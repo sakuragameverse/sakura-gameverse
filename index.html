@@ -7,16 +7,18 @@
   <style>
     body {
       margin: 0;
-      background-color: #0d041a; /* Fondo aún más oscuro para mayor contraste */
+      background-color: #0d041a;
+      color: white;
+      font-family: sans-serif;
     }
+    
+    /* BANNER PRINCIPAL */
     .hero-banner {
       background-color: #11052C;
-      color: white;
       text-align: center;
       padding: 60px 20px;
       border-bottom: 3px solid #FF007F;
       box-shadow: 0 0 20px rgba(255, 0, 127, 0.4);
-      font-family: sans-serif; 
     }
     .hero-logo {
       max-width: 280px;
@@ -42,6 +44,67 @@
       box-shadow: 0 0 10px #FF007F inset, 0 0 15px #FF007F;
       cursor: pointer;
     }
+    
+    /* SECCIÓN DEL CATÁLOGO */
+    .container {
+      padding: 40px 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .section-title {
+      text-align: center;
+      color: #FF007F;
+      font-size: 1.8em;
+      margin-bottom: 30px;
+      text-shadow: 0 0 10px rgba(255,0,127,0.5);
+    }
+    
+    /* CUADRÍCULA DE PRODUCTOS */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    
+    /* TARJETAS DE PRODUCTO ELEGANTES */
+    .card {
+      background-color: #1a0b38; /* Morado suave para contrastar con el fondo */
+      border-radius: 15px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+      position: relative; /* Importante para la etiqueta de encargo */
+    }
+    .card img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+    .card-title {
+      font-size: 1.2em;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .card-price {
+      color: #00e5ff; /* Azul cian brillante para los precios */
+      font-size: 1.2em;
+      font-weight: bold;
+      text-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
+    }
+    
+    /* ETIQUETA DE "POR ENCARGO" */
+    .badge-encargo {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #FF007F;
+      color: white;
+      padding: 5px 12px;
+      font-size: 0.8em;
+      font-weight: bold;
+      border-radius: 20px;
+      box-shadow: 0 0 10px #FF007F;
+    }
   </style>
 </head>
 <body>
@@ -52,6 +115,39 @@
     Donde tu pasión por el gaming nunca hace game over. 👾🌸
   </div>
   <button class="btn-neon">Ver Catálogo</button>
+</div>
+
+<!-- NUEVA SECCIÓN: PRODUCTOS -->
+<div class="container">
+  <h2 class="section-title">✨ Nuevos Lanzamientos ✨</h2>
+  
+  <div class="grid">
+    
+    <!-- PRODUCTO 1 (EN STOCK) -->
+    <div class="card">
+      <!-- Nota: Estas fotos son de prueba, luego pondremos las tuyas -->
+      <img src="https://via.placeholder.com/250x250/11052C/FF007F?text=Figura+Anime" alt="Figura">
+      <div class="card-title">Figura de Colección</div>
+      <div class="card-price">$35.00</div>
+    </div>
+
+    <!-- PRODUCTO 2 (POR ENCARGO) -->
+    <div class="card">
+      <div class="badge-encargo">Por Encargo</div>
+      <img src="https://via.placeholder.com/250x250/11052C/00e5ff?text=Peluche+Kawaii" alt="Peluche">
+      <div class="card-title">Peluche Exclusivo</div>
+      <div class="card-price">$20.00</div>
+    </div>
+
+    <!-- PRODUCTO 3 (POR ENCARGO) -->
+    <div class="card">
+      <div class="badge-encargo">Por Encargo</div>
+      <img src="https://via.placeholder.com/250x250/11052C/FF007F?text=Cartas+TCG" alt="Cartas">
+      <div class="card-title">Booster Pack TCG</div>
+      <div class="card-price">$5.00</div>
+    </div>
+    
+  </div>
 </div>
 
 </body>
