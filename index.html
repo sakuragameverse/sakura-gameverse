@@ -24,20 +24,17 @@
       justify-content: center;
       align-items: center;
       z-index: 9999;
-      transition: opacity 0.6s ease;
+      transition: opacity 0.5s ease;
     }
     .splash-logo {
       max-width: 280px;
       margin-bottom: 20px;
-      animation: car-accelerating 0.4s infinite alternate ease-in-out;
+      animation: car-accelerating 0.3s infinite alternate ease-in-out;
     }
-    /* EFECTO DE ACELERACIÓN Y VIBRACIÓN DE MOTOR */
     @keyframes car-accelerating {
-      0% { transform: scale(1) translateX(0) translateY(0); filter: drop-shadow(0 0 10px rgba(0,229,255,0.5)); }
-      25% { transform: scale(1.02) translateX(-2px) translateY(1px); filter: drop-shadow(0 0 15px rgba(255,0,127,0.7)); }
-      50% { transform: scale(1.04) translateX(2px) translateY(-1px); filter: drop-shadow(0 0 20px rgba(0,229,255,0.9)); }
-      75% { transform: scale(1.02) translateX(-1px) translateY(-1px); filter: drop-shadow(0 0 15px rgba(255,0,127,0.7)); }
-      100% { transform: scale(1.05) translateX(2px) translateY(1px); filter: drop-shadow(0 0 25px rgba(0,229,255,1)); }
+      0% { transform: scale(1) translateX(0); filter: drop-shadow(0 0 10px rgba(0,229,255,0.5)); }
+      50% { transform: scale(1.04) translateX(3px) translateY(-2px); filter: drop-shadow(0 0 20px rgba(255,0,127,0.9)); }
+      100% { transform: scale(1.06) translateX(-3px) translateY(2px); filter: drop-shadow(0 0 25px rgba(0,229,255,1)); }
     }
 
     .loading-bar-container {
@@ -54,7 +51,7 @@
       height: 100%;
       background: #00e5ff;
       box-shadow: 0 0 10px #00e5ff;
-      animation: load-progress 1.2s forwards;
+      animation: load-progress 1.5s linear forwards;
     }
     @keyframes load-progress {
       to { width: 100%; }
@@ -118,7 +115,6 @@
 </head>
 <body>
 
-<!-- PANTALLA DE CARGA CON EL CARRO ACELERANDO -->
 <div id="splash-screen">
   <img src="logo.webp" alt="Logo Carro" class="splash-logo">
   <div style="color: #00e5ff; font-weight: bold; font-size: 1.1em; letter-spacing: 2px;">ACELERANDO EL GAMEVERSE...</div>
@@ -234,13 +230,14 @@
 <a href="https://wa.me/584244970576" class="whatsapp-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
 <script>
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      let splash = document.getElementById('splash-screen');
+  // FUNCIÓN DE SEGURIDAD: QUITA EL SPLASH SCREEN EXACTAMENTE A LOS 1.5 SEGUNDOS
+  setTimeout(() => {
+    let splash = document.getElementById('splash-screen');
+    if (splash) {
       splash.style.opacity = '0';
-      setTimeout(() => splash.style.display = 'none', 600);
-    }, 1200);
-  });
+      setTimeout(() => splash.style.display = 'none', 500);
+    }
+  }, 1500);
 
   function reproducirSonido() {
     try {
