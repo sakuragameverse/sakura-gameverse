@@ -928,7 +928,7 @@
     </div>
 
     <div class="faq-item">
-      <div class="faq-question"><i class="fas fa-shipping-fast"></i> ¿Por cuáles empresas envían?</div>
+      <div class="faq-question"><i class="fas fa-shipping-fast"></i> Por cuáles empresas envían?</div>
       <div class="faq-answer">Realizamos envíos nacionales con cobro a destino exclusivamente a través de <strong>ZOOM</strong> y <strong>MRW</strong>.</div>
     </div>
   </div>
@@ -1085,24 +1085,38 @@
   }
   iniciarCountdown();
 
-  // OBTENER TASA BCV AUTOMÁTICA EN VIVO
-  let tasaBcvActual = 36.50; // Respaldo por defecto
+  // NUEVA API PÚBLICA ESTABLE DE TASA BCV
+  let tasaBcvActual = 854.46; // Respaldo oficial predeterminado actual
 
   async function obtenerTasaBcvAutomatica() {
     try {
-      let respuesta = await fetch('https://rates.dolarvzla.com/bcv/current.json');
+      let respuesta = await fetch('https://pydolarvenezuela-api.vercel.app/api/v1/dollar?page=bcv');
       let data = await respuesta.json();
-      if (data && data.usd) {
-        tasaBcvActual = parseFloat(data.usd);
-        document.getElementById('txtTasaBcvAuto').innerText = `Bs. ${tasaBcvActual.toFixed(2)}`;
+      // Verificamos formato estándar de pydolarvenezuela
+      let valorEncontrado = data.monitors?.bcv?.price || data.price || data.usd;
+      if (valorEncontrado) {
+        tasaBcvActual = parseFloat(valorEncontrado);
+        document.getElementById('txtTasaBcvAuto').innerText = `Bs. ${tasaBcvActual.toLocaleString('es-VE', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
         actualizarPreciosEnBs();
       } else {
-        throw new Error("Formato inválido");
+        throw new Error("Estructura no reconocida");
       }
     } catch (e) {
-      // Si falla la red, intenta usar la última tasa guardada o el respaldo
-      tasaBcvActual = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 36.50;
-      document.getElementById('txtTasaBcvAuto').innerText = `Bs. ${tasaBcvActual.toFixed(2)} (Offline)`;
+      // Segundo intento con endpoint alternativo directo
+      try {
+        let respuestaAlt = await fetch('https://rates.dolarvzla.com/bcv/current.json');
+        let dataAlt = await respuestaAlt.json();
+        if (dataAlt && dataAlt.usd) {
+          tasaBcvActual = parseFloat(dataAlt.usd);
+          document.getElementById('txtTasaBcvAuto').innerText = `Bs. ${tasaBcvActual.toLocaleString('es-VE', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+          actualizarPreciosEnBs();
+          return;
+        }
+      } catch (errAlt) {}
+
+      // Si todo falla, usa respaldo guardado o predeterminado
+      tasaBcvActual = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 854.46;
+      document.getElementById('txtTasaBcvAuto').innerText = `Bs. ${tasaBcvActual.toLocaleString('es-VE', {minimumFractionDigits: 2, maximumFractionDigits: 2})} (Ref)`;
       actualizarPreciosEnBs();
     }
   }
