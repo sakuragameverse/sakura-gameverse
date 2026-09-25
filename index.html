@@ -84,7 +84,6 @@
     .hero-logo { max-width: 240px; margin-bottom: 10px; filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1)); }
     .hero-title { font-size: 1.2em; font-weight: bold; margin-bottom: 15px; letter-spacing: 1px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
     
-    /* PANEL DE TASA BCV MODIFICABLE */
     .bcv-box {
       background: rgba(0, 229, 255, 0.1);
       border: 1px solid #00e5ff;
@@ -111,15 +110,17 @@
     }
 
     .container { padding: 30px 20px; max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
-    .section-title { text-align: center; color: #FF007F; font-size: 1.8em; margin-bottom: 20px; animation: neon-pulse 1.5s infinite alternate; }
-    @keyframes neon-pulse { 0% { text-shadow: 0 0 5px #FF007F, 0 0 10px #FF007F; } 100% { text-shadow: 0 0 5px #fff, 0 0 15px #FF007F, 0 0 30px #FF007F; } }
     
     .search-box { text-align: center; margin-bottom: 20px; }
     .search-input { background: #11052C; border: 2px solid #00e5ff; color: white; padding: 10px 20px; width: 80%; max-width: 400px; border-radius: 25px; font-size: 1em; outline: none; box-shadow: 0 0 10px rgba(0,229,255,0.3); }
     
-    .filtros { text-align: center; margin-bottom: 30px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+    .controles-superiores { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-bottom: 30px; }
+    .filtros { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
     .btn-filtro { background: transparent; color: white; border: 1px solid #00e5ff; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: 0.3s; }
     .btn-filtro:hover, .btn-filtro.activo { background: #00e5ff; color: #0d041a; box-shadow: 0 0 10px #00e5ff; }
+
+    /* SELECTOR DE ORDENAMIENTO */
+    .ordenar-select { background: #11052C; border: 1px solid #FF007F; color: white; padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; outline: none; box-shadow: 0 0 10px rgba(255,0,127,0.3); }
 
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
     
@@ -133,7 +134,12 @@
     .card-title { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; }
     .card-price { color: #00e5ff; font-size: 1.2em; font-weight: bold; text-shadow: 0 0 5px rgba(0, 229, 255, 0.5); margin-bottom: 3px; }
     .card-bs { color: #ff99cc; font-size: 0.85em; font-weight: bold; }
-    .badge-encargo { position: absolute; top: 10px; right: 10px; background-color: #FF007F; color: white; padding: 5px 12px; font-size: 0.8em; font-weight: bold; border-radius: 20px; box-shadow: 0 0 10px #FF007F; z-index: 3; }
+    
+    /* ETIQUETAS DE ESTADO VISUALES */
+    .badge-estado { position: absolute; top: 10px; right: 10px; padding: 5px 12px; font-size: 0.75em; font-weight: bold; border-radius: 20px; z-index: 3; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+    .badge-stock { background-color: #00e5ff; color: #0d041a; box-shadow: 0 0 10px #00e5ff; }
+    .badge-encargo { background-color: #FF007F; color: white; box-shadow: 0 0 10px #FF007F; }
+    .badge-nuevo { background-color: #ffcc00; color: #0d041a; box-shadow: 0 0 10px #ffcc00; }
 
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
     .modal-content { background: #11052C; padding: 20px; border-radius: 20px; text-align: center; max-width: 90%; width: 400px; border: 2px solid #FF007F; box-shadow: 0 0 30px rgba(255,0,127,0.5); position: relative; max-height: 90vh; overflow-y: auto; }
@@ -163,10 +169,12 @@
     .btn-checkout { background: #25D366; color: white; border: none; padding: 8px 15px; border-radius: 15px; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px #25D366; font-size: 0.9em; }
     .btn-clear { background: #ff3366; color: white; border: none; padding: 8px 12px; border-radius: 15px; font-weight: bold; cursor: pointer; font-size: 0.9em; }
 
+    /* SECCIÓN DE PAGOS INTERACTIVA */
     .info-section { background: #11052C; margin-top: 40px; margin-bottom: 60px; padding: 30px 20px; border-radius: 15px; border: 1px solid #FF007F; box-shadow: 0 0 15px rgba(255,0,127,0.2); }
-    .info-title { color: #00e5ff; font-size: 1.4em; margin-bottom: 15px; text-align: center; }
-    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; font-size: 0.95em; line-height: 1.5; }
-    .info-card { background: #1a0b38; padding: 15px; border-radius: 10px; border: 1px solid rgba(255,0,127,0.3); }
+    .info-title { color: #00e5ff; font-size: 1.4em; margin-bottom: 20px; text-align: center; }
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; font-size: 0.95em; line-height: 1.5; }
+    .info-card { background: #1a0b38; padding: 20px; border-radius: 12px; border: 1px solid rgba(255,0,127,0.3); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+    .info-card h4 { color: #00e5ff; margin-top: 0; margin-bottom: 10px; font-size: 1.1em; display: flex; align-items: center; gap: 8px; }
 
     .floating-buttons { position: fixed; bottom: 75px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 1000; }
     .whatsapp-btn { background-color: #25D366; color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 26px; text-decoration: none; box-shadow: 0 0 10px rgba(37,211,102,0.5); }
@@ -213,57 +221,68 @@
     <input type="text" id="buscador" class="search-input" placeholder="🔍 Buscar figura, katana, lámpara..." onkeyup="buscarProductos()">
   </div>
 
-  <div class="filtros">
-    <button class="btn-filtro activo" onclick="filtrar('todos', event)">Todos</button>
-    <button class="btn-filtro" onclick="filtrar('figuras', event)">Figuras</button>
-    <button class="btn-filtro" onclick="filtrar('peluches', event)">Peluches</button>
-    <button class="btn-filtro" onclick="filtrar('cartas', event)">Cartas TCG</button>
-    <button class="btn-filtro" onclick="filtrar('accesorios', event)">Accesorios</button>
-    <button class="btn-filtro" onclick="filtrar('katanas', event)">Katanas</button>
-    <button class="btn-filtro" onclick="filtrar('lamparas', event)">Lámparas</button>
+  <div class="controles-superiores">
+    <div class="filtros">
+      <button class="btn-filtro activo" onclick="filtrar('todos', event)">Todos</button>
+      <button class="btn-filtro" onclick="filtrar('figuras', event)">Figuras</button>
+      <button class="btn-filtro" onclick="filtrar('peluches', event)">Peluches</button>
+      <button class="btn-filtro" onclick="filtrar('cartas', event)">Cartas TCG</button>
+      <button class="btn-filtro" onclick="filtrar('accesorios', event)">Accesorios</button>
+      <button class="btn-filtro" onclick="filtrar('katanas', event)">Katanas</button>
+      <button class="btn-filtro" onclick="filtrar('lamparas', event)">Lámparas</button>
+    </div>
+
+    <!-- SELECTOR DE ORDENAMIENTO DE PRECIOS -->
+    <select id="selectOrden" class="ordenar-select" onchange="ordenarProductos()">
+      <option value="defecto">⚡ Ordenar por: Destacados</option>
+      <option value="menor">📉 Precio: Menor a Mayor</option>
+      <option value="mayor">📈 Precio: Mayor a Menor</option>
+    </select>
   </div>
   
   <div class="grid" id="catalogo">
-    <div class="card item-producto" data-nombre="figura de coleccion" data-categoria="figuras" onclick="reproducirSonido(); abrirModal('figuras.jpg', 'Figura de Colección', 35.00, '¡Una figura épica para tu repisa! Detalles increíbles y acabados premium.')">
+    <div class="card item-producto" data-nombre="figura de coleccion" data-categoria="figuras" data-precio="35.00" onclick="reproducirSonido(); abrirModal('figuras.jpg', 'Figura de Colección', 35.00, '¡Una figura épica para tu repisa! Detalles increíbles y acabados premium.')">
+      <div class="badge-estado badge-stock">Stock</div>
       <img src="figuras.jpg" alt="Figura">
       <div class="card-title">Figura de Colección</div>
       <div class="card-price">$35.00</div>
       <div class="card-bs" data-usd="35.00">≈ Bs. 0.00</div>
     </div>
 
-    <div class="card item-producto" data-nombre="peluche exclusivo" data-categoria="peluches" onclick="reproducirSonido(); abrirModal('peluche.jpg', 'Peluche Exclusivo', 20.00, 'Súper suave y kawaii. El compañero perfecto para tus largas noches de gaming.')">
-      <div class="badge-encargo">Por Encargo</div>
+    <div class="card item-producto" data-nombre="peluche exclusivo" data-categoria="peluches" data-precio="20.00" onclick="reproducirSonido(); abrirModal('peluche.jpg', 'Peluche Exclusivo', 20.00, 'Súper suave y kawaii. El compañero perfecto para tus largas noches de gaming.')">
+      <div class="badge-estado badge-encargo">Por Encargo</div>
       <img src="peluche.jpg" alt="Peluche">
       <div class="card-title">Peluche Exclusivo</div>
       <div class="card-price">$20.00</div>
       <div class="card-bs" data-usd="20.00">≈ Bs. 0.00</div>
     </div>
 
-    <div class="card item-producto" data-nombre="booster pack tcg cartas" data-categoria="cartas" onclick="reproducirSonido(); abrirModal('cartas.jpg', 'Booster Pack TCG', 5.00, '¡Expande tu mazo y aplasta a tus rivales! Incluye cartas raras garantizadas.')">
-      <div class="badge-encargo">Por Encargo</div>
+    <div class="card item-producto" data-nombre="booster pack tcg cartas" data-categoria="cartas" data-precio="5.00" onclick="reproducirSonido(); abrirModal('cartas.jpg', 'Booster Pack TCG', 5.00, '¡Expande tu mazo y aplasta a tus rivales! Incluye cartas raras garantizadas.')">
+      <div class="badge-estado badge-nuevo">🔥 Nuevo</div>
       <img src="cartas.jpg" alt="Cartas TCG">
       <div class="card-title">Booster Pack TCG</div>
       <div class="card-price">$5.00</div>
       <div class="card-bs" data-usd="5.00">≈ Bs. 0.00</div>
     </div>
 
-    <div class="card item-producto" data-nombre="accesorio anime collar" data-categoria="accesorios" onclick="reproducirSonido(); abrirModal('accesorios.jpeg', 'Accesorio Anime', 5.00, '¡Lleva tu pasión a todas partes con este increíble accesorio! Diseño súper detallado.')">
-      <div class="badge-encargo">Por Encargo</div>
+    <div class="card item-producto" data-nombre="accesorio anime collar" data-categoria="accesorios" data-precio="5.00" onclick="reproducirSonido(); abrirModal('accesorios.jpeg', 'Accesorio Anime', 5.00, '¡Lleva tu pasión a todas partes con este increíble accesorio! Diseño súper detallado.')">
+      <div class="badge-estado badge-encargo">Por Encargo</div>
       <img src="accesorios.jpeg" alt="Accesorios">
       <div class="card-title">Accesorio Anime</div>
       <div class="card-price">$5.00</div>
       <div class="card-bs" data-usd="5.00">≈ Bs. 0.00</div>
     </div>
 
-    <div class="card item-producto" data-nombre="katana replica anime" data-categoria="katanas" onclick="reproducirSonido(); abrirModal('katanas.jpg', 'Katana Replica Anime', 45.00, 'Replica a escala real. Perfecta para cosplay o para darle un toque épico a tu cuarto.')">
-      <div class="badge-encargo">Por Encargo</div>
+    <div class="card item-producto" data-nombre="katana replica anime" data-categoria="katanas" data-precio="45.00" onclick="reproducirSonido(); abrirModal('katanas.jpg', 'Katana Replica Anime', 45.00, 'Replica a escala real. Perfecta para cosplay o para darle un toque épico a tu cuarto.')">
+      <div class="badge-estado badge-encargo">Por Encargo</div>
       <img src="katanas.jpg" alt="Katanas">
       <div class="card-title">Katana Replica Anime</div>
       <div class="card-price">$45.00</div>
       <div class="card-bs" data-usd="45.00">≈ Bs. 0.00</div>
     </div>
 
-    <div class="card item-producto" data-nombre="lampara neon gamer" data-categoria="lamparas" onclick="reproducirSonido(); abrirModal('lamparas.jpg', 'Lámpara Neón Gamer', 25.00, 'Ilumina tu setup con esta increíble lámpara. Varios colores y modos de luz.')">
+    <div class="card item-producto" data-nombre="lampara neon gamer" data-categoria="lamparas" data-precio="25.00" onclick="reproducirSonido(); abrirModal('lamparas.jpg', 'Lámpara Neón Gamer', 25.00, 'Ilumina tu setup con esta increíble lámpara. Varios colores y modos de luz.')">
+      <div class="badge-estado badge-stock">Stock</div>
       <img src="lamparas.jpg" alt="Lámparas">
       <div class="card-title">Lámpara Neón Gamer</div>
       <div class="card-price">$25.00</div>
@@ -289,19 +308,22 @@
   </div>
 
   <div class="info-section">
-    <div class="info-title">✨ Información y Envíos 📦</div>
+    <div class="info-title">✨ Información, Pagos y Envíos 📦</div>
     <div class="info-grid">
       <div class="info-card">
-        <strong>💳 Métodos de Pago:</strong><br>
-        Pago Móvil, Efectivo ($) y Binance USDT.
+        <h4><i class="fas fa-credit-card" style="color: #00e5ff;"></i> Métodos de Pago</h4>
+        • <strong>Pago Móvil</strong> (Calculado a tasa BCV del día)<br>
+        • <strong>Efectivo</strong> ($ / €)<br>
+        • <strong>Binance USDT</strong> (Cripto pago rápido)
       </div>
       <div class="info-card">
-        <strong>🚚 Envíos Nacionales:</strong><br>
-        Envíos seguros a todo el país por Zoom, Tealca y MRW.
+        <h4><i class="fas fa-truck-fast" style="color: #FF007F;"></i> Envíos Nacionales</h4>
+        Despachos seguros y embalaje protegido a todo el territorio nacional a través de:<br>
+        • <strong>Zoom, Tealca y MRW</strong>.
       </div>
       <div class="info-card">
-        <strong>⚡ Sobre los Encargos:</strong><br>
-        Los productos bajo encargo se apartan con un 50% de inicial. ¡Consúltanos al WhatsApp!
+        <h4><i class="fas fa-bolt" style="color: #ffcc00;"></i> Sobre los Encargos</h4>
+        Los artículos bajo la modalidad de encargo se apartan con un <strong>50% de inicial</strong>. ¡Escríbenos al WhatsApp para cotizar tu figura o manga soñado!
       </div>
     </div>
   </div>
@@ -364,7 +386,6 @@
     }
   }, 1600);
 
-  // CONTROL MANUAL DE TASA BCV (Guardada en el navegador del dispositivo)
   let tasaBcvActual = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 36.50;
   document.getElementById('inputTasaBcv').value = tasaBcvActual;
 
@@ -422,6 +443,25 @@
         prod.style.display = 'none';
       }
     });
+  }
+
+  // ORDENAR PRODUCTOS POR PRECIO
+  function ordenarProductos() {
+    reproducirSonido();
+    let criterio = document.getElementById('selectOrden').value;
+    let catalogo = document.getElementById('catalogo');
+    let productos = Array.from(catalogo.getElementsByClassName('item-producto'));
+
+    productos.sort((a, b) => {
+      let precioA = parseFloat(a.getAttribute('data-precio'));
+      let precioB = parseFloat(b.getAttribute('data-precio'));
+
+      if (criterio === 'menor') return precioA - precioB;
+      if (criterio === 'mayor') return precioB - precioA;
+      return 0; // Defecto
+    });
+
+    productos.forEach(prod => catalogo.appendChild(prod));
   }
 
   function buscarProductos() {
