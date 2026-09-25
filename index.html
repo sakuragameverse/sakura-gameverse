@@ -108,13 +108,25 @@
     .card-price { color: #00e5ff; font-size: 1.2em; font-weight: bold; text-shadow: 0 0 5px rgba(0, 229, 255, 0.5); }
     .badge-encargo { position: absolute; top: 10px; right: 10px; background-color: #FF007F; color: white; padding: 5px 12px; font-size: 0.8em; font-weight: bold; border-radius: 20px; box-shadow: 0 0 10px #FF007F; z-index: 3; }
 
+    /* MODALES GENERALES */
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
     .modal-content { background: #11052C; padding: 20px; border-radius: 20px; text-align: center; max-width: 90%; width: 400px; border: 2px solid #FF007F; box-shadow: 0 0 30px rgba(255,0,127,0.5); position: relative; max-height: 90vh; overflow-y: auto; }
     .cerrar-modal { position: absolute; top: 10px; right: 15px; font-size: 25px; color: white; cursor: pointer; background: none; border: none; font-weight: bold; }
     .modal-img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
     .btn-comprar { background: #FF007F; color: white; border: none; padding: 10px 20px; font-size: 1.1em; font-weight: bold; border-radius: 30px; cursor: pointer; margin-top: 15px; box-shadow: 0 0 10px #FF007F; width: 100%; }
 
-    .cart-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(17, 5, 44, 0.95); border-top: 2px solid #00e5ff; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; z-index: 1500; box-shadow: 0 -5px 20px rgba(0,229,255,0.3); backdrop-filter: blur(5px); flex-wrap: wrap; gap: 8px; }
+    /* ESTILOS DEL MODAL DE CARRITO DETALLADO */
+    .cart-item-row { display: flex; align-items: center; justify-content: space-between; background: #1a0b38; padding: 10px; border-radius: 10px; margin-bottom: 10px; border: 1px solid rgba(0,229,255,0.3); }
+    .cart-item-img { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; margin-right: 10px; }
+    .cart-item-info { flex-grow: 1; text-align: left; font-size: 0.9em; }
+    .cart-item-del { background: #ff3366; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.8em; }
+
+    /* ESTILOS DEL MODAL DE SUGERENCIAS */
+    .sugerencia-input { width: 100%; background: #0d041a; border: 1px solid #00e5ff; color: white; padding: 10px; border-radius: 10px; margin-bottom: 12px; box-sizing: border-box; outline: none; }
+    .btn-sugerencia { background: #00e5ff; color: #0d041a; border: none; padding: 10px 20px; font-weight: bold; border-radius: 20px; cursor: pointer; width: 100%; box-shadow: 0 0 10px #00e5ff; }
+
+    /* BARRA DE CARRITO INFERIOR */
+    .cart-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(17, 5, 44, 0.95); border-top: 2px solid #00e5ff; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; z-index: 1500; box-shadow: 0 -5px 20px rgba(0,229,255,0.3); backdrop-filter: blur(5px); flex-wrap: wrap; gap: 8px; cursor: pointer; }
     .cart-info { font-weight: bold; font-size: 1em; color: #00e5ff; }
     .cart-buttons { display: flex; gap: 8px; }
     .btn-checkout { background: #25D366; color: white; border: none; padding: 8px 15px; border-radius: 15px; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px #25D366; font-size: 0.9em; }
@@ -125,8 +137,11 @@
     .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; font-size: 0.95em; line-height: 1.5; }
     .info-card { background: #1a0b38; padding: 15px; border-radius: 10px; border: 1px solid rgba(255,0,127,0.3); }
 
-    .whatsapp-btn { position: fixed; bottom: 75px; right: 20px; background-color: #25D366; color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 26px; text-decoration: none; z-index: 1000; animation: pulse-wa 2s infinite; }
-    @keyframes pulse-wa { 0% { transform: scale(1); box-shadow: 0 0 10px rgba(37, 211, 102, 0.5); } 50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(37, 211, 102, 1); } 100% { transform: scale(1); box-shadow: 0 0 10px rgba(37, 211, 102, 0.5); } }
+    /* BOTONES FLOTANTES DERECHOS (WhatsApp y Sugerencias) */
+    .floating-buttons { position: fixed; bottom: 75px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 1000; }
+    .whatsapp-btn { background-color: #25D366; color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 26px; text-decoration: none; animation: pulse-wa 2s infinite; box-shadow: 0 0 10px rgba(37,211,102,0.5); }
+    .sugerencia-btn { background-color: #FF007F; color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 24px; text-decoration: none; box-shadow: 0 0 10px #FF007F; cursor: pointer; border: none; }
+    @keyframes pulse-wa { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 
     .bg-elements { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
     .float-item { position: absolute; top: -10%; animation: fall linear infinite; opacity: 0.7; }
@@ -244,18 +259,44 @@
   </div>
 </div>
 
-<div class="cart-bar">
-  <div class="cart-info" id="cartText">🛒 0 ítems ($0.00)</div>
-  <div class="cart-buttons">
-    <button class="btn-clear" onclick="vaciarCarrito()">Vaciar</button>
-    <button class="btn-checkout" onclick="enviarPedidoWhatsApp()">Pedir al WhatsApp 📱</button>
+<div id="modalCarrito" class="modal">
+  <div class="modal-content" style="width: 450px;">
+    <button class="cerrar-modal" onclick="cerrarCarritoModal()">×</button>
+    <h2 style="color: #00e5ff; margin-top: 0;">🛒 Tu Carrito de Compras</h2>
+    <div id="listaCarritoDetalle" style="max-height: 250px; overflow-y: auto; margin-bottom: 15px; padding-right: 5px;">
+      </div>
+    <h3 id="modalCarritoTotal" style="color: #FF007F; margin-bottom: 15px;">Total: $0.00</h3>
+    <div style="display: flex; gap: 10px;">
+      <button class="btn-clear" style="flex: 1; padding: 10px;" onclick="vaciarCarrito()">Vaciar Carrito</button>
+      <button class="btn-checkout" style="flex: 2; padding: 10px;" onclick="enviarPedidoWhatsApp()">Enviar al WhatsApp 📱</button>
+    </div>
   </div>
 </div>
 
-<a href="https://wa.me/584244970576" class="whatsapp-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<div id="modalSugerencias" class="modal">
+  <div class="modal-content">
+    <button class="cerrar-modal" onclick="cerrarSugerenciaModal()">×</button>
+    <h2 style="color: #FF007F; margin-top: 0;">💡 Sugerir Mercancía</h2>
+    <p style="font-size: 0.85em; color: #ccc; margin-bottom: 15px;">¿Buscas un artículo, figura o manga en específico? ¡Dinos cuál y evaluaremos traerlo!</p>
+    <input type="text" id="sugNombre" class="sugerencia-input" placeholder="Tu Nombre o Apodo">
+    <textarea id="sugDeseo" class="sugerencia-input" rows="3" placeholder="¿Qué producto o anime te gustaría que trajéramos?"></textarea>
+    <button class="btn-sugerencia" onclick="enviarSugerenciaWhatsApp()">Enviar Sugerencia 🚀</button>
+  </div>
+</div>
+
+<div class="cart-bar" onclick="abrirCarritoModal()">
+  <div class="cart-info" id="cartText">🛒 Ver Carrito: 0 ítems ($0.00)</div>
+  <div class="cart-buttons" onclick="event.stopPropagation()">
+    <button class="btn-checkout" onclick="abrirCarritoModal()">Revisar 🛒</button>
+  </div>
+</div>
+
+<div class="floating-buttons">
+  <button class="sugerencia-btn" onclick="abrirSugerenciaModal()" title="Sugerir Mercancía"><i class="fas fa-lightbulb"></i></button>
+  <a href="https://wa.me/584244970576" class="whatsapp-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
+</div>
 
 <script>
-  // TEMPORIZADOR DE SEGURIDAD (Se desvanece suavemente a los 1.6 segundos)
   setTimeout(() => {
     let splash = document.getElementById('splash-screen');
     if (splash) {
@@ -314,7 +355,7 @@
   }
 
   function abrirModal(img, titulo, precio, descripcion) {
-    productoActual = { titulo, precio };
+    productoActual = { img, titulo, precio };
     document.getElementById('modalImg').src = img;
     document.getElementById('modalTitulo').innerText = titulo;
     document.getElementById('modalPrecio').innerText = "$" + precio.toFixed(2);
@@ -338,18 +379,58 @@
     reproducirSonido();
     carrito = [];
     actualizarCarritoUI();
+    abrirCarritoModal();
+  }
+
+  function eliminarItemCarrito(index) {
+    reproducirSonido();
+    carrito.splice(index, 1);
+    actualizarCarritoUI();
+    abrirCarritoModal();
   }
 
   function actualizarCarritoUI() {
     let totalItems = carrito.length;
     let totalPrecio = carrito.reduce((sum, item) => sum + item.precio, 0);
-    document.getElementById('cartText').innerText = `🛒 ${totalItems} ítems ($${totalPrecio.toFixed(2)})`;
+    document.getElementById('cartText').innerText = `🛒 Ver Carrito: ${totalItems} ítems ($${totalPrecio.toFixed(2)})`;
+  }
+
+  function abrirCarritoModal() {
+    reproducirSonido();
+    let contenedor = document.getElementById('listaCarritoDetalle');
+    contenedor.innerHTML = "";
+    
+    if (carrito.length === 0) {
+      contenedor.innerHTML = "<p style='color: #aaa;'>Tu carrito está vacío.</p>";
+    } else {
+      carrito.forEach((item, index) => {
+        contenedor.innerHTML += `
+          <div class="cart-item-row">
+            <img src="${item.img}" class="cart-item-img">
+            <div class="cart-item-info">
+              <strong>${item.titulo}</strong><br>
+              <span style="color: #00e5ff;">$${item.precio.toFixed(2)}</span>
+            </div>
+            <button class="cart-item-del" onclick="eliminarItemCarrito(${index})">❌</button>
+          </div>
+        `;
+      });
+    }
+
+    let totalPrecio = carrito.reduce((sum, item) => sum + item.precio, 0);
+    document.getElementById('modalCarritoTotal').innerText = `Total: $${totalPrecio.toFixed(2)}`;
+    document.getElementById('modalCarrito').style.display = 'flex';
+  }
+
+  function cerrarCarritoModal() {
+    reproducirSonido();
+    document.getElementById('modalCarrito').style.display = 'none';
   }
 
   function enviarPedidoWhatsApp() {
     reproducirSonido();
     if (carrito.length === 0) {
-      alert("¡Tu carrito está vacío! Selecciona al menos un producto.");
+      alert("¡Tu carrito está vacío!");
       return;
     }
     let mensaje = "¡Hola Sakura Gameverse! 🌸👾 Deseo realizar el siguiente pedido:\n\n";
@@ -362,6 +443,33 @@
     
     let url = "https://wa.me/584244970576?text=" + encodeURIComponent(mensaje);
     window.open(url, '_blank');
+  }
+
+  // FUNCIONES DE SUGERENCIA
+  function abrirSugerenciaModal() {
+    reproducirSonido();
+    document.getElementById('modalSugerencias').style.display = 'flex';
+  }
+
+  function cerrarSugerenciaModal() {
+    reproducirSonido();
+    document.getElementById('modalSugerencias').style.display = 'none';
+  }
+
+  function enviarSugerenciaWhatsApp() {
+    reproducirSonido();
+    let nombre = document.getElementById('sugNombre').value.trim();
+    let deseo = document.getElementById('sugDeseo').value.trim();
+
+    if (!nombre || !deseo) {
+      alert("Por favor completa tu nombre y la sugerencia.");
+      return;
+    }
+
+    let mensaje = `💡 *Sugerencia de Mercancía* 💡\n\n*Cliente:* ${nombre}\n*Sugerencia:* ${deseo}\n\n¡Enviado desde Sakura Gameverse! 🌸`;
+    let url = "https://wa.me/584244970576?text=" + encodeURIComponent(mensaje);
+    window.open(url, '_blank');
+    cerrarSugerenciaModal();
   }
 </script>
 
