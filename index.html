@@ -9,7 +9,6 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
   <style>
-    /* TEMAS: CYBERPUNK (DEFAULT) Y NEON SAKURA */
     :root {
       --bg-color: #0d041a;
       --card-bg: linear-gradient(135deg, #1a0b38 0%, #11052C 100%);
@@ -263,7 +262,11 @@
     }
     .card img { width: 100%; height: 250px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
     .card-title { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; }
-    .card-price { color: var(--secondary-color); font-size: 1.2em; font-weight: bold; text-shadow: 0 0 5px rgba(0, 229, 255, 0.5); margin-bottom: 3px; }
+    
+    /* ESTILOS PRECIO TACHADO / OFERTA */
+    .precio-container { display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 3px; }
+    .card-price-old { color: #888; font-size: 0.95em; text-decoration: line-through; }
+    .card-price { color: var(--secondary-color); font-size: 1.2em; font-weight: bold; text-shadow: 0 0 5px rgba(0, 229, 255, 0.5); }
     .card-bs { color: var(--primary-color); font-size: 0.85em; font-weight: bold; margin-bottom: 8px; }
     
     .badge-estado { position: absolute; top: 10px; right: 10px; padding: 5px 12px; font-size: 0.75em; font-weight: bold; border-radius: 20px; z-index: 3; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
@@ -272,7 +275,6 @@
     .badge-nuevo { background-color: #ffcc00; color: #0d041a; box-shadow: 0 0 10px #ffcc00; }
     .badge-gamer { background-color: #7b2cbf; color: white; box-shadow: 0 0 10px #7b2cbf; }
 
-    /* BOTÓN DE FAVORITO EN TARJETA */
     .btn-fav-card {
       position: absolute;
       top: 10px;
@@ -389,7 +391,7 @@
 
 <div class="ticker-bar">
   <div class="ticker-content">
-    🔥 ¡Bienvenidos a Sakura Gameverse! Envíos seguros a todo el país exclusivamente por ZOOM y MRW 📦 | 🎮 Cupón activo: OTAKU10 | ⚡ ¡Calcula tu pago móvil al instante con la tasa BCV del día! 🌸
+    🔥 ¡Bienvenidos a Sakura Gameverse! Envíos seguros a todo el país exclusivamente por ZOOM y MRW 📦 | 🎮 Cupón activo: OTAKU10 | ⚡ ¡Nuevos Mangas y Cartas TCG disponibles! 🌸
   </div>
 </div>
 
@@ -419,12 +421,13 @@
 
 <div class="container">
   <div class="search-box">
-    <input type="text" id="buscador" class="search-input" placeholder="🔍 Buscar ropa, mando, figura..." onkeyup="buscarProductos()">
+    <input type="text" id="buscador" class="search-input" placeholder="🔍 Buscar manga, hoodie, figura..." onkeyup="buscarProductos()">
   </div>
 
   <div class="controles-superiores">
     <div class="filtros">
       <button class="btn-filtro activo" onclick="filtrar('todos', event)">🌟 Todos</button>
+      <button class="btn-filtro" onclick="filtrar('mangas', event)">📚 Mangas</button>
       <button class="btn-filtro" onclick="filtrar('ropa', event)">👕 Ropa / Hoodies</button>
       <button class="btn-filtro" onclick="filtrar('mandos', event)">🎮 Mandos PC</button>
       <button class="btn-filtro" onclick="filtrar('teclados', event)">⌨️ Teclados</button>
@@ -453,36 +456,71 @@
   <div class="destacados-container">
     <div class="destacados-title">🔥 Destacados de la Semana 🚀</div>
     <div class="grid" id="gridDestacados">
+      <div class="card item-producto" data-nombre="tomo manga original" data-categoria="mangas" data-precio="12.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Tomo Manga Original (Español)', 12.00, 'Edición oficial en español de alta calidad. ¡Colecciona tus arcos favoritos!', 'Envío Inmediato 📦', false)">
+        <button class="btn-fav-card" onclick="toggleFavorito(event, 'Tomo Manga Original', 12.00, 'figuras.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
+        <div class="badge-estado badge-nuevo">🔥 Oferta</div>
+        <img src="figuras.jpg" alt="Manga">
+        <div class="card-title">Tomo Manga Original</div>
+        <div class="precio-container">
+          <span class="card-price-old">$16.00</span>
+          <span class="card-price">$12.00</span>
+        </div>
+        <div class="card-bs" data-usd="12.00">≈ Bs. 0.00</div>
+        <div class="card-stock-alert">⚠️ ¡Ahorras $4.00!</div>
+      </div>
+
       <div class="card item-producto" data-nombre="hoodie anime oversize" data-categoria="ropa" data-precio="25.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Hoodie Oversize Anime', 25.00, 'Algodón afelpado de alta calidad, diseño exclusivo estampado en alta definición.', 'Envío Inmediato 📦', true)">
         <button class="btn-fav-card" onclick="toggleFavorito(event, 'Hoodie Oversize Anime', 25.00, 'figuras.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
         <div class="badge-estado badge-nuevo">🔥 Nuevo</div>
         <img src="figuras.jpg" alt="Hoodie">
         <div class="card-title">Hoodie Oversize Anime</div>
-        <div class="card-price">$25.00</div>
+        <div class="precio-container">
+          <span class="card-price-old">$32.00</span>
+          <span class="card-price">$25.00</span>
+        </div>
         <div class="card-bs" data-usd="25.00">≈ Bs. 0.00</div>
         <div class="card-stock-alert">⚠️ ¡Solo quedan 2 disponibles!</div>
-      </div>
-
-      <div class="card item-producto" data-nombre="mando gamer inalambrico pc" data-categoria="mandos" data-precio="28.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('lamparas.jpg', 'Mando Pro Inalámbrico PC', 28.00, 'Alta precisión, gatillos sensibles y batería de larga duración. Compatible con PC.', 'Envío Inmediato 📦', false)">
-        <button class="btn-fav-card" onclick="toggleFavorito(event, 'Mando Pro Inalámbrico PC', 28.00, 'lamparas.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
-        <div class="badge-estado badge-gamer">🎮 Pro Gaming</div>
-        <img src="lamparas.jpg" alt="Mando">
-        <div class="card-title">Mando Pro Inalámbrico PC</div>
-        <div class="card-price">$28.00</div>
-        <div class="card-bs" data-usd="28.00">≈ Bs. 0.00</div>
-        <div class="card-stock-alert">⚠️ ¡Alta Demanda Gamer!</div>
       </div>
     </div>
   </div>
   
   <h2 style="color: var(--primary-color); text-align: center; margin-bottom: 20px;">📦 Catálogo General</h2>
   <div class="grid" id="catalogo">
+    <div class="card item-producto" data-nombre="tomo manga original" data-categoria="mangas" data-precio="12.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Tomo Manga Original (Español)', 12.00, 'Edición oficial en español de alta calidad. ¡Colecciona tus arcos favoritos!', 'Envío Inmediato 📦', false)">
+      <button class="btn-fav-card" onclick="toggleFavorito(event, 'Tomo Manga Original', 12.00, 'figuras.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
+      <div class="badge-estado badge-nuevo">🔥 Oferta</div>
+      <img src="figuras.jpg" alt="Manga">
+      <div class="card-title">Tomo Manga Original</div>
+      <div class="precio-container">
+        <span class="card-price-old">$16.00</span>
+        <span class="card-price">$12.00</span>
+      </div>
+      <div class="card-bs" data-usd="12.00">≈ Bs. 0.00</div>
+      <div class="card-stock-alert">⚠️ ¡Ahorras $4.00!</div>
+    </div>
+
+    <div class="card item-producto" data-nombre="caja booster cartas tcg pokemon" data-categoria="cartas" data-precio="40.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('accesorios.jpeg', 'Booster Box Cartas TCG', 40.00, 'Caja de sobres coleccionables TCG. ¡Encuentra cartas ultra raras para tu mazo!', 'Envío Inmediato 📦', false)">
+      <button class="btn-fav-card" onclick="toggleFavorito(event, 'Booster Box Cartas TCG', 40.00, 'accesorios.jpeg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
+      <div class="badge-estado badge-gamer">🃏 TCG</div>
+      <img src="accesorios.jpeg" alt="Cartas TCG">
+      <div class="card-title">Booster Box Cartas TCG</div>
+      <div class="precio-container">
+        <span class="card-price-old">$50.00</span>
+        <span class="card-price">$40.00</span>
+      </div>
+      <div class="card-bs" data-usd="40.00">≈ Bs. 0.00</div>
+      <div class="card-stock-alert">⚠️ ¡Alta Rotación!</div>
+    </div>
+
     <div class="card item-producto" data-nombre="hoodie anime oversize" data-categoria="ropa" data-precio="25.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Hoodie Oversize Anime', 25.00, 'Algodón afelpado de alta calidad, diseño exclusivo estampado en alta definición.', 'Envío Inmediato 📦', true)">
       <button class="btn-fav-card" onclick="toggleFavorito(event, 'Hoodie Oversize Anime', 25.00, 'figuras.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
       <div class="badge-estado badge-nuevo">🔥 Nuevo</div>
       <img src="figuras.jpg" alt="Hoodie">
       <div class="card-title">Hoodie Oversize Anime</div>
-      <div class="card-price">$25.00</div>
+      <div class="precio-container">
+        <span class="card-price-old">$32.00</span>
+        <span class="card-price">$25.00</span>
+      </div>
       <div class="card-bs" data-usd="25.00">≈ Bs. 0.00</div>
       <div class="card-stock-alert">⚠️ ¡Solo quedan 2 disponibles!</div>
     </div>
@@ -492,7 +530,10 @@
       <div class="badge-estado badge-gamer">🎮 Pro Gaming</div>
       <img src="lamparas.jpg" alt="Mando">
       <div class="card-title">Mando Pro Inalámbrico PC</div>
-      <div class="card-price">$28.00</div>
+      <div class="precio-container">
+        <span class="card-price-old">$35.00</span>
+        <span class="card-price">$28.00</span>
+      </div>
       <div class="card-bs" data-usd="28.00">≈ Bs. 0.00</div>
       <div class="card-stock-alert">⚠️ ¡Alta Demanda Gamer!</div>
     </div>
@@ -502,7 +543,10 @@
       <div class="badge-estado badge-stock">Stock</div>
       <img src="lamparas.jpg" alt="Teclado">
       <div class="card-title">Teclado Mecánico RGB</div>
-      <div class="card-price">$35.00</div>
+      <div class="precio-container">
+        <span class="card-price-old">$45.00</span>
+        <span class="card-price">$35.00</span>
+      </div>
       <div class="card-bs" data-usd="35.00">≈ Bs. 0.00</div>
       <div class="card-stock-alert">⚠️ ¡Quedan 3 unidades!</div>
     </div>
@@ -512,7 +556,10 @@
       <div class="badge-estado badge-stock">Stock</div>
       <img src="accesorios.jpeg" alt="Audífonos">
       <div class="card-title">Audífonos Gamer Surround</div>
-      <div class="card-price">$30.00</div>
+      <div class="precio-container">
+        <span class="card-price-old">$38.00</span>
+        <span class="card-price">$30.00</span>
+      </div>
       <div class="card-bs" data-usd="30.00">≈ Bs. 0.00</div>
       <div class="card-stock-alert">⚠️ ¡Últimas piezas!</div>
     </div>
@@ -522,7 +569,10 @@
       <div class="badge-estado badge-stock">Stock</div>
       <img src="figuras.jpg" alt="Figura">
       <div class="card-title">Figura de Colección</div>
-      <div class="card-price">$35.00</div>
+      <div class="precio-container">
+        <span class="card-price-old">$45.00</span>
+        <span class="card-price">$35.00</span>
+      </div>
       <div class="card-bs" data-usd="35.00">≈ Bs. 0.00</div>
       <div class="card-stock-alert">⚠️ ¡Stock Limitado!</div>
     </div>
@@ -532,7 +582,10 @@
       <div class="badge-estado badge-encargo">Por Encargo</div>
       <img src="peluche.jpg" alt="Peluche">
       <div class="card-title">Peluche Exclusivo</div>
-      <div class="card-price">$20.00</div>
+      <div class="precio-container">
+        <span class="card-price-old">$25.00</span>
+        <span class="card-price">$20.00</span>
+      </div>
       <div class="card-bs" data-usd="20.00">≈ Bs. 0.00</div>
       <div class="card-stock-alert">⚡ Modalidad Encargo</div>
     </div>
@@ -542,7 +595,10 @@
       <div class="badge-estado badge-encargo">Por Encargo</div>
       <img src="katanas.jpg" alt="Katanas">
       <div class="card-title">Katana Replica Anime</div>
-      <div class="card-price">$45.00</div>
+      <div class="precio-container">
+        <span class="card-price-old">$55.00</span>
+        <span class="card-price">$45.00</span>
+      </div>
       <div class="card-bs" data-usd="45.00">≈ Bs. 0.00</div>
       <div class="card-stock-alert">⚡ Modalidad Encargo</div>
     </div>
@@ -620,7 +676,6 @@
   </div>
 </div>
 
-<!-- MODAL DE FAVORITOS (WISHLIST) -->
 <div id="modalFavoritos" class="modal">
   <div class="modal-content" style="width: 450px;">
     <button class="cerrar-modal" onclick="cerrarFavoritosModal()">×</button>
@@ -732,7 +787,6 @@
     }
   }, 2000);
 
-  // SISTEMA DE TEMA NEÓN / CYBERPUNK
   let modoNeonActivo = localStorage.getItem('sakura_neon') === 'true';
   if (modoNeonActivo) {
     document.body.classList.add('neon-mode');
@@ -745,7 +799,6 @@
     localStorage.setItem('sakura_neon', esNeon);
   }
 
-  // SISTEMA DE FAVORITOS (WISHLIST)
   let favoritos = JSON.parse(localStorage.getItem('sakura_favoritos')) || [];
 
   function toggleFavorito(event, titulo, precio, img) {
@@ -808,10 +861,10 @@
   }
 
   const compradoresFake = [
-    { nombre: "Gabriel S.", lugar: "Bejuma, Carabobo", item: "un Hoodie Oversize" },
-    { nombre: "Valeria M.", lugar: "Miranda, Carabobo", item: "unos Audífonos Gamer" },
+    { nombre: "Gabriel S.", lugar: "Bejuma, Carabobo", item: "un Tomo de Manga" },
+    { nombre: "Valeria M.", lugar: "Miranda, Carabobo", item: "una Booster Box TCG" },
     { nombre: "Andrés R.", lugar: "Valencia, Carabobo", item: "un Mando Pro PC" },
-    { nombre: "Mariana L.", lugar: "Caracas", item: "una Figura de Colección" }
+    { nombre: "Mariana L.", lugar: "Caracas", item: "un Hoodie Oversize" }
   ];
 
   function lanzarPruebaSocial() {
@@ -1191,8 +1244,8 @@
   }
 
   let reviews = JSON.parse(localStorage.getItem('sakura_reviews')) || [
-    { nombre: "Ángel G.", estrellas: "⭐⭐⭐⭐⭐", texto: "¡Excelente tienda! Los hoodies y mandos llegaron por ZOOM impecables. 10/10." },
-    { nombre: "Valeria Otaku", estrellas: "⭐⭐⭐⭐⭐", texto: "La ropa es de muy buena calidad y el pedido llegó rapidísimo por MRW. ¡Recomendado!" }
+    { nombre: "Ángel G.", estrellas: "⭐⭐⭐⭐⭐", texto: "¡Excelente tienda! Los tomos de manga y mandos llegaron por ZOOM impecables. 10/10." },
+    { nombre: "Valeria Otaku", estrellas: "⭐⭐⭐⭐⭐", texto: "Las cartas TCG y la ropa son de calidad brutal. El pedido llegó rapidísimo por MRW." }
   ];
 
   function renderReviews() {
