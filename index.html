@@ -1147,6 +1147,13 @@
   document.getElementById('lblRango').innerText = gamerProfile.rango;
   document.getElementById('lblXp').innerText = gamerProfile.xp + " XP";
 </script>
+  function cerrarPromoFlash() {
+    reproducirSonido();
+    let modal = document.getElementById('modalPromoFlash');
+    if (modal) {
+      modal.style.display = 'none';
+    }
+  }
 
 </body>
 </html>
