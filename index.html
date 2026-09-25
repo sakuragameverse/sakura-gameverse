@@ -84,17 +84,30 @@
     .hero-logo { max-width: 240px; margin-bottom: 10px; filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1)); }
     .hero-title { font-size: 1.2em; font-weight: bold; margin-bottom: 15px; letter-spacing: 1px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
     
-    /* BARRA DE TASA BCV */
-    .bcv-ticker {
+    /* PANEL DE TASA BCV MODIFICABLE */
+    .bcv-box {
       background: rgba(0, 229, 255, 0.1);
-      border: 1px dashed #00e5ff;
-      color: #00e5ff;
-      display: inline-block;
+      border: 1px solid #00e5ff;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
       padding: 6px 15px;
       border-radius: 20px;
-      font-size: 0.85em;
+      font-size: 0.9em;
       font-weight: bold;
+      color: #00e5ff;
       box-shadow: 0 0 10px rgba(0,229,255,0.2);
+    }
+    .bcv-input {
+      background: #0d041a;
+      border: 1px solid #FF007F;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 10px;
+      width: 80px;
+      text-align: center;
+      font-weight: bold;
+      outline: none;
     }
 
     .container { padding: 30px 20px; max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
@@ -188,8 +201,10 @@
 <div class="hero-banner">
   <img src="logo.webp" alt="Sakura Gameverse" class="hero-logo">
   <div class="hero-title">✨ Bienvenidos a Sakura Gameverse ✨<br>Donde tu pasión por el gaming nunca hace game over. 👾🌸</div>
-  <div class="bcv-ticker">
-    <i class="fas fa-coins"></i> Tasa BCV Referencial: <span id="tasaBcvDisplay">Calculando...</span> Bs/$
+  
+  <div class="bcv-box">
+    <i class="fas fa-coins"></i> Tasa BCV (Bs/$): 
+    <input type="number" id="inputTasaBcv" class="bcv-input" step="0.01" value="36.50" oninput="cambiarTasaBcvManual()">
   </div>
 </div>
 
@@ -349,20 +364,15 @@
     }
   }, 1600);
 
-  // OBTENER TASA BCV EN VIVO (API PÚBLICA DE VENEZUELA)
-  let tasaBcvActual = 0;
+  // CONTROL MANUAL DE TASA BCV (Guardada en el navegador del dispositivo)
+  let tasaBcvActual = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 36.50;
+  document.getElementById('inputTasaBcv').value = tasaBcvActual;
 
-  async function cargarTasaBcv() {
-    try {
-      let respuesta = await fetch('https://ve.dolarapi.com/v1/dolares/bcv');
-      let datos = await respuesta.json();
-      tasaBcvActual = datos.promedio;
-      document.getElementById('tasaBcvDisplay').innerText = tasaBcvActual.toFixed(2);
-      actualizarPreciosEnBs();
-    } catch(e) {
-      // Tasa de respaldo por si falla la API
-      tasaBcvActual = 36.50; 
-      document.getElementById('tasaBcvDisplay').innerText = tasaBcvActual.toFixed(2) + " (Ref)";
+  function cambiarTasaBcvManual() {
+    let val = parseFloat(document.getElementById('inputTasaBcv').value);
+    if (!isNaN(val) && val > 0) {
+      tasaBcvActual = val;
+      localStorage.setItem('sakura_tasa_bcv', tasaBcvActual);
       actualizarPreciosEnBs();
     }
   }
@@ -376,7 +386,7 @@
     });
   }
 
-  cargarTasaBcv();
+  actualizarPreciosEnBs();
 
   function reproducirSonido() {
     try {
