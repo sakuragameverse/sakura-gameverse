@@ -65,7 +65,6 @@
     ::-webkit-scrollbar-track { background: var(--bg-color); }
     ::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
 
-    /* NOTIFICACIÓN INTEGRADA ARRIBA (NO INTERRUMPE) */
     #socialProofContainer {
       background: rgba(17, 5, 44, 0.95);
       border-bottom: 1px solid var(--secondary-color);
@@ -183,9 +182,34 @@
     .hero-banner { background-color: var(--hero-bg); text-align: center; padding: 30px 20px 20px 20px; border-bottom: 3px solid var(--primary-color); box-shadow: 0 0 20px rgba(255, 0, 127, 0.4); position: relative; z-index: 2; transition: background 0.4s ease; }
     .hero-logo { max-width: 220px; margin-bottom: 10px; filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1)); cursor: pointer; transition: transform 0.2s; }
     .hero-logo:hover { transform: scale(1.05); }
-    .hero-title { font-size: 1.1em; font-weight: bold; margin-bottom: 15px; letter-spacing: 1px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
+    .hero-title { font-size: 1.1em; font-weight: bold; margin-bottom: 12px; letter-spacing: 1px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
     
-    /* TEMPORIZADOR DE OFERTA RELÁMPAGO */
+    /* INDICADOR DE ESTADO EN VIVO */
+    .store-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(37, 211, 102, 0.15);
+      border: 1px solid #25D366;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.85em;
+      font-weight: bold;
+      color: #25D366;
+      margin-bottom: 12px;
+      box-shadow: 0 0 10px rgba(37,211,102,0.3);
+    }
+    .status-dot {
+      width: 10px; height: 10px; background-color: #25D366; border-radius: 50%;
+      box-shadow: 0 0 8px #25D366;
+      animation: pulse-dot 1.5s infinite;
+    }
+    @keyframes pulse-dot {
+      0% { transform: scale(0.9); opacity: 0.7; }
+      50% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(0.9); opacity: 0.7; }
+    }
+
     .flash-sale-banner {
       background: linear-gradient(135deg, rgba(255,0,127,0.2) 0%, rgba(0,229,255,0.2) 100%);
       border: 1px dashed var(--secondary-color);
@@ -415,7 +439,7 @@
       opacity: 0;
     }
     .menu-desplegable-flotante.abierto {
-      max-height: 600px;
+      max-height: 650px;
       opacity: 1;
     }
 
@@ -429,6 +453,7 @@
     .theme-btn { background-color: #ffcc00; color: #0d041a; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px #ffcc00; cursor: pointer; border: none; font-weight: bold; }
     .gacha-btn { background-color: #9900ff; color: white; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px #9900ff; cursor: pointer; border: none; }
     .chest-btn { background-color: #ff9900; color: #0d041a; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px #ff9900; cursor: pointer; border: none; font-weight: bold; }
+    .admin-btn { background-color: #ff3366; color: white; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px #ff3366; cursor: pointer; border: none; }
     .music-btn { background-color: #ff0055; color: white; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px #ff0055; cursor: pointer; border: none; }
     .gamer-profile-btn { background-color: #00ffcc; color: #0d041a; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px #00ffcc; cursor: pointer; border: none; font-weight: bold; }
     .fav-floating-btn { background-color: #ff3366; color: white; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px #ff3366; cursor: pointer; border: none; position: relative; }
@@ -455,7 +480,7 @@
 
 <div class="ticker-bar">
   <div class="ticker-content">
-    🔥 ¡Bienvenidos a Sakura Gameverse! Envíos seguros a todo el país exclusivamente por ZOOM y MRW 📦 | 🎮 Cupón activo: OTAKU10 | ⚡ ¡Abre el menú flotante para descubrir cofre diario, música y gacha! 🌸
+    🔥 ¡Bienvenidos a Sakura Gameverse! Envíos seguros a todo el país exclusivamente por ZOOM y MRW 📦 | 🎮 Cupón activo: OTAKU10 | ⚡ ¡Abre el menú flotante para panel de administración y cofre diario! 🌸
   </div>
 </div>
 
@@ -468,6 +493,32 @@
       Usa el código <strong>OTAKU10</strong> o abre el menú flotante para reclamar tu <strong>Cofre Diario</strong> y girar la ruleta Gacha. Entregas en <strong>Bejuma y Miranda</strong> y envíos por <strong>ZOOM y MRW</strong>.
     </p>
     <button class="btn-sugerencia" onclick="cerrarPromoFlash()">¡A Explorar Catálogo! 🚀</button>
+  </div>
+</div>
+
+<!-- PANEL DE ADMINISTRACIÓN DE DATOS DE PAGO (EDITABLE) -->
+<div id="modalAdminPago" class="modal">
+  <div class="modal-content" style="width: 440px; border: 2px solid #ff3366;">
+    <button class="cerrar-modal" onclick="cerrarAdminModal()">×</button>
+    <div style="font-size: 40px; margin-bottom: 5px;">⚙️</div>
+    <h2 style="color: #ff3366; margin-top: 0;">Panel Admin: Datos de Pago</h2>
+    <p style="font-size: 0.85em; opacity: 0.9; margin-bottom: 15px;">Edita tus datos aquí para que tus clientes los copien con un toque:</p>
+    
+    <div style="text-align: left; font-size: 0.9em; display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;">
+      <label>Banco:</label>
+      <input type="text" id="adminBanco" class="sugerencia-input" value="Banesco (0134)">
+      
+      <label>Teléfono Pago Móvil:</label>
+      <input type="text" id="adminTelefono" class="sugerencia-input" value="0424-4970576">
+      
+      <label>Cédula / RIF:</label>
+      <input type="text" id="adminCedula" class="sugerencia-input" value="V-27000000">
+
+      <label>Binance Pay / Correo / USDT:</label>
+      <input type="text" id="adminBinance" class="sugerencia-input" value="sakuragameverse@gmail.com">
+    </div>
+
+    <button class="btn-sugerencia" style="background: #ff3366; color: white;" onclick="guardarDatosAdmin()">Guardar Datos 💾</button>
   </div>
 </div>
 
@@ -562,6 +613,12 @@
 
 <div class="hero-banner">
   <img src="logo.webp" alt="Sakura Gameverse" class="hero-logo" onclick="activarEasterEggLogo()" title="¡Haz clic aquí para modo secreto!">
+  
+  <!-- INDICADOR EN VIVO -->
+  <div class="store-status-badge">
+    <div class="status-dot"></div> Pedidos Abiertos (Bejuma & Miranda)
+  </div>
+
   <div class="hero-title">✨ Bienvenidos a Sakura Gameverse ✨<br>Donde tu pasión por el gaming nunca hace game over. 👾🌸</div>
   
   <!-- OFERTA RELÁMPAGO CON CUENTA REGRESIVA -->
@@ -598,6 +655,9 @@
       <button class="btn-filtro" onclick="filtrar('cartas', event)">🃏 Cartas TCG</button>
       <button class="btn-filtro" onclick="filtrar('katanas', event)">⚔️ Katanas</button>
       <button class="btn-filtro" onclick="filtrar('lamparas', event)">💡 Lámparas</button>
+      <!-- NUEVOS FILTROS RÁPIDOS POR ESTADO -->
+      <button class="btn-filtro" style="border-color: #00e5ff; color: #00e5ff;" onclick="filtrarEstado('inmediato', event)">📦 Stock Inmediato</button>
+      <button class="btn-filtro" style="border-color: #FF007F; color: #FF007F;" onclick="filtrarEstado('encargo', event)">⚡ Por Encargo</button>
     </div>
 
     <div class="panel-controles-avanzados">
@@ -615,9 +675,9 @@
   </div>
 
   <div class="destacados-container">
-    <div class="destacados-title">🔥 Destacados de la Semana 🚀</div>
+    <div class="destacados-title">🔥 Recomendados & Destacados para Ti 🚀</div>
     <div class="grid" id="gridDestacados">
-      <div class="card item-producto" data-nombre="tomo manga original" data-categoria="mangas" data-precio="12.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Tomo Manga Original (Español)', 12.00, 'Edición oficial en español de alta calidad. ¡Colecciona tus arcos favoritos!', 'Envío Inmediato 📦', false)">
+      <div class="card item-producto" data-nombre="tomo manga original" data-categoria="mangas" data-estado="inmediato" data-precio="12.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Tomo Manga Original (Español)', 12.00, 'Edición oficial en español de alta calidad. ¡Colecciona tus arcos favoritos!', 'Envío Inmediato 📦', false)">
         <button class="btn-fav-card" onclick="toggleFavorito(event, 'Tomo Manga Original', 12.00, 'figuras.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
         <div class="badge-estado badge-nuevo">🔥 Oferta</div>
         <img src="figuras.jpg" alt="Manga">
@@ -630,7 +690,7 @@
         <div class="card-stock-alert">🔥 4 personas viendo esto ahora</div>
       </div>
 
-      <div class="card item-producto" data-nombre="hoodie anime oversize" data-categoria="ropa" data-precio="25.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Hoodie Oversize Anime', 25.00, 'Algodón afelpado de alta calidad, diseño exclusivo estampado en alta definición.', 'Envío Inmediato 📦', true)">
+      <div class="card item-producto" data-nombre="hoodie anime oversize" data-categoria="ropa" data-estado="inmediato" data-precio="25.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Hoodie Oversize Anime', 25.00, 'Algodón afelpado de alta calidad, diseño exclusivo estampado en alta definición.', 'Envío Inmediato 📦', true)">
         <button class="btn-fav-card" onclick="toggleFavorito(event, 'Hoodie Oversize Anime', 25.00, 'figuras.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
         <div class="badge-estado badge-nuevo">🔥 Nuevo</div>
         <img src="figuras.jpg" alt="Hoodie">
@@ -647,7 +707,7 @@
   
   <h2 style="color: var(--primary-color); text-align: center; margin-bottom: 20px;">📦 Catálogo General</h2>
   <div class="grid" id="catalogo">
-    <div class="card item-producto" data-nombre="tomo manga original" data-categoria="mangas" data-precio="12.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Tomo Manga Original (Español)', 12.00, 'Edición oficial en español de alta calidad. ¡Colecciona tus arcos favoritos!', 'Envío Inmediato 📦', false)">
+    <div class="card item-producto" data-nombre="tomo manga original" data-categoria="mangas" data-estado="inmediato" data-precio="12.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Tomo Manga Original (Español)', 12.00, 'Edición oficial en español de alta calidad. ¡Colecciona tus arcos favoritos!', 'Envío Inmediato 📦', false)">
       <button class="btn-fav-card" onclick="toggleFavorito(event, 'Tomo Manga Original', 12.00, 'figuras.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
       <div class="badge-estado badge-nuevo">🔥 Oferta</div>
       <img src="figuras.jpg" alt="Manga">
@@ -660,7 +720,7 @@
       <div class="card-stock-alert">🔥 Alta demanda en Bejuma</div>
     </div>
 
-    <div class="card item-producto" data-nombre="caja booster cartas tcg pokemon" data-categoria="cartas" data-precio="40.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('accesorios.jpeg', 'Booster Box Cartas TCG', 40.00, 'Caja de sobres coleccionables TCG. ¡Encuentra cartas ultra raras para tu mazo!', 'Envío Inmediato 📦', false)">
+    <div class="card item-producto" data-nombre="caja booster cartas tcg pokemon" data-categoria="cartas" data-estado="inmediato" data-precio="40.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('accesorios.jpeg', 'Booster Box Cartas TCG', 40.00, 'Caja de sobres coleccionables TCG. ¡Encuentra cartas ultra raras para tu mazo!', 'Envío Inmediato 📦', false)">
       <button class="btn-fav-card" onclick="toggleFavorito(event, 'Booster Box Cartas TCG', 40.00, 'accesorios.jpeg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
       <div class="badge-estado badge-gamer">🃏 TCG</div>
       <img src="accesorios.jpeg" alt="Cartas TCG">
@@ -673,7 +733,7 @@
       <div class="card-stock-alert">⚠️ ¡Quedan 3 en stock!</div>
     </div>
 
-    <div class="card item-producto" data-nombre="hoodie anime oversize" data-categoria="ropa" data-precio="25.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Hoodie Oversize Anime', 25.00, 'Algodón afelpado de alta calidad, diseño exclusivo estampado en alta definición.', 'Envío Inmediato 📦', true)">
+    <div class="card item-producto" data-nombre="hoodie anime oversize" data-categoria="ropa" data-estado="inmediato" data-precio="25.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Hoodie Oversize Anime', 25.00, 'Algodón afelpado de alta calidad, diseño exclusivo estampado en alta definición.', 'Envío Inmediato 📦', true)">
       <button class="btn-fav-card" onclick="toggleFavorito(event, 'Hoodie Oversize Anime', 25.00, 'figuras.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
       <div class="badge-estado badge-nuevo">🔥 Nuevo</div>
       <img src="figuras.jpg" alt="Hoodie">
@@ -686,7 +746,7 @@
       <div class="card-stock-alert">⚠️ ¡Solo quedan 2 disponibles!</div>
     </div>
 
-    <div class="card item-producto" data-nombre="mando gamer inalambrico pc" data-categoria="mandos" data-precio="28.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('lamparas.jpg', 'Mando Pro Inalámbrico PC', 28.00, 'Alta precisión, gatillos sensibles y batería de larga duración. Compatible con PC.', 'Envío Inmediato 📦', false)">
+    <div class="card item-producto" data-nombre="mando gamer inalambrico pc" data-categoria="mandos" data-estado="inmediato" data-precio="28.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('lamparas.jpg', 'Mando Pro Inalámbrico PC', 28.00, 'Alta precisión, gatillos sensibles y batería de larga duración. Compatible con PC.', 'Envío Inmediato 📦', false)">
       <button class="btn-fav-card" onclick="toggleFavorito(event, 'Mando Pro Inalámbrico PC', 28.00, 'lamparas.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
       <div class="badge-estado badge-gamer">🎮 Pro Gaming</div>
       <img src="lamparas.jpg" alt="Mando">
@@ -699,7 +759,7 @@
       <div class="card-stock-alert">🔥 6 personas lo tienen en el carrito</div>
     </div>
 
-    <div class="card item-producto" data-nombre="teclado mecanico gamer" data-categoria="teclados" data-precio="35.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('lamparas.jpg', 'Teclado Mecánico RGB', 35.00, 'Switches mecánicos, iluminación RGB y respuesta ultra rápida para gaming competitivo.', 'Envío Inmediato 📦', false)">
+    <div class="card item-producto" data-nombre="teclado mecanico gamer" data-categoria="teclados" data-estado="inmediato" data-precio="35.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('lamparas.jpg', 'Teclado Mecánico RGB', 35.00, 'Switches mecánicos, iluminación RGB y respuesta ultra rápida para gaming competitivo.', 'Envío Inmediato 📦', false)">
       <button class="btn-fav-card" onclick="toggleFavorito(event, 'Teclado Mecánico RGB', 35.00, 'lamparas.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
       <div class="badge-estado badge-stock">Stock</div>
       <img src="lamparas.jpg" alt="Teclado">
@@ -712,7 +772,7 @@
       <div class="card-stock-alert">⚠️ ¡Quedan 3 unidades!</div>
     </div>
 
-    <div class="card item-producto" data-nombre="audifonos gamer surround" data-categoria="audifonos" data-precio="30.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('accesorios.jpeg', 'Audífonos Gamer Surround', 30.00, 'Sonido envolvente 7.1, micrófono con cancelación de ruido y almohadillas ultra cómodas.', 'Envío Inmediato 📦', false)">
+    <div class="card item-producto" data-nombre="audifonos gamer surround" data-categoria="audifonos" data-estado="inmediato" data-precio="30.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('accesorios.jpeg', 'Audífonos Gamer Surround', 30.00, 'Sonido envolvente 7.1, micrófono con cancelación de ruido y almohadillas ultra cómodas.', 'Envío Inmediato 📦', false)">
       <button class="btn-fav-card" onclick="toggleFavorito(event, 'Audífonos Gamer Surround', 30.00, 'accesorios.jpeg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
       <div class="badge-estado badge-stock">Stock</div>
       <img src="accesorios.jpeg" alt="Audífonos">
@@ -725,7 +785,7 @@
       <div class="card-stock-alert">⚠️ ¡Últimas piezas!</div>
     </div>
 
-    <div class="card item-producto" data-nombre="figura de coleccion" data-categoria="figuras" data-precio="35.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Figura de Colección', 35.00, '¡Una figura épica para tu repisa! Detalles increíbles y acabados premium.', 'Envío Inmediato 📦', false)">
+    <div class="card item-producto" data-nombre="figura de coleccion" data-categoria="figuras" data-estado="inmediato" data-precio="35.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Figura de Colección', 35.00, '¡Una figura épica para tu repisa! Detalles increíbles y acabados premium.', 'Envío Inmediato 📦', false)">
       <button class="btn-fav-card" onclick="toggleFavorito(event, 'Figura de Colección', 35.00, 'figuras.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
       <div class="badge-estado badge-stock">Stock</div>
       <img src="figuras.jpg" alt="Figura">
@@ -738,7 +798,7 @@
       <div class="card-stock-alert">⚠️ ¡Stock Limitado!</div>
     </div>
 
-    <div class="card item-producto" data-nombre="peluche exclusivo" data-categoria="peluches" data-precio="20.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('peluche.jpg', 'Peluche Exclusivo', 20.00, 'Súper suave y kawaii. El compañero perfecto para tus largas noches de gaming.', 'Disponible por Encargo (100% inicial)', false)">
+    <div class="card item-producto" data-nombre="peluche exclusivo" data-categoria="peluches" data-estado="encargo" data-precio="20.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('peluche.jpg', 'Peluche Exclusivo', 20.00, 'Súper suave y kawaii. El compañero perfecto para tus largas noches de gaming.', 'Disponible por Encargo (100% inicial)', false)">
       <button class="btn-fav-card" onclick="toggleFavorito(event, 'Peluche Exclusivo', 20.00, 'peluche.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
       <div class="badge-estado badge-encargo">Por Encargo</div>
       <img src="peluche.jpg" alt="Peluche">
@@ -751,7 +811,7 @@
       <div class="card-stock-alert">⚡ Modalidad Encargo</div>
     </div>
 
-    <div class="card item-producto" data-nombre="katana replica anime" data-categoria="katanas" data-precio="45.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('katanas.jpg', 'Katana Replica Anime', 45.00, 'Replica a escala real. Perfecta para cosplay o para darle un toque épico a tu cuarto.', 'Disponible por Encargo (100% inicial)', false)">
+    <div class="card item-producto" data-nombre="katana replica anime" data-categoria="katanas" data-estado="encargo" data-precio="45.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('katanas.jpg', 'Katana Replica Anime', 45.00, 'Replica a escala real. Perfecta para cosplay o para darle un toque épico a tu cuarto.', 'Disponible por Encargo (100% inicial)', false)">
       <button class="btn-fav-card" onclick="toggleFavorito(event, 'Katana Replica Anime', 45.00, 'katanas.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
       <div class="badge-estado badge-encargo">Por Encargo</div>
       <img src="katanas.jpg" alt="Katanas">
@@ -787,14 +847,10 @@
     <div class="info-grid">
       <div class="info-card">
         <h4><i class="fas fa-credit-card" style="color: var(--secondary-color);"></i> Métodos de Pago</h4>
-        <div style="margin-top: 8px;">
-          <span class="badge-metodo"><i class="fas fa-mobile-alt"></i> Pago Móvil (BCV)</span>
-          <span class="badge-metodo"><i class="fab fa-btc"></i> Binance USDT</span>
-          <span class="badge-metodo"><i class="fas fa-university"></i> Zelle</span>
-          <span class="badge-metodo"><i class="fas fa-wallet"></i> Zinli</span>
-          <span class="badge-metodo"><i class="fab fa-paypal"></i> PayPal (+comisión)</span>
-          <span class="badge-metodo"><i class="fas fa-money-bill-wave"></i> Efectivo ($/€)</span>
+        <div style="margin-top: 8px;" id="cajaDatosPagoInfo">
+          <!-- Datos dinámicos editables -->
         </div>
+        <button class="btn-sugerencia" style="margin-top: 10px; padding: 6px; font-size: 0.85em;" onclick="copiarDatosPago()"><i class="fas fa-copy"></i> Copiar Datos de Pago</button>
       </div>
       <div class="info-card">
         <h4><i class="fas fa-truck-fast" style="color: var(--primary-color);"></i> Envíos Nacionales</h4>
@@ -927,6 +983,7 @@
     <button class="music-btn" onclick="toggleMusicaLoFi()" title="Reproducir/Pausar Música Lo-Fi"><i class="fas fa-music" id="iconoMusica"></i></button>
     <button class="gamer-profile-btn" onclick="abrirGamerProfileModal()" title="Perfil Gamer & XP"><i class="fas fa-user-astronaut"></i></button>
     <button class="theme-btn" onclick="abrirTemasModal()" title="Cambiar Tema Visual"><i class="fas fa-palette"></i></button>
+    <button class="admin-btn" onclick="abrirAdminModal()" title="Panel Admin: Editar Datos de Pago"><i class="fas fa-cogs"></i></button>
     <a href="https://www.tiktok.com/@sakuragameverse" class="tiktok-btn" target="_blank" title="Síguenos en TikTok"><i class="fab fa-tiktok"></i></a>
     <a href="https://www.instagram.com/sakuragameverse?stkn=bDQ5NXRla2Vyano1" class="instagram-btn" target="_blank" title="Síguenos en Instagram"><i class="fab fa-instagram"></i></a>
     <button class="faq-btn" onclick="abrirFaqModal()" title="Preguntas Frecuentes"><i class="fas fa-question"></i></button>
@@ -959,6 +1016,58 @@
       setTimeout(() => splash.style.display = 'none', 600);
     }
   }, 2000);
+
+  // DATOS DE PAGO EDITABLES (ADMIN)
+  let datosPago = JSON.parse(localStorage.getItem('sakura_datos_pago')) || {
+    banco: "Banesco (0134)",
+    telefono: "0424-4970576",
+    cedula: "V-27000000",
+    binance: "sakuragameverse@gmail.com"
+  };
+
+  function renderizarDatosPago() {
+    let caja = document.getElementById('cajaDatosPagoInfo');
+    caja.innerHTML = `
+      🏦 <strong>Banco:</strong> ${datosPago.banco}<br>
+      📱 <strong>Pago Móvil:</strong> ${datosPago.telefono}<br>
+      🪪 <strong>Cédula:</strong> ${datosPago.cedula}<br>
+      🪙 <strong>Binance Pay:</strong> ${datosPago.binance}
+    `;
+  }
+  renderizarDatosPago();
+
+  function abrirAdminModal() {
+    reproducirSonido();
+    document.getElementById('adminBanco').value = datosPago.banco;
+    document.getElementById('adminTelefono').value = datosPago.telefono;
+    document.getElementById('adminCedula').value = datosPago.cedula;
+    document.getElementById('adminBinance').value = datosPago.binance;
+    document.getElementById('modalAdminPago').style.display = 'flex';
+  }
+  function cerrarAdminModal() {
+    reproducirSonido();
+    document.getElementById('modalAdminPago').style.display = 'none';
+  }
+  function guardarDatosAdmin() {
+    reproducirSonido();
+    datosPago.banco = document.getElementById('adminBanco').value;
+    datosPago.telefono = document.getElementById('adminTelefono').value;
+    datosPago.cedula = document.getElementById('adminCedula').value;
+    datosPago.binance = document.getElementById('adminBinance').value;
+    
+    localStorage.setItem('sakura_datos_pago', JSON.stringify(datosPago));
+    renderizarDatosPago();
+    alert("⚙️ ¡Datos de pago actualizados exitosamente en la tienda!");
+    cerrarAdminModal();
+  }
+
+  function copiarDatosPago() {
+    reproducirSonido();
+    let textoCopiar = `DATOS DE PAGO SAKURA GAMEVERSE:\nBanco: ${datosPago.banco}\nTeléfono: ${datosPago.telefono}\nCédula: ${datosPago.cedula}\nBinance: ${datosPago.binance}`;
+    navigator.clipboard.writeText(textoCopiar).then(() => {
+      alert("📋 ¡Datos de pago copiado al portapapeles con éxito!");
+    });
+  }
 
   // TEMPORIZADOR DE OFERTA RELÁMPAGO (12 Horas)
   let tiempoRestante = 12 * 3600;
@@ -1289,6 +1398,7 @@
   let carrito = [];
   let productoActual = null;
   let categoriaActualFiltro = 'todos';
+  let estadoActualFiltro = 'todos';
   let descuentoAplicado = 0;
 
   function filtrar(categoria, evento) {
@@ -1298,6 +1408,18 @@
     evento.target.classList.add('activo');
 
     categoriaActualFiltro = categoria;
+    estadoActualFiltro = 'todos';
+    aplicarFiltrosCombinados();
+  }
+
+  function filtrarEstado(estado, evento) {
+    reproducirSonido();
+    let botones = document.querySelectorAll('.btn-filtro');
+    botones.forEach(btn => btn.classList.remove('activo'));
+    evento.target.classList.add('activo');
+
+    estadoActualFiltro = estado;
+    categoriaActualFiltro = 'todos';
     aplicarFiltrosCombinados();
   }
 
@@ -1313,12 +1435,14 @@
 
     productos.forEach(prod => {
       let cat = prod.getAttribute('data-categoria');
+      let est = prod.getAttribute('data-estado');
       let precio = parseFloat(prod.getAttribute('data-precio'));
       
       let cumpleCat = (categoriaActualFiltro === 'todos' || cat === categoriaActualFiltro);
+      let cumpleEst = (estadoActualFiltro === 'todos' || est === estadoActualFiltro);
       let cumplePrecio = (precio <= precioMax);
 
-      if (cumpleCat && cumplePrecio) {
+      if (cumpleCat && cumpleEst && cumplePrecio) {
         prod.style.display = 'block';
       } else {
         prod.style.display = 'none';
