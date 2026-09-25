@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sakura Gameverse - Tienda Oficial</title>
+  <title>Sakura Gameverse</title>
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
@@ -295,6 +295,9 @@
     .precio-slider-box { background: var(--hero-bg); border: 1px solid var(--secondary-color); padding: 8px 15px; border-radius: 20px; display: inline-flex; align-items: center; gap: 10px; font-size: 0.9em; font-weight: bold; color: var(--secondary-color); box-shadow: 0 0 10px rgba(0,229,255,0.2); }
     .precio-slider-box input { accent-color: var(--primary-color); cursor: pointer; width: 120px; }
 
+    .destacados-container { margin-bottom: 40px; background: linear-gradient(135deg, var(--hero-bg) 0%, var(--bg-color) 100%); padding: 20px; border-radius: 20px; border: 2px dashed var(--secondary-color); box-shadow: 0 0 20px rgba(0,229,255,0.2); }
+    .destacados-title { color: var(--secondary-color); font-size: 1.4em; font-weight: bold; margin-bottom: 15px; text-align: center; text-shadow: 0 0 8px rgba(0,229,255,0.5); }
+
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
     
     .card { 
@@ -337,12 +340,15 @@
     .card-title { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; }
     
     .precio-container { display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 3px; }
+    .card-price-old { color: #888; font-size: 0.95em; text-decoration: line-through; }
     .card-price { color: var(--secondary-color); font-size: 1.2em; font-weight: bold; text-shadow: 0 0 5px rgba(0, 229, 255, 0.5); }
     .card-bs { color: var(--primary-color); font-size: 0.85em; font-weight: bold; margin-bottom: 8px; }
     
     .badge-estado { position: absolute; top: 10px; right: 10px; padding: 5px 12px; font-size: 0.75em; font-weight: bold; border-radius: 20px; z-index: 3; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
     .badge-stock { background-color: #00e5ff; color: #0d041a; box-shadow: 0 0 10px #00e5ff; }
     .badge-encargo { background-color: #FF007F; color: white; box-shadow: 0 0 10px #FF007F; }
+    .badge-nuevo { background-color: #ffcc00; color: #0d041a; box-shadow: 0 0 10px #ffcc00; }
+    .badge-gamer { background-color: #7b2cbf; color: white; box-shadow: 0 0 10px #7b2cbf; }
 
     .btn-fav-card {
       position: absolute;
@@ -360,6 +366,8 @@
       transition: transform 0.2s;
     }
     .btn-fav-card:hover { transform: scale(1.15); background: rgba(255,0,127,0.3); }
+
+    .card-stock-alert { color: #ff3366; font-size: 0.78em; font-weight: bold; background: rgba(255,51,102,0.1); border: 1px solid rgba(255,51,102,0.3); padding: 3px 8px; border-radius: 10px; display: inline-block; margin-top: 5px; }
 
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
     .modal-content { background: var(--hero-bg); padding: 20px; border-radius: 20px; text-align: center; max-width: 90%; width: 400px; border: 2px solid var(--primary-color); box-shadow: 0 0 30px rgba(255,0,127,0.5); position: relative; max-height: 90vh; overflow-y: auto; transition: background 0.4s ease; }
@@ -408,6 +416,7 @@
     .info-card { background: var(--card-bg); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,0,127,0.3); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
     .info-card h4 { color: var(--secondary-color); margin-top: 0; margin-bottom: 12px; font-size: 1.1em; display: flex; align-items: center; gap: 8px; }
     
+    .badge-metodo { display: inline-flex; align-items: center; gap: 6px; background: rgba(0, 229, 255, 0.1); border: 1px solid var(--secondary-color); padding: 4px 10px; border-radius: 8px; font-size: 0.85em; font-weight: bold; color: var(--secondary-color); margin: 3px; }
     .badge-envio { display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 0, 127, 0.15); border: 1px solid var(--primary-color); padding: 4px 10px; border-radius: 8px; font-size: 0.85em; font-weight: bold; color: var(--text-color); margin: 3px; }
 
     .cart-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--hero-bg); border-top: 2px solid var(--secondary-color); padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; z-index: 1500; box-shadow: 0 -5px 20px rgba(0,229,255,0.3); backdrop-filter: blur(5px); flex-wrap: wrap; gap: 8px; cursor: pointer; transition: background 0.4s ease; }
@@ -416,6 +425,7 @@
     .btn-checkout { background: #25D366; color: white; border: none; padding: 8px 15px; border-radius: 15px; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px #25D366; font-size: 0.9em; }
     .btn-clear { background: #ff3366; color: white; border: none; padding: 8px 12px; border-radius: 15px; font-weight: bold; cursor: pointer; font-size: 0.9em; }
 
+    /* MENÚ FLOTANTE HORIZONTAL COMPACTO (CARRUSEL INFERIOR) */
     .floating-buttons { position: fixed; bottom: 65px; right: 15px; z-index: 1000; display: flex; align-items: center; gap: 8px; }
     
     .menu-desplegable-horizontal {
@@ -435,7 +445,7 @@
       align-items: center;
     }
     .menu-desplegable-horizontal.abierto {
-      max-width: 350px;
+      max-width: 320px;
       opacity: 1;
       padding: 6px 12px;
       border-color: var(--secondary-color);
@@ -455,7 +465,7 @@
     .theme-btn { background-color: #ffcc00; color: #0d041a; font-weight: bold; }
     .gacha-btn { background-color: #9900ff; color: white; }
     .chest-btn { background-color: #ff9900; color: #0d041a; font-weight: bold; }
-    .admin-btn { background-color: #ff3366; color: white; text-decoration: none; }
+    .admin-btn { background-color: #ff3366; color: white; }
     .music-btn { background-color: #ff0055; color: white; }
     .gamer-profile-btn { background-color: #00ffcc; color: #0d041a; font-weight: bold; }
     .fav-floating-btn { background-color: #ff3366; color: white; position: relative; }
@@ -471,6 +481,7 @@
 </head>
 <body>
 
+<!-- BARRA DE NOTIFICACIÓN SUPERIOR -->
 <div id="socialProofContainer">
   <div class="sp-icon"><i class="fas fa-shopping-bag"></i></div>
   <div>
@@ -497,12 +508,39 @@
   </div>
 </div>
 
+<!-- PANEL DE ADMINISTRACIÓN DE DATOS DE PAGO (EDITABLE) -->
+<div id="modalAdminPago" class="modal">
+  <div class="modal-content" style="width: 440px; border: 2px solid #ff3366;">
+    <button class="cerrar-modal" onclick="cerrarAdminModal()">×</button>
+    <div style="font-size: 40px; margin-bottom: 5px;">⚙️</div>
+    <h2 style="color: #ff3366; margin-top: 0;">Panel Admin: Datos de Pago</h2>
+    <p style="font-size: 0.85em; opacity: 0.9; margin-bottom: 15px;">Edita tus datos aquí para que tus clientes los copien con un toque:</p>
+    
+    <div style="text-align: left; font-size: 0.9em; display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;">
+      <label>Banco:</label>
+      <input type="text" id="adminBanco" class="sugerencia-input" value="Banesco (0134)">
+      
+      <label>Teléfono Pago Móvil:</label>
+      <input type="text" id="adminTelefono" class="sugerencia-input" value="0424-4970576">
+      
+      <label>Cédula / RIF:</label>
+      <input type="text" id="adminCedula" class="sugerencia-input" value="V-27000000">
+
+      <label>Binance Pay / Correo / USDT:</label>
+      <input type="text" id="adminBinance" class="sugerencia-input" value="sakuragameverse@gmail.com">
+    </div>
+
+    <button class="btn-sugerencia" style="background: #ff3366; color: white;" onclick="guardarDatosAdmin()">Guardar Datos 💾</button>
+  </div>
+</div>
+
+<!-- MODAL COFRE DIARIO -->
 <div id="modalCofreDiario" class="modal">
   <div class="modal-content" style="width: 420px; border: 2px solid #ff9900;">
     <button class="cerrar-modal" onclick="cerrarCofreModal()">×</button>
     <div style="font-size: 45px; margin-bottom: 5px;">📦✨</div>
     <h2 style="color: #ff9900; margin-top: 0;">Cofre de Recompensa Diaria</h2>
-    <p style="font-size: 0.9em; opacity: 0.9; margin-bottom: 15px;">¡Abre tu cofre una vez al día para ganar bonos de XP y cupones sorpresa!</p>
+    <p id="mensajeCofreInfo" style="font-size: 0.9em; opacity: 0.9; margin-bottom: 15px;">¡Abre tu cofre una vez al día para ganar bonos de XP y cupones sorpresa!</p>
     <div id="cofreResultado" style="background: var(--bg-color); border: 2px dashed #ff9900; padding: 20px; border-radius: 12px; font-size: 1.1em; font-weight: bold; color: var(--secondary-color); margin-bottom: 15px;">
       Cofre listo para abrir 🗝️
     </div>
@@ -510,6 +548,7 @@
   </div>
 </div>
 
+<!-- MODAL GACHA VISUAL ANIMADO -->
 <div id="modalGacha" class="modal">
   <div class="modal-content" style="width: 420px; border: 2px solid #9900ff;">
     <button class="cerrar-modal" onclick="cerrarGachaModal()">×</button>
@@ -523,6 +562,7 @@
   </div>
 </div>
 
+<!-- MODAL SELECTOR DE TEMA -->
 <div id="modalTemas" class="modal">
   <div class="modal-content" style="width: 400px; border: 2px solid #ffcc00;">
     <button class="cerrar-modal" onclick="cerrarTemasModal()">×</button>
@@ -615,18 +655,18 @@
   <div class="controles-superiores">
     <div class="filtros">
       <button class="btn-filtro activo" onclick="filtrar('todos', event)">🌟 Todos</button>
-      <button class="btn-filtro" onclick="filtrar('Mangas', event)">📚 Mangas</button>
-      <button class="btn-filtro" onclick="filtrar('Ropa / Hoodies', event)">👕 Ropa / Hoodies</button>
-      <button class="btn-filtro" onclick="filtrar('Mandos PC', event)">🎮 Mandos PC</button>
-      <button class="btn-filtro" onclick="filtrar('Teclados', event)">⌨️ Teclados</button>
-      <button class="btn-filtro" onclick="filtrar('Audífonos', event)">🎧 Audífonos</button>
-      <button class="btn-filtro" onclick="filtrar('Figuras', event)">🗿 Figuras</button>
-      <button class="btn-filtro" onclick="filtrar('Peluches', event)">🧸 Peluches</button>
-      <button class="btn-filtro" onclick="filtrar('Cartas TCG', event)">🃏 Cartas TCG</button>
-      <button class="btn-filtro" onclick="filtrar('Katanas', event)">⚔️ Katanas</button>
-      <button class="btn-filtro" onclick="filtrar('Lámparas', event)">💡 Lámparas</button>
-      <button class="btn-filtro" style="border-color: #00e5ff; color: #00e5ff;" onclick="filtrarEstado('Inmediato', event)">📦 Stock Inmediato</button>
-      <button class="btn-filtro" style="border-color: #FF007F; color: #FF007F;" onclick="filtrarEstado('Por Encargo', event)">⚡ Por Encargo</button>
+      <button class="btn-filtro" onclick="filtrar('mangas', event)">📚 Mangas</button>
+      <button class="btn-filtro" onclick="filtrar('ropa', event)">👕 Ropa / Hoodies</button>
+      <button class="btn-filtro" onclick="filtrar('mandos', event)">🎮 Mandos PC</button>
+      <button class="btn-filtro" onclick="filtrar('teclados', event)">⌨️ Teclados</button>
+      <button class="btn-filtro" onclick="filtrar('audifonos', event)">🎧 Audífonos</button>
+      <button class="btn-filtro" onclick="filtrar('figuras', event)">🗿 Figuras</button>
+      <button class="btn-filtro" onclick="filtrar('peluches', event)">🧸 Peluches</button>
+      <button class="btn-filtro" onclick="filtrar('cartas', event)">🃏 Cartas TCG</button>
+      <button class="btn-filtro" onclick="filtrar('katanas', event)">⚔️ Katanas</button>
+      <button class="btn-filtro" onclick="filtrar('lamparas', event)">💡 Lámparas</button>
+      <button class="btn-filtro" style="border-color: #00e5ff; color: #00e5ff;" onclick="filtrarEstado('inmediato', event)">📦 Stock Inmediato</button>
+      <button class="btn-filtro" style="border-color: #FF007F; color: #FF007F;" onclick="filtrarEstado('encargo', event)">⚡ Por Encargo</button>
     </div>
 
     <div class="panel-controles-avanzados">
@@ -643,11 +683,155 @@
     </div>
   </div>
 
-  <h2 style="color: var(--primary-color); text-align: center; margin-bottom: 20px;">📦 Catálogo General (Sincronizado con Panel Admin)</h2>
+  <div class="destacados-container">
+    <div class="destacados-title">🔥 Recomendados & Destacados para Ti 🚀</div>
+    <div class="grid" id="gridDestacados">
+      <div class="card item-producto" data-nombre="tomo manga original" data-categoria="mangas" data-estado="inmediato" data-precio="12.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Tomo Manga Original (Español)', 12.00, 'Edición oficial en español de alta calidad. ¡Colecciona tus arcos favoritos!', 'Envío Inmediato 📦', false)">
+        <button class="btn-fav-card" onclick="toggleFavorito(event, 'Tomo Manga Original', 12.00, 'figuras.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
+        <div class="badge-estado badge-nuevo">🔥 Oferta</div>
+        <img src="figuras.jpg" alt="Manga">
+        <div class="card-title">Tomo Manga Original</div>
+        <div class="precio-container">
+          <span class="card-price-old">$16.00</span>
+          <span class="card-price">$12.00</span>
+        </div>
+        <div class="card-bs" data-usd="12.00">≈ Bs. 0.00</div>
+        <div class="card-stock-alert">🔥 4 personas viendo esto ahora</div>
+      </div>
+
+      <div class="card item-producto" data-nombre="hoodie anime oversize" data-categoria="ropa" data-estado="inmediato" data-precio="25.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Hoodie Oversize Anime', 25.00, 'Algodón afelpado de alta calidad, diseño exclusivo estampado en alta definición.', 'Envío Inmediato 📦', true)">
+        <button class="btn-fav-card" onclick="toggleFavorito(event, 'Hoodie Oversize Anime', 25.00, 'figuras.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
+        <div class="badge-estado badge-nuevo">🔥 Nuevo</div>
+        <img src="figuras.jpg" alt="Hoodie">
+        <div class="card-title">Hoodie Oversize Anime</div>
+        <div class="precio-container">
+          <span class="card-price-old">$32.00</span>
+          <span class="card-price">$25.00</span>
+        </div>
+        <div class="card-bs" data-usd="25.00">≈ Bs. 0.00</div>
+        <div class="card-stock-alert">⚠️ ¡Solo quedan 2 disponibles!</div>
+      </div>
+    </div>
+  </div>
   
-  <!-- GRID DE PRODUCTOS DINÁMICO CONECTADO AL LOCALSTORAGE DEL ADMIN -->
+  <h2 style="color: var(--primary-color); text-align: center; margin-bottom: 20px;">📦 Catálogo General</h2>
   <div class="grid" id="catalogo">
-    <!-- Se llena automáticamente con los productos que agregues en el admin.html -->
+    <div class="card item-producto" data-nombre="tomo manga original" data-categoria="mangas" data-estado="inmediato" data-precio="12.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Tomo Manga Original (Español)', 12.00, 'Edición oficial en español de alta calidad. ¡Colecciona tus arcos favoritos!', 'Envío Inmediato 📦', false)">
+      <button class="btn-fav-card" onclick="toggleFavorito(event, 'Tomo Manga Original', 12.00, 'figuras.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
+      <div class="badge-estado badge-nuevo">🔥 Oferta</div>
+      <img src="figuras.jpg" alt="Manga">
+      <div class="card-title">Tomo Manga Original</div>
+      <div class="precio-container">
+        <span class="card-price-old">$16.00</span>
+        <span class="card-price">$12.00</span>
+      </div>
+      <div class="card-bs" data-usd="12.00">≈ Bs. 0.00</div>
+      <div class="card-stock-alert">🔥 Alta demanda en Bejuma</div>
+    </div>
+
+    <div class="card item-producto" data-nombre="caja booster cartas tcg pokemon" data-categoria="cartas" data-estado="inmediato" data-precio="40.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('accesorios.jpeg', 'Booster Box Cartas TCG', 40.00, 'Caja de sobres coleccionables TCG. ¡Encuentra cartas ultra raras para tu mazo!', 'Envío Inmediato 📦', false)">
+      <button class="btn-fav-card" onclick="toggleFavorito(event, 'Booster Box Cartas TCG', 40.00, 'accesorios.jpeg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
+      <div class="badge-estado badge-gamer">🃏 TCG</div>
+      <img src="accesorios.jpeg" alt="Cartas TCG">
+      <div class="card-title">Booster Box Cartas TCG</div>
+      <div class="precio-container">
+        <span class="card-price-old">$50.00</span>
+        <span class="card-price">$40.00</span>
+      </div>
+      <div class="card-bs" data-usd="40.00">≈ Bs. 0.00</div>
+      <div class="card-stock-alert">⚠️ ¡Quedan 3 en stock!</div>
+    </div>
+
+    <div class="card item-producto" data-nombre="hoodie anime oversize" data-categoria="ropa" data-estado="inmediato" data-precio="25.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Hoodie Oversize Anime', 25.00, 'Algodón afelpado de alta calidad, diseño exclusivo estampado en alta definición.', 'Envío Inmediato 📦', true)">
+      <button class="btn-fav-card" onclick="toggleFavorito(event, 'Hoodie Oversize Anime', 25.00, 'figuras.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
+      <div class="badge-estado badge-nuevo">🔥 Nuevo</div>
+      <img src="figuras.jpg" alt="Hoodie">
+      <div class="card-title">Hoodie Oversize Anime</div>
+      <div class="precio-container">
+        <span class="card-price-old">$32.00</span>
+        <span class="card-price">$25.00</span>
+      </div>
+      <div class="card-bs" data-usd="25.00">≈ Bs. 0.00</div>
+      <div class="card-stock-alert">⚠️ ¡Solo quedan 2 disponibles!</div>
+    </div>
+
+    <div class="card item-producto" data-nombre="mando gamer inalambrico pc" data-categoria="mandos" data-estado="inmediato" data-precio="28.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('lamparas.jpg', 'Mando Pro Inalámbrico PC', 28.00, 'Alta precisión, gatillos sensibles y batería de larga duración. Compatible con PC.', 'Envío Inmediato 📦', false)">
+      <button class="btn-fav-card" onclick="toggleFavorito(event, 'Mando Pro Inalámbrico PC', 28.00, 'lamparas.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
+      <div class="badge-estado badge-gamer">🎮 Pro Gaming</div>
+      <img src="lamparas.jpg" alt="Mando">
+      <div class="card-title">Mando Pro Inalámbrico PC</div>
+      <div class="precio-container">
+        <span class="card-price-old">$35.00</span>
+        <span class="card-price">$28.00</span>
+      </div>
+      <div class="card-bs" data-usd="28.00">≈ Bs. 0.00</div>
+      <div class="card-stock-alert">🔥 6 personas lo tienen en el carrito</div>
+    </div>
+
+    <div class="card item-producto" data-nombre="teclado mecanico gamer" data-categoria="teclados" data-estado="inmediato" data-precio="35.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('lamparas.jpg', 'Teclado Mecánico RGB', 35.00, 'Switches mecánicos, iluminación RGB y respuesta ultra rápida para gaming competitivo.', 'Envío Inmediato 📦', false)">
+      <button class="btn-fav-card" onclick="toggleFavorito(event, 'Teclado Mecánico RGB', 35.00, 'lamparas.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
+      <div class="badge-estado badge-stock">Stock</div>
+      <img src="lamparas.jpg" alt="Teclado">
+      <div class="card-title">Teclado Mecánico RGB</div>
+      <div class="precio-container">
+        <span class="card-price-old">$45.00</span>
+        <span class="card-price">$35.00</span>
+      </div>
+      <div class="card-bs" data-usd="35.00">≈ Bs. 0.00</div>
+      <div class="card-stock-alert">⚠️ ¡Quedan 3 unidades!</div>
+    </div>
+
+    <div class="card item-producto" data-nombre="audifonos gamer surround" data-categoria="audifonos" data-estado="inmediato" data-precio="30.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('accesorios.jpeg', 'Audífonos Gamer Surround', 30.00, 'Sonido envolvente 7.1, micrófono con cancelación de ruido y almohadillas ultra cómodas.', 'Envío Inmediato 📦', false)">
+      <button class="btn-fav-card" onclick="toggleFavorito(event, 'Audífonos Gamer Surround', 30.00, 'accesorios.jpeg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
+      <div class="badge-estado badge-stock">Stock</div>
+      <img src="accesorios.jpeg" alt="Audífonos">
+      <div class="card-title">Audífonos Gamer Surround</div>
+      <div class="precio-container">
+        <span class="card-price-old">$38.00</span>
+        <span class="card-price">$30.00</span>
+      </div>
+      <div class="card-bs" data-usd="30.00">≈ Bs. 0.00</div>
+      <div class="card-stock-alert">⚠️ ¡Últimas piezas!</div>
+    </div>
+
+    <div class="card item-producto" data-nombre="figura de coleccion" data-categoria="figuras" data-estado="inmediato" data-precio="35.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Figura de Colección', 35.00, '¡Una figura épica para tu repisa! Detalles increíbles y acabados premium.', 'Envío Inmediato 📦', false)">
+      <button class="btn-fav-card" onclick="toggleFavorito(event, 'Figura de Colección', 35.00, 'figuras.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
+      <div class="badge-estado badge-stock">Stock</div>
+      <img src="figuras.jpg" alt="Figura">
+      <div class="card-title">Figura de Colección</div>
+      <div class="precio-container">
+        <span class="card-price-old">$45.00</span>
+        <span class="card-price">$35.00</span>
+      </div>
+      <div class="card-bs" data-usd="35.00">≈ Bs. 0.00</div>
+      <div class="card-stock-alert">⚠️ ¡Stock Limitado!</div>
+    </div>
+
+    <div class="card item-producto" data-nombre="peluche exclusivo" data-categoria="peluches" data-estado="encargo" data-precio="20.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('peluche.jpg', 'Peluche Exclusivo', 20.00, 'Súper suave y kawaii. El compañero perfecto para tus largas noches de gaming.', 'Disponible por Encargo (100% inicial)', false)">
+      <button class="btn-fav-card" onclick="toggleFavorito(event, 'Peluche Exclusivo', 20.00, 'peluche.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
+      <div class="badge-estado badge-encargo">Por Encargo</div>
+      <img src="peluche.jpg" alt="Peluche">
+      <div class="card-title">Peluche Exclusivo</div>
+      <div class="precio-container">
+        <span class="card-price-old">$25.00</span>
+        <span class="card-price">$20.00</span>
+      </div>
+      <div class="card-bs" data-usd="20.00">≈ Bs. 0.00</div>
+      <div class="card-stock-alert">⚡ Modalidad Encargo</div>
+    </div>
+
+    <div class="card item-producto" data-nombre="katana replica anime" data-categoria="katanas" data-estado="encargo" data-precio="45.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('katanas.jpg', 'Katana Replica Anime', 45.00, 'Replica a escala real. Perfecta para cosplay o para darle un toque épico a tu cuarto.', 'Disponible por Encargo (100% inicial)', false)">
+      <button class="btn-fav-card" onclick="toggleFavorito(event, 'Katana Replica Anime', 45.00, 'katanas.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
+      <div class="badge-estado badge-encargo">Por Encargo</div>
+      <img src="katanas.jpg" alt="Katanas">
+      <div class="card-title">Katana Replica Anime</div>
+      <div class="precio-container">
+        <span class="card-price-old">$55.00</span>
+        <span class="card-price">$45.00</span>
+      </div>
+      <div class="card-bs" data-usd="45.00">≈ Bs. 0.00</div>
+      <div class="card-stock-alert">⚡ Modalidad Encargo</div>
+    </div>
   </div>
 
   <div class="reviews-section">
@@ -712,7 +896,7 @@
       <span class="link-guia-tallas" onclick="abrirGuiaTallasModal()">Ver Guía de Tallas (cm) 📏</span>
     </div>
 
-    <button class="btn-comprar" onclick="agregarAlCarritoModal()">¡Añadir al Carrito! 🛒</button>
+    <button class="btn-comprar" onclick="agregarAlCarrito()">¡Añadir al Carrito! 🛒</button>
     <button class="btn-compartir" onclick="compartirProductoWhatsApp()"><i class="fab fa-whatsapp"></i> Compartir producto</button>
   </div>
 </div>
@@ -797,6 +981,7 @@
   </div>
 </div>
 
+<!-- MENÚ FLOTANTE HORIZONTAL COMPACTO (CARRUSEL INFERIOR) -->
 <div class="floating-buttons">
   <div class="menu-desplegable-horizontal" id="menuFlotante">
     <button class="mini-btn fav-floating-btn" onclick="abrirFavoritosModal()" title="Ver Favoritos"><i class="fas fa-heart"></i><div class="fav-badge-count" id="favCount">0</div></button>
@@ -805,9 +990,9 @@
     <button class="mini-btn music-btn" onclick="toggleMusicaLoFi()" title="Música Lo-Fi"><i class="fas fa-music" id="iconoMusica"></i></button>
     <button class="mini-btn gamer-profile-btn" onclick="abrirGamerProfileModal()" title="Perfil Gamer"><i class="fas fa-user-astronaut"></i></button>
     <button class="mini-btn theme-btn" onclick="abrirTemasModal()" title="Cambiar Tema"><i class="fas fa-palette"></i></button>
-    <a href="admin.html" class="mini-btn admin-btn" title="Panel Admin"><i class="fas fa-cogs"></i></a>
+    <button class="mini-btn admin-btn" onclick="abrirAdminModal()" title="Panel Admin"><i class="fas fa-cogs"></i></button>
     <a href="https://www.tiktok.com/@sakuragameverse" class="mini-btn tiktok-btn" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
-    <a href="https://www.instagram.com/sakuragameverse" class="mini-btn instagram-btn" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.instagram.com/sakuragameverse?stkn=bDQ5NXRla2Vyano1" class="mini-btn instagram-btn" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
     <button class="mini-btn faq-btn" onclick="abrirFaqModal()" title="FAQ"><i class="fas fa-question"></i></button>
     <button class="mini-btn sugerencia-btn" onclick="abrirSugerenciaModal()" title="Sugerir"><i class="fas fa-lightbulb"></i></button>
     <a href="https://wa.me/584244970576" class="mini-btn whatsapp-btn" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
@@ -815,6 +1000,7 @@
   <button class="btn-menu-principal" onclick="toggleMenuFlotante()" title="Abrir Menú"><i class="fas fa-bars" id="iconoMenuBtn"></i></button>
 </div>
 
+<!-- AUDIO LO-FI ESTABLE -->
 <audio id="audioLoFi" loop src="https://stream.zeno.fm/f3wvbbqmdg8uv"></audio>
 
 <script>
@@ -838,7 +1024,6 @@
     }
   }, 2000);
 
-  // DATOS DE PAGO
   let datosPago = JSON.parse(localStorage.getItem('sakura_datos_pago')) || {
     banco: "Banesco (0134)",
     telefono: "0424-4970576",
@@ -857,15 +1042,53 @@
   }
   renderizarDatosPago();
 
+  function abrirAdminModal() {
+    reproducirSonido();
+    document.getElementById('adminBanco').value = datosPago.banco;
+    document.getElementById('adminTelefono').value = datosPago.telefono;
+    document.getElementById('adminCedula').value = datosPago.cedula;
+    document.getElementById('adminBinance').value = datosPago.binance;
+    document.getElementById('modalAdminPago').style.display = 'flex';
+  }
+  function cerrarAdminModal() {
+    reproducirSonido();
+    document.getElementById('modalAdminPago').style.display = 'none';
+  }
+  function guardarDatosAdmin() {
+    reproducirSonido();
+    datosPago.banco = document.getElementById('adminBanco').value;
+    datosPago.telefono = document.getElementById('adminTelefono').value;
+    datosPago.cedula = document.getElementById('adminCedula').value;
+    datosPago.binance = document.getElementById('adminBinance').value;
+    
+    localStorage.setItem('sakura_datos_pago', JSON.stringify(datosPago));
+    renderizarDatosPago();
+    alert("⚙️ ¡Datos de pago actualizados exitosamente en la tienda!");
+    cerrarAdminModal();
+  }
+
   function copiarDatosPago() {
     reproducirSonido();
     let textoCopiar = `DATOS DE PAGO SAKURA GAMEVERSE:\nBanco: ${datosPago.banco}\nTeléfono: ${datosPago.telefono}\nCédula: ${datosPago.cedula}\nBinance: ${datosPago.binance}`;
     navigator.clipboard.writeText(textoCopiar).then(() => {
-      alert("📋 ¡Datos de pago copiados al portapapeles con éxito!");
+      alert("📋 ¡Datos de pago copiado al portapapeles con éxito!");
     });
   }
 
-  // TASA BCV
+  let tiempoRestante = 12 * 3600;
+  function iniciarCountdown() {
+    let timerElem = document.getElementById('countdownTimer');
+    setInterval(() => {
+      if (tiempoRestante > 0) tiempoRestante--;
+      let horas = Math.floor(tiempoRestante / 3600);
+      let minutos = Math.floor((tiempoRestante % 3600) / 60);
+      let segundos = tiempoRestante % 60;
+      timerElem.innerText = `${String(horas).padStart(2,'0')}:${String(minutos).padStart(2,'0')}:${String(segundos).padStart(2,'0')}`;
+    }, 1000);
+  }
+  iniciarCountdown();
+
+  // TASA BCV MANUAL CONTROLADA POR EL ADMINISTRADOR
   let tasaBcvActual = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 854.46;
   document.getElementById('inputTasaBcv').value = tasaBcvActual;
 
@@ -874,50 +1097,318 @@
     if (!isNaN(val) && val > 0) {
       tasaBcvActual = val;
       localStorage.setItem('sakura_tasa_bcv', tasaBcvActual);
-      renderizarCatalogoDinamico();
+      actualizarPreciosEnBs();
     }
   }
 
-  // CARGAR PRODUCTOS DESDE EL ADMIN (LOCALSTORAGE)
-  let inventarioTienda = JSON.parse(localStorage.getItem('sakura_inventario_admin')) || [
-    { nombre: "Tomo Manga Original", categoria: "Mangas", precio: 12.00, estado: "Inmediato", fotos: ["figuras.jpg"] },
-    { nombre: "Booster Box Cartas TCG", categoria: "Cartas", precio: 40.00, estado: "Inmediato", fotos: ["accesorios.jpeg"] },
-    { nombre: "Hoodie Oversize Anime", categoria: "Ropa / Hoodies", precio: 25.00, estado: "Inmediato", fotos: ["figuras.jpg"] }
-  ];
-
-  function renderizarCatalogoDinamico() {
-    let catalogoGrid = document.getElementById('catalogo');
-    catalogoGrid.innerHTML = "";
-
-    inventarioTienda.forEach((prod, index) => {
-      let precioBs = prod.precio * tasaBcvActual;
-      let imagenSrc = (prod.fotos && prod.fotos.length > 0 && prod.fotos[0]) ? prod.fotos[0] : 'logo.webp';
-      let badgeClase = (prod.estado === 'Por Encargo') ? 'badge-encargo' : 'badge-stock';
-      let categoriaLimpia = prod.categoria || 'General';
-
-      catalogoGrid.innerHTML += `
-        <div class="card item-producto" data-nombre="${prod.nombre.toLowerCase()}" data-categoria="${categoriaLimpia}" data-estado="${prod.estado}" data-precio="${prod.precio}" onclick="crearDestello(event); reproducirSonido(); abrirModal('${imagenSrc}', '${prod.nombre}', ${prod.precio}, 'Producto oficial de calidad Sakura Gameverse.', '${prod.estado}', ${categoriaLimpia.toLowerCase().includes('ropa') || categoriaLimpia.toLowerCase().includes('hoodie')})">
-          <button class="btn-fav-card" onclick="toggleFavorito(event, '${prod.nombre}', ${prod.precio}, '${imagenSrc}')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
-          <div class="badge-estado ${badgeClase}">${prod.estado}</div>
-          <img src="${imagenSrc}" alt="${prod.nombre}">
-          <div class="card-title">${prod.nombre}</div>
-          <div class="precio-container">
-            <span class="card-price">$${prod.precio.toFixed(2)}</span>
-          </div>
-          <div class="card-bs">≈ Bs. ${precioBs.toLocaleString('es-VE', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
-        </div>
-      `;
+  function actualizarPreciosEnBs() {
+    let etiquetasBs = document.querySelectorAll('.card-bs');
+    etiquetasBs.forEach(etiqueta => {
+      let usd = parseFloat(etiqueta.getAttribute('data-usd'));
+      let totalBs = usd * tasaBcvActual;
+      etiqueta.innerText = `≈ Bs. ${totalBs.toLocaleString('es-VE', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
     });
   }
-  renderizarCatalogoDinamico();
 
+  actualizarPreciosEnBs();
+
+  function abrirCofreModal() {
+    reproducirSonido();
+    verificarEstadoCofre();
+    document.getElementById('modalCofreDiario').style.display = 'flex';
+  }
+  function cerrarCofreModal() {
+    reproducirSonido();
+    document.getElementById('modalCofreDiario').style.display = 'none';
+  }
+
+  function verificarEstadoCofre() {
+    let ultimoReclamo = localStorage.getItem('sakura_ultimo_cofre');
+    let ahora = new Date().getTime();
+    let btn = document.getElementById('btnReclamarCofre');
+    let res = document.getElementById('cofreResultado');
+
+    if (ultimoReclamo && (ahora - parseInt(ultimoReclamo) < 86400000)) {
+      btn.style.display = 'none';
+      res.innerHTML = "⏳ Ya abriste tu cofre hoy. ¡Vuelve mañana por más XP y premios!";
+    } else {
+      btn.style.display = 'block';
+      res.innerHTML = "Cofre listo para abrir 🗝️";
+    }
+  }
+
+  function abrirCofreDiario() {
+    reproducirSonido();
+    localStorage.setItem('sakura_ultimo_cofre', new Date().getTime());
+    
+    gamerProfile.xp += 100;
+    localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
+    document.getElementById('lblXp').innerText = gamerProfile.xp + " XP";
+
+    confetti({ particleCount: 150, spread: 90, origin: { y: 0.5 } });
+    document.getElementById('cofreResultado').innerHTML = "🎉 ¡Felicidades! Ganaste +100 XP y el cupón secreto <strong>OTAKU10</strong>.";
+    document.getElementById('btnReclamarCofre').style.display = 'none';
+  }
+
+  const compradoresFake = [
+    { nombre: "Gabriel S.", lugar: "Bejuma, Carabobo", item: "un Tomo de Manga" },
+    { nombre: "Valeria M.", lugar: "Miranda, Carabobo", item: "una Booster Box TCG" },
+    { nombre: "Andrés R.", lugar: "Valencia, Carabobo", item: "un Mando Pro PC" },
+    { nombre: "Mariana L.", lugar: "Caracas", item: "un Hoodie Oversize" },
+    { nombre: "Josué O.", lugar: "Bejuma, Carabobo", item: "una Figura de Colección" }
+  ];
+
+  function actualizarPruebaSocialArriba() {
+    let comprador = compradoresFake[Math.floor(Math.random() * compradoresFake.length)];
+    document.getElementById('spTexto').innerText = `¡${comprador.nombre} compró ${comprador.item}!`;
+    document.getElementById('spLugar').innerText = `(${comprador.lugar})`;
+  }
+  setInterval(actualizarPruebaSocialArriba, 6000);
+
+  function toggleMenuFlotante() {
+    reproducirSonido();
+    let menu = document.getElementById('menuFlotante');
+    let icono = document.getElementById('iconoMenuBtn');
+    menu.classList.toggle('abierto');
+    if (menu.classList.contains('abierto')) {
+      icono.className = "fas fa-times";
+    } else {
+      icono.className = "fas fa-bars";
+    }
+  }
+
+  let temaActual = localStorage.getItem('sakura_tema') || 'theme-rosa';
+  document.body.className = temaActual;
+
+  function abrirTemasModal() {
+    reproducirSonido();
+    document.getElementById('modalTemas').style.display = 'flex';
+  }
+  function cerrarTemasModal() {
+    reproducirSonido();
+    document.getElementById('modalTemas').style.display = 'none';
+  }
+  function cambiarTema(claseTema) {
+    reproducirSonido();
+    document.body.className = claseTema;
+    localStorage.setItem('sakura_tema', claseTema);
+    cerrarTemasModal();
+  }
+
+  function activarEasterEggLogo() {
+    reproducirSonido();
+    document.body.classList.toggle('theme-overdrive');
+    confetti({ particleCount: 150, spread: 90, origin: { y: 0.4 } });
+    if (document.body.classList.contains('theme-overdrive')) {
+      alert("🔥 ¡MODO OVERDRIVE SUPREMO ACTIVADO! ¡Lluvia de poder otaku!");
+    } else {
+      alert("✨ Modo restaurado.");
+    }
+  }
+
+  let reproduciendoMusica = false;
+  function toggleMusicaLoFi() {
+    reproducirSonido();
+    let audio = document.getElementById('audioLoFi');
+    let icono = document.getElementById('iconoMusica');
+    if (!reproducingMusica()) {
+      audio.play().then(() => {
+        reproducirMusica = true;
+        icono.className = "fas fa-pause";
+        alert("🎵 ¡Música Lo-Fi activada de fondo!");
+      }).catch(e => {
+        alert("⚠️ Toca la pantalla o interactúa un momento antes de encender la música.");
+      });
+    } else {
+      audio.pause();
+      reproducirMusica = false;
+      icono.className = "fas fa-music";
+      alert("⏸️ Música pausada.");
+    }
+  }
+  function reproducingMusica() { return reproduciendoMusica; }
+
+  function abrirGachaModal() {
+    reproducirSonido();
+    document.getElementById('gachaResultado').innerText = "Presiona el botón para girar 🎁";
+    document.getElementById('modalGacha').style.display = 'flex';
+  }
+  function cerrarGachaModal() {
+    reproducirSonido();
+    document.getElementById('modalGacha').style.display = 'none';
+  }
+  function girarRuletaGacha() {
+    reproducirSonido();
+    let resBox = document.getElementById('gachaResultado');
+    resBox.innerHTML = "🌀 Girando ruleta y abriendo cofre gacha...";
+    
+    setTimeout(() => {
+      let premios = [
+        { texto: "🎉 ¡Felicidades! Ganaste 5% de descuento (Usa cupón <strong>GACHA5</strong>)", codigo: "GACHA5" },
+        { texto: "🔥 ¡Jackpot Otaku! Ganaste 15% de descuento (Usa cupón <strong>GAMERVIP</strong>)", codigo: "GAMERVIP" },
+        { texto: "🌸 ¡Premio Especial! 10% de descuento (Usa cupón <strong>OTAKU10</strong>)", codigo: "OTAKU10" }
+      ];
+      let premioGanado = premios[Math.floor(Math.random() * premios.length)];
+      resBox.innerHTML = `${premioGanado.texto}`;
+      confetti({ particleCount: 140, spread: 85, origin: { y: 0.5 } });
+    }, 1000);
+  }
+
+  let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, rango: "Rango Hokage" };
+  document.getElementById('inputGamerTag').value = gamerProfile.tag;
+  document.getElementById('lblRango').innerText = gamerProfile.rango;
+  document.getElementById('lblXp').innerText = gamerProfile.xp + " XP";
+
+  function abrirGamerProfileModal() {
+    reproducirSonido();
+    document.getElementById('modalGamerProfile').style.display = 'flex';
+  }
+  function cerrarGamerProfileModal() {
+    reproducirSonido();
+    document.getElementById('modalGamerProfile').style.display = 'none';
+  }
+  function guardarGamerTag() {
+    reproducirSonido();
+    let nuevoTag = document.getElementById('inputGamerTag').value.trim();
+    if (nuevoTag) {
+      gamerProfile.tag = nuevoTag;
+      gamerProfile.xp += 50;
+      if (gamerProfile.xp > 300) gamerProfile.rango = "Rango Leyenda Ciberpunk ⚡";
+      localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
+      document.getElementById('lblRango').innerText = gamerProfile.rango;
+      document.getElementById('lblXp').innerText = gamerProfile.xp + " XP";
+      alert(`💾 ¡GamerTag guardado exitosamente como [${nuevoTag}]! +50 XP ganados.`);
+      cerrarGamerProfileModal();
+    }
+  }
+
+  function abrirGuiaTallasModal() {
+    reproducirSonido();
+    document.getElementById('modalGuiaTallas').style.display = 'flex';
+  }
+  function cerrarGuiaTallasModal() {
+    reproducirSonido();
+    document.getElementById('modalGuiaTallas').style.display = 'none';
+  }
+
+  let favoritos = JSON.parse(localStorage.getItem('sakura_favoritos')) || [];
+
+  function toggleFavorito(event, titulo, precio, img) {
+    event.stopPropagation();
+    reproducirSonido();
+    
+    let index = favoritos.findIndex(item => item.titulo === titulo);
+    if (index === -1) {
+      favoritos.push({ titulo, precio, img });
+      alert(`💖 ¡Añadido a tus Favoritos: ${titulo}!`);
+    } else {
+      favoritos.splice(index, 1);
+      alert(`💔 ¡Eliminado de tus Favoritos: ${titulo}!`);
+    }
+    
+    localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos));
+    actualizarFavBadge();
+  }
+
+  function actualizarFavBadge() {
+    document.getElementById('favCount').innerText = favoritos.length;
+  }
+  actualizarFavBadge();
+
+  function abrirFavoritosModal() {
+    reproducirSonido();
+    let contenedor = document.getElementById('listaFavoritosDetalle');
+    contenedor.innerHTML = "";
+
+    if (favoritos.length === 0) {
+      contenedor.innerHTML = "<p style='color: #aaa;'>Aún no tienes productos en tu lista de deseos.</p>";
+    } else {
+      favoritos.forEach((item, index) => {
+        contenedor.innerHTML += `
+          <div class="cart-item-row">
+            <img src="${item.img}" class="cart-item-img">
+            <div class="cart-item-info">
+              <strong>${item.titulo}</strong><br>
+              <span style="color: var(--secondary-color);">$${item.precio.toFixed(2)}</span>
+            </div>
+            <button class="cart-item-del" onclick="eliminarFavorito(${index})">❌</button>
+          </div>
+        `;
+      });
+    }
+    document.getElementById('modalFavoritos').style.display = 'flex';
+  }
+
+  function cerrarFavoritosModal() {
+    reproducirSonido();
+    document.getElementById('modalFavoritos').style.display = 'none';
+  }
+
+  function eliminarFavorito(index) {
+    reproducirSonido();
+    favoritos.splice(index, 1);
+    localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos));
+    actualizarFavBadge();
+    abrirFavoritosModal();
+  }
+
+  function cerrarPromoFlash() {
+    reproducirSonido();
+    document.getElementById('modalPromoFlash').style.display = 'none';
+  }
+
+  function reproducirSonido() {
+    try {
+      let ctx = new (window.AudioContext || window.webkitAudioContext)();
+      let osc = ctx.createOscillator();
+      let gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.1);
+      gain.gain.setValueAtTime(0.1, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.1);
+    } catch(e) {}
+  }
+
+  function crearDestello(event) {
+    let x = event.clientX;
+    let y = event.clientY;
+    let iconos = ['🌸', '✨', '💜', '⚡', '🎮'];
+    let span = document.createElement('span');
+    span.innerText = iconos[Math.floor(Math.random() * iconos.length)];
+    span.style.position = 'fixed';
+    span.style.left = x + 'px';
+    span.style.top = y + 'px';
+    span.style.fontSize = '20px';
+    span.style.pointerEvents = 'none';
+    span.style.zIndex = '3000';
+    span.style.transition = 'all 0.6s ease-out';
+    document.body.appendChild(span);
+
+    setTimeout(() => {
+      span.style.transform = `translate(${(Math.random() - 0.5) * 80}px, ${-60 - Math.random() * 40}px) scale(1.5)`;
+      span.style.opacity = '0';
+    }, 20);
+
+    setTimeout(() => span.remove(), 600);
+  }
+
+  let carrito = [];
+  let productoActual = null;
   let categoriaActualFiltro = 'todos';
   let estadoActualFiltro = 'todos';
+  let descuentoAplicado = 0;
 
   function filtrar(categoria, evento) {
     reproducirSonido();
-    document.querySelectorAll('.btn-filtro').forEach(btn => btn.classList.remove('activo'));
+    let botones = document.querySelectorAll('.btn-filtro');
+    botones.forEach(btn => btn.classList.remove('activo'));
     evento.target.classList.add('activo');
+
     categoriaActualFiltro = categoria;
     estadoActualFiltro = 'todos';
     aplicarFiltrosCombinados();
@@ -925,8 +1416,10 @@
 
   function filtrarEstado(estado, evento) {
     reproducirSonido();
-    document.querySelectorAll('.btn-filtro').forEach(btn => btn.classList.remove('activo'));
+    let botones = document.querySelectorAll('.btn-filtro');
+    botones.forEach(btn => btn.classList.remove('activo'));
     evento.target.classList.add('activo');
+
     estadoActualFiltro = estado;
     categoriaActualFiltro = 'todos';
     aplicarFiltrosCombinados();
@@ -968,6 +1461,7 @@
     productos.sort((a, b) => {
       let precioA = parseFloat(a.getAttribute('data-precio'));
       let precioB = parseFloat(b.getAttribute('data-precio'));
+
       if (criterio === 'menor') return precioA - precioB;
       if (criterio === 'mayor') return precioB - precioA;
       return 0;
@@ -989,38 +1483,6 @@
     });
   }
 
-  // COFRE DIARIO Y GACHA
-  function abrirCofreModal() { reproducirSonido(); verificarEstadoCofre(); document.getElementById('modalCofreDiario').style.display = 'flex'; }
-  function cerrarCofreModal() { reproducirSonido(); document.getElementById('modalCofreDiario').style.display = 'none'; }
-  function verificarEstadoCofre() {
-    let ultimoReclamo = localStorage.getItem('sakura_ultimo_cofre');
-    let ahora = new Date().getTime();
-    let btn = document.getElementById('btnReclamarCofre');
-    let res = document.getElementById('cofreResultado');
-    if (ultimoReclamo && (ahora - parseInt(ultimoReclamo) < 86400000)) {
-      btn.style.display = 'none';
-      res.innerHTML = "⏳ Ya abriste tu cofre hoy. ¡Vuelve mañana!";
-    } else {
-      btn.style.display = 'block';
-      res.innerHTML = "Cofre listo para abrir 🗝️";
-    }
-  }
-  function abrirCofreDiario() {
-    reproducirSonido();
-    localStorage.setItem('sakura_ultimo_cofre', new Date().getTime());
-    gamerProfile.xp += 100;
-    localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
-    document.getElementById('lblXp').innerText = gamerProfile.xp + " XP";
-    confetti({ particleCount: 150, spread: 90, origin: { y: 0.5 } });
-    document.getElementById('cofreResultado').innerHTML = "🎉 ¡Felicidades! Ganaste +100 XP.";
-    document.getElementById('btnReclamarCofre').style.display = 'none';
-  }
-
-  // INTERACCIONES Y EXTRAS
-  let carrito = [];
-  let productoActual = null;
-  let descuentoAplicado = 0;
-
   function abrirModal(img, titulo, precio, descripcion, disponibilidad, esRopa) {
     productoActual = { img, titulo, precio, esRopa };
     document.getElementById('modalImg').src = img;
@@ -1028,26 +1490,99 @@
     document.getElementById('modalPrecio').innerText = "$" + precio.toFixed(2);
     document.getElementById('modalDesc').innerText = descripcion;
     document.getElementById('modalTag').innerText = disponibilidad;
-    document.getElementById('tallasContainer').style.display = esRopa ? 'block' : 'none';
+
+    let tallasCont = document.getElementById('tallasContainer');
+    if (esRopa) {
+      tallasCont.style.display = 'block';
+    } else {
+      tallasCont.style.display = 'none';
+    }
+
     document.getElementById('miModal').style.display = 'flex';
   }
-  function cerrarModal() { reproducirSonido(); document.getElementById('miModal').style.display = 'none'; }
 
-  function agregarAlCarritoModal() {
+  function cerrarModal() {
     reproducirSonido();
-    let item = { ...productoActual };
-    if (item.esRopa) item.titulo += ` (Talla: ${document.getElementById('selectTalla').value})`;
-    carrito.push(item);
+    document.getElementById('miModal').style.display = 'none';
+  }
+
+  function compartirProductoWhatsApp() {
+    reproducirSonido();
+    let texto = `¡Hola! Mira este artículo que encontré en Sakura Gameverse: *${productoActual.titulo}* por solo *$${productoActual.precio.toFixed(2)}*. 🎮🌸`;
+    let url = `https://wa.me/?text=` + encodeURIComponent(texto);
+    window.open(url, '_blank');
+  }
+
+  function abrirFaqModal() {
+    reproducirSonido();
+    document.getElementById('modalFaq').style.display = 'flex';
+  }
+
+  function cerrarFaqModal() {
+    reproducirSonido();
+    document.getElementById('modalFaq').style.display = 'none';
+  }
+
+  function agregarAlCarrito() {
+    reproducirSonido();
+    let itemParaCarrito = { ...productoActual };
+    
+    if (itemParaCarrito.esRopa) {
+      let tallaSeleccionada = document.getElementById('selectTalla').value;
+      itemParaCarrito.titulo += ` (Talla: ${tallaSeleccionada})`;
+    }
+
+    carrito.push(itemParaCarrito);
     gamerProfile.xp += 20;
     localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
+    
     actualizarCarritoUI();
     cerrarModal();
   }
 
+  function vaciarCarrito() {
+    reproducirSonido();
+    carrito = [];
+    descuentoAplicado = 0;
+    document.getElementById('inputCupon').value = "";
+    document.getElementById('mensajeCupon').innerText = "";
+    actualizarCarritoUI();
+    abrirCarritoModal();
+  }
+
+  function eliminarItemCarrito(index) {
+    reproducirSonido();
+    carrito.splice(index, 1);
+    actualizarCarritoUI();
+    abrirCarritoModal();
+  }
+
+  function aplicarCupon() {
+    reproducirSonido();
+    let codigo = document.getElementById('inputCupon').value.trim().toUpperCase();
+    let msg = document.getElementById('mensajeCupon');
+
+    if (codigo === "OTAKU10" || codigo === "GACHA5") {
+      descuentoAplicado = (codigo === "GACHA5") ? 0.05 : 0.10;
+      msg.style.color = "#25D366";
+      msg.innerText = `🎉 ¡Cupón ${codigo} aplicado con éxito!`;
+    } else if (codigo === "GAMERVIP") {
+      descuentoAplicado = 0.15;
+      msg.style.color = "#25D366";
+      msg.innerText = "🔥 ¡Cupón GAMERVIP aplicado con éxito (-15%)!";
+    } else {
+      descuentoAplicado = 0;
+      msg.style.color = "#ff3366";
+      msg.innerText = "❌ Código de cupón inválido.";
+    }
+    abrirCarritoModal();
+  }
+
   function actualizarCarritoUI() {
+    let totalItems = carrito.length;
     let subtotal = carrito.reduce((sum, item) => sum + item.precio, 0);
     let totalPrecio = subtotal * (1 - descuentoAplicado);
-    document.getElementById('cartText').innerText = `🛒 Ver Carrito: ${carrito.length} ítems ($${totalPrecio.toFixed(2)})`;
+    document.getElementById('cartText').innerText = `🛒 Ver Carrito: ${totalItems} ítems ($${totalPrecio.toFixed(2)})`;
   }
 
   function abrirCarritoModal() {
@@ -1055,6 +1590,7 @@
     let contenedor = document.getElementById('listaCarritoDetalle');
     let reciboBox = document.getElementById('reciboDigital');
     let reciboContenido = document.getElementById('reciboContenido');
+    
     contenedor.innerHTML = "";
     reciboContenido.innerHTML = "";
     
@@ -1064,23 +1600,35 @@
     } else {
       reciboBox.style.display = 'block';
       let htmlRecibo = "";
+      
       carrito.forEach((item, index) => {
         contenedor.innerHTML += `
           <div class="cart-item-row">
             <img src="${item.img}" class="cart-item-img">
-            <div class="cart-item-info"><strong>${item.titulo}</strong><br><span style="color: var(--secondary-color);">$${item.precio.toFixed(2)}</span></div>
+            <div class="cart-item-info">
+              <strong>${item.titulo}</strong><br>
+              <span style="color: var(--secondary-color);">$${item.precio.toFixed(2)}</span>
+            </div>
             <button class="cart-item-del" onclick="eliminarItemCarrito(${index})">❌</button>
           </div>
         `;
         htmlRecibo += `<div class="recibo-line"><span>${item.titulo}</span><span>$${item.precio.toFixed(2)}</span></div>`;
       });
+
       let subtotal = carrito.reduce((sum, item) => sum + item.precio, 0);
-      let totalPrecio = subtotal * (1 - descuentoAplicado);
+      let descuentoMonto = subtotal * descuentoAplicado;
+      let totalPrecio = subtotal - descuentoMonto;
       let totalBs = totalPrecio * tasaBcvActual;
+
+      if (descuentoAplicado > 0) {
+        htmlRecibo += `<div style="color: #25D366;" class="recibo-line"><span>DESCUENTO:</span><span>-$${descuentoMonto.toFixed(2)}</span></div>`;
+      }
+
       htmlRecibo += `<div style="border-top: 1px dashed var(--secondary-color); margin-top: 5px; padding-top: 5px;" class="recibo-line"><strong>TOTAL USD:</strong> <strong>$${totalPrecio.toFixed(2)}</strong></div>`;
       htmlRecibo += `<div class="recibo-line"><strong>TOTAL BS:</strong> <strong>Bs. ${totalBs.toFixed(2)}</strong></div>`;
       reciboContenido.innerHTML = htmlRecibo;
     }
+
     let subtotal = carrito.reduce((sum, item) => sum + item.precio, 0);
     let totalPrecio = subtotal * (1 - descuentoAplicado);
     let totalBs = totalPrecio * tasaBcvActual;
@@ -1088,72 +1636,125 @@
     document.getElementById('modalCarrito').style.display = 'flex';
   }
 
-  function cerrarCarritoModal() { reproducirSonido(); document.getElementById('modalCarrito').style.display = 'none'; }
-  function vaciarCarrito() { reproducirSonido(); carrito = []; descuentoAplicado = 0; actualizarCarritoUI(); abrirCarritoModal(); }
-  function eliminarItemCarrito(index) { reproducirSonido(); carrito.splice(index, 1); actualizarCarritoUI(); abrirCarritoModal(); }
+  function cerrarCarritoModal() {
+    reproducirSonido();
+    document.getElementById('modalCarrito').style.display = 'none';
+  }
 
   function enviarPedidoWhatsApp() {
     reproducirSonido();
-    if (carrito.length === 0) { alert("¡Tu carrito está vacío!"); return; }
+    if (carrito.length === 0) {
+      alert("¡Tu carrito está vacío!");
+      return;
+    }
+
     confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
 
     gamerProfile.xp += 100;
     localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
 
-    let detalleTexto = carrito.map(i => i.titulo).join(", ");
-    let subtotal = carrito.reduce((sum, item) => sum + item.precio, 0);
+    let mensaje = `¡Hola Sakura Gameverse! 🌸👾 Deseo realizar el siguiente pedido (GamerTag: ${gamerProfile.tag}):\n\n`;
+    let subtotal = 0;
+    carrito.forEach((item, index) => {
+      mensaje += `${index + 1}. ${item.titulo} - $${item.precio.toFixed(2)}\n`;
+      subtotal += item.precio;
+    });
+
     let total = subtotal * (1 - descuentoAplicado);
     let totalBs = total * tasaBcvActual;
 
-    // REGISTRAR AUTOMÁTICAMENTE EN EL PANEL ADMIN
-    let listaPedidos = JSON.parse(localStorage.getItem('sakura_pedidos')) || [];
-    listaPedidos.push({
-      gamerTag: gamerProfile.tag,
-      detalle: detalleTexto,
-      totalUsd: total,
-      estatus: "Pendiente"
+    if (descuentoAplicado > 0) {
+      mensaje += `\n*Subtotal:* $${subtotal.toFixed(2)}`;
+      mensaje += `\n*Descuento aplicado:* -${descuentoAplicado * 100}%`;
+    }
+
+    mensaje += `\n\n*Total a pagar: $${total.toFixed(2)} (Bs. ${totalBs.toFixed(2)})*\n¡Espero su respuesta para coordinar el pago y el envío (ZOOM / MRW)!`;
+    
+    let url = "https://wa.me/584244970576?text=" + encodeURIComponent(mensaje);
+    
+    setTimeout(() => {
+      window.open(url, '_blank');
+      cerrarCarritoModal();
+    }, 800);
+  }
+
+  function abrirSugerenciaModal() {
+    reproducirSonido();
+    document.getElementById('modalSugerencias').style.display = 'flex';
+  }
+
+  function cerrarSugerenciaModal() {
+    reproducirSonido();
+    document.getElementById('modalSugerencias').style.display = 'none';
+  }
+
+  function enviarSugerenciaWhatsApp() {
+    reproducirSonido();
+    let nombre = document.getElementById('sugNombre').value.trim();
+    let deseo = document.getElementById('sugDeseo').value.trim();
+
+    if (!nombre || !deseo) {
+      alert("Por favor completa tu nombre y la sugerencia.");
+      return;
+    }
+
+    let mensaje = `💡 *Sugerencia de Mercancía* 💡\n\n*Cliente:* ${nombre}\n*Sugerencia:* ${deseo}\n\n¡Enviado desde Sakura Gameverse! 🌸`;
+    let url = "https://wa.me/584244970576?text=" + encodeURIComponent(mensaje);
+    window.open(url, '_blank');
+    cerrarSugerenciaModal();
+  }
+
+  let reviews = JSON.parse(localStorage.getItem('sakura_reviews')) || [
+    { nombre: "Ángel G.", estrellas: "⭐⭐⭐⭐⭐", texto: "¡Excelente tienda! Los tomos de manga y mandos llegaron por ZOOM impecables. 10/10." },
+    { nombre: "Valeria Otaku", estrellas: "⭐⭐⭐⭐⭐", texto: "Las cartas TCG y la ropa son de calidad brutal. El pedido llegó rapidísimo por MRW." }
+  ];
+
+  function renderReviews() {
+    let contenedor = document.getElementById('contenedorReviews');
+    contenedor.innerHTML = "";
+    reviews.forEach((rev, index) => {
+      contenedor.innerHTML += `
+        <div class="review-card">
+          <button class="btn-del-review" onclick="eliminarReview(${index})" title="Borrar reseña indeseada">Eliminar ❌</button>
+          <div class="review-author">${rev.nombre}</div>
+          <div class="review-stars">${rev.estrellas}</div>
+          <div class="review-text">${rev.texto}</div>
+        </div>
+      `;
     });
-    localStorage.setItem('sakura_pedidos', JSON.stringify(listaPedidos));
-
-    let mensaje = `¡Hola Sakura Gameverse! 🌸👾 Deseo realizar este pedido:\n\n📦 *Productos:* ${detalleTexto}\n💵 *Total USD:* $${total.toFixed(2)}\n🇻🇪 *Total Bs:* Bs. ${totalBs.toFixed(2)}\n\n¡Quedo atento para coordinar el pago y el envío por ZOOM o MRW! 🚀`;
-    window.open(`https://wa.me/584244970576?text=` + encodeURIComponent(mensaje), '_blank');
-    cerrarCarritoModal();
   }
 
-  // TEMA Y AUDIO
-  let temaActual = localStorage.getItem('sakura_tema') || 'theme-rosa';
-  document.body.className = temaActual;
-  function abrirTemasModal() { reproducirSonido(); document.getElementById('modalTemas').style.display = 'flex'; }
-  function cerrarTemasModal() { reproducirSonido(); document.getElementById('modalTemas').style.display = 'none'; }
-  function cambiarTema(clase) { document.body.className = clase; localStorage.setItem('sakura_tema', clase); cerrarTemasModal(); }
-
-  let reproduciendoMusica = false;
-  function toggleMusicaLoFi() {
+  function agregarReview() {
     reproducirSonido();
-    let audio = document.getElementById('audioLoFi');
-    let icono = document.getElementById('iconoMusica');
-    if (!reproduciendoMusica) {
-      audio.play().then(() => { reproduciendoMusica = true; icono.className = "fas fa-pause"; alert("🎵 ¡Música Lo-Fi activada!"); }).catch(e => alert("Toca la pantalla primero."));
-    } else {
-      audio.pause(); reproduciendoMusica = false; icono.className = "fas fa-music";
+    let nombre = document.getElementById('revNombre').value.trim();
+    let estrellas = document.getElementById('revEstrellas').value;
+    let texto = document.getElementById('revTexto').value.trim();
+
+    if (!nombre || !texto) {
+      alert("Por favor ingresa tu nombre y tu comentario. ✨");
+      return;
+    }
+
+    reviews.unshift({ nombre, estrellas, texto });
+    localStorage.setItem('sakura_reviews', JSON.stringify(reviews));
+    
+    document.getElementById('revNombre').value = "";
+    document.getElementById('revTexto').value = "";
+    renderReviews();
+    alert("¡Gracias por tu reseña! Ya ha sido publicada.");
+  }
+
+  function eliminarReview(index) {
+    reproducirSonido();
+    if (confirm("¿Estás seguro de eliminar esta reseña?")) {
+      reviews.splice(index, 1);
+      localStorage.setItem('sakura_reviews', JSON.stringify(reviews));
+      renderReviews();
     }
   }
 
-  function toggleMenuFlotante() { reproducirSonido(); document.getElementById('menuFlotante').classList.toggle('abierto'); }
-  function reproducirSonido() { try { let ctx = new (window.AudioContext || window.webkitAudioContext)(); let osc = ctx.createOscillator(); let g = ctx.createGain(); osc.connect(g); g.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime + 0.05); } catch(e){} }
-  function crearDestello(e) { /* Efecto visual */ }
-
-  let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, rango: "Rango Hokage" };
-  document.getElementById('lblRango').innerText = gamerProfile.rango;
-  document.getElementById('lblXp').innerText = gamerProfile.xp + " XP";
+  renderReviews();
 </script>
-  function cerrarPromoFlash() {
-    reproducirSonido();
-    let modal = document.getElementById('modalPromoFlash');
-    if (modal) {
-      modal.style.display = 'none';
-    }
-  }
 
 </body>
 </html>
