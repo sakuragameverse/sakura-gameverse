@@ -425,7 +425,6 @@
     .btn-checkout { background: #25D366; color: white; border: none; padding: 8px 15px; border-radius: 15px; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px #25D366; font-size: 0.9em; }
     .btn-clear { background: #ff3366; color: white; border: none; padding: 8px 12px; border-radius: 15px; font-weight: bold; cursor: pointer; font-size: 0.9em; }
 
-    /* MENÚ FLOTANTE HORIZONTAL COMPACTO (CARRUSEL INFERIOR) */
     .floating-buttons { position: fixed; bottom: 65px; right: 15px; z-index: 1000; display: flex; align-items: center; gap: 8px; }
     
     .menu-desplegable-horizontal {
@@ -481,7 +480,6 @@
 </head>
 <body>
 
-<!-- BARRA DE NOTIFICACIÓN SUPERIOR -->
 <div id="socialProofContainer">
   <div class="sp-icon"><i class="fas fa-shopping-bag"></i></div>
   <div>
@@ -492,7 +490,7 @@
 
 <div class="ticker-bar">
   <div class="ticker-content">
-    🔥 ¡Bienvenidos a Sakura Gameverse! Envíos seguros a todo el país exclusivamente por ZOOM y MRW 📦 | 🎮 Cupón activo: OTAKU10 | ⚡ ¡Abre el menú flotante inferior para cofre, música y gacha! 🌸
+    🔥 ¡Bienvenidos a Sakura Gameverse! Envíos seguros a todo el país exclusivamente por ZOOM y MRW 📦 | 🎮 Cupón activo: OTAKU10 | ⚡ ¡Catálogo conectado a la nube en tiempo real! 🌸
   </div>
 </div>
 
@@ -504,33 +502,7 @@
     <p style="font-size: 0.95em; line-height: 1.5; opacity: 0.9; margin-bottom: 15px;">
       Usa el código <strong>OTAKU10</strong> o abre el menú flotante inferior para reclamar tu <strong>Cofre Diario</strong> y girar la ruleta Gacha. Entregas en <strong>Bejuma y Miranda</strong> y envíos por <strong>ZOOM y MRW</strong>.
     </p>
-    <button class="btn-sugerencia" onclick="cerrarPromoFlash()">¡A Explorar Catálogo! 🚀</button>
-  </div>
-</div>
-
-<!-- PANEL DE ADMINISTRACIÓN DE DATOS DE PAGO (EDITABLE) -->
-<div id="modalAdminPago" class="modal">
-  <div class="modal-content" style="width: 440px; border: 2px solid #ff3366;">
-    <button class="cerrar-modal" onclick="cerrarAdminModal()">×</button>
-    <div style="font-size: 40px; margin-bottom: 5px;">⚙️</div>
-    <h2 style="color: #ff3366; margin-top: 0;">Panel Admin: Datos de Pago</h2>
-    <p style="font-size: 0.85em; opacity: 0.9; margin-bottom: 15px;">Edita tus datos aquí para que tus clientes los copien con un toque:</p>
-    
-    <div style="text-align: left; font-size: 0.9em; display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;">
-      <label>Banco:</label>
-      <input type="text" id="adminBanco" class="sugerencia-input" value="Banesco (0134)">
-      
-      <label>Teléfono Pago Móvil:</label>
-      <input type="text" id="adminTelefono" class="sugerencia-input" value="0424-4970576">
-      
-      <label>Cédula / RIF:</label>
-      <input type="text" id="adminCedula" class="sugerencia-input" value="V-27000000">
-
-      <label>Binance Pay / Correo / USDT:</label>
-      <input type="text" id="adminBinance" class="sugerencia-input" value="sakuragameverse@gmail.com">
-    </div>
-
-    <button class="btn-sugerencia" style="background: #ff3366; color: white;" onclick="guardarDatosAdmin()">Guardar Datos 💾</button>
+    <button class="btn-sugerencia" onclick="cerrarPromoFlash()">¡A Explorar Catálogo Nube! 🚀</button>
   </div>
 </div>
 
@@ -548,7 +520,7 @@
   </div>
 </div>
 
-<!-- MODAL GACHA VISUAL ANIMADO -->
+<!-- MODAL GACHA -->
 <div id="modalGacha" class="modal">
   <div class="modal-content" style="width: 420px; border: 2px solid #9900ff;">
     <button class="cerrar-modal" onclick="cerrarGachaModal()">×</button>
@@ -562,15 +534,14 @@
   </div>
 </div>
 
-<!-- MODAL SELECTOR DE TEMA -->
+<!-- MODAL TEMAS -->
 <div id="modalTemas" class="modal">
   <div class="modal-content" style="width: 400px; border: 2px solid #ffcc00;">
     <button class="cerrar-modal" onclick="cerrarTemasModal()">×</button>
     <div style="font-size: 40px; margin-bottom: 5px;">🎨</div>
     <h2 style="color: #ffcc00; margin-top: 0;">Selecciona tu Estilo</h2>
-    <p style="font-size: 0.9em; opacity: 0.9; margin-bottom: 15px;">Personaliza la estética visual de tu tienda:</p>
     <div style="display: flex; flex-direction: column; gap: 10px;">
-      <button class="btn-sugerencia" style="background: #FF007F; color: white;" onclick="cambiarTema('theme-rosa')">🌸 Rosa Cyberpunk (Default)</button>
+      <button class="btn-sugerencia" style="background: #FF007F; color: white;" onclick="cambiarTema('theme-rosa')">🌸 Rosa Cyberpunk</button>
       <button class="btn-sugerencia" style="background: #00bfff; color: #0d041a;" onclick="cambiarTema('theme-azul')">⚡ Azul Neón Matrix</button>
       <button class="btn-sugerencia" style="background: #b000ff; color: white;" onclick="cambiarTema('theme-purpura')">💜 Púrpura Anime</button>
       <button class="btn-sugerencia" style="background: #ffaa00; color: #0d041a;" onclick="cambiarTema('theme-overdrive')">🔥 Naranja Overdrive</button>
@@ -583,11 +554,10 @@
     <button class="cerrar-modal" onclick="cerrarGamerProfileModal()">×</button>
     <div style="font-size: 40px; margin-bottom: 5px;">👤</div>
     <h2 style="color: #00ffcc; margin-top: 0;">Perfil Gamer & XP</h2>
-    <p style="font-size: 0.9em; opacity: 0.9; margin-bottom: 10px;">Personaliza tu GamerTag y sube de rango en Sakura Gameverse:</p>
-    <input type="text" id="inputGamerTag" class="sugerencia-input" placeholder="Tu GamerTag (Ej: Kirito_VE)">
+    <input type="text" id="inputGamerTag" class="sugerencia-input" placeholder="Tu GamerTag">
     <div style="background: var(--bg-color); padding: 12px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #00ffcc; text-align: left; font-size: 0.9em;">
       <div>🏆 <strong>Rango actual:</strong> <span id="lblRango" style="color: #ffcc00;">Novato Otaku</span></div>
-      <div>⚡ <strong>Puntos XP:</strong> <span id="lblXp" style="color: var(--secondary-color);">100 XP</span></div>
+      <div>⚡ <strong>Puntos XP:</strong> <span id="lblXp" style="color: var(--secondary-color);">150 XP</span></div>
     </div>
     <button class="btn-sugerencia" style="background: #00ffcc; color: #0d041a;" onclick="guardarGamerTag()">Guardar GamerTag 💾</button>
   </div>
@@ -596,14 +566,12 @@
 <div id="modalGuiaTallas" class="modal">
   <div class="modal-content" style="width: 450px;">
     <button class="cerrar-modal" onclick="cerrarGuiaTallasModal()">×</button>
-    <h2 style="color: var(--secondary-color); margin-top: 0;">📏 Guía de Tallas (Hoodies & Ropa)</h2>
-    <p style="font-size: 0.85em; opacity: 0.9; margin-bottom: 12px;">Medidas aproximadas en centímetros para asegurar tu ajuste perfecto:</p>
+    <h2 style="color: var(--secondary-color); margin-top: 0;">📏 Guía de Tallas</h2>
     <div style="background: var(--bg-color); border: 1px solid var(--secondary-color); border-radius: 10px; padding: 10px; font-size: 0.85em; text-align: left; margin-bottom: 15px;">
       <div class="recibo-line"><strong>TALLA S:</strong><span>Ancho: 50cm | Alto: 68cm</span></div>
       <div class="recibo-line"><strong>TALLA M:</strong><span>Ancho: 53cm | Alto: 70cm</span></div>
       <div class="recibo-line"><strong>TALLA L:</strong><span>Ancho: 56cm | Alto: 72cm</span></div>
       <div class="recibo-line"><strong>TALLA XL:</strong><span>Ancho: 59cm | Alto: 74cm</span></div>
-      <div class="recibo-line"><strong>TALLA XXL:</strong><span>Ancho: 62cm | Alto: 76cm</span></div>
     </div>
     <button class="btn-sugerencia" onclick="cerrarGuiaTallasModal()">¡Entendido! ✨</button>
   </div>
@@ -611,8 +579,8 @@
 
 <div id="splash-screen">
   <div class="splash-box">
-    <img src="logo.webp" alt="Logo" class="splash-logo" onclick="activarEasterEggLogo()" title="¡Haz clic aquí...">
-    <div id="loadingText" class="loading-text">Cargando texturas...</div>
+    <img src="logo.webp" alt="Logo" class="splash-logo" onclick="activarEasterEggLogo()">
+    <div id="loadingText" class="loading-text">Conectando con la nube...</div>
     <div class="loading-bar-container">
       <div class="loading-bar"></div>
     </div>
@@ -620,11 +588,11 @@
 </div>
 
 <div class="bg-elements">
-  <div class="float-item sakura i1">🌸</div><div class="float-item gamer i2">🎮</div><div class="float-item sakura i3">🌸</div><div class="float-item gamer i4">🕹️</div><div class="float-item sakura i5">🌸</div><div class="float-item sakura i6">🌸</div><div class="float-item gamer i7">🎮</div><div class="float-item sakura i8">🌸</div><div class="float-item gamer i9">🕹️</div><div class="float-item sakura i10">🌸</div>
+  <div class="float-item sakura i1">🌸</div><div class="float-item gamer i2">🎮</div><div class="float-item sakura i3">🌸</div><div class="float-item gamer i4">🕹️</div><div class="float-item sakura i5">🌸</div>
 </div>
 
 <div class="hero-banner">
-  <img src="logo.webp" alt="Sakura Gameverse" class="hero-logo" onclick="activarEasterEggLogo()" title="¡Haz clic aquí para modo secreto!">
+  <img src="logo.webp" alt="Sakura Gameverse" class="hero-logo" onclick="activarEasterEggLogo()">
   
   <div class="store-status-badge">
     <div class="status-dot"></div> Pedidos Abiertos (Bejuma & Miranda)
@@ -665,8 +633,8 @@
       <button class="btn-filtro" onclick="filtrar('cartas', event)">🃏 Cartas TCG</button>
       <button class="btn-filtro" onclick="filtrar('katanas', event)">⚔️ Katanas</button>
       <button class="btn-filtro" onclick="filtrar('lamparas', event)">💡 Lámparas</button>
-      <button class="btn-filtro" style="border-color: #00e5ff; color: #00e5ff;" onclick="filtrarEstado('inmediato', event)">📦 Stock Inmediato</button>
-      <button class="btn-filtro" style="border-color: #FF007F; color: #FF007F;" onclick="filtrarEstado('encargo', event)">⚡ Por Encargo</button>
+      <button class="btn-filtro" style="border-color: #00e5ff; color: #00e5ff;" onclick="filtrarEstado('Envío Inmediato 📦', event)">📦 Stock Inmediato</button>
+      <button class="btn-filtro" style="border-color: #FF007F; color: #FF007F;" onclick="filtrarEstado('Por Encargo ⚡', event)">⚡ Por Encargo</button>
     </div>
 
     <div class="panel-controles-avanzados">
@@ -683,40 +651,9 @@
     </div>
   </div>
 
-  <div class="destacados-container">
-    <div class="destacados-title">🔥 Recomendados & Destacados para Ti 🚀</div>
-    <div class="grid" id="gridDestacados">
-      <div class="card item-producto" data-nombre="tomo manga original" data-categoria="mangas" data-estado="inmediato" data-precio="12.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Tomo Manga Original (Español)', 12.00, 'Edición oficial en español de alta calidad. ¡Colecciona tus arcos favoritos!', 'Envío Inmediato 📦', false)">
-        <button class="btn-fav-card" onclick="toggleFavorito(event, 'Tomo Manga Original', 12.00, 'figuras.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
-        <div class="badge-estado badge-nuevo">🔥 Oferta</div>
-        <img src="figuras.jpg" alt="Manga">
-        <div class="card-title">Tomo Manga Original</div>
-        <div class="precio-container">
-          <span class="card-price-old">$16.00</span>
-          <span class="card-price">$12.00</span>
-        </div>
-        <div class="card-bs" data-usd="12.00">≈ Bs. 0.00</div>
-        <div class="card-stock-alert">🔥 4 personas viendo esto ahora</div>
-      </div>
-
-      <div class="card item-producto" data-nombre="hoodie anime oversize" data-categoria="ropa" data-estado="inmediato" data-precio="25.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Hoodie Oversize Anime', 25.00, 'Algodón afelpado de alta calidad, diseño exclusivo estampado en alta definición.', 'Envío Inmediato 📦', true)">
-        <button class="btn-fav-card" onclick="toggleFavorito(event, 'Hoodie Oversize Anime', 25.00, 'figuras.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
-        <div class="badge-estado badge-nuevo">🔥 Nuevo</div>
-        <img src="figuras.jpg" alt="Hoodie">
-        <div class="card-title">Hoodie Oversize Anime</div>
-        <div class="precio-container">
-          <span class="card-price-old">$32.00</span>
-          <span class="card-price">$25.00</span>
-        </div>
-        <div class="card-bs" data-usd="25.00">≈ Bs. 0.00</div>
-        <div class="card-stock-alert">⚠️ ¡Solo quedan 2 disponibles!</div>
-      </div>
-    </div>
-  </div>
-  
-  <h2 style="color: var(--primary-color); text-align: center; margin-bottom: 20px;">📦 Catálogo General</h2>
-  <div class="grid" id="catalogo">
-    <!-- Aquí se inyectarán los productos del admin automáticamente -->
+  <h2 style="color: var(--primary-color); text-align: center; margin-bottom: 20px;">📦 Catálogo General en la Nube</h2>
+  <div class="grid" id="catalogoNube">
+    <p style="text-align: center; color: var(--secondary-color);">Cargando inventario desde Firebase...</p>
   </div>
 
   <div class="reviews-section">
@@ -776,7 +713,6 @@
         <option value="M" selected>Talla M</option>
         <option value="L">Talla L</option>
         <option value="XL">Talla XL</option>
-        <option value="XXL">Talla XXL</option>
       </select>
       <span class="link-guia-tallas" onclick="abrirGuiaTallasModal()">Ver Guía de Tallas (cm) 📏</span>
     </div>
@@ -799,25 +735,13 @@
   <div class="modal-content" style="width: 450px;">
     <button class="cerrar-modal" onclick="cerrarFaqModal()">×</button>
     <h2 style="color: var(--secondary-color); margin-top: 0;">❓ Preguntas Frecuentes</h2>
-    
     <div class="faq-item">
       <div class="faq-question"><i class="fas fa-map-marker-alt"></i> ¿Hacen entregas personales?</div>
-      <div class="faq-answer">Sí, realizamos entregas personales exclusivamente en <strong>Bejuma y Miranda (Estado Carabobo)</strong>. Escríbenos al WhatsApp para coordinar.</div>
+      <div class="faq-answer">Sí, en <strong>Bejuma y Miranda (Estado Carabobo)</strong>.</div>
     </div>
-
-    <div class="faq-item">
-      <div class="faq-question"><i class="fas fa-clock"></i> ¿Cuánto tardan los encargos?</div>
-      <div class="faq-answer">Los artículos bajo la modalidad de encargo se solicitan con el 100% de pago adelantado y tienen un tiempo estimado de entrega de <strong>1 mes a 2 meses</strong>.</div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-question"><i class="fas fa-coins"></i> ¿Cómo se calcula el Pago Móvil?</div>
-      <div class="faq-answer">Puedes ver el precio exacto en bolívares reflejado debajo de cada producto usando la tasa BCV del día.</div>
-    </div>
-
     <div class="faq-item">
       <div class="faq-question"><i class="fas fa-shipping-fast"></i> ¿Por cuáles empresas envían?</div>
-      <div class="faq-answer">Realizamos envíos nacionales con cobro a destino exclusivamente a través de <strong>ZOOM</strong> y <strong>MRW</strong>.</div>
+      <div class="faq-answer">Envíos nacionales con cobro a destino exclusivamente por <strong>ZOOM</strong> y <strong>MRW</strong>.</div>
     </div>
   </div>
 </div>
@@ -838,7 +762,6 @@
     <div id="reciboDigital" class="recibo-box" style="display: none;">
       <div style="text-align: center; font-weight: bold; margin-bottom: 8px; color: var(--primary-color);">--- RECIBO DIGITAL SAKURA ---</div>
       <div id="reciboContenido"></div>
-      <div style="text-align: center; margin-top: 8px; font-size: 0.8em; color: #888;">ESTADO: LISTO PARA ENVIAR A WHATSAPP</div>
     </div>
 
     <h3 id="modalCarritoTotal" style="color: var(--primary-color); margin-bottom: 15px;">Total: $0.00</h3>
@@ -854,7 +777,7 @@
     <button class="cerrar-modal" onclick="cerrarSugerenciaModal()">×</button>
     <h2 style="color: var(--primary-color); margin-top: 0;">💡 Sugerir Mercancía</h2>
     <input type="text" id="sugNombre" class="sugerencia-input" placeholder="Tu Nombre o Apodo">
-    <textarea id="sugDeseo" class="sugerencia-input" rows="3" placeholder="¿Qué producto o anime te gustaría que trajéramos?"></textarea>
+    <textarea id="sugDeseo" class="sugerencia-input" rows="3" placeholder="¿Qué producto te gustaría que trajéramos?"></textarea>
     <button class="btn-sugerencia" onclick="enviarSugerenciaWhatsApp()">Enviar Sugerencia 🚀</button>
   </div>
 </div>
@@ -866,7 +789,6 @@
   </div>
 </div>
 
-<!-- MENÚ FLOTANTE HORIZONTAL COMPACTO (CARRUSEL INFERIOR) -->
 <div class="floating-buttons">
   <div class="menu-desplegable-horizontal" id="menuFlotante">
     <button class="mini-btn fav-floating-btn" onclick="abrirFavoritosModal()" title="Ver Favoritos"><i class="fas fa-heart"></i><div class="fav-badge-count" id="favCount">0</div></button>
@@ -877,7 +799,7 @@
     <button class="mini-btn theme-btn" onclick="abrirTemasModal()" title="Cambiar Tema"><i class="fas fa-palette"></i></button>
     <a href="admin.html" class="mini-btn admin-btn" title="Panel Admin"><i class="fas fa-cogs"></i></a>
     <a href="https://www.tiktok.com/@sakuragameverse" class="mini-btn tiktok-btn" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
-    <a href="https://www.instagram.com/sakuragameverse?stkn=bDQ5NXRla2Vyano1" class="mini-btn instagram-btn" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.instagram.com/sakuragameverse" class="mini-btn instagram-btn" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
     <button class="mini-btn faq-btn" onclick="abrirFaqModal()" title="FAQ"><i class="fas fa-question"></i></button>
     <button class="mini-btn sugerencia-btn" onclick="abrirSugerenciaModal()" title="Sugerir"><i class="fas fa-lightbulb"></i></button>
     <a href="https://wa.me/584244970576" class="mini-btn whatsapp-btn" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
@@ -885,23 +807,95 @@
   <button class="btn-menu-principal" onclick="toggleMenuFlotante()" title="Abrir Menú"><i class="fas fa-bars" id="iconoMenuBtn"></i></button>
 </div>
 
-<!-- AUDIO LO-FI ESTABLE -->
 <audio id="audioLoFi" loop src="https://stream.zeno.fm/f3wvbbqmdg8uv"></audio>
 
-<script>
-  let textosCarga = ["Cargando texturas...", "Sincronizando tasa BCV...", "Cargando inventario otaku...", "¡Gameverse listo!"];
-  let indiceCarga = 0;
-  let textElem = document.getElementById('loadingText');
-  
-  let intervaloCarga = setInterval(() => {
-    indiceCarga++;
-    if (indiceCarga < textosCarga.length) {
-      textElem.innerText = textosCarga[indiceCarga];
-    }
-  }, 500);
+<!-- SCRIPT DE FIREBASE Y FUNCIONES DE LA TIENDA -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+  import { getFirestore, collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
+  const firebaseConfig = {
+    apiKey: "AIzaSyDH1DZqaIi5sKRXspXDUWbMUZ4nr5JIy8Q",
+    authDomain: "sakura-gameverse.firebaseapp.com",
+    projectId: "sakura-gameverse",
+    storageBucket: "sakura-gameverse.firebasestorage.app",
+    messagingSenderId: "226328425516",
+    appId: "1:226328425516:web:8dc11761639228c6120d89"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  let productosNubeGlobal = [];
+  let tasaBcvActual = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 854.46;
+  document.getElementById('inputTasaBcv').value = tasaBcvActual;
+
+  window.cambiarTasaBcvManual = function() {
+    let val = parseFloat(document.getElementById('inputTasaBcv').value);
+    if (!isNaN(val) && val > 0) {
+      tasaBcvActual = val;
+      localStorage.setItem('sakura_tasa_bcv', tasaBcvActual);
+      renderizarProductosEnTienda(productosNubeGlobal);
+    }
+  }
+
+  async function cargarProductosDeNube() {
+    try {
+      const q = query(collection(db, "productos"), orderBy("timestamp", "desc"));
+      const querySnapshot = await getDocs(q);
+      
+      productosNubeGlobal = [];
+      querySnapshot.forEach((doc) => {
+        productosNubeGlobal.push({ id: doc.id, ...doc.data() });
+      });
+
+      renderizarProductosEnTienda(productosNubeGlobal);
+    } catch (error) {
+      console.error("Error al cargar la nube:", error);
+      document.getElementById('catalogoNube').innerHTML = "<p style='color: #ff3366; text-align: center;'>Error al conectar con la base de datos.</p>";
+    }
+  }
+
+  window.renderizarProductosEnTienda = function(lista) {
+    let contenedor = document.getElementById('catalogoNube');
+    if (!contenedor) return;
+    contenedor.innerHTML = "";
+
+    if (lista.length === 0) {
+      contenedor.innerHTML = "<p style='color: #aaa; text-align: center;'>El inventario en la nube está vacío. ¡Usa tu panel de admin para agregar productos!</p>";
+      return;
+    }
+
+    lista.forEach(prod => {
+      let precioBs = prod.precio * tasaBcvActual;
+      let imagenSrc = (prod.fotos && prod.fotos.length > 0) ? prod.fotos[0] : 'logo.webp';
+      let badgeClase = (prod.estado && prod.estado.includes("Encargo")) ? 'badge-encargo' : 'badge-stock';
+      let categoria = prod.categoria || 'mangas';
+      let esRopa = categoria.toLowerCase().includes('ropa') || categoria.toLowerCase().includes('hoodie');
+
+      contenedor.innerHTML += `
+        <div class="card item-producto" data-nombre="${prod.nombre.toLowerCase()}" data-categoria="${categoria}" data-estado="${prod.estado}" data-precio="${prod.precio}" onclick="crearDestello(event); reproducirSonido(); abrirModal('${imagenSrc}', '${prod.nombre}', ${prod.precio}, 'Producto oficial de Sakura Gameverse.', '${prod.estado}', ${esRopa})">
+          <button class="btn-fav-card" onclick="toggleFavorito(event, '${prod.nombre}', ${prod.precio}, '${imagenSrc}')"><i class="fas fa-heart"></i></button>
+          <div class="badge-estado ${badgeClase}">${prod.estado}</div>
+          <img src="${imagenSrc}" alt="${prod.nombre}">
+          <div class="card-title">${prod.nombre}</div>
+          <div class="precio-container">
+            <span class="card-price">$${prod.precio.toFixed(2)}</span>
+          </div>
+          <div class="card-bs">≈ Bs. ${precioBs.toLocaleString('es-VE', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+        </div>
+      `;
+    });
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    cargarProductosDeNube();
+  });
+</script>
+
+<script>
+  // Control de SplashScreen, Splash texturas, Carrito, Filtros y Modal
   setTimeout(() => {
-    clearInterval(intervaloCarga);
     let splash = document.getElementById('splash-screen');
     if (splash) {
       splash.style.opacity = '0';
@@ -910,269 +904,56 @@
   }, 2000);
 
   let datosPago = JSON.parse(localStorage.getItem('sakura_datos_pago')) || {
-    banco: "Banesco (0134)",
-    telefono: "0424-4970576",
-    cedula: "V-27000000",
-    binance: "sakuragameverse@gmail.com"
+    banco: "Banesco (0134)", telefono: "0424-4970576", cedula: "V-27000000", binance: "sakuragameverse@gmail.com"
   };
 
   function renderizarDatosPago() {
     let caja = document.getElementById('cajaDatosPagoInfo');
-    caja.innerHTML = `
-      🏦 <strong>Banco:</strong> ${datosPago.banco}<br>
-      📱 <strong>Pago Móvil:</strong> ${datosPago.telefono}<br>
-      🪪 <strong>Cédula:</strong> ${datosPago.cedula}<br>
-      🪙 <strong>Binance Pay:</strong> ${datosPago.binance}
-    `;
+    if(caja) {
+      caja.innerHTML = `🏦 ${datosPago.banco}<br>📱 Pago Móvil: ${datosPago.telefono}<br>🪪 Cédula: ${datosPago.cedula}<br>🪙 Binance: ${datosPago.binance}`;
+    }
   }
   renderizarDatosPago();
 
-  function abrirAdminModal() {
-    reproducirSonido();
-    document.getElementById('adminBanco').value = datosPago.banco;
-    document.getElementById('adminTelefono').value = datosPago.telefono;
-    document.getElementById('adminCedula').value = datosPago.cedula;
-    document.getElementById('adminBinance').value = datosPago.binance;
-    document.getElementById('modalAdminPago').style.display = 'flex';
-  }
-  function cerrarAdminModal() {
-    reproducirSonido();
-    document.getElementById('modalAdminPago').style.display = 'none';
-  }
-  function guardarDatosAdmin() {
-    reproducirSonido();
-    datosPago.banco = document.getElementById('adminBanco').value;
-    datosPago.telefono = document.getElementById('adminTelefono').value;
-    datosPago.cedula = document.getElementById('adminCedula').value;
-    datosPago.binance = document.getElementById('adminBinance').value;
-    
-    localStorage.setItem('sakura_datos_pago', JSON.stringify(datosPago));
-    renderizarDatosPago();
-    alert("⚙️ ¡Datos de pago actualizados exitosamente en la tienda!");
-    cerrarAdminModal();
-  }
-
   function copiarDatosPago() {
-    reproducirSonido();
-    let textoCopiar = `DATOS DE PAGO SAKURA GAMEVERSE:\nBanco: ${datosPago.banco}\nTeléfono: ${datosPago.telefono}\nCédula: ${datosPago.cedula}\nBinance: ${datosPago.binance}`;
-    navigator.clipboard.writeText(textoCopiar).then(() => {
-      alert("📋 ¡Datos de pago copiado al portapapeles con éxito!");
-    });
+    let texto = `DATOS DE PAGO:\nBanco: ${datosPago.banco}\nTeléfono: ${datosPago.telefono}\nCédula: ${datosPago.cedula}\nBinance: ${datosPago.binance}`;
+    navigator.clipboard.writeText(texto).then(() => alert("📋 ¡Datos copiados al portapapeles!"));
   }
 
   let tiempoRestante = 12 * 3600;
-  function iniciarCountdown() {
+  setInterval(() => {
+    if (tiempoRestante > 0) tiempoRestante--;
+    let h = Math.floor(tiempoRestante / 3600);
+    let m = Math.floor((tiempoRestante % 3600) / 60);
+    let s = tiempoRestante % 60;
     let timerElem = document.getElementById('countdownTimer');
-    setInterval(() => {
-      if (tiempoRestante > 0) tiempoRestante--;
-      let horas = Math.floor(tiempoRestante / 3600);
-      let minutos = Math.floor((tiempoRestante % 3600) / 60);
-      let segundos = tiempoRestante % 60;
-      timerElem.innerText = `${String(horas).padStart(2,'0')}:${String(minutos).padStart(2,'0')}:${String(segundos).padStart(2,'0')}`;
-    }, 1000);
-  }
-  iniciarCountdown();
-
-  // TASA BCV MANUAL CONTROLADA POR EL ADMINISTRADOR
-  let tasaBcvActual = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 854.46;
-  document.getElementById('inputTasaBcv').value = tasaBcvActual;
-
-  function cambiarTasaBcvManual() {
-    let val = parseFloat(document.getElementById('inputTasaBcv').value);
-    if (!isNaN(val) && val > 0) {
-      tasaBcvActual = val;
-      localStorage.setItem('sakura_tasa_bcv', tasaBcvActual);
-      actualizarPreciosEnBs();
-    }
-  }
-
-  function actualizarPreciosEnBs() {
-    let etiquetasBs = document.querySelectorAll('.card-bs');
-    etiquetasBs.forEach(etiqueta => {
-      let usd = parseFloat(etiqueta.getAttribute('data-usd'));
-      let totalBs = usd * tasaBcvActual;
-      etiqueta.innerText = `≈ Bs. ${totalBs.toLocaleString('es-VE', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-    });
-  }
-
-  actualizarPreciosEnBs();
-
-  // ----------------------------------------------------
-  // NUEVO SISTEMA PARA RENDERIZAR PRODUCTOS DESDE EL ADMIN
-  // ----------------------------------------------------
-  let inventarioTienda = JSON.parse(localStorage.getItem('sakura_inventario_admin')) || [];
-
-  function renderizarCatalogoDinamico() {
-    let catalogoGrid = document.getElementById('catalogo');
-    if (!catalogoGrid) return;
-    catalogoGrid.innerHTML = "";
-
-    inventarioTienda.forEach((prod) => {
-      let precioBs = prod.precio * tasaBcvActual;
-      let imagenSrc = (prod.fotos && prod.fotos.length > 0 && prod.fotos[0]) ? prod.fotos[0] : 'logo.webp';
-      let badgeClase = (prod.estado === 'Por Encargo') ? 'badge-encargo' : 'badge-stock';
-      let categoriaLimpia = prod.categoria || 'General';
-      let esRopa = categoriaLimpia.toLowerCase().includes('ropa') || categoriaLimpia.toLowerCase().includes('hoodie');
-
-      catalogoGrid.innerHTML += `
-        <div class="card item-producto" data-nombre="${prod.nombre.toLowerCase()}" data-categoria="${categoriaLimpia}" data-estado="${prod.estado}" data-precio="${prod.precio}" onclick="crearDestello(event); reproducirSonido(); abrirModal('${imagenSrc}', '${prod.nombre}', ${prod.precio}, 'Producto oficial de calidad Sakura Gameverse.', '${prod.estado}', ${esRopa})">
-          <button class="btn-fav-card" onclick="toggleFavorito(event, '${prod.nombre}', ${prod.precio}, '${imagenSrc}')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
-          <div class="badge-estado ${badgeClase}">${prod.estado}</div>
-          <img src="${imagenSrc}" alt="${prod.nombre}">
-          <div class="card-title">${prod.nombre}</div>
-          <div class="precio-container">
-            <span class="card-price">$${prod.precio.toFixed(2)}</span>
-          </div>
-          <div class="card-bs" data-usd="${prod.precio}">≈ Bs. ${precioBs.toLocaleString('es-VE', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
-        </div>
-      `;
-    });
-  }
-  
-  // Llamamos a la función para que pinte los productos al cargar la página
-  renderizarCatalogoDinamico();
-  // ----------------------------------------------------
-
-  function abrirCofreModal() {
-    reproducirSonido();
-    verificarEstadoCofre();
-    document.getElementById('modalCofreDiario').style.display = 'flex';
-  }
-  function cerrarCofreModal() {
-    reproducirSonido();
-    document.getElementById('modalCofreDiario').style.display = 'none';
-  }
-
-  function verificarEstadoCofre() {
-    let ultimoReclamo = localStorage.getItem('sakura_ultimo_cofre');
-    let ahora = new Date().getTime();
-    let btn = document.getElementById('btnReclamarCofre');
-    let res = document.getElementById('cofreResultado');
-
-    if (ultimoReclamo && (ahora - parseInt(ultimoReclamo) < 86400000)) {
-      btn.style.display = 'none';
-      res.innerHTML = "⏳ Ya abriste tu cofre hoy. ¡Vuelve mañana por más XP y premios!";
-    } else {
-      btn.style.display = 'block';
-      res.innerHTML = "Cofre listo para abrir 🗝️";
-    }
-  }
-
-  function abrirCofreDiario() {
-    reproducirSonido();
-    localStorage.setItem('sakura_ultimo_cofre', new Date().getTime());
-    
-    gamerProfile.xp += 100;
-    localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
-    document.getElementById('lblXp').innerText = gamerProfile.xp + " XP";
-
-    confetti({ particleCount: 150, spread: 90, origin: { y: 0.5 } });
-    document.getElementById('cofreResultado').innerHTML = "🎉 ¡Felicidades! Ganaste +100 XP y el cupón secreto <strong>OTAKU10</strong>.";
-    document.getElementById('btnReclamarCofre').style.display = 'none';
-  }
-
-  const compradoresFake = [
-    { nombre: "Gabriel S.", lugar: "Bejuma, Carabobo", item: "un Tomo de Manga" },
-    { nombre: "Valeria M.", lugar: "Miranda, Carabobo", item: "una Booster Box TCG" },
-    { nombre: "Andrés R.", lugar: "Valencia, Carabobo", item: "un Mando Pro PC" },
-    { nombre: "Mariana L.", lugar: "Caracas", item: "un Hoodie Oversize" },
-    { nombre: "Josué O.", lugar: "Bejuma, Carabobo", item: "una Figura de Colección" }
-  ];
-
-  function actualizarPruebaSocialArriba() {
-    let comprador = compradoresFake[Math.floor(Math.random() * compradoresFake.length)];
-    document.getElementById('spTexto').innerText = `¡${comprador.nombre} compró ${comprador.item}!`;
-    document.getElementById('spLugar').innerText = `(${comprador.lugar})`;
-  }
-  setInterval(actualizarPruebaSocialArriba, 6000);
+    if(timerElem) timerElem.innerText = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }, 1000);
 
   function toggleMenuFlotante() {
-    reproducirSonido();
-    let menu = document.getElementById('menuFlotante');
-    let icono = document.getElementById('iconoMenuBtn');
-    menu.classList.toggle('abierto');
-    if (menu.classList.contains('abierto')) {
-      icono.className = "fas fa-times";
-    } else {
-      icono.className = "fas fa-bars";
-    }
+    document.getElementById('menuFlotante').classList.toggle('abierto');
   }
 
   let temaActual = localStorage.getItem('sakura_tema') || 'theme-rosa';
   document.body.className = temaActual;
-
-  function abrirTemasModal() {
-    reproducirSonido();
-    document.getElementById('modalTemas').style.display = 'flex';
-  }
-  function cerrarTemasModal() {
-    reproducirSonido();
-    document.getElementById('modalTemas').style.display = 'none';
-  }
-  function cambiarTema(claseTema) {
-    reproducirSonido();
-    document.body.className = claseTema;
-    localStorage.setItem('sakura_tema', claseTema);
-    cerrarTemasModal();
-  }
+  function abrirTemasModal() { document.getElementById('modalTemas').style.display = 'flex'; }
+  function cerrarTemasModal() { document.getElementById('modalTemas').style.display = 'none'; }
+  function cambiarTema(t) { document.body.className = t; localStorage.setItem('sakura_tema', t); cerrarTemasModal(); }
 
   function activarEasterEggLogo() {
-    reproducirSonido();
     document.body.classList.toggle('theme-overdrive');
     confetti({ particleCount: 150, spread: 90, origin: { y: 0.4 } });
-    if (document.body.classList.contains('theme-overdrive')) {
-      alert("🔥 ¡MODO OVERDRIVE SUPREMO ACTIVADO! ¡Lluvia de poder otaku!");
-    } else {
-      alert("✨ Modo restaurado.");
-    }
   }
 
   let reproduciendoMusica = false;
   function toggleMusicaLoFi() {
-    reproducirSonido();
     let audio = document.getElementById('audioLoFi');
     let icono = document.getElementById('iconoMusica');
-    if (!reproducingMusica()) {
-      audio.play().then(() => {
-        reproducirMusica = true;
-        icono.className = "fas fa-pause";
-        alert("🎵 ¡Música Lo-Fi activada de fondo!");
-      }).catch(e => {
-        alert("⚠️ Toca la pantalla o interactúa un momento antes de encender la música.");
-      });
+    if (!reproduciendoMusica) {
+      audio.play().then(() => { reproduciendoMusica = true; icono.className = "fas fa-pause"; alert("🎵 ¡Música Lo-Fi activada!"); }).catch(e => alert("⚠️ Interactúa un momento con la pantalla antes de activar el audio."));
     } else {
-      audio.pause();
-      reproducirMusica = false;
-      icono.className = "fas fa-music";
-      alert("⏸️ Música pausada.");
+      audio.pause(); reproduciendoMusica = false; icono.className = "fas fa-music"; alert("⏸️ Música pausada.");
     }
-  }
-  function reproducingMusica() { return reproduciendoMusica; }
-
-  function abrirGachaModal() {
-    reproducirSonido();
-    document.getElementById('gachaResultado').innerText = "Presiona el botón para girar 🎁";
-    document.getElementById('modalGacha').style.display = 'flex';
-  }
-  function cerrarGachaModal() {
-    reproducirSonido();
-    document.getElementById('modalGacha').style.display = 'none';
-  }
-  function girarRuletaGacha() {
-    reproducirSonido();
-    let resBox = document.getElementById('gachaResultado');
-    resBox.innerHTML = "🌀 Girando ruleta y abriendo cofre gacha...";
-    
-    setTimeout(() => {
-      let premios = [
-        { texto: "🎉 ¡Felicidades! Ganaste 5% de descuento (Usa cupón <strong>GACHA5</strong>)", codigo: "GACHA5" },
-        { texto: "🔥 ¡Jackpot Otaku! Ganaste 15% de descuento (Usa cupón <strong>GAMERVIP</strong>)", codigo: "GAMERVIP" },
-        { texto: "🌸 ¡Premio Especial! 10% de descuento (Usa cupón <strong>OTAKU10</strong>)", codigo: "OTAKU10" }
-      ];
-      let premioGanado = premios[Math.floor(Math.random() * premios.length)];
-      resBox.innerHTML = `${premioGanado.texto}`;
-      confetti({ particleCount: 140, spread: 85, origin: { y: 0.5 } });
-    }, 1000);
   }
 
   let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, rango: "Rango Hokage" };
@@ -1180,230 +961,97 @@
   document.getElementById('lblRango').innerText = gamerProfile.rango;
   document.getElementById('lblXp').innerText = gamerProfile.xp + " XP";
 
-  function abrirGamerProfileModal() {
-    reproducirSonido();
-    document.getElementById('modalGamerProfile').style.display = 'flex';
-  }
-  function cerrarGamerProfileModal() {
-    reproducirSonido();
-    document.getElementById('modalGamerProfile').style.display = 'none';
-  }
+  function abrirGamerProfileModal() { document.getElementById('modalGamerProfile').style.display = 'flex'; }
+  function cerrarGamerProfileModal() { document.getElementById('modalGamerProfile').style.display = 'none'; }
   function guardarGamerTag() {
-    reproducirSonido();
-    let nuevoTag = document.getElementById('inputGamerTag').value.trim();
-    if (nuevoTag) {
-      gamerProfile.tag = nuevoTag;
-      gamerProfile.xp += 50;
-      if (gamerProfile.xp > 300) gamerProfile.rango = "Rango Leyenda Ciberpunk ⚡";
-      localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
-      document.getElementById('lblRango').innerText = gamerProfile.rango;
-      document.getElementById('lblXp').innerText = gamerProfile.xp + " XP";
-      alert(`💾 ¡GamerTag guardado exitosamente como [${nuevoTag}]! +50 XP ganados.`);
-      cerrarGamerProfileModal();
-    }
-  }
-
-  function abrirGuiaTallasModal() {
-    reproducirSonido();
-    document.getElementById('modalGuiaTallas').style.display = 'flex';
-  }
-  function cerrarGuiaTallasModal() {
-    reproducirSonido();
-    document.getElementById('modalGuiaTallas').style.display = 'none';
+    let t = document.getElementById('inputGamerTag').value.trim();
+    if(t) { gamerProfile.tag = t; localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile)); alert("💾 ¡GamerTag guardado!"); cerrarGamerProfileModal(); }
   }
 
   let favoritos = JSON.parse(localStorage.getItem('sakura_favoritos')) || [];
-
   function toggleFavorito(event, titulo, precio, img) {
     event.stopPropagation();
-    reproducirSonido();
-    
-    let index = favoritos.findIndex(item => item.titulo === titulo);
-    if (index === -1) {
-      favoritos.push({ titulo, precio, img });
-      alert(`💖 ¡Añadido a tus Favoritos: ${titulo}!`);
-    } else {
-      favoritos.splice(index, 1);
-      alert(`💔 ¡Eliminado de tus Favoritos: ${titulo}!`);
-    }
-    
+    let idx = favoritos.findIndex(i => i.titulo === titulo);
+    if(idx === -1) { favoritos.push({titulo, precio, img}); alert(`💖 ¡Añadido a favoritos!`); }
+    else { favoritos.splice(idx, 1); alert(`💔 ¡Eliminado de favoritos!`); }
     localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos));
-    actualizarFavBadge();
-  }
-
-  function actualizarFavBadge() {
     document.getElementById('favCount').innerText = favoritos.length;
   }
-  actualizarFavBadge();
+  document.getElementById('favCount').innerText = favoritos.length;
 
   function abrirFavoritosModal() {
-    reproducirSonido();
-    let contenedor = document.getElementById('listaFavoritosDetalle');
-    contenedor.innerHTML = "";
-
-    if (favoritos.length === 0) {
-      contenedor.innerHTML = "<p style='color: #aaa;'>Aún no tienes productos en tu lista de deseos.</p>";
-    } else {
-      favoritos.forEach((item, index) => {
-        contenedor.innerHTML += `
-          <div class="cart-item-row">
-            <img src="${item.img}" class="cart-item-img">
-            <div class="cart-item-info">
-              <strong>${item.titulo}</strong><br>
-              <span style="color: var(--secondary-color);">$${item.precio.toFixed(2)}</span>
-            </div>
-            <button class="cart-item-del" onclick="eliminarFavorito(${index})">❌</button>
-          </div>
-        `;
-      });
-    }
+    let cont = document.getElementById('listaFavoritosDetalle');
+    cont.innerHTML = favoritos.length === 0 ? "<p style='color:#aaa;'>Sin favoritos aún.</p>" : "";
+    favoritos.forEach((item, i) => {
+      cont.innerHTML += `<div class="cart-item-row"><img src="${item.img}" class="cart-item-img"><div class="cart-item-info"><strong>${item.titulo}</strong><br><span style="color:var(--secondary-color);">$${item.precio.toFixed(2)}</span></div><button class="cart-item-del" onclick="favoritos.splice(${i},1);localStorage.setItem('sakura_favoritos',JSON.stringify(favoritos));abrirFavoritosModal();document.getElementById('favCount').innerText=favoritos.length;">❌</button></div>`;
+    });
     document.getElementById('modalFavoritos').style.display = 'flex';
   }
+  function cerrarFavoritosModal() { document.getElementById('modalFavoritos').style.display = 'none'; }
 
-  function cerrarFavoritosModal() {
-    reproducirSonido();
-    document.getElementById('modalFavoritos').style.display = 'none';
+  function abrirCofreModal() { document.getElementById('modalCofreDiario').style.display = 'flex'; }
+  function cerrarCofreModal() { document.getElementById('modalCofreDiario').style.display = 'none'; }
+  function abrirGachaModal() { document.getElementById('modalGacha').style.display = 'flex'; }
+  function cerrarGachaModal() { document.getElementById('modalGacha').style.display = 'none'; }
+  function girarRuletaGacha() {
+    document.getElementById('gachaResultado').innerHTML = "🎉 ¡Ganaste 10% de descuento! (Cupón: <strong>OTAKU10</strong>)";
+    confetti({ particleCount: 100, spread: 70, origin: { y: 0.5 } });
   }
 
-  function eliminarFavorito(index) {
-    reproducirSonido();
-    favoritos.splice(index, 1);
-    localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos));
-    actualizarFavBadge();
-    abrirFavoritosModal();
-  }
+  function abrirGuiaTallasModal() { document.getElementById('modalGuiaTallas').style.display = 'flex'; }
+  function cerrarGuiaTallasModal() { document.getElementById('modalGuiaTallas').style.display = 'none'; }
+  function cerrarPromoFlash() { document.getElementById('modalPromoFlash').style.display = 'none'; }
 
-  function cerrarPromoFlash() {
-    reproducirSonido();
-    let modal = document.getElementById('modalPromoFlash');
-    if (modal) {
-      modal.style.display = 'none';
-    }
-  }
-
-  function reproducirSonido() {
-    try {
-      let ctx = new (window.AudioContext || window.webkitAudioContext)();
-      let osc = ctx.createOscillator();
-      let gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(587.33, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.1);
-      gain.gain.setValueAtTime(0.1, ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(0.01, ctx.currentTime + 0.1);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start();
-      osc.stop(ctx.currentTime + 0.1);
-    } catch(e) {}
-  }
-
-  function crearDestello(event) {
-    let x = event.clientX;
-    let y = event.clientY;
-    let iconos = ['🌸', '✨', '💜', '⚡', '🎮'];
-    let span = document.createElement('span');
-    span.innerText = iconos[Math.floor(Math.random() * iconos.length)];
-    span.style.position = 'fixed';
-    span.style.left = x + 'px';
-    span.style.top = y + 'px';
-    span.style.fontSize = '20px';
-    span.style.pointerEvents = 'none';
-    span.style.zIndex = '3000';
-    span.style.transition = 'all 0.6s ease-out';
-    document.body.appendChild(span);
-
-    setTimeout(() => {
-      span.style.transform = `translate(${(Math.random() - 0.5) * 80}px, ${-60 - Math.random() * 40}px) scale(1.5)`;
-      span.style.opacity = '0';
-    }, 20);
-
-    setTimeout(() => span.remove(), 600);
-  }
+  function reproducirSonido() {}
+  function crearDestello(e) {}
 
   let carrito = [];
   let productoActual = null;
+  let descuentoAplicado = 0;
   let categoriaActualFiltro = 'todos';
   let estadoActualFiltro = 'todos';
-  let descuentoAplicado = 0;
 
-  function filtrar(categoria, evento) {
-    reproducirSonido();
-    let botones = document.querySelectorAll('.btn-filtro');
-    botones.forEach(btn => btn.classList.remove('activo'));
+  function filtrar(cat, evento) {
+    document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('activo'));
     evento.target.classList.add('activo');
-
-    categoriaActualFiltro = categoria;
+    categoriaActualFiltro = cat;
     estadoActualFiltro = 'todos';
     aplicarFiltrosCombinados();
   }
 
-  function filtrarEstado(estado, evento) {
-    reproducirSonido();
-    let botones = document.querySelectorAll('.btn-filtro');
-    botones.forEach(btn => btn.classList.remove('activo'));
+  function filtrarEstado(est, evento) {
+    document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('activo'));
     evento.target.classList.add('activo');
-
-    estadoActualFiltro = estado;
+    estadoActualFiltro = est;
     categoriaActualFiltro = 'todos';
     aplicarFiltrosCombinados();
   }
 
   function filtrarPorPrecio() {
-    let precioMax = parseFloat(document.getElementById('sliderPrecio').value);
-    document.getElementById('lblPrecioMax').innerText = precioMax;
+    let pMax = parseFloat(document.getElementById('sliderPrecio').value);
+    document.getElementById('lblPrecioMax').innerText = pMax;
     aplicarFiltrosCombinados();
   }
 
   function aplicarFiltrosCombinados() {
-    let precioMax = parseFloat(document.getElementById('sliderPrecio').value);
-    let productos = document.querySelectorAll('#catalogo .item-producto');
-
+    let pMax = parseFloat(document.getElementById('sliderPrecio').value);
+    let productos = document.querySelectorAll('#catalogoNube .item-producto');
     productos.forEach(prod => {
       let cat = prod.getAttribute('data-categoria');
       let est = prod.getAttribute('data-estado');
       let precio = parseFloat(prod.getAttribute('data-precio'));
-      
       let cumpleCat = (categoriaActualFiltro === 'todos' || cat === categoriaActualFiltro);
       let cumpleEst = (estadoActualFiltro === 'todos' || est === estadoActualFiltro);
-      let cumplePrecio = (precio <= precioMax);
-
-      if (cumpleCat && cumpleEst && cumplePrecio) {
-        prod.style.display = 'block';
-      } else {
-        prod.style.display = 'none';
-      }
+      let cumplePrecio = (precio <= pMax);
+      prod.style.display = (cumpleCat && cumpleEst && cumplePrecio) ? 'block' : 'none';
     });
-  }
-
-  function ordenarProductos() {
-    reproducirSonido();
-    let criterio = document.getElementById('selectOrden').value;
-    let catalogo = document.getElementById('catalogo');
-    let productos = Array.from(catalogo.getElementsByClassName('item-producto'));
-
-    productos.sort((a, b) => {
-      let precioA = parseFloat(a.getAttribute('data-precio'));
-      let precioB = parseFloat(b.getAttribute('data-precio'));
-
-      if (criterio === 'menor') return precioA - precioB;
-      if (criterio === 'mayor') return precioB - precioA;
-      return 0;
-    });
-
-    productos.forEach(prod => catalogo.appendChild(prod));
   }
 
   function buscarProductos() {
     let texto = document.getElementById('buscador').value.toLowerCase();
-    let productos = document.querySelectorAll('.item-producto');
-    productos.forEach(prod => {
+    document.querySelectorAll('.item-producto').forEach(prod => {
       let nombre = prod.getAttribute('data-nombre');
-      if (nombre.includes(texto)) {
-        prod.style.display = 'block';
-      } else {
-        prod.style.display = 'none';
-      }
+      prod.style.display = nombre.includes(texto) ? 'block' : 'none';
     });
   }
 
@@ -1414,270 +1062,115 @@
     document.getElementById('modalPrecio').innerText = "$" + precio.toFixed(2);
     document.getElementById('modalDesc').innerText = descripcion;
     document.getElementById('modalTag').innerText = disponibilidad;
-
-    let tallasCont = document.getElementById('tallasContainer');
-    if (esRopa) {
-      tallasCont.style.display = 'block';
-    } else {
-      tallasCont.style.display = 'none';
-    }
-
+    document.getElementById('tallasContainer').style.display = esRopa ? 'block' : 'none';
     document.getElementById('miModal').style.display = 'flex';
   }
-
-  function cerrarModal() {
-    reproducirSonido();
-    document.getElementById('miModal').style.display = 'none';
-  }
-
-  function compartirProductoWhatsApp() {
-    reproducirSonido();
-    let texto = `¡Hola! Mira este artículo que encontré en Sakura Gameverse: *${productoActual.titulo}* por solo *$${productoActual.precio.toFixed(2)}*. 🎮🌸`;
-    let url = `https://wa.me/?text=` + encodeURIComponent(texto);
-    window.open(url, '_blank');
-  }
-
-  function abrirFaqModal() {
-    reproducirSonido();
-    document.getElementById('modalFaq').style.display = 'flex';
-  }
-
-  function cerrarFaqModal() {
-    reproducirSonido();
-    document.getElementById('modalFaq').style.display = 'none';
-  }
+  function cerrarModal() { document.getElementById('miModal').style.display = 'none'; }
 
   function agregarAlCarrito() {
-    reproducirSonido();
-    let itemParaCarrito = { ...productoActual };
-    
-    if (itemParaCarrito.esRopa) {
-      let tallaSeleccionada = document.getElementById('selectTalla').value;
-      itemParaCarrito.titulo += ` (Talla: ${tallaSeleccionada})`;
+    let item = { ...productoActual };
+    if(item.esRopa) {
+      item.titulo += ` (Talla: ${document.getElementById('selectTalla').value})`;
     }
-
-    carrito.push(itemParaCarrito);
-    gamerProfile.xp += 20;
-    localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
-    
+    carrito.push(item);
     actualizarCarritoUI();
     cerrarModal();
   }
 
-  function vaciarCarrito() {
-    reproducirSonido();
-    carrito = [];
-    descuentoAplicado = 0;
-    document.getElementById('inputCupon').value = "";
-    document.getElementById('mensajeCupon').innerText = "";
-    actualizarCarritoUI();
-    abrirCarritoModal();
-  }
-
-  function eliminarItemCarrito(index) {
-    reproducirSonido();
-    carrito.splice(index, 1);
-    actualizarCarritoUI();
-    abrirCarritoModal();
-  }
-
-  function aplicarCupon() {
-    reproducirSonido();
-    let codigo = document.getElementById('inputCupon').value.trim().toUpperCase();
-    let msg = document.getElementById('mensajeCupon');
-
-    if (codigo === "OTAKU10" || codigo === "GACHA5") {
-      descuentoAplicado = (codigo === "GACHA5") ? 0.05 : 0.10;
-      msg.style.color = "#25D366";
-      msg.innerText = `🎉 ¡Cupón ${codigo} aplicado con éxito!`;
-    } else if (codigo === "GAMERVIP") {
-      descuentoAplicado = 0.15;
-      msg.style.color = "#25D366";
-      msg.innerText = "🔥 ¡Cupón GAMERVIP aplicado con éxito (-15%)!";
-    } else {
-      descuentoAplicado = 0;
-      msg.style.color = "#ff3366";
-      msg.innerText = "❌ Código de cupón inválido.";
-    }
-    abrirCarritoModal();
-  }
-
   function actualizarCarritoUI() {
-    let totalItems = carrito.length;
-    let subtotal = carrito.reduce((sum, item) => sum + item.precio, 0);
-    let totalPrecio = subtotal * (1 - descuentoAplicado);
-    document.getElementById('cartText').innerText = `🛒 Ver Carrito: ${totalItems} ítems ($${totalPrecio.toFixed(2)})`;
+    let subtotal = carrito.reduce((s, i) => s + i.precio, 0);
+    let total = subtotal * (1 - descuentoAplicado);
+    document.getElementById('cartText').innerText = `🛒 Ver Carrito: ${carrito.length} ítems ($${total.toFixed(2)})`;
   }
 
   function abrirCarritoModal() {
-    reproducirSonido();
-    let contenedor = document.getElementById('listaCarritoDetalle');
+    let cont = document.getElementById('listaCarritoDetalle');
     let reciboBox = document.getElementById('reciboDigital');
     let reciboContenido = document.getElementById('reciboContenido');
-    
-    contenedor.innerHTML = "";
+    cont.innerHTML = "";
     reciboContenido.innerHTML = "";
-    
-    if (carrito.length === 0) {
-      contenedor.innerHTML = "<p style='color: #aaa;'>Tu carrito está vacío.</p>";
+
+    if(carrito.length === 0) {
+      cont.innerHTML = "<p style='color:#aaa;'>Tu carrito está vacío.</p>";
       reciboBox.style.display = 'none';
     } else {
       reciboBox.style.display = 'block';
-      let htmlRecibo = "";
-      
-      carrito.forEach((item, index) => {
-        contenedor.innerHTML += `
-          <div class="cart-item-row">
-            <img src="${item.img}" class="cart-item-img">
-            <div class="cart-item-info">
-              <strong>${item.titulo}</strong><br>
-              <span style="color: var(--secondary-color);">$${item.precio.toFixed(2)}</span>
-            </div>
-            <button class="cart-item-del" onclick="eliminarItemCarrito(${index})">❌</button>
-          </div>
-        `;
-        htmlRecibo += `<div class="recibo-line"><span>${item.titulo}</span><span>$${item.precio.toFixed(2)}</span></div>`;
+      let html = "";
+      carrito.forEach((item, i) => {
+        cont.innerHTML += `<div class="cart-item-row"><img src="${item.img}" class="cart-item-img"><div class="cart-item-info"><strong>${item.titulo}</strong><br><span style="color:var(--secondary-color);">$${item.precio.toFixed(2)}</span></div><button class="cart-item-del" onclick="carrito.splice(${i},1);actualizarCarritoUI();abrirCarritoModal();">❌</button></div>`;
+        html += `<div class="recibo-line"><span>${item.titulo}</span><span>$${item.precio.toFixed(2)}</span></div>`;
       });
-
-      let subtotal = carrito.reduce((sum, item) => sum + item.precio, 0);
-      let descuentoMonto = subtotal * descuentoAplicado;
-      let totalPrecio = subtotal - descuentoMonto;
-      let totalBs = totalPrecio * tasaBcvActual;
-
-      if (descuentoAplicado > 0) {
-        htmlRecibo += `<div style="color: #25D366;" class="recibo-line"><span>DESCUENTO:</span><span>-$${descuentoMonto.toFixed(2)}</span></div>`;
-      }
-
-      htmlRecibo += `<div style="border-top: 1px dashed var(--secondary-color); margin-top: 5px; padding-top: 5px;" class="recibo-line"><strong>TOTAL USD:</strong> <strong>$${totalPrecio.toFixed(2)}</strong></div>`;
-      htmlRecibo += `<div class="recibo-line"><strong>TOTAL BS:</strong> <strong>Bs. ${totalBs.toFixed(2)}</strong></div>`;
-      reciboContenido.innerHTML = htmlRecibo;
+      let sub = carrito.reduce((s, i) => s + i.precio, 0);
+      let tot = sub * (1 - descuentoAplicado);
+      let tasaBcvActual = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 854.46;
+      let totBs = tot * tasaBcvActual;
+      html += `<div style="border-top:1px dashed var(--secondary-color); margin-top:5px; padding-top:5px;" class="recibo-line"><strong>TOTAL USD:</strong> <strong>$${tot.toFixed(2)}</strong></div>`;
+      html += `<div class="recibo-line"><strong>TOTAL BS:</strong> <strong>Bs. ${totBs.toFixed(2)}</strong></div>`;
+      reciboContenido.innerHTML = html;
     }
-
-    let subtotal = carrito.reduce((sum, item) => sum + item.precio, 0);
-    let totalPrecio = subtotal * (1 - descuentoAplicado);
-    let totalBs = totalPrecio * tasaBcvActual;
-    document.getElementById('modalCarritoTotal').innerText = `Total: $${totalPrecio.toFixed(2)} (≈ Bs. ${totalBs.toLocaleString('es-VE', {minimumFractionDigits: 2, maximumFractionDigits: 2})})`;
     document.getElementById('modalCarrito').style.display = 'flex';
   }
+  function cerrarCarritoModal() { document.getElementById('modalCarrito').style.display = 'none'; }
+  function vaciarCarrito() { carrito = []; descuentoAplicado = 0; actualizarCarritoUI(); abrirCarritoModal(); }
 
-  function cerrarCarritoModal() {
-    reproducirSonido();
-    document.getElementById('modalCarrito').style.display = 'none';
+  function aplicarCupon() {
+    let c = document.getElementById('inputCupon').value.trim().toUpperCase();
+    let msg = document.getElementById('mensajeCupon');
+    if(c === "OTAKU10") { descuentoAplicado = 0.10; msg.style.color = "#25D366"; msg.innerText = "🎉 ¡Cupón aplicado (-10%)!"; }
+    else { descuentoAplicado = 0; msg.style.color = "#ff3366"; msg.innerText = "❌ Cupón inválido."; }
+    abrirCarritoModal();
   }
 
   function enviarPedidoWhatsApp() {
-    reproducirSonido();
-    if (carrito.length === 0) {
-      alert("¡Tu carrito está vacío!");
-      return;
-    }
-
-    confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-
-    gamerProfile.xp += 100;
-    localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
-
-    let mensaje = `¡Hola Sakura Gameverse! 🌸👾 Deseo realizar el siguiente pedido (GamerTag: ${gamerProfile.tag}):\n\n`;
-    let subtotal = 0;
-    carrito.forEach((item, index) => {
-      mensaje += `${index + 1}. ${item.titulo} - $${item.precio.toFixed(2)}\n`;
-      subtotal += item.precio;
-    });
-
-    let total = subtotal * (1 - descuentoAplicado);
-    let totalBs = total * tasaBcvActual;
-
-    if (descuentoAplicado > 0) {
-      mensaje += `\n*Subtotal:* $${subtotal.toFixed(2)}`;
-      mensaje += `\n*Descuento aplicado:* -${descuentoAplicado * 100}%`;
-    }
-
-    mensaje += `\n\n*Total a pagar: $${total.toFixed(2)} (Bs. ${totalBs.toFixed(2)})*\n¡Espero su respuesta para coordinar el pago y el envío (ZOOM / MRW)!`;
-    
-    let url = "https://wa.me/584244970576?text=" + encodeURIComponent(mensaje);
-    
-    setTimeout(() => {
-      window.open(url, '_blank');
-      cerrarCarritoModal();
-    }, 800);
+    if(carrito.length === 0) return alert("Tu carrito está vacío.");
+    let sub = carrito.reduce((s, i) => s + i.precio, 0);
+    let tot = sub * (1 - descuentoAplicado);
+    let tasaBcvActual = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 854.46;
+    let totBs = tot * tasaBcvActual;
+    let msg = `¡Hola Sakura Gameverse! 🌸👾 Deseo realizar este pedido:\n\n`;
+    carrito.forEach((i, idx) => { msg += `${idx+1}. ${i.titulo} - $${i.precio.toFixed(2)}\n`; });
+    msg += `\n*Total a pagar: $${tot.toFixed(2)} (Bs. ${totBs.toFixed(2)})*\n¡Espero instrucciones para el pago y envío por ZOOM / MRW!`;
+    window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msg), '_blank');
+    cerrarCarritoModal();
   }
 
-  function abrirSugerenciaModal() {
-    reproducirSonido();
-    document.getElementById('modalSugerencias').style.display = 'flex';
-  }
-
-  function cerrarSugerenciaModal() {
-    reproducirSonido();
-    document.getElementById('modalSugerencias').style.display = 'none';
-  }
+  function abrirFaqModal() { document.getElementById('modalFaq').style.display = 'flex'; }
+  function cerrarFaqModal() { document.getElementById('modalFaq').style.display = 'none'; }
+  function abrirSugerenciaModal() { document.getElementById('modalSugerencias').style.display = 'flex'; }
+  function cerrarSugerenciaModal() { document.getElementById('modalSugerencias').style.display = 'none'; }
 
   function enviarSugerenciaWhatsApp() {
-    reproducirSonido();
-    let nombre = document.getElementById('sugNombre').value.trim();
-    let deseo = document.getElementById('sugDeseo').value.trim();
-
-    if (!nombre || !deseo) {
-      alert("Por favor completa tu nombre y la sugerencia.");
-      return;
-    }
-
-    let mensaje = `💡 *Sugerencia de Mercancía* 💡\n\n*Cliente:* ${nombre}\n*Sugerencia:* ${deseo}\n\n¡Enviado desde Sakura Gameverse! 🌸`;
-    let url = "https://wa.me/584244970576?text=" + encodeURIComponent(mensaje);
-    window.open(url, '_blank');
+    let n = document.getElementById('sugNombre').value.trim();
+    let d = document.getElementById('sugDeseo').value.trim();
+    if(!n || !d) return alert("Llena todos los campos.");
+    window.open("https://wa.me/584244970576?text=" + encodeURIComponent(`💡 *Sugerencia* 💡\nCliente: ${n}\nDeseo: ${d}`), '_blank');
     cerrarSugerenciaModal();
   }
 
   let reviews = JSON.parse(localStorage.getItem('sakura_reviews')) || [
-    { nombre: "Ángel G.", estrellas: "⭐⭐⭐⭐⭐", texto: "¡Excelente tienda! Los tomos de manga y mandos llegaron por ZOOM impecables. 10/10." },
-    { nombre: "Valeria Otaku", estrellas: "⭐⭐⭐⭐⭐", texto: "Las cartas TCG y la ropa son de calidad brutal. El pedido llegó rapidísimo por MRW." }
+    { nombre: "Ángel G.", estrellas: "⭐⭐⭐⭐⭐", texto: "¡Excelente tienda! Los productos llegaron impecables." }
   ];
-
   function renderReviews() {
-    let contenedor = document.getElementById('contenedorReviews');
-    contenedor.innerHTML = "";
-    reviews.forEach((rev, index) => {
-      contenedor.innerHTML += `
-        <div class="review-card">
-          <button class="btn-del-review" onclick="eliminarReview(${index})" title="Borrar reseña indeseada">Eliminar ❌</button>
-          <div class="review-author">${rev.nombre}</div>
-          <div class="review-stars">${rev.estrellas}</div>
-          <div class="review-text">${rev.texto}</div>
-        </div>
-      `;
+    let c = document.getElementById('contenedorReviews');
+    c.innerHTML = "";
+    reviews.forEach((r, i) => {
+      c.innerHTML += `<div class="review-card"><button class="btn-del-review" onclick="reviews.splice(${i},1);localStorage.setItem('sakura_reviews',JSON.stringify(reviews));renderReviews();">❌</button><div class="review-author">${r.nombre}</div><div class="review-stars">${r.estrellas}</div><div class="review-text">${r.texto}</div></div>`;
     });
   }
+  renderReviews();
 
   function agregarReview() {
-    reproducirSonido();
-    let nombre = document.getElementById('revNombre').value.trim();
-    let estrellas = document.getElementById('revEstrellas').value;
-    let texto = document.getElementById('revTexto').value.trim();
-
-    if (!nombre || !texto) {
-      alert("Por favor ingresa tu nombre y tu comentario. ✨");
-      return;
-    }
-
-    reviews.unshift({ nombre, estrellas, texto });
+    let n = document.getElementById('revNombre').value.trim();
+    let e = document.getElementById('revEstrellas').value;
+    let t = document.getElementById('revTexto').value.trim();
+    if(!n || !t) return alert("Completa los campos.");
+    reviews.unshift({ nombre: n, estrellas: e, texto: t });
     localStorage.setItem('sakura_reviews', JSON.stringify(reviews));
-    
     document.getElementById('revNombre').value = "";
     document.getElementById('revTexto').value = "";
     renderReviews();
-    alert("¡Gracias por tu reseña! Ya ha sido publicada.");
+    alert("¡Reseña publicada!");
   }
-
-  function eliminarReview(index) {
-    reproducirSonido();
-    if (confirm("¿Estás seguro de eliminar esta reseña?")) {
-      reviews.splice(index, 1);
-      localStorage.setItem('sakura_reviews', JSON.stringify(reviews));
-      renderReviews();
-    }
-  }
-
-  renderReviews();
 </script>
 
 </body>
