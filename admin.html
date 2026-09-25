@@ -25,7 +25,6 @@
     ::-webkit-scrollbar-track { background: var(--bg-color); }
     ::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
 
-    /* HEADER ADMIN */
     .admin-header {
       background: var(--hero-bg);
       border-bottom: 2px solid var(--primary-color);
@@ -36,7 +35,6 @@
     .admin-logo { max-width: 160px; margin-bottom: 8px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.2)); }
     .admin-title { font-size: 1.3em; font-weight: bold; color: var(--secondary-color); text-shadow: 0 0 8px rgba(0,229,255,0.5); }
 
-    /* CONTENEDOR PRINCIPAL Y PESTAÑAS */
     .admin-container { max-width: 1100px; margin: 0 auto; padding: 25px 15px; }
 
     .admin-tabs {
@@ -74,7 +72,6 @@
     .seccion-panel.activa { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* TARJETAS Y GRID DE ESTADÍSTICAS */
     .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 25px; }
     .stat-card {
       background: var(--card-bg);
@@ -87,7 +84,6 @@
     .stat-card h3 { color: var(--secondary-color); margin: 0 0 10px 0; font-size: 0.95em; }
     .stat-value { font-size: 1.5em; font-weight: bold; color: var(--text-color); text-shadow: 0 0 8px rgba(255,255,255,0.3); }
 
-    /* FORMULARIOS Y TABLAS */
     .admin-card-form {
       background: var(--card-bg);
       border: 1px solid var(--border-color);
@@ -125,7 +121,6 @@
     }
     .btn-admin-accion:hover { transform: scale(1.03); }
 
-    /* TABLAS DE DATOS */
     .tabla-responsive { width: 100%; overflow-x: auto; }
     .admin-table {
       width: 100%;
@@ -149,7 +144,6 @@
     }
     .estado-pendiente { background: rgba(255,204,0,0.2); color: #ffcc00; border: 1px solid #ffcc00; }
     .estado-pagado { background: rgba(37,211,102,0.2); color: #25D366; border: 1px solid #25D366; }
-    .estado-enviado { background: rgba(0,229,255,0.2); color: var(--secondary-color); border: 1px solid var(--secondary-color); }
 
     .btn-eliminar-fila {
       background: #ff3366; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8em;
@@ -169,11 +163,11 @@
 <div class="admin-container">
   <a href="index.html" class="btn-volver-tienda"><i class="fas fa-arrow-left"></i> Volver a la Tienda Web</a>
 
-  <!-- PESTAÑAS DE NAVEGACIÓN -->
   <div class="admin-tabs">
     <button class="tab-btn activo" onclick="cambiarTab('dash', event)"><i class="fas fa-chart-line"></i> Dashboard</button>
-    <button class="tab-btn" onclick="cambiarTab('inventario', event)"><i class="fas fa-boxes"></i> Inventario & Productos</button>
-    <button class="tab-btn" onclick="cambiarTab('pedidos', event)"><i class="fas fa-shopping-cart"></i> Registro de Pedidos</button>
+    <button class="tab-btn" onclick="cambiarTab('inventario', event)"><i class="fas fa-boxes"></i> Inventario</button>
+    <button class="tab-btn" onclick="cambiarTab('pedidos', event)"><i class="fas fa-shopping-cart"></i> Pedidos</button>
+    <button class="tab-btn" onclick="cambiarTab('cupones', event)"><i class="fas fa-ticket-alt"></i> Cupones</button>
     <button class="tab-btn" onclick="cambiarTab('comunidad', event)"><i class="fas fa-users"></i> Comunidad & XP</button>
     <button class="tab-btn" onclick="cambiarTab('finanzas', event)"><i class="fas fa-coins"></i> Tasa BCV & Pagos</button>
   </div>
@@ -186,34 +180,27 @@
         <div class="stat-value" id="statTasa">Bs. 0.00</div>
       </div>
       <div class="stat-card">
-        <h3>📦 Productos en Stock</h3>
-        <div class="stat-value" id="statProductos">9</div>
+        <h3>📦 Productos Activos</h3>
+        <div class="stat-value" id="statProductos">0</div>
       </div>
       <div class="stat-card">
-        <h3>🛒 Pedidos Registrados</h3>
+        <h3>🛒 Pedidos Recibidos</h3>
         <div class="stat-value" id="statPedidos">0</div>
       </div>
       <div class="stat-card">
-        <h3>👤 Usuarios Gamer</h3>
-        <div class="stat-value" id="statUsuarios">1</div>
+        <h3>🎟️ Cupones Activos</h3>
+        <div class="stat-value" id="statCupones">0</div>
       </div>
-    </div>
-
-    <div class="admin-card-form">
-      <h3>🚀 Accesos Rápidos & Estado del Negocio</h3>
-      <p style="font-size: 0.9em; opacity: 0.8; line-height: 1.5;">
-        Bienvenido al centro de mando de <strong>Sakura Gameverse</strong>, jefe. Desde aquí puedes supervisar la tasa oficial del BCV, controlar los pedidos que te entran por WhatsApp, revisar los puntos XP de tus clientes y actualizar los datos de pago móvil o Binance de forma instantánea.
-      </p>
     </div>
   </div>
 
-  <!-- SECCIÓN 2: INVENTARIO & PRODUCTOS -->
+  <!-- SECCIÓN 2: INVENTARIO -->
   <div id="seccion-inventario" class="seccion-panel">
     <div class="admin-card-form">
       <h3><i class="fas fa-plus-circle"></i> Agregar Nuevo Producto</h3>
       <div class="form-grid">
-        <input type="text" id="nuevoNombre" class="admin-input" placeholder="Nombre del Producto (Ej: Tomo Manga)">
-        <input type="number" id="nuevoPrecio" class="admin-input" placeholder="Precio en USD ($)" step="0.01">
+        <input type="text" id="nuevoNombre" class="admin-input" placeholder="Nombre del Producto">
+        <input type="number" id="nuevoPrecio" class="admin-input" placeholder="Precio USD ($)" step="0.01">
         <select id="nuevaCategoria" class="admin-input">
           <option value="mangas">Mangas</option>
           <option value="ropa">Ropa / Hoodies</option>
@@ -227,8 +214,8 @@
           <option value="lamparas">Lámparas</option>
         </select>
         <select id="nuevoEstado" class="admin-input">
-          <option value="inmediato">Stock Inmediato 📦</option>
-          <option value="encargo">Por Encargo ⚡</option>
+          <option value="Inmediato">Stock Inmediato 📦</option>
+          <option value="Por Encargo">Por Encargo ⚡</option>
         </select>
       </div>
       <button class="btn-admin-accion" onclick="agregarProductoAdmin()">Guardar Producto 💾</button>
@@ -247,9 +234,7 @@
               <th>Acción</th>
             </tr>
           </thead>
-          <tbody id="tablaInventarioAdmin">
-            <!-- Se llena por JS -->
-          </tbody>
+          <tbody id="tablaInventarioAdmin"></tbody>
         </table>
       </div>
     </div>
@@ -258,72 +243,90 @@
   <!-- SECCIÓN 3: PEDIDOS -->
   <div id="seccion-pedidos" class="seccion-panel">
     <div class="admin-card-form">
-      <h3><i class="fas fa-clipboard-list"></i> Registro de Pedidos Entrantes</h3>
+      <h3><i class="fas fa-clipboard-list"></i> Registro de Pedidos (WhatsApp)</h3>
       <div class="tabla-responsive">
         <table class="admin-table">
           <thead>
             <tr>
-              <th>Cliente / GamerTag</th>
-              <th>Detalle del Pedido</th>
-              <th>Total ($ / Bs)</th>
+              <th>GamerTag / Cliente</th>
+              <th>Detalle</th>
+              <th>Total ($)</th>
               <th>Estatus</th>
               <th>Acción</th>
             </tr>
           </thead>
-          <tbody id="tablaPedidosAdmin">
-            <tr>
-              <td colspan="5" style="text-align: center; color: #aaa;">No hay pedidos registrados aún. (Se sincronizan al enviar desde el carrito).</td>
-            </tr>
-          </tbody>
+          <tbody id="tablaPedidosAdmin"></tbody>
         </table>
       </div>
     </div>
   </div>
 
-  <!-- SECCIÓN 4: COMUNIDAD & XP -->
-  <div id="seccion-comunidad" class="seccion-panel">
+  <!-- SECCIÓN 4: CUPONES -->
+  <div id="seccion-cupones" class="seccion-panel">
     <div class="admin-card-form">
-      <h3><i class="fas fa-user-astronaut"></i> Perfil Gamer & Estadísticas de Comunidad</h3>
-      <div style="font-size: 0.95em; line-height: 1.6;" id="infoComunidadAdmin">
-        <div>🏆 <strong>GamerTag Principal:</strong> <span id="adminGamerTag" style="color: var(--secondary-color);">Cargando...</span></div>
-        <div>⚡ <strong>Puntos XP:</strong> <span id="adminXp" style="color: #ffcc00;">0 XP</span></div>
-        <div>🎖️ <strong>Rango Otaku:</strong> <span id="adminRango" style="color: var(--primary-color);">Cargando...</span></div>
+      <h3><i class="fas fa-ticket-alt"></i> Crear Nuevo Cupón de Descuento</h3>
+      <div class="form-grid">
+        <input type="text" id="inputCodigoCupon" class="admin-input" placeholder="Código (Ej: OTOKUPRO)">
+        <input type="number" id="inputPorcentajeCupon" class="admin-input" placeholder="Descuento % (Ej: 10)" min="1" max="100">
+      </div>
+      <button class="btn-admin-accion" onclick="agregarCuponAdmin()">Crear Cupón 🎟️</button>
+    </div>
+
+    <div class="admin-card-form">
+      <h3><i class="fas fa-tags"></i> Cupones Activos en la Tienda</h3>
+      <div class="tabla-responsive">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Descuento</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody id="tablaCuponesAdmin"></tbody>
+        </table>
       </div>
     </div>
   </div>
 
-  <!-- SECCIÓN 5: TASA BCV & FINANZAS -->
+  <!-- SECCIÓN 5: COMUNIDAD & XP -->
+  <div id="seccion-comunidad" class="seccion-panel">
+    <div class="admin-card-form">
+      <h3><i class="fas fa-user-astronaut"></i> Registro de Miembros de la Comunidad</h3>
+      <div class="tabla-responsive">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>GamerTag</th>
+              <th>Puntos XP</th>
+              <th>Rango Otaku</th>
+            </tr>
+          </thead>
+          <tbody id="tablaComunidadAdmin"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 6: TASA BCV & FINANZAS -->
   <div id="seccion-finanzas" class="seccion-panel">
     <div class="admin-card-form">
-      <h3><i class="fas fa-coins"></i> Control de Tasa BCV Oficial</h3>
-      <p style="font-size: 0.85em; opacity: 0.8; margin-bottom: 12px;">Actualiza el valor del dólar BCV. Esto se reflejará de inmediato en toda la tienda web:</p>
+      <h3><i class="fas fa-coins"></i> Tasa BCV Oficial</h3>
       <div style="display: flex; gap: 10px; max-width: 350px; margin-bottom: 20px;">
-        <input type="number" id="adminInputTasa" class="admin-input" step="0.01" placeholder="Ej: 854.46">
-        <button class="btn-admin-accion" onclick="guardarTasaAdmin()">Actualizar Tasa 🚀</button>
+        <input type="number" id="adminInputTasa" class="admin-input" step="0.01">
+        <button class="btn-admin-accion" onclick="guardarTasaAdmin()">Actualizar 🚀</button>
       </div>
     </div>
 
     <div class="admin-card-form">
       <h3><i class="fas fa-credit-card"></i> Datos de Pago (Pago Móvil / Binance)</h3>
       <div class="form-grid">
-        <div>
-          <label style="font-size: 0.85em; color: var(--secondary-color);">Banco:</label>
-          <input type="text" id="pagoBanco" class="admin-input">
-        </div>
-        <div>
-          <label style="font-size: 0.85em; color: var(--secondary-color);">Teléfono Pago Móvil:</label>
-          <input type="text" id="pagoTelefono" class="admin-input">
-        </div>
-        <div>
-          <label style="font-size: 0.85em; color: var(--secondary-color);">Cédula / RIF:</label>
-          <input type="text" id="pagoCedula" class="admin-input">
-        </div>
-        <div>
-          <label style="font-size: 0.85em; color: var(--secondary-color);">Binance Pay / Correo:</label>
-          <input type="text" id="pagoBinance" class="admin-input">
-        </div>
+        <div><label style="font-size:0.85em; color:var(--secondary-color);">Banco:</label><input type="text" id="pagoBanco" class="admin-input"></div>
+        <div><label style="font-size:0.85em; color:var(--secondary-color);">Teléfono:</label><input type="text" id="pagoTelefono" class="admin-input"></div>
+        <div><label style="font-size:0.85em; color:var(--secondary-color);">Cédula:</label><input type="text" id="pagoCedula" class="admin-input"></div>
+        <div><label style="font-size:0.85em; color:var(--secondary-color);">Binance:</label><input type="text" id="pagoBinance" class="admin-input"></div>
       </div>
-      <button class="btn-admin-accion" onclick="guardarDatosPagoAdmin()">Guardar Datos de Pago 💾</button>
+      <button class="btn-admin-accion" onclick="guardarDatosPagoAdmin()">Guardar Datos 💾</button>
     </div>
   </div>
 </div>
@@ -333,29 +336,15 @@
     let botones = document.querySelectorAll('.tab-btn');
     botones.forEach(btn => btn.classList.remove('activo'));
     evento.currentTarget.classList.add('activo');
-
     let secciones = document.querySelectorAll('.seccion-panel');
     secciones.forEach(sec => sec.classList.remove('activa'));
-
     document.getElementById('seccion-' + tabId).classList.add('activa');
   }
 
-  // SINCRONIZACIÓN DE DATOS CON LOCALSTORAGE
+  // TASA Y PAGOS
   let tasaBcv = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 854.46;
   document.getElementById('statTasa').innerText = `Bs. ${tasaBcv.toFixed(2)}`;
   document.getElementById('adminInputTasa').value = tasaBcv;
-
-  let datosPago = JSON.parse(localStorage.getItem('sakura_datos_pago')) || {
-    banco: "Banesco (0134)",
-    telefono: "0424-4970576",
-    cedula: "V-27000000",
-    binance: "sakuragameverse@gmail.com"
-  };
-
-  document.getElementById('pagoBanco').value = datosPago.banco;
-  document.getElementById('pagoTelefono').value = datosPago.telefono;
-  document.getElementById('pagoCedula').value = datosPago.cedula;
-  document.getElementById('pagoBinance').value = datosPago.binance;
 
   function guardarTasaAdmin() {
     let nuevaTasa = parseFloat(document.getElementById('adminInputTasa').value);
@@ -364,32 +353,29 @@
       tasaBcv = nuevaTasa;
       document.getElementById('statTasa').innerText = `Bs. ${tasaBcv.toFixed(2)}`;
       confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-      alert("⚡ ¡Tasa BCV actualizada y sincronizada con éxito!");
+      alert("⚡ ¡Tasa BCV actualizada con éxito!");
     }
   }
+
+  let datosPago = JSON.parse(localStorage.getItem('sakura_datos_pago')) || { banco: "Banesco (0134)", telefono: "0424-4970576", cedula: "V-27000000", binance: "sakuragameverse@gmail.com" };
+  document.getElementById('pagoBanco').value = datosPago.banco;
+  document.getElementById('pagoTelefono').value = datosPago.telefono;
+  document.getElementById('pagoCedula').value = datosPago.cedula;
+  document.getElementById('pagoBinance').value = datosPago.binance;
 
   function guardarDatosPagoAdmin() {
     datosPago.banco = document.getElementById('pagoBanco').value;
     datosPago.telefono = document.getElementById('pagoTelefono').value;
     datosPago.cedula = document.getElementById('pagoCedula').value;
     datosPago.binance = document.getElementById('pagoBinance').value;
-
     localStorage.setItem('sakura_datos_pago', JSON.stringify(datosPago));
-    confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-    alert("💾 ¡Datos de pago guardados exitosamente!");
+    alert("💾 ¡Datos de pago guardados!");
   }
 
-  let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, rango: "Rango Hokage" };
-  document.getElementById('adminGamerTag').innerText = gamerProfile.tag;
-  document.getElementById('adminXp').innerText = gamerProfile.xp + " XP";
-  document.getElementById('adminRango').innerText = gamerProfile.rango;
-
-  // INVENTARIO DINÁMICO
+  // INVENTARIO
   let listaInventario = JSON.parse(localStorage.getItem('sakura_inventario_admin')) || [
     { nombre: "Tomo Manga Original", categoria: "Mangas", precio: 12.00, estado: "Inmediato" },
-    { nombre: "Booster Box Cartas TCG", categoria: "Cartas", precio: 40.00, estado: "Inmediato" },
-    { nombre: "Hoodie Oversize Anime", categoria: "Ropa", precio: 25.00, estado: "Inmediato" },
-    { nombre: "Mando Pro Inalámbrico PC", categoria: "Mandos", precio: 28.00, estado: "Inmediato" }
+    { nombre: "Booster Box Cartas TCG", categoria: "Cartas", precio: 40.00, estado: "Inmediato" }
   ];
 
   function renderInventarioAdmin() {
@@ -401,7 +387,7 @@
           <td><strong>${item.nombre}</strong></td>
           <td>${item.categoria}</td>
           <td style="color: var(--secondary-color);">$${item.precio.toFixed(2)}</td>
-          <td><span class="badge-estado-pedido ${item.estado === 'Inmediato' ? 'estado-pagado' : 'estado-pendiente'}">${item.estado}</span></td>
+          <td><span class="badge-estado-pedido estado-pagado">${item.estado}</span></td>
           <td><button class="btn-eliminar-fila" onclick="eliminarProductoAdmin(${index})">Eliminar</button></td>
         </tr>
       `;
@@ -414,29 +400,106 @@
     let nombre = document.getElementById('nuevoNombre').value.trim();
     let precio = parseFloat(document.getElementById('nuevoPrecio').value);
     let categoria = document.getElementById('nuevaCategoria').value;
-    let estado = document.getElementById('nuevoEstado').value === 'inmediato' ? 'Inmediato' : 'Por Encargo';
+    let estado = document.getElementById('nuevoEstado').value;
 
-    if (!nombre || isNaN(precio) || precio <= 0) {
-      alert("Por favor ingresa un nombre válido y un precio correcto.");
-      return;
-    }
-
+    if (!nombre || isNaN(precio) || precio <= 0) { alert("Completa los campos correctamente."); return; }
     listaInventario.push({ nombre, categoria, precio, estado });
     localStorage.setItem('sakura_inventario_admin', JSON.stringify(listaInventario));
     renderInventarioAdmin();
-
     document.getElementById('nuevoNombre').value = "";
     document.getElementById('nuevoPrecio').value = "";
-    alert("📦 ¡Producto agregado exitosamente al inventario!");
+    alert("📦 ¡Producto agregado!");
   }
 
   function eliminarProductoAdmin(index) {
-    if (confirm("¿Estás seguro de eliminar este producto del inventario?")) {
+    if (confirm("¿Eliminar producto?")) {
       listaInventario.splice(index, 1);
       localStorage.setItem('sakura_inventario_admin', JSON.stringify(listaInventario));
       renderInventarioAdmin();
     }
   }
+
+  // PEDIDOS SINCRONIZADOS
+  let listaPedidos = JSON.parse(localStorage.getItem('sakura_pedidos')) || [];
+  function renderPedidosAdmin() {
+    let tbody = document.getElementById('tablaPedidosAdmin');
+    tbody.innerHTML = "";
+    if (listaPedidos.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #aaa;">No hay pedidos registrados aún.</td></tr>`;
+    } else {
+      listaPedidos.forEach((ped, index) => {
+        tbody.innerHTML += `
+          <tr>
+            <td><strong>${ped.gamerTag}</strong></td>
+            <td>${ped.detalle}</td>
+            <td style="color: var(--secondary-color);">$${ped.totalUsd.toFixed(2)}</td>
+            <td><span class="badge-estado-pedido estado-pendiente">${ped.estatus}</span></td>
+            <td><button class="btn-eliminar-fila" onclick="eliminarPedido(${index})">Eliminar</button></td>
+          </tr>
+        `;
+      });
+    }
+    document.getElementById('statPedidos').innerText = listaPedidos.length;
+  }
+  renderPedidosAdmin();
+
+  function eliminarPedido(index) {
+    listaPedidos.splice(index, 1);
+    localStorage.setItem('sakura_pedidos', JSON.stringify(listaPedidos));
+    renderPedidosAdmin();
+  }
+
+  // CUPONES DINÁMICOS
+  let listaCupones = JSON.parse(localStorage.getItem('sakura_cupones')) || [
+    { codigo: "OTAKU10", descuento: 10 },
+    { codigo: "GACHA5", descuento: 5 },
+    { codigo: "GAMERVIP", descuento: 15 }
+  ];
+
+  function renderCuponesAdmin() {
+    let tbody = document.getElementById('tablaCuponesAdmin');
+    tbody.innerHTML = "";
+    listaCupones.forEach((c, index) => {
+      tbody.innerHTML += `
+        <tr>
+          <td><strong style="color: var(--secondary-color);">${c.codigo}</strong></td>
+          <td>${c.descuento}% OFF</td>
+          <td><button class="btn-eliminar-fila" onclick="eliminarCupon(${index})">Eliminar</button></td>
+        </tr>
+      `;
+    });
+    document.getElementById('statCupones').innerText = listaCupones.length;
+  }
+  renderCuponesAdmin();
+
+  function agregarCuponAdmin() {
+    let codigo = document.getElementById('inputCodigoCupon').value.trim().toUpperCase();
+    let desc = parseInt(document.getElementById('inputPorcentajeCupon').value);
+    if (!codigo || isNaN(desc)) { alert("Ingresa un código y un porcentaje válido."); return; }
+    listaCupones.push({ codigo, descuento: desc });
+    localStorage.setItem('sakura_cupones', JSON.stringify(listaCupones));
+    renderCuponesAdmin();
+    document.getElementById('inputCodigoCupon').value = "";
+    document.getElementById('inputPorcentajeCupon').value = "";
+    alert("🎟️ ¡Cupón creado con éxito!");
+  }
+
+  function eliminarCupon(index) {
+    listaCupones.splice(index, 1);
+    localStorage.setItem('sakura_cupones', JSON.stringify(listaCupones));
+    renderCuponesAdmin();
+  }
+
+  // COMUNIDAD & XP
+  let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, rango: "Rango Hokage" };
+  let tbodyComunidad = document.getElementById('tablaComunidadAdmin');
+  tbodyComunidad.innerHTML = `
+    <tr>
+      <td><strong style="color: var(--secondary-color);">${gamerProfile.tag}</strong></td>
+      <td style="color: #ffcc00; font-weight: bold;">${gamerProfile.xp} XP</td>
+      <td><span class="badge-estado-pedido estado-pagado">${gamerProfile.rango}</span></td>
+    </tr>
+  `;
 </script>
 
 </body>
