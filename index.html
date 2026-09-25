@@ -14,17 +14,19 @@
     ::-webkit-scrollbar-track { background: #0d041a; }
     ::-webkit-scrollbar-thumb { background: #FF007F; border-radius: 10px; }
 
-    .hero-banner { background-color: #11052C; text-align: center; padding: 60px 20px; border-bottom: 3px solid #FF007F; box-shadow: 0 0 20px rgba(255, 0, 127, 0.4); position: relative; z-index: 2; }
-    .hero-logo { max-width: 280px; margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1)); }
-    .hero-title { font-size: 1.4em; font-weight: bold; margin-bottom: 25px; letter-spacing: 1px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
-    .btn-neon { background-color: transparent; color: #FF007F; border: 2px solid #FF007F; padding: 12px 30px; font-size: 1.1em; font-weight: bold; border-radius: 30px; text-transform: uppercase; box-shadow: 0 0 10px #FF007F inset, 0 0 15px #FF007F; cursor: pointer; }
+    .hero-banner { background-color: #11052C; text-align: center; padding: 50px 20px; border-bottom: 3px solid #FF007F; box-shadow: 0 0 20px rgba(255, 0, 127, 0.4); position: relative; z-index: 2; }
+    .hero-logo { max-width: 260px; margin-bottom: 15px; filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1)); }
+    .hero-title { font-size: 1.3em; font-weight: bold; margin-bottom: 20px; letter-spacing: 1px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
     
-    .container { padding: 40px 20px; max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
+    .container { padding: 30px 20px; max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
     .section-title { text-align: center; color: #FF007F; font-size: 1.8em; margin-bottom: 20px; animation: neon-pulse 1.5s infinite alternate; }
     @keyframes neon-pulse { 0% { text-shadow: 0 0 5px #FF007F, 0 0 10px #FF007F; } 100% { text-shadow: 0 0 5px #fff, 0 0 15px #FF007F, 0 0 30px #FF007F; } }
     
-    /* ESTILOS DE LOS BOTONES DE FILTROS */
-    .filtros { text-align: center; margin-bottom: 30px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    /* BUSCADOR Y FILTROS */
+    .search-box { text-align: center; margin-bottom: 20px; }
+    .search-input { background: #11052C; border: 2px solid #00e5ff; color: white; padding: 10px 20px; width: 80%; max-width: 400px; border-radius: 25px; font-size: 1em; outline: none; box-shadow: 0 0 10px rgba(0,229,255,0.3); }
+    
+    .filtros { text-align: center; margin-bottom: 30px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
     .btn-filtro { background: transparent; color: white; border: 1px solid #00e5ff; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: 0.3s; }
     .btn-filtro:hover, .btn-filtro.activo { background: #00e5ff; color: #0d041a; box-shadow: 0 0 10px #00e5ff; }
 
@@ -37,15 +39,25 @@
     .card-price { color: #00e5ff; font-size: 1.2em; font-weight: bold; text-shadow: 0 0 5px rgba(0, 229, 255, 0.5); }
     .badge-encargo { position: absolute; top: 10px; right: 10px; background-color: #FF007F; color: white; padding: 5px 12px; font-size: 0.8em; font-weight: bold; border-radius: 20px; box-shadow: 0 0 10px #FF007F; z-index: 3; }
 
-    /* ESTILOS DE LA VENTANA MODAL */
+    /* MODAL DE PRODUCTO */
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-    .modal-content { background: #11052C; padding: 20px; border-radius: 20px; text-align: center; max-width: 90%; width: 400px; border: 2px solid #FF007F; box-shadow: 0 0 30px rgba(255,0,127,0.5); position: relative; animation: pop-up 0.3s ease-out; max-height: 90vh; overflow-y: auto; }
-    @keyframes pop-up { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+    .modal-content { background: #11052C; padding: 20px; border-radius: 20px; text-align: center; max-width: 90%; width: 400px; border: 2px solid #FF007F; box-shadow: 0 0 30px rgba(255,0,127,0.5); position: relative; max-height: 90vh; overflow-y: auto; }
     .cerrar-modal { position: absolute; top: 10px; right: 15px; font-size: 25px; color: white; cursor: pointer; background: none; border: none; font-weight: bold; }
     .modal-img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
-    .btn-comprar { background: #FF007F; color: white; border: none; padding: 10px 20px; font-size: 1.2em; font-weight: bold; border-radius: 30px; cursor: pointer; margin-top: 15px; box-shadow: 0 0 10px #FF007F; width: 100%; }
+    .btn-comprar { background: #FF007F; color: white; border: none; padding: 10px 20px; font-size: 1.1em; font-weight: bold; border-radius: 30px; cursor: pointer; margin-top: 15px; box-shadow: 0 0 10px #FF007F; width: 100%; }
 
-    .whatsapp-btn { position: fixed; bottom: 25px; right: 25px; background-color: #25D366; color: white; border-radius: 50%; width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; font-size: 35px; text-decoration: none; z-index: 1000; animation: pulse-wa 2s infinite; }
+    /* BARRA FLOTANTE DE CARRITO */
+    .cart-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(17, 5, 44, 0.95); border-top: 2px solid #00e5ff; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 1500; box-shadow: 0 -5px 20px rgba(0,229,255,0.3); backdrop-filter: blur(5px); }
+    .cart-info { font-weight: bold; font-size: 1.1em; color: #00e5ff; }
+    .btn-checkout { background: #25D366; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px #25D366; }
+
+    /* SECCIÓN DE INFORMACIÓN Y PAGOS */
+    .info-section { background: #11052C; margin-top: 50px; padding: 30px 20px; border-radius: 15px; border: 1px solid #FF007F; box-shadow: 0 0 15px rgba(255,0,127,0.2); }
+    .info-title { color: #00e5ff; font-size: 1.4em; margin-bottom: 15px; text-align: center; }
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; font-size: 0.95em; line-height: 1.5; }
+    .info-card { background: #1a0b38; padding: 15px; border-radius: 10px; border: 1px solid rgba(255,0,127,0.3); }
+
+    .whatsapp-btn { position: fixed; bottom: 85px; right: 25px; background-color: #25D366; color: white; border-radius: 50%; width: 55px; height: 55px; display: flex; justify-content: center; align-items: center; font-size: 30px; text-decoration: none; z-index: 1000; animation: pulse-wa 2s infinite; }
     @keyframes pulse-wa { 0% { transform: scale(1); box-shadow: 0 0 10px rgba(37, 211, 102, 0.5); } 50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(37, 211, 102, 1); } 100% { transform: scale(1); box-shadow: 0 0 10px rgba(37, 211, 102, 0.5); } }
 
     .bg-elements { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
@@ -64,14 +76,16 @@
 
 <div class="hero-banner">
   <img src="logo.webp" alt="Sakura Gameverse" class="hero-logo">
-  <div class="hero-title">Donde tu pasión por el gaming nunca hace game over. 👾🌸</div>
-  <button class="btn-neon">Ver Catálogo</button>
+  <div class="hero-title">✨ Bienvenidos a Sakura Gameverse ✨<br>Donde tu pasión por el gaming nunca hace game over. 👾🌸</div>
 </div>
 
 <div class="container">
-  <h2 class="section-title">✨ Bienvenidos a Sakura Gameverse ✨</h2>
-  
-  <!-- AHORA TENEMOS LOS 6 BOTONES MAGIA -->
+  <!-- BUSCADOR INTELIGENTE -->
+  <div class="search-box">
+    <input type="text" id="buscador" class="search-input" placeholder="🔍 Buscar figura, katana, lámpara..." onkeyup="buscarProductos()">
+  </div>
+
+  <!-- FILTROS -->
   <div class="filtros">
     <button class="btn-filtro activo" onclick="filtrar('todos', event)">Todos</button>
     <button class="btn-filtro" onclick="filtrar('figuras', event)">Figuras</button>
@@ -82,55 +96,69 @@
     <button class="btn-filtro" onclick="filtrar('lamparas', event)">Lámparas</button>
   </div>
   
-  <div class="grid">
-    <!-- PRODUCTO 1: FIGURAS -->
-    <div class="card item-producto" data-categoria="figuras" onclick="abrirModal('figuras.jpg', 'Figura de Colección', '$35.00', '¡Una figura épica para tu repisa! Detalles increíbles y acabados premium.')">
+  <div class="grid" id="catalogo">
+    <div class="card item-producto" data-nombre="figura de coleccion" data-categoria="figuras" onclick="reproducirSonido(); abrirModal('figuras.jpg', 'Figura de Colección', 35.00, '¡Una figura épica para tu repisa! Detalles increíbles y acabados premium.')">
       <img src="figuras.jpg" alt="Figura">
       <div class="card-title">Figura de Colección</div>
       <div class="card-price">$35.00</div>
     </div>
 
-    <!-- PRODUCTO 2: PELUCHES -->
-    <div class="card item-producto" data-categoria="peluches" onclick="abrirModal('peluche.jpg', 'Peluche Exclusivo', '$20.00', 'Súper suave y kawaii. El compañero perfecto para tus largas noches de gaming.')">
+    <div class="card item-producto" data-nombre="peluche exclusivo" data-categoria="peluches" onclick="reproducirSonido(); abrirModal('peluche.jpg', 'Peluche Exclusivo', 20.00, 'Súper suave y kawaii. El compañero perfecto para tus largas noches de gaming.')">
       <div class="badge-encargo">Por Encargo</div>
       <img src="peluche.jpg" alt="Peluche">
-      <div class="card-title">Peluches</div>
+      <div class="card-title">Peluche Exclusivo</div>
       <div class="card-price">$20.00</div>
     </div>
 
-    <!-- PRODUCTO 3: CARTAS TCG -->
-    <div class="card item-producto" data-categoria="cartas" onclick="abrirModal('cartas.jpg', 'Booster Pack TCG', '$5.00', '¡Expande tu mazo y aplasta a tus rivales! Incluye cartas raras garantizadas.')">
+    <div class="card item-producto" data-nombre="booster pack tcg cartas" data-categoria="cartas" onclick="reproducirSonido(); abrirModal('cartas.jpg', 'Booster Pack TCG', 5.00, '¡Expande tu mazo y aplasta a tus rivales! Incluye cartas raras garantizadas.')">
       <div class="badge-encargo">Por Encargo</div>
       <img src="cartas.jpg" alt="Cartas TCG">
-      <div class="card-title">Cartas TCG</div>
+      <div class="card-title">Booster Pack TCG</div>
       <div class="card-price">$5.00</div>
     </div>
 
-    <!-- PRODUCTO 4: ACCESORIOS -->
-    <div class="card item-producto" data-categoria="accesorios" onclick="abrirModal('accesorios.jpeg', 'Accesorio Anime', '$5.00', '¡Lleva tu pasión a todas partes con este increíble accesorio! Diseño súper detallado.')">
+    <div class="card item-producto" data-nombre="accesorio anime collar" data-categoria="accesorios" onclick="reproducirSonido(); abrirModal('accesorios.jpeg', 'Accesorio Anime', 5.00, '¡Lleva tu pasión a todas partes con este increíble accesorio! Diseño súper detallado.')">
       <div class="badge-encargo">Por Encargo</div>
       <img src="accesorios.jpeg" alt="Accesorios">
       <div class="card-title">Accesorio Anime</div>
       <div class="card-price">$5.00</div>
     </div>
 
-    <!-- PRODUCTO 5: KATANAS (NUEVO) -->
-    <div class="card item-producto" data-categoria="katanas" onclick="abrirModal('katanas.jpg', 'Katana Replica Anime', '$45.00', 'Replica a escala real. Perfecta para cosplay o para darle un toque épico a tu cuarto.')">
+    <div class="card item-producto" data-nombre="katana replica anime" data-categoria="katanas" onclick="reproducirSonido(); abrirModal('katanas.jpg', 'Katana Replica Anime', 45.00, 'Replica a escala real. Perfecta para cosplay o para darle un toque épico a tu cuarto.')">
       <div class="badge-encargo">Por Encargo</div>
       <img src="katanas.jpg" alt="Katanas">
       <div class="card-title">Katana Replica Anime</div>
       <div class="card-price">$45.00</div>
     </div>
 
-    <!-- PRODUCTO 6: LÁMPARAS (NUEVO) -->
-    <div class="card item-producto" data-categoria="lamparas" onclick="abrirModal('lamparas.jpg', 'Lámpara Neón Gamer', '$25.00', 'Ilumina tu setup con esta increíble lámpara. Varios colores y modos de luz.')">
+    <div class="card item-producto" data-nombre="lampara neon gamer" data-categoria="lamparas" onclick="reproducirSonido(); abrirModal('lamparas.jpg', 'Lámpara Neón Gamer', 25.00, 'Ilumina tu setup con esta increíble lámpara. Varios colores y modos de luz.')">
       <img src="lamparas.jpg" alt="Lámparas">
       <div class="card-title">Lámpara Neón Gamer</div>
       <div class="card-price">$25.00</div>
     </div>
   </div>
+
+  <!-- SECCIÓN DE INFORMACIÓN Y MÉTODOS DE PAGO -->
+  <div class="info-section">
+    <div class="info-title">✨ Información y Envíos 📦</div>
+    <div class="info-grid">
+      <div class="info-card">
+        <strong>💳 Métodos de Pago:</strong><br>
+        Pago Móvil, Efectivo ($) y Binance USDT.
+      </div>
+      <div class="info-card">
+        <strong>🚚 Envíos Nacionales:</strong><br>
+        Envíos seguros a todo el país por Zoom, Tealca y MRW.
+      </div>
+      <div class="info-card">
+        <strong>⚡ Sobre los Encargos:</strong><br>
+        Los productos bajo encargo se apartan con un 50% de inicial. ¡Consúltanos al WhatsApp!
+      </div>
+    </div>
+  </div>
 </div>
 
+<!-- VENTANA MODAL -->
 <div id="miModal" class="modal">
   <div class="modal-content">
     <button class="cerrar-modal" onclick="cerrarModal()">×</button>
@@ -138,14 +166,43 @@
     <h2 id="modalTitulo" style="color: #00e5ff; margin-bottom: 5px;">Título</h2>
     <h3 id="modalPrecio" style="color: #FF007F; margin-top: 0;">$0.00</h3>
     <p id="modalDesc" style="font-size: 0.9em; margin-bottom: 20px;">Descripción aquí.</p>
-    <a id="modalLink" href="#" class="btn-comprar" style="display:block; text-decoration:none;">¡Lo quiero! 🛒</a>
+    <button class="btn-comprar" onclick="agregarAlCarrito()">¡Añadir al Carrito! 🛒</button>
   </div>
+</div>
+
+<!-- BARRA FLOTANTE DE CARRITO -->
+<div class="cart-bar">
+  <div class="cart-info" id="cartText">🛒 Carrito: 0 items ($0.00)</div>
+  <button class="btn-checkout" onclick="enviarPedidoWhatsApp()">Finalizar Pedido 📱</button>
 </div>
 
 <a href="https://wa.me/584244970576" class="whatsapp-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
 <script>
+  // AUDIO SINTETIZADOR ARCADE (Efecto de Clic)
+  function reproducirSonido() {
+    try {
+      let ctx = new (window.AudioContext || window.webkitAudioContext)();
+      let osc = ctx.createOscillator();
+      let gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(587.33, ctx.currentTime); // Nota D5
+      osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.1);
+      gain.gain.setValueAtTime(0.1, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.1);
+    } catch(e) {}
+  }
+
+  // CARRITO DE COMPRAS GLOBAL
+  let carrito = [];
+  let productoActual = null;
+
   function filtrar(categoria, evento) {
+    reproducirSonido();
     let botones = document.querySelectorAll('.btn-filtro');
     botones.forEach(btn => btn.classList.remove('activo'));
     evento.target.classList.add('activo');
@@ -160,20 +217,62 @@
     });
   }
 
+  function buscarProductos() {
+    let texto = document.getElementById('buscador').value.toLowerCase();
+    let productos = document.querySelectorAll('.item-producto');
+    productos.forEach(prod => {
+      let nombre = prod.getAttribute('data-nombre');
+      if (nombre.includes(texto)) {
+        prod.style.display = 'block';
+      } else {
+        prod.style.display = 'none';
+      }
+    });
+  }
+
   function abrirModal(img, titulo, precio, descripcion) {
+    productoActual = { titulo, precio };
     document.getElementById('modalImg').src = img;
     document.getElementById('modalTitulo').innerText = titulo;
-    document.getElementById('modalPrecio').innerText = precio;
+    document.getElementById('modalPrecio').innerText = "$" + precio.toFixed(2);
     document.getElementById('modalDesc').innerText = descripcion;
-    
-    let mensaje = "¡Hola Sakura Gameverse! Me interesa el producto: " + titulo;
-    document.getElementById('modalLink').href = "https://wa.me/584244970576?text=" + encodeURIComponent(mensaje);
-    
     document.getElementById('miModal').style.display = 'flex';
   }
 
   function cerrarModal() {
+    reproducirSonido();
     document.getElementById('miModal').style.display = 'none';
+  }
+
+  function agregarAlCarrito() {
+    reproducirSonido();
+    carrito.push(productoActual);
+    actualizarCarritoUI();
+    cerrarModal();
+  }
+
+  function actualizarCarritoUI() {
+    let totalItems = carrito.length;
+    let totalPrecio = carrito.reduce((sum, item) => sum + item.precio, 0);
+    document.getElementById('cartText').innerText = `🛒 Carrito: ${totalItems} items ($${totalPrecio.toFixed(2)})`;
+  }
+
+  function enviarPedidoWhatsApp() {
+    reproducirSonido();
+    if (carrito.length === 0) {
+      alert("¡Tu carrito está vacío! Selecciona al menos un producto.");
+      return;
+    }
+    let mensaje = "¡Hola Sakura Gameverse! 🌸👾 Deseo realizar el siguiente pedido:\n\n";
+    let total = 0;
+    carrito.forEach((item, index) => {
+      mensaje += `${index + 1}. ${item.titulo} - $${item.precio.toFixed(2)}\n`;
+      total += item.precio;
+    });
+    mensaje += `\n*Total a pagar: $${total.toFixed(2)}*\n¡Espero su respuesta para coordinar el pago y el envío!`;
+    
+    let url = "https://wa.me/584244970576?text=" + encodeURIComponent(mensaje);
+    window.open(url, '_blank');
   }
 </script>
 
