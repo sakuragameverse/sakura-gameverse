@@ -116,6 +116,23 @@
       margin-bottom: 15px;
     }
     .fotos-container-admin h4 { color: var(--secondary-color); margin: 0 0 10px 0; font-size: 0.95em; }
+    
+    .file-input-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      font-size: 0.85em;
+      color: var(--text-color);
+    }
+    .file-input-wrapper input[type="file"] {
+      background: var(--bg-color);
+      border: 1px solid var(--primary-color);
+      color: var(--text-color);
+      padding: 6px;
+      border-radius: 8px;
+      font-size: 0.85em;
+      cursor: pointer;
+    }
 
     .btn-admin-accion {
       background: var(--primary-color);
@@ -203,10 +220,10 @@
     </div>
   </div>
 
-  <!-- SECCIÓN 2: INVENTARIO CON 5 FOTOS -->
+  <!-- SECCIÓN 2: INVENTARIO CON CARGA DIRECTA DE ARCHIVOS -->
   <div id="seccion-inventario" class="seccion-panel">
     <div class="admin-card-form">
-      <h3><i class="fas fa-plus-circle"></i> Agregar Nuevo Producto con Galería (Hasta 5 Fotos)</h3>
+      <h3><i class="fas fa-plus-circle"></i> Agregar Producto con Fotos de la Galería</h3>
       <div class="form-grid">
         <input type="text" id="nuevoNombre" class="admin-input" placeholder="Nombre del Producto">
         <input type="number" id="nuevoPrecio" class="admin-input" placeholder="Precio USD ($)" step="0.01">
@@ -229,17 +246,32 @@
       </div>
 
       <div class="fotos-container-admin">
-        <h4>📸 Galería de Fotos (Nombres de archivo o Enlaces)</h4>
+        <h4>📸 Seleccionar hasta 5 fotos directo de tu dispositivo:</h4>
         <div class="form-grid">
-          <input type="text" id="foto1" class="admin-input" placeholder="Foto 1 (Principal - Ej: figura1.jpg)">
-          <input type="text" id="foto2" class="admin-input" placeholder="Foto 2 (Opcional)">
-          <input type="text" id="foto3" class="admin-input" placeholder="Foto 3 (Opcional)">
-          <input type="text" id="foto4" class="admin-input" placeholder="Foto 4 (Opcional)">
-          <input type="text" id="foto5" class="admin-input" placeholder="Foto 5 (Opcional)">
+          <div class="file-input-wrapper">
+            <label>Foto 1 (Principal):</label>
+            <input type="file" id="fileFoto1" accept="image/*">
+          </div>
+          <div class="file-input-wrapper">
+            <label>Foto 2 (Opcional):</label>
+            <input type="file" id="fileFoto2" accept="image/*">
+          </div>
+          <div class="file-input-wrapper">
+            <label>Foto 3 (Opcional):</label>
+            <input type="file" id="fileFoto3" accept="image/*">
+          </div>
+          <div class="file-input-wrapper">
+            <label>Foto 4 (Opcional):</label>
+            <input type="file" id="fileFoto4" accept="image/*">
+          </div>
+          <div class="file-input-wrapper">
+            <label>Foto 5 (Opcional):</label>
+            <input type="file" id="fileFoto5" accept="image/*">
+          </div>
         </div>
       </div>
 
-      <button class="btn-admin-accion" onclick="agregarProductoAdmin()">Guardar Producto con Fotos 💾</button>
+      <button class="btn-admin-accion" onclick="procesarYGuardarProducto()">Guardar Producto con Fotos 💾</button>
     </div>
 
     <div class="admin-card-form">
@@ -394,7 +426,7 @@
     alert("💾 ¡Datos de pago guardados!");
   }
 
-  // INVENTARIO CON 5 FOTOS
+  // INVENTARIO CON SUBIDA DE ARCHIVOS
   let listaInventario = JSON.parse(localStorage.getItem('sakura_inventario_admin')) || [
     { nombre: "Tomo Manga Original", categoria: "Mangas", precio: 12.00, estado: "Inmediato", fotos: ["figuras.jpg"] },
     { nombre: "Booster Box Cartas TCG", categoria: "Cartas", precio: 40.00, estado: "Inmediato", fotos: ["accesorios.jpeg"] }
@@ -404,7 +436,7 @@
     let tbody = document.getElementById('tablaInventarioAdmin');
     tbody.innerHTML = "";
     listaInventario.forEach((item, index) => {
-      let numFotos = item.fotos ? item.fotos.filter(f => f.trim() !== "").length : 0;
+      let numFotos = item.fotos ? item.fotos.length : 0;
       tbody.innerHTML += `
         <tr>
           <td><strong>${item.nombre}</strong></td>
@@ -420,36 +452,60 @@
   }
   renderInventarioAdmin();
 
-  function agregarProductoAdmin() {
+  function procesarYGuardarProducto() {
     let nombre = document.getElementById('nuevoNombre').value.trim();
     let precio = parseFloat(document.getElementById('nuevoPrecio').value);
     let categoria = document.getElementById('nuevaCategoria').value;
     let estado = document.getElementById('nuevoEstado').value;
 
-    let f1 = document.getElementById('foto1').value.trim();
-    let f2 = document.getElementById('foto2').value.trim();
-    let f3 = document.getElementById('foto3').value.trim();
-    let f4 = document.getElementById('foto4').value.trim();
-    let f5 = document.getElementById('foto5').value.trim();
+    if (!nombre || isNaN(precio) || precio <= 0) {
+      alert("Por favor ingresa un nombre y un precio válido.");
+      return;
+    }
 
-    let fotosArray = [f1, f2, f3, f4, f5].filter(f => f !== "");
+    let inputFiles = [
+      document.getElementById('fileFoto1').files[0],
+      document.getElementById('fileFoto2').files[0],
+      document.getElementById('fileFoto3').files[0],
+      document.getElementById('fileFoto4').files[0],
+      document.getElementById('fileFoto5').files[0]
+    ];
 
-    if (!nombre || isNaN(precio) || precio <= 0) { alert("Completa el nombre y el precio correctamente."); return; }
-    if (fotosArray.length === 0) { alert("Por lo menos añade la primera foto principal."); return; }
+    let archivosValidos = inputFiles.filter(file => file !== undefined);
 
-    listaInventario.push({ nombre, categoria, precio, estado, fotos: fotosArray });
-    localStorage.setItem('sakura_inventario_admin', JSON.stringify(listaInventario));
-    renderInventarioAdmin();
+    if (archivosValidos.length === 0) {
+      alert("Por favor selecciona al menos la primera foto principal desde tu dispositivo.");
+      return;
+    }
 
-    document.getElementById('nuevoNombre').value = "";
-    document.getElementById('nuevoPrecio').value = "";
-    document.getElementById('foto1').value = "";
-    document.getElementById('foto2').value = "";
-    document.getElementById('foto3').value = "";
-    document.getElementById('foto4').value = "";
-    document.getElementById('foto5').value = "";
+    let fotosProcesadas = [];
+    let leidos = 0;
 
-    alert("📦 ¡Producto agregado con su galería de fotos!");
+    archivosValidos.forEach((file, idx) => {
+      let reader = new FileReader();
+      reader.onload = function(e) {
+        fotosProcesadas[idx] = e.target.result;
+        leidos++;
+        if (leidos === archivosValidos.length) {
+          // Guardar cuando todas las fotos estén listas
+          listaInventario.push({ nombre, categoria, precio, estado, fotos: fotosProcesadas });
+          localStorage.setItem('sakura_inventario_admin', JSON.stringify(listaInventario));
+          renderInventarioAdmin();
+
+          document.getElementById('nuevoNombre').value = "";
+          document.getElementById('nuevoPrecio').value = "";
+          document.getElementById('fileFoto1').value = "";
+          document.getElementById('fileFoto2').value = "";
+          document.getElementById('fileFoto3').value = "";
+          document.getElementById('fileFoto4').value = "";
+          document.getElementById('fileFoto5').value = "";
+
+          confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+          alert("📦 ¡Producto y fotos subidas desde tu dispositivo con éxito!");
+        }
+      };
+      reader.readAsDataURL(file);
+    });
   }
 
   function eliminarProductoAdmin(index) {
