@@ -295,9 +295,6 @@
     .precio-slider-box { background: var(--hero-bg); border: 1px solid var(--secondary-color); padding: 8px 15px; border-radius: 20px; display: inline-flex; align-items: center; gap: 10px; font-size: 0.9em; font-weight: bold; color: var(--secondary-color); box-shadow: 0 0 10px rgba(0,229,255,0.2); }
     .precio-slider-box input { accent-color: var(--primary-color); cursor: pointer; width: 120px; }
 
-    .destacados-container { margin-bottom: 40px; background: linear-gradient(135deg, var(--hero-bg) 0%, var(--bg-color) 100%); padding: 20px; border-radius: 20px; border: 2px dashed var(--secondary-color); box-shadow: 0 0 20px rgba(0,229,255,0.2); }
-    .destacados-title { color: var(--secondary-color); font-size: 1.4em; font-weight: bold; margin-bottom: 15px; text-align: center; text-shadow: 0 0 8px rgba(0,229,255,0.5); }
-
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
     
     .card { 
@@ -317,38 +314,84 @@
       0% { transform: scale(0.8); opacity: 0; }
       100% { transform: scale(1); opacity: 1; }
     }
-    
-    .card::before {
-      content: '';
-      position: absolute;
-      top: -50%; left: -50%; width: 200%; height: 200%;
-      background: linear-gradient(0deg, transparent, rgba(255, 0, 127, 0.08), rgba(0, 229, 255, 0.12), transparent);
-      transform: rotate(45deg) translateY(-100%);
-      transition: transform 0.6s ease;
-      pointer-events: none;
-    }
-    .card:hover::before, .card:active::before {
-      transform: rotate(45deg) translateY(100%);
-    }
 
     .card:hover, .card:active { 
       transform: translateY(-10px) scale(1.02); 
       box-shadow: 0 0 25px var(--primary-color), 0 0 45px var(--secondary-color); 
       border: 1px solid var(--secondary-color); 
     }
-    .card img { width: 100%; height: 250px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
+
+    /* CARRUSEL EN LA TARJETA PRINCIPAL */
+    .card-img-container {
+      position: relative;
+      width: 100%;
+      height: 250px;
+      background-color: rgba(0,0,0,0.3);
+      border-radius: 10px;
+      margin-bottom: 15px;
+      overflow: hidden;
+    }
+    .card-img-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: none;
+    }
+    .card-img-container img.activa {
+      display: block;
+    }
+
+    .carrusel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.6);
+      color: var(--secondary-color);
+      border: 1px solid var(--secondary-color);
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.8em;
+      z-index: 4;
+      transition: background 0.2s;
+    }
+    .carrusel-btn:hover { background: rgba(0, 229, 255, 0.3); }
+    .carrusel-prev { left: 8px; }
+    .carrusel-next { right: 8px; }
+
+    .carrusel-dots {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 5px;
+      z-index: 4;
+    }
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+    }
+    .dot.activo {
+      background: var(--secondary-color);
+      box-shadow: 0 0 5px var(--secondary-color);
+    }
+
     .card-title { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; }
     
     .precio-container { display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 3px; }
-    .card-price-old { color: #888; font-size: 0.95em; text-decoration: line-through; }
     .card-price { color: var(--secondary-color); font-size: 1.2em; font-weight: bold; text-shadow: 0 0 5px rgba(0, 229, 255, 0.5); }
     .card-bs { color: var(--primary-color); font-size: 0.85em; font-weight: bold; margin-bottom: 8px; }
     
     .badge-estado { position: absolute; top: 10px; right: 10px; padding: 5px 12px; font-size: 0.75em; font-weight: bold; border-radius: 20px; z-index: 3; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
     .badge-stock { background-color: #00e5ff; color: #0d041a; box-shadow: 0 0 10px #00e5ff; }
     .badge-encargo { background-color: #FF007F; color: white; box-shadow: 0 0 10px #FF007F; }
-    .badge-nuevo { background-color: #ffcc00; color: #0d041a; box-shadow: 0 0 10px #ffcc00; }
-    .badge-gamer { background-color: #7b2cbf; color: white; box-shadow: 0 0 10px #7b2cbf; }
 
     .btn-fav-card {
       position: absolute;
@@ -367,14 +410,37 @@
     }
     .btn-fav-card:hover { transform: scale(1.15); background: rgba(255,0,127,0.3); }
 
-    .card-stock-alert { color: #ff3366; font-size: 0.78em; font-weight: bold; background: rgba(255,51,102,0.1); border: 1px solid rgba(255,51,102,0.3); padding: 3px 8px; border-radius: 10px; display: inline-block; margin-top: 5px; }
-
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
     .modal-content { background: var(--hero-bg); padding: 20px; border-radius: 20px; text-align: center; max-width: 90%; width: 400px; border: 2px solid var(--primary-color); box-shadow: 0 0 30px rgba(255,0,127,0.5); position: relative; max-height: 90vh; overflow-y: auto; transition: background 0.4s ease; }
     .cerrar-modal { position: absolute; top: 10px; right: 15px; font-size: 25px; color: var(--text-color); cursor: pointer; background: none; border: none; font-weight: bold; }
-    .modal-img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
+    .modal-img { width: 100%; max-height: 250px; object-fit: contain; background: rgba(0,0,0,0.3); border-radius: 10px; margin-bottom: 15px; }
     .modal-tag-info { display: inline-block; background: rgba(0,229,255,0.15); border: 1px solid var(--secondary-color); color: var(--secondary-color); padding: 4px 10px; border-radius: 10px; font-size: 0.8em; font-weight: bold; margin-bottom: 10px; }
     
+    /* MINIATURAS DEL MODAL */
+    .modal-miniaturas {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 15px;
+      overflow-x: auto;
+      padding-bottom: 5px;
+    }
+    .modal-mini-img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 1px solid var(--secondary-color);
+      opacity: 0.6;
+      transition: all 0.2s;
+    }
+    .modal-mini-img:hover, .modal-mini-img.activo {
+      opacity: 1;
+      transform: scale(1.05);
+      box-shadow: 0 0 8px var(--secondary-color);
+    }
+
     .tallas-container { margin: 15px 0; display: none; text-align: left; }
     .tallas-container label { display: block; color: var(--secondary-color); font-size: 0.9em; font-weight: bold; margin-bottom: 5px; }
     .talla-select { background: var(--bg-color); border: 1px solid var(--secondary-color); color: var(--text-color); padding: 8px; border-radius: 10px; width: 100%; font-weight: bold; outline: none; text-align: center; }
@@ -416,7 +482,6 @@
     .info-card { background: var(--card-bg); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,0,127,0.3); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
     .info-card h4 { color: var(--secondary-color); margin-top: 0; margin-bottom: 12px; font-size: 1.1em; display: flex; align-items: center; gap: 8px; }
     
-    .badge-metodo { display: inline-flex; align-items: center; gap: 6px; background: rgba(0, 229, 255, 0.1); border: 1px solid var(--secondary-color); padding: 4px 10px; border-radius: 8px; font-size: 0.85em; font-weight: bold; color: var(--secondary-color); margin: 3px; }
     .badge-envio { display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 0, 127, 0.15); border: 1px solid var(--primary-color); padding: 4px 10px; border-radius: 8px; font-size: 0.85em; font-weight: bold; color: var(--text-color); margin: 3px; }
 
     .cart-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--hero-bg); border-top: 2px solid var(--secondary-color); padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; z-index: 1500; box-shadow: 0 -5px 20px rgba(0,229,255,0.3); backdrop-filter: blur(5px); flex-wrap: wrap; gap: 8px; cursor: pointer; transition: background 0.4s ease; }
@@ -475,7 +540,7 @@
     .sakura { font-size: 22px; filter: drop-shadow(0 0 5px var(--primary-color)); }
     .gamer { font-size: 28px; filter: drop-shadow(0 0 8px var(--secondary-color)); opacity: 0.5; }
     @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
-    .i1 { left: 5%; animation-duration: 9s; animation-delay: 0s; } .i2 { left: 15%; animation-duration: 14s; animation-delay: 2s; } .i3 { left: 25%; animation-duration: 10s; animation-delay: 4s; } .i4 { left: 35%; animation-duration: 13s; animation-delay: 1s; } .i5 { left: 45%; animation-duration: 11s; animation-delay: 5s; } .i6 { left: 55%; animation-duration: 15s; animation-delay: 0s; } .i7 { left: 65%; animation-duration: 9s; animation-delay: 3s; } .i8 { left: 75%; animation-duration: 12s; animation-delay: 1s; } .i9 { left: 85%; animation-duration: 16s; animation-delay: 4s; } .i10 { left: 95%; animation-duration: 10s; animation-delay: 2s; }
+    .i1 { left: 5%; animation-duration: 9s; animation-delay: 0s; } .i2 { left: 15%; animation-duration: 14s; animation-delay: 2s; } .i3 { left: 25%; animation-duration: 10s; animation-delay: 4s; } .i4 { left: 35%; animation-duration: 13s; animation-delay: 1s; } .i5 { left: 45%; animation-duration: 11s; animation-delay: 5s; }
   </style>
 </head>
 <body>
@@ -490,7 +555,7 @@
 
 <div class="ticker-bar">
   <div class="ticker-content">
-    🔥 ¡Bienvenidos a Sakura Gameverse! Envíos seguros a todo el país exclusivamente por ZOOM y MRW 📦 | 🎮 Cupón activo: OTAKU10 | ⚡ ¡Catálogo conectado a la nube en tiempo real! 🌸
+    🔥 ¡Bienvenidos a Sakura Gameverse! Envíos seguros a todo el país exclusivamente por ZOOM y MRW 📦 | 🎮 Cupón activo: OTAKU10 | ⚡ ¡Catálogo en la nube con carrusel activo! 🌸
   </div>
 </div>
 
@@ -809,7 +874,7 @@
 
 <audio id="audioLoFi" loop src="https://stream.zeno.fm/f3wvbbqmdg8uv"></audio>
 
-<!-- SCRIPT DE FIREBASE Y FUNCIONES DE LA TIENDA -->
+<!-- SCRIPT DE FIREBASE Y CARRUSEL DE PRODUCTOS -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
   import { getFirestore, collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
@@ -866,18 +931,37 @@
       return;
     }
 
-    lista.forEach(prod => {
+    lista.forEach((prod, indexProd) => {
       let precioBs = prod.precio * tasaBcvActual;
-      let imagenSrc = (prod.fotos && prod.fotos.length > 0) ? prod.fotos[0] : 'logo.webp';
+      let fotosArray = (prod.fotos && prod.fotos.length > 0) ? prod.fotos : ['logo.webp'];
+      let fotosJson = JSON.stringify(fotosArray).replace(/"/g, '&quot;');
       let badgeClase = (prod.estado && prod.estado.includes("Encargo")) ? 'badge-encargo' : 'badge-stock';
       let categoria = prod.categoria || 'mangas';
       let esRopa = categoria.toLowerCase().includes('ropa') || categoria.toLowerCase().includes('hoodie');
 
+      let imgsHtml = '';
+      let dotsHtml = '';
+      fotosArray.forEach((foto, fIdx) => {
+        imgsHtml += `<img src="${foto}" class="${fIdx === 0 ? 'activa' : ''}" data-index="${fIdx}">`;
+        dotsHtml += `<div class="dot ${fIdx === 0 ? 'activo' : ''}" data-index="${fIdx}"></div>`;
+      });
+
+      let botonesCarrusel = fotosArray.length > 1 ? `
+        <div class="carrusel-btn carrusel-prev" onclick="cambiarFotoTarjeta(event, ${indexProd}, -1)"><i class="fas fa-chevron-left"></i></div>
+        <div class="carrusel-btn carrusel-next" onclick="cambiarFotoTarjeta(event, ${indexProd}, 1)"><i class="fas fa-chevron-right"></i></div>
+        <div class="carrusel-dots">${dotsHtml}</div>
+      ` : '';
+
       contenedor.innerHTML += `
-        <div class="card item-producto" data-nombre="${prod.nombre.toLowerCase()}" data-categoria="${categoria}" data-estado="${prod.estado}" data-precio="${prod.precio}" onclick="crearDestello(event); reproducirSonido(); abrirModal('${imagenSrc}', '${prod.nombre}', ${prod.precio}, 'Producto oficial de Sakura Gameverse.', '${prod.estado}', ${esRopa})">
-          <button class="btn-fav-card" onclick="toggleFavorito(event, '${prod.nombre}', ${prod.precio}, '${imagenSrc}')"><i class="fas fa-heart"></i></button>
+        <div class="card item-producto" data-nombre="${prod.nombre.toLowerCase()}" data-categoria="${categoria}" data-estado="${prod.estado}" data-precio="${prod.precio}" onclick="crearDestello(event); reproducirSonido(); abrirModalMulti(${fotosJson}, '${prod.nombre}', ${prod.precio}, 'Producto oficial de Sakura Gameverse.', '${prod.estado}', ${esRopa})">
+          <button class="btn-fav-card" onclick="toggleFavorito(event, '${prod.nombre}', ${prod.precio}, '${fotosArray[0]}')"><i class="fas fa-heart"></i></button>
           <div class="badge-estado ${badgeClase}">${prod.estado}</div>
-          <img src="${imagenSrc}" alt="${prod.nombre}">
+          
+          <div class="card-img-container" id="carrusel-card-${indexProd}">
+            ${imgsHtml}
+            ${botonesCarrusel}
+          </div>
+
           <div class="card-title">${prod.nombre}</div>
           <div class="precio-container">
             <span class="card-price">$${prod.precio.toFixed(2)}</span>
@@ -894,7 +978,64 @@
 </script>
 
 <script>
-  // Control de SplashScreen, Splash texturas, Carrito, Filtros y Modal
+  window.cambiarFotoTarjeta = function(event, cardIndex, direccion) {
+    event.stopPropagation();
+    let contenedor = document.getElementById(`carrusel-card-${cardIndex}`);
+    if (!contenedor) return;
+
+    let imgs = contenedor.querySelectorAll('img');
+    let dots = contenedor.querySelectorAll('.dot');
+    if (imgs.length <= 1) return;
+
+    let currentIndex = Array.from(imgs).findIndex(img => img.classList.contains('activa'));
+    let newIndex = currentIndex + direccion;
+
+    if (newIndex >= imgs.length) newIndex = 0;
+    if (newIndex < 0) newIndex = imgs.length - 1;
+
+    imgs.forEach(img => img.classList.remove('activa'));
+    dots.forEach(d => d.classList.remove('activa'));
+
+    imgs[newIndex].classList.add('activa');
+    dots[newIndex].classList.add('activa');
+  }
+
+  function abrirModalMulti(fotosArray, titulo, precio, descripcion, disponibilidad, esRopa) {
+    productoActual = { img: fotosArray[0], titulo, precio, esRopa };
+    
+    document.getElementById('modalImg').src = fotosArray[0];
+    document.getElementById('modalTitulo').innerText = titulo;
+    document.getElementById('modalPrecio').innerText = "$" + precio.toFixed(2);
+    document.getElementById('modalDesc').innerText = descripcion;
+    document.getElementById('modalTag').innerText = disponibilidad;
+    document.getElementById('tallasContainer').style.display = esRopa ? 'block' : 'none';
+
+    let contenedorMinisOld = document.getElementById('modalContainerMinis');
+    if (contenedorMinisOld) contenedorMinisOld.remove();
+
+    if (fotosArray.length > 1) {
+      let divMinis = document.createElement('div');
+      divMinis.id = 'modalContainerMinis';
+      divMinis.className = 'modal-miniaturas';
+      
+      fotosArray.forEach((fotoUrl, idx) => {
+        divMinis.innerHTML += `<img src="${fotoUrl}" class="modal-mini-img ${idx === 0 ? 'activo' : ''}" onclick="cambiarFotoModal('${fotoUrl}', this)">`;
+      });
+
+      let imgPrincipalElem = document.getElementById('modalImg');
+      imgPrincipalElem.insertAdjacentElement('afterend', divMinis);
+    }
+
+    document.getElementById('miModal').style.display = 'flex';
+  }
+
+  function cambiarFotoModal(urlFoto, elementoMini) {
+    document.getElementById('modalImg').src = urlFoto;
+    productoActual.img = urlFoto;
+    document.querySelectorAll('.modal-mini-img').forEach(m => m.classList.remove('activo'));
+    elementoMini.classList.add('activo');
+  }
+
   setTimeout(() => {
     let splash = document.getElementById('splash-screen');
     if (splash) {
@@ -1055,16 +1196,6 @@
     });
   }
 
-  function abrirModal(img, titulo, precio, descripcion, disponibilidad, esRopa) {
-    productoActual = { img, titulo, precio, esRopa };
-    document.getElementById('modalImg').src = img;
-    document.getElementById('modalTitulo').innerText = titulo;
-    document.getElementById('modalPrecio').innerText = "$" + precio.toFixed(2);
-    document.getElementById('modalDesc').innerText = descripcion;
-    document.getElementById('modalTag').innerText = disponibilidad;
-    document.getElementById('tallasContainer').style.display = esRopa ? 'block' : 'none';
-    document.getElementById('miModal').style.display = 'flex';
-  }
   function cerrarModal() { document.getElementById('miModal').style.display = 'none'; }
 
   function agregarAlCarrito() {
