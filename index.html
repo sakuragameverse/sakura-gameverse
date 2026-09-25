@@ -29,6 +29,17 @@
       --hero-bg: #2b0b4a;
     }
 
+    /* MODO OVERDRIVE SUPREMO (EASTER EGG) */
+    body.overdrive-mode {
+      --bg-color: #2b0500;
+      --card-bg: linear-gradient(135deg, #4a0d00 0%, #2b0500 100%);
+      --text-color: #fff5e6;
+      --primary-color: #ffaa00;
+      --secondary-color: #ff4400;
+      --border-color: rgba(255,170,0,0.6);
+      --hero-bg: #4a0d00;
+    }
+
     body { margin: 0; background-color: var(--bg-color); color: var(--text-color); font-family: sans-serif; overflow-x: hidden; transition: background 0.4s ease, color 0.4s ease; }
     
     ::-webkit-scrollbar { width: 8px; }
@@ -119,6 +130,7 @@
       max-width: 220px;
       margin-bottom: 15px;
       filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+      cursor: pointer;
     }
 
     .loading-text {
@@ -155,7 +167,8 @@
     }
 
     .hero-banner { background-color: var(--hero-bg); text-align: center; padding: 40px 20px; border-bottom: 3px solid var(--primary-color); box-shadow: 0 0 20px rgba(255, 0, 127, 0.4); position: relative; z-index: 2; transition: background 0.4s ease; }
-    .hero-logo { max-width: 240px; margin-bottom: 10px; filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1)); }
+    .hero-logo { max-width: 240px; margin-bottom: 10px; filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1)); cursor: pointer; transition: transform 0.2s; }
+    .hero-logo:hover { transform: scale(1.05); }
     .hero-title { font-size: 1.2em; font-weight: bold; margin-bottom: 15px; letter-spacing: 1px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
     
     .bcv-box {
@@ -263,7 +276,6 @@
     .card img { width: 100%; height: 250px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
     .card-title { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; }
     
-    /* ESTILOS PRECIO TACHADO / OFERTA */
     .precio-container { display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 3px; }
     .card-price-old { color: #888; font-size: 0.95em; text-decoration: line-through; }
     .card-price { color: var(--secondary-color); font-size: 1.2em; font-weight: bold; text-shadow: 0 0 5px rgba(0, 229, 255, 0.5); }
@@ -292,7 +304,7 @@
     }
     .btn-fav-card:hover { transform: scale(1.15); background: rgba(255,0,127,0.3); }
 
-    .card-stock-alert { color: #ff3366; font-size: 0.78em; font-weight: bold; background: rgba(255,51,102,0.1); border: 1px solid rgba(255,51,102,0.3); padding: 3px 8px; border-radius: 10px; display: inline-block; }
+    .card-stock-alert { color: #ff3366; font-size: 0.78em; font-weight: bold; background: rgba(255,51,102,0.1); border: 1px solid rgba(255,51,102,0.3); padding: 3px 8px; border-radius: 10px; display: inline-block; margin-top: 5px; }
 
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
     .modal-content { background: var(--hero-bg); padding: 20px; border-radius: 20px; text-align: center; max-width: 90%; width: 400px; border: 2px solid var(--primary-color); box-shadow: 0 0 30px rgba(255,0,127,0.5); position: relative; max-height: 90vh; overflow-y: auto; transition: background 0.4s ease; }
@@ -300,9 +312,10 @@
     .modal-img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
     .modal-tag-info { display: inline-block; background: rgba(0,229,255,0.15); border: 1px solid var(--secondary-color); color: var(--secondary-color); padding: 4px 10px; border-radius: 10px; font-size: 0.8em; font-weight: bold; margin-bottom: 10px; }
     
-    .tallas-container { margin: 15px 0; display: none; }
+    .tallas-container { margin: 15px 0; display: none; text-align: left; }
     .tallas-container label { display: block; color: var(--secondary-color); font-size: 0.9em; font-weight: bold; margin-bottom: 5px; }
     .talla-select { background: var(--bg-color); border: 1px solid var(--secondary-color); color: var(--text-color); padding: 8px; border-radius: 10px; width: 100%; font-weight: bold; outline: none; text-align: center; }
+    .link-guia-tallas { color: var(--secondary-color); font-size: 0.8em; text-decoration: underline; cursor: pointer; margin-top: 5px; display: inline-block; }
 
     .btn-comprar { background: var(--primary-color); color: white; border: none; padding: 10px 20px; font-size: 1.1em; font-weight: bold; border-radius: 30px; cursor: pointer; margin-top: 15px; box-shadow: 0 0 10px var(--primary-color); width: 100%; }
     .btn-compartir { background: #25D366; color: white; border: none; padding: 8px 15px; font-size: 0.9em; font-weight: bold; border-radius: 20px; cursor: pointer; margin-top: 8px; box-shadow: 0 0 8px #25D366; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; }
@@ -356,6 +369,9 @@
     .sugerencia-btn { background-color: var(--primary-color); color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 24px; text-decoration: none; box-shadow: 0 0 10px var(--primary-color); cursor: pointer; border: none; }
     .faq-btn { background-color: var(--secondary-color); color: #0d041a; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 22px; text-decoration: none; box-shadow: 0 0 10px var(--secondary-color); cursor: pointer; border: none; font-weight: bold; }
     .theme-btn { background-color: #ffcc00; color: #0d041a; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 22px; text-decoration: none; box-shadow: 0 0 10px #ffcc00; cursor: pointer; border: none; font-weight: bold; }
+    .gacha-btn { background-color: #9900ff; color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 20px; text-decoration: none; box-shadow: 0 0 10px #9900ff; cursor: pointer; border: none; }
+    .music-btn { background-color: #ff0055; color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 20px; text-decoration: none; box-shadow: 0 0 10px #ff0055; cursor: pointer; border: none; }
+    .gamer-profile-btn { background-color: #00ffcc; color: #0d041a; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 20px; text-decoration: none; box-shadow: 0 0 10px #00ffcc; cursor: pointer; border: none; font-weight: bold; }
     .fav-floating-btn { background-color: #ff3366; color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 20px; text-decoration: none; box-shadow: 0 0 10px #ff3366; cursor: pointer; border: none; position: relative; }
     .fav-badge-count { position: absolute; top: -5px; right: -5px; background: #00e5ff; color: #0d041a; font-size: 0.7em; font-weight: bold; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 5px #00e5ff; }
 
@@ -377,27 +393,75 @@
   </div>
 </div>
 
+<!-- MODAL BIEVENIDA / PROMO FLASH -->
 <div id="modalPromoFlash" class="modal" style="display: flex;">
   <div class="modal-content" style="border: 2px solid var(--secondary-color); box-shadow: 0 0 40px rgba(0,229,255,0.6);">
     <button class="cerrar-modal" onclick="cerrarPromoFlash()">×</button>
     <div style="font-size: 40px; margin-bottom: 10px;">🎁</div>
     <h2 style="color: var(--secondary-color); margin-top: 0;">¡Bienvenido a Sakura Gameverse!</h2>
     <p style="font-size: 0.95em; line-height: 1.5; opacity: 0.9; margin-bottom: 15px;">
-      Usa el código <strong>OTAKU10</strong> en tu carrito para obtener un descuento exclusivo. Entregas personales en <strong>Bejuma y Miranda</strong> y envíos por <strong>ZOOM y MRW</strong>.
+      Usa el código <strong>OTAKU10</strong> en tu carrito o gira la ruleta Gacha flotante para ganar sorpresas. Entregas en <strong>Bejuma y Miranda</strong> y envíos por <strong>ZOOM y MRW</strong>.
     </p>
     <button class="btn-sugerencia" onclick="cerrarPromoFlash()">¡A Explorar Catálogo! 🚀</button>
   </div>
 </div>
 
+<!-- MODAL RULETA GACHA -->
+<div id="modalGacha" class="modal">
+  <div class="modal-content" style="width: 420px; border: 2px solid #9900ff;">
+    <button class="cerrar-modal" onclick="cerrarGachaModal()">×</button>
+    <div style="font-size: 40px; margin-bottom: 5px;">🎰</div>
+    <h2 style="color: #ffcc00; margin-top: 0;">Ruleta Gacha Otaku</h2>
+    <p style="font-size: 0.9em; opacity: 0.9; margin-bottom: 15px;">¡Prueba tu suerte y gana un cupón de descuento sorpresa para tu compra!</p>
+    <div id="gachaResultado" style="background: var(--bg-color); border: 2px dashed #9900ff; padding: 20px; border-radius: 12px; font-size: 1.2em; font-weight: bold; color: var(--secondary-color); margin-bottom: 15px;">
+      Presiona el botón para girar 🎁
+    </div>
+    <button class="btn-sugerencia" style="background: #9900ff; color: white;" onclick="girarRuletaGacha()">¡Girar Ruleta Gacha! ⚡</button>
+  </div>
+</div>
+
+<!-- MODAL PERFIL GAMER / XP -->
+<div id="modalGamerProfile" class="modal">
+  <div class="modal-content" style="width: 420px; border: 2px solid #00ffcc;">
+    <button class="cerrar-modal" onclick="cerrarGamerProfileModal()">×</button>
+    <div style="font-size: 40px; margin-bottom: 5px;">👤</div>
+    <h2 style="color: #00ffcc; margin-top: 0;">Perfil Gamer & XP</h2>
+    <p style="font-size: 0.9em; opacity: 0.9; margin-bottom: 10px;">Personaliza tu GamerTag y sube de rango en Sakura Gameverse:</p>
+    <input type="text" id="inputGamerTag" class="sugerencia-input" placeholder="Tu GamerTag (Ej: Kirito_VE)">
+    <div style="background: var(--bg-color); padding: 12px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #00ffcc; text-align: left; font-size: 0.9em;">
+      <div>🏆 <strong>Rango actual:</strong> <span id="lblRango" style="color: #ffcc00;">Novato Otaku</span></div>
+      <div>⚡ <strong>Puntos XP:</strong> <span id="lblXp" style="color: var(--secondary-color);">100 XP</span></div>
+    </div>
+    <button class="btn-sugerencia" style="background: #00ffcc; color: #0d041a;" onclick="guardarGamerTag()">Guardar GamerTag 💾</button>
+  </div>
+</div>
+
+<!-- MODAL GUÍA DE TALLAS -->
+<div id="modalGuiaTallas" class="modal">
+  <div class="modal-content" style="width: 450px;">
+    <button class="cerrar-modal" onclick="cerrarGuiaTallasModal()">×</button>
+    <h2 style="color: var(--secondary-color); margin-top: 0;">📏 Guía de Tallas (Hoodies & Ropa)</h2>
+    <p style="font-size: 0.85em; opacity: 0.9; margin-bottom: 12px;">Medidas aproximadas en centímetros para asegurar tu ajuste perfecto:</p>
+    <div style="background: var(--bg-color); border: 1px solid var(--secondary-color); border-radius: 10px; padding: 10px; font-size: 0.85em; text-align: left; margin-bottom: 15px;">
+      <div class="recibo-line"><strong>TALLA S:</strong><span>Ancho: 50cm | Alto: 68cm</span></div>
+      <div class="recibo-line"><strong>TALLA M:</strong><span>Ancho: 53cm | Alto: 70cm</span></div>
+      <div class="recibo-line"><strong>TALLA L:</strong><span>Ancho: 56cm | Alto: 72cm</span></div>
+      <div class="recibo-line"><strong>TALLA XL:</strong><span>Ancho: 59cm | Alto: 74cm</span></div>
+      <div class="recibo-line"><strong>TALLA XXL:</strong><span>Ancho: 62cm | Alto: 76cm</span></div>
+    </div>
+    <button class="btn-sugerencia" onclick="cerrarGuiaTallasModal()">¡Entendido! ✨</button>
+  </div>
+</div>
+
 <div class="ticker-bar">
   <div class="ticker-content">
-    🔥 ¡Bienvenidos a Sakura Gameverse! Envíos seguros a todo el país exclusivamente por ZOOM y MRW 📦 | 🎮 Cupón activo: OTAKU10 | ⚡ ¡Nuevos Mangas y Cartas TCG disponibles! 🌸
+    🔥 ¡Bienvenidos a Sakura Gameverse! Envíos seguros a todo el país exclusivamente por ZOOM y MRW 📦 | 🎮 Cupón activo: OTAKU10 | ⚡ ¡Gira la Ruleta Gacha flotante y gana premios! 🌸
   </div>
 </div>
 
 <div id="splash-screen">
   <div class="splash-box">
-    <img src="logo.webp" alt="Logo" class="splash-logo">
+    <img src="logo.webp" alt="Logo" class="splash-logo" onclick="activarEasterEggLogo()" title="¡Haz clic aquí...">
     <div id="loadingText" class="loading-text">Cargando texturas...</div>
     <div class="loading-bar-container">
       <div class="loading-bar"></div>
@@ -410,7 +474,7 @@
 </div>
 
 <div class="hero-banner">
-  <img src="logo.webp" alt="Sakura Gameverse" class="hero-logo">
+  <img src="logo.webp" alt="Sakura Gameverse" class="hero-logo" onclick="activarEasterEggLogo()" title="¡Haz clic aquí para modo secreto!">
   <div class="hero-title">✨ Bienvenidos a Sakura Gameverse ✨<br>Donde tu pasión por el gaming nunca hace game over. 👾🌸</div>
   
   <div class="bcv-box">
@@ -466,7 +530,7 @@
           <span class="card-price">$12.00</span>
         </div>
         <div class="card-bs" data-usd="12.00">≈ Bs. 0.00</div>
-        <div class="card-stock-alert">⚠️ ¡Ahorras $4.00!</div>
+        <div class="card-stock-alert">🔥 4 personas viendo esto ahora</div>
       </div>
 
       <div class="card item-producto" data-nombre="hoodie anime oversize" data-categoria="ropa" data-precio="25.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Hoodie Oversize Anime', 25.00, 'Algodón afelpado de alta calidad, diseño exclusivo estampado en alta definición.', 'Envío Inmediato 📦', true)">
@@ -496,7 +560,7 @@
         <span class="card-price">$12.00</span>
       </div>
       <div class="card-bs" data-usd="12.00">≈ Bs. 0.00</div>
-      <div class="card-stock-alert">⚠️ ¡Ahorras $4.00!</div>
+      <div class="card-stock-alert">🔥 Alta demanda en Bejuma</div>
     </div>
 
     <div class="card item-producto" data-nombre="caja booster cartas tcg pokemon" data-categoria="cartas" data-precio="40.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('accesorios.jpeg', 'Booster Box Cartas TCG', 40.00, 'Caja de sobres coleccionables TCG. ¡Encuentra cartas ultra raras para tu mazo!', 'Envío Inmediato 📦', false)">
@@ -509,7 +573,7 @@
         <span class="card-price">$40.00</span>
       </div>
       <div class="card-bs" data-usd="40.00">≈ Bs. 0.00</div>
-      <div class="card-stock-alert">⚠️ ¡Alta Rotación!</div>
+      <div class="card-stock-alert">⚠️ ¡Quedan 3 en stock!</div>
     </div>
 
     <div class="card item-producto" data-nombre="hoodie anime oversize" data-categoria="ropa" data-precio="25.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Hoodie Oversize Anime', 25.00, 'Algodón afelpado de alta calidad, diseño exclusivo estampado en alta definición.', 'Envío Inmediato 📦', true)">
@@ -535,7 +599,7 @@
         <span class="card-price">$28.00</span>
       </div>
       <div class="card-bs" data-usd="28.00">≈ Bs. 0.00</div>
-      <div class="card-stock-alert">⚠️ ¡Alta Demanda Gamer!</div>
+      <div class="card-stock-alert">🔥 6 personas lo tienen en el carrito</div>
     </div>
 
     <div class="card item-producto" data-nombre="teclado mecanico gamer" data-categoria="teclados" data-precio="35.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('lamparas.jpg', 'Teclado Mecánico RGB', 35.00, 'Switches mecánicos, iluminación RGB y respuesta ultra rápida para gaming competitivo.', 'Envío Inmediato 📦', false)">
@@ -669,6 +733,7 @@
         <option value="XL">Talla XL</option>
         <option value="XXL">Talla XXL</option>
       </select>
+      <span class="link-guia-tallas" onclick="abrirGuiaTallasModal()">Ver Guía de Tallas (cm) 📏</span>
     </div>
 
     <button class="btn-comprar" onclick="agregarAlCarrito()">¡Añadir al Carrito! 🛒</button>
@@ -758,6 +823,9 @@
 
 <div class="floating-buttons">
   <button class="fav-floating-btn" onclick="abrirFavoritosModal()" title="Ver Favoritos"><i class="fas fa-heart"></i><div class="fav-badge-count" id="favCount">0</div></button>
+  <button class="gacha-btn" onclick="abrirGachaModal()" title="Ruleta Gacha de Descuentos"><i class="fas fa-dice"></i></button>
+  <button class="music-btn" onclick="toggleMusicaLoFi()" title="Reproducir/Pausar Música Lo-Fi"><i class="fas fa-music" id="iconoMusica"></i></button>
+  <button class="gamer-profile-btn" onclick="abrirGamerProfileModal()" title="Perfil Gamer & XP"><i class="fas fa-user-astronaut"></i></button>
   <button class="theme-btn" onclick="alternarTema()" title="Cambiar Tema Visual"><i class="fas fa-palette"></i></button>
   <a href="https://www.tiktok.com/@sakuragameverse" class="tiktok-btn" target="_blank" title="Síguenos en TikTok"><i class="fab fa-tiktok"></i></a>
   <a href="https://www.instagram.com/sakuragameverse?stkn=bDQ5NXRla2Vyano1" class="instagram-btn" target="_blank" title="Síguenos en Instagram"><i class="fab fa-instagram"></i></a>
@@ -765,6 +833,9 @@
   <button class="sugerencia-btn" onclick="abrirSugerenciaModal()" title="Sugerir Mercancía"><i class="fas fa-lightbulb"></i></button>
   <a href="https://wa.me/584244970576" class="whatsapp-btn" target="_blank" title="Escríbenos al WhatsApp"><i class="fab fa-whatsapp"></i></a>
 </div>
+
+<!-- AUDIO LO-FI EXTERNO OCULTO -->
+<audio id="audioLoFi" loop src="https://commondatastorage.googleapis.com/codesign-us-public/lofi-sample.mp3"></audio>
 
 <script>
   let textosCarga = ["Cargando texturas...", "Sincronizando tasa BCV...", "Cargando inventario otaku...", "¡Gameverse listo!"];
@@ -787,6 +858,7 @@
     }
   }, 2000);
 
+  // 1. TEMA VISUAL (CYBERPUNK / NEON / OVERDRIVE)
   let modoNeonActivo = localStorage.getItem('sakura_neon') === 'true';
   if (modoNeonActivo) {
     document.body.classList.add('neon-mode');
@@ -794,11 +866,107 @@
 
   function alternarTema() {
     reproducirSonido();
+    document.body.classList.remove('overdrive-mode');
     document.body.classList.toggle('neon-mode');
     let esNeon = document.body.classList.contains('neon-mode');
     localStorage.setItem('sakura_neon', esNeon);
   }
 
+  // EASTER EGG LOGO (MODO OVERDRIVE SUPREMO)
+  function activarEasterEggLogo() {
+    reproducirSonido();
+    document.body.classList.toggle('overdrive-mode');
+    confetti({ particleCount: 150, spread: 90, origin: { y: 0.4 } });
+    if (document.body.classList.contains('overdrive-mode')) {
+      alert("🔥 ¡MODO OVERDRIVE SUPREMO ACTIVADO! ¡Lluvia de poder otaku!");
+    } else {
+      alert("✨ Modo normal restaurado.");
+    }
+  }
+
+  // 2. REPRODUCTOR LO-FI / SYNTHWAVE
+  let reproduciendoMusica = false;
+  function toggleMusicaLoFi() {
+    reproducirSonido();
+    let audio = document.getElementById('audioLoFi');
+    let icono = document.getElementById('iconoMusica');
+    if (!reproducingMusica()) {
+      audio.play().catch(e => {
+        // En algunos navegadores requiere interacción previa o archivo externo
+      });
+      reproducirMusica = true;
+      icono.className = "fas fa-pause";
+      alert("🎵 ¡Música Lo-Fi / Synthwave activada de fondo!");
+    } else {
+      audio.pause();
+      reproducirMusica = false;
+      icono.className = "fas fa-music";
+    }
+  }
+  function reproducingMusica() { return reproduciendoMusica; }
+
+  // 3. RULETA GACHA DE DESCUENTOS
+  function abrirGachaModal() {
+    reproducirSonido();
+    document.getElementById('gachaResultado').innerText = "Presiona el botón para girar 🎁";
+    document.getElementById('modalGacha').style.display = 'flex';
+  }
+  function cerrarGachaModal() {
+    reproducirSonido();
+    document.getElementById('modalGacha').style.display = 'none';
+  }
+  function girarRuletaGacha() {
+    reproducirSonido();
+    let premios = [
+      { texto: "🎉 ¡Felicidades! Ganaste 5% de descuento (Usa cupón GACHA5)", codigo: "GACHA5" },
+      { texto: "🔥 ¡Jackpot Otaku! Ganaste 15% de descuento (Usa cupón GAMERVIP)", codigo: "GAMERVIP" },
+      { texto: "🌸 ¡Premio Especial! 10% de descuento (Usa cupón OTAKU10)", codigo: "OTAKU10" }
+    ];
+    let premioGanado = premios[Math.floor(Math.random() * premios.length)];
+    document.getElementById('gachaResultado').innerHTML = `${premioGanado.texto}`;
+    confetti({ particleCount: 120, spread: 80, origin: { y: 0.5 } });
+  }
+
+  // 4. PERFIL GAMER & XP
+  let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, rango: "Rango Hokage" };
+  document.getElementById('inputGamerTag').value = gamerProfile.tag;
+  document.getElementById('lblRango').innerText = gamerProfile.rango;
+  document.getElementById('lblXp').innerText = gamerProfile.xp + " XP";
+
+  function abrirGamerProfileModal() {
+    reproducirSonido();
+    document.getElementById('modalGamerProfile').style.display = 'flex';
+  }
+  function cerrarGamerProfileModal() {
+    reproducirSonido();
+    document.getElementById('modalGamerProfile').style.display = 'none';
+  }
+  function guardarGamerTag() {
+    reproducirSonido();
+    let nuevoTag = document.getElementById('inputGamerTag').value.trim();
+    if (nuevoTag) {
+      gamerProfile.tag = nuevoTag;
+      gamerProfile.xp += 50; // Gana XP por interactuar
+      if (gamerProfile.xp > 300) gamerProfile.rango = "Rango Leyenda Ciberpunk ⚡";
+      localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
+      document.getElementById('lblRango').innerText = gamerProfile.rango;
+      document.getElementById('lblXp').innerText = gamerProfile.xp + " XP";
+      alert(`💾 ¡GamerTag guardado exitosamente como [${nuevoTag}]! +50 XP ganados.`);
+      cerrarGamerProfileModal();
+    }
+  }
+
+  // 5. GUÍA DE TALLAS
+  function abrirGuiaTallasModal() {
+    reproducirSonido();
+    document.getElementById('modalGuiaTallas').style.display = 'flex';
+  }
+  function cerrarGuiaTallasModal() {
+    reproducirSonido();
+    document.getElementById('modalGuiaTallas').style.display = 'none';
+  }
+
+  // 6. SISTEMA DE FAVORITOS & PRUEBA SOCIAL
   let favoritos = JSON.parse(localStorage.getItem('sakura_favoritos')) || [];
 
   function toggleFavorito(event, titulo, precio, img) {
@@ -1074,6 +1242,9 @@
     }
 
     carrito.push(itemParaCarrito);
+    gamerProfile.xp += 20; // XP por agregar al carrito
+    localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
+    
     actualizarCarritoUI();
     cerrarModal();
   }
@@ -1100,10 +1271,10 @@
     let codigo = document.getElementById('inputCupon').value.trim().toUpperCase();
     let msg = document.getElementById('mensajeCupon');
 
-    if (codigo === "OTAKU10") {
-      descuentoAplicado = 0.10;
+    if (codigo === "OTAKU10" || codigo === "GACHA5") {
+      descuentoAplicado = (codigo === "GACHA5") ? 0.05 : 0.10;
       msg.style.color = "#25D366";
-      msg.innerText = "🎉 ¡Cupón OTAKU10 aplicado con éxito (-10%)!";
+      msg.innerText = `🎉 ¡Cupón ${codigo} aplicado con éxito!`;
     } else if (codigo === "GAMERVIP") {
       descuentoAplicado = 0.15;
       msg.style.color = "#25D366";
@@ -1192,7 +1363,10 @@
       origin: { y: 0.6 }
     });
 
-    let mensaje = "¡Hola Sakura Gameverse! 🌸👾 Deseo realizar el siguiente pedido:\n\n";
+    gamerProfile.xp += 100; // Gran recompensa XP por compra
+    localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
+
+    let mensaje = `¡Hola Sakura Gameverse! 🌸👾 Deseo realizar el siguiente pedido (GamerTag: ${gamerProfile.tag}):\n\n`;
     let subtotal = 0;
     carrito.forEach((item, index) => {
       mensaje += `${index + 1}. ${item.titulo} - $${item.precio.toFixed(2)}\n`;
