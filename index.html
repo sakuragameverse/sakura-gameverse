@@ -14,7 +14,7 @@
     ::-webkit-scrollbar-track { background: #0d041a; }
     ::-webkit-scrollbar-thumb { background: #FF007F; border-radius: 10px; }
 
-    /* PANTALLA DE CARGA ESTILO VIDEOJUEGO */
+    /* PANTALLA DE CARGA CON EL CARRO ACELERANDO */
     #splash-screen {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -27,16 +27,21 @@
       transition: opacity 0.6s ease;
     }
     .splash-logo {
-      max-width: 220px;
+      max-width: 280px;
       margin-bottom: 20px;
-      animation: pulse-logo 1.5s infinite alternate;
+      animation: car-accelerating 0.4s infinite alternate ease-in-out;
     }
-    @keyframes pulse-logo {
-      0% { filter: drop-shadow(0 0 10px rgba(255,0,127,0.4)); transform: scale(1); }
-      100% { filter: drop-shadow(0 0 25px rgba(0,229,255,0.8)); transform: scale(1.05); }
+    /* EFECTO DE ACELERACIÓN Y VIBRACIÓN DE MOTOR */
+    @keyframes car-accelerating {
+      0% { transform: scale(1) translateX(0) translateY(0); filter: drop-shadow(0 0 10px rgba(0,229,255,0.5)); }
+      25% { transform: scale(1.02) translateX(-2px) translateY(1px); filter: drop-shadow(0 0 15px rgba(255,0,127,0.7)); }
+      50% { transform: scale(1.04) translateX(2px) translateY(-1px); filter: drop-shadow(0 0 20px rgba(0,229,255,0.9)); }
+      75% { transform: scale(1.02) translateX(-1px) translateY(-1px); filter: drop-shadow(0 0 15px rgba(255,0,127,0.7)); }
+      100% { transform: scale(1.05) translateX(2px) translateY(1px); filter: drop-shadow(0 0 25px rgba(0,229,255,1)); }
     }
+
     .loading-bar-container {
-      width: 200px;
+      width: 220px;
       height: 6px;
       background: #11052C;
       border-radius: 10px;
@@ -72,7 +77,6 @@
 
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
     
-    /* ANIMACIÓN DE REBOTE AL ENTRAR (POP) */
     .card { background-color: #1a0b38; border-radius: 15px; padding: 15px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.5); position: relative; border: 1px solid transparent; transition: all 0.3s ease; cursor: pointer; animation: card-pop 0.4s ease-out; }
     @keyframes card-pop {
       0% { transform: scale(0.8); opacity: 0; }
@@ -90,7 +94,6 @@
     .modal-img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
     .btn-comprar { background: #FF007F; color: white; border: none; padding: 10px 20px; font-size: 1.1em; font-weight: bold; border-radius: 30px; cursor: pointer; margin-top: 15px; box-shadow: 0 0 10px #FF007F; width: 100%; }
 
-    /* BARRA DE CARRITO MEJORADA */
     .cart-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(17, 5, 44, 0.95); border-top: 2px solid #00e5ff; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; z-index: 1500; box-shadow: 0 -5px 20px rgba(0,229,255,0.3); backdrop-filter: blur(5px); flex-wrap: wrap; gap: 8px; }
     .cart-info { font-weight: bold; font-size: 1em; color: #00e5ff; }
     .cart-buttons { display: flex; gap: 8px; }
@@ -115,10 +118,10 @@
 </head>
 <body>
 
-<!-- PANTALLA DE CARGA (SPLASH SCREEN) -->
+<!-- PANTALLA DE CARGA CON EL CARRO ACELERANDO -->
 <div id="splash-screen">
-  <img src="logo.webp" alt="Logo" class="splash-logo">
-  <div style="color: #00e5ff; font-weight: bold; font-size: 1.1em; letter-spacing: 2px;">CARGANDO GAMEVERSE...</div>
+  <img src="logo.webp" alt="Logo Carro" class="splash-logo">
+  <div style="color: #00e5ff; font-weight: bold; font-size: 1.1em; letter-spacing: 2px;">ACELERANDO EL GAMEVERSE...</div>
   <div class="loading-bar-container">
     <div class="loading-bar"></div>
   </div>
@@ -220,7 +223,6 @@
   </div>
 </div>
 
-<!-- BARRA DE CARRITO CON CONTADOR Y BOTÓN VACIAR -->
 <div class="cart-bar">
   <div class="cart-info" id="cartText">🛒 0 ítems ($0.00)</div>
   <div class="cart-buttons">
@@ -232,7 +234,6 @@
 <a href="https://wa.me/584244970576" class="whatsapp-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
 <script>
-  // OCULTAR PANTALLA DE CARGA TRAS 1.2 SEGUNDOS
   window.addEventListener('load', () => {
     setTimeout(() => {
       let splash = document.getElementById('splash-screen');
@@ -241,7 +242,6 @@
     }, 1200);
   });
 
-  // AUDIO SINTETIZADOR ARCADE
   function reproducirSonido() {
     try {
       let ctx = new (window.AudioContext || window.webkitAudioContext)();
