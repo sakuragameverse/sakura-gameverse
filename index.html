@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sakura Gameverse - Tienda Oficial</title>
+  <title>Sakura Gameverse</title>
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
@@ -19,228 +19,1741 @@
       --hero-bg: #11052C;
     }
 
-    body { margin: 0; background-color: var(--bg-color); color: var(--text-color); font-family: sans-serif; overflow-x: hidden; }
+    body.theme-rosa {
+      --bg-color: #0d041a;
+      --card-bg: linear-gradient(135deg, #1a0b38 0%, #11052C 100%);
+      --text-color: white;
+      --primary-color: #FF007F;
+      --secondary-color: #00e5ff;
+      --border-color: rgba(0,229,255,0.3);
+      --hero-bg: #11052C;
+    }
 
+    body.theme-azul {
+      --bg-color: #020813;
+      --card-bg: linear-gradient(135deg, #071630 0%, #030a1c 100%);
+      --text-color: #e0f7ff;
+      --primary-color: #00bfff;
+      --secondary-color: #00ffcc;
+      --border-color: rgba(0,255,204,0.3);
+      --hero-bg: #071630;
+    }
+
+    body.theme-purpura {
+      --bg-color: #12021a;
+      --card-bg: linear-gradient(135deg, #28053b 0%, #170224 100%);
+      --text-color: #fce8ff;
+      --primary-color: #b000ff;
+      --secondary-color: #ff00ea;
+      --border-color: rgba(255,0,234,0.3);
+      --hero-bg: #28053b;
+    }
+
+    body.theme-overdrive {
+      --bg-color: #2b0500;
+      --card-bg: linear-gradient(135deg, #4a0d00 0%, #2b0500 100%);
+      --text-color: #fff5e6;
+      --primary-color: #ffaa00;
+      --secondary-color: #ff4400;
+      --border-color: rgba(255,170,0,0.6);
+      --hero-bg: #4a0d00;
+    }
+
+    body { margin: 0; background-color: var(--bg-color); color: var(--text-color); font-family: sans-serif; overflow-x: hidden; transition: background 0.4s ease, color 0.4s ease; }
+    
     ::-webkit-scrollbar { width: 8px; height: 8px; }
     ::-webkit-scrollbar-track { background: var(--bg-color); }
     ::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
 
-    /* HEADER TIENDA */
-    .store-header {
-      background: var(--hero-bg);
-      border-bottom: 2px solid var(--primary-color);
-      padding: 15px 20px;
+    #socialProofContainer {
+      background: rgba(17, 5, 44, 0.95);
+      border-bottom: 1px solid var(--secondary-color);
+      padding: 8px 15px;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 0 20px rgba(255,0,127,0.3);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .store-logo-area { display: flex; align-items: center; gap: 12px; }
-    .store-logo { max-width: 50px; border-radius: 50%; border: 2px solid var(--secondary-color); }
-    .store-name { font-size: 1.1em; font-weight: bold; color: var(--secondary-color); text-shadow: 0 0 8px rgba(0,229,255,0.5); }
-
-    .header-actions { display: flex; gap: 10px; align-items: center; }
-    .btn-icon-header {
-      background: var(--card-bg);
-      border: 1px solid var(--secondary-color);
-      color: var(--text-color);
-      padding: 8px 12px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-weight: bold;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.85em;
-      box-shadow: 0 0 10px rgba(0,229,255,0.2);
-    }
-    .btn-icon-header:hover { background: rgba(0,229,255,0.2); }
-
-    /* CONTENEDOR PRINCIPAL */
-    .store-container { max-width: 1100px; margin: 0 auto; padding: 25px 15px; }
-
-    .banner-bcv {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 15px;
-      padding: 15px 20px;
-      margin-bottom: 25px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-    }
-    .banner-bcv h4 { margin: 0; color: var(--secondary-color); font-size: 0.95em; }
-    .banner-bcv span { color: #ffcc00; font-weight: bold; font-size: 1.1em; }
-
-    /* GRID DE PRODUCTOS */
-    .productos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
-    .producto-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.3s ease;
-    }
-    .producto-card:hover { transform: translateY(-5px); border-color: var(--secondary-color); }
-
-    .producto-img-container { width: 100%; height: 200px; background: #000; overflow: hidden; position: relative; }
-    .producto-img { width: 100%; height: 100%; object-fit: cover; }
-    
-    .producto-info { padding: 15px; display: flex; flex-direction: column; flex-grow: 1; }
-    .producto-cat { font-size: 0.75em; color: var(--secondary-color); text-transform: uppercase; font-weight: bold; margin-bottom: 5px; }
-    .producto-titulo { font-size: 1em; font-weight: bold; margin: 0 0 10px 0; }
-    .producto-precios { margin-top: auto; margin-bottom: 15px; }
-    .precio-usd { font-size: 1.2em; font-weight: bold; color: var(--primary-color); }
-    .precio-bs { font-size: 0.85em; opacity: 0.8; color: #ffcc00; }
-
-    .btn-comprar {
-      background: var(--secondary-color);
-      color: #0d041a;
-      border: none;
-      padding: 10px;
-      font-weight: bold;
-      border-radius: 10px;
-      cursor: pointer;
-      width: 100%;
-      box-shadow: 0 0 10px rgba(0,229,255,0.3);
-      transition: transform 0.2s;
-    }
-    .btn-comprar:hover { transform: scale(1.02); }
-
-    /* CARRITO MODAL / FLOTANTE */
-    .carrito-flotante {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: var(--primary-color);
-      color: white;
-      border-radius: 50px;
-      padding: 12px 22px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 0 20px var(--primary-color);
-      display: flex;
+      justify-content: center;
       align-items: center;
       gap: 10px;
-      z-index: 200;
+      font-size: 0.85em;
+      position: relative;
+      z-index: 2000;
+      box-shadow: inset 0 0 10px rgba(0,229,255,0.2);
     }
+    #socialProofContainer .sp-icon { font-size: 18px; color: var(--secondary-color); }
+    #socialProofContainer .sp-text { color: var(--text-color); font-weight: bold; }
+    #socialProofContainer .sp-sub { color: #aaa; font-size: 0.9em; font-weight: normal; }
+
+    .ticker-bar {
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--primary-color));
+      background-size: 200% 100%;
+      animation: gradient-move 5s linear infinite;
+      color: #0d041a;
+      font-weight: bold;
+      font-size: 0.9em;
+      text-align: center;
+      padding: 8px 10px;
+      position: relative;
+      z-index: 2001;
+      box-shadow: 0 2px 10px rgba(0,229,255,0.4);
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .ticker-content {
+      display: inline-block;
+      animation: ticker-slide 18s linear infinite;
+    }
+    @keyframes gradient-move {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+    @keyframes ticker-slide {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
+    #splash-screen {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-color: var(--bg-color);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.6s ease;
+    }
+    
+    .splash-box {
+      background: var(--hero-bg);
+      border: 3px solid var(--primary-color);
+      padding: 30px 40px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 0 30px var(--primary-color), 0 0 60px rgba(0, 229, 255, 0.4);
+      animation: box-pulse 1.5s infinite alternate;
+      max-width: 90%;
+      width: 320px;
+    }
+
+    @keyframes box-pulse {
+      0% { box-shadow: 0 0 15px var(--primary-color), inset 0 0 10px rgba(255,0,127,0.3); border-color: var(--primary-color); }
+      100% { box-shadow: 0 0 35px var(--secondary-color), 0 0 50px var(--primary-color), inset 0 0 20px rgba(0,229,255,0.4); border-color: var(--secondary-color); }
+    }
+
+    .splash-logo {
+      max-width: 220px;
+      margin-bottom: 15px;
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+      cursor: pointer;
+    }
+
+    .loading-text {
+      color: var(--secondary-color);
+      font-weight: bold;
+      font-size: 1em;
+      letter-spacing: 1px;
+      margin-bottom: 15px;
+      text-shadow: 0 0 10px rgba(0,229,255,0.7);
+      min-height: 20px;
+    }
+
+    .loading-bar-container {
+      width: 100%;
+      height: 8px;
+      background: var(--bg-color);
+      border-radius: 10px;
+      border: 1px solid var(--primary-color);
+      overflow: hidden;
+    }
+
+    .loading-bar {
+      width: 0%;
+      height: 100%;
+      background: var(--secondary-color);
+      box-shadow: 0 0 10px var(--secondary-color);
+      animation: load-progress 2s linear forwards;
+    }
+
+    @keyframes load-progress {
+      0% { width: 0%; }
+      50% { width: 65%; }
+      100% { width: 100%; }
+    }
+
+    .hero-banner { background-color: var(--hero-bg); text-align: center; padding: 30px 20px 20px 20px; border-bottom: 3px solid var(--primary-color); box-shadow: 0 0 20px rgba(255, 0, 127, 0.4); position: relative; z-index: 2; transition: background 0.4s ease; }
+    .hero-logo { max-width: 220px; margin-bottom: 10px; filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1)); cursor: pointer; transition: transform 0.2s; }
+    .hero-logo:hover { transform: scale(1.05); }
+    .hero-title { font-size: 1.1em; font-weight: bold; margin-bottom: 12px; letter-spacing: 1px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
+    
+    .store-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(37, 211, 102, 0.15);
+      border: 1px solid #25D366;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.85em;
+      font-weight: bold;
+      color: #25D366;
+      margin-bottom: 12px;
+      box-shadow: 0 0 10px rgba(37,211,102,0.3);
+    }
+    .status-dot {
+      width: 10px; height: 10px; background-color: #25D366; border-radius: 50%;
+      box-shadow: 0 0 8px #25D366;
+      animation: pulse-dot 1.5s infinite;
+    }
+    @keyframes pulse-dot {
+      0% { transform: scale(0.9); opacity: 0.7; }
+      50% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(0.9); opacity: 0.7; }
+    }
+
+    .flash-sale-banner {
+      background: linear-gradient(135deg, rgba(255,0,127,0.2) 0%, rgba(0,229,255,0.2) 100%);
+      border: 1px dashed var(--secondary-color);
+      padding: 10px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.85em;
+      font-weight: bold;
+      color: var(--text-color);
+      box-shadow: 0 0 15px rgba(0,229,255,0.2);
+    }
+    .countdown-timer {
+      background: var(--bg-color);
+      border: 1px solid var(--primary-color);
+      padding: 4px 10px;
+      border-radius: 8px;
+      color: var(--secondary-color);
+      font-family: monospace;
+      font-size: 1em;
+      box-shadow: 0 0 8px var(--primary-color);
+    }
+
+    .bcv-box {
+      background: rgba(0, 229, 255, 0.1);
+      border: 1px solid var(--secondary-color);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 15px;
+      border-radius: 20px;
+      font-size: 0.9em;
+      font-weight: bold;
+      color: var(--secondary-color);
+      box-shadow: 0 0 10px rgba(0,229,255,0.2);
+    }
+    .bcv-input {
+      background: var(--bg-color);
+      border: 1px solid var(--primary-color);
+      color: var(--text-color);
+      padding: 4px 8px;
+      border-radius: 10px;
+      width: 90px;
+      text-align: center;
+      font-weight: bold;
+      outline: none;
+    }
+
+    .container { padding: 30px 20px 100px 20px; max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
+    
+    .search-box { text-align: center; margin-bottom: 20px; }
+    .search-input { background: var(--hero-bg); border: 2px solid var(--secondary-color); color: var(--text-color); padding: 10px 20px; width: 80%; max-width: 400px; border-radius: 25px; font-size: 1em; outline: none; box-shadow: 0 0 10px rgba(0,229,255,0.3); }
+    
+    .controles-superiores { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-bottom: 30px; }
+    
+    .filtros { display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 100%; padding-bottom: 10px; justify-content: flex-start; gap: 8px; scrollbar-width: thin; }
+    
+    .btn-filtro { 
+      background: transparent; 
+      color: var(--text-color); 
+      border: 1px solid var(--secondary-color); 
+      padding: 8px 16px; 
+      border-radius: 20px; 
+      cursor: pointer; 
+      font-weight: bold; 
+      transition: all 0.3s ease; 
+      white-space: nowrap; 
+      flex-shrink: 0; 
+      position: relative;
+    }
+    .btn-filtro:hover { background: rgba(0,229,255,0.2); box-shadow: 0 0 10px rgba(0,229,255,0.4); }
+    .btn-filtro.activo { 
+      background: var(--secondary-color); 
+      color: #0d041a; 
+      box-shadow: 0 0 15px var(--secondary-color), inset 0 0 8px rgba(255,255,255,0.6); 
+      border-color: #ffffff;
+    }
+
+    .panel-controles-avanzados { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; width: 100%; max-width: 650px; margin: 0 auto; }
+    .ordenar-select { background: var(--hero-bg); border: 1px solid var(--primary-color); color: var(--text-color); padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; outline: none; box-shadow: 0 0 10px rgba(255,0,127,0.3); }
+
+    .precio-slider-box { background: var(--hero-bg); border: 1px solid var(--secondary-color); padding: 8px 15px; border-radius: 20px; display: inline-flex; align-items: center; gap: 10px; font-size: 0.9em; font-weight: bold; color: var(--secondary-color); box-shadow: 0 0 10px rgba(0,229,255,0.2); }
+    .precio-slider-box input { accent-color: var(--primary-color); cursor: pointer; width: 120px; }
+
+    .destacados-container { margin-bottom: 40px; background: linear-gradient(135deg, var(--hero-bg) 0%, var(--bg-color) 100%); padding: 20px; border-radius: 20px; border: 2px dashed var(--secondary-color); box-shadow: 0 0 20px rgba(0,229,255,0.2); }
+    .destacados-title { color: var(--secondary-color); font-size: 1.4em; font-weight: bold; margin-bottom: 15px; text-align: center; text-shadow: 0 0 8px rgba(0,229,255,0.5); }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+    
+    .card { 
+      background: var(--card-bg); 
+      border-radius: 15px; 
+      padding: 15px; 
+      text-align: center; 
+      box-shadow: 0 10px 20px rgba(0,0,0,0.5); 
+      position: relative; 
+      border: 1px solid var(--border-color); 
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; 
+      cursor: pointer; 
+      animation: card-pop 0.4s ease-out;
+      overflow: hidden;
+    }
+    @keyframes card-pop {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%; width: 200%; height: 200%;
+      background: linear-gradient(0deg, transparent, rgba(255, 0, 127, 0.08), rgba(0, 229, 255, 0.12), transparent);
+      transform: rotate(45deg) translateY(-100%);
+      transition: transform 0.6s ease;
+      pointer-events: none;
+    }
+    .card:hover::before, .card:active::before {
+      transform: rotate(45deg) translateY(100%);
+    }
+
+    .card:hover, .card:active { 
+      transform: translateY(-10px) scale(1.02); 
+      box-shadow: 0 0 25px var(--primary-color), 0 0 45px var(--secondary-color); 
+      border: 1px solid var(--secondary-color); 
+    }
+    .card img { width: 100%; height: 250px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
+    .card-title { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; }
+    
+    .precio-container { display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 3px; }
+    .card-price-old { color: #888; font-size: 0.95em; text-decoration: line-through; }
+    .card-price { color: var(--secondary-color); font-size: 1.2em; font-weight: bold; text-shadow: 0 0 5px rgba(0, 229, 255, 0.5); }
+    .card-bs { color: var(--primary-color); font-size: 0.85em; font-weight: bold; margin-bottom: 8px; }
+    
+    .badge-estado { position: absolute; top: 10px; right: 10px; padding: 5px 12px; font-size: 0.75em; font-weight: bold; border-radius: 20px; z-index: 3; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+    .badge-stock { background-color: #00e5ff; color: #0d041a; box-shadow: 0 0 10px #00e5ff; }
+    .badge-encargo { background-color: #FF007F; color: white; box-shadow: 0 0 10px #FF007F; }
+    .badge-nuevo { background-color: #ffcc00; color: #0d041a; box-shadow: 0 0 10px #ffcc00; }
+    .badge-gamer { background-color: #7b2cbf; color: white; box-shadow: 0 0 10px #7b2cbf; }
+
+    .btn-fav-card {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(0,0,0,0.6);
+      border: 1px solid var(--secondary-color);
+      color: #ff3366;
+      width: 35px; height: 35px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      font-size: 1em;
+      z-index: 3;
+      transition: transform 0.2s;
+    }
+    .btn-fav-card:hover { transform: scale(1.15); background: rgba(255,0,127,0.3); }
+
+    .card-stock-alert { color: #ff3366; font-size: 0.78em; font-weight: bold; background: rgba(255,51,102,0.1); border: 1px solid rgba(255,51,102,0.3); padding: 3px 8px; border-radius: 10px; display: inline-block; margin-top: 5px; }
+
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+    .modal-content { background: var(--hero-bg); padding: 20px; border-radius: 20px; text-align: center; max-width: 90%; width: 400px; border: 2px solid var(--primary-color); box-shadow: 0 0 30px rgba(255,0,127,0.5); position: relative; max-height: 90vh; overflow-y: auto; transition: background 0.4s ease; }
+    .cerrar-modal { position: absolute; top: 10px; right: 15px; font-size: 25px; color: var(--text-color); cursor: pointer; background: none; border: none; font-weight: bold; }
+    .modal-img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
+    .modal-tag-info { display: inline-block; background: rgba(0,229,255,0.15); border: 1px solid var(--secondary-color); color: var(--secondary-color); padding: 4px 10px; border-radius: 10px; font-size: 0.8em; font-weight: bold; margin-bottom: 10px; }
+    
+    .tallas-container { margin: 15px 0; display: none; text-align: left; }
+    .tallas-container label { display: block; color: var(--secondary-color); font-size: 0.9em; font-weight: bold; margin-bottom: 5px; }
+    .talla-select { background: var(--bg-color); border: 1px solid var(--secondary-color); color: var(--text-color); padding: 8px; border-radius: 10px; width: 100%; font-weight: bold; outline: none; text-align: center; }
+    .link-guia-tallas { color: var(--secondary-color); font-size: 0.8em; text-decoration: underline; cursor: pointer; margin-top: 5px; display: inline-block; }
+
+    .btn-comprar { background: var(--primary-color); color: white; border: none; padding: 10px 20px; font-size: 1.1em; font-weight: bold; border-radius: 30px; cursor: pointer; margin-top: 15px; box-shadow: 0 0 10px var(--primary-color); width: 100%; }
+    .btn-compartir { background: #25D366; color: white; border: none; padding: 8px 15px; font-size: 0.9em; font-weight: bold; border-radius: 20px; cursor: pointer; margin-top: 8px; box-shadow: 0 0 8px #25D366; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; }
+
+    .cupon-box { display: flex; gap: 8px; margin-bottom: 12px; }
+    .cupon-input { flex-grow: 1; background: var(--bg-color); border: 1px solid var(--secondary-color); color: var(--text-color); padding: 8px; border-radius: 10px; font-size: 0.9em; outline: none; text-transform: uppercase; }
+    .btn-cupon { background: var(--secondary-color); color: #0d041a; border: none; padding: 0 15px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 0.85em; }
+
+    .recibo-box { background: var(--bg-color); border: 2px dashed var(--secondary-color); padding: 15px; border-radius: 12px; text-align: left; font-family: monospace; font-size: 0.85em; color: var(--secondary-color); margin-bottom: 15px; box-shadow: inset 0 0 10px rgba(0,229,255,0.2); }
+    .recibo-line { display: flex; justify-content: space-between; margin-bottom: 5px; }
+
+    .faq-item { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; margin-bottom: 10px; text-align: left; }
+    .faq-question { color: var(--secondary-color); font-weight: bold; font-size: 0.95em; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
+    .faq-answer { color: var(--text-color); font-size: 0.88em; line-height: 1.4; opacity: 0.85; }
+
+    .cart-item-row { display: flex; align-items: center; justify-content: space-between; background: var(--card-bg); padding: 10px; border-radius: 10px; margin-bottom: 10px; border: 1px solid var(--border-color); }
+    .cart-item-img { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; margin-right: 10px; }
+    .cart-item-info { flex-grow: 1; text-align: left; font-size: 0.9em; }
+    .cart-item-del { background: #ff3366; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.8em; }
+
+    .sugerencia-input { width: 100%; background: var(--bg-color); border: 1px solid var(--secondary-color); color: var(--text-color); padding: 10px; border-radius: 10px; margin-bottom: 12px; box-sizing: border-box; outline: none; }
+    .btn-sugerencia { background: var(--secondary-color); color: #0d041a; border: none; padding: 10px 20px; font-weight: bold; border-radius: 20px; cursor: pointer; width: 100%; box-shadow: 0 0 10px var(--secondary-color); }
+
+    .reviews-section { background: var(--hero-bg); margin-top: 40px; padding: 30px 20px; border-radius: 15px; border: 1px solid var(--secondary-color); box-shadow: 0 0 15px rgba(0,229,255,0.2); transition: background 0.4s ease; }
+    .review-card { background: var(--card-bg); padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid rgba(255,0,127,0.3); position: relative; }
+    .review-author { font-weight: bold; color: var(--secondary-color); margin-bottom: 5px; }
+    .review-stars { color: #ffcc00; margin-bottom: 8px; }
+    .review-text { font-size: 0.95em; line-height: 1.4; }
+    .btn-del-review { position: absolute; top: 10px; right: 10px; background: #ff3366; color: white; border: none; border-radius: 5px; padding: 3px 8px; font-size: 0.75em; cursor: pointer; }
+    .review-form { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+
+    .info-section { background: var(--hero-bg); margin-top: 40px; margin-bottom: 60px; padding: 30px 20px; border-radius: 15px; border: 1px solid var(--primary-color); box-shadow: 0 0 15px rgba(255,0,127,0.2); transition: background 0.4s ease; }
+    .info-title { color: var(--secondary-color); font-size: 1.4em; margin-bottom: 20px; text-align: center; }
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; font-size: 0.95em; line-height: 1.5; }
+    .info-card { background: var(--card-bg); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,0,127,0.3); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+    .info-card h4 { color: var(--secondary-color); margin-top: 0; margin-bottom: 12px; font-size: 1.1em; display: flex; align-items: center; gap: 8px; }
+    
+    .badge-metodo { display: inline-flex; align-items: center; gap: 6px; background: rgba(0, 229, 255, 0.1); border: 1px solid var(--secondary-color); padding: 4px 10px; border-radius: 8px; font-size: 0.85em; font-weight: bold; color: var(--secondary-color); margin: 3px; }
+    .badge-envio { display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 0, 127, 0.15); border: 1px solid var(--primary-color); padding: 4px 10px; border-radius: 8px; font-size: 0.85em; font-weight: bold; color: var(--text-color); margin: 3px; }
+
+    .cart-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--hero-bg); border-top: 2px solid var(--secondary-color); padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; z-index: 1500; box-shadow: 0 -5px 20px rgba(0,229,255,0.3); backdrop-filter: blur(5px); flex-wrap: wrap; gap: 8px; cursor: pointer; transition: background 0.4s ease; }
+    .cart-info { font-weight: bold; font-size: 1em; color: var(--secondary-color); }
+    .cart-buttons { display: flex; gap: 8px; }
+    .btn-checkout { background: #25D366; color: white; border: none; padding: 8px 15px; border-radius: 15px; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px #25D366; font-size: 0.9em; }
+    .btn-clear { background: #ff3366; color: white; border: none; padding: 8px 12px; border-radius: 15px; font-weight: bold; cursor: pointer; font-size: 0.9em; }
+
+    /* MENÚ FLOTANTE HORIZONTAL COMPACTO (CARRUSEL INFERIOR) */
+    .floating-buttons { position: fixed; bottom: 65px; right: 15px; z-index: 1000; display: flex; align-items: center; gap: 8px; }
+    
+    .menu-desplegable-horizontal {
+      display: flex;
+      gap: 8px;
+      max-width: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-space: nowrap;
+      transition: max-width 0.4s ease, opacity 0.4s ease, padding 0.4s ease;
+      opacity: 0;
+      padding: 0;
+      background: rgba(17, 5, 44, 0.92);
+      backdrop-filter: blur(8px);
+      border-radius: 30px;
+      border: 1px solid transparent;
+      align-items: center;
+    }
+    .menu-desplegable-horizontal.abierto {
+      max-width: 320px;
+      opacity: 1;
+      padding: 6px 12px;
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 20px rgba(0,229,255,0.3);
+    }
+
+    .btn-menu-principal { background-color: var(--primary-color); color: white; border-radius: 50%; width: 48px; height: 48px; display: flex; justify-content: center; align-items: center; font-size: 20px; cursor: pointer; border: 2px solid var(--secondary-color); box-shadow: 0 0 15px var(--primary-color); flex-shrink: 0; }
+
+    .mini-btn { width: 38px; height: 38px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 15px; text-decoration: none; cursor: pointer; border: none; flex-shrink: 0; box-shadow: 0 0 8px rgba(0,0,0,0.5); transition: transform 0.2s; }
+    .mini-btn:hover { transform: scale(1.15); }
+
+    .whatsapp-btn { background-color: #25D366; color: white; }
+    .instagram-btn { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); color: white; }
+    .tiktok-btn { background-color: #000000; color: white; border: 1px solid #00e5ff; }
+    .sugerencia-btn { background-color: var(--primary-color); color: white; }
+    .faq-btn { background-color: var(--secondary-color); color: #0d041a; font-weight: bold; }
+    .theme-btn { background-color: #ffcc00; color: #0d041a; font-weight: bold; }
+    .gacha-btn { background-color: #9900ff; color: white; }
+    .chest-btn { background-color: #ff9900; color: #0d041a; font-weight: bold; }
+    .admin-btn { background-color: #ff3366; color: white; }
+    .music-btn { background-color: #ff0055; color: white; }
+    .gamer-profile-btn { background-color: #00ffcc; color: #0d041a; font-weight: bold; }
+    .fav-floating-btn { background-color: #ff3366; color: white; position: relative; }
+    .fav-badge-count { position: absolute; top: -4px; right: -4px; background: #00e5ff; color: #0d041a; font-size: 0.6em; font-weight: bold; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+    .bg-elements { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+    .float-item { position: absolute; top: -10%; animation: fall linear infinite; opacity: 0.7; }
+    .sakura { font-size: 22px; filter: drop-shadow(0 0 5px var(--primary-color)); }
+    .gamer { font-size: 28px; filter: drop-shadow(0 0 8px var(--secondary-color)); opacity: 0.5; }
+    @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
+    .i1 { left: 5%; animation-duration: 9s; animation-delay: 0s; } .i2 { left: 15%; animation-duration: 14s; animation-delay: 2s; } .i3 { left: 25%; animation-duration: 10s; animation-delay: 4s; } .i4 { left: 35%; animation-duration: 13s; animation-delay: 1s; } .i5 { left: 45%; animation-duration: 11s; animation-delay: 5s; } .i6 { left: 55%; animation-duration: 15s; animation-delay: 0s; } .i7 { left: 65%; animation-duration: 9s; animation-delay: 3s; } .i8 { left: 75%; animation-duration: 12s; animation-delay: 1s; } .i9 { left: 85%; animation-duration: 16s; animation-delay: 4s; } .i10 { left: 95%; animation-duration: 10s; animation-delay: 2s; }
   </style>
 </head>
 <body>
 
-<div class="store-header">
-  <div class="store-logo-area">
-    <img src="logo.webp" alt="Logo" class="store-logo">
-    <div class="store-name">Sakura Gameverse</div>
-  </div>
-  <div class="header-actions">
-    <a href="admin.html" class="btn-icon-header"><i class="fas fa-cog"></i> Admin</a>
-  </div>
-</div>
-
-<div class="store-container">
-  <!-- BANNER TASA BCV -->
-  <div class="banner-bcv">
-    <h4>⚡ Tasa Oficial BCV del Día</h4>
-    <span id="labelTasaBcv">Bs. 0.00</span>
-  </div>
-
-  <!-- CATÁLOGO DE PRODUCTOS DINÁMICO -->
-  <div class="productos-grid" id="catalogoTienda">
-    <!-- Se llena automáticamente con los productos del Admin -->
+<!-- BARRA DE NOTIFICACIÓN SUPERIOR -->
+<div id="socialProofContainer">
+  <div class="sp-icon"><i class="fas fa-shopping-bag"></i></div>
+  <div>
+    <span class="sp-text" id="spTexto">¡Gabriel S. compró un Tomo de Manga!</span> 
+    <span class="sp-sub" id="spLugar">(Bejuma)</span>
   </div>
 </div>
 
-<!-- BOTÓN CARRITO -->
-<div class="carrito-flotante" onclick="verCarrito()">
-  <i class="fas fa-shopping-cart"></i> Carrito (<span id="contadorCarrito">0</span>)
+<div class="ticker-bar">
+  <div class="ticker-content">
+    🔥 ¡Bienvenidos a Sakura Gameverse! Envíos seguros a todo el país exclusivamente por ZOOM y MRW 📦 | 🎮 Cupón activo: OTAKU10 | ⚡ ¡Abre el menú flotante inferior para cofre, música y gacha! 🌸
+  </div>
 </div>
+
+<div id="modalPromoFlash" class="modal" style="display: flex;">
+  <div class="modal-content" style="border: 2px solid var(--secondary-color); box-shadow: 0 0 40px rgba(0,229,255,0.6);">
+    <button class="cerrar-modal" onclick="cerrarPromoFlash()">×</button>
+    <div style="font-size: 40px; margin-bottom: 10px;">🎁</div>
+    <h2 style="color: var(--secondary-color); margin-top: 0;">¡Bienvenido a Sakura Gameverse!</h2>
+    <p style="font-size: 0.95em; line-height: 1.5; opacity: 0.9; margin-bottom: 15px;">
+      Usa el código <strong>OTAKU10</strong> o abre el menú flotante inferior para reclamar tu <strong>Cofre Diario</strong> y girar la ruleta Gacha. Entregas en <strong>Bejuma y Miranda</strong> y envíos por <strong>ZOOM y MRW</strong>.
+    </p>
+    <button class="btn-sugerencia" onclick="cerrarPromoFlash()">¡A Explorar Catálogo! 🚀</button>
+  </div>
+</div>
+
+<!-- PANEL DE ADMINISTRACIÓN DE DATOS DE PAGO (EDITABLE) -->
+<div id="modalAdminPago" class="modal">
+  <div class="modal-content" style="width: 440px; border: 2px solid #ff3366;">
+    <button class="cerrar-modal" onclick="cerrarAdminModal()">×</button>
+    <div style="font-size: 40px; margin-bottom: 5px;">⚙️</div>
+    <h2 style="color: #ff3366; margin-top: 0;">Panel Admin: Datos de Pago</h2>
+    <p style="font-size: 0.85em; opacity: 0.9; margin-bottom: 15px;">Edita tus datos aquí para que tus clientes los copien con un toque:</p>
+    
+    <div style="text-align: left; font-size: 0.9em; display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;">
+      <label>Banco:</label>
+      <input type="text" id="adminBanco" class="sugerencia-input" value="Banesco (0134)">
+      
+      <label>Teléfono Pago Móvil:</label>
+      <input type="text" id="adminTelefono" class="sugerencia-input" value="0424-4970576">
+      
+      <label>Cédula / RIF:</label>
+      <input type="text" id="adminCedula" class="sugerencia-input" value="V-27000000">
+
+      <label>Binance Pay / Correo / USDT:</label>
+      <input type="text" id="adminBinance" class="sugerencia-input" value="sakuragameverse@gmail.com">
+    </div>
+
+    <button class="btn-sugerencia" style="background: #ff3366; color: white;" onclick="guardarDatosAdmin()">Guardar Datos 💾</button>
+  </div>
+</div>
+
+<!-- MODAL COFRE DIARIO -->
+<div id="modalCofreDiario" class="modal">
+  <div class="modal-content" style="width: 420px; border: 2px solid #ff9900;">
+    <button class="cerrar-modal" onclick="cerrarCofreModal()">×</button>
+    <div style="font-size: 45px; margin-bottom: 5px;">📦✨</div>
+    <h2 style="color: #ff9900; margin-top: 0;">Cofre de Recompensa Diaria</h2>
+    <p id="mensajeCofreInfo" style="font-size: 0.9em; opacity: 0.9; margin-bottom: 15px;">¡Abre tu cofre una vez al día para ganar bonos de XP y cupones sorpresa!</p>
+    <div id="cofreResultado" style="background: var(--bg-color); border: 2px dashed #ff9900; padding: 20px; border-radius: 12px; font-size: 1.1em; font-weight: bold; color: var(--secondary-color); margin-bottom: 15px;">
+      Cofre listo para abrir 🗝️
+    </div>
+    <button class="btn-sugerencia" id="btnReclamarCofre" style="background: #ff9900; color: #0d041a;" onclick="abrirCofreDiario()">¡Abrir Cofre Diario! 🔓</button>
+  </div>
+</div>
+
+<!-- MODAL GACHA VISUAL ANIMADO -->
+<div id="modalGacha" class="modal">
+  <div class="modal-content" style="width: 420px; border: 2px solid #9900ff;">
+    <button class="cerrar-modal" onclick="cerrarGachaModal()">×</button>
+    <div style="font-size: 40px; margin-bottom: 5px;">🎰</div>
+    <h2 style="color: #ffcc00; margin-top: 0;">Ruleta Gacha Otaku</h2>
+    <p style="font-size: 0.9em; opacity: 0.9; margin-bottom: 15px;">¡Prueba tu suerte y descubre tu recompensa épica!</p>
+    <div id="gachaResultado" style="background: var(--bg-color); border: 2px dashed #9900ff; padding: 20px; border-radius: 12px; font-size: 1.1em; font-weight: bold; color: var(--secondary-color); margin-bottom: 15px; min-height: 60px; display: flex; align-items: center; justify-content: center;">
+      Presiona el botón para girar 🎁
+    </div>
+    <button class="btn-sugerencia" style="background: #9900ff; color: white;" onclick="girarRuletaGacha()">¡Girar Ruleta Gacha! ⚡</button>
+  </div>
+</div>
+
+<!-- MODAL SELECTOR DE TEMA -->
+<div id="modalTemas" class="modal">
+  <div class="modal-content" style="width: 400px; border: 2px solid #ffcc00;">
+    <button class="cerrar-modal" onclick="cerrarTemasModal()">×</button>
+    <div style="font-size: 40px; margin-bottom: 5px;">🎨</div>
+    <h2 style="color: #ffcc00; margin-top: 0;">Selecciona tu Estilo</h2>
+    <p style="font-size: 0.9em; opacity: 0.9; margin-bottom: 15px;">Personaliza la estética visual de tu tienda:</p>
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <button class="btn-sugerencia" style="background: #FF007F; color: white;" onclick="cambiarTema('theme-rosa')">🌸 Rosa Cyberpunk (Default)</button>
+      <button class="btn-sugerencia" style="background: #00bfff; color: #0d041a;" onclick="cambiarTema('theme-azul')">⚡ Azul Neón Matrix</button>
+      <button class="btn-sugerencia" style="background: #b000ff; color: white;" onclick="cambiarTema('theme-purpura')">💜 Púrpura Anime</button>
+      <button class="btn-sugerencia" style="background: #ffaa00; color: #0d041a;" onclick="cambiarTema('theme-overdrive')">🔥 Naranja Overdrive</button>
+    </div>
+  </div>
+</div>
+
+<div id="modalGamerProfile" class="modal">
+  <div class="modal-content" style="width: 420px; border: 2px solid #00ffcc;">
+    <button class="cerrar-modal" onclick="cerrarGamerProfileModal()">×</button>
+    <div style="font-size: 40px; margin-bottom: 5px;">👤</div>
+    <h2 style="color: #00ffcc; margin-top: 0;">Perfil Gamer & XP</h2>
+    <p style="font-size: 0.9em; opacity: 0.9; margin-bottom: 10px;">Personaliza tu GamerTag y sube de rango en Sakura Gameverse:</p>
+    <input type="text" id="inputGamerTag" class="sugerencia-input" placeholder="Tu GamerTag (Ej: Kirito_VE)">
+    <div style="background: var(--bg-color); padding: 12px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #00ffcc; text-align: left; font-size: 0.9em;">
+      <div>🏆 <strong>Rango actual:</strong> <span id="lblRango" style="color: #ffcc00;">Novato Otaku</span></div>
+      <div>⚡ <strong>Puntos XP:</strong> <span id="lblXp" style="color: var(--secondary-color);">100 XP</span></div>
+    </div>
+    <button class="btn-sugerencia" style="background: #00ffcc; color: #0d041a;" onclick="guardarGamerTag()">Guardar GamerTag 💾</button>
+  </div>
+</div>
+
+<div id="modalGuiaTallas" class="modal">
+  <div class="modal-content" style="width: 450px;">
+    <button class="cerrar-modal" onclick="cerrarGuiaTallasModal()">×</button>
+    <h2 style="color: var(--secondary-color); margin-top: 0;">📏 Guía de Tallas (Hoodies & Ropa)</h2>
+    <p style="font-size: 0.85em; opacity: 0.9; margin-bottom: 12px;">Medidas aproximadas en centímetros para asegurar tu ajuste perfecto:</p>
+    <div style="background: var(--bg-color); border: 1px solid var(--secondary-color); border-radius: 10px; padding: 10px; font-size: 0.85em; text-align: left; margin-bottom: 15px;">
+      <div class="recibo-line"><strong>TALLA S:</strong><span>Ancho: 50cm | Alto: 68cm</span></div>
+      <div class="recibo-line"><strong>TALLA M:</strong><span>Ancho: 53cm | Alto: 70cm</span></div>
+      <div class="recibo-line"><strong>TALLA L:</strong><span>Ancho: 56cm | Alto: 72cm</span></div>
+      <div class="recibo-line"><strong>TALLA XL:</strong><span>Ancho: 59cm | Alto: 74cm</span></div>
+      <div class="recibo-line"><strong>TALLA XXL:</strong><span>Ancho: 62cm | Alto: 76cm</span></div>
+    </div>
+    <button class="btn-sugerencia" onclick="cerrarGuiaTallasModal()">¡Entendido! ✨</button>
+  </div>
+</div>
+
+<div id="splash-screen">
+  <div class="splash-box">
+    <img src="logo.webp" alt="Logo" class="splash-logo" onclick="activarEasterEggLogo()" title="¡Haz clic aquí...">
+    <div id="loadingText" class="loading-text">Cargando texturas...</div>
+    <div class="loading-bar-container">
+      <div class="loading-bar"></div>
+    </div>
+  </div>
+</div>
+
+<div class="bg-elements">
+  <div class="float-item sakura i1">🌸</div><div class="float-item gamer i2">🎮</div><div class="float-item sakura i3">🌸</div><div class="float-item gamer i4">🕹️</div><div class="float-item sakura i5">🌸</div><div class="float-item sakura i6">🌸</div><div class="float-item gamer i7">🎮</div><div class="float-item sakura i8">🌸</div><div class="float-item gamer i9">🕹️</div><div class="float-item sakura i10">🌸</div>
+</div>
+
+<div class="hero-banner">
+  <img src="logo.webp" alt="Sakura Gameverse" class="hero-logo" onclick="activarEasterEggLogo()" title="¡Haz clic aquí para modo secreto!">
+  
+  <div class="store-status-badge">
+    <div class="status-dot"></div> Pedidos Abiertos (Bejuma & Miranda)
+  </div>
+
+  <div class="hero-title">✨ Bienvenidos a Sakura Gameverse ✨<br>Donde tu pasión por el gaming nunca hace game over. 👾🌸</div>
+  
+  <div class="flash-sale-banner">
+    <i class="fas fa-bolt" style="color: #ffcc00; font-size: 1.2em;"></i>
+    <div>
+      <strong>¡OFERTA RELÁMPAGO ACTIVA!</strong><br>
+      Termina en: <span id="countdownTimer" class="countdown-timer">12:00:00</span>
+    </div>
+  </div>
+  <br>
+
+  <div class="bcv-box">
+    <i class="fas fa-coins"></i> Tasa BCV (Bs/$): 
+    <input type="number" id="inputTasaBcv" class="bcv-input" step="0.01" value="854.46" oninput="cambiarTasaBcvManual()">
+  </div>
+</div>
+
+<div class="container">
+  <div class="search-box">
+    <input type="text" id="buscador" class="search-input" placeholder="🔍 Buscar manga, hoodie, figura..." onkeyup="buscarProductos()">
+  </div>
+
+  <div class="controles-superiores">
+    <div class="filtros">
+      <button class="btn-filtro activo" onclick="filtrar('todos', event)">🌟 Todos</button>
+      <button class="btn-filtro" onclick="filtrar('mangas', event)">📚 Mangas</button>
+      <button class="btn-filtro" onclick="filtrar('ropa', event)">👕 Ropa / Hoodies</button>
+      <button class="btn-filtro" onclick="filtrar('mandos', event)">🎮 Mandos PC</button>
+      <button class="btn-filtro" onclick="filtrar('teclados', event)">⌨️ Teclados</button>
+      <button class="btn-filtro" onclick="filtrar('audifonos', event)">🎧 Audífonos</button>
+      <button class="btn-filtro" onclick="filtrar('figuras', event)">🗿 Figuras</button>
+      <button class="btn-filtro" onclick="filtrar('peluches', event)">🧸 Peluches</button>
+      <button class="btn-filtro" onclick="filtrar('cartas', event)">🃏 Cartas TCG</button>
+      <button class="btn-filtro" onclick="filtrar('katanas', event)">⚔️ Katanas</button>
+      <button class="btn-filtro" onclick="filtrar('lamparas', event)">💡 Lámparas</button>
+      <button class="btn-filtro" style="border-color: #00e5ff; color: #00e5ff;" onclick="filtrarEstado('inmediato', event)">📦 Stock Inmediato</button>
+      <button class="btn-filtro" style="border-color: #FF007F; color: #FF007F;" onclick="filtrarEstado('encargo', event)">⚡ Por Encargo</button>
+    </div>
+
+    <div class="panel-controles-avanzados">
+      <select id="selectOrden" class="ordenar-select" onchange="ordenarProductos()">
+        <option value="defecto">⚡ Ordenar por: Destacados</option>
+        <option value="menor">📉 Precio: Menor a Mayor</option>
+        <option value="mayor">📈 Precio: Mayor a Menor</option>
+      </select>
+
+      <div class="precio-slider-box">
+        <span>💵 Máx: $<span id="lblPrecioMax">1000</span></span>
+        <input type="range" id="sliderPrecio" min="1" max="1000" step="10" value="1000" oninput="filtrarPorPrecio()">
+      </div>
+    </div>
+  </div>
+
+  <div class="destacados-container">
+    <div class="destacados-title">🔥 Recomendados & Destacados para Ti 🚀</div>
+    <div class="grid" id="gridDestacados">
+      <div class="card item-producto" data-nombre="tomo manga original" data-categoria="mangas" data-estado="inmediato" data-precio="12.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Tomo Manga Original (Español)', 12.00, 'Edición oficial en español de alta calidad. ¡Colecciona tus arcos favoritos!', 'Envío Inmediato 📦', false)">
+        <button class="btn-fav-card" onclick="toggleFavorito(event, 'Tomo Manga Original', 12.00, 'figuras.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
+        <div class="badge-estado badge-nuevo">🔥 Oferta</div>
+        <img src="figuras.jpg" alt="Manga">
+        <div class="card-title">Tomo Manga Original</div>
+        <div class="precio-container">
+          <span class="card-price-old">$16.00</span>
+          <span class="card-price">$12.00</span>
+        </div>
+        <div class="card-bs" data-usd="12.00">≈ Bs. 0.00</div>
+        <div class="card-stock-alert">🔥 4 personas viendo esto ahora</div>
+      </div>
+
+      <div class="card item-producto" data-nombre="hoodie anime oversize" data-categoria="ropa" data-estado="inmediato" data-precio="25.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Hoodie Oversize Anime', 25.00, 'Algodón afelpado de alta calidad, diseño exclusivo estampado en alta definición.', 'Envío Inmediato 📦', true)">
+        <button class="btn-fav-card" onclick="toggleFavorito(event, 'Hoodie Oversize Anime', 25.00, 'figuras.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
+        <div class="badge-estado badge-nuevo">🔥 Nuevo</div>
+        <img src="figuras.jpg" alt="Hoodie">
+        <div class="card-title">Hoodie Oversize Anime</div>
+        <div class="precio-container">
+          <span class="card-price-old">$32.00</span>
+          <span class="card-price">$25.00</span>
+        </div>
+        <div class="card-bs" data-usd="25.00">≈ Bs. 0.00</div>
+        <div class="card-stock-alert">⚠️ ¡Solo quedan 2 disponibles!</div>
+      </div>
+    </div>
+  </div>
+  
+  <h2 style="color: var(--primary-color); text-align: center; margin-bottom: 20px;">📦 Catálogo General</h2>
+  <div class="grid" id="catalogo">
+    <div class="card item-producto" data-nombre="tomo manga original" data-categoria="mangas" data-estado="inmediato" data-precio="12.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Tomo Manga Original (Español)', 12.00, 'Edición oficial en español de alta calidad. ¡Colecciona tus arcos favoritos!', 'Envío Inmediato 📦', false)">
+      <button class="btn-fav-card" onclick="toggleFavorito(event, 'Tomo Manga Original', 12.00, 'figuras.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
+      <div class="badge-estado badge-nuevo">🔥 Oferta</div>
+      <img src="figuras.jpg" alt="Manga">
+      <div class="card-title">Tomo Manga Original</div>
+      <div class="precio-container">
+        <span class="card-price-old">$16.00</span>
+        <span class="card-price">$12.00</span>
+      </div>
+      <div class="card-bs" data-usd="12.00">≈ Bs. 0.00</div>
+      <div class="card-stock-alert">🔥 Alta demanda en Bejuma</div>
+    </div>
+
+    <div class="card item-producto" data-nombre="caja booster cartas tcg pokemon" data-categoria="cartas" data-estado="inmediato" data-precio="40.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('accesorios.jpeg', 'Booster Box Cartas TCG', 40.00, 'Caja de sobres coleccionables TCG. ¡Encuentra cartas ultra raras para tu mazo!', 'Envío Inmediato 📦', false)">
+      <button class="btn-fav-card" onclick="toggleFavorito(event, 'Booster Box Cartas TCG', 40.00, 'accesorios.jpeg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
+      <div class="badge-estado badge-gamer">🃏 TCG</div>
+      <img src="accesorios.jpeg" alt="Cartas TCG">
+      <div class="card-title">Booster Box Cartas TCG</div>
+      <div class="precio-container">
+        <span class="card-price-old">$50.00</span>
+        <span class="card-price">$40.00</span>
+      </div>
+      <div class="card-bs" data-usd="40.00">≈ Bs. 0.00</div>
+      <div class="card-stock-alert">⚠️ ¡Quedan 3 en stock!</div>
+    </div>
+
+    <div class="card item-producto" data-nombre="hoodie anime oversize" data-categoria="ropa" data-estado="inmediato" data-precio="25.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Hoodie Oversize Anime', 25.00, 'Algodón afelpado de alta calidad, diseño exclusivo estampado en alta definición.', 'Envío Inmediato 📦', true)">
+      <button class="btn-fav-card" onclick="toggleFavorito(event, 'Hoodie Oversize Anime', 25.00, 'figuras.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
+      <div class="badge-estado badge-nuevo">🔥 Nuevo</div>
+      <img src="figuras.jpg" alt="Hoodie">
+      <div class="card-title">Hoodie Oversize Anime</div>
+      <div class="precio-container">
+        <span class="card-price-old">$32.00</span>
+        <span class="card-price">$25.00</span>
+      </div>
+      <div class="card-bs" data-usd="25.00">≈ Bs. 0.00</div>
+      <div class="card-stock-alert">⚠️ ¡Solo quedan 2 disponibles!</div>
+    </div>
+
+    <div class="card item-producto" data-nombre="mando gamer inalambrico pc" data-categoria="mandos" data-estado="inmediato" data-precio="28.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('lamparas.jpg', 'Mando Pro Inalámbrico PC', 28.00, 'Alta precisión, gatillos sensibles y batería de larga duración. Compatible con PC.', 'Envío Inmediato 📦', false)">
+      <button class="btn-fav-card" onclick="toggleFavorito(event, 'Mando Pro Inalámbrico PC', 28.00, 'lamparas.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
+      <div class="badge-estado badge-gamer">🎮 Pro Gaming</div>
+      <img src="lamparas.jpg" alt="Mando">
+      <div class="card-title">Mando Pro Inalámbrico PC</div>
+      <div class="precio-container">
+        <span class="card-price-old">$35.00</span>
+        <span class="card-price">$28.00</span>
+      </div>
+      <div class="card-bs" data-usd="28.00">≈ Bs. 0.00</div>
+      <div class="card-stock-alert">🔥 6 personas lo tienen en el carrito</div>
+    </div>
+
+    <div class="card item-producto" data-nombre="teclado mecanico gamer" data-categoria="teclados" data-estado="inmediato" data-precio="35.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('lamparas.jpg', 'Teclado Mecánico RGB', 35.00, 'Switches mecánicos, iluminación RGB y respuesta ultra rápida para gaming competitivo.', 'Envío Inmediato 📦', false)">
+      <button class="btn-fav-card" onclick="toggleFavorito(event, 'Teclado Mecánico RGB', 35.00, 'lamparas.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
+      <div class="badge-estado badge-stock">Stock</div>
+      <img src="lamparas.jpg" alt="Teclado">
+      <div class="card-title">Teclado Mecánico RGB</div>
+      <div class="precio-container">
+        <span class="card-price-old">$45.00</span>
+        <span class="card-price">$35.00</span>
+      </div>
+      <div class="card-bs" data-usd="35.00">≈ Bs. 0.00</div>
+      <div class="card-stock-alert">⚠️ ¡Quedan 3 unidades!</div>
+    </div>
+
+    <div class="card item-producto" data-nombre="audifonos gamer surround" data-categoria="audifonos" data-estado="inmediato" data-precio="30.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('accesorios.jpeg', 'Audífonos Gamer Surround', 30.00, 'Sonido envolvente 7.1, micrófono con cancelación de ruido y almohadillas ultra cómodas.', 'Envío Inmediato 📦', false)">
+      <button class="btn-fav-card" onclick="toggleFavorito(event, 'Audífonos Gamer Surround', 30.00, 'accesorios.jpeg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
+      <div class="badge-estado badge-stock">Stock</div>
+      <img src="accesorios.jpeg" alt="Audífonos">
+      <div class="card-title">Audífonos Gamer Surround</div>
+      <div class="precio-container">
+        <span class="card-price-old">$38.00</span>
+        <span class="card-price">$30.00</span>
+      </div>
+      <div class="card-bs" data-usd="30.00">≈ Bs. 0.00</div>
+      <div class="card-stock-alert">⚠️ ¡Últimas piezas!</div>
+    </div>
+
+    <div class="card item-producto" data-nombre="figura de coleccion" data-categoria="figuras" data-estado="inmediato" data-precio="35.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Figura de Colección', 35.00, '¡Una figura épica para tu repisa! Detalles increíbles y acabados premium.', 'Envío Inmediato 📦', false)">
+      <button class="btn-fav-card" onclick="toggleFavorito(event, 'Figura de Colección', 35.00, 'figuras.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
+      <div class="badge-estado badge-stock">Stock</div>
+      <img src="figuras.jpg" alt="Figura">
+      <div class="card-title">Figura de Colección</div>
+      <div class="precio-container">
+        <span class="card-price-old">$45.00</span>
+        <span class="card-price">$35.00</span>
+      </div>
+      <div class="card-bs" data-usd="35.00">≈ Bs. 0.00</div>
+      <div class="card-stock-alert">⚠️ ¡Stock Limitado!</div>
+    </div>
+
+    <div class="card item-producto" data-nombre="peluche exclusivo" data-categoria="peluches" data-estado="encargo" data-precio="20.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('peluche.jpg', 'Peluche Exclusivo', 20.00, 'Súper suave y kawaii. El compañero perfecto para tus largas noches de gaming.', 'Disponible por Encargo (100% inicial)', false)">
+      <button class="btn-fav-card" onclick="toggleFavorito(event, 'Peluche Exclusivo', 20.00, 'peluche.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
+      <div class="badge-estado badge-encargo">Por Encargo</div>
+      <img src="peluche.jpg" alt="Peluche">
+      <div class="card-title">Peluche Exclusivo</div>
+      <div class="precio-container">
+        <span class="card-price-old">$25.00</span>
+        <span class="card-price">$20.00</span>
+      </div>
+      <div class="card-bs" data-usd="20.00">≈ Bs. 0.00</div>
+      <div class="card-stock-alert">⚡ Modalidad Encargo</div>
+    </div>
+
+    <div class="card item-producto" data-nombre="katana replica anime" data-categoria="katanas" data-estado="encargo" data-precio="45.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('katanas.jpg', 'Katana Replica Anime', 45.00, 'Replica a escala real. Perfecta para cosplay o para darle un toque épico a tu cuarto.', 'Disponible por Encargo (100% inicial)', false)">
+      <button class="btn-fav-card" onclick="toggleFavorito(event, 'Katana Replica Anime', 45.00, 'katanas.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
+      <div class="badge-estado badge-encargo">Por Encargo</div>
+      <img src="katanas.jpg" alt="Katanas">
+      <div class="card-title">Katana Replica Anime</div>
+      <div class="precio-container">
+        <span class="card-price-old">$55.00</span>
+        <span class="card-price">$45.00</span>
+      </div>
+      <div class="card-bs" data-usd="45.00">≈ Bs. 0.00</div>
+      <div class="card-stock-alert">⚡ Modalidad Encargo</div>
+    </div>
+  </div>
+
+  <div class="reviews-section">
+    <div class="info-title">💬 Reseñas de la Comunidad 🌟</div>
+    <div id="contenedorReviews"></div>
+    
+    <div class="review-form">
+      <h3 style="color: var(--primary-color); font-size: 1.1em; margin: 10px 0 5px 0;">Deja tu opinión:</h3>
+      <input type="text" id="revNombre" class="sugerencia-input" placeholder="Tu Nombre / GamerTag">
+      <select id="revEstrellas" class="sugerencia-input">
+        <option value="⭐⭐⭐⭐⭐">⭐⭐⭐⭐⭐ (5/5 Excelente)</option>
+        <option value="⭐⭐⭐⭐">⭐⭐⭐⭐ (4/5 Muy bueno)</option>
+        <option value="⭐⭐⭐">⭐⭐⭐ (3/5 Normal)</option>
+      </select>
+      <textarea id="revTexto" class="sugerencia-input" rows="2" placeholder="¿Qué te pareció el servicio o la mercancía?"></textarea>
+      <button class="btn-sugerencia" onclick="agregarReview()">Publicar Reseña 🚀</button>
+    </div>
+  </div>
+
+  <div class="info-section">
+    <div class="info-title">✨ Información, Pagos y Envíos 📦</div>
+    <div class="info-grid">
+      <div class="info-card">
+        <h4><i class="fas fa-credit-card" style="color: var(--secondary-color);"></i> Métodos de Pago</h4>
+        <div style="margin-top: 8px;" id="cajaDatosPagoInfo"></div>
+        <button class="btn-sugerencia" style="margin-top: 10px; padding: 6px; font-size: 0.85em;" onclick="copiarDatosPago()"><i class="fas fa-copy"></i> Copiar Datos de Pago</button>
+      </div>
+      <div class="info-card">
+        <h4><i class="fas fa-truck-fast" style="color: var(--primary-color);"></i> Envíos Nacionales</h4>
+        Despachos seguros y embalaje protegido a todo el país exclusivamente a través de:<br>
+        <div style="margin-top: 10px;">
+          <span class="badge-envio"><i class="fas fa-box"></i> ZOOM</span>
+          <span class="badge-envio"><i class="fas fa-shipping-fast"></i> MRW</span>
+        </div>
+      </div>
+      <div class="info-card">
+        <h4><i class="fas fa-bolt" style="color: #ffcc00;"></i> Garantía & Encargos</h4>
+        Periféricos con garantía de prueba. Artículos bajo encargo con el <strong>100% de inicial</strong>. ¡Escríbenos al WhatsApp!
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="miModal" class="modal">
+  <div class="modal-content">
+    <button class="cerrar-modal" onclick="cerrarModal()">×</button>
+    <img id="modalImg" src="" alt="Producto" class="modal-img">
+    <div id="modalTag" class="modal-tag-info">Envío Inmediato 📦</div>
+    <h2 id="modalTitulo" style="color: var(--secondary-color); margin-bottom: 5px;">Título</h2>
+    <h3 id="modalPrecio" style="color: var(--primary-color); margin-top: 0;">$0.00</h3>
+    <p id="modalDesc" style="font-size: 0.9em; margin-bottom: 10px;">Descripción aquí.</p>
+    
+    <div id="tallasContainer" class="tallas-container">
+      <label for="selectTalla">Selecciona tu Talla:</label>
+      <select id="selectTalla" class="talla-select">
+        <option value="S">Talla S</option>
+        <option value="M" selected>Talla M</option>
+        <option value="L">Talla L</option>
+        <option value="XL">Talla XL</option>
+        <option value="XXL">Talla XXL</option>
+      </select>
+      <span class="link-guia-tallas" onclick="abrirGuiaTallasModal()">Ver Guía de Tallas (cm) 📏</span>
+    </div>
+
+    <button class="btn-comprar" onclick="agregarAlCarrito()">¡Añadir al Carrito! 🛒</button>
+    <button class="btn-compartir" onclick="compartirProductoWhatsApp()"><i class="fab fa-whatsapp"></i> Compartir producto</button>
+  </div>
+</div>
+
+<div id="modalFavoritos" class="modal">
+  <div class="modal-content" style="width: 450px;">
+    <button class="cerrar-modal" onclick="cerrarFavoritosModal()">×</button>
+    <h2 style="color: #ff3366; margin-top: 0;">💖 Tu Lista de Deseos</h2>
+    <div id="listaFavoritosDetalle" style="max-height: 250px; overflow-y: auto; margin-bottom: 15px; padding-right: 5px;"></div>
+    <button class="btn-sugerencia" onclick="cerrarFavoritosModal()">Seguir Viendo Catálogo ✨</button>
+  </div>
+</div>
+
+<div id="modalFaq" class="modal">
+  <div class="modal-content" style="width: 450px;">
+    <button class="cerrar-modal" onclick="cerrarFaqModal()">×</button>
+    <h2 style="color: var(--secondary-color); margin-top: 0;">❓ Preguntas Frecuentes</h2>
+    
+    <div class="faq-item">
+      <div class="faq-question"><i class="fas fa-map-marker-alt"></i> ¿Hacen entregas personales?</div>
+      <div class="faq-answer">Sí, realizamos entregas personales exclusivamente en <strong>Bejuma y Miranda (Estado Carabobo)</strong>. Escríbenos al WhatsApp para coordinar.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question"><i class="fas fa-clock"></i> ¿Cuánto tardan los encargos?</div>
+      <div class="faq-answer">Los artículos bajo la modalidad de encargo se solicitan con el 100% de pago adelantado y tienen un tiempo estimado de entrega de <strong>1 mes a 2 meses</strong>.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question"><i class="fas fa-coins"></i> ¿Cómo se calcula el Pago Móvil?</div>
+      <div class="faq-answer">Puedes ver el precio exacto en bolívares reflejado debajo de cada producto usando la tasa BCV del día.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question"><i class="fas fa-shipping-fast"></i> ¿Por cuáles empresas envían?</div>
+      <div class="faq-answer">Realizamos envíos nacionales con cobro a destino exclusivamente a través de <strong>ZOOM</strong> y <strong>MRW</strong>.</div>
+    </div>
+  </div>
+</div>
+
+<div id="modalCarrito" class="modal">
+  <div class="modal-content" style="width: 450px;">
+    <button class="cerrar-modal" onclick="cerrarCarritoModal()">×</button>
+    <h2 style="color: var(--secondary-color); margin-top: 0;">🛒 Tu Carrito de Compras</h2>
+    
+    <div class="cupon-box">
+      <input type="text" id="inputCupon" class="cupon-input" placeholder="Código de Cupón (Ej: OTAKU10)">
+      <button class="btn-cupon" onclick="aplicarCupon()">Aplicar</button>
+    </div>
+    <div id="mensajeCupon" style="font-size: 0.8em; margin-bottom: 8px; color: var(--secondary-color);"></div>
+
+    <div id="listaCarritoDetalle" style="max-height: 150px; overflow-y: auto; margin-bottom: 12px; padding-right: 5px;"></div>
+    
+    <div id="reciboDigital" class="recibo-box" style="display: none;">
+      <div style="text-align: center; font-weight: bold; margin-bottom: 8px; color: var(--primary-color);">--- RECIBO DIGITAL SAKURA ---</div>
+      <div id="reciboContenido"></div>
+      <div style="text-align: center; margin-top: 8px; font-size: 0.8em; color: #888;">ESTADO: LISTO PARA ENVIAR A WHATSAPP</div>
+    </div>
+
+    <h3 id="modalCarritoTotal" style="color: var(--primary-color); margin-bottom: 15px;">Total: $0.00</h3>
+    <div style="display: flex; gap: 10px;">
+      <button class="btn-clear" style="flex: 1; padding: 10px;" onclick="vaciarCarrito()">Vaciar</button>
+      <button class="btn-checkout" style="flex: 2; padding: 10px;" onclick="enviarPedidoWhatsApp()">Enviar al WhatsApp 📱</button>
+    </div>
+  </div>
+</div>
+
+<div id="modalSugerencias" class="modal">
+  <div class="modal-content">
+    <button class="cerrar-modal" onclick="cerrarSugerenciaModal()">×</button>
+    <h2 style="color: var(--primary-color); margin-top: 0;">💡 Sugerir Mercancía</h2>
+    <input type="text" id="sugNombre" class="sugerencia-input" placeholder="Tu Nombre o Apodo">
+    <textarea id="sugDeseo" class="sugerencia-input" rows="3" placeholder="¿Qué producto o anime te gustaría que trajéramos?"></textarea>
+    <button class="btn-sugerencia" onclick="enviarSugerenciaWhatsApp()">Enviar Sugerencia 🚀</button>
+  </div>
+</div>
+
+<div class="cart-bar" onclick="abrirCarritoModal()">
+  <div class="cart-info" id="cartText">🛒 Ver Carrito: 0 ítems ($0.00)</div>
+  <div class="cart-buttons" onclick="event.stopPropagation()">
+    <button class="btn-checkout" onclick="abrirCarritoModal()">Revisar 🛒</button>
+  </div>
+</div>
+
+<!-- MENÚ FLOTANTE HORIZONTAL COMPACTO (CARRUSEL INFERIOR) -->
+<div class="floating-buttons">
+  <div class="menu-desplegable-horizontal" id="menuFlotante">
+    <button class="mini-btn fav-floating-btn" onclick="abrirFavoritosModal()" title="Ver Favoritos"><i class="fas fa-heart"></i><div class="fav-badge-count" id="favCount">0</div></button>
+    <button class="mini-btn chest-btn" onclick="abrirCofreModal()" title="Cofre Diario"><i class="fas fa-gift"></i></button>
+    <button class="mini-btn gacha-btn" onclick="abrirGachaModal()" title="Ruleta Gacha"><i class="fas fa-dice"></i></button>
+    <button class="mini-btn music-btn" onclick="toggleMusicaLoFi()" title="Música Lo-Fi"><i class="fas fa-music" id="iconoMusica"></i></button>
+    <button class="mini-btn gamer-profile-btn" onclick="abrirGamerProfileModal()" title="Perfil Gamer"><i class="fas fa-user-astronaut"></i></button>
+    <button class="mini-btn theme-btn" onclick="abrirTemasModal()" title="Cambiar Tema"><i class="fas fa-palette"></i></button>
+    <button class="mini-btn admin-btn" onclick="abrirAdminModal()" title="Panel Admin"><i class="fas fa-cogs"></i></button>
+    <a href="https://www.tiktok.com/@sakuragameverse" class="mini-btn tiktok-btn" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+    <a href="https://www.instagram.com/sakuragameverse?stkn=bDQ5NXRla2Vyano1" class="mini-btn instagram-btn" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+    <button class="mini-btn faq-btn" onclick="abrirFaqModal()" title="FAQ"><i class="fas fa-question"></i></button>
+    <button class="mini-btn sugerencia-btn" onclick="abrirSugerenciaModal()" title="Sugerir"><i class="fas fa-lightbulb"></i></button>
+    <a href="https://wa.me/584244970576" class="mini-btn whatsapp-btn" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+  </div>
+  <button class="btn-menu-principal" onclick="toggleMenuFlotante()" title="Abrir Menú"><i class="fas fa-bars" id="iconoMenuBtn"></i></button>
+</div>
+
+<!-- AUDIO LO-FI ESTABLE -->
+<audio id="audioLoFi" loop src="https://stream.zeno.fm/f3wvbbqmdg8uv"></audio>
 
 <script>
-  // CARGAR DATOS DESDE EL LOCALSTORAGE COMPARTIDO CON EL ADMIN
-  let tasaBcv = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 854.46;
-  document.getElementById('labelTasaBcv').innerText = `Bs. ${tasaBcv.toFixed(2)}`;
+  let textosCarga = ["Cargando texturas...", "Sincronizando tasa BCV...", "Cargando inventario otaku...", "¡Gameverse listo!"];
+  let indiceCarga = 0;
+  let textElem = document.getElementById('loadingText');
+  
+  let intervaloCarga = setInterval(() => {
+    indiceCarga++;
+    if (indiceCarga < textosCarga.length) {
+      textElem.innerText = textosCarga[indiceCarga];
+    }
+  }, 500);
 
-  let inventarioTienda = JSON.parse(localStorage.getItem('sakura_inventario_admin')) || [
-    { nombre: "Tomo Manga Original", categoria: "Mangas", precio: 12.00, estado: "Inmediato", fotos: ["figuras.jpg"] },
-    { nombre: "Booster Box Cartas TCG", categoria: "Cartas", precio: 40.00, estado: "Inmediato", fotos: ["accesorios.jpeg"] }
+  setTimeout(() => {
+    clearInterval(intervaloCarga);
+    let splash = document.getElementById('splash-screen');
+    if (splash) {
+      splash.style.opacity = '0';
+      setTimeout(() => splash.style.display = 'none', 600);
+    }
+  }, 2000);
+
+  let datosPago = JSON.parse(localStorage.getItem('sakura_datos_pago')) || {
+    banco: "Banesco (0134)",
+    telefono: "0424-4970576",
+    cedula: "V-27000000",
+    binance: "sakuragameverse@gmail.com"
+  };
+
+  function renderizarDatosPago() {
+    let caja = document.getElementById('cajaDatosPagoInfo');
+    caja.innerHTML = `
+      🏦 <strong>Banco:</strong> ${datosPago.banco}<br>
+      📱 <strong>Pago Móvil:</strong> ${datosPago.telefono}<br>
+      🪪 <strong>Cédula:</strong> ${datosPago.cedula}<br>
+      🪙 <strong>Binance Pay:</strong> ${datosPago.binance}
+    `;
+  }
+  renderizarDatosPago();
+
+  function abrirAdminModal() {
+    reproducirSonido();
+    document.getElementById('adminBanco').value = datosPago.banco;
+    document.getElementById('adminTelefono').value = datosPago.telefono;
+    document.getElementById('adminCedula').value = datosPago.cedula;
+    document.getElementById('adminBinance').value = datosPago.binance;
+    document.getElementById('modalAdminPago').style.display = 'flex';
+  }
+  function cerrarAdminModal() {
+    reproducirSonido();
+    document.getElementById('modalAdminPago').style.display = 'none';
+  }
+  function guardarDatosAdmin() {
+    reproducirSonido();
+    datosPago.banco = document.getElementById('adminBanco').value;
+    datosPago.telefono = document.getElementById('adminTelefono').value;
+    datosPago.cedula = document.getElementById('adminCedula').value;
+    datosPago.binance = document.getElementById('adminBinance').value;
+    
+    localStorage.setItem('sakura_datos_pago', JSON.stringify(datosPago));
+    renderizarDatosPago();
+    alert("⚙️ ¡Datos de pago actualizados exitosamente en la tienda!");
+    cerrarAdminModal();
+  }
+
+  function copiarDatosPago() {
+    reproducirSonido();
+    let textoCopiar = `DATOS DE PAGO SAKURA GAMEVERSE:\nBanco: ${datosPago.banco}\nTeléfono: ${datosPago.telefono}\nCédula: ${datosPago.cedula}\nBinance: ${datosPago.binance}`;
+    navigator.clipboard.writeText(textoCopiar).then(() => {
+      alert("📋 ¡Datos de pago copiado al portapapeles con éxito!");
+    });
+  }
+
+  let tiempoRestante = 12 * 3600;
+  function iniciarCountdown() {
+    let timerElem = document.getElementById('countdownTimer');
+    setInterval(() => {
+      if (tiempoRestante > 0) tiempoRestante--;
+      let horas = Math.floor(tiempoRestante / 3600);
+      let minutos = Math.floor((tiempoRestante % 3600) / 60);
+      let segundos = tiempoRestante % 60;
+      timerElem.innerText = `${String(horas).padStart(2,'0')}:${String(minutos).padStart(2,'0')}:${String(segundos).padStart(2,'0')}`;
+    }, 1000);
+  }
+  iniciarCountdown();
+
+  // TASA BCV MANUAL CONTROLADA POR EL ADMINISTRADOR
+  let tasaBcvActual = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 854.46;
+  document.getElementById('inputTasaBcv').value = tasaBcvActual;
+
+  function cambiarTasaBcvManual() {
+    let val = parseFloat(document.getElementById('inputTasaBcv').value);
+    if (!isNaN(val) && val > 0) {
+      tasaBcvActual = val;
+      localStorage.setItem('sakura_tasa_bcv', tasaBcvActual);
+      actualizarPreciosEnBs();
+    }
+  }
+
+  function actualizarPreciosEnBs() {
+    let etiquetasBs = document.querySelectorAll('.card-bs');
+    etiquetasBs.forEach(etiqueta => {
+      let usd = parseFloat(etiqueta.getAttribute('data-usd'));
+      let totalBs = usd * tasaBcvActual;
+      etiqueta.innerText = `≈ Bs. ${totalBs.toLocaleString('es-VE', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    });
+  }
+
+  actualizarPreciosEnBs();
+
+  function abrirCofreModal() {
+    reproducirSonido();
+    verificarEstadoCofre();
+    document.getElementById('modalCofreDiario').style.display = 'flex';
+  }
+  function cerrarCofreModal() {
+    reproducirSonido();
+    document.getElementById('modalCofreDiario').style.display = 'none';
+  }
+
+  function verificarEstadoCofre() {
+    let ultimoReclamo = localStorage.getItem('sakura_ultimo_cofre');
+    let ahora = new Date().getTime();
+    let btn = document.getElementById('btnReclamarCofre');
+    let res = document.getElementById('cofreResultado');
+
+    if (ultimoReclamo && (ahora - parseInt(ultimoReclamo) < 86400000)) {
+      btn.style.display = 'none';
+      res.innerHTML = "⏳ Ya abriste tu cofre hoy. ¡Vuelve mañana por más XP y premios!";
+    } else {
+      btn.style.display = 'block';
+      res.innerHTML = "Cofre listo para abrir 🗝️";
+    }
+  }
+
+  function abrirCofreDiario() {
+    reproducirSonido();
+    localStorage.setItem('sakura_ultimo_cofre', new Date().getTime());
+    
+    gamerProfile.xp += 100;
+    localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
+    document.getElementById('lblXp').innerText = gamerProfile.xp + " XP";
+
+    confetti({ particleCount: 150, spread: 90, origin: { y: 0.5 } });
+    document.getElementById('cofreResultado').innerHTML = "🎉 ¡Felicidades! Ganaste +100 XP y el cupón secreto <strong>OTAKU10</strong>.";
+    document.getElementById('btnReclamarCofre').style.display = 'none';
+  }
+
+  const compradoresFake = [
+    { nombre: "Gabriel S.", lugar: "Bejuma, Carabobo", item: "un Tomo de Manga" },
+    { nombre: "Valeria M.", lugar: "Miranda, Carabobo", item: "una Booster Box TCG" },
+    { nombre: "Andrés R.", lugar: "Valencia, Carabobo", item: "un Mando Pro PC" },
+    { nombre: "Mariana L.", lugar: "Caracas", item: "un Hoodie Oversize" },
+    { nombre: "Josué O.", lugar: "Bejuma, Carabobo", item: "una Figura de Colección" }
   ];
 
-  let carrito = [];
+  function actualizarPruebaSocialArriba() {
+    let comprador = compradoresFake[Math.floor(Math.random() * compradoresFake.length)];
+    document.getElementById('spTexto').innerText = `¡${comprador.nombre} compró ${comprador.item}!`;
+    document.getElementById('spLugar').innerText = `(${comprador.lugar})`;
+  }
+  setInterval(actualizarPruebaSocialArriba, 6000);
 
-  function renderTienda() {
-    let grid = document.getElementById('catalogoTienda');
-    grid.innerHTML = "";
+  function toggleMenuFlotante() {
+    reproducirSonido();
+    let menu = document.getElementById('menuFlotante');
+    let icono = document.getElementById('iconoMenuBtn');
+    menu.classList.toggle('abierto');
+    if (menu.classList.contains('abierto')) {
+      icono.className = "fas fa-times";
+    } else {
+      icono.className = "fas fa-bars";
+    }
+  }
 
-    inventarioTienda.forEach((prod, index) => {
-      let precioBs = prod.precio * tasaBcv;
-      let imagenSrc = (prod.fotos && prod.fotos.length > 0) ? prod.fotos[0] : 'logo.webp';
+  let temaActual = localStorage.getItem('sakura_tema') || 'theme-rosa';
+  document.body.className = temaActual;
 
-      grid.innerHTML += `
-        <div class="producto-card">
-          <div class="producto-img-container">
-            <img src="${imagenSrc}" alt="${prod.nombre}" class="producto-img">
-          </div>
-          <div class="producto-info">
-            <div class="producto-cat">${prod.categoria} • ${prod.estado || 'Inmediato'}</div>
-            <div class="producto-titulo">${prod.nombre}</div>
-            <div class="producto-precios">
-              <div class="precio-usd">$${prod.precio.toFixed(2)}</div>
-              <div class="precio-bs">≈ Bs. ${precioBs.toFixed(2)}</div>
+  function abrirTemasModal() {
+    reproducirSonido();
+    document.getElementById('modalTemas').style.display = 'flex';
+  }
+  function cerrarTemasModal() {
+    reproducirSonido();
+    document.getElementById('modalTemas').style.display = 'none';
+  }
+  function cambiarTema(claseTema) {
+    reproducirSonido();
+    document.body.className = claseTema;
+    localStorage.setItem('sakura_tema', claseTema);
+    cerrarTemasModal();
+  }
+
+  function activarEasterEggLogo() {
+    reproducirSonido();
+    document.body.classList.toggle('theme-overdrive');
+    confetti({ particleCount: 150, spread: 90, origin: { y: 0.4 } });
+    if (document.body.classList.contains('theme-overdrive')) {
+      alert("🔥 ¡MODO OVERDRIVE SUPREMO ACTIVADO! ¡Lluvia de poder otaku!");
+    } else {
+      alert("✨ Modo restaurado.");
+    }
+  }
+
+  let reproduciendoMusica = false;
+  function toggleMusicaLoFi() {
+    reproducirSonido();
+    let audio = document.getElementById('audioLoFi');
+    let icono = document.getElementById('iconoMusica');
+    if (!reproducingMusica()) {
+      audio.play().then(() => {
+        reproducirMusica = true;
+        icono.className = "fas fa-pause";
+        alert("🎵 ¡Música Lo-Fi activada de fondo!");
+      }).catch(e => {
+        alert("⚠️ Toca la pantalla o interactúa un momento antes de encender la música.");
+      });
+    } else {
+      audio.pause();
+      reproducirMusica = false;
+      icono.className = "fas fa-music";
+      alert("⏸️ Música pausada.");
+    }
+  }
+  function reproducingMusica() { return reproduciendoMusica; }
+
+  function abrirGachaModal() {
+    reproducirSonido();
+    document.getElementById('gachaResultado').innerText = "Presiona el botón para girar 🎁";
+    document.getElementById('modalGacha').style.display = 'flex';
+  }
+  function cerrarGachaModal() {
+    reproducirSonido();
+    document.getElementById('modalGacha').style.display = 'none';
+  }
+  function girarRuletaGacha() {
+    reproducirSonido();
+    let resBox = document.getElementById('gachaResultado');
+    resBox.innerHTML = "🌀 Girando ruleta y abriendo cofre gacha...";
+    
+    setTimeout(() => {
+      let premios = [
+        { texto: "🎉 ¡Felicidades! Ganaste 5% de descuento (Usa cupón <strong>GACHA5</strong>)", codigo: "GACHA5" },
+        { texto: "🔥 ¡Jackpot Otaku! Ganaste 15% de descuento (Usa cupón <strong>GAMERVIP</strong>)", codigo: "GAMERVIP" },
+        { texto: "🌸 ¡Premio Especial! 10% de descuento (Usa cupón <strong>OTAKU10</strong>)", codigo: "OTAKU10" }
+      ];
+      let premioGanado = premios[Math.floor(Math.random() * premios.length)];
+      resBox.innerHTML = `${premioGanado.texto}`;
+      confetti({ particleCount: 140, spread: 85, origin: { y: 0.5 } });
+    }, 1000);
+  }
+
+  let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, rango: "Rango Hokage" };
+  document.getElementById('inputGamerTag').value = gamerProfile.tag;
+  document.getElementById('lblRango').innerText = gamerProfile.rango;
+  document.getElementById('lblXp').innerText = gamerProfile.xp + " XP";
+
+  function abrirGamerProfileModal() {
+    reproducirSonido();
+    document.getElementById('modalGamerProfile').style.display = 'flex';
+  }
+  function cerrarGamerProfileModal() {
+    reproducirSonido();
+    document.getElementById('modalGamerProfile').style.display = 'none';
+  }
+  function guardarGamerTag() {
+    reproducirSonido();
+    let nuevoTag = document.getElementById('inputGamerTag').value.trim();
+    if (nuevoTag) {
+      gamerProfile.tag = nuevoTag;
+      gamerProfile.xp += 50;
+      if (gamerProfile.xp > 300) gamerProfile.rango = "Rango Leyenda Ciberpunk ⚡";
+      localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
+      document.getElementById('lblRango').innerText = gamerProfile.rango;
+      document.getElementById('lblXp').innerText = gamerProfile.xp + " XP";
+      alert(`💾 ¡GamerTag guardado exitosamente como [${nuevoTag}]! +50 XP ganados.`);
+      cerrarGamerProfileModal();
+    }
+  }
+
+  function abrirGuiaTallasModal() {
+    reproducirSonido();
+    document.getElementById('modalGuiaTallas').style.display = 'flex';
+  }
+  function cerrarGuiaTallasModal() {
+    reproducirSonido();
+    document.getElementById('modalGuiaTallas').style.display = 'none';
+  }
+
+  let favoritos = JSON.parse(localStorage.getItem('sakura_favoritos')) || [];
+
+  function toggleFavorito(event, titulo, precio, img) {
+    event.stopPropagation();
+    reproducirSonido();
+    
+    let index = favoritos.findIndex(item => item.titulo === titulo);
+    if (index === -1) {
+      favoritos.push({ titulo, precio, img });
+      alert(`💖 ¡Añadido a tus Favoritos: ${titulo}!`);
+    } else {
+      favoritos.splice(index, 1);
+      alert(`💔 ¡Eliminado de tus Favoritos: ${titulo}!`);
+    }
+    
+    localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos));
+    actualizarFavBadge();
+  }
+
+  function actualizarFavBadge() {
+    document.getElementById('favCount').innerText = favoritos.length;
+  }
+  actualizarFavBadge();
+
+  function abrirFavoritosModal() {
+    reproducirSonido();
+    let contenedor = document.getElementById('listaFavoritosDetalle');
+    contenedor.innerHTML = "";
+
+    if (favoritos.length === 0) {
+      contenedor.innerHTML = "<p style='color: #aaa;'>Aún no tienes productos en tu lista de deseos.</p>";
+    } else {
+      favoritos.forEach((item, index) => {
+        contenedor.innerHTML += `
+          <div class="cart-item-row">
+            <img src="${item.img}" class="cart-item-img">
+            <div class="cart-item-info">
+              <strong>${item.titulo}</strong><br>
+              <span style="color: var(--secondary-color);">$${item.precio.toFixed(2)}</span>
             </div>
-            <button class="btn-comprar" onclick="agregarAlCarrito(${index})"><i class="fas fa-cart-plus"></i> Agregar al Carrito</button>
+            <button class="cart-item-del" onclick="eliminarFavorito(${index})">❌</button>
           </div>
+        `;
+      });
+    }
+    document.getElementById('modalFavoritos').style.display = 'flex';
+  }
+
+  function cerrarFavoritosModal() {
+    reproducirSonido();
+    document.getElementById('modalFavoritos').style.display = 'none';
+  }
+
+  function eliminarFavorito(index) {
+    reproducirSonido();
+    favoritos.splice(index, 1);
+    localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos));
+    actualizarFavBadge();
+    abrirFavoritosModal();
+  }
+
+  function cerrarPromoFlash() {
+    reproducirSonido();
+    document.getElementById('modalPromoFlash').style.display = 'none';
+  }
+
+  function reproducirSonido() {
+    try {
+      let ctx = new (window.AudioContext || window.webkitAudioContext)();
+      let osc = ctx.createOscillator();
+      let gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.1);
+      gain.gain.setValueAtTime(0.1, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.1);
+    } catch(e) {}
+  }
+
+  function crearDestello(event) {
+    let x = event.clientX;
+    let y = event.clientY;
+    let iconos = ['🌸', '✨', '💜', '⚡', '🎮'];
+    let span = document.createElement('span');
+    span.innerText = iconos[Math.floor(Math.random() * iconos.length)];
+    span.style.position = 'fixed';
+    span.style.left = x + 'px';
+    span.style.top = y + 'px';
+    span.style.fontSize = '20px';
+    span.style.pointerEvents = 'none';
+    span.style.zIndex = '3000';
+    span.style.transition = 'all 0.6s ease-out';
+    document.body.appendChild(span);
+
+    setTimeout(() => {
+      span.style.transform = `translate(${(Math.random() - 0.5) * 80}px, ${-60 - Math.random() * 40}px) scale(1.5)`;
+      span.style.opacity = '0';
+    }, 20);
+
+    setTimeout(() => span.remove(), 600);
+  }
+
+  let carrito = [];
+  let productoActual = null;
+  let categoriaActualFiltro = 'todos';
+  let estadoActualFiltro = 'todos';
+  let descuentoAplicado = 0;
+
+  function filtrar(categoria, evento) {
+    reproducirSonido();
+    let botones = document.querySelectorAll('.btn-filtro');
+    botones.forEach(btn => btn.classList.remove('activo'));
+    evento.target.classList.add('activo');
+
+    categoriaActualFiltro = categoria;
+    estadoActualFiltro = 'todos';
+    aplicarFiltrosCombinados();
+  }
+
+  function filtrarEstado(estado, evento) {
+    reproducirSonido();
+    let botones = document.querySelectorAll('.btn-filtro');
+    botones.forEach(btn => btn.classList.remove('activo'));
+    evento.target.classList.add('activo');
+
+    estadoActualFiltro = estado;
+    categoriaActualFiltro = 'todos';
+    aplicarFiltrosCombinados();
+  }
+
+  function filtrarPorPrecio() {
+    let precioMax = parseFloat(document.getElementById('sliderPrecio').value);
+    document.getElementById('lblPrecioMax').innerText = precioMax;
+    aplicarFiltrosCombinados();
+  }
+
+  function aplicarFiltrosCombinados() {
+    let precioMax = parseFloat(document.getElementById('sliderPrecio').value);
+    let productos = document.querySelectorAll('#catalogo .item-producto');
+
+    productos.forEach(prod => {
+      let cat = prod.getAttribute('data-categoria');
+      let est = prod.getAttribute('data-estado');
+      let precio = parseFloat(prod.getAttribute('data-precio'));
+      
+      let cumpleCat = (categoriaActualFiltro === 'todos' || cat === categoriaActualFiltro);
+      let cumpleEst = (estadoActualFiltro === 'todos' || est === estadoActualFiltro);
+      let cumplePrecio = (precio <= precioMax);
+
+      if (cumpleCat && cumpleEst && cumplePrecio) {
+        prod.style.display = 'block';
+      } else {
+        prod.style.display = 'none';
+      }
+    });
+  }
+
+  function ordenarProductos() {
+    reproducirSonido();
+    let criterio = document.getElementById('selectOrden').value;
+    let catalogo = document.getElementById('catalogo');
+    let productos = Array.from(catalogo.getElementsByClassName('item-producto'));
+
+    productos.sort((a, b) => {
+      let precioA = parseFloat(a.getAttribute('data-precio'));
+      let precioB = parseFloat(b.getAttribute('data-precio'));
+
+      if (criterio === 'menor') return precioA - precioB;
+      if (criterio === 'mayor') return precioB - precioA;
+      return 0;
+    });
+
+    productos.forEach(prod => catalogo.appendChild(prod));
+  }
+
+  function buscarProductos() {
+    let texto = document.getElementById('buscador').value.toLowerCase();
+    let productos = document.querySelectorAll('.item-producto');
+    productos.forEach(prod => {
+      let nombre = prod.getAttribute('data-nombre');
+      if (nombre.includes(texto)) {
+        prod.style.display = 'block';
+      } else {
+        prod.style.display = 'none';
+      }
+    });
+  }
+
+  function abrirModal(img, titulo, precio, descripcion, disponibilidad, esRopa) {
+    productoActual = { img, titulo, precio, esRopa };
+    document.getElementById('modalImg').src = img;
+    document.getElementById('modalTitulo').innerText = titulo;
+    document.getElementById('modalPrecio').innerText = "$" + precio.toFixed(2);
+    document.getElementById('modalDesc').innerText = descripcion;
+    document.getElementById('modalTag').innerText = disponibilidad;
+
+    let tallasCont = document.getElementById('tallasContainer');
+    if (esRopa) {
+      tallasCont.style.display = 'block';
+    } else {
+      tallasCont.style.display = 'none';
+    }
+
+    document.getElementById('miModal').style.display = 'flex';
+  }
+
+  function cerrarModal() {
+    reproducirSonido();
+    document.getElementById('miModal').style.display = 'none';
+  }
+
+  function compartirProductoWhatsApp() {
+    reproducirSonido();
+    let texto = `¡Hola! Mira este artículo que encontré en Sakura Gameverse: *${productoActual.titulo}* por solo *$${productoActual.precio.toFixed(2)}*. 🎮🌸`;
+    let url = `https://wa.me/?text=` + encodeURIComponent(texto);
+    window.open(url, '_blank');
+  }
+
+  function abrirFaqModal() {
+    reproducirSonido();
+    document.getElementById('modalFaq').style.display = 'flex';
+  }
+
+  function cerrarFaqModal() {
+    reproducirSonido();
+    document.getElementById('modalFaq').style.display = 'none';
+  }
+
+  function agregarAlCarrito() {
+    reproducirSonido();
+    let itemParaCarrito = { ...productoActual };
+    
+    if (itemParaCarrito.esRopa) {
+      let tallaSeleccionada = document.getElementById('selectTalla').value;
+      itemParaCarrito.titulo += ` (Talla: ${tallaSeleccionada})`;
+    }
+
+    carrito.push(itemParaCarrito);
+    gamerProfile.xp += 20;
+    localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
+    
+    actualizarCarritoUI();
+    cerrarModal();
+  }
+
+  function vaciarCarrito() {
+    reproducirSonido();
+    carrito = [];
+    descuentoAplicado = 0;
+    document.getElementById('inputCupon').value = "";
+    document.getElementById('mensajeCupon').innerText = "";
+    actualizarCarritoUI();
+    abrirCarritoModal();
+  }
+
+  function eliminarItemCarrito(index) {
+    reproducirSonido();
+    carrito.splice(index, 1);
+    actualizarCarritoUI();
+    abrirCarritoModal();
+  }
+
+  function aplicarCupon() {
+    reproducirSonido();
+    let codigo = document.getElementById('inputCupon').value.trim().toUpperCase();
+    let msg = document.getElementById('mensajeCupon');
+
+    if (codigo === "OTAKU10" || codigo === "GACHA5") {
+      descuentoAplicado = (codigo === "GACHA5") ? 0.05 : 0.10;
+      msg.style.color = "#25D366";
+      msg.innerText = `🎉 ¡Cupón ${codigo} aplicado con éxito!`;
+    } else if (codigo === "GAMERVIP") {
+      descuentoAplicado = 0.15;
+      msg.style.color = "#25D366";
+      msg.innerText = "🔥 ¡Cupón GAMERVIP aplicado con éxito (-15%)!";
+    } else {
+      descuentoAplicado = 0;
+      msg.style.color = "#ff3366";
+      msg.innerText = "❌ Código de cupón inválido.";
+    }
+    abrirCarritoModal();
+  }
+
+  function actualizarCarritoUI() {
+    let totalItems = carrito.length;
+    let subtotal = carrito.reduce((sum, item) => sum + item.precio, 0);
+    let totalPrecio = subtotal * (1 - descuentoAplicado);
+    document.getElementById('cartText').innerText = `🛒 Ver Carrito: ${totalItems} ítems ($${totalPrecio.toFixed(2)})`;
+  }
+
+  function abrirCarritoModal() {
+    reproducirSonido();
+    let contenedor = document.getElementById('listaCarritoDetalle');
+    let reciboBox = document.getElementById('reciboDigital');
+    let reciboContenido = document.getElementById('reciboContenido');
+    
+    contenedor.innerHTML = "";
+    reciboContenido.innerHTML = "";
+    
+    if (carrito.length === 0) {
+      contenedor.innerHTML = "<p style='color: #aaa;'>Tu carrito está vacío.</p>";
+      reciboBox.style.display = 'none';
+    } else {
+      reciboBox.style.display = 'block';
+      let htmlRecibo = "";
+      
+      carrito.forEach((item, index) => {
+        contenedor.innerHTML += `
+          <div class="cart-item-row">
+            <img src="${item.img}" class="cart-item-img">
+            <div class="cart-item-info">
+              <strong>${item.titulo}</strong><br>
+              <span style="color: var(--secondary-color);">$${item.precio.toFixed(2)}</span>
+            </div>
+            <button class="cart-item-del" onclick="eliminarItemCarrito(${index})">❌</button>
+          </div>
+        `;
+        htmlRecibo += `<div class="recibo-line"><span>${item.titulo}</span><span>$${item.precio.toFixed(2)}</span></div>`;
+      });
+
+      let subtotal = carrito.reduce((sum, item) => sum + item.precio, 0);
+      let descuentoMonto = subtotal * descuentoAplicado;
+      let totalPrecio = subtotal - descuentoMonto;
+      let totalBs = totalPrecio * tasaBcvActual;
+
+      if (descuentoAplicado > 0) {
+        htmlRecibo += `<div style="color: #25D366;" class="recibo-line"><span>DESCUENTO:</span><span>-$${descuentoMonto.toFixed(2)}</span></div>`;
+      }
+
+      htmlRecibo += `<div style="border-top: 1px dashed var(--secondary-color); margin-top: 5px; padding-top: 5px;" class="recibo-line"><strong>TOTAL USD:</strong> <strong>$${totalPrecio.toFixed(2)}</strong></div>`;
+      htmlRecibo += `<div class="recibo-line"><strong>TOTAL BS:</strong> <strong>Bs. ${totalBs.toFixed(2)}</strong></div>`;
+      reciboContenido.innerHTML = htmlRecibo;
+    }
+
+    let subtotal = carrito.reduce((sum, item) => sum + item.precio, 0);
+    let totalPrecio = subtotal * (1 - descuentoAplicado);
+    let totalBs = totalPrecio * tasaBcvActual;
+    document.getElementById('modalCarritoTotal').innerText = `Total: $${totalPrecio.toFixed(2)} (≈ Bs. ${totalBs.toLocaleString('es-VE', {minimumFractionDigits: 2, maximumFractionDigits: 2})})`;
+    document.getElementById('modalCarrito').style.display = 'flex';
+  }
+
+  function cerrarCarritoModal() {
+    reproducirSonido();
+    document.getElementById('modalCarrito').style.display = 'none';
+  }
+
+  function enviarPedidoWhatsApp() {
+    reproducirSonido();
+    if (carrito.length === 0) {
+      alert("¡Tu carrito está vacío!");
+      return;
+    }
+
+    confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+
+    gamerProfile.xp += 100;
+    localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
+
+    let mensaje = `¡Hola Sakura Gameverse! 🌸👾 Deseo realizar el siguiente pedido (GamerTag: ${gamerProfile.tag}):\n\n`;
+    let subtotal = 0;
+    carrito.forEach((item, index) => {
+      mensaje += `${index + 1}. ${item.titulo} - $${item.precio.toFixed(2)}\n`;
+      subtotal += item.precio;
+    });
+
+    let total = subtotal * (1 - descuentoAplicado);
+    let totalBs = total * tasaBcvActual;
+
+    if (descuentoAplicado > 0) {
+      mensaje += `\n*Subtotal:* $${subtotal.toFixed(2)}`;
+      mensaje += `\n*Descuento aplicado:* -${descuentoAplicado * 100}%`;
+    }
+
+    mensaje += `\n\n*Total a pagar: $${total.toFixed(2)} (Bs. ${totalBs.toFixed(2)})*\n¡Espero su respuesta para coordinar el pago y el envío (ZOOM / MRW)!`;
+    
+    let url = "https://wa.me/584244970576?text=" + encodeURIComponent(mensaje);
+    
+    setTimeout(() => {
+      window.open(url, '_blank');
+      cerrarCarritoModal();
+    }, 800);
+  }
+
+  function abrirSugerenciaModal() {
+    reproducirSonido();
+    document.getElementById('modalSugerencias').style.display = 'flex';
+  }
+
+  function cerrarSugerenciaModal() {
+    reproducirSonido();
+    document.getElementById('modalSugerencias').style.display = 'none';
+  }
+
+  function enviarSugerenciaWhatsApp() {
+    reproducirSonido();
+    let nombre = document.getElementById('sugNombre').value.trim();
+    let deseo = document.getElementById('sugDeseo').value.trim();
+
+    if (!nombre || !deseo) {
+      alert("Por favor completa tu nombre y la sugerencia.");
+      return;
+    }
+
+    let mensaje = `💡 *Sugerencia de Mercancía* 💡\n\n*Cliente:* ${nombre}\n*Sugerencia:* ${deseo}\n\n¡Enviado desde Sakura Gameverse! 🌸`;
+    let url = "https://wa.me/584244970576?text=" + encodeURIComponent(mensaje);
+    window.open(url, '_blank');
+    cerrarSugerenciaModal();
+  }
+
+  let reviews = JSON.parse(localStorage.getItem('sakura_reviews')) || [
+    { nombre: "Ángel G.", estrellas: "⭐⭐⭐⭐⭐", texto: "¡Excelente tienda! Los tomos de manga y mandos llegaron por ZOOM impecables. 10/10." },
+    { nombre: "Valeria Otaku", estrellas: "⭐⭐⭐⭐⭐", texto: "Las cartas TCG y la ropa son de calidad brutal. El pedido llegó rapidísimo por MRW." }
+  ];
+
+  function renderReviews() {
+    let contenedor = document.getElementById('contenedorReviews');
+    contenedor.innerHTML = "";
+    reviews.forEach((rev, index) => {
+      contenedor.innerHTML += `
+        <div class="review-card">
+          <button class="btn-del-review" onclick="eliminarReview(${index})" title="Borrar reseña indeseada">Eliminar ❌</button>
+          <div class="review-author">${rev.nombre}</div>
+          <div class="review-stars">${rev.estrellas}</div>
+          <div class="review-text">${rev.texto}</div>
         </div>
       `;
     });
   }
-  renderTienda();
 
-  function agregarAlCarrito(index) {
-    let productoSeleccionado = inventarioTienda[index];
-    carrito.push(productoSeleccionado);
-    document.getElementById('contadorCarrito').innerText = carrito.length;
-    confetti({ particleCount: 50, spread: 60, origin: { y: 0.8 } });
-    alert(`🛒 ¡${productoSeleccionado.nombre} agregado al carrito!`);
-  }
+  function agregarReview() {
+    reproducirSonido();
+    let nombre = document.getElementById('revNombre').value.trim();
+    let estrellas = document.getElementById('revEstrellas').value;
+    let texto = document.getElementById('revTexto').value.trim();
 
-  function verCarrito() {
-    if (carrito.length === 0) {
-      alert("Tu carrito está vacío, jefe. ¡Elige tus productos otaku favoritos!");
+    if (!nombre || !texto) {
+      alert("Por favor ingresa tu nombre y tu comentario. ✨");
       return;
     }
 
-    let totalUsd = carrito.reduce((sum, item) => sum + item.precio, 0);
-    let totalBs = totalUsd * tasaBcv;
-    let detalleTexto = carrito.map(i => i.name || i.nombre).join(", ");
-
-    let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE" };
-
-    // REGISTRAR AUTOMÁTICAMENTE EN LOS PEDIDOS DEL ADMIN
-    let listaPedidos = JSON.parse(localStorage.getItem('sakura_pedidos')) || [];
-    let nuevoPedido = {
-      gamerTag: gamerProfile.tag,
-      detalle: detalleTexto,
-      totalUsd: totalUsd,
-      estatus: "Pendiente"
-    };
-    listaPedidos.push(nuevoPedido);
-    localStorage.setItem('sakura_pedidos', JSON.stringify(listaPedidos));
-
-    // ABRIR WHATSAPP
-    let telefonoWhatsApp = "584244970576"; // Tu número
-    let mensaje = `¡Hola Sakura Gameverse! 🌸🤖 Soy *${gamerProfile.tag}* y quiero confirmar este pedido:%0A%0A📦 *Productos:* ${detalleTexto}%0A💵 *Total USD:* $${totalUsd.toFixed(2)}%0A🇻🇪 *Total Bs:* Bs. ${totalBs.toFixed(2)}%0A%0A¡Quedo atento para coordinar el pago y el envío por ZOOM o MRW! 🚀`;
-
-    window.open(`https://wa.me/${telefonoWhatsApp}?text=${mensaje}`, '_blank');
+    reviews.unshift({ nombre, estrellas, texto });
+    localStorage.setItem('sakura_reviews', JSON.stringify(reviews));
+    
+    document.getElementById('revNombre').value = "";
+    document.getElementById('revTexto').value = "";
+    renderReviews();
+    alert("¡Gracias por tu reseña! Ya ha sido publicada.");
   }
+
+  function eliminarReview(index) {
+    reproducirSonido();
+    if (confirm("¿Estás seguro de eliminar esta reseña?")) {
+      reviews.splice(index, 1);
+      localStorage.setItem('sakura_reviews', JSON.stringify(reviews));
+      renderReviews();
+    }
+  }
+
+  renderReviews();
 </script>
 
 </body>
