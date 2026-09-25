@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Sakura Gameverse</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --bg-color: #0d041a;
+      --card-bg: linear-gradient(135deg, #1a0b38 0%, #11052C 100%);
+      --text-color: white;
+      --primary-color: #FF007F;
+      --secondary-color: #00e5ff;
+      --border-color: rgba(0,229,255,0.3);
+      --hero-bg: #11052C;
+    }
+
+    body { margin: 0; background-color: var(--bg-color); color: var(--text-color); font-family: sans-serif; overflow-x: hidden; }
+
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-color); }
+    ::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
+
+    /* HEADER ADMIN */
+    .admin-header {
+      background: var(--hero-bg);
+      border-bottom: 2px solid var(--primary-color);
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(255,0,127,0.3);
+    }
+    .admin-logo { max-width: 160px; margin-bottom: 8px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.2)); }
+    .admin-title { font-size: 1.3em; font-weight: bold; color: var(--secondary-color); text-shadow: 0 0 8px rgba(0,229,255,0.5); }
+
+    /* CONTENEDOR PRINCIPAL Y PESTAÑAS */
+    .admin-container { max-width: 1100px; margin: 0 auto; padding: 25px 15px; }
+
+    .admin-tabs {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+      scrollbar-width: thin;
+    }
+
+    .tab-btn {
+      background: var(--hero-bg);
+      color: var(--text-color);
+      border: 1px solid var(--secondary-color);
+      padding: 10px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tab-btn:hover { background: rgba(0,229,255,0.2); box-shadow: 0 0 10px rgba(0,229,255,0.4); }
+    .tab-btn.activo {
+      background: var(--secondary-color);
+      color: #0d041a;
+      box-shadow: 0 0 15px var(--secondary-color);
+      border-color: #fff;
+    }
+
+    .seccion-panel { display: none; animation: fadeIn 0.4s ease; }
+    .seccion-panel.activa { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* TARJETAS Y GRID DE ESTADÍSTICAS */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 25px; }
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+    }
+    .stat-card h3 { color: var(--secondary-color); margin: 0 0 10px 0; font-size: 0.95em; }
+    .stat-value { font-size: 1.5em; font-weight: bold; color: var(--text-color); text-shadow: 0 0 8px rgba(255,255,255,0.3); }
+
+    /* FORMULARIOS Y TABLAS */
+    .admin-card-form {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 25px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+    }
+    .admin-card-form h3 { color: var(--primary-color); margin-top: 0; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 15px; }
+    .admin-input {
+      background: var(--bg-color);
+      border: 1px solid var(--secondary-color);
+      color: var(--text-color);
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.9em;
+      outline: none;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .admin-input:focus { box-shadow: 0 0 10px var(--secondary-color); }
+
+    .btn-admin-accion {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-weight: bold;
+      border-radius: 20px;
+      cursor: pointer;
+      box-shadow: 0 0 10px var(--primary-color);
+      transition: transform 0.2s;
+    }
+    .btn-admin-accion:hover { transform: scale(1.03); }
+
+    /* TABLAS DE DATOS */
+    .tabla-responsive { width: 100%; overflow-x: auto; }
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card-bg);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      font-size: 0.9em;
+      text-align: left;
+    }
+    .admin-table th, .admin-table td { padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .admin-table th { background: var(--hero-bg); color: var(--secondary-color); font-weight: bold; }
+    .admin-table tr:hover { background: rgba(0,229,255,0.03); }
+
+    .badge-estado-pedido {
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.75em;
+      font-weight: bold;
+    }
+    .estado-pendiente { background: rgba(255,204,0,0.2); color: #ffcc00; border: 1px solid #ffcc00; }
+    .estado-pagado { background: rgba(37,211,102,0.2); color: #25D366; border: 1px solid #25D366; }
+    .estado-enviado { background: rgba(0,229,255,0.2); color: var(--secondary-color); border: 1px solid var(--secondary-color); }
+
+    .btn-eliminar-fila {
+      background: #ff3366; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8em;
+    }
+    .btn-volver-tienda {
+      display: inline-flex; align-items: center; gap: 8px; background: var(--secondary-color); color: #0d041a; font-weight: bold; text-decoration: none; padding: 8px 16px; border-radius: 20px; margin-bottom: 15px; box-shadow: 0 0 10px rgba(0,229,255,0.3);
+    }
+  </style>
+</head>
+<body>
+
+<div class="admin-header">
+  <img src="logo.webp" alt="Sakura Gameverse" class="admin-logo">
+  <div class="admin-title">⚙️ Panel de Control & Administración General</div>
+</div>
+
+<div class="admin-container">
+  <a href="index.html" class="btn-volver-tienda"><i class="fas fa-arrow-left"></i> Volver a la Tienda Web</a>
+
+  <!-- PESTAÑAS DE NAVEGACIÓN -->
+  <div class="admin-tabs">
+    <button class="tab-btn activo" onclick="cambiarTab('dash', event)"><i class="fas fa-chart-line"></i> Dashboard</button>
+    <button class="tab-btn" onclick="cambiarTab('inventario', event)"><i class="fas fa-boxes"></i> Inventario & Productos</button>
+    <button class="tab-btn" onclick="cambiarTab('pedidos', event)"><i class="fas fa-shopping-cart"></i> Registro de Pedidos</button>
+    <button class="tab-btn" onclick="cambiarTab('comunidad', event)"><i class="fas fa-users"></i> Comunidad & XP</button>
+    <button class="tab-btn" onclick="cambiarTab('finanzas', event)"><i class="fas fa-coins"></i> Tasa BCV & Pagos</button>
+  </div>
+
+  <!-- SECCIÓN 1: DASHBOARD -->
+  <div id="seccion-dash" class="seccion-panel activa">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>⚡ Tasa BCV Actual</h3>
+        <div class="stat-value" id="statTasa">Bs. 0.00</div>
+      </div>
+      <div class="stat-card">
+        <h3>📦 Productos en Stock</h3>
+        <div class="stat-value" id="statProductos">9</div>
+      </div>
+      <div class="stat-card">
+        <h3>🛒 Pedidos Registrados</h3>
+        <div class="stat-value" id="statPedidos">0</div>
+      </div>
+      <div class="stat-card">
+        <h3>👤 Usuarios Gamer</h3>
+        <div class="stat-value" id="statUsuarios">1</div>
+      </div>
+    </div>
+
+    <div class="admin-card-form">
+      <h3>🚀 Accesos Rápidos & Estado del Negocio</h3>
+      <p style="font-size: 0.9em; opacity: 0.8; line-height: 1.5;">
+        Bienvenido al centro de mando de <strong>Sakura Gameverse</strong>, jefe. Desde aquí puedes supervisar la tasa oficial del BCV, controlar los pedidos que te entran por WhatsApp, revisar los puntos XP de tus clientes y actualizar los datos de pago móvil o Binance de forma instantánea.
+      </p>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 2: INVENTARIO & PRODUCTOS -->
+  <div id="seccion-inventario" class="seccion-panel">
+    <div class="admin-card-form">
+      <h3><i class="fas fa-plus-circle"></i> Agregar Nuevo Producto</h3>
+      <div class="form-grid">
+        <input type="text" id="nuevoNombre" class="admin-input" placeholder="Nombre del Producto (Ej: Tomo Manga)">
+        <input type="number" id="nuevoPrecio" class="admin-input" placeholder="Precio en USD ($)" step="0.01">
+        <select id="nuevaCategoria" class="admin-input">
+          <option value="mangas">Mangas</option>
+          <option value="ropa">Ropa / Hoodies</option>
+          <option value="mandos">Mandos PC</option>
+          <option value="teclados">Teclados</option>
+          <option value="audifonos">Audífonos</option>
+          <option value="figuras">Figuras</option>
+          <option value="peluches">Peluches</option>
+          <option value="cartas">Cartas TCG</option>
+          <option value="katanas">Katanas</option>
+          <option value="lamparas">Lámparas</option>
+        </select>
+        <select id="nuevoEstado" class="admin-input">
+          <option value="inmediato">Stock Inmediato 📦</option>
+          <option value="encargo">Por Encargo ⚡</option>
+        </select>
+      </div>
+      <button class="btn-admin-accion" onclick="agregarProductoAdmin()">Guardar Producto 💾</button>
+    </div>
+
+    <div class="admin-card-form">
+      <h3><i class="fas fa-list"></i> Catálogo Activo</h3>
+      <div class="tabla-responsive">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Categoría</th>
+              <th>Precio ($)</th>
+              <th>Modalidad</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody id="tablaInventarioAdmin">
+            <!-- Se llena por JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 3: PEDIDOS -->
+  <div id="seccion-pedidos" class="seccion-panel">
+    <div class="admin-card-form">
+      <h3><i class="fas fa-clipboard-list"></i> Registro de Pedidos Entrantes</h3>
+      <div class="tabla-responsive">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Cliente / GamerTag</th>
+              <th>Detalle del Pedido</th>
+              <th>Total ($ / Bs)</th>
+              <th>Estatus</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody id="tablaPedidosAdmin">
+            <tr>
+              <td colspan="5" style="text-align: center; color: #aaa;">No hay pedidos registrados aún. (Se sincronizan al enviar desde el carrito).</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 4: COMUNIDAD & XP -->
+  <div id="seccion-comunidad" class="seccion-panel">
+    <div class="admin-card-form">
+      <h3><i class="fas fa-user-astronaut"></i> Perfil Gamer & Estadísticas de Comunidad</h3>
+      <div style="font-size: 0.95em; line-height: 1.6;" id="infoComunidadAdmin">
+        <div>🏆 <strong>GamerTag Principal:</strong> <span id="adminGamerTag" style="color: var(--secondary-color);">Cargando...</span></div>
+        <div>⚡ <strong>Puntos XP:</strong> <span id="adminXp" style="color: #ffcc00;">0 XP</span></div>
+        <div>🎖️ <strong>Rango Otaku:</strong> <span id="adminRango" style="color: var(--primary-color);">Cargando...</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 5: TASA BCV & FINANZAS -->
+  <div id="seccion-finanzas" class="seccion-panel">
+    <div class="admin-card-form">
+      <h3><i class="fas fa-coins"></i> Control de Tasa BCV Oficial</h3>
+      <p style="font-size: 0.85em; opacity: 0.8; margin-bottom: 12px;">Actualiza el valor del dólar BCV. Esto se reflejará de inmediato en toda la tienda web:</p>
+      <div style="display: flex; gap: 10px; max-width: 350px; margin-bottom: 20px;">
+        <input type="number" id="adminInputTasa" class="admin-input" step="0.01" placeholder="Ej: 854.46">
+        <button class="btn-admin-accion" onclick="guardarTasaAdmin()">Actualizar Tasa 🚀</button>
+      </div>
+    </div>
+
+    <div class="admin-card-form">
+      <h3><i class="fas fa-credit-card"></i> Datos de Pago (Pago Móvil / Binance)</h3>
+      <div class="form-grid">
+        <div>
+          <label style="font-size: 0.85em; color: var(--secondary-color);">Banco:</label>
+          <input type="text" id="pagoBanco" class="admin-input">
+        </div>
+        <div>
+          <label style="font-size: 0.85em; color: var(--secondary-color);">Teléfono Pago Móvil:</label>
+          <input type="text" id="pagoTelefono" class="admin-input">
+        </div>
+        <div>
+          <label style="font-size: 0.85em; color: var(--secondary-color);">Cédula / RIF:</label>
+          <input type="text" id="pagoCedula" class="admin-input">
+        </div>
+        <div>
+          <label style="font-size: 0.85em; color: var(--secondary-color);">Binance Pay / Correo:</label>
+          <input type="text" id="pagoBinance" class="admin-input">
+        </div>
+      </div>
+      <button class="btn-admin-accion" onclick="guardarDatosPagoAdmin()">Guardar Datos de Pago 💾</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function cambiarTab(tabId, evento) {
+    let botones = document.querySelectorAll('.tab-btn');
+    botones.forEach(btn => btn.classList.remove('activo'));
+    evento.currentTarget.classList.add('activo');
+
+    let secciones = document.querySelectorAll('.seccion-panel');
+    secciones.forEach(sec => sec.classList.remove('activa'));
+
+    document.getElementById('seccion-' + tabId).classList.add('activa');
+  }
+
+  // SINCRONIZACIÓN DE DATOS CON LOCALSTORAGE
+  let tasaBcv = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 854.46;
+  document.getElementById('statTasa').innerText = `Bs. ${tasaBcv.toFixed(2)}`;
+  document.getElementById('adminInputTasa').value = tasaBcv;
+
+  let datosPago = JSON.parse(localStorage.getItem('sakura_datos_pago')) || {
+    banco: "Banesco (0134)",
+    telefono: "0424-4970576",
+    cedula: "V-27000000",
+    binance: "sakuragameverse@gmail.com"
+  };
+
+  document.getElementById('pagoBanco').value = datosPago.banco;
+  document.getElementById('pagoTelefono').value = datosPago.telefono;
+  document.getElementById('pagoCedula').value = datosPago.cedula;
+  document.getElementById('pagoBinance').value = datosPago.binance;
+
+  function guardarTasaAdmin() {
+    let nuevaTasa = parseFloat(document.getElementById('adminInputTasa').value);
+    if (!isNaN(nuevaTasa) && nuevaTasa > 0) {
+      localStorage.setItem('sakura_tasa_bcv', nuevaTasa);
+      tasaBcv = nuevaTasa;
+      document.getElementById('statTasa').innerText = `Bs. ${tasaBcv.toFixed(2)}`;
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+      alert("⚡ ¡Tasa BCV actualizada y sincronizada con éxito!");
+    }
+  }
+
+  function guardarDatosPagoAdmin() {
+    datosPago.banco = document.getElementById('pagoBanco').value;
+    datosPago.telefono = document.getElementById('pagoTelefono').value;
+    datosPago.cedula = document.getElementById('pagoCedula').value;
+    datosPago.binance = document.getElementById('pagoBinance').value;
+
+    localStorage.setItem('sakura_datos_pago', JSON.stringify(datosPago));
+    confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+    alert("💾 ¡Datos de pago guardados exitosamente!");
+  }
+
+  let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, rango: "Rango Hokage" };
+  document.getElementById('adminGamerTag').innerText = gamerProfile.tag;
+  document.getElementById('adminXp').innerText = gamerProfile.xp + " XP";
+  document.getElementById('adminRango').innerText = gamerProfile.rango;
+
+  // INVENTARIO DINÁMICO
+  let listaInventario = JSON.parse(localStorage.getItem('sakura_inventario_admin')) || [
+    { nombre: "Tomo Manga Original", categoria: "Mangas", precio: 12.00, estado: "Inmediato" },
+    { nombre: "Booster Box Cartas TCG", categoria: "Cartas", precio: 40.00, estado: "Inmediato" },
+    { nombre: "Hoodie Oversize Anime", categoria: "Ropa", precio: 25.00, estado: "Inmediato" },
+    { nombre: "Mando Pro Inalámbrico PC", categoria: "Mandos", precio: 28.00, estado: "Inmediato" }
+  ];
+
+  function renderInventarioAdmin() {
+    let tbody = document.getElementById('tablaInventarioAdmin');
+    tbody.innerHTML = "";
+    listaInventario.forEach((item, index) => {
+      tbody.innerHTML += `
+        <tr>
+          <td><strong>${item.nombre}</strong></td>
+          <td>${item.categoria}</td>
+          <td style="color: var(--secondary-color);">$${item.precio.toFixed(2)}</td>
+          <td><span class="badge-estado-pedido ${item.estado === 'Inmediato' ? 'estado-pagado' : 'estado-pendiente'}">${item.estado}</span></td>
+          <td><button class="btn-eliminar-fila" onclick="eliminarProductoAdmin(${index})">Eliminar</button></td>
+        </tr>
+      `;
+    });
+    document.getElementById('statProductos').innerText = listaInventario.length;
+  }
+  renderInventarioAdmin();
+
+  function agregarProductoAdmin() {
+    let nombre = document.getElementById('nuevoNombre').value.trim();
+    let precio = parseFloat(document.getElementById('nuevoPrecio').value);
+    let categoria = document.getElementById('nuevaCategoria').value;
+    let estado = document.getElementById('nuevoEstado').value === 'inmediato' ? 'Inmediato' : 'Por Encargo';
+
+    if (!nombre || isNaN(precio) || precio <= 0) {
+      alert("Por favor ingresa un nombre válido y un precio correcto.");
+      return;
+    }
+
+    listaInventario.push({ nombre, categoria, precio, estado });
+    localStorage.setItem('sakura_inventario_admin', JSON.stringify(listaInventario));
+    renderInventarioAdmin();
+
+    document.getElementById('nuevoNombre').value = "";
+    document.getElementById('nuevoPrecio').value = "";
+    alert("📦 ¡Producto agregado exitosamente al inventario!");
+  }
+
+  function eliminarProductoAdmin(index) {
+    if (confirm("¿Estás seguro de eliminar este producto del inventario?")) {
+      listaInventario.splice(index, 1);
+      localStorage.setItem('sakura_inventario_admin', JSON.stringify(listaInventario));
+      renderInventarioAdmin();
+    }
+  }
+</script>
+
+</body>
+</html>
