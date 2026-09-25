@@ -14,7 +14,7 @@
     ::-webkit-scrollbar-track { background: #0d041a; }
     ::-webkit-scrollbar-thumb { background: #FF007F; border-radius: 10px; }
 
-    /* PANTALLA DE CARGA CON EL CARRO ACELERANDO Y HUMO */
+    /* PANTALLA DE CARGA CON CARRERA Y HUMO NEÓN */
     #splash-screen {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -24,60 +24,70 @@
       justify-content: center;
       align-items: center;
       z-index: 9999;
-      overflow: hidden;
       transition: opacity 0.6s ease;
+      overflow: hidden;
     }
     
-    .pista {
+    .race-track {
       position: relative;
       width: 100%;
-      height: 150px;
+      height: 180px;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
     }
 
-    /* EL CARRO DE TU LOGO ACELERANDO DESDE LA IZQUIERDA */
-    .splash-logo {
-      max-width: 250px;
+    /* EL CARRO ACELERANDO Y CRUZANDO */
+    .splash-car {
+      max-width: 260px;
       position: absolute;
-      animation: car-drift 1.4s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
-      filter: drop-shadow(0 0 15px rgba(0,229,255,0.8));
+      animation: car-drift 1.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
     }
 
     @keyframes car-drift {
-      0% { left: -100%; transform: scale(0.6) rotate(-5deg); opacity: 0; }
-      30% { opacity: 1; }
-      70% { left: 42%; transform: scale(1.1) rotate(2deg); }
-      100% { left: 50%; transform: translate(-50%, 0) scale(1) rotate(0deg); }
+      0% { transform: translateX(-120vw) scale(0.8) rotate(-5deg); opacity: 0; }
+      40% { transform: translateX(0vw) scale(1.05) rotate(2deg); opacity: 1; }
+      60% { transform: translateX(0vw) scale(1) rotate(0deg); opacity: 1; }
+      100% { transform: translateX(0vw) scale(1); opacity: 1; }
     }
 
-    /* EFECTO DE HUMO NEÓN ATRÁS DEL CARRO */
-    .smoke {
+    /* EFECTO DE HUMO DE ESCAPE */
+    .smoke-puff {
       position: absolute;
-      background: rgba(0, 229, 255, 0.4);
+      bottom: 20px;
+      left: 45%;
+      width: 15px;
+      height: 15px;
+      background: rgba(0, 229, 255, 0.6);
       border-radius: 50%;
-      filter: blur(8px);
-      animation: puff-smoke 1.2s infinite ease-out;
-      z-index: -1;
+      box-shadow: 0 0 15px #00e5ff, 0 0 30px #FF007F;
+      animation: puff-out 0.8s infinite linear;
+      opacity: 0;
     }
 
-    @keyframes puff-smoke {
-      0% { transform: scale(0.5) translateX(0); opacity: 0.8; }
-      100% { transform: scale(2.5) translateX(-80px) translateY(-20px); opacity: 0; }
+    @keyframes puff-out {
+      0% { transform: translateX(0) scale(0.5); opacity: 0.8; }
+      100% { transform: translateX(-80px) translateY(-30px) scale(2.5); opacity: 0; }
     }
 
-    .loading-text {
-      color: #00e5ff;
-      font-weight: bold;
-      font-size: 1.1em;
-      letter-spacing: 2px;
-      margin-top: 10px;
-      text-shadow: 0 0 10px rgba(0,229,255,0.6);
-      animation: pulse-text 0.6s infinite alternate;
+    .loading-bar-container {
+      width: 220px;
+      height: 6px;
+      background: #11052C;
+      border-radius: 10px;
+      border: 1px solid #FF007F;
+      overflow: hidden;
+      margin-top: 20px;
     }
-    @keyframes pulse-text {
-      to { opacity: 0.5; }
+    .loading-bar {
+      width: 0%;
+      height: 100%;
+      background: #00e5ff;
+      box-shadow: 0 0 10px #00e5ff;
+      animation: load-progress 1.5s linear forwards;
+    }
+    @keyframes load-progress {
+      to { width: 100%; }
     }
 
     .hero-banner { background-color: #11052C; text-align: center; padding: 50px 20px; border-bottom: 3px solid #FF007F; box-shadow: 0 0 20px rgba(255, 0, 127, 0.4); position: relative; z-index: 2; }
@@ -89,4 +99,283 @@
     @keyframes neon-pulse { 0% { text-shadow: 0 0 5px #FF007F, 0 0 10px #FF007F; } 100% { text-shadow: 0 0 5px #fff, 0 0 15px #FF007F, 0 0 30px #FF007F; } }
     
     .search-box { text-align: center; margin-bottom: 20px; }
-    .search
+    .search-input { background: #11052C; border: 2px solid #00e5ff; color: white; padding: 10px 20px; width: 80%; max-width: 400px; border-radius: 25px; font-size: 1em; outline: none; box-shadow: 0 0 10px rgba(0,229,255,0.3); }
+    
+    .filtros { text-align: center; margin-bottom: 30px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+    .btn-filtro { background: transparent; color: white; border: 1px solid #00e5ff; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+    .btn-filtro:hover, .btn-filtro.activo { background: #00e5ff; color: #0d041a; box-shadow: 0 0 10px #00e5ff; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+    
+    .card { background-color: #1a0b38; border-radius: 15px; padding: 15px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.5); position: relative; border: 1px solid transparent; transition: all 0.3s ease; cursor: pointer; animation: card-pop 0.4s ease-out; }
+    @keyframes card-pop {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .card:hover, .card:active { transform: translateY(-10px) scale(1.02); box-shadow: 0 15px 30px rgba(0, 229, 255, 0.4); border: 1px solid #00e5ff; }
+    .card img { width: 100%; height: 250px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
+    .card-title { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; }
+    .card-price { color: #00e5ff; font-size: 1.2em; font-weight: bold; text-shadow: 0 0 5px rgba(0, 229, 255, 0.5); }
+    .badge-encargo { position: absolute; top: 10px; right: 10px; background-color: #FF007F; color: white; padding: 5px 12px; font-size: 0.8em; font-weight: bold; border-radius: 20px; box-shadow: 0 0 10px #FF007F; z-index: 3; }
+
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+    .modal-content { background: #11052C; padding: 20px; border-radius: 20px; text-align: center; max-width: 90%; width: 400px; border: 2px solid #FF007F; box-shadow: 0 0 30px rgba(255,0,127,0.5); position: relative; max-height: 90vh; overflow-y: auto; }
+    .cerrar-modal { position: absolute; top: 10px; right: 15px; font-size: 25px; color: white; cursor: pointer; background: none; border: none; font-weight: bold; }
+    .modal-img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
+    .btn-comprar { background: #FF007F; color: white; border: none; padding: 10px 20px; font-size: 1.1em; font-weight: bold; border-radius: 30px; cursor: pointer; margin-top: 15px; box-shadow: 0 0 10px #FF007F; width: 100%; }
+
+    .cart-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(17, 5, 44, 0.95); border-top: 2px solid #00e5ff; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; z-index: 1500; box-shadow: 0 -5px 20px rgba(0,229,255,0.3); backdrop-filter: blur(5px); flex-wrap: wrap; gap: 8px; }
+    .cart-info { font-weight: bold; font-size: 1em; color: #00e5ff; }
+    .cart-buttons { display: flex; gap: 8px; }
+    .btn-checkout { background: #25D366; color: white; border: none; padding: 8px 15px; border-radius: 15px; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px #25D366; font-size: 0.9em; }
+    .btn-clear { background: #ff3366; color: white; border: none; padding: 8px 12px; border-radius: 15px; font-weight: bold; cursor: pointer; font-size: 0.9em; }
+
+    .info-section { background: #11052C; margin-top: 50px; margin-bottom: 60px; padding: 30px 20px; border-radius: 15px; border: 1px solid #FF007F; box-shadow: 0 0 15px rgba(255,0,127,0.2); }
+    .info-title { color: #00e5ff; font-size: 1.4em; margin-bottom: 15px; text-align: center; }
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; font-size: 0.95em; line-height: 1.5; }
+    .info-card { background: #1a0b38; padding: 15px; border-radius: 10px; border: 1px solid rgba(255,0,127,0.3); }
+
+    .whatsapp-btn { position: fixed; bottom: 75px; right: 20px; background-color: #25D366; color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 26px; text-decoration: none; z-index: 1000; animation: pulse-wa 2s infinite; }
+    @keyframes pulse-wa { 0% { transform: scale(1); box-shadow: 0 0 10px rgba(37, 211, 102, 0.5); } 50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(37, 211, 102, 1); } 100% { transform: scale(1); box-shadow: 0 0 10px rgba(37, 211, 102, 0.5); } }
+
+    .bg-elements { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+    .float-item { position: absolute; top: -10%; animation: fall linear infinite; opacity: 0.7; }
+    .sakura { font-size: 22px; filter: drop-shadow(0 0 5px #FF007F); }
+    .gamer { font-size: 28px; filter: drop-shadow(0 0 8px #00e5ff); opacity: 0.5; }
+    @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
+    .i1 { left: 5%; animation-duration: 9s; animation-delay: 0s; } .i2 { left: 15%; animation-duration: 14s; animation-delay: 2s; } .i3 { left: 25%; animation-duration: 10s; animation-delay: 4s; } .i4 { left: 35%; animation-duration: 13s; animation-delay: 1s; } .i5 { left: 45%; animation-duration: 11s; animation-delay: 5s; } .i6 { left: 55%; animation-duration: 15s; animation-delay: 0s; } .i7 { left: 65%; animation-duration: 9s; animation-delay: 3s; } .i8 { left: 75%; animation-duration: 12s; animation-delay: 1s; } .i9 { left: 85%; animation-duration: 16s; animation-delay: 4s; } .i10 { left: 95%; animation-duration: 10s; animation-delay: 2s; }
+  </style>
+</head>
+<body>
+
+<!-- PANTALLA DE CARGA CON EL CARRO EN PISTA Y HUMO NEÓN -->
+<div id="splash-screen">
+  <div class="race-track">
+    <div class="smoke-puff"></div>
+    <img src="logo.webp" alt="Carro Acelerando" class="splash-car">
+  </div>
+  <div style="color: #00e5ff; font-weight: bold; font-size: 1.1em; letter-spacing: 2px; margin-top: 10px;">ENCENDiendo MOTORES...</div>
+  <div class="loading-bar-container">
+    <div class="loading-bar"></div>
+  </div>
+</div>
+
+<div class="bg-elements">
+  <div class="float-item sakura i1">🌸</div><div class="float-item gamer i2">🎮</div><div class="float-item sakura i3">🌸</div><div class="float-item gamer i4">🕹️</div><div class="float-item sakura i5">🌸</div><div class="float-item sakura i6">🌸</div><div class="float-item gamer i7">🎮</div><div class="float-item sakura i8">🌸</div><div class="float-item gamer i9">🕹️</div><div class="float-item sakura i10">🌸</div>
+</div>
+
+<div class="hero-banner">
+  <img src="logo.webp" alt="Sakura Gameverse" class="hero-logo">
+  <div class="hero-title">✨ Bienvenidos a Sakura Gameverse ✨<br>Donde tu pasión por el gaming nunca hace game over. 👾🌸</div>
+</div>
+
+<div class="container">
+  <div class="search-box">
+    <input type="text" id="buscador" class="search-input" placeholder="🔍 Buscar figura, katana, lámpara..." onkeyup="buscarProductos()">
+  </div>
+
+  <div class="filtros">
+    <button class="btn-filtro activo" onclick="filtrar('todos', event)">Todos</button>
+    <button class="btn-filtro" onclick="filtrar('figuras', event)">Figuras</button>
+    <button class="btn-filtro" onclick="filtrar('peluches', event)">Peluches</button>
+    <button class="btn-filtro" onclick="filtrar('cartas', event)">Cartas TCG</button>
+    <button class="btn-filtro" onclick="filtrar('accesorios', event)">Accesorios</button>
+    <button class="btn-filtro" onclick="filtrar('katanas', event)">Katanas</button>
+    <button class="btn-filtro" onclick="filtrar('lamparas', event)">Lámparas</button>
+  </div>
+  
+  <div class="grid" id="catalogo">
+    <div class="card item-producto" data-nombre="figura de coleccion" data-categoria="figuras" onclick="reproducirSonido(); abrirModal('figuras.jpg', 'Figura de Colección', 35.00, '¡Una figura épica para tu repisa! Detalles increíbles y acabados premium.')">
+      <img src="figuras.jpg" alt="Figura">
+      <div class="card-title">Figura de Colección</div>
+      <div class="card-price">$35.00</div>
+    </div>
+
+    <div class="card item-producto" data-nombre="peluche exclusivo" data-categoria="peluches" onclick="reproducirSonido(); abrirModal('peluche.jpg', 'Peluche Exclusivo', 20.00, 'Súper suave y kawaii. El compañero perfecto para tus largas noches de gaming.')">
+      <div class="badge-encargo">Por Encargo</div>
+      <img src="peluche.jpg" alt="Peluche">
+      <div class="card-title">Peluche Exclusivo</div>
+      <div class="card-price">$20.00</div>
+    </div>
+
+    <div class="card item-producto" data-nombre="booster pack tcg cartas" data-categoria="cartas" onclick="reproducirSonido(); abrirModal('cartas.jpg', 'Booster Pack TCG', 5.00, '¡Expande tu mazo y aplasta a tus rivales! Incluye cartas raras garantizadas.')">
+      <div class="badge-encargo">Por Encargo</div>
+      <img src="cartas.jpg" alt="Cartas TCG">
+      <div class="card-title">Booster Pack TCG</div>
+      <div class="card-price">$5.00</div>
+    </div>
+
+    <div class="card item-producto" data-nombre="accesorio anime collar" data-categoria="accesorios" onclick="reproducirSonido(); abrirModal('accesorios.jpeg', 'Accesorio Anime', 5.00, '¡Lleva tu pasión a todas partes con este increíble accesorio! Diseño súper detallado.')">
+      <div class="badge-encargo">Por Encargo</div>
+      <img src="accesorios.jpeg" alt="Accesorios">
+      <div class="card-title">Accesorio Anime</div>
+      <div class="card-price">$5.00</div>
+    </div>
+
+    <div class="card item-producto" data-nombre="katana replica anime" data-categoria="katanas" onclick="reproducirSonido(); abrirModal('katanas.jpg', 'Katana Replica Anime', 45.00, 'Replica a escala real. Perfecta para cosplay o para darle un toque épico a tu cuarto.')">
+      <div class="badge-encargo">Por Encargo</div>
+      <img src="katanas.jpg" alt="Katanas">
+      <div class="card-title">Katana Replica Anime</div>
+      <div class="card-price">$45.00</div>
+    </div>
+
+    <div class="card item-producto" data-nombre="lampara neon gamer" data-categoria="lamparas" onclick="reproducirSonido(); abrirModal('lamparas.jpg', 'Lámpara Neón Gamer', 25.00, 'Ilumina tu setup con esta increíble lámpara. Varios colores y modos de luz.')">
+      <img src="lamparas.jpg" alt="Lámparas">
+      <div class="card-title">Lámpara Neón Gamer</div>
+      <div class="card-price">$25.00</div>
+    </div>
+  </div>
+
+  <div class="info-section">
+    <div class="info-title">✨ Información y Envíos 📦</div>
+    <div class="info-grid">
+      <div class="info-card">
+        <strong>💳 Métodos de Pago:</strong><br>
+        Pago Móvil, Efectivo ($) y Binance USDT.
+      </div>
+      <div class="info-card">
+        <strong>🚚 Envíos Nacionales:</strong><br>
+        Envíos seguros a todo el país por Zoom, Tealca y MRW.
+      </div>
+      <div class="info-card">
+        <strong>⚡ Sobre los Encargos:</strong><br>
+        Los productos bajo encargo se apartan con un 50% de inicial. ¡Consúltanos al WhatsApp!
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="miModal" class="modal">
+  <div class="modal-content">
+    <button class="cerrar-modal" onclick="cerrarModal()">×</button>
+    <img id="modalImg" src="" alt="Producto" class="modal-img">
+    <h2 id="modalTitulo" style="color: #00e5ff; margin-bottom: 5px;">Título</h2>
+    <h3 id="modalPrecio" style="color: #FF007F; margin-top: 0;">$0.00</h3>
+    <p id="modalDesc" style="font-size: 0.9em; margin-bottom: 20px;">Descripción aquí.</p>
+    <button class="btn-comprar" onclick="agregarAlCarrito()">¡Añadir al Carrito! 🛒</button>
+  </div>
+</div>
+
+<div class="cart-bar">
+  <div class="cart-info" id="cartText">🛒 0 ítems ($0.00)</div>
+  <div class="cart-buttons">
+    <button class="btn-clear" onclick="vaciarCarrito()">Vaciar</button>
+    <button class="btn-checkout" onclick="enviarPedidoWhatsApp()">Pedir al WhatsApp 📱</button>
+  </div>
+</div>
+
+<a href="https://wa.me/584244970576" class="whatsapp-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+<script>
+  // SEGURIDAD PARA OCULTAR LA PANTALLA DE CARGA A LOS 1.6 SEGUNDOS
+  setTimeout(() => {
+    let splash = document.getElementById('splash-screen');
+    if (splash) {
+      splash.style.opacity = '0';
+      setTimeout(() => splash.style.display = 'none', 500);
+    }
+  }, 1600);
+
+  function reproducirSonido() {
+    try {
+      let ctx = new (window.AudioContext || window.webkitAudioContext)();
+      let osc = ctx.createOscillator();
+      let gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.1);
+      gain.gain.setValueAtTime(0.1, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.1);
+    } catch(e) {}
+  }
+
+  let carrito = [];
+  let productoActual = null;
+
+  function filtrar(categoria, evento) {
+    reproducirSonido();
+    let botones = document.querySelectorAll('.btn-filtro');
+    botones.forEach(btn => btn.classList.remove('activo'));
+    evento.target.classList.add('activo');
+
+    let productos = document.querySelectorAll('.item-producto');
+    productos.forEach(prod => {
+      if (categoria === 'todos' || prod.getAttribute('data-categoria') === categoria) {
+        prod.style.display = 'block';
+      } else {
+        prod.style.display = 'none';
+      }
+    });
+  }
+
+  function buscarProductos() {
+    let texto = document.getElementById('buscador').value.toLowerCase();
+    let productos = document.querySelectorAll('.item-producto');
+    productos.forEach(prod => {
+      let nombre = prod.getAttribute('data-nombre');
+      if (nombre.includes(texto)) {
+        prod.style.display = 'block';
+      } else {
+        prod.style.display = 'none';
+      }
+    });
+  }
+
+  function abrirModal(img, titulo, precio, descripcion) {
+    productoActual = { titulo, precio };
+    document.getElementById('modalImg').src = img;
+    document.getElementById('modalTitulo').innerText = titulo;
+    document.getElementById('modalPrecio').innerText = "$" + precio.toFixed(2);
+    document.getElementById('modalDesc').innerText = descripcion;
+    document.getElementById('miModal').style.display = 'flex';
+  }
+
+  function cerrarModal() {
+    reproducirSonido();
+    document.getElementById('miModal').style.display = 'none';
+  }
+
+  function agregarAlCarrito() {
+    reproducirSonido();
+    carrito.push(productoActual);
+    actualizarCarritoUI();
+    cerrarModal();
+  }
+
+  function vaciarCarrito() {
+    reproducirSonido();
+    carrito = [];
+    actualizarCarritoUI();
+  }
+
+  function actualizarCarritoUI() {
+    let totalItems = carrito.length;
+    let totalPrecio = carrito.reduce((sum, item) => sum + item.precio, 0);
+    document.getElementById('cartText').innerText = `🛒 ${totalItems} ítems ($${totalPrecio.toFixed(2)})`;
+  }
+
+  function enviarPedidoWhatsApp() {
+    reproducirSonido();
+    if (carrito.length === 0) {
+      alert("¡Tu carrito está vacío! Selecciona al menos un producto.");
+      return;
+    }
+    let mensaje = "¡Hola Sakura Gameverse! 🌸👾 Deseo realizar el siguiente pedido:\n\n";
+    let total = 0;
+    carrito.forEach((item, index) => {
+      mensaje += `${index + 1}. ${item.titulo} - $${item.precio.toFixed(2)}\n`;
+      total += item.precio;
+    });
+    mensaje += `\n*Total a pagar: $${total.toFixed(2)}*\n¡Espero su respuesta para coordinar el pago y el envío!`;
+    
+    let url = "https://wa.me/584244970576?text=" + encodeURIComponent(mensaje);
+    window.open(url, '_blank');
+  }
+</script>
+
+</body>
+</html>
