@@ -247,16 +247,13 @@
       color: var(--secondary-color);
       box-shadow: 0 0 10px rgba(0,229,255,0.2);
     }
-    .bcv-input {
+    .bcv-valor-auto {
       background: var(--bg-color);
       border: 1px solid var(--primary-color);
       color: var(--text-color);
-      padding: 4px 8px;
+      padding: 4px 12px;
       border-radius: 10px;
-      width: 80px;
-      text-align: center;
       font-weight: bold;
-      outline: none;
     }
 
     .container { padding: 30px 20px 100px 20px; max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
@@ -425,7 +422,7 @@
     .btn-checkout { background: #25D366; color: white; border: none; padding: 8px 15px; border-radius: 15px; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px #25D366; font-size: 0.9em; }
     .btn-clear { background: #ff3366; color: white; border: none; padding: 8px 12px; border-radius: 15px; font-weight: bold; cursor: pointer; font-size: 0.9em; }
 
-    /* MENÚ FLOTANTE HORIZONTAL COMPACTO (CARRUSEL INFERIOR NO INVASIVO) */
+    /* MENÚ FLOTANTE HORIZONTAL COMPACTO (CARRUSEL INFERIOR) */
     .floating-buttons { position: fixed; bottom: 65px; right: 15px; z-index: 1000; display: flex; align-items: center; gap: 8px; }
     
     .menu-desplegable-horizontal {
@@ -492,7 +489,7 @@
 
 <div class="ticker-bar">
   <div class="ticker-content">
-    🔥 ¡Bienvenidos a Sakura Gameverse! Envíos seguros a todo el país exclusivamente por ZOOM y MRW 📦 | 🎮 Cupón activo: OTAKU10 | ⚡ ¡Abre el menú flotante inferior para cofre, música y gacha! 🌸
+    🔥 ¡Bienvenidos a Sakura Gameverse! Envíos seguros a todo el país exclusivamente por ZOOM y MRW 📦 | 🎮 Cupón activo: OTAKU10 | ⚡ Tasa BCV Oficial en vivo automática 🌸
   </div>
 </div>
 
@@ -642,8 +639,8 @@
   <br>
 
   <div class="bcv-box">
-    <i class="fas fa-coins"></i> Tasa BCV (Bs/$): 
-    <input type="number" id="inputTasaBcv" class="bcv-input" step="0.01" value="36.50" oninput="cambiarTasaBcvManual()">
+    <i class="fas fa-coins"></i> Tasa BCV Oficial (En Vivo): 
+    <span id="txtTasaBcvAuto" class="bcv-valor-auto">Cargando...</span>
   </div>
 </div>
 
@@ -927,7 +924,7 @@
 
     <div class="faq-item">
       <div class="faq-question"><i class="fas fa-coins"></i> ¿Cómo se calcula el Pago Móvil?</div>
-      <div class="faq-answer">Puedes ver el precio exacto en bolívares reflejado debajo de cada producto usando la tasa BCV del día que puedes actualizar en la parte superior de la tienda.</div>
+      <div class="faq-answer">Puedes ver el precio exacto en bolívares reflejado debajo de cada producto usando la tasa BCV oficial que se actualiza automáticamente todos los días.</div>
     </div>
 
     <div class="faq-item">
@@ -1004,7 +1001,7 @@
 <audio id="audioLoFi" loop src="https://stream.zeno.fm/f3wvbbqmdg8uv"></audio>
 
 <script>
-  let textosCarga = ["Cargando texturas...", "Sincronizando tasa BCV...", "Cargando inventario otaku...", "¡Gameverse listo!"];
+  let textosCarga = ["Cargando texturas...", "Sincronizando tasa BCV en vivo...", "Cargando inventario otaku...", "¡Gameverse listo!"];
   let indiceCarga = 0;
   let textElem = document.getElementById('loadingText');
   
@@ -1087,6 +1084,38 @@
     }, 1000);
   }
   iniciarCountdown();
+
+  // OBTENER TASA BCV AUTOMÁTICA EN VIVO
+  let tasaBcvActual = 36.50; // Respaldo por defecto
+
+  async function obtenerTasaBcvAutomatica() {
+    try {
+      let respuesta = await fetch('https://rates.dolarvzla.com/bcv/current.json');
+      let data = await respuesta.json();
+      if (data && data.usd) {
+        tasaBcvActual = parseFloat(data.usd);
+        document.getElementById('txtTasaBcvAuto').innerText = `Bs. ${tasaBcvActual.toFixed(2)}`;
+        actualizarPreciosEnBs();
+      } else {
+        throw new Error("Formato inválido");
+      }
+    } catch (e) {
+      // Si falla la red, intenta usar la última tasa guardada o el respaldo
+      tasaBcvActual = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 36.50;
+      document.getElementById('txtTasaBcvAuto').innerText = `Bs. ${tasaBcvActual.toFixed(2)} (Offline)`;
+      actualizarPreciosEnBs();
+    }
+  }
+  obtenerTasaBcvAutomatica();
+
+  function actualizarPreciosEnBs() {
+    let etiquetasBs = document.querySelectorAll('.card-bs');
+    etiquetasBs.forEach(etiqueta => {
+      let usd = parseFloat(etiqueta.getAttribute('data-usd'));
+      let totalBs = usd * tasaBcvActual;
+      etiqueta.innerText = `≈ Bs. ${totalBs.toLocaleString('es-VE', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    });
+  }
 
   function abrirCofreModal() {
     reproducirSonido();
@@ -1332,29 +1361,6 @@
     reproducirSonido();
     document.getElementById('modalPromoFlash').style.display = 'none';
   }
-
-  let tasaBcvActual = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 36.50;
-  document.getElementById('inputTasaBcv').value = tasaBcvActual;
-
-  function cambiarTasaBcvManual() {
-    let val = parseFloat(document.getElementById('inputTasaBcv').value);
-    if (!isNaN(val) && val > 0) {
-      tasaBcvActual = val;
-      localStorage.setItem('sakura_tasa_bcv', tasaBcvActual);
-      actualizarPreciosEnBs();
-    }
-  }
-
-  function actualizarPreciosEnBs() {
-    let etiquetasBs = document.querySelectorAll('.card-bs');
-    etiquetasBs.forEach(etiqueta => {
-      let usd = parseFloat(etiqueta.getAttribute('data-usd'));
-      let totalBs = usd * tasaBcvActual;
-      etiqueta.innerText = `≈ Bs. ${totalBs.toLocaleString('es-VE', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-    });
-  }
-
-  actualizarPreciosEnBs();
 
   function reproducirSonido() {
     try {
@@ -1711,7 +1717,6 @@
   function renderReviews() {
     let contenedor = document.getElementById('contenedorReviews');
     contenedor.innerHTML = "";
-    reviews.reviews.forEach((rev, index) => {}); // placeholder
     reviews.forEach((rev, index) => {
       contenedor.innerHTML += `
         <div class="review-card">
