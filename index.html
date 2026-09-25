@@ -61,7 +61,7 @@
 
     body { margin: 0; background-color: var(--bg-color); color: var(--text-color); font-family: sans-serif; overflow-x: hidden; transition: background 0.4s ease, color 0.4s ease; }
     
-    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
     ::-webkit-scrollbar-track { background: var(--bg-color); }
     ::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
 
@@ -184,7 +184,6 @@
     .hero-logo:hover { transform: scale(1.05); }
     .hero-title { font-size: 1.1em; font-weight: bold; margin-bottom: 12px; letter-spacing: 1px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
     
-    /* INDICADOR DE ESTADO EN VIVO */
     .store-status-badge {
       display: inline-flex;
       align-items: center;
@@ -260,7 +259,7 @@
       outline: none;
     }
 
-    .container { padding: 30px 20px; max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
+    .container { padding: 30px 20px 100px 20px; max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
     
     .search-box { text-align: center; margin-bottom: 20px; }
     .search-input { background: var(--hero-bg); border: 2px solid var(--secondary-color); color: var(--text-color); padding: 10px 20px; width: 80%; max-width: 400px; border-radius: 25px; font-size: 1em; outline: none; box-shadow: 0 0 10px rgba(0,229,255,0.3); }
@@ -426,38 +425,51 @@
     .btn-checkout { background: #25D366; color: white; border: none; padding: 8px 15px; border-radius: 15px; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px #25D366; font-size: 0.9em; }
     .btn-clear { background: #ff3366; color: white; border: none; padding: 8px 12px; border-radius: 15px; font-weight: bold; cursor: pointer; font-size: 0.9em; }
 
-    /* MENÚ FLOTANTE OCULTO */
-    .floating-buttons { position: fixed; bottom: 75px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 1000; align-items: flex-end; }
+    /* MENÚ FLOTANTE HORIZONTAL COMPACTO (CARRUSEL INFERIOR NO INVASIVO) */
+    .floating-buttons { position: fixed; bottom: 65px; right: 15px; z-index: 1000; display: flex; align-items: center; gap: 8px; }
     
-    .menu-desplegable-flotante {
+    .menu-desplegable-horizontal {
       display: flex;
-      flex-direction: column;
-      gap: 10px;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s ease, opacity 0.4s ease;
+      gap: 8px;
+      max-width: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-space: nowrap;
+      transition: max-width 0.4s ease, opacity 0.4s ease, padding 0.4s ease;
       opacity: 0;
+      padding: 0;
+      background: rgba(17, 5, 44, 0.92);
+      backdrop-filter: blur(8px);
+      border-radius: 30px;
+      border: 1px solid transparent;
+      align-items: center;
     }
-    .menu-desplegable-flotante.abierto {
-      max-height: 650px;
+    .menu-desplegable-horizontal.abierto {
+      max-width: 320px;
       opacity: 1;
+      padding: 6px 12px;
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 20px rgba(0,229,255,0.3);
     }
 
-    .btn-menu-principal { background-color: var(--primary-color); color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 22px; cursor: pointer; border: 2px solid var(--secondary-color); box-shadow: 0 0 15px var(--primary-color); }
+    .btn-menu-principal { background-color: var(--primary-color); color: white; border-radius: 50%; width: 48px; height: 48px; display: flex; justify-content: center; align-items: center; font-size: 20px; cursor: pointer; border: 2px solid var(--secondary-color); box-shadow: 0 0 15px var(--primary-color); flex-shrink: 0; }
 
-    .whatsapp-btn { background-color: #25D366; color: white; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 22px; text-decoration: none; box-shadow: 0 0 10px rgba(37,211,102,0.5); }
-    .instagram-btn { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); color: white; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 20px; text-decoration: none; box-shadow: 0 0 10px rgba(214,36,159,0.6); }
-    .tiktok-btn { background-color: #000000; color: white; border: 2px solid #00e5ff; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px rgba(0,229,255,0.6); }
-    .sugerencia-btn { background-color: var(--primary-color); color: white; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 20px; text-decoration: none; box-shadow: 0 0 10px var(--primary-color); cursor: pointer; border: none; }
-    .faq-btn { background-color: var(--secondary-color); color: #0d041a; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px var(--secondary-color); cursor: pointer; border: none; font-weight: bold; }
-    .theme-btn { background-color: #ffcc00; color: #0d041a; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px #ffcc00; cursor: pointer; border: none; font-weight: bold; }
-    .gacha-btn { background-color: #9900ff; color: white; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px #9900ff; cursor: pointer; border: none; }
-    .chest-btn { background-color: #ff9900; color: #0d041a; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px #ff9900; cursor: pointer; border: none; font-weight: bold; }
-    .admin-btn { background-color: #ff3366; color: white; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px #ff3366; cursor: pointer; border: none; }
-    .music-btn { background-color: #ff0055; color: white; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px #ff0055; cursor: pointer; border: none; }
-    .gamer-profile-btn { background-color: #00ffcc; color: #0d041a; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px #00ffcc; cursor: pointer; border: none; font-weight: bold; }
-    .fav-floating-btn { background-color: #ff3366; color: white; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px #ff3366; cursor: pointer; border: none; position: relative; }
-    .fav-badge-count { position: absolute; top: -5px; right: -5px; background: #00e5ff; color: #0d041a; font-size: 0.65em; font-weight: bold; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 5px #00e5ff; }
+    .mini-btn { width: 38px; height: 38px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 15px; text-decoration: none; cursor: pointer; border: none; flex-shrink: 0; box-shadow: 0 0 8px rgba(0,0,0,0.5); transition: transform 0.2s; }
+    .mini-btn:hover { transform: scale(1.15); }
+
+    .whatsapp-btn { background-color: #25D366; color: white; }
+    .instagram-btn { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); color: white; }
+    .tiktok-btn { background-color: #000000; color: white; border: 1px solid #00e5ff; }
+    .sugerencia-btn { background-color: var(--primary-color); color: white; }
+    .faq-btn { background-color: var(--secondary-color); color: #0d041a; font-weight: bold; }
+    .theme-btn { background-color: #ffcc00; color: #0d041a; font-weight: bold; }
+    .gacha-btn { background-color: #9900ff; color: white; }
+    .chest-btn { background-color: #ff9900; color: #0d041a; font-weight: bold; }
+    .admin-btn { background-color: #ff3366; color: white; }
+    .music-btn { background-color: #ff0055; color: white; }
+    .gamer-profile-btn { background-color: #00ffcc; color: #0d041a; font-weight: bold; }
+    .fav-floating-btn { background-color: #ff3366; color: white; position: relative; }
+    .fav-badge-count { position: absolute; top: -4px; right: -4px; background: #00e5ff; color: #0d041a; font-size: 0.6em; font-weight: bold; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 
     .bg-elements { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
     .float-item { position: absolute; top: -10%; animation: fall linear infinite; opacity: 0.7; }
@@ -480,7 +492,7 @@
 
 <div class="ticker-bar">
   <div class="ticker-content">
-    🔥 ¡Bienvenidos a Sakura Gameverse! Envíos seguros a todo el país exclusivamente por ZOOM y MRW 📦 | 🎮 Cupón activo: OTAKU10 | ⚡ ¡Abre el menú flotante para panel de administración y cofre diario! 🌸
+    🔥 ¡Bienvenidos a Sakura Gameverse! Envíos seguros a todo el país exclusivamente por ZOOM y MRW 📦 | 🎮 Cupón activo: OTAKU10 | ⚡ ¡Abre el menú flotante inferior para cofre, música y gacha! 🌸
   </div>
 </div>
 
@@ -490,7 +502,7 @@
     <div style="font-size: 40px; margin-bottom: 10px;">🎁</div>
     <h2 style="color: var(--secondary-color); margin-top: 0;">¡Bienvenido a Sakura Gameverse!</h2>
     <p style="font-size: 0.95em; line-height: 1.5; opacity: 0.9; margin-bottom: 15px;">
-      Usa el código <strong>OTAKU10</strong> o abre el menú flotante para reclamar tu <strong>Cofre Diario</strong> y girar la ruleta Gacha. Entregas en <strong>Bejuma y Miranda</strong> y envíos por <strong>ZOOM y MRW</strong>.
+      Usa el código <strong>OTAKU10</strong> o abre el menú flotante inferior para reclamar tu <strong>Cofre Diario</strong> y girar la ruleta Gacha. Entregas en <strong>Bejuma y Miranda</strong> y envíos por <strong>ZOOM y MRW</strong>.
     </p>
     <button class="btn-sugerencia" onclick="cerrarPromoFlash()">¡A Explorar Catálogo! 🚀</button>
   </div>
@@ -614,14 +626,12 @@
 <div class="hero-banner">
   <img src="logo.webp" alt="Sakura Gameverse" class="hero-logo" onclick="activarEasterEggLogo()" title="¡Haz clic aquí para modo secreto!">
   
-  <!-- INDICADOR EN VIVO -->
   <div class="store-status-badge">
     <div class="status-dot"></div> Pedidos Abiertos (Bejuma & Miranda)
   </div>
 
   <div class="hero-title">✨ Bienvenidos a Sakura Gameverse ✨<br>Donde tu pasión por el gaming nunca hace game over. 👾🌸</div>
   
-  <!-- OFERTA RELÁMPAGO CON CUENTA REGRESIVA -->
   <div class="flash-sale-banner">
     <i class="fas fa-bolt" style="color: #ffcc00; font-size: 1.2em;"></i>
     <div>
@@ -655,7 +665,6 @@
       <button class="btn-filtro" onclick="filtrar('cartas', event)">🃏 Cartas TCG</button>
       <button class="btn-filtro" onclick="filtrar('katanas', event)">⚔️ Katanas</button>
       <button class="btn-filtro" onclick="filtrar('lamparas', event)">💡 Lámparas</button>
-      <!-- NUEVOS FILTROS RÁPIDOS POR ESTADO -->
       <button class="btn-filtro" style="border-color: #00e5ff; color: #00e5ff;" onclick="filtrarEstado('inmediato', event)">📦 Stock Inmediato</button>
       <button class="btn-filtro" style="border-color: #FF007F; color: #FF007F;" onclick="filtrarEstado('encargo', event)">⚡ Por Encargo</button>
     </div>
@@ -847,9 +856,7 @@
     <div class="info-grid">
       <div class="info-card">
         <h4><i class="fas fa-credit-card" style="color: var(--secondary-color);"></i> Métodos de Pago</h4>
-        <div style="margin-top: 8px;" id="cajaDatosPagoInfo">
-          <!-- Datos dinámicos editables -->
-        </div>
+        <div style="margin-top: 8px;" id="cajaDatosPagoInfo"></div>
         <button class="btn-sugerencia" style="margin-top: 10px; padding: 6px; font-size: 0.85em;" onclick="copiarDatosPago()"><i class="fas fa-copy"></i> Copiar Datos de Pago</button>
       </div>
       <div class="info-card">
@@ -974,23 +981,23 @@
   </div>
 </div>
 
-<!-- MENÚ FLOTANTE UNIFICADO Y DESPLEGABLE -->
+<!-- MENÚ FLOTANTE HORIZONTAL COMPACTO (CARRUSEL INFERIOR) -->
 <div class="floating-buttons">
-  <div class="menu-desplegable-flotante" id="menuFlotante">
-    <button class="fav-floating-btn" onclick="abrirFavoritosModal()" title="Ver Favoritos"><i class="fas fa-heart"></i><div class="fav-badge-count" id="favCount">0</div></button>
-    <button class="chest-btn" onclick="abrirCofreModal()" title="Cofre Diario de Recompensa"><i class="fas fa-gift"></i></button>
-    <button class="gacha-btn" onclick="abrirGachaModal()" title="Ruleta Gacha de Descuentos"><i class="fas fa-dice"></i></button>
-    <button class="music-btn" onclick="toggleMusicaLoFi()" title="Reproducir/Pausar Música Lo-Fi"><i class="fas fa-music" id="iconoMusica"></i></button>
-    <button class="gamer-profile-btn" onclick="abrirGamerProfileModal()" title="Perfil Gamer & XP"><i class="fas fa-user-astronaut"></i></button>
-    <button class="theme-btn" onclick="abrirTemasModal()" title="Cambiar Tema Visual"><i class="fas fa-palette"></i></button>
-    <button class="admin-btn" onclick="abrirAdminModal()" title="Panel Admin: Editar Datos de Pago"><i class="fas fa-cogs"></i></button>
-    <a href="https://www.tiktok.com/@sakuragameverse" class="tiktok-btn" target="_blank" title="Síguenos en TikTok"><i class="fab fa-tiktok"></i></a>
-    <a href="https://www.instagram.com/sakuragameverse?stkn=bDQ5NXRla2Vyano1" class="instagram-btn" target="_blank" title="Síguenos en Instagram"><i class="fab fa-instagram"></i></a>
-    <button class="faq-btn" onclick="abrirFaqModal()" title="Preguntas Frecuentes"><i class="fas fa-question"></i></button>
-    <button class="sugerencia-btn" onclick="abrirSugerenciaModal()" title="Sugerir Mercancía"><i class="fas fa-lightbulb"></i></button>
-    <a href="https://wa.me/584244970576" class="whatsapp-btn" target="_blank" title="Escríbenos al WhatsApp"><i class="fab fa-whatsapp"></i></a>
+  <div class="menu-desplegable-horizontal" id="menuFlotante">
+    <button class="mini-btn fav-floating-btn" onclick="abrirFavoritosModal()" title="Ver Favoritos"><i class="fas fa-heart"></i><div class="fav-badge-count" id="favCount">0</div></button>
+    <button class="mini-btn chest-btn" onclick="abrirCofreModal()" title="Cofre Diario"><i class="fas fa-gift"></i></button>
+    <button class="mini-btn gacha-btn" onclick="abrirGachaModal()" title="Ruleta Gacha"><i class="fas fa-dice"></i></button>
+    <button class="mini-btn music-btn" onclick="toggleMusicaLoFi()" title="Música Lo-Fi"><i class="fas fa-music" id="iconoMusica"></i></button>
+    <button class="mini-btn gamer-profile-btn" onclick="abrirGamerProfileModal()" title="Perfil Gamer"><i class="fas fa-user-astronaut"></i></button>
+    <button class="mini-btn theme-btn" onclick="abrirTemasModal()" title="Cambiar Tema"><i class="fas fa-palette"></i></button>
+    <button class="mini-btn admin-btn" onclick="abrirAdminModal()" title="Panel Admin"><i class="fas fa-cogs"></i></button>
+    <a href="https://www.tiktok.com/@sakuragameverse" class="mini-btn tiktok-btn" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+    <a href="https://www.instagram.com/sakuragameverse?stkn=bDQ5NXRla2Vyano1" class="mini-btn instagram-btn" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+    <button class="mini-btn faq-btn" onclick="abrirFaqModal()" title="FAQ"><i class="fas fa-question"></i></button>
+    <button class="mini-btn sugerencia-btn" onclick="abrirSugerenciaModal()" title="Sugerir"><i class="fas fa-lightbulb"></i></button>
+    <a href="https://wa.me/584244970576" class="mini-btn whatsapp-btn" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
   </div>
-  <button class="btn-menu-principal" onclick="toggleMenuFlotante()" title="Abrir Menú Otaku"><i class="fas fa-bars" id="iconoMenuBtn"></i></button>
+  <button class="btn-menu-principal" onclick="toggleMenuFlotante()" title="Abrir Menú"><i class="fas fa-bars" id="iconoMenuBtn"></i></button>
 </div>
 
 <!-- AUDIO LO-FI ESTABLE -->
@@ -1017,7 +1024,6 @@
     }
   }, 2000);
 
-  // DATOS DE PAGO EDITABLES (ADMIN)
   let datosPago = JSON.parse(localStorage.getItem('sakura_datos_pago')) || {
     banco: "Banesco (0134)",
     telefono: "0424-4970576",
@@ -1069,7 +1075,6 @@
     });
   }
 
-  // TEMPORIZADOR DE OFERTA RELÁMPAGO (12 Horas)
   let tiempoRestante = 12 * 3600;
   function iniciarCountdown() {
     let timerElem = document.getElementById('countdownTimer');
@@ -1083,7 +1088,6 @@
   }
   iniciarCountdown();
 
-  // COFRE DIARIO CON MEMORIA LOCAL
   function abrirCofreModal() {
     reproducirSonido();
     verificarEstadoCofre();
@@ -1122,7 +1126,6 @@
     document.getElementById('btnReclamarCofre').style.display = 'none';
   }
 
-  // ROTACIÓN DE PRUEBA SOCIAL ARRIBA
   const compradoresFake = [
     { nombre: "Gabriel S.", lugar: "Bejuma, Carabobo", item: "un Tomo de Manga" },
     { nombre: "Valeria M.", lugar: "Miranda, Carabobo", item: "una Booster Box TCG" },
@@ -1150,7 +1153,6 @@
     }
   }
 
-  // SELECTOR DE TEMAS MÚLTIPLES
   let temaActual = localStorage.getItem('sakura_tema') || 'theme-rosa';
   document.body.className = temaActual;
 
@@ -1202,7 +1204,6 @@
   }
   function reproducingMusica() { return reproduciendoMusica; }
 
-  // GACHA VISUAL ANIMADO
   function abrirGachaModal() {
     reproducirSonido();
     document.getElementById('gachaResultado').innerText = "Presiona el botón para girar 🎁";
@@ -1710,6 +1711,7 @@
   function renderReviews() {
     let contenedor = document.getElementById('contenedorReviews');
     contenedor.innerHTML = "";
+    reviews.reviews.forEach((rev, index) => {}); // placeholder
     reviews.forEach((rev, index) => {
       contenedor.innerHTML += `
         <div class="review-card">
