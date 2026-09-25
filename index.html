@@ -43,6 +43,30 @@
       100% { transform: translateX(-100%); }
     }
 
+    /* PRUEBA SOCIAL FLOTANTE (NOTIFICACIONES DE COMPRA) */
+    #socialProofToast {
+      position: fixed;
+      bottom: 85px;
+      left: 20px;
+      background: rgba(17, 5, 44, 0.95);
+      border: 1px solid #00e5ff;
+      padding: 10px 15px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,229,255,0.4);
+      z-index: 1400;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.85em;
+      max-width: 280px;
+      transform: translateX(-120%);
+      transition: transform 0.5s ease;
+      backdrop-filter: blur(5px);
+    }
+    #socialProofToast.mostrar {
+      transform: translateX(0);
+    }
+
     #splash-screen {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -241,6 +265,12 @@
     .talla-select { background: #0d041a; border: 1px solid #00e5ff; color: white; padding: 8px; border-radius: 10px; width: 100%; font-weight: bold; outline: none; text-align: center; }
 
     .btn-comprar { background: #FF007F; color: white; border: none; padding: 10px 20px; font-size: 1.1em; font-weight: bold; border-radius: 30px; cursor: pointer; margin-top: 15px; box-shadow: 0 0 10px #FF007F; width: 100%; }
+    .btn-compartir { background: #25D366; color: white; border: none; padding: 8px 15px; font-size: 0.9em; font-weight: bold; border-radius: 20px; cursor: pointer; margin-top: 8px; box-shadow: 0 0 8px #25D366; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; }
+
+    /* CUPONES Y RECIBO DIGITAL */
+    .cupon-box { display: flex; gap: 8px; margin-bottom: 12px; }
+    .cupon-input { flex-grow: 1; background: #0d041a; border: 1px solid #00e5ff; color: white; padding: 8px; border-radius: 10px; font-size: 0.9em; outline: none; text-transform: uppercase; }
+    .btn-cupon { background: #00e5ff; color: #0d041a; border: none; padding: 0 15px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 0.85em; }
 
     .recibo-box { background: #0d041a; border: 2px dashed #00e5ff; padding: 15px; border-radius: 12px; text-align: left; font-family: monospace; font-size: 0.85em; color: #00e5ff; margin-bottom: 15px; box-shadow: inset 0 0 10px rgba(0,229,255,0.2); }
     .recibo-line { display: flex; justify-content: space-between; margin-bottom: 5px; }
@@ -297,13 +327,22 @@
 </head>
 <body>
 
+<!-- NOTIFICACIÓN DE PRUEBA SOCIAL FLOTANTE -->
+<div id="socialProofToast">
+  <div style="font-size: 22px;">🛍️</div>
+  <div>
+    <strong id="toastTexto" style="color: #00e5ff;">¡Alguien compró!</strong><br>
+    <span style="color: #aaa; font-size: 0.75em;" id="toastLugar">Hace un momento en Carabobo</span>
+  </div>
+</div>
+
 <div id="modalPromoFlash" class="modal" style="display: flex;">
   <div class="modal-content" style="border: 2px solid #00e5ff; box-shadow: 0 0 40px rgba(0,229,255,0.6);">
     <button class="cerrar-modal" onclick="cerrarPromoFlash()">×</button>
     <div style="font-size: 40px; margin-bottom: 10px;">🎁</div>
     <h2 style="color: #00e5ff; margin-top: 0;">¡Bienvenido a Sakura Gameverse!</h2>
     <p style="font-size: 0.95em; line-height: 1.5; color: #ddd; margin-bottom: 15px;">
-      Explora nuestra tienda de ropa, mandos y coleccionables. Recuerda que hacemos entregas personales en <strong>Bejuma y Miranda</strong> y envíos por <strong>ZOOM y MRW</strong>.
+      Usa el código <strong>OTAKU10</strong> en tu carrito para obtener un descuento exclusivo. Entregas personales en <strong>Bejuma y Miranda</strong> y envíos por <strong>ZOOM y MRW</strong>.
     </p>
     <button class="btn-sugerencia" onclick="cerrarPromoFlash()">¡A Explorar Catálogo! 🚀</button>
   </div>
@@ -311,7 +350,7 @@
 
 <div class="ticker-bar">
   <div class="ticker-content">
-    🔥 ¡Bienvenidos a Sakura Gameverse! Envíos seguros a todo el país exclusivamente por ZOOM y MRW 📦 | 🎮 Nuevos mandos PC, teclados y hoodies disponibles | ⚡ ¡Calcula tu pago móvil al instante con la tasa BCV del día! 🌸
+    🔥 ¡Bienvenidos a Sakura Gameverse! Envíos seguros a todo el país exclusivamente por ZOOM y MRW 📦 | 🎮 Cupón activo: OTAKU10 | ⚡ ¡Calcula tu pago móvil al instante con la tasa BCV del día! 🌸
   </div>
 </div>
 
@@ -358,7 +397,6 @@
       <button class="btn-filtro" onclick="filtrar('lamparas', event)">💡 Lámparas</button>
     </div>
 
-    <!-- PANEL DE CONTROLES AVANZADOS CON SLIDER DE 1$ A 1000$ -->
     <div class="panel-controles-avanzados">
       <select id="selectOrden" class="ordenar-select" onchange="ordenarProductos()">
         <option value="defecto">⚡ Ordenar por: Destacados</option>
@@ -530,6 +568,7 @@
     </div>
 
     <button class="btn-comprar" onclick="agregarAlCarrito()">¡Añadir al Carrito! 🛒</button>
+    <button class="btn-compartir" onclick="compartirProductoWhatsApp()"><i class="fab fa-whatsapp"></i> Compartir producto</button>
   </div>
 </div>
 
@@ -565,7 +604,14 @@
     <button class="cerrar-modal" onclick="cerrarCarritoModal()">×</button>
     <h2 style="color: #00e5ff; margin-top: 0;">🛒 Tu Carrito de Compras</h2>
     
-    <div id="listaCarritoDetalle" style="max-height: 180px; overflow-y: auto; margin-bottom: 12px; padding-right: 5px;"></div>
+    <!-- SECCIÓN DE CUPONES -->
+    <div class="cupon-box">
+      <input type="text" id="inputCupon" class="cupon-input" placeholder="Código de Cupón (Ej: OTAKU10)">
+      <button class="btn-cupon" onclick="aplicarCupon()">Aplicar</button>
+    </div>
+    <div id="mensajeCupon" style="font-size: 0.8em; margin-bottom: 8px; color: #00e5ff;"></div>
+
+    <div id="listaCarritoDetalle" style="max-height: 150px; overflow-y: auto; margin-bottom: 12px; padding-right: 5px;"></div>
     
     <div id="reciboDigital" class="recibo-box" style="display: none;">
       <div style="text-align: center; font-weight: bold; margin-bottom: 8px; color: #FF007F;">--- RECIBO DIGITAL SAKURA ---</div>
@@ -626,6 +672,33 @@
       setTimeout(() => splash.style.display = 'none', 600);
     }
   }, 2000);
+
+  // SISTEMA DE PRUEBA SOCIAL (NOTIFICACIONES FLOTANTES)
+  const compradoresFake = [
+    { nombre: "Gabriel S.", lugar: "Bejuma, Carabobo", item: "un Hoodie Oversize" },
+    { nombre: "Valeria M.", lugar: "Miranda, Carabobo", item: "unos Audífonos Gamer" },
+    { nombre: "Andrés R.", lugar: "Valencia, Carabobo", item: "un Mando Pro PC" },
+    { nombre: "Mariana L.", lugar: "Caracas", item: "una Figura de Colección" }
+  ];
+
+  function lanzarPruebaSocial() {
+    let comprador = compradoresFake[Math.floor(Math.random() * compradoresFake.length)];
+    document.getElementById('toastTexto').innerText = `${comprador.nombre} compró ${comprador.item}`;
+    document.getElementById('toastLugar').innerText = `Hace un momento en ${comprador.lugar}`;
+    
+    let toast = document.getElementById('socialProofToast');
+    toast.classList.add('mostrar');
+
+    setTimeout(() => {
+      toast.classList.remove('mostrar');
+    }, 4000);
+  }
+
+  // Lanzar primera notificación a los 6 segundos y luego cada 15 segundos
+  setTimeout(() => {
+    lanzarPruebaSocial();
+    setInterval(lanzarPruebaSocial, 15000);
+  }, 6000);
 
   function cerrarPromoFlash() {
     reproducirSonido();
@@ -698,6 +771,7 @@
   let carrito = [];
   let productoActual = null;
   let categoriaActualFiltro = 'todos';
+  let descuentoAplicado = 0; // Porcentaje de descuento por cupón
 
   function filtrar(categoria, evento) {
     reproducirSonido();
@@ -788,6 +862,13 @@
     document.getElementById('miModal').style.display = 'none';
   }
 
+  function compartirProductoWhatsApp() {
+    reproducirSonido();
+    let texto = `¡Hola! Mira este artículo que encontré en Sakura Gameverse: *${productoActual.titulo}* por solo *$${productoActual.precio.toFixed(2)}*. 🎮🌸`;
+    let url = `https://wa.me/?text=` + encodeURIComponent(texto);
+    window.open(url, '_blank');
+  }
+
   function abrirFaqModal() {
     reproducirSonido();
     document.getElementById('modalFaq').style.display = 'flex';
@@ -815,6 +896,9 @@
   function vaciarCarrito() {
     reproducirSonido();
     carrito = [];
+    descuentoAplicado = 0;
+    document.getElementById('inputCupon').value = "";
+    document.getElementById('mensajeCupon').innerText = "";
     actualizarCarritoUI();
     abrirCarritoModal();
   }
@@ -826,9 +910,31 @@
     abrirCarritoModal();
   }
 
+  function aplicarCupon() {
+    reproducirSonido();
+    let codigo = document.getElementById('inputCupon').value.trim().toUpperCase();
+    let msg = document.getElementById('mensajeCupon');
+
+    if (codigo === "OTAKU10") {
+      descuentoAplicado = 0.10; // 10% de descuento
+      msg.style.color = "#25D366";
+      msg.innerText = "🎉 ¡Cupón OTAKU10 aplicado con éxito (-10%)!";
+    } else if (codigo === "GAMERVIP") {
+      descuentoAplicado = 0.15; // 15% de descuento
+      msg.style.color = "#25D366";
+      msg.innerText = "🔥 ¡Cupón GAMERVIP aplicado con éxito (-15%)!";
+    } else {
+      descuentoAplicado = 0;
+      msg.style.color = "#ff3366";
+      msg.innerText = "❌ Código de cupón inválido.";
+    }
+    abrirCarritoModal();
+  }
+
   function actualizarCarritoUI() {
     let totalItems = carrito.length;
-    let totalPrecio = carrito.reduce((sum, item) => sum + item.precio, 0);
+    let subtotal = carrito.reduce((sum, item) => sum + item.precio, 0);
+    let totalPrecio = subtotal * (1 - descuentoAplicado);
     document.getElementById('cartText').innerText = `🛒 Ver Carrito: ${totalItems} ítems ($${totalPrecio.toFixed(2)})`;
   }
 
@@ -862,14 +968,22 @@
         htmlRecibo += `<div class="recibo-line"><span>${item.titulo}</span><span>$${item.precio.toFixed(2)}</span></div>`;
       });
 
-      let totalPrecio = carrito.reduce((sum, item) => sum + item.precio, 0);
+      let subtotal = carrito.reduce((sum, item) => sum + item.precio, 0);
+      let descuentoMonto = subtotal * descuentoAplicado;
+      let totalPrecio = subtotal - descuentoMonto;
       let totalBs = totalPrecio * tasaBcvActual;
+
+      if (descuentoAplicado > 0) {
+        htmlRecibo += `<div style="color: #25D366;" class="recibo-line"><span>DESCUENTO:</span><span>-$${descuentoMonto.toFixed(2)}</span></div>`;
+      }
+
       htmlRecibo += `<div style="border-top: 1px dashed #00e5ff; margin-top: 5px; padding-top: 5px;" class="recibo-line"><strong>TOTAL USD:</strong> <strong>$${totalPrecio.toFixed(2)}</strong></div>`;
       htmlRecibo += `<div class="recibo-line"><strong>TOTAL BS:</strong> <strong>Bs. ${totalBs.toFixed(2)}</strong></div>`;
       reciboContenido.innerHTML = htmlRecibo;
     }
 
-    let totalPrecio = carrito.reduce((sum, item) => sum + item.precio, 0);
+    let subtotal = carrito.reduce((sum, item) => sum + item.precio, 0);
+    let totalPrecio = subtotal * (1 - descuentoAplicado);
     let totalBs = totalPrecio * tasaBcvActual;
     document.getElementById('modalCarritoTotal').innerText = `Total: $${totalPrecio.toFixed(2)} (≈ Bs. ${totalBs.toLocaleString('es-VE', {minimumFractionDigits: 2, maximumFractionDigits: 2})})`;
     document.getElementById('modalCarrito').style.display = 'flex';
@@ -894,13 +1008,21 @@
     });
 
     let mensaje = "¡Hola Sakura Gameverse! 🌸👾 Deseo realizar el siguiente pedido:\n\n";
-    let total = 0;
+    let subtotal = 0;
     carrito.forEach((item, index) => {
       mensaje += `${index + 1}. ${item.titulo} - $${item.precio.toFixed(2)}\n`;
-      total += item.precio;
+      subtotal += item.precio;
     });
+
+    let total = subtotal * (1 - descuentoAplicado);
     let totalBs = total * tasaBcvActual;
-    mensaje += `\n*Total a pagar: $${total.toFixed(2)} (Bs. ${totalBs.toFixed(2)})*\n¡Espero su respuesta para coordinar el pago y el envío (ZOOM / MRW)!`;
+
+    if (descuentoAplicado > 0) {
+      mensaje += `\n*Subtotal:* $${subtotal.toFixed(2)}`;
+      mensaje += `\n*Descuento aplicado:* -${descuentoAplicado * 100}%`;
+    }
+
+    mensaje += `\n\n*Total a pagar: $${total.toFixed(2)} (Bs. ${totalBs.toFixed(2)})*\n¡Espero su respuesta para coordinar el pago y el envío (ZOOM / MRW)!`;
     
     let url = "https://wa.me/584244970576?text=" + encodeURIComponent(mensaje);
     
