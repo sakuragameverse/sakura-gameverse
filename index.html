@@ -115,12 +115,17 @@
     .search-input { background: #11052C; border: 2px solid #00e5ff; color: white; padding: 10px 20px; width: 80%; max-width: 400px; border-radius: 25px; font-size: 1em; outline: none; box-shadow: 0 0 10px rgba(0,229,255,0.3); }
     
     .controles-superiores { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-bottom: 30px; }
-    .filtros { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
-    .btn-filtro { background: transparent; color: white; border: 1px solid #00e5ff; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+    
+    /* MENÚ DE NAVEGACIÓN ESTILO PÍLDORAS DESLIZANTE */
+    .filtros { display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 100%; padding-bottom: 10px; justify-content: flex-start; gap: 8px; scrollbar-width: thin; }
+    .btn-filtro { background: transparent; color: white; border: 1px solid #00e5ff; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: 0.3s; white-space: nowrap; flex-shrink: 0; }
     .btn-filtro:hover, .btn-filtro.activo { background: #00e5ff; color: #0d041a; box-shadow: 0 0 10px #00e5ff; }
 
-    /* SELECTOR DE ORDENAMIENTO */
     .ordenar-select { background: #11052C; border: 1px solid #FF007F; color: white; padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; outline: none; box-shadow: 0 0 10px rgba(255,0,127,0.3); }
+
+    /* SECCIÓN DE DESTACADOS DE LA SEMANA */
+    .destacados-container { margin-bottom: 40px; background: linear-gradient(135deg, #11052C 0%, #1a0b38 100%); padding: 20px; border-radius: 20px; border: 2px dashed #00e5ff; box-shadow: 0 0 20px rgba(0,229,255,0.2); }
+    .destacados-title { color: #00e5ff; font-size: 1.4em; font-weight: bold; margin-bottom: 15px; text-align: center; text-shadow: 0 0 8px rgba(0,229,255,0.5); }
 
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
     
@@ -135,7 +140,6 @@
     .card-price { color: #00e5ff; font-size: 1.2em; font-weight: bold; text-shadow: 0 0 5px rgba(0, 229, 255, 0.5); margin-bottom: 3px; }
     .card-bs { color: #ff99cc; font-size: 0.85em; font-weight: bold; }
     
-    /* ETIQUETAS DE ESTADO VISUALES */
     .badge-estado { position: absolute; top: 10px; right: 10px; padding: 5px 12px; font-size: 0.75em; font-weight: bold; border-radius: 20px; z-index: 3; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
     .badge-stock { background-color: #00e5ff; color: #0d041a; box-shadow: 0 0 10px #00e5ff; }
     .badge-encargo { background-color: #FF007F; color: white; box-shadow: 0 0 10px #FF007F; }
@@ -145,6 +149,7 @@
     .modal-content { background: #11052C; padding: 20px; border-radius: 20px; text-align: center; max-width: 90%; width: 400px; border: 2px solid #FF007F; box-shadow: 0 0 30px rgba(255,0,127,0.5); position: relative; max-height: 90vh; overflow-y: auto; }
     .cerrar-modal { position: absolute; top: 10px; right: 15px; font-size: 25px; color: white; cursor: pointer; background: none; border: none; font-weight: bold; }
     .modal-img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
+    .modal-tag-info { display: inline-block; background: rgba(0,229,255,0.15); border: 1px solid #00e5ff; color: #00e5ff; padding: 4px 10px; border-radius: 10px; font-size: 0.8em; font-weight: bold; margin-bottom: 10px; }
     .btn-comprar { background: #FF007F; color: white; border: none; padding: 10px 20px; font-size: 1.1em; font-weight: bold; border-radius: 30px; cursor: pointer; margin-top: 15px; box-shadow: 0 0 10px #FF007F; width: 100%; }
 
     .cart-item-row { display: flex; align-items: center; justify-content: space-between; background: #1a0b38; padding: 10px; border-radius: 10px; margin-bottom: 10px; border: 1px solid rgba(0,229,255,0.3); }
@@ -169,7 +174,6 @@
     .btn-checkout { background: #25D366; color: white; border: none; padding: 8px 15px; border-radius: 15px; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px #25D366; font-size: 0.9em; }
     .btn-clear { background: #ff3366; color: white; border: none; padding: 8px 12px; border-radius: 15px; font-weight: bold; cursor: pointer; font-size: 0.9em; }
 
-    /* SECCIÓN DE PAGOS INTERACTIVA */
     .info-section { background: #11052C; margin-top: 40px; margin-bottom: 60px; padding: 30px 20px; border-radius: 15px; border: 1px solid #FF007F; box-shadow: 0 0 15px rgba(255,0,127,0.2); }
     .info-title { color: #00e5ff; font-size: 1.4em; margin-bottom: 20px; text-align: center; }
     .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; font-size: 0.95em; line-height: 1.5; }
@@ -221,27 +225,50 @@
     <input type="text" id="buscador" class="search-input" placeholder="🔍 Buscar figura, katana, lámpara..." onkeyup="buscarProductos()">
   </div>
 
+  <!-- NAVEGACIÓN SUPERIOR ESTILO PÍLDORAS DESLIZANTE -->
   <div class="controles-superiores">
     <div class="filtros">
-      <button class="btn-filtro activo" onclick="filtrar('todos', event)">Todos</button>
-      <button class="btn-filtro" onclick="filtrar('figuras', event)">Figuras</button>
-      <button class="btn-filtro" onclick="filtrar('peluches', event)">Peluches</button>
-      <button class="btn-filtro" onclick="filtrar('cartas', event)">Cartas TCG</button>
-      <button class="btn-filtro" onclick="filtrar('accesorios', event)">Accesorios</button>
-      <button class="btn-filtro" onclick="filtrar('katanas', event)">Katanas</button>
-      <button class="btn-filtro" onclick="filtrar('lamparas', event)">Lámparas</button>
+      <button class="btn-filtro activo" onclick="filtrar('todos', event)">🌟 Todos</button>
+      <button class="btn-filtro" onclick="filtrar('figuras', event)">🗿 Figuras</button>
+      <button class="btn-filtro" onclick="filtrar('peluches', event)">🧸 Peluches</button>
+      <button class="btn-filtro" onclick="filtrar('cartas', event)">🃏 Cartas TCG</button>
+      <button class="btn-filtro" onclick="filtrar('accesorios', event)">💍 Accesorios</button>
+      <button class="btn-filtro" onclick="filtrar('katanas', event)">⚔️ Katanas</button>
+      <button class="btn-filtro" onclick="filtrar('lamparas', event)">💡 Lámparas</button>
     </div>
 
-    <!-- SELECTOR DE ORDENAMIENTO DE PRECIOS -->
     <select id="selectOrden" class="ordenar-select" onchange="ordenarProductos()">
       <option value="defecto">⚡ Ordenar por: Destacados</option>
       <option value="menor">📉 Precio: Menor a Mayor</option>
       <option value="mayor">📈 Precio: Mayor a Menor</option>
     </select>
   </div>
+
+  <!-- SECCIÓN DE DESTACADOS DE LA SEMANA -->
+  <div class="destacados-container">
+    <div class="destacados-title">🔥 Destacados de la Semana 🚀</div>
+    <div class="grid" id="gridDestacados">
+      <div class="card item-producto" data-nombre="figura de coleccion" data-categoria="figuras" data-precio="35.00" onclick="reproducirSonido(); abrirModal('figuras.jpg', 'Figura de Colección', 35.00, '¡Una figura épica para tu repisa! Detalles increíbles y acabados premium.', 'Envío Inmediato 📦')">
+        <div class="badge-estado badge-stock">Stock</div>
+        <img src="figuras.jpg" alt="Figura">
+        <div class="card-title">Figura de Colección</div>
+        <div class="card-price">$35.00</div>
+        <div class="card-bs" data-usd="35.00">≈ Bs. 0.00</div>
+      </div>
+
+      <div class="card item-producto" data-nombre="katana replica anime" data-categoria="katanas" data-precio="45.00" onclick="reproducirSonido(); abrirModal('katanas.jpg', 'Katana Replica Anime', 45.00, 'Replica a escala real. Perfecta para cosplay o para darle un toque épico a tu cuarto.', 'Disponible por Encargo (100% inicial)')">
+        <div class="badge-estado badge-encargo">Por Encargo</div>
+        <img src="katanas.jpg" alt="Katanas">
+        <div class="card-title">Katana Replica Anime</div>
+        <div class="card-price">$45.00</div>
+        <div class="card-bs" data-usd="45.00">≈ Bs. 0.00</div>
+      </div>
+    </div>
+  </div>
   
+  <h2 style="color: #FF007F; text-align: center; margin-bottom: 20px;">📦 Catálogo General</h2>
   <div class="grid" id="catalogo">
-    <div class="card item-producto" data-nombre="figura de coleccion" data-categoria="figuras" data-precio="35.00" onclick="reproducirSonido(); abrirModal('figuras.jpg', 'Figura de Colección', 35.00, '¡Una figura épica para tu repisa! Detalles increíbles y acabados premium.')">
+    <div class="card item-producto" data-nombre="figura de coleccion" data-categoria="figuras" data-precio="35.00" onclick="reproducirSonido(); abrirModal('figuras.jpg', 'Figura de Colección', 35.00, '¡Una figura épica para tu repisa! Detalles increíbles y acabados premium.', 'Envío Inmediato 📦')">
       <div class="badge-estado badge-stock">Stock</div>
       <img src="figuras.jpg" alt="Figura">
       <div class="card-title">Figura de Colección</div>
@@ -249,7 +276,7 @@
       <div class="card-bs" data-usd="35.00">≈ Bs. 0.00</div>
     </div>
 
-    <div class="card item-producto" data-nombre="peluche exclusivo" data-categoria="peluches" data-precio="20.00" onclick="reproducirSonido(); abrirModal('peluche.jpg', 'Peluche Exclusivo', 20.00, 'Súper suave y kawaii. El compañero perfecto para tus largas noches de gaming.')">
+    <div class="card item-producto" data-nombre="peluche exclusivo" data-categoria="peluches" data-precio="20.00" onclick="reproducirSonido(); abrirModal('peluche.jpg', 'Peluche Exclusivo', 20.00, 'Súper suave y kawaii. El compañero perfecto para tus largas noches de gaming.', 'Disponible por Encargo (100% inicial)')">
       <div class="badge-estado badge-encargo">Por Encargo</div>
       <img src="peluche.jpg" alt="Peluche">
       <div class="card-title">Peluche Exclusivo</div>
@@ -257,7 +284,7 @@
       <div class="card-bs" data-usd="20.00">≈ Bs. 0.00</div>
     </div>
 
-    <div class="card item-producto" data-nombre="booster pack tcg cartas" data-categoria="cartas" data-precio="5.00" onclick="reproducirSonido(); abrirModal('cartas.jpg', 'Booster Pack TCG', 5.00, '¡Expande tu mazo y aplasta a tus rivales! Incluye cartas raras garantizadas.')">
+    <div class="card item-producto" data-nombre="booster pack tcg cartas" data-categoria="cartas" data-precio="5.00" onclick="reproducirSonido(); abrirModal('cartas.jpg', 'Booster Pack TCG', 5.00, '¡Expande tu mazo y aplasta a tus rivales! Incluye cartas raras garantizadas.', 'Envío Inmediato 📦')">
       <div class="badge-estado badge-nuevo">🔥 Nuevo</div>
       <img src="cartas.jpg" alt="Cartas TCG">
       <div class="card-title">Booster Pack TCG</div>
@@ -265,7 +292,7 @@
       <div class="card-bs" data-usd="5.00">≈ Bs. 0.00</div>
     </div>
 
-    <div class="card item-producto" data-nombre="accesorio anime collar" data-categoria="accesorios" data-precio="5.00" onclick="reproducirSonido(); abrirModal('accesorios.jpeg', 'Accesorio Anime', 5.00, '¡Lleva tu pasión a todas partes con este increíble accesorio! Diseño súper detallado.')">
+    <div class="card item-producto" data-nombre="accesorio anime collar" data-categoria="accesorios" data-precio="5.00" onclick="reproducirSonido(); abrirModal('accesorios.jpeg', 'Accesorio Anime', 5.00, '¡Lleva tu pasión a todas partes con este increíble accesorio! Diseño súper detallado.', 'Disponible por Encargo (100% inicial)')">
       <div class="badge-estado badge-encargo">Por Encargo</div>
       <img src="accesorios.jpeg" alt="Accesorios">
       <div class="card-title">Accesorio Anime</div>
@@ -273,7 +300,7 @@
       <div class="card-bs" data-usd="5.00">≈ Bs. 0.00</div>
     </div>
 
-    <div class="card item-producto" data-nombre="katana replica anime" data-categoria="katanas" data-precio="45.00" onclick="reproducirSonido(); abrirModal('katanas.jpg', 'Katana Replica Anime', 45.00, 'Replica a escala real. Perfecta para cosplay o para darle un toque épico a tu cuarto.')">
+    <div class="card item-producto" data-nombre="katana replica anime" data-categoria="katanas" data-precio="45.00" onclick="reproducirSonido(); abrirModal('katanas.jpg', 'Katana Replica Anime', 45.00, 'Replica a escala real. Perfecta para cosplay o para darle un toque épico a tu cuarto.', 'Disponible por Encargo (100% inicial)')">
       <div class="badge-estado badge-encargo">Por Encargo</div>
       <img src="katanas.jpg" alt="Katanas">
       <div class="card-title">Katana Replica Anime</div>
@@ -281,7 +308,7 @@
       <div class="card-bs" data-usd="45.00">≈ Bs. 0.00</div>
     </div>
 
-    <div class="card item-producto" data-nombre="lampara neon gamer" data-categoria="lamparas" data-precio="25.00" onclick="reproducirSonido(); abrirModal('lamparas.jpg', 'Lámpara Neón Gamer', 25.00, 'Ilumina tu setup con esta increíble lámpara. Varios colores y modos de luz.')">
+    <div class="card item-producto" data-nombre="lampara neon gamer" data-categoria="lamparas" data-precio="25.00" onclick="reproducirSonido(); abrirModal('lamparas.jpg', 'Lámpara Neón Gamer', 25.00, 'Ilumina tu setup con esta increíble lámpara. Varios colores y modos de luz.', 'Envío Inmediato 📦')">
       <div class="badge-estado badge-stock">Stock</div>
       <img src="lamparas.jpg" alt="Lámparas">
       <div class="card-title">Lámpara Neón Gamer</div>
@@ -312,18 +339,21 @@
     <div class="info-grid">
       <div class="info-card">
         <h4><i class="fas fa-credit-card" style="color: #00e5ff;"></i> Métodos de Pago</h4>
-        • <strong>Pago Móvil</strong> (Calculado a tasa BCV del día)<br>
-        • <strong>Efectivo</strong> ($ / €)<br>
-        • <strong>Binance USDT</strong> (Cripto pago rápido)
+        • <strong>Pago Móvil</strong> (Tasa BCV del día)<br>
+        • <strong>Binance USDT</strong><br>
+        • <strong>Zelle</strong><br>
+        • <strong>Zinli</strong><br>
+        • <strong>PayPal</strong> (+ comisión)<br>
+        • <strong>Efectivo</strong> ($ / €)
       </div>
       <div class="info-card">
         <h4><i class="fas fa-truck-fast" style="color: #FF007F;"></i> Envíos Nacionales</h4>
-        Despachos seguros y embalaje protegido a todo el territorio nacional a través de:<br>
+        Despachos seguros y embalaje protegido a todo el país a través de:<br>
         • <strong>Zoom, Tealca y MRW</strong>.
       </div>
       <div class="info-card">
         <h4><i class="fas fa-bolt" style="color: #ffcc00;"></i> Sobre los Encargos</h4>
-        Los artículos bajo la modalidad de encargo se apartan con un <strong>50% de inicial</strong>. ¡Escríbenos al WhatsApp para cotizar tu figura o manga soñado!
+        Los artículos bajo la modalidad de encargo se apartan con el <strong>100% del pago por adelantado</strong> para garantizar la importación y reserva directa. ¡Escríbenos al WhatsApp!
       </div>
     </div>
   </div>
@@ -333,6 +363,7 @@
   <div class="modal-content">
     <button class="cerrar-modal" onclick="cerrarModal()">×</button>
     <img id="modalImg" src="" alt="Producto" class="modal-img">
+    <div id="modalTag" class="modal-tag-info">Envío Inmediato 📦</div>
     <h2 id="modalTitulo" style="color: #00e5ff; margin-bottom: 5px;">Título</h2>
     <h3 id="modalPrecio" style="color: #FF007F; margin-top: 0;">$0.00</h3>
     <p id="modalDesc" style="font-size: 0.9em; margin-bottom: 20px;">Descripción aquí.</p>
@@ -435,7 +466,7 @@
     botones.forEach(btn => btn.classList.remove('activo'));
     evento.target.classList.add('activo');
 
-    let productos = document.querySelectorAll('.item-producto');
+    let productos = document.querySelectorAll('#catalogo .item-producto');
     productos.forEach(prod => {
       if (categoria === 'todos' || prod.getAttribute('data-categoria') === categoria) {
         prod.style.display = 'block';
@@ -445,7 +476,6 @@
     });
   }
 
-  // ORDENAR PRODUCTOS POR PRECIO
   function ordenarProductos() {
     reproducirSonido();
     let criterio = document.getElementById('selectOrden').value;
@@ -458,7 +488,7 @@
 
       if (criterio === 'menor') return precioA - precioB;
       if (criterio === 'mayor') return precioB - precioA;
-      return 0; // Defecto
+      return 0;
     });
 
     productos.forEach(prod => catalogo.appendChild(prod));
@@ -477,12 +507,13 @@
     });
   }
 
-  function abrirModal(img, titulo, precio, descripcion) {
+  function abrirModal(img, titulo, precio, descripcion, disponibilidad) {
     productoActual = { img, titulo, precio };
     document.getElementById('modalImg').src = img;
     document.getElementById('modalTitulo').innerText = titulo;
     document.getElementById('modalPrecio').innerText = "$" + precio.toFixed(2);
     document.getElementById('modalDesc').innerText = descripcion;
+    document.getElementById('modalTag').innerText = disponibilidad;
     document.getElementById('miModal').style.display = 'flex';
   }
 
