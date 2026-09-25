@@ -116,14 +116,12 @@
     
     .controles-superiores { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-bottom: 30px; }
     
-    /* MENÚ DE NAVEGACIÓN ESTILO PÍLDORAS DESLIZANTE */
     .filtros { display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 100%; padding-bottom: 10px; justify-content: flex-start; gap: 8px; scrollbar-width: thin; }
     .btn-filtro { background: transparent; color: white; border: 1px solid #00e5ff; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: 0.3s; white-space: nowrap; flex-shrink: 0; }
     .btn-filtro:hover, .btn-filtro.activo { background: #00e5ff; color: #0d041a; box-shadow: 0 0 10px #00e5ff; }
 
     .ordenar-select { background: #11052C; border: 1px solid #FF007F; color: white; padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; outline: none; box-shadow: 0 0 10px rgba(255,0,127,0.3); }
 
-    /* SECCIÓN DE DESTACADOS DE LA SEMANA */
     .destacados-container { margin-bottom: 40px; background: linear-gradient(135deg, #11052C 0%, #1a0b38 100%); padding: 20px; border-radius: 20px; border: 2px dashed #00e5ff; box-shadow: 0 0 20px rgba(0,229,255,0.2); }
     .destacados-title { color: #00e5ff; font-size: 1.4em; font-weight: bold; margin-bottom: 15px; text-align: center; text-shadow: 0 0 8px rgba(0,229,255,0.5); }
 
@@ -144,12 +142,19 @@
     .badge-stock { background-color: #00e5ff; color: #0d041a; box-shadow: 0 0 10px #00e5ff; }
     .badge-encargo { background-color: #FF007F; color: white; box-shadow: 0 0 10px #FF007F; }
     .badge-nuevo { background-color: #ffcc00; color: #0d041a; box-shadow: 0 0 10px #ffcc00; }
+    .badge-gamer { background-color: #7b2cbf; color: white; box-shadow: 0 0 10px #7b2cbf; }
 
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
     .modal-content { background: #11052C; padding: 20px; border-radius: 20px; text-align: center; max-width: 90%; width: 400px; border: 2px solid #FF007F; box-shadow: 0 0 30px rgba(255,0,127,0.5); position: relative; max-height: 90vh; overflow-y: auto; }
     .cerrar-modal { position: absolute; top: 10px; right: 15px; font-size: 25px; color: white; cursor: pointer; background: none; border: none; font-weight: bold; }
     .modal-img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
     .modal-tag-info { display: inline-block; background: rgba(0,229,255,0.15); border: 1px solid #00e5ff; color: #00e5ff; padding: 4px 10px; border-radius: 10px; font-size: 0.8em; font-weight: bold; margin-bottom: 10px; }
+    
+    /* SELECCIÓN DE TALLAS PARA ROPA */
+    .tallas-container { margin: 15px 0; display: none; }
+    .tallas-container label { display: block; color: #00e5ff; font-size: 0.9em; font-weight: bold; margin-bottom: 5px; }
+    .talla-select { background: #0d041a; border: 1px solid #00e5ff; color: white; padding: 8px; border-radius: 10px; width: 100%; font-weight: bold; outline: none; text-align: center; }
+
     .btn-comprar { background: #FF007F; color: white; border: none; padding: 10px 20px; font-size: 1.1em; font-weight: bold; border-radius: 30px; cursor: pointer; margin-top: 15px; box-shadow: 0 0 10px #FF007F; width: 100%; }
 
     .cart-item-row { display: flex; align-items: center; justify-content: space-between; background: #1a0b38; padding: 10px; border-radius: 10px; margin-bottom: 10px; border: 1px solid rgba(0,229,255,0.3); }
@@ -222,17 +227,20 @@
 
 <div class="container">
   <div class="search-box">
-    <input type="text" id="buscador" class="search-input" placeholder="🔍 Buscar figura, katana, lámpara..." onkeyup="buscarProductos()">
+    <input type="text" id="buscador" class="search-input" placeholder="🔍 Buscar ropa, mando, figura..." onkeyup="buscarProductos()">
   </div>
 
   <!-- NAVEGACIÓN SUPERIOR ESTILO PÍLDORAS DESLIZANTE -->
   <div class="controles-superiores">
     <div class="filtros">
       <button class="btn-filtro activo" onclick="filtrar('todos', event)">🌟 Todos</button>
+      <button class="btn-filtro" onclick="filtrar('ropa', event)">👕 Ropa / Hoodies</button>
+      <button class="btn-filtro" onclick="filtrar('mandos', event)">🎮 Mandos PC</button>
+      <button class="btn-filtro" onclick="filtrar('teclados', event)">⌨️ Teclados</button>
+      <button class="btn-filtro" onclick="filtrar('audifonos', event)">🎧 Audífonos</button>
       <button class="btn-filtro" onclick="filtrar('figuras', event)">🗿 Figuras</button>
       <button class="btn-filtro" onclick="filtrar('peluches', event)">🧸 Peluches</button>
       <button class="btn-filtro" onclick="filtrar('cartas', event)">🃏 Cartas TCG</button>
-      <button class="btn-filtro" onclick="filtrar('accesorios', event)">💍 Accesorios</button>
       <button class="btn-filtro" onclick="filtrar('katanas', event)">⚔️ Katanas</button>
       <button class="btn-filtro" onclick="filtrar('lamparas', event)">💡 Lámparas</button>
     </div>
@@ -244,31 +252,63 @@
     </select>
   </div>
 
-  <!-- SECCIÓN DE DESTACADOS DE LA SEMANA -->
+  <!-- SECCIÓN DE DESTACADOS -->
   <div class="destacados-container">
     <div class="destacados-title">🔥 Destacados de la Semana 🚀</div>
     <div class="grid" id="gridDestacados">
-      <div class="card item-producto" data-nombre="figura de coleccion" data-categoria="figuras" data-precio="35.00" onclick="reproducirSonido(); abrirModal('figuras.jpg', 'Figura de Colección', 35.00, '¡Una figura épica para tu repisa! Detalles increíbles y acabados premium.', 'Envío Inmediato 📦')">
-        <div class="badge-estado badge-stock">Stock</div>
-        <img src="figuras.jpg" alt="Figura">
-        <div class="card-title">Figura de Colección</div>
-        <div class="card-price">$35.00</div>
-        <div class="card-bs" data-usd="35.00">≈ Bs. 0.00</div>
+      <div class="card item-producto" data-nombre="hoodie anime oversize" data-categoria="ropa" data-precio="25.00" onclick="reproducirSonido(); abrirModal('figuras.jpg', 'Hoodie Oversize Anime', 25.00, 'Algodón afelpado de alta calidad, diseño exclusivo estampado en alta definición.', 'Envío Inmediato 📦', true)">
+        <div class="badge-estado badge-nuevo">🔥 Nuevo</div>
+        <img src="figuras.jpg" alt="Hoodie">
+        <div class="card-title">Hoodie Oversize Anime</div>
+        <div class="card-price">$25.00</div>
+        <div class="card-bs" data-usd="25.00">≈ Bs. 0.00</div>
       </div>
 
-      <div class="card item-producto" data-nombre="katana replica anime" data-categoria="katanas" data-precio="45.00" onclick="reproducirSonido(); abrirModal('katanas.jpg', 'Katana Replica Anime', 45.00, 'Replica a escala real. Perfecta para cosplay o para darle un toque épico a tu cuarto.', 'Disponible por Encargo (100% inicial)')">
-        <div class="badge-estado badge-encargo">Por Encargo</div>
-        <img src="katanas.jpg" alt="Katanas">
-        <div class="card-title">Katana Replica Anime</div>
-        <div class="card-price">$45.00</div>
-        <div class="card-bs" data-usd="45.00">≈ Bs. 0.00</div>
+      <div class="card item-producto" data-nombre="mando gamer inalambrico pc" data-categoria="mandos" data-precio="28.00" onclick="reproducirSonido(); abrirModal('lamparas.jpg', 'Mando Pro Inalámbrico PC', 28.00, 'Alta precisión, gatillos sensibles y batería de larga duración. Compatible con PC.', 'Envío Inmediato 📦', false)">
+        <div class="badge-estado badge-gamer">🎮 Pro Gaming</div>
+        <img src="lamparas.jpg" alt="Mando">
+        <div class="card-title">Mando Pro Inalámbrico PC</div>
+        <div class="card-price">$28.00</div>
+        <div class="card-bs" data-usd="28.00">≈ Bs. 0.00</div>
       </div>
     </div>
   </div>
   
   <h2 style="color: #FF007F; text-align: center; margin-bottom: 20px;">📦 Catálogo General</h2>
   <div class="grid" id="catalogo">
-    <div class="card item-producto" data-nombre="figura de coleccion" data-categoria="figuras" data-precio="35.00" onclick="reproducirSonido(); abrirModal('figuras.jpg', 'Figura de Colección', 35.00, '¡Una figura épica para tu repisa! Detalles increíbles y acabados premium.', 'Envío Inmediato 📦')">
+    <div class="card item-producto" data-nombre="hoodie anime oversize" data-categoria="ropa" data-precio="25.00" onclick="reproducirSonido(); abrirModal('figuras.jpg', 'Hoodie Oversize Anime', 25.00, 'Algodón afelpado de alta calidad, diseño exclusivo estampado en alta definición.', 'Envío Inmediato 📦', true)">
+      <div class="badge-estado badge-nuevo">🔥 Nuevo</div>
+      <img src="figuras.jpg" alt="Hoodie">
+      <div class="card-title">Hoodie Oversize Anime</div>
+      <div class="card-price">$25.00</div>
+      <div class="card-bs" data-usd="25.00">≈ Bs. 0.00</div>
+    </div>
+
+    <div class="card item-producto" data-nombre="mando gamer inalambrico pc" data-categoria="mandos" data-precio="28.00" onclick="reproducirSonido(); abrirModal('lamparas.jpg', 'Mando Pro Inalámbrico PC', 28.00, 'Alta precisión, gatillos sensibles y batería de larga duración. Compatible con PC.', 'Envío Inmediato 📦', false)">
+      <div class="badge-estado badge-gamer">🎮 Pro Gaming</div>
+      <img src="lamparas.jpg" alt="Mando">
+      <div class="card-title">Mando Pro Inalámbrico PC</div>
+      <div class="card-price">$28.00</div>
+      <div class="card-bs" data-usd="28.00">≈ Bs. 0.00</div>
+    </div>
+
+    <div class="card item-producto" data-nombre="teclado mecanico gamer" data-categoria="teclados" data-precio="35.00" onclick="reproducirSonido(); abrirModal('lamparas.jpg', 'Teclado Mecánico RGB', 35.00, 'Switches mecánicos, iluminación RGB y respuesta ultra rápida para gaming competitivo.', 'Envío Inmediato 📦', false)">
+      <div class="badge-estado badge-stock">Stock</div>
+      <img src="lamparas.jpg" alt="Teclado">
+      <div class="card-title">Teclado Mecánico RGB</div>
+      <div class="card-price">$35.00</div>
+      <div class="card-bs" data-usd="35.00">≈ Bs. 0.00</div>
+    </div>
+
+    <div class="card item-producto" data-nombre="audifonos gamer surround" data-categoria="audifonos" data-precio="30.00" onclick="reproducirSonido(); abrirModal('accesorios.jpeg', 'Audífonos Gamer Surround', 30.00, 'Sonido envolvente 7.1, micrófono con cancelación de ruido y almohadillas ultra cómodas.', 'Envío Inmediato 📦', false)">
+      <div class="badge-estado badge-stock">Stock</div>
+      <img src="accesorios.jpeg" alt="Audífonos">
+      <div class="card-title">Audífonos Gamer Surround</div>
+      <div class="card-price">$30.00</div>
+      <div class="card-bs" data-usd="30.00">≈ Bs. 0.00</div>
+    </div>
+
+    <div class="card item-producto" data-nombre="figura de coleccion" data-categoria="figuras" data-precio="35.00" onclick="reproducirSonido(); abrirModal('figuras.jpg', 'Figura de Colección', 35.00, '¡Una figura épica para tu repisa! Detalles increíbles y acabados premium.', 'Envío Inmediato 📦', false)">
       <div class="badge-estado badge-stock">Stock</div>
       <img src="figuras.jpg" alt="Figura">
       <div class="card-title">Figura de Colección</div>
@@ -276,7 +316,7 @@
       <div class="card-bs" data-usd="35.00">≈ Bs. 0.00</div>
     </div>
 
-    <div class="card item-producto" data-nombre="peluche exclusivo" data-categoria="peluches" data-precio="20.00" onclick="reproducirSonido(); abrirModal('peluche.jpg', 'Peluche Exclusivo', 20.00, 'Súper suave y kawaii. El compañero perfecto para tus largas noches de gaming.', 'Disponible por Encargo (100% inicial)')">
+    <div class="card item-producto" data-nombre="peluche exclusivo" data-categoria="peluches" data-precio="20.00" onclick="reproducirSonido(); abrirModal('peluche.jpg', 'Peluche Exclusivo', 20.00, 'Súper suave y kawaii. El compañero perfecto para tus largas noches de gaming.', 'Disponible por Encargo (100% inicial)', false)">
       <div class="badge-estado badge-encargo">Por Encargo</div>
       <img src="peluche.jpg" alt="Peluche">
       <div class="card-title">Peluche Exclusivo</div>
@@ -284,36 +324,12 @@
       <div class="card-bs" data-usd="20.00">≈ Bs. 0.00</div>
     </div>
 
-    <div class="card item-producto" data-nombre="booster pack tcg cartas" data-categoria="cartas" data-precio="5.00" onclick="reproducirSonido(); abrirModal('cartas.jpg', 'Booster Pack TCG', 5.00, '¡Expande tu mazo y aplasta a tus rivales! Incluye cartas raras garantizadas.', 'Envío Inmediato 📦')">
-      <div class="badge-estado badge-nuevo">🔥 Nuevo</div>
-      <img src="cartas.jpg" alt="Cartas TCG">
-      <div class="card-title">Booster Pack TCG</div>
-      <div class="card-price">$5.00</div>
-      <div class="card-bs" data-usd="5.00">≈ Bs. 0.00</div>
-    </div>
-
-    <div class="card item-producto" data-nombre="accesorio anime collar" data-categoria="accesorios" data-precio="5.00" onclick="reproducirSonido(); abrirModal('accesorios.jpeg', 'Accesorio Anime', 5.00, '¡Lleva tu pasión a todas partes con este increíble accesorio! Diseño súper detallado.', 'Disponible por Encargo (100% inicial)')">
-      <div class="badge-estado badge-encargo">Por Encargo</div>
-      <img src="accesorios.jpeg" alt="Accesorios">
-      <div class="card-title">Accesorio Anime</div>
-      <div class="card-price">$5.00</div>
-      <div class="card-bs" data-usd="5.00">≈ Bs. 0.00</div>
-    </div>
-
-    <div class="card item-producto" data-nombre="katana replica anime" data-categoria="katanas" data-precio="45.00" onclick="reproducirSonido(); abrirModal('katanas.jpg', 'Katana Replica Anime', 45.00, 'Replica a escala real. Perfecta para cosplay o para darle un toque épico a tu cuarto.', 'Disponible por Encargo (100% inicial)')">
+    <div class="card item-producto" data-nombre="katana replica anime" data-categoria="katanas" data-precio="45.00" onclick="reproducirSonido(); abrirModal('katanas.jpg', 'Katana Replica Anime', 45.00, 'Replica a escala real. Perfecta para cosplay o para darle un toque épico a tu cuarto.', 'Disponible por Encargo (100% inicial)', false)">
       <div class="badge-estado badge-encargo">Por Encargo</div>
       <img src="katanas.jpg" alt="Katanas">
       <div class="card-title">Katana Replica Anime</div>
       <div class="card-price">$45.00</div>
       <div class="card-bs" data-usd="45.00">≈ Bs. 0.00</div>
-    </div>
-
-    <div class="card item-producto" data-nombre="lampara neon gamer" data-categoria="lamparas" data-precio="25.00" onclick="reproducirSonido(); abrirModal('lamparas.jpg', 'Lámpara Neón Gamer', 25.00, 'Ilumina tu setup con esta increíble lámpara. Varios colores y modos de luz.', 'Envío Inmediato 📦')">
-      <div class="badge-estado badge-stock">Stock</div>
-      <img src="lamparas.jpg" alt="Lámparas">
-      <div class="card-title">Lámpara Neón Gamer</div>
-      <div class="card-price">$25.00</div>
-      <div class="card-bs" data-usd="25.00">≈ Bs. 0.00</div>
     </div>
   </div>
 
@@ -348,12 +364,12 @@
       </div>
       <div class="info-card">
         <h4><i class="fas fa-truck-fast" style="color: #FF007F;"></i> Envíos Nacionales</h4>
-        Despachos seguros y embalaje protegido a todo el país a través de:<br>
-        • <strong>Zoom, Tealca y MRW</strong>.
+        Despachos seguros y embalaje protegido a todo el país exclusivamente a través de:<br>
+        • <strong>ZOOM y MRW</strong>.
       </div>
       <div class="info-card">
-        <h4><i class="fas fa-bolt" style="color: #ffcc00;"></i> Sobre los Encargos</h4>
-        Los artículos bajo la modalidad de encargo se apartan con el <strong>100% del pago por adelantado</strong> para garantizar la importación y reserva directa. ¡Escríbenos al WhatsApp!
+        <h4><i class="fas fa-bolt" style="color: #ffcc00;"></i> Garantía & Encargos</h4>
+        Periféricos con garantía de prueba. Artículos bajo encargo con el <strong>100% de inicial</strong>. ¡Escríbenos al WhatsApp!
       </div>
     </div>
   </div>
@@ -366,7 +382,20 @@
     <div id="modalTag" class="modal-tag-info">Envío Inmediato 📦</div>
     <h2 id="modalTitulo" style="color: #00e5ff; margin-bottom: 5px;">Título</h2>
     <h3 id="modalPrecio" style="color: #FF007F; margin-top: 0;">$0.00</h3>
-    <p id="modalDesc" style="font-size: 0.9em; margin-bottom: 20px;">Descripción aquí.</p>
+    <p id="modalDesc" style="font-size: 0.9em; margin-bottom: 10px;">Descripción aquí.</p>
+    
+    <!-- SELECTOR DE TALLAS (SOLO APARECE SI ES ROPA) -->
+    <div id="tallasContainer" class="tallas-container">
+      <label for="selectTalla">Selecciona tu Talla:</label>
+      <select id="selectTalla" class="talla-select">
+        <option value="S">Talla S</option>
+        <option value="M" selected>Talla M</option>
+        <option value="L">Talla L</option>
+        <option value="XL">Talla XL</option>
+        <option value="XXL">Talla XXL</option>
+      </select>
+    </div>
+
     <button class="btn-comprar" onclick="agregarAlCarrito()">¡Añadir al Carrito! 🛒</button>
   </div>
 </div>
@@ -507,13 +536,21 @@
     });
   }
 
-  function abrirModal(img, titulo, precio, descripcion, disponibilidad) {
-    productoActual = { img, titulo, precio };
+  function abrirModal(img, titulo, precio, descripcion, disponibilidad, esRopa) {
+    productoActual = { img, titulo, precio, esRopa };
     document.getElementById('modalImg').src = img;
     document.getElementById('modalTitulo').innerText = titulo;
     document.getElementById('modalPrecio').innerText = "$" + precio.toFixed(2);
     document.getElementById('modalDesc').innerText = descripcion;
     document.getElementById('modalTag').innerText = disponibilidad;
+
+    let tallasCont = document.getElementById('tallasContainer');
+    if (esRopa) {
+      tallasCont.style.display = 'block';
+    } else {
+      tallasCont.style.display = 'none';
+    }
+
     document.getElementById('miModal').style.display = 'flex';
   }
 
@@ -524,7 +561,14 @@
 
   function agregarAlCarrito() {
     reproducirSonido();
-    carrito.push(productoActual);
+    let itemParaCarrito = { ...productoActual };
+    
+    if (itemParaCarrito.esRopa) {
+      let tallaSeleccionada = document.getElementById('selectTalla').value;
+      itemParaCarrito.titulo += ` (Talla: ${tallaSeleccionada})`;
+    }
+
+    carrito.push(itemParaCarrito);
     actualizarCarritoUI();
     cerrarModal();
   }
@@ -602,7 +646,7 @@
       total += item.precio;
     });
     let totalBs = total * tasaBcvActual;
-    mensaje += `\n*Total a pagar: $${total.toFixed(2)} (Bs. ${totalBs.toFixed(2)})*\n¡Espero su respuesta para coordinar el pago y el envío!`;
+    mensaje += `\n*Total a pagar: $${total.toFixed(2)} (Bs. ${totalBs.toFixed(2)})*\n¡Espero su respuesta para coordinar el pago y el envío (ZOOM / MRW)!`;
     
     let url = "https://wa.me/584244970576?text=" + encodeURIComponent(mensaje);
     
@@ -639,8 +683,8 @@
   }
 
   let reviews = JSON.parse(localStorage.getItem('sakura_reviews')) || [
-    { nombre: "Ángel G.", estrellas: "⭐⭐⭐⭐⭐", texto: "¡Excelente tienda! Las katanas llegaron impecables y el trato es de primera. 10/10." },
-    { nombre: "Valeria Otaku", estrellas: "⭐⭐⭐⭐⭐", texto: "Los peluches son súper suaves y el servicio por WhatsApp es rapidísimo. ¡Recomendado!" }
+    { nombre: "Ángel G.", estrellas: "⭐⭐⭐⭐⭐", texto: "¡Excelente tienda! Los hoodies y mandos llegaron por ZOOM impecables. 10/10." },
+    { nombre: "Valeria Otaku", estrellas: "⭐⭐⭐⭐⭐", texto: "La ropa es de muy buena calidad y el pedido llegó rapidísimo por MRW. ¡Recomendado!" }
   ];
 
   function renderReviews() {
