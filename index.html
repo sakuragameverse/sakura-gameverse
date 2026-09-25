@@ -9,11 +9,32 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
   <style>
-    body { margin: 0; background-color: #0d041a; color: white; font-family: sans-serif; overflow-x: hidden; }
+    /* TEMAS: CYBERPUNK (DEFAULT) Y NEON SAKURA */
+    :root {
+      --bg-color: #0d041a;
+      --card-bg: linear-gradient(135deg, #1a0b38 0%, #11052C 100%);
+      --text-color: white;
+      --primary-color: #FF007F;
+      --secondary-color: #00e5ff;
+      --border-color: rgba(0,229,255,0.3);
+      --hero-bg: #11052C;
+    }
+
+    body.neon-mode {
+      --bg-color: #1a0033;
+      --card-bg: linear-gradient(135deg, #2b0b4a 0%, #17022e 100%);
+      --text-color: #fff0f5;
+      --primary-color: #ff3399;
+      --secondary-color: #ff99cc;
+      --border-color: rgba(255,153,204,0.5);
+      --hero-bg: #2b0b4a;
+    }
+
+    body { margin: 0; background-color: var(--bg-color); color: var(--text-color); font-family: sans-serif; overflow-x: hidden; transition: background 0.4s ease, color 0.4s ease; }
     
     ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: #0d041a; }
-    ::-webkit-scrollbar-thumb { background: #FF007F; border-radius: 10px; }
+    ::-webkit-scrollbar-track { background: var(--bg-color); }
+    ::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
 
     .ticker-bar {
       background: linear-gradient(90deg, #FF007F, #00e5ff, #FF007F);
@@ -43,13 +64,12 @@
       100% { transform: translateX(-100%); }
     }
 
-    /* PRUEBA SOCIAL FLOTANTE (NOTIFICACIONES DE COMPRA) */
     #socialProofToast {
       position: fixed;
       bottom: 85px;
       left: 20px;
-      background: rgba(17, 5, 44, 0.95);
-      border: 1px solid #00e5ff;
+      background: var(--hero-bg);
+      border: 1px solid var(--secondary-color);
       padding: 10px 15px;
       border-radius: 12px;
       box-shadow: 0 0 20px rgba(0,229,255,0.4);
@@ -70,7 +90,7 @@
     #splash-screen {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background-color: #0d041a;
+      background-color: var(--bg-color);
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -80,20 +100,20 @@
     }
     
     .splash-box {
-      background: #11052C;
-      border: 3px solid #FF007F;
+      background: var(--hero-bg);
+      border: 3px solid var(--primary-color);
       padding: 30px 40px;
       border-radius: 20px;
       text-align: center;
-      box-shadow: 0 0 30px #FF007F, 0 0 60px rgba(0, 229, 255, 0.4);
+      box-shadow: 0 0 30px var(--primary-color), 0 0 60px rgba(0, 229, 255, 0.4);
       animation: box-pulse 1.5s infinite alternate;
       max-width: 90%;
       width: 320px;
     }
 
     @keyframes box-pulse {
-      0% { box-shadow: 0 0 15px #FF007F, inset 0 0 10px rgba(255,0,127,0.3); border-color: #FF007F; }
-      100% { box-shadow: 0 0 35px #00e5ff, 0 0 50px #FF007F, inset 0 0 20px rgba(0,229,255,0.4); border-color: #00e5ff; }
+      0% { box-shadow: 0 0 15px var(--primary-color), inset 0 0 10px rgba(255,0,127,0.3); border-color: var(--primary-color); }
+      100% { box-shadow: 0 0 35px var(--secondary-color), 0 0 50px var(--primary-color), inset 0 0 20px rgba(0,229,255,0.4); border-color: var(--secondary-color); }
     }
 
     .splash-logo {
@@ -103,7 +123,7 @@
     }
 
     .loading-text {
-      color: #00e5ff;
+      color: var(--secondary-color);
       font-weight: bold;
       font-size: 1em;
       letter-spacing: 1px;
@@ -115,17 +135,17 @@
     .loading-bar-container {
       width: 100%;
       height: 8px;
-      background: #0d041a;
+      background: var(--bg-color);
       border-radius: 10px;
-      border: 1px solid #FF007F;
+      border: 1px solid var(--primary-color);
       overflow: hidden;
     }
 
     .loading-bar {
       width: 0%;
       height: 100%;
-      background: #00e5ff;
-      box-shadow: 0 0 10px #00e5ff;
+      background: var(--secondary-color);
+      box-shadow: 0 0 10px var(--secondary-color);
       animation: load-progress 2s linear forwards;
     }
 
@@ -135,13 +155,13 @@
       100% { width: 100%; }
     }
 
-    .hero-banner { background-color: #11052C; text-align: center; padding: 40px 20px; border-bottom: 3px solid #FF007F; box-shadow: 0 0 20px rgba(255, 0, 127, 0.4); position: relative; z-index: 2; }
+    .hero-banner { background-color: var(--hero-bg); text-align: center; padding: 40px 20px; border-bottom: 3px solid var(--primary-color); box-shadow: 0 0 20px rgba(255, 0, 127, 0.4); position: relative; z-index: 2; transition: background 0.4s ease; }
     .hero-logo { max-width: 240px; margin-bottom: 10px; filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1)); }
     .hero-title { font-size: 1.2em; font-weight: bold; margin-bottom: 15px; letter-spacing: 1px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
     
     .bcv-box {
       background: rgba(0, 229, 255, 0.1);
-      border: 1px solid #00e5ff;
+      border: 1px solid var(--secondary-color);
       display: inline-flex;
       align-items: center;
       gap: 10px;
@@ -149,13 +169,13 @@
       border-radius: 20px;
       font-size: 0.9em;
       font-weight: bold;
-      color: #00e5ff;
+      color: var(--secondary-color);
       box-shadow: 0 0 10px rgba(0,229,255,0.2);
     }
     .bcv-input {
-      background: #0d041a;
-      border: 1px solid #FF007F;
-      color: white;
+      background: var(--bg-color);
+      border: 1px solid var(--primary-color);
+      color: var(--text-color);
       padding: 4px 8px;
       border-radius: 10px;
       width: 80px;
@@ -167,7 +187,7 @@
     .container { padding: 30px 20px; max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
     
     .search-box { text-align: center; margin-bottom: 20px; }
-    .search-input { background: #11052C; border: 2px solid #00e5ff; color: white; padding: 10px 20px; width: 80%; max-width: 400px; border-radius: 25px; font-size: 1em; outline: none; box-shadow: 0 0 10px rgba(0,229,255,0.3); }
+    .search-input { background: var(--hero-bg); border: 2px solid var(--secondary-color); color: var(--text-color); padding: 10px 20px; width: 80%; max-width: 400px; border-radius: 25px; font-size: 1em; outline: none; box-shadow: 0 0 10px rgba(0,229,255,0.3); }
     
     .controles-superiores { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-bottom: 30px; }
     
@@ -175,8 +195,8 @@
     
     .btn-filtro { 
       background: transparent; 
-      color: white; 
-      border: 1px solid #00e5ff; 
+      color: var(--text-color); 
+      border: 1px solid var(--secondary-color); 
       padding: 8px 16px; 
       border-radius: 20px; 
       cursor: pointer; 
@@ -188,31 +208,31 @@
     }
     .btn-filtro:hover { background: rgba(0,229,255,0.2); box-shadow: 0 0 10px rgba(0,229,255,0.4); }
     .btn-filtro.activo { 
-      background: #00e5ff; 
+      background: var(--secondary-color); 
       color: #0d041a; 
-      box-shadow: 0 0 15px #00e5ff, inset 0 0 8px rgba(255,255,255,0.6); 
+      box-shadow: 0 0 15px var(--secondary-color), inset 0 0 8px rgba(255,255,255,0.6); 
       border-color: #ffffff;
     }
 
     .panel-controles-avanzados { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; width: 100%; max-width: 650px; margin: 0 auto; }
-    .ordenar-select { background: #11052C; border: 1px solid #FF007F; color: white; padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; outline: none; box-shadow: 0 0 10px rgba(255,0,127,0.3); }
+    .ordenar-select { background: var(--hero-bg); border: 1px solid var(--primary-color); color: var(--text-color); padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; outline: none; box-shadow: 0 0 10px rgba(255,0,127,0.3); }
 
-    .precio-slider-box { background: #11052C; border: 1px solid #00e5ff; padding: 8px 15px; border-radius: 20px; display: inline-flex; align-items: center; gap: 10px; font-size: 0.9em; font-weight: bold; color: #00e5ff; box-shadow: 0 0 10px rgba(0,229,255,0.2); }
-    .precio-slider-box input { accent-color: #FF007F; cursor: pointer; width: 120px; }
+    .precio-slider-box { background: var(--hero-bg); border: 1px solid var(--secondary-color); padding: 8px 15px; border-radius: 20px; display: inline-flex; align-items: center; gap: 10px; font-size: 0.9em; font-weight: bold; color: var(--secondary-color); box-shadow: 0 0 10px rgba(0,229,255,0.2); }
+    .precio-slider-box input { accent-color: var(--primary-color); cursor: pointer; width: 120px; }
 
-    .destacados-container { margin-bottom: 40px; background: linear-gradient(135deg, #11052C 0%, #1a0b38 100%); padding: 20px; border-radius: 20px; border: 2px dashed #00e5ff; box-shadow: 0 0 20px rgba(0,229,255,0.2); }
-    .destacados-title { color: #00e5ff; font-size: 1.4em; font-weight: bold; margin-bottom: 15px; text-align: center; text-shadow: 0 0 8px rgba(0,229,255,0.5); }
+    .destacados-container { margin-bottom: 40px; background: linear-gradient(135deg, var(--hero-bg) 0%, var(--bg-color) 100%); padding: 20px; border-radius: 20px; border: 2px dashed var(--secondary-color); box-shadow: 0 0 20px rgba(0,229,255,0.2); }
+    .destacados-title { color: var(--secondary-color); font-size: 1.4em; font-weight: bold; margin-bottom: 15px; text-align: center; text-shadow: 0 0 8px rgba(0,229,255,0.5); }
 
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
     
     .card { 
-      background: linear-gradient(135deg, #1a0b38 0%, #11052C 100%); 
+      background: var(--card-bg); 
       border-radius: 15px; 
       padding: 15px; 
       text-align: center; 
       box-shadow: 0 10px 20px rgba(0,0,0,0.5); 
       position: relative; 
-      border: 1px solid rgba(0,229,255,0.2); 
+      border: 1px solid var(--border-color); 
       transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; 
       cursor: pointer; 
       animation: card-pop 0.4s ease-out;
@@ -238,13 +258,13 @@
 
     .card:hover, .card:active { 
       transform: translateY(-10px) scale(1.02); 
-      box-shadow: 0 0 25px #FF007F, 0 0 45px #00e5ff; 
-      border: 1px solid #00e5ff; 
+      box-shadow: 0 0 25px var(--primary-color), 0 0 45px var(--secondary-color); 
+      border: 1px solid var(--secondary-color); 
     }
     .card img { width: 100%; height: 250px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
     .card-title { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; }
-    .card-price { color: #00e5ff; font-size: 1.2em; font-weight: bold; text-shadow: 0 0 5px rgba(0, 229, 255, 0.5); margin-bottom: 3px; }
-    .card-bs { color: #ff99cc; font-size: 0.85em; font-weight: bold; margin-bottom: 8px; }
+    .card-price { color: var(--secondary-color); font-size: 1.2em; font-weight: bold; text-shadow: 0 0 5px rgba(0, 229, 255, 0.5); margin-bottom: 3px; }
+    .card-bs { color: var(--primary-color); font-size: 0.85em; font-weight: bold; margin-bottom: 8px; }
     
     .badge-estado { position: absolute; top: 10px; right: 10px; padding: 5px 12px; font-size: 0.75em; font-weight: bold; border-radius: 20px; z-index: 3; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
     .badge-stock { background-color: #00e5ff; color: #0d041a; box-shadow: 0 0 10px #00e5ff; }
@@ -252,60 +272,77 @@
     .badge-nuevo { background-color: #ffcc00; color: #0d041a; box-shadow: 0 0 10px #ffcc00; }
     .badge-gamer { background-color: #7b2cbf; color: white; box-shadow: 0 0 10px #7b2cbf; }
 
+    /* BOTÓN DE FAVORITO EN TARJETA */
+    .btn-fav-card {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(0,0,0,0.6);
+      border: 1px solid var(--secondary-color);
+      color: #ff3366;
+      width: 35px; height: 35px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      font-size: 1em;
+      z-index: 3;
+      transition: transform 0.2s;
+    }
+    .btn-fav-card:hover { transform: scale(1.15); background: rgba(255,0,127,0.3); }
+
     .card-stock-alert { color: #ff3366; font-size: 0.78em; font-weight: bold; background: rgba(255,51,102,0.1); border: 1px solid rgba(255,51,102,0.3); padding: 3px 8px; border-radius: 10px; display: inline-block; }
 
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-    .modal-content { background: #11052C; padding: 20px; border-radius: 20px; text-align: center; max-width: 90%; width: 400px; border: 2px solid #FF007F; box-shadow: 0 0 30px rgba(255,0,127,0.5); position: relative; max-height: 90vh; overflow-y: auto; }
-    .cerrar-modal { position: absolute; top: 10px; right: 15px; font-size: 25px; color: white; cursor: pointer; background: none; border: none; font-weight: bold; }
+    .modal-content { background: var(--hero-bg); padding: 20px; border-radius: 20px; text-align: center; max-width: 90%; width: 400px; border: 2px solid var(--primary-color); box-shadow: 0 0 30px rgba(255,0,127,0.5); position: relative; max-height: 90vh; overflow-y: auto; transition: background 0.4s ease; }
+    .cerrar-modal { position: absolute; top: 10px; right: 15px; font-size: 25px; color: var(--text-color); cursor: pointer; background: none; border: none; font-weight: bold; }
     .modal-img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
-    .modal-tag-info { display: inline-block; background: rgba(0,229,255,0.15); border: 1px solid #00e5ff; color: #00e5ff; padding: 4px 10px; border-radius: 10px; font-size: 0.8em; font-weight: bold; margin-bottom: 10px; }
+    .modal-tag-info { display: inline-block; background: rgba(0,229,255,0.15); border: 1px solid var(--secondary-color); color: var(--secondary-color); padding: 4px 10px; border-radius: 10px; font-size: 0.8em; font-weight: bold; margin-bottom: 10px; }
     
     .tallas-container { margin: 15px 0; display: none; }
-    .tallas-container label { display: block; color: #00e5ff; font-size: 0.9em; font-weight: bold; margin-bottom: 5px; }
-    .talla-select { background: #0d041a; border: 1px solid #00e5ff; color: white; padding: 8px; border-radius: 10px; width: 100%; font-weight: bold; outline: none; text-align: center; }
+    .tallas-container label { display: block; color: var(--secondary-color); font-size: 0.9em; font-weight: bold; margin-bottom: 5px; }
+    .talla-select { background: var(--bg-color); border: 1px solid var(--secondary-color); color: var(--text-color); padding: 8px; border-radius: 10px; width: 100%; font-weight: bold; outline: none; text-align: center; }
 
-    .btn-comprar { background: #FF007F; color: white; border: none; padding: 10px 20px; font-size: 1.1em; font-weight: bold; border-radius: 30px; cursor: pointer; margin-top: 15px; box-shadow: 0 0 10px #FF007F; width: 100%; }
+    .btn-comprar { background: var(--primary-color); color: white; border: none; padding: 10px 20px; font-size: 1.1em; font-weight: bold; border-radius: 30px; cursor: pointer; margin-top: 15px; box-shadow: 0 0 10px var(--primary-color); width: 100%; }
     .btn-compartir { background: #25D366; color: white; border: none; padding: 8px 15px; font-size: 0.9em; font-weight: bold; border-radius: 20px; cursor: pointer; margin-top: 8px; box-shadow: 0 0 8px #25D366; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
-    /* CUPONES Y RECIBO DIGITAL */
     .cupon-box { display: flex; gap: 8px; margin-bottom: 12px; }
-    .cupon-input { flex-grow: 1; background: #0d041a; border: 1px solid #00e5ff; color: white; padding: 8px; border-radius: 10px; font-size: 0.9em; outline: none; text-transform: uppercase; }
-    .btn-cupon { background: #00e5ff; color: #0d041a; border: none; padding: 0 15px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 0.85em; }
+    .cupon-input { flex-grow: 1; background: var(--bg-color); border: 1px solid var(--secondary-color); color: var(--text-color); padding: 8px; border-radius: 10px; font-size: 0.9em; outline: none; text-transform: uppercase; }
+    .btn-cupon { background: var(--secondary-color); color: #0d041a; border: none; padding: 0 15px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 0.85em; }
 
-    .recibo-box { background: #0d041a; border: 2px dashed #00e5ff; padding: 15px; border-radius: 12px; text-align: left; font-family: monospace; font-size: 0.85em; color: #00e5ff; margin-bottom: 15px; box-shadow: inset 0 0 10px rgba(0,229,255,0.2); }
+    .recibo-box { background: var(--bg-color); border: 2px dashed var(--secondary-color); padding: 15px; border-radius: 12px; text-align: left; font-family: monospace; font-size: 0.85em; color: var(--secondary-color); margin-bottom: 15px; box-shadow: inset 0 0 10px rgba(0,229,255,0.2); }
     .recibo-line { display: flex; justify-content: space-between; margin-bottom: 5px; }
 
-    .faq-item { background: #1a0b38; border: 1px solid rgba(0,229,255,0.3); border-radius: 10px; padding: 12px; margin-bottom: 10px; text-align: left; }
-    .faq-question { color: #00e5ff; font-weight: bold; font-size: 0.95em; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
-    .faq-answer { color: #ddd; font-size: 0.88em; line-height: 1.4; }
+    .faq-item { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; margin-bottom: 10px; text-align: left; }
+    .faq-question { color: var(--secondary-color); font-weight: bold; font-size: 0.95em; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
+    .faq-answer { color: var(--text-color); font-size: 0.88em; line-height: 1.4; opacity: 0.85; }
 
-    .cart-item-row { display: flex; align-items: center; justify-content: space-between; background: #1a0b38; padding: 10px; border-radius: 10px; margin-bottom: 10px; border: 1px solid rgba(0,229,255,0.3); }
+    .cart-item-row { display: flex; align-items: center; justify-content: space-between; background: var(--card-bg); padding: 10px; border-radius: 10px; margin-bottom: 10px; border: 1px solid var(--border-color); }
     .cart-item-img { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; margin-right: 10px; }
     .cart-item-info { flex-grow: 1; text-align: left; font-size: 0.9em; }
     .cart-item-del { background: #ff3366; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.8em; }
 
-    .sugerencia-input { width: 100%; background: #0d041a; border: 1px solid #00e5ff; color: white; padding: 10px; border-radius: 10px; margin-bottom: 12px; box-sizing: border-box; outline: none; }
-    .btn-sugerencia { background: #00e5ff; color: #0d041a; border: none; padding: 10px 20px; font-weight: bold; border-radius: 20px; cursor: pointer; width: 100%; box-shadow: 0 0 10px #00e5ff; }
+    .sugerencia-input { width: 100%; background: var(--bg-color); border: 1px solid var(--secondary-color); color: var(--text-color); padding: 10px; border-radius: 10px; margin-bottom: 12px; box-sizing: border-box; outline: none; }
+    .btn-sugerencia { background: var(--secondary-color); color: #0d041a; border: none; padding: 10px 20px; font-weight: bold; border-radius: 20px; cursor: pointer; width: 100%; box-shadow: 0 0 10px var(--secondary-color); }
 
-    .reviews-section { background: #11052C; margin-top: 40px; padding: 30px 20px; border-radius: 15px; border: 1px solid #00e5ff; box-shadow: 0 0 15px rgba(0,229,255,0.2); }
-    .review-card { background: #1a0b38; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid rgba(255,0,127,0.3); position: relative; }
-    .review-author { font-weight: bold; color: #00e5ff; margin-bottom: 5px; }
+    .reviews-section { background: var(--hero-bg); margin-top: 40px; padding: 30px 20px; border-radius: 15px; border: 1px solid var(--secondary-color); box-shadow: 0 0 15px rgba(0,229,255,0.2); transition: background 0.4s ease; }
+    .review-card { background: var(--card-bg); padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid rgba(255,0,127,0.3); position: relative; }
+    .review-author { font-weight: bold; color: var(--secondary-color); margin-bottom: 5px; }
     .review-stars { color: #ffcc00; margin-bottom: 8px; }
     .review-text { font-size: 0.95em; line-height: 1.4; }
     .btn-del-review { position: absolute; top: 10px; right: 10px; background: #ff3366; color: white; border: none; border-radius: 5px; padding: 3px 8px; font-size: 0.75em; cursor: pointer; }
     .review-form { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
 
-    .info-section { background: #11052C; margin-top: 40px; margin-bottom: 60px; padding: 30px 20px; border-radius: 15px; border: 1px solid #FF007F; box-shadow: 0 0 15px rgba(255,0,127,0.2); }
-    .info-title { color: #00e5ff; font-size: 1.4em; margin-bottom: 20px; text-align: center; }
+    .info-section { background: var(--hero-bg); margin-top: 40px; margin-bottom: 60px; padding: 30px 20px; border-radius: 15px; border: 1px solid var(--primary-color); box-shadow: 0 0 15px rgba(255,0,127,0.2); transition: background 0.4s ease; }
+    .info-title { color: var(--secondary-color); font-size: 1.4em; margin-bottom: 20px; text-align: center; }
     .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; font-size: 0.95em; line-height: 1.5; }
-    .info-card { background: #1a0b38; padding: 20px; border-radius: 12px; border: 1px solid rgba(255,0,127,0.3); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-    .info-card h4 { color: #00e5ff; margin-top: 0; margin-bottom: 12px; font-size: 1.1em; display: flex; align-items: center; gap: 8px; }
+    .info-card { background: var(--card-bg); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,0,127,0.3); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+    .info-card h4 { color: var(--secondary-color); margin-top: 0; margin-bottom: 12px; font-size: 1.1em; display: flex; align-items: center; gap: 8px; }
     
-    .badge-metodo { display: inline-flex; align-items: center; gap: 6px; background: rgba(0, 229, 255, 0.1); border: 1px solid #00e5ff; padding: 4px 10px; border-radius: 8px; font-size: 0.85em; font-weight: bold; color: #00e5ff; margin: 3px; }
-    .badge-envio { display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 0, 127, 0.15); border: 1px solid #FF007F; padding: 4px 10px; border-radius: 8px; font-size: 0.85em; font-weight: bold; color: #ff99cc; margin: 3px; }
+    .badge-metodo { display: inline-flex; align-items: center; gap: 6px; background: rgba(0, 229, 255, 0.1); border: 1px solid var(--secondary-color); padding: 4px 10px; border-radius: 8px; font-size: 0.85em; font-weight: bold; color: var(--secondary-color); margin: 3px; }
+    .badge-envio { display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 0, 127, 0.15); border: 1px solid var(--primary-color); padding: 4px 10px; border-radius: 8px; font-size: 0.85em; font-weight: bold; color: var(--text-color); margin: 3px; }
 
-    .cart-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(17, 5, 44, 0.95); border-top: 2px solid #00e5ff; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; z-index: 1500; box-shadow: 0 -5px 20px rgba(0,229,255,0.3); backdrop-filter: blur(5px); flex-wrap: wrap; gap: 8px; cursor: pointer; }
-    .cart-info { font-weight: bold; font-size: 1em; color: #00e5ff; }
+    .cart-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--hero-bg); border-top: 2px solid var(--secondary-color); padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; z-index: 1500; box-shadow: 0 -5px 20px rgba(0,229,255,0.3); backdrop-filter: blur(5px); flex-wrap: wrap; gap: 8px; cursor: pointer; transition: background 0.4s ease; }
+    .cart-info { font-weight: bold; font-size: 1em; color: var(--secondary-color); }
     .cart-buttons { display: flex; gap: 8px; }
     .btn-checkout { background: #25D366; color: white; border: none; padding: 8px 15px; border-radius: 15px; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px #25D366; font-size: 0.9em; }
     .btn-clear { background: #ff3366; color: white; border: none; padding: 8px 12px; border-radius: 15px; font-weight: bold; cursor: pointer; font-size: 0.9em; }
@@ -314,34 +351,36 @@
     .whatsapp-btn { background-color: #25D366; color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 26px; text-decoration: none; box-shadow: 0 0 10px rgba(37,211,102,0.5); }
     .instagram-btn { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 24px; text-decoration: none; box-shadow: 0 0 10px rgba(214,36,159,0.6); }
     .tiktok-btn { background-color: #000000; color: white; border: 2px solid #00e5ff; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 22px; text-decoration: none; box-shadow: 0 0 10px rgba(0,229,255,0.6); }
-    .sugerencia-btn { background-color: #FF007F; color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 24px; text-decoration: none; box-shadow: 0 0 10px #FF007F; cursor: pointer; border: none; }
-    .faq-btn { background-color: #00e5ff; color: #0d041a; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 22px; text-decoration: none; box-shadow: 0 0 10px #00e5ff; cursor: pointer; border: none; font-weight: bold; }
+    .sugerencia-btn { background-color: var(--primary-color); color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 24px; text-decoration: none; box-shadow: 0 0 10px var(--primary-color); cursor: pointer; border: none; }
+    .faq-btn { background-color: var(--secondary-color); color: #0d041a; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 22px; text-decoration: none; box-shadow: 0 0 10px var(--secondary-color); cursor: pointer; border: none; font-weight: bold; }
+    .theme-btn { background-color: #ffcc00; color: #0d041a; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 22px; text-decoration: none; box-shadow: 0 0 10px #ffcc00; cursor: pointer; border: none; font-weight: bold; }
+    .fav-floating-btn { background-color: #ff3366; color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 20px; text-decoration: none; box-shadow: 0 0 10px #ff3366; cursor: pointer; border: none; position: relative; }
+    .fav-badge-count { position: absolute; top: -5px; right: -5px; background: #00e5ff; color: #0d041a; font-size: 0.7em; font-weight: bold; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 5px #00e5ff; }
 
     .bg-elements { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
     .float-item { position: absolute; top: -10%; animation: fall linear infinite; opacity: 0.7; }
-    .sakura { font-size: 22px; filter: drop-shadow(0 0 5px #FF007F); }
-    .gamer { font-size: 28px; filter: drop-shadow(0 0 8px #00e5ff); opacity: 0.5; }
+    .sakura { font-size: 22px; filter: drop-shadow(0 0 5px var(--primary-color)); }
+    .gamer { font-size: 28px; filter: drop-shadow(0 0 8px var(--secondary-color)); opacity: 0.5; }
     @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
     .i1 { left: 5%; animation-duration: 9s; animation-delay: 0s; } .i2 { left: 15%; animation-duration: 14s; animation-delay: 2s; } .i3 { left: 25%; animation-duration: 10s; animation-delay: 4s; } .i4 { left: 35%; animation-duration: 13s; animation-delay: 1s; } .i5 { left: 45%; animation-duration: 11s; animation-delay: 5s; } .i6 { left: 55%; animation-duration: 15s; animation-delay: 0s; } .i7 { left: 65%; animation-duration: 9s; animation-delay: 3s; } .i8 { left: 75%; animation-duration: 12s; animation-delay: 1s; } .i9 { left: 85%; animation-duration: 16s; animation-delay: 4s; } .i10 { left: 95%; animation-duration: 10s; animation-delay: 2s; }
   </style>
 </head>
 <body>
 
-<!-- NOTIFICACIÓN DE PRUEBA SOCIAL FLOTANTE -->
 <div id="socialProofToast">
   <div style="font-size: 22px;">🛍️</div>
   <div>
-    <strong id="toastTexto" style="color: #00e5ff;">¡Alguien compró!</strong><br>
+    <strong id="toastTexto" style="color: var(--secondary-color);">¡Alguien compró!</strong><br>
     <span style="color: #aaa; font-size: 0.75em;" id="toastLugar">Hace un momento en Carabobo</span>
   </div>
 </div>
 
 <div id="modalPromoFlash" class="modal" style="display: flex;">
-  <div class="modal-content" style="border: 2px solid #00e5ff; box-shadow: 0 0 40px rgba(0,229,255,0.6);">
+  <div class="modal-content" style="border: 2px solid var(--secondary-color); box-shadow: 0 0 40px rgba(0,229,255,0.6);">
     <button class="cerrar-modal" onclick="cerrarPromoFlash()">×</button>
     <div style="font-size: 40px; margin-bottom: 10px;">🎁</div>
-    <h2 style="color: #00e5ff; margin-top: 0;">¡Bienvenido a Sakura Gameverse!</h2>
-    <p style="font-size: 0.95em; line-height: 1.5; color: #ddd; margin-bottom: 15px;">
+    <h2 style="color: var(--secondary-color); margin-top: 0;">¡Bienvenido a Sakura Gameverse!</h2>
+    <p style="font-size: 0.95em; line-height: 1.5; opacity: 0.9; margin-bottom: 15px;">
       Usa el código <strong>OTAKU10</strong> en tu carrito para obtener un descuento exclusivo. Entregas personales en <strong>Bejuma y Miranda</strong> y envíos por <strong>ZOOM y MRW</strong>.
     </p>
     <button class="btn-sugerencia" onclick="cerrarPromoFlash()">¡A Explorar Catálogo! 🚀</button>
@@ -415,6 +454,7 @@
     <div class="destacados-title">🔥 Destacados de la Semana 🚀</div>
     <div class="grid" id="gridDestacados">
       <div class="card item-producto" data-nombre="hoodie anime oversize" data-categoria="ropa" data-precio="25.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Hoodie Oversize Anime', 25.00, 'Algodón afelpado de alta calidad, diseño exclusivo estampado en alta definición.', 'Envío Inmediato 📦', true)">
+        <button class="btn-fav-card" onclick="toggleFavorito(event, 'Hoodie Oversize Anime', 25.00, 'figuras.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
         <div class="badge-estado badge-nuevo">🔥 Nuevo</div>
         <img src="figuras.jpg" alt="Hoodie">
         <div class="card-title">Hoodie Oversize Anime</div>
@@ -424,6 +464,7 @@
       </div>
 
       <div class="card item-producto" data-nombre="mando gamer inalambrico pc" data-categoria="mandos" data-precio="28.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('lamparas.jpg', 'Mando Pro Inalámbrico PC', 28.00, 'Alta precisión, gatillos sensibles y batería de larga duración. Compatible con PC.', 'Envío Inmediato 📦', false)">
+        <button class="btn-fav-card" onclick="toggleFavorito(event, 'Mando Pro Inalámbrico PC', 28.00, 'lamparas.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
         <div class="badge-estado badge-gamer">🎮 Pro Gaming</div>
         <img src="lamparas.jpg" alt="Mando">
         <div class="card-title">Mando Pro Inalámbrico PC</div>
@@ -434,9 +475,10 @@
     </div>
   </div>
   
-  <h2 style="color: #FF007F; text-align: center; margin-bottom: 20px;">📦 Catálogo General</h2>
+  <h2 style="color: var(--primary-color); text-align: center; margin-bottom: 20px;">📦 Catálogo General</h2>
   <div class="grid" id="catalogo">
     <div class="card item-producto" data-nombre="hoodie anime oversize" data-categoria="ropa" data-precio="25.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Hoodie Oversize Anime', 25.00, 'Algodón afelpado de alta calidad, diseño exclusivo estampado en alta definición.', 'Envío Inmediato 📦', true)">
+      <button class="btn-fav-card" onclick="toggleFavorito(event, 'Hoodie Oversize Anime', 25.00, 'figuras.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
       <div class="badge-estado badge-nuevo">🔥 Nuevo</div>
       <img src="figuras.jpg" alt="Hoodie">
       <div class="card-title">Hoodie Oversize Anime</div>
@@ -446,6 +488,7 @@
     </div>
 
     <div class="card item-producto" data-nombre="mando gamer inalambrico pc" data-categoria="mandos" data-precio="28.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('lamparas.jpg', 'Mando Pro Inalámbrico PC', 28.00, 'Alta precisión, gatillos sensibles y batería de larga duración. Compatible con PC.', 'Envío Inmediato 📦', false)">
+      <button class="btn-fav-card" onclick="toggleFavorito(event, 'Mando Pro Inalámbrico PC', 28.00, 'lamparas.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
       <div class="badge-estado badge-gamer">🎮 Pro Gaming</div>
       <img src="lamparas.jpg" alt="Mando">
       <div class="card-title">Mando Pro Inalámbrico PC</div>
@@ -455,6 +498,7 @@
     </div>
 
     <div class="card item-producto" data-nombre="teclado mecanico gamer" data-categoria="teclados" data-precio="35.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('lamparas.jpg', 'Teclado Mecánico RGB', 35.00, 'Switches mecánicos, iluminación RGB y respuesta ultra rápida para gaming competitivo.', 'Envío Inmediato 📦', false)">
+      <button class="btn-fav-card" onclick="toggleFavorito(event, 'Teclado Mecánico RGB', 35.00, 'lamparas.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
       <div class="badge-estado badge-stock">Stock</div>
       <img src="lamparas.jpg" alt="Teclado">
       <div class="card-title">Teclado Mecánico RGB</div>
@@ -464,6 +508,7 @@
     </div>
 
     <div class="card item-producto" data-nombre="audifonos gamer surround" data-categoria="audifonos" data-precio="30.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('accesorios.jpeg', 'Audífonos Gamer Surround', 30.00, 'Sonido envolvente 7.1, micrófono con cancelación de ruido y almohadillas ultra cómodas.', 'Envío Inmediato 📦', false)">
+      <button class="btn-fav-card" onclick="toggleFavorito(event, 'Audífonos Gamer Surround', 30.00, 'accesorios.jpeg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
       <div class="badge-estado badge-stock">Stock</div>
       <img src="accesorios.jpeg" alt="Audífonos">
       <div class="card-title">Audífonos Gamer Surround</div>
@@ -473,6 +518,7 @@
     </div>
 
     <div class="card item-producto" data-nombre="figura de coleccion" data-categoria="figuras" data-precio="35.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Figura de Colección', 35.00, '¡Una figura épica para tu repisa! Detalles increíbles y acabados premium.', 'Envío Inmediato 📦', false)">
+      <button class="btn-fav-card" onclick="toggleFavorito(event, 'Figura de Colección', 35.00, 'figuras.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
       <div class="badge-estado badge-stock">Stock</div>
       <img src="figuras.jpg" alt="Figura">
       <div class="card-title">Figura de Colección</div>
@@ -482,6 +528,7 @@
     </div>
 
     <div class="card item-producto" data-nombre="peluche exclusivo" data-categoria="peluches" data-precio="20.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('peluche.jpg', 'Peluche Exclusivo', 20.00, 'Súper suave y kawaii. El compañero perfecto para tus largas noches de gaming.', 'Disponible por Encargo (100% inicial)', false)">
+      <button class="btn-fav-card" onclick="toggleFavorito(event, 'Peluche Exclusivo', 20.00, 'peluche.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
       <div class="badge-estado badge-encargo">Por Encargo</div>
       <img src="peluche.jpg" alt="Peluche">
       <div class="card-title">Peluche Exclusivo</div>
@@ -491,6 +538,7 @@
     </div>
 
     <div class="card item-producto" data-nombre="katana replica anime" data-categoria="katanas" data-precio="45.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('katanas.jpg', 'Katana Replica Anime', 45.00, 'Replica a escala real. Perfecta para cosplay o para darle un toque épico a tu cuarto.', 'Disponible por Encargo (100% inicial)', false)">
+      <button class="btn-fav-card" onclick="toggleFavorito(event, 'Katana Replica Anime', 45.00, 'katanas.jpg')" title="Guardar en Favoritos"><i class="fas fa-heart"></i></button>
       <div class="badge-estado badge-encargo">Por Encargo</div>
       <img src="katanas.jpg" alt="Katanas">
       <div class="card-title">Katana Replica Anime</div>
@@ -505,7 +553,7 @@
     <div id="contenedorReviews"></div>
     
     <div class="review-form">
-      <h3 style="color: #FF007F; font-size: 1.1em; margin: 10px 0 5px 0;">Deja tu opinión:</h3>
+      <h3 style="color: var(--primary-color); font-size: 1.1em; margin: 10px 0 5px 0;">Deja tu opinión:</h3>
       <input type="text" id="revNombre" class="sugerencia-input" placeholder="Tu Nombre / GamerTag">
       <select id="revEstrellas" class="sugerencia-input">
         <option value="⭐⭐⭐⭐⭐">⭐⭐⭐⭐⭐ (5/5 Excelente)</option>
@@ -521,7 +569,7 @@
     <div class="info-title">✨ Información, Pagos y Envíos 📦</div>
     <div class="info-grid">
       <div class="info-card">
-        <h4><i class="fas fa-credit-card" style="color: #00e5ff;"></i> Métodos de Pago</h4>
+        <h4><i class="fas fa-credit-card" style="color: var(--secondary-color);"></i> Métodos de Pago</h4>
         <div style="margin-top: 8px;">
           <span class="badge-metodo"><i class="fas fa-mobile-alt"></i> Pago Móvil (BCV)</span>
           <span class="badge-metodo"><i class="fab fa-btc"></i> Binance USDT</span>
@@ -532,7 +580,7 @@
         </div>
       </div>
       <div class="info-card">
-        <h4><i class="fas fa-truck-fast" style="color: #FF007F;"></i> Envíos Nacionales</h4>
+        <h4><i class="fas fa-truck-fast" style="color: var(--primary-color);"></i> Envíos Nacionales</h4>
         Despachos seguros y embalaje protegido a todo el país exclusivamente a través de:<br>
         <div style="margin-top: 10px;">
           <span class="badge-envio"><i class="fas fa-box"></i> ZOOM</span>
@@ -552,8 +600,8 @@
     <button class="cerrar-modal" onclick="cerrarModal()">×</button>
     <img id="modalImg" src="" alt="Producto" class="modal-img">
     <div id="modalTag" class="modal-tag-info">Envío Inmediato 📦</div>
-    <h2 id="modalTitulo" style="color: #00e5ff; margin-bottom: 5px;">Título</h2>
-    <h3 id="modalPrecio" style="color: #FF007F; margin-top: 0;">$0.00</h3>
+    <h2 id="modalTitulo" style="color: var(--secondary-color); margin-bottom: 5px;">Título</h2>
+    <h3 id="modalPrecio" style="color: var(--primary-color); margin-top: 0;">$0.00</h3>
     <p id="modalDesc" style="font-size: 0.9em; margin-bottom: 10px;">Descripción aquí.</p>
     
     <div id="tallasContainer" class="tallas-container">
@@ -572,10 +620,20 @@
   </div>
 </div>
 
+<!-- MODAL DE FAVORITOS (WISHLIST) -->
+<div id="modalFavoritos" class="modal">
+  <div class="modal-content" style="width: 450px;">
+    <button class="cerrar-modal" onclick="cerrarFavoritosModal()">×</button>
+    <h2 style="color: #ff3366; margin-top: 0;">💖 Tu Lista de Deseos</h2>
+    <div id="listaFavoritosDetalle" style="max-height: 250px; overflow-y: auto; margin-bottom: 15px; padding-right: 5px;"></div>
+    <button class="btn-sugerencia" onclick="cerrarFavoritosModal()">Seguir Viendo Catálogo ✨</button>
+  </div>
+</div>
+
 <div id="modalFaq" class="modal">
   <div class="modal-content" style="width: 450px;">
     <button class="cerrar-modal" onclick="cerrarFaqModal()">×</button>
-    <h2 style="color: #00e5ff; margin-top: 0;">❓ Preguntas Frecuentes</h2>
+    <h2 style="color: var(--secondary-color); margin-top: 0;">❓ Preguntas Frecuentes</h2>
     
     <div class="faq-item">
       <div class="faq-question"><i class="fas fa-map-marker-alt"></i> ¿Hacen entregas personales?</div>
@@ -602,24 +660,23 @@
 <div id="modalCarrito" class="modal">
   <div class="modal-content" style="width: 450px;">
     <button class="cerrar-modal" onclick="cerrarCarritoModal()">×</button>
-    <h2 style="color: #00e5ff; margin-top: 0;">🛒 Tu Carrito de Compras</h2>
+    <h2 style="color: var(--secondary-color); margin-top: 0;">🛒 Tu Carrito de Compras</h2>
     
-    <!-- SECCIÓN DE CUPONES -->
     <div class="cupon-box">
       <input type="text" id="inputCupon" class="cupon-input" placeholder="Código de Cupón (Ej: OTAKU10)">
       <button class="btn-cupon" onclick="aplicarCupon()">Aplicar</button>
     </div>
-    <div id="mensajeCupon" style="font-size: 0.8em; margin-bottom: 8px; color: #00e5ff;"></div>
+    <div id="mensajeCupon" style="font-size: 0.8em; margin-bottom: 8px; color: var(--secondary-color);"></div>
 
     <div id="listaCarritoDetalle" style="max-height: 150px; overflow-y: auto; margin-bottom: 12px; padding-right: 5px;"></div>
     
     <div id="reciboDigital" class="recibo-box" style="display: none;">
-      <div style="text-align: center; font-weight: bold; margin-bottom: 8px; color: #FF007F;">--- RECIBO DIGITAL SAKURA ---</div>
+      <div style="text-align: center; font-weight: bold; margin-bottom: 8px; color: var(--primary-color);">--- RECIBO DIGITAL SAKURA ---</div>
       <div id="reciboContenido"></div>
       <div style="text-align: center; margin-top: 8px; font-size: 0.8em; color: #888;">ESTADO: LISTO PARA ENVIAR A WHATSAPP</div>
     </div>
 
-    <h3 id="modalCarritoTotal" style="color: #FF007F; margin-bottom: 15px;">Total: $0.00</h3>
+    <h3 id="modalCarritoTotal" style="color: var(--primary-color); margin-bottom: 15px;">Total: $0.00</h3>
     <div style="display: flex; gap: 10px;">
       <button class="btn-clear" style="flex: 1; padding: 10px;" onclick="vaciarCarrito()">Vaciar</button>
       <button class="btn-checkout" style="flex: 2; padding: 10px;" onclick="enviarPedidoWhatsApp()">Enviar al WhatsApp 📱</button>
@@ -630,7 +687,7 @@
 <div id="modalSugerencias" class="modal">
   <div class="modal-content">
     <button class="cerrar-modal" onclick="cerrarSugerenciaModal()">×</button>
-    <h2 style="color: #FF007F; margin-top: 0;">💡 Sugerir Mercancía</h2>
+    <h2 style="color: var(--primary-color); margin-top: 0;">💡 Sugerir Mercancía</h2>
     <input type="text" id="sugNombre" class="sugerencia-input" placeholder="Tu Nombre o Apodo">
     <textarea id="sugDeseo" class="sugerencia-input" rows="3" placeholder="¿Qué producto o anime te gustaría que trajéramos?"></textarea>
     <button class="btn-sugerencia" onclick="enviarSugerenciaWhatsApp()">Enviar Sugerencia 🚀</button>
@@ -645,6 +702,8 @@
 </div>
 
 <div class="floating-buttons">
+  <button class="fav-floating-btn" onclick="abrirFavoritosModal()" title="Ver Favoritos"><i class="fas fa-heart"></i><div class="fav-badge-count" id="favCount">0</div></button>
+  <button class="theme-btn" onclick="alternarTema()" title="Cambiar Tema Visual"><i class="fas fa-palette"></i></button>
   <a href="https://www.tiktok.com/@sakuragameverse" class="tiktok-btn" target="_blank" title="Síguenos en TikTok"><i class="fab fa-tiktok"></i></a>
   <a href="https://www.instagram.com/sakuragameverse?stkn=bDQ5NXRla2Vyano1" class="instagram-btn" target="_blank" title="Síguenos en Instagram"><i class="fab fa-instagram"></i></a>
   <button class="faq-btn" onclick="abrirFaqModal()" title="Preguntas Frecuentes"><i class="fas fa-question"></i></button>
@@ -673,7 +732,81 @@
     }
   }, 2000);
 
-  // SISTEMA DE PRUEBA SOCIAL (NOTIFICACIONES FLOTANTES)
+  // SISTEMA DE TEMA NEÓN / CYBERPUNK
+  let modoNeonActivo = localStorage.getItem('sakura_neon') === 'true';
+  if (modoNeonActivo) {
+    document.body.classList.add('neon-mode');
+  }
+
+  function alternarTema() {
+    reproducirSonido();
+    document.body.classList.toggle('neon-mode');
+    let esNeon = document.body.classList.contains('neon-mode');
+    localStorage.setItem('sakura_neon', esNeon);
+  }
+
+  // SISTEMA DE FAVORITOS (WISHLIST)
+  let favoritos = JSON.parse(localStorage.getItem('sakura_favoritos')) || [];
+
+  function toggleFavorito(event, titulo, precio, img) {
+    event.stopPropagation();
+    reproducirSonido();
+    
+    let index = favoritos.findIndex(item => item.titulo === titulo);
+    if (index === -1) {
+      favoritos.push({ titulo, precio, img });
+      alert(`💖 ¡Añadido a tus Favoritos: ${titulo}!`);
+    } else {
+      favoritos.splice(index, 1);
+      alert(`💔 ¡Eliminado de tus Favoritos: ${titulo}!`);
+    }
+    
+    localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos));
+    actualizarFavBadge();
+  }
+
+  function actualizarFavBadge() {
+    document.getElementById('favCount').innerText = favoritos.length;
+  }
+  actualizarFavBadge();
+
+  function abrirFavoritosModal() {
+    reproducirSonido();
+    let contenedor = document.getElementById('listaFavoritosDetalle');
+    contenedor.innerHTML = "";
+
+    if (favoritos.length === 0) {
+      contenedor.innerHTML = "<p style='color: #aaa;'>Aún no tienes productos en tu lista de deseos.</p>";
+    } else {
+      favoritos.forEach((item, index) => {
+        contenedor.innerHTML += `
+          <div class="cart-item-row">
+            <img src="${item.img}" class="cart-item-img">
+            <div class="cart-item-info">
+              <strong>${item.titulo}</strong><br>
+              <span style="color: var(--secondary-color);">$${item.precio.toFixed(2)}</span>
+            </div>
+            <button class="cart-item-del" onclick="eliminarFavorito(${index})">❌</button>
+          </div>
+        `;
+      });
+    }
+    document.getElementById('modalFavoritos').style.display = 'flex';
+  }
+
+  function cerrarFavoritosModal() {
+    reproducirSonido();
+    document.getElementById('modalFavoritos').style.display = 'none';
+  }
+
+  function eliminarFavorito(index) {
+    reproducirSonido();
+    favoritos.splice(index, 1);
+    localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos));
+    actualizarFavBadge();
+    abrirFavoritosModal();
+  }
+
   const compradoresFake = [
     { nombre: "Gabriel S.", lugar: "Bejuma, Carabobo", item: "un Hoodie Oversize" },
     { nombre: "Valeria M.", lugar: "Miranda, Carabobo", item: "unos Audífonos Gamer" },
@@ -694,7 +827,6 @@
     }, 4000);
   }
 
-  // Lanzar primera notificación a los 6 segundos y luego cada 15 segundos
   setTimeout(() => {
     lanzarPruebaSocial();
     setInterval(lanzarPruebaSocial, 15000);
@@ -771,7 +903,7 @@
   let carrito = [];
   let productoActual = null;
   let categoriaActualFiltro = 'todos';
-  let descuentoAplicado = 0; // Porcentaje de descuento por cupón
+  let descuentoAplicado = 0;
 
   function filtrar(categoria, evento) {
     reproducirSonido();
@@ -916,11 +1048,11 @@
     let msg = document.getElementById('mensajeCupon');
 
     if (codigo === "OTAKU10") {
-      descuentoAplicado = 0.10; // 10% de descuento
+      descuentoAplicado = 0.10;
       msg.style.color = "#25D366";
       msg.innerText = "🎉 ¡Cupón OTAKU10 aplicado con éxito (-10%)!";
     } else if (codigo === "GAMERVIP") {
-      descuentoAplicado = 0.15; // 15% de descuento
+      descuentoAplicado = 0.15;
       msg.style.color = "#25D366";
       msg.innerText = "🔥 ¡Cupón GAMERVIP aplicado con éxito (-15%)!";
     } else {
@@ -960,7 +1092,7 @@
             <img src="${item.img}" class="cart-item-img">
             <div class="cart-item-info">
               <strong>${item.titulo}</strong><br>
-              <span style="color: #00e5ff;">$${item.precio.toFixed(2)}</span>
+              <span style="color: var(--secondary-color);">$${item.precio.toFixed(2)}</span>
             </div>
             <button class="cart-item-del" onclick="eliminarItemCarrito(${index})">❌</button>
           </div>
@@ -977,7 +1109,7 @@
         htmlRecibo += `<div style="color: #25D366;" class="recibo-line"><span>DESCUENTO:</span><span>-$${descuentoMonto.toFixed(2)}</span></div>`;
       }
 
-      htmlRecibo += `<div style="border-top: 1px dashed #00e5ff; margin-top: 5px; padding-top: 5px;" class="recibo-line"><strong>TOTAL USD:</strong> <strong>$${totalPrecio.toFixed(2)}</strong></div>`;
+      htmlRecibo += `<div style="border-top: 1px dashed var(--secondary-color); margin-top: 5px; padding-top: 5px;" class="recibo-line"><strong>TOTAL USD:</strong> <strong>$${totalPrecio.toFixed(2)}</strong></div>`;
       htmlRecibo += `<div class="recibo-line"><strong>TOTAL BS:</strong> <strong>Bs. ${totalBs.toFixed(2)}</strong></div>`;
       reciboContenido.innerHTML = htmlRecibo;
     }
