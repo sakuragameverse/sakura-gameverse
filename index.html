@@ -73,28 +73,24 @@
       100% { transform: translateX(-100%); }
     }
 
-    #socialProofToast {
-      position: fixed;
-      bottom: 85px;
-      left: 20px;
-      background: var(--hero-bg);
-      border: 1px solid var(--secondary-color);
-      padding: 10px 15px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,229,255,0.4);
-      z-index: 1400;
+    /* NOTIFICACIÓN INTEGRADA ARRIBA (NO INTERRUMPE) */
+    #socialProofContainer {
+      background: rgba(17, 5, 44, 0.95);
+      border-bottom: 1px solid var(--secondary-color);
+      padding: 8px 15px;
       display: flex;
+      justify-content: center;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       font-size: 0.85em;
-      max-width: 280px;
-      transform: translateX(-120%);
-      transition: transform 0.5s ease;
-      backdrop-filter: blur(5px);
+      position: relative;
+      z-index: 2000;
+      box-shadow: inset 0 0 10px rgba(0,229,255,0.2);
+      transition: all 0.5s ease;
     }
-    #socialProofToast.mostrar {
-      transform: translateX(0);
-    }
+    #socialProofContainer .sp-icon { font-size: 18px; color: var(--secondary-color); }
+    #socialProofContainer .sp-text { color: var(--text-color); font-weight: bold; }
+    #socialProofContainer .sp-sub { color: #aaa; font-size: 0.9em; font-weight: normal; }
 
     #splash-screen {
       position: fixed;
@@ -361,7 +357,7 @@
     .btn-checkout { background: #25D366; color: white; border: none; padding: 8px 15px; border-radius: 15px; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px #25D366; font-size: 0.9em; }
     .btn-clear { background: #ff3366; color: white; border: none; padding: 8px 12px; border-radius: 15px; font-weight: bold; cursor: pointer; font-size: 0.9em; }
 
-    /* NUEVO SISTEMA DE BOTONES FLOTANTES OCULTOS EN MENÚ DESPLEGABLE */
+    /* MENÚ FLOTANTE OCULTO */
     .floating-buttons { position: fixed; bottom: 75px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 1000; align-items: flex-end; }
     
     .menu-desplegable-flotante {
@@ -402,11 +398,18 @@
 </head>
 <body>
 
-<div id="socialProofToast">
-  <div style="font-size: 22px;">🛍️</div>
+<!-- BARRA DE NOTIFICACIÓN ESTÁTICA SUPERIOR (NO INTERRUMPE) -->
+<div id="socialProofContainer">
+  <div class="sp-icon"><i class="fas fa-shopping-bag"></i></div>
   <div>
-    <strong id="toastTexto" style="color: var(--secondary-color);">¡Alguien compró!</strong><br>
-    <span style="color: #aaa; font-size: 0.75em;" id="toastLugar">Hace un momento en Carabobo</span>
+    <span class="sp-text" id="spTexto">¡Gabriel S. compró un Tomo de Manga!</span> 
+    <span class="sp-sub" id="spLugar">(Bejuma)</span>
+  </div>
+</div>
+
+<div class="ticker-bar">
+  <div class="ticker-content">
+    🔥 ¡Bienvenidos a Sakura Gameverse! Envíos seguros a todo el país exclusivamente por ZOOM y MRW 📦 | 🎮 Cupón activo: OTAKU10 | ⚡ ¡Abre el menú flotante para descubrir música y gacha! 🌸
   </div>
 </div>
 
@@ -463,12 +466,6 @@
       <div class="recibo-line"><strong>TALLA XXL:</strong><span>Ancho: 62cm | Alto: 76cm</span></div>
     </div>
     <button class="btn-sugerencia" onclick="cerrarGuiaTallasModal()">¡Entendido! ✨</button>
-  </div>
-</div>
-
-<div class="ticker-bar">
-  <div class="ticker-content">
-    🔥 ¡Bienvenidos a Sakura Gameverse! Envíos seguros a todo el país exclusivamente por ZOOM y MRW 📦 | 🎮 Cupón activo: OTAKU10 | ⚡ ¡Abre el menú flotante para descubrir música y gacha! 🌸
   </div>
 </div>
 
@@ -851,7 +848,7 @@
   <button class="btn-menu-principal" onclick="toggleMenuFlotante()" title="Abrir Menú Otaku"><i class="fas fa-bars" id="iconoMenuBtn"></i></button>
 </div>
 
-<!-- AUDIO LO-FI EXTERNO ESTABLE -->
+<!-- AUDIO LO-FI ESTABLE -->
 <audio id="audioLoFi" loop src="https://stream.zeno.fm/f3wvbbqmdg8uv"></audio>
 
 <script>
@@ -875,7 +872,22 @@
     }
   }, 2000);
 
-  // CONTROL DEL MENÚ FLOTANTE DESPLEGABLE
+  // ROTACIÓN DE PRUEBA SOCIAL ARRIBA
+  const compradoresFake = [
+    { nombre: "Gabriel S.", lugar: "Bejuma, Carabobo", item: "un Tomo de Manga" },
+    { nombre: "Valeria M.", lugar: "Miranda, Carabobo", item: "una Booster Box TCG" },
+    { nombre: "Andrés R.", lugar: "Valencia, Carabobo", item: "un Mando Pro PC" },
+    { nombre: "Mariana L.", lugar: "Caracas", item: "un Hoodie Oversize" },
+    { nombre: "Josué O.", lugar: "Bejuma, Carabobo", item: "una Figura de Colección" }
+  ];
+
+  function actualizarPruebaSocialArriba() {
+    let comprador = compradoresFake[Math.floor(Math.random() * compradoresFake.length)];
+    document.getElementById('spTexto').innerText = `¡${comprador.nombre} compró ${comprador.item}!`;
+    document.getElementById('spLugar').innerText = `(${comprador.lugar})`;
+  }
+  setInterval(actualizarPruebaSocialArriba, 6000);
+
   function toggleMenuFlotante() {
     reproducirSonido();
     let menu = document.getElementById('menuFlotante');
@@ -888,7 +900,6 @@
     }
   }
 
-  // TEMA VISUAL
   let modoNeonActivo = localStorage.getItem('sakura_neon') === 'true';
   if (modoNeonActivo) {
     document.body.classList.add('neon-mode');
@@ -913,7 +924,6 @@
     }
   }
 
-  // REPRODUCTOR LO-FI ESTABLE
   let reproduciendoMusica = false;
   function toggleMusicaLoFi() {
     reproducirSonido();
@@ -936,7 +946,6 @@
   }
   function reproducingMusica() { return reproduciendoMusica; }
 
-  // RULETA GACHA
   function abrirGachaModal() {
     reproducirSonido();
     document.getElementById('gachaResultado').innerText = "Presiona el botón para girar 🎁";
@@ -958,7 +967,6 @@
     confetti({ particleCount: 120, spread: 80, origin: { y: 0.5 } });
   }
 
-  // PERFIL GAMER & XP
   let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, rango: "Rango Hokage" };
   document.getElementById('inputGamerTag').value = gamerProfile.tag;
   document.getElementById('lblRango').innerText = gamerProfile.rango;
@@ -987,7 +995,6 @@
     }
   }
 
-  // GUÍA DE TALLAS
   function abrirGuiaTallasModal() {
     reproducirSonido();
     document.getElementById('modalGuiaTallas').style.display = 'flex';
@@ -997,7 +1004,6 @@
     document.getElementById('modalGuiaTallas').style.display = 'none';
   }
 
-  // FAVORITOS
   let favoritos = JSON.parse(localStorage.getItem('sakura_favoritos')) || [];
 
   function toggleFavorito(event, titulo, precio, img) {
@@ -1058,31 +1064,6 @@
     actualizarFavBadge();
     abrirFavoritosModal();
   }
-
-  const compradoresFake = [
-    { nombre: "Gabriel S.", lugar: "Bejuma, Carabobo", item: "un Tomo de Manga" },
-    { nombre: "Valeria M.", lugar: "Miranda, Carabobo", item: "una Booster Box TCG" },
-    { nombre: "Andrés R.", lugar: "Valencia, Carabobo", item: "un Mando Pro PC" },
-    { nombre: "Mariana L.", lugar: "Caracas", item: "un Hoodie Oversize" }
-  ];
-
-  function lanzarPruebaSocial() {
-    let comprador = compradoresFake[Math.floor(Math.random() * compradoresFake.length)];
-    document.getElementById('toastTexto').innerText = `${comprador.nombre} compró ${comprador.item}`;
-    document.getElementById('toastLugar').innerText = `Hace un momento en ${comprador.lugar}`;
-    
-    let toast = document.getElementById('socialProofToast');
-    toast.classList.add('mostrar');
-
-    setTimeout(() => {
-      toast.classList.remove('mostrar');
-    }, 4000);
-  }
-
-  setTimeout(() => {
-    lanzarPruebaSocial();
-    setInterval(lanzarPruebaSocial, 15000);
-  }, 6000);
 
   function cerrarPromoFlash() {
     reproducirSonido();
@@ -1475,7 +1456,7 @@
     let texto = document.getElementById('revTexto').value.trim();
 
     if (!nombre || !texto) {
-      alert("Por favor ingresa tu nombre y tu comentario.");
+      alert("Por favor ingresa tu nombre y tu comentario. ✨");
       return;
     }
 
