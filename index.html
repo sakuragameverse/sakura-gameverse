@@ -29,7 +29,6 @@
       --hero-bg: #2b0b4a;
     }
 
-    /* MODO OVERDRIVE SUPREMO (EASTER EGG) */
     body.overdrive-mode {
       --bg-color: #2b0500;
       --card-bg: linear-gradient(135deg, #4a0d00 0%, #2b0500 100%);
@@ -362,18 +361,36 @@
     .btn-checkout { background: #25D366; color: white; border: none; padding: 8px 15px; border-radius: 15px; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px #25D366; font-size: 0.9em; }
     .btn-clear { background: #ff3366; color: white; border: none; padding: 8px 12px; border-radius: 15px; font-weight: bold; cursor: pointer; font-size: 0.9em; }
 
-    .floating-buttons { position: fixed; bottom: 75px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 1000; }
-    .whatsapp-btn { background-color: #25D366; color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 26px; text-decoration: none; box-shadow: 0 0 10px rgba(37,211,102,0.5); }
-    .instagram-btn { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 24px; text-decoration: none; box-shadow: 0 0 10px rgba(214,36,159,0.6); }
-    .tiktok-btn { background-color: #000000; color: white; border: 2px solid #00e5ff; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 22px; text-decoration: none; box-shadow: 0 0 10px rgba(0,229,255,0.6); }
-    .sugerencia-btn { background-color: var(--primary-color); color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 24px; text-decoration: none; box-shadow: 0 0 10px var(--primary-color); cursor: pointer; border: none; }
-    .faq-btn { background-color: var(--secondary-color); color: #0d041a; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 22px; text-decoration: none; box-shadow: 0 0 10px var(--secondary-color); cursor: pointer; border: none; font-weight: bold; }
-    .theme-btn { background-color: #ffcc00; color: #0d041a; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 22px; text-decoration: none; box-shadow: 0 0 10px #ffcc00; cursor: pointer; border: none; font-weight: bold; }
-    .gacha-btn { background-color: #9900ff; color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 20px; text-decoration: none; box-shadow: 0 0 10px #9900ff; cursor: pointer; border: none; }
-    .music-btn { background-color: #ff0055; color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 20px; text-decoration: none; box-shadow: 0 0 10px #ff0055; cursor: pointer; border: none; }
-    .gamer-profile-btn { background-color: #00ffcc; color: #0d041a; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 20px; text-decoration: none; box-shadow: 0 0 10px #00ffcc; cursor: pointer; border: none; font-weight: bold; }
-    .fav-floating-btn { background-color: #ff3366; color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 20px; text-decoration: none; box-shadow: 0 0 10px #ff3366; cursor: pointer; border: none; position: relative; }
-    .fav-badge-count { position: absolute; top: -5px; right: -5px; background: #00e5ff; color: #0d041a; font-size: 0.7em; font-weight: bold; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 5px #00e5ff; }
+    /* NUEVO SISTEMA DE BOTONES FLOTANTES OCULTOS EN MENÚ DESPLEGABLE */
+    .floating-buttons { position: fixed; bottom: 75px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 1000; align-items: flex-end; }
+    
+    .menu-desplegable-flotante {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, opacity 0.4s ease;
+      opacity: 0;
+    }
+    .menu-desplegable-flotante.abierto {
+      max-height: 500px;
+      opacity: 1;
+    }
+
+    .btn-menu-principal { background-color: var(--primary-color); color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 22px; cursor: pointer; border: 2px solid var(--secondary-color); box-shadow: 0 0 15px var(--primary-color); }
+
+    .whatsapp-btn { background-color: #25D366; color: white; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 22px; text-decoration: none; box-shadow: 0 0 10px rgba(37,211,102,0.5); }
+    .instagram-btn { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); color: white; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 20px; text-decoration: none; box-shadow: 0 0 10px rgba(214,36,159,0.6); }
+    .tiktok-btn { background-color: #000000; color: white; border: 2px solid #00e5ff; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px rgba(0,229,255,0.6); }
+    .sugerencia-btn { background-color: var(--primary-color); color: white; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 20px; text-decoration: none; box-shadow: 0 0 10px var(--primary-color); cursor: pointer; border: none; }
+    .faq-btn { background-color: var(--secondary-color); color: #0d041a; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px var(--secondary-color); cursor: pointer; border: none; font-weight: bold; }
+    .theme-btn { background-color: #ffcc00; color: #0d041a; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px #ffcc00; cursor: pointer; border: none; font-weight: bold; }
+    .gacha-btn { background-color: #9900ff; color: white; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px #9900ff; cursor: pointer; border: none; }
+    .music-btn { background-color: #ff0055; color: white; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px #ff0055; cursor: pointer; border: none; }
+    .gamer-profile-btn { background-color: #00ffcc; color: #0d041a; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px #00ffcc; cursor: pointer; border: none; font-weight: bold; }
+    .fav-floating-btn { background-color: #ff3366; color: white; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px #ff3366; cursor: pointer; border: none; position: relative; }
+    .fav-badge-count { position: absolute; top: -5px; right: -5px; background: #00e5ff; color: #0d041a; font-size: 0.65em; font-weight: bold; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 5px #00e5ff; }
 
     .bg-elements { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
     .float-item { position: absolute; top: -10%; animation: fall linear infinite; opacity: 0.7; }
@@ -393,20 +410,18 @@
   </div>
 </div>
 
-<!-- MODAL BIEVENIDA / PROMO FLASH -->
 <div id="modalPromoFlash" class="modal" style="display: flex;">
   <div class="modal-content" style="border: 2px solid var(--secondary-color); box-shadow: 0 0 40px rgba(0,229,255,0.6);">
     <button class="cerrar-modal" onclick="cerrarPromoFlash()">×</button>
     <div style="font-size: 40px; margin-bottom: 10px;">🎁</div>
     <h2 style="color: var(--secondary-color); margin-top: 0;">¡Bienvenido a Sakura Gameverse!</h2>
     <p style="font-size: 0.95em; line-height: 1.5; opacity: 0.9; margin-bottom: 15px;">
-      Usa el código <strong>OTAKU10</strong> en tu carrito o gira la ruleta Gacha flotante para ganar sorpresas. Entregas en <strong>Bejuma y Miranda</strong> y envíos por <strong>ZOOM y MRW</strong>.
+      Usa el código <strong>OTAKU10</strong> en tu carrito o abre el menú flotante para girar la ruleta Gacha. Entregas en <strong>Bejuma y Miranda</strong> y envíos por <strong>ZOOM y MRW</strong>.
     </p>
     <button class="btn-sugerencia" onclick="cerrarPromoFlash()">¡A Explorar Catálogo! 🚀</button>
   </div>
 </div>
 
-<!-- MODAL RULETA GACHA -->
 <div id="modalGacha" class="modal">
   <div class="modal-content" style="width: 420px; border: 2px solid #9900ff;">
     <button class="cerrar-modal" onclick="cerrarGachaModal()">×</button>
@@ -420,7 +435,6 @@
   </div>
 </div>
 
-<!-- MODAL PERFIL GAMER / XP -->
 <div id="modalGamerProfile" class="modal">
   <div class="modal-content" style="width: 420px; border: 2px solid #00ffcc;">
     <button class="cerrar-modal" onclick="cerrarGamerProfileModal()">×</button>
@@ -436,7 +450,6 @@
   </div>
 </div>
 
-<!-- MODAL GUÍA DE TALLAS -->
 <div id="modalGuiaTallas" class="modal">
   <div class="modal-content" style="width: 450px;">
     <button class="cerrar-modal" onclick="cerrarGuiaTallasModal()">×</button>
@@ -455,7 +468,7 @@
 
 <div class="ticker-bar">
   <div class="ticker-content">
-    🔥 ¡Bienvenidos a Sakura Gameverse! Envíos seguros a todo el país exclusivamente por ZOOM y MRW 📦 | 🎮 Cupón activo: OTAKU10 | ⚡ ¡Gira la Ruleta Gacha flotante y gana premios! 🌸
+    🔥 ¡Bienvenidos a Sakura Gameverse! Envíos seguros a todo el país exclusivamente por ZOOM y MRW 📦 | 🎮 Cupón activo: OTAKU10 | ⚡ ¡Abre el menú flotante para descubrir música y gacha! 🌸
   </div>
 </div>
 
@@ -821,21 +834,25 @@
   </div>
 </div>
 
+<!-- MENÚ FLOTANTE UNIFICADO Y DESPLEGABLE -->
 <div class="floating-buttons">
-  <button class="fav-floating-btn" onclick="abrirFavoritosModal()" title="Ver Favoritos"><i class="fas fa-heart"></i><div class="fav-badge-count" id="favCount">0</div></button>
-  <button class="gacha-btn" onclick="abrirGachaModal()" title="Ruleta Gacha de Descuentos"><i class="fas fa-dice"></i></button>
-  <button class="music-btn" onclick="toggleMusicaLoFi()" title="Reproducir/Pausar Música Lo-Fi"><i class="fas fa-music" id="iconoMusica"></i></button>
-  <button class="gamer-profile-btn" onclick="abrirGamerProfileModal()" title="Perfil Gamer & XP"><i class="fas fa-user-astronaut"></i></button>
-  <button class="theme-btn" onclick="alternarTema()" title="Cambiar Tema Visual"><i class="fas fa-palette"></i></button>
-  <a href="https://www.tiktok.com/@sakuragameverse" class="tiktok-btn" target="_blank" title="Síguenos en TikTok"><i class="fab fa-tiktok"></i></a>
-  <a href="https://www.instagram.com/sakuragameverse?stkn=bDQ5NXRla2Vyano1" class="instagram-btn" target="_blank" title="Síguenos en Instagram"><i class="fab fa-instagram"></i></a>
-  <button class="faq-btn" onclick="abrirFaqModal()" title="Preguntas Frecuentes"><i class="fas fa-question"></i></button>
-  <button class="sugerencia-btn" onclick="abrirSugerenciaModal()" title="Sugerir Mercancía"><i class="fas fa-lightbulb"></i></button>
-  <a href="https://wa.me/584244970576" class="whatsapp-btn" target="_blank" title="Escríbenos al WhatsApp"><i class="fab fa-whatsapp"></i></a>
+  <div class="menu-desplegable-flotante" id="menuFlotante">
+    <button class="fav-floating-btn" onclick="abrirFavoritosModal()" title="Ver Favoritos"><i class="fas fa-heart"></i><div class="fav-badge-count" id="favCount">0</div></button>
+    <button class="gacha-btn" onclick="abrirGachaModal()" title="Ruleta Gacha de Descuentos"><i class="fas fa-dice"></i></button>
+    <button class="music-btn" onclick="toggleMusicaLoFi()" title="Reproducir/Pausar Música Lo-Fi"><i class="fas fa-music" id="iconoMusica"></i></button>
+    <button class="gamer-profile-btn" onclick="abrirGamerProfileModal()" title="Perfil Gamer & XP"><i class="fas fa-user-astronaut"></i></button>
+    <button class="theme-btn" onclick="alternarTema()" title="Cambiar Tema Visual"><i class="fas fa-palette"></i></button>
+    <a href="https://www.tiktok.com/@sakuragameverse" class="tiktok-btn" target="_blank" title="Síguenos en TikTok"><i class="fab fa-tiktok"></i></a>
+    <a href="https://www.instagram.com/sakuragameverse?stkn=bDQ5NXRla2Vyano1" class="instagram-btn" target="_blank" title="Síguenos en Instagram"><i class="fab fa-instagram"></i></a>
+    <button class="faq-btn" onclick="abrirFaqModal()" title="Preguntas Frecuentes"><i class="fas fa-question"></i></button>
+    <button class="sugerencia-btn" onclick="abrirSugerenciaModal()" title="Sugerir Mercancía"><i class="fas fa-lightbulb"></i></button>
+    <a href="https://wa.me/584244970576" class="whatsapp-btn" target="_blank" title="Escríbenos al WhatsApp"><i class="fab fa-whatsapp"></i></a>
+  </div>
+  <button class="btn-menu-principal" onclick="toggleMenuFlotante()" title="Abrir Menú Otaku"><i class="fas fa-bars" id="iconoMenuBtn"></i></button>
 </div>
 
-<!-- AUDIO LO-FI EXTERNO OCULTO -->
-<audio id="audioLoFi" loop src="https://commondatastorage.googleapis.com/codesign-us-public/lofi-sample.mp3"></audio>
+<!-- AUDIO LO-FI EXTERNO ESTABLE -->
+<audio id="audioLoFi" loop src="https://stream.zeno.fm/f3wvbbqmdg8uv"></audio>
 
 <script>
   let textosCarga = ["Cargando texturas...", "Sincronizando tasa BCV...", "Cargando inventario otaku...", "¡Gameverse listo!"];
@@ -858,7 +875,20 @@
     }
   }, 2000);
 
-  // 1. TEMA VISUAL (CYBERPUNK / NEON / OVERDRIVE)
+  // CONTROL DEL MENÚ FLOTANTE DESPLEGABLE
+  function toggleMenuFlotante() {
+    reproducirSonido();
+    let menu = document.getElementById('menuFlotante');
+    let icono = document.getElementById('iconoMenuBtn');
+    menu.classList.toggle('abierto');
+    if (menu.classList.contains('abierto')) {
+      icono.className = "fas fa-times";
+    } else {
+      icono.className = "fas fa-bars";
+    }
+  }
+
+  // TEMA VISUAL
   let modoNeonActivo = localStorage.getItem('sakura_neon') === 'true';
   if (modoNeonActivo) {
     document.body.classList.add('neon-mode');
@@ -872,7 +902,6 @@
     localStorage.setItem('sakura_neon', esNeon);
   }
 
-  // EASTER EGG LOGO (MODO OVERDRIVE SUPREMO)
   function activarEasterEggLogo() {
     reproducirSonido();
     document.body.classList.toggle('overdrive-mode');
@@ -884,28 +913,30 @@
     }
   }
 
-  // 2. REPRODUCTOR LO-FI / SYNTHWAVE
+  // REPRODUCTOR LO-FI ESTABLE
   let reproduciendoMusica = false;
   function toggleMusicaLoFi() {
     reproducirSonido();
     let audio = document.getElementById('audioLoFi');
     let icono = document.getElementById('iconoMusica');
     if (!reproducingMusica()) {
-      audio.play().catch(e => {
-        // En algunos navegadores requiere interacción previa o archivo externo
+      audio.play().then(() => {
+        reproducirMusica = true;
+        icono.className = "fas fa-pause";
+        alert("🎵 ¡Música Lo-Fi activada de fondo!");
+      }).catch(e => {
+        alert("⚠️ Toca la pantalla o interactúa un momento antes de encender la música.");
       });
-      reproducirMusica = true;
-      icono.className = "fas fa-pause";
-      alert("🎵 ¡Música Lo-Fi / Synthwave activada de fondo!");
     } else {
       audio.pause();
       reproducirMusica = false;
       icono.className = "fas fa-music";
+      alert("⏸️ Música pausada.");
     }
   }
   function reproducingMusica() { return reproduciendoMusica; }
 
-  // 3. RULETA GACHA DE DESCUENTOS
+  // RULETA GACHA
   function abrirGachaModal() {
     reproducirSonido();
     document.getElementById('gachaResultado').innerText = "Presiona el botón para girar 🎁";
@@ -927,7 +958,7 @@
     confetti({ particleCount: 120, spread: 80, origin: { y: 0.5 } });
   }
 
-  // 4. PERFIL GAMER & XP
+  // PERFIL GAMER & XP
   let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, rango: "Rango Hokage" };
   document.getElementById('inputGamerTag').value = gamerProfile.tag;
   document.getElementById('lblRango').innerText = gamerProfile.rango;
@@ -946,7 +977,7 @@
     let nuevoTag = document.getElementById('inputGamerTag').value.trim();
     if (nuevoTag) {
       gamerProfile.tag = nuevoTag;
-      gamerProfile.xp += 50; // Gana XP por interactuar
+      gamerProfile.xp += 50;
       if (gamerProfile.xp > 300) gamerProfile.rango = "Rango Leyenda Ciberpunk ⚡";
       localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
       document.getElementById('lblRango').innerText = gamerProfile.rango;
@@ -956,7 +987,7 @@
     }
   }
 
-  // 5. GUÍA DE TALLAS
+  // GUÍA DE TALLAS
   function abrirGuiaTallasModal() {
     reproducirSonido();
     document.getElementById('modalGuiaTallas').style.display = 'flex';
@@ -966,7 +997,7 @@
     document.getElementById('modalGuiaTallas').style.display = 'none';
   }
 
-  // 6. SISTEMA DE FAVORITOS & PRUEBA SOCIAL
+  // FAVORITOS
   let favoritos = JSON.parse(localStorage.getItem('sakura_favoritos')) || [];
 
   function toggleFavorito(event, titulo, precio, img) {
@@ -1242,7 +1273,7 @@
     }
 
     carrito.push(itemParaCarrito);
-    gamerProfile.xp += 20; // XP por agregar al carrito
+    gamerProfile.xp += 20;
     localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
     
     actualizarCarritoUI();
@@ -1363,7 +1394,7 @@
       origin: { y: 0.6 }
     });
 
-    gamerProfile.xp += 100; // Gran recompensa XP por compra
+    gamerProfile.xp += 100;
     localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
 
     let mensaje = `¡Hola Sakura Gameverse! 🌸👾 Deseo realizar el siguiente pedido (GamerTag: ${gamerProfile.tag}):\n\n`;
