@@ -1301,6 +1301,10 @@
     document.getElementById('revTexto').value = "";
     renderReviews();
     alert("¡Reseña publicada!");
+
+    // Cargar el carrito guardado previamente en el navegador (si existe)
+let carrito = JSON.parse(localStorage.getItem('sakura_carrito')) || [];
+    
   }
 </script>
 
