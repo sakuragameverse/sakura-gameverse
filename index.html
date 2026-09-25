@@ -14,6 +14,47 @@
     ::-webkit-scrollbar-track { background: #0d041a; }
     ::-webkit-scrollbar-thumb { background: #FF007F; border-radius: 10px; }
 
+    /* PANTALLA DE CARGA ESTILO VIDEOJUEGO */
+    #splash-screen {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-color: #0d041a;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.6s ease;
+    }
+    .splash-logo {
+      max-width: 220px;
+      margin-bottom: 20px;
+      animation: pulse-logo 1.5s infinite alternate;
+    }
+    @keyframes pulse-logo {
+      0% { filter: drop-shadow(0 0 10px rgba(255,0,127,0.4)); transform: scale(1); }
+      100% { filter: drop-shadow(0 0 25px rgba(0,229,255,0.8)); transform: scale(1.05); }
+    }
+    .loading-bar-container {
+      width: 200px;
+      height: 6px;
+      background: #11052C;
+      border-radius: 10px;
+      border: 1px solid #FF007F;
+      overflow: hidden;
+      margin-top: 15px;
+    }
+    .loading-bar {
+      width: 0%;
+      height: 100%;
+      background: #00e5ff;
+      box-shadow: 0 0 10px #00e5ff;
+      animation: load-progress 1.2s forwards;
+    }
+    @keyframes load-progress {
+      to { width: 100%; }
+    }
+
     .hero-banner { background-color: #11052C; text-align: center; padding: 50px 20px; border-bottom: 3px solid #FF007F; box-shadow: 0 0 20px rgba(255, 0, 127, 0.4); position: relative; z-index: 2; }
     .hero-logo { max-width: 260px; margin-bottom: 15px; filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1)); }
     .hero-title { font-size: 1.3em; font-weight: bold; margin-bottom: 20px; letter-spacing: 1px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
@@ -22,7 +63,6 @@
     .section-title { text-align: center; color: #FF007F; font-size: 1.8em; margin-bottom: 20px; animation: neon-pulse 1.5s infinite alternate; }
     @keyframes neon-pulse { 0% { text-shadow: 0 0 5px #FF007F, 0 0 10px #FF007F; } 100% { text-shadow: 0 0 5px #fff, 0 0 15px #FF007F, 0 0 30px #FF007F; } }
     
-    /* BUSCADOR Y FILTROS */
     .search-box { text-align: center; margin-bottom: 20px; }
     .search-input { background: #11052C; border: 2px solid #00e5ff; color: white; padding: 10px 20px; width: 80%; max-width: 400px; border-radius: 25px; font-size: 1em; outline: none; box-shadow: 0 0 10px rgba(0,229,255,0.3); }
     
@@ -32,32 +72,37 @@
 
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
     
-    .card { background-color: #1a0b38; border-radius: 15px; padding: 15px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.5); position: relative; border: 1px solid transparent; transition: all 0.3s ease; cursor: pointer; }
+    /* ANIMACIÓN DE REBOTE AL ENTRAR (POP) */
+    .card { background-color: #1a0b38; border-radius: 15px; padding: 15px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.5); position: relative; border: 1px solid transparent; transition: all 0.3s ease; cursor: pointer; animation: card-pop 0.4s ease-out; }
+    @keyframes card-pop {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
     .card:hover, .card:active { transform: translateY(-10px) scale(1.02); box-shadow: 0 15px 30px rgba(0, 229, 255, 0.4); border: 1px solid #00e5ff; }
     .card img { width: 100%; height: 250px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
     .card-title { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; }
     .card-price { color: #00e5ff; font-size: 1.2em; font-weight: bold; text-shadow: 0 0 5px rgba(0, 229, 255, 0.5); }
     .badge-encargo { position: absolute; top: 10px; right: 10px; background-color: #FF007F; color: white; padding: 5px 12px; font-size: 0.8em; font-weight: bold; border-radius: 20px; box-shadow: 0 0 10px #FF007F; z-index: 3; }
 
-    /* MODAL DE PRODUCTO */
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
     .modal-content { background: #11052C; padding: 20px; border-radius: 20px; text-align: center; max-width: 90%; width: 400px; border: 2px solid #FF007F; box-shadow: 0 0 30px rgba(255,0,127,0.5); position: relative; max-height: 90vh; overflow-y: auto; }
     .cerrar-modal { position: absolute; top: 10px; right: 15px; font-size: 25px; color: white; cursor: pointer; background: none; border: none; font-weight: bold; }
     .modal-img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
     .btn-comprar { background: #FF007F; color: white; border: none; padding: 10px 20px; font-size: 1.1em; font-weight: bold; border-radius: 30px; cursor: pointer; margin-top: 15px; box-shadow: 0 0 10px #FF007F; width: 100%; }
 
-    /* BARRA FLOTANTE DE CARRITO */
-    .cart-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(17, 5, 44, 0.95); border-top: 2px solid #00e5ff; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 1500; box-shadow: 0 -5px 20px rgba(0,229,255,0.3); backdrop-filter: blur(5px); }
-    .cart-info { font-weight: bold; font-size: 1.1em; color: #00e5ff; }
-    .btn-checkout { background: #25D366; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px #25D366; }
+    /* BARRA DE CARRITO MEJORADA */
+    .cart-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(17, 5, 44, 0.95); border-top: 2px solid #00e5ff; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; z-index: 1500; box-shadow: 0 -5px 20px rgba(0,229,255,0.3); backdrop-filter: blur(5px); flex-wrap: wrap; gap: 8px; }
+    .cart-info { font-weight: bold; font-size: 1em; color: #00e5ff; }
+    .cart-buttons { display: flex; gap: 8px; }
+    .btn-checkout { background: #25D366; color: white; border: none; padding: 8px 15px; border-radius: 15px; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px #25D366; font-size: 0.9em; }
+    .btn-clear { background: #ff3366; color: white; border: none; padding: 8px 12px; border-radius: 15px; font-weight: bold; cursor: pointer; font-size: 0.9em; }
 
-    /* SECCIÓN DE INFORMACIÓN Y PAGOS */
-    .info-section { background: #11052C; margin-top: 50px; padding: 30px 20px; border-radius: 15px; border: 1px solid #FF007F; box-shadow: 0 0 15px rgba(255,0,127,0.2); }
+    .info-section { background: #11052C; margin-top: 50px; margin-bottom: 60px; padding: 30px 20px; border-radius: 15px; border: 1px solid #FF007F; box-shadow: 0 0 15px rgba(255,0,127,0.2); }
     .info-title { color: #00e5ff; font-size: 1.4em; margin-bottom: 15px; text-align: center; }
     .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; font-size: 0.95em; line-height: 1.5; }
     .info-card { background: #1a0b38; padding: 15px; border-radius: 10px; border: 1px solid rgba(255,0,127,0.3); }
 
-    .whatsapp-btn { position: fixed; bottom: 85px; right: 25px; background-color: #25D366; color: white; border-radius: 50%; width: 55px; height: 55px; display: flex; justify-content: center; align-items: center; font-size: 30px; text-decoration: none; z-index: 1000; animation: pulse-wa 2s infinite; }
+    .whatsapp-btn { position: fixed; bottom: 75px; right: 20px; background-color: #25D366; color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 26px; text-decoration: none; z-index: 1000; animation: pulse-wa 2s infinite; }
     @keyframes pulse-wa { 0% { transform: scale(1); box-shadow: 0 0 10px rgba(37, 211, 102, 0.5); } 50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(37, 211, 102, 1); } 100% { transform: scale(1); box-shadow: 0 0 10px rgba(37, 211, 102, 0.5); } }
 
     .bg-elements { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
@@ -70,6 +115,15 @@
 </head>
 <body>
 
+<!-- PANTALLA DE CARGA (SPLASH SCREEN) -->
+<div id="splash-screen">
+  <img src="logo.webp" alt="Logo" class="splash-logo">
+  <div style="color: #00e5ff; font-weight: bold; font-size: 1.1em; letter-spacing: 2px;">CARGANDO GAMEVERSE...</div>
+  <div class="loading-bar-container">
+    <div class="loading-bar"></div>
+  </div>
+</div>
+
 <div class="bg-elements">
   <div class="float-item sakura i1">🌸</div><div class="float-item gamer i2">🎮</div><div class="float-item sakura i3">🌸</div><div class="float-item gamer i4">🕹️</div><div class="float-item sakura i5">🌸</div><div class="float-item sakura i6">🌸</div><div class="float-item gamer i7">🎮</div><div class="float-item sakura i8">🌸</div><div class="float-item gamer i9">🕹️</div><div class="float-item sakura i10">🌸</div>
 </div>
@@ -80,12 +134,10 @@
 </div>
 
 <div class="container">
-  <!-- BUSCADOR INTELIGENTE -->
   <div class="search-box">
     <input type="text" id="buscador" class="search-input" placeholder="🔍 Buscar figura, katana, lámpara..." onkeyup="buscarProductos()">
   </div>
 
-  <!-- FILTROS -->
   <div class="filtros">
     <button class="btn-filtro activo" onclick="filtrar('todos', event)">Todos</button>
     <button class="btn-filtro" onclick="filtrar('figuras', event)">Figuras</button>
@@ -99,66 +151,64 @@
   <div class="grid" id="catalogo">
     <div class="card item-producto" data-nombre="figura de coleccion" data-categoria="figuras" onclick="reproducirSonido(); abrirModal('figuras.jpg', 'Figura de Colección', 35.00, '¡Una figura épica para tu repisa! Detalles increíbles y acabados premium.')">
       <img src="figuras.jpg" alt="Figura">
-      <div class="card-title">Figuras</div>
+      <div class="card-title">Figura de Colección</div>
       <div class="card-price">$35.00</div>
     </div>
 
     <div class="card item-producto" data-nombre="peluche exclusivo" data-categoria="peluches" onclick="reproducirSonido(); abrirModal('peluche.jpg', 'Peluche Exclusivo', 20.00, 'Súper suave y kawaii. El compañero perfecto para tus largas noches de gaming.')">
       <div class="badge-encargo">Por Encargo</div>
       <img src="peluche.jpg" alt="Peluche">
-      <div class="card-title">Peluches</div>
+      <div class="card-title">Peluche Exclusivo</div>
       <div class="card-price">$20.00</div>
     </div>
 
     <div class="card item-producto" data-nombre="booster pack tcg cartas" data-categoria="cartas" onclick="reproducirSonido(); abrirModal('cartas.jpg', 'Booster Pack TCG', 5.00, '¡Expande tu mazo y aplasta a tus rivales! Incluye cartas raras garantizadas.')">
       <div class="badge-encargo">Por Encargo</div>
       <img src="cartas.jpg" alt="Cartas TCG">
-      <div class="card-title">Caja de cartas TCG</div>
+      <div class="card-title">Booster Pack TCG</div>
       <div class="card-price">$5.00</div>
     </div>
 
     <div class="card item-producto" data-nombre="accesorio anime collar" data-categoria="accesorios" onclick="reproducirSonido(); abrirModal('accesorios.jpeg', 'Accesorio Anime', 5.00, '¡Lleva tu pasión a todas partes con este increíble accesorio! Diseño súper detallado.')">
       <div class="badge-encargo">Por Encargo</div>
       <img src="accesorios.jpeg" alt="Accesorios">
-      <div class="card-title">Accesorios</div>
+      <div class="card-title">Accesorio Anime</div>
       <div class="card-price">$5.00</div>
     </div>
 
     <div class="card item-producto" data-nombre="katana replica anime" data-categoria="katanas" onclick="reproducirSonido(); abrirModal('katanas.jpg', 'Katana Replica Anime', 45.00, 'Replica a escala real. Perfecta para cosplay o para darle un toque épico a tu cuarto.')">
       <div class="badge-encargo">Por Encargo</div>
       <img src="katanas.jpg" alt="Katanas">
-      <div class="card-title">Katanas</div>
+      <div class="card-title">Katana Replica Anime</div>
       <div class="card-price">$45.00</div>
     </div>
 
     <div class="card item-producto" data-nombre="lampara neon gamer" data-categoria="lamparas" onclick="reproducirSonido(); abrirModal('lamparas.jpg', 'Lámpara Neón Gamer', 25.00, 'Ilumina tu setup con esta increíble lámpara. Varios colores y modos de luz.')">
       <img src="lamparas.jpg" alt="Lámparas">
-      <div class="card-title">Lámparas</div>
+      <div class="card-title">Lámpara Neón Gamer</div>
       <div class="card-price">$25.00</div>
     </div>
   </div>
 
-  <!-- SECCIÓN DE INFORMACIÓN Y MÉTODOS DE PAGO -->
   <div class="info-section">
     <div class="info-title">✨ Información y Envíos 📦</div>
     <div class="info-grid">
       <div class="info-card">
         <strong>💳 Métodos de Pago:</strong><br>
-        Pago Móvil, zinli, paypal+comisión y Binance
+        Pago Móvil, Efectivo ($) y Binance USDT.
       </div>
       <div class="info-card">
         <strong>🚚 Envíos Nacionales:</strong><br>
-        Envíos seguros a todo el país por Zoom y MRW.
+        Envíos seguros a todo el país por Zoom, Tealca y MRW.
       </div>
       <div class="info-card">
         <strong>⚡ Sobre los Encargos:</strong><br>
-        Los productos bajo encargo se apartan con el 100% del pago. ¡Consúltanos al WhatsApp!
+        Los productos bajo encargo se apartan con un 50% de inicial. ¡Consúltanos al WhatsApp!
       </div>
     </div>
   </div>
 </div>
 
-<!-- VENTANA MODAL -->
 <div id="miModal" class="modal">
   <div class="modal-content">
     <button class="cerrar-modal" onclick="cerrarModal()">×</button>
@@ -170,23 +220,35 @@
   </div>
 </div>
 
-<!-- BARRA FLOTANTE DE CARRITO -->
+<!-- BARRA DE CARRITO CON CONTADOR Y BOTÓN VACIAR -->
 <div class="cart-bar">
-  <div class="cart-info" id="cartText">🛒 Carrito: 0 items ($0.00)</div>
-  <button class="btn-checkout" onclick="enviarPedidoWhatsApp()">Finalizar Pedido 📱</button>
+  <div class="cart-info" id="cartText">🛒 0 ítems ($0.00)</div>
+  <div class="cart-buttons">
+    <button class="btn-clear" onclick="vaciarCarrito()">Vaciar</button>
+    <button class="btn-checkout" onclick="enviarPedidoWhatsApp()">Pedir al WhatsApp 📱</button>
+  </div>
 </div>
 
 <a href="https://wa.me/584244970576" class="whatsapp-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
 <script>
-  // AUDIO SINTETIZADOR ARCADE (Efecto de Clic)
+  // OCULTAR PANTALLA DE CARGA TRAS 1.2 SEGUNDOS
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      let splash = document.getElementById('splash-screen');
+      splash.style.opacity = '0';
+      setTimeout(() => splash.style.display = 'none', 600);
+    }, 1200);
+  });
+
+  // AUDIO SINTETIZADOR ARCADE
   function reproducirSonido() {
     try {
       let ctx = new (window.AudioContext || window.webkitAudioContext)();
       let osc = ctx.createOscillator();
       let gain = ctx.createGain();
       osc.type = 'sine';
-      osc.frequency.setValueAtTime(587.33, ctx.currentTime); // Nota D5
+      osc.frequency.setValueAtTime(587.33, ctx.currentTime);
       osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.1);
       gain.gain.setValueAtTime(0.1, ctx.currentTime);
       gain.gain.linearRampToValueAtTime(0.01, ctx.currentTime + 0.1);
@@ -197,7 +259,6 @@
     } catch(e) {}
   }
 
-  // CARRITO DE COMPRAS GLOBAL
   let carrito = [];
   let productoActual = null;
 
@@ -251,10 +312,16 @@
     cerrarModal();
   }
 
+  function vaciarCarrito() {
+    reproducirSonido();
+    carrito = [];
+    actualizarCarritoUI();
+  }
+
   function actualizarCarritoUI() {
     let totalItems = carrito.length;
     let totalPrecio = carrito.reduce((sum, item) => sum + item.precio, 0);
-    document.getElementById('cartText').innerText = `🛒 Carrito: ${totalItems} items ($${totalPrecio.toFixed(2)})`;
+    document.getElementById('cartText').innerText = `🛒 ${totalItems} ítems ($${totalPrecio.toFixed(2)})`;
   }
 
   function enviarPedidoWhatsApp() {
