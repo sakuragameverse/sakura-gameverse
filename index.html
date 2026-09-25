@@ -5,250 +5,156 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sakura Gameverse</title>
   
-  <!-- AQUI ESTÁ EL PAQUETE DE ICONOS PARA WHATSAPP -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
   <style>
-    body {
-      margin: 0;
-      background-color: #0d041a;
-      color: white;
-      font-family: sans-serif;
-      overflow-x: hidden;
-    }
+    body { margin: 0; background-color: #0d041a; color: white; font-family: sans-serif; overflow-x: hidden; }
     
-    /* BARRA DE SCROLL NEÓN */
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: #0d041a; }
     ::-webkit-scrollbar-thumb { background: #FF007F; border-radius: 10px; }
 
-    /* BANNER PRINCIPAL */
-    .hero-banner {
-      background-color: #11052C;
-      text-align: center;
-      padding: 60px 20px;
-      border-bottom: 3px solid #FF007F;
-      box-shadow: 0 0 20px rgba(255, 0, 127, 0.4);
-      position: relative;
-      z-index: 2;
-    }
-    .hero-logo {
-      max-width: 280px;
-      margin-bottom: 20px;
-      filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1));
-    }
-    .hero-title {
-      font-size: 1.4em;
-      font-weight: bold;
-      margin-bottom: 25px;
-      letter-spacing: 1px;
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
-    }
-    .btn-neon {
-      background-color: transparent;
-      color: #FF007F;
-      border: 2px solid #FF007F;
-      padding: 12px 30px;
-      font-size: 1.1em;
-      font-weight: bold;
-      border-radius: 30px;
-      text-transform: uppercase;
-      box-shadow: 0 0 10px #FF007F inset, 0 0 15px #FF007F;
-      cursor: pointer;
-    }
+    .hero-banner { background-color: #11052C; text-align: center; padding: 60px 20px; border-bottom: 3px solid #FF007F; box-shadow: 0 0 20px rgba(255, 0, 127, 0.4); position: relative; z-index: 2; }
+    .hero-logo { max-width: 280px; margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1)); }
+    .hero-title { font-size: 1.4em; font-weight: bold; margin-bottom: 25px; letter-spacing: 1px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
+    .btn-neon { background-color: transparent; color: #FF007F; border: 2px solid #FF007F; padding: 12px 30px; font-size: 1.1em; font-weight: bold; border-radius: 30px; text-transform: uppercase; box-shadow: 0 0 10px #FF007F inset, 0 0 15px #FF007F; cursor: pointer; }
     
-    /* SECCIÓN DEL CATÁLOGO */
-    .container {
-      padding: 40px 20px;
-      max-width: 1000px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 2;
-    }
+    .container { padding: 40px 20px; max-width: 1000px; margin: 0 auto; position: relative; z-index: 2; }
+    .section-title { text-align: center; color: #FF007F; font-size: 1.8em; margin-bottom: 20px; animation: neon-pulse 1.5s infinite alternate; }
+    @keyframes neon-pulse { 0% { text-shadow: 0 0 5px #FF007F, 0 0 10px #FF007F; } 100% { text-shadow: 0 0 5px #fff, 0 0 15px #FF007F, 0 0 30px #FF007F; } }
     
-    /* TÍTULO NEÓN PULSANTE */
-    .section-title {
-      text-align: center;
-      color: #FF007F;
-      font-size: 1.8em;
-      margin-bottom: 30px;
-      animation: neon-pulse 1.5s infinite alternate;
-    }
-    @keyframes neon-pulse {
-      0% { text-shadow: 0 0 5px #FF007F, 0 0 10px #FF007F; }
-      100% { text-shadow: 0 0 5px #fff, 0 0 15px #FF007F, 0 0 30px #FF007F; }
-    }
-    
-    /* CUADRÍCULA DE PRODUCTOS */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-    
-    /* TARJETAS CON EFECTO POWER-UP */
-    .card {
-      background-color: #1a0b38;
-      border-radius: 15px;
-      padding: 15px;
-      text-align: center;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-      position: relative;
-      border: 1px solid transparent;
-      transition: all 0.3s ease; 
-    }
-    .card:hover, .card:active {
-      transform: translateY(-10px) scale(1.02); 
-      box-shadow: 0 15px 30px rgba(0, 229, 255, 0.4); 
-      border: 1px solid #00e5ff; 
-    }
-    
-    .card img {
-      width: 100%;
-      height: 250px;
-      object-fit: cover;
-      border-radius: 10px;
-      margin-bottom: 15px;
-    }
-    .card-title {
-      font-size: 1.2em;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-    .card-price {
-      color: #00e5ff;
-      font-size: 1.2em;
-      font-weight: bold;
-      text-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
-    }
-    
-    /* ETIQUETA DE "POR ENCARGO" */
-    .badge-encargo {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background-color: #FF007F;
-      color: white;
-      padding: 5px 12px;
-      font-size: 0.8em;
-      font-weight: bold;
-      border-radius: 20px;
-      box-shadow: 0 0 10px #FF007F;
-      z-index: 3;
-    }
+    /* ESTILOS DE LOS BOTONES DE FILTROS */
+    .filtros { text-align: center; margin-bottom: 30px; }
+    .btn-filtro { background: transparent; color: white; border: 1px solid #00e5ff; padding: 8px 15px; margin: 5px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+    .btn-filtro:hover, .btn-filtro.activo { background: #00e5ff; color: #0d041a; box-shadow: 0 0 10px #00e5ff; }
 
-    /* BOTÓN WHATSAPP FLOTANTE CON ICONO ORIGINAL */
-    .whatsapp-btn {
-      position: fixed;
-      bottom: 25px;
-      right: 25px;
-      background-color: #25D366;
-      color: white;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 35px;
-      text-decoration: none;
-      z-index: 1000;
-      animation: pulse-wa 2s infinite;
-    }
-    @keyframes pulse-wa {
-      0% { transform: scale(1); box-shadow: 0 0 10px rgba(37, 211, 102, 0.5); }
-      50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(37, 211, 102, 1); }
-      100% { transform: scale(1); box-shadow: 0 0 10px rgba(37, 211, 102, 0.5); }
-    }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+    
+    /* TARJETAS AHORA COMO BOTONES CLICKABLES */
+    .card { background-color: #1a0b38; border-radius: 15px; padding: 15px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.5); position: relative; border: 1px solid transparent; transition: all 0.3s ease; cursor: pointer; }
+    .card:hover, .card:active { transform: translateY(-10px) scale(1.02); box-shadow: 0 15px 30px rgba(0, 229, 255, 0.4); border: 1px solid #00e5ff; }
+    .card img { width: 100%; height: 250px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
+    .card-title { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; }
+    .card-price { color: #00e5ff; font-size: 1.2em; font-weight: bold; text-shadow: 0 0 5px rgba(0, 229, 255, 0.5); }
+    .badge-encargo { position: absolute; top: 10px; right: 10px; background-color: #FF007F; color: white; padding: 5px 12px; font-size: 0.8em; font-weight: bold; border-radius: 20px; box-shadow: 0 0 10px #FF007F; z-index: 3; }
 
-    /* LLUVIA INTENSA SAKURA + CONTROLES */
-    .bg-elements {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 1;
-    }
-    .float-item {
-      position: absolute;
-      top: -10%;
-      animation: fall linear infinite;
-      opacity: 0.7;
-    }
+    /* ESTILOS DE LA VENTANA MODAL MAGICA */
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+    .modal-content { background: #11052C; padding: 20px; border-radius: 20px; text-align: center; max-width: 90%; width: 400px; border: 2px solid #FF007F; box-shadow: 0 0 30px rgba(255,0,127,0.5); position: relative; animation: pop-up 0.3s ease-out; }
+    @keyframes pop-up { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+    .cerrar-modal { position: absolute; top: 10px; right: 15px; font-size: 25px; color: white; cursor: pointer; background: none; border: none; font-weight: bold; }
+    .modal-img { width: 100%; max-height: 300px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
+    .btn-comprar { background: #FF007F; color: white; border: none; padding: 10px 20px; font-size: 1.2em; font-weight: bold; border-radius: 30px; cursor: pointer; margin-top: 15px; box-shadow: 0 0 10px #FF007F; width: 100%; }
+
+    /* BOTON WHATSAPP FLOTANTE */
+    .whatsapp-btn { position: fixed; bottom: 25px; right: 25px; background-color: #25D366; color: white; border-radius: 50%; width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; font-size: 35px; text-decoration: none; z-index: 1000; animation: pulse-wa 2s infinite; }
+    @keyframes pulse-wa { 0% { transform: scale(1); box-shadow: 0 0 10px rgba(37, 211, 102, 0.5); } 50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(37, 211, 102, 1); } 100% { transform: scale(1); box-shadow: 0 0 10px rgba(37, 211, 102, 0.5); } }
+
+    /* LLUVIA ANIMADA */
+    .bg-elements { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+    .float-item { position: absolute; top: -10%; animation: fall linear infinite; opacity: 0.7; }
     .sakura { font-size: 22px; filter: drop-shadow(0 0 5px #FF007F); }
     .gamer { font-size: 28px; filter: drop-shadow(0 0 8px #00e5ff); opacity: 0.5; }
-    
-    @keyframes fall {
-      to { transform: translateY(110vh) rotate(720deg); }
-    }
-    
-    .i1 { left: 5%; animation-duration: 9s; animation-delay: 0s; }
-    .i2 { left: 15%; animation-duration: 14s; animation-delay: 2s; }
-    .i3 { left: 25%; animation-duration: 10s; animation-delay: 4s; }
-    .i4 { left: 35%; animation-duration: 13s; animation-delay: 1s; }
-    .i5 { left: 45%; animation-duration: 11s; animation-delay: 5s; }
-    .i6 { left: 55%; animation-duration: 15s; animation-delay: 0s; }
-    .i7 { left: 65%; animation-duration: 9s; animation-delay: 3s; }
-    .i8 { left: 75%; animation-duration: 12s; animation-delay: 1s; }
-    .i9 { left: 85%; animation-duration: 16s; animation-delay: 4s; }
-    .i10 { left: 95%; animation-duration: 10s; animation-delay: 2s; }
+    @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
+    .i1 { left: 5%; animation-duration: 9s; animation-delay: 0s; } .i2 { left: 15%; animation-duration: 14s; animation-delay: 2s; } .i3 { left: 25%; animation-duration: 10s; animation-delay: 4s; } .i4 { left: 35%; animation-duration: 13s; animation-delay: 1s; } .i5 { left: 45%; animation-duration: 11s; animation-delay: 5s; } .i6 { left: 55%; animation-duration: 15s; animation-delay: 0s; } .i7 { left: 65%; animation-duration: 9s; animation-delay: 3s; } .i8 { left: 75%; animation-duration: 12s; animation-delay: 1s; } .i9 { left: 85%; animation-duration: 16s; animation-delay: 4s; } .i10 { left: 95%; animation-duration: 10s; animation-delay: 2s; }
   </style>
 </head>
 <body>
 
 <div class="bg-elements">
-  <div class="float-item sakura i1">🌸</div>
-  <div class="float-item gamer i2">🎮</div>
-  <div class="float-item sakura i3">🌸</div>
-  <div class="float-item gamer i4">🕹️</div>
-  <div class="float-item sakura i5">🌸</div>
-  <div class="float-item sakura i6">🌸</div>
-  <div class="float-item gamer i7">🎮</div>
-  <div class="float-item sakura i8">🌸</div>
-  <div class="float-item gamer i9">🕹️</div>
-  <div class="float-item sakura i10">🌸</div>
+  <div class="float-item sakura i1">🌸</div><div class="float-item gamer i2">🎮</div><div class="float-item sakura i3">🌸</div><div class="float-item gamer i4">🕹️</div><div class="float-item sakura i5">🌸</div><div class="float-item sakura i6">🌸</div><div class="float-item gamer i7">🎮</div><div class="float-item sakura i8">🌸</div><div class="float-item gamer i9">🕹️</div><div class="float-item sakura i10">🌸</div>
 </div>
 
 <div class="hero-banner">
   <img src="logo.webp" alt="Sakura Gameverse" class="hero-logo">
-  <div class="hero-title">
-    Donde tu pasión por el gaming nunca hace game over. 👾🌸
-  </div>
+  <div class="hero-title">Donde tu pasión por el gaming nunca hace game over. 👾🌸</div>
   <button class="btn-neon">Ver Catálogo</button>
 </div>
 
 <div class="container">
   <h2 class="section-title">✨ Nuevos Lanzamientos ✨</h2>
   
+  <!-- LOS BOTONES FILTRO MÁGICOS -->
+  <div class="filtros">
+    <button class="btn-filtro activo" onclick="filtrar('todos', event)">Todos</button>
+    <button class="btn-filtro" onclick="filtrar('figuras', event)">Figuras</button>
+    <button class="btn-filtro" onclick="filtrar('peluches', event)">Peluches</button>
+    <button class="btn-filtro" onclick="filtrar('cartas', event)">Cartas TCG</button>
+  </div>
+  
   <div class="grid">
-    
-    <div class="card">
+    <!-- PRODUCTO 1: FIGURAS -->
+    <div class="card item-producto" data-categoria="figuras" onclick="abrirModal('figuras.jpg', 'Figura de Colección', '$35.00', '¡Una figura épica para tu repisa! Detalles increíbles y acabados premium.')">
       <img src="figuras.jpg" alt="Figura">
       <div class="card-title">Figura de Colección</div>
       <div class="card-price">$35.00</div>
     </div>
 
-    <div class="card">
+    <!-- PRODUCTO 2: PELUCHES -->
+    <div class="card item-producto" data-categoria="peluches" onclick="abrirModal('peluche.jpg', 'Peluche Exclusivo', '$20.00', 'Súper suave y kawaii. El compañero perfecto para tus largas noches de gaming.')">
       <div class="badge-encargo">Por Encargo</div>
       <img src="peluche.jpg" alt="Peluche">
       <div class="card-title">Peluche Exclusivo</div>
       <div class="card-price">$20.00</div>
     </div>
 
-    <div class="card">
+    <!-- PRODUCTO 3: CARTAS -->
+    <div class="card item-producto" data-categoria="cartas" onclick="abrirModal('accesorios.jpeg', 'Booster Pack TCG', '$5.00', '¡Expande tu mazo y aplasta a tus rivales! Incluye cartas raras garantizadas.')">
       <div class="badge-encargo">Por Encargo</div>
       <img src="accesorios.jpeg" alt="Cartas">
       <div class="card-title">Booster Pack TCG</div>
       <div class="card-price">$5.00</div>
     </div>
-    
   </div>
 </div>
 
-<!-- BOTÓN WHATSAPP -->
+<!-- LA VENTANA DE CAPA MODAL OCULTA -->
+<div id="miModal" class="modal">
+  <div class="modal-content">
+    <button class="cerrar-modal" onclick="cerrarModal()">×</button>
+    <img id="modalImg" src="" alt="Producto" class="modal-img">
+    <h2 id="modalTitulo" style="color: #00e5ff; margin-bottom: 5px;">Título</h2>
+    <h3 id="modalPrecio" style="color: #FF007F; margin-top: 0;">$0.00</h3>
+    <p id="modalDesc" style="font-size: 0.9em; margin-bottom: 20px;">Descripción aquí.</p>
+    <a id="modalLink" href="#" class="btn-comprar" style="display:block; text-decoration:none;">¡Lo quiero! 🛒</a>
+  </div>
+</div>
+
 <a href="https://wa.me/584244970576" class="whatsapp-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+<!-- EL CEREBRO JAVASCRIPT QUE HACE LA MAGIA -->
+<script>
+  function filtrar(categoria, evento) {
+    let botones = document.querySelectorAll('.btn-filtro');
+    botones.forEach(btn => btn.classList.remove('activo'));
+    evento.target.classList.add('activo');
+
+    let productos = document.querySelectorAll('.item-producto');
+    productos.forEach(prod => {
+      if (categoria === 'todos' || prod.getAttribute('data-categoria') === categoria) {
+        prod.style.display = 'block';
+      } else {
+        prod.style.display = 'none';
+      }
+    });
+  }
+
+  function abrirModal(img, titulo, precio, descripcion) {
+    document.getElementById('modalImg').src = img;
+    document.getElementById('modalTitulo').innerText = titulo;
+    document.getElementById('modalPrecio').innerText = precio;
+    document.getElementById('modalDesc').innerText = descripcion;
+    
+    let mensaje = "¡Hola Sakura Gameverse! Me interesa el producto: " + titulo;
+    document.getElementById('modalLink').href = "https://wa.me/584244970576?text=" + encodeURIComponent(mensaje);
+    
+    document.getElementById('miModal').style.display = 'flex';
+  }
+
+  function cerrarModal() {
+    document.getElementById('miModal').style.display = 'none';
+  }
+</script>
 
 </body>
 </html>
