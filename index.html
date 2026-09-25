@@ -1,4 +1,4 @@
-ass="talla-select"><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -170,12 +170,11 @@ ass="talla-select"><!DOCTYPE html>
       border-color: #ffffff;
     }
 
-    .panel-controles-avanzados { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; width: 100%; max-width: 600px; margin: 0 auto; }
+    .panel-controles-avanzados { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; width: 100%; max-width: 650px; margin: 0 auto; }
     .ordenar-select { background: #11052C; border: 1px solid #FF007F; color: white; padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; outline: none; box-shadow: 0 0 10px rgba(255,0,127,0.3); }
 
-    /* SLIDER DE PRECIOS */
     .precio-slider-box { background: #11052C; border: 1px solid #00e5ff; padding: 8px 15px; border-radius: 20px; display: inline-flex; align-items: center; gap: 10px; font-size: 0.9em; font-weight: bold; color: #00e5ff; box-shadow: 0 0 10px rgba(0,229,255,0.2); }
-    .precio-slider-box input { accent-color: #FF007F; cursor: pointer; }
+    .precio-slider-box input { accent-color: #FF007F; cursor: pointer; width: 120px; }
 
     .destacados-container { margin-bottom: 40px; background: linear-gradient(135deg, #11052C 0%, #1a0b38 100%); padding: 20px; border-radius: 20px; border: 2px dashed #00e5ff; box-shadow: 0 0 20px rgba(0,229,255,0.2); }
     .destacados-title { color: #00e5ff; font-size: 1.4em; font-weight: bold; margin-bottom: 15px; text-align: center; text-shadow: 0 0 8px rgba(0,229,255,0.5); }
@@ -243,7 +242,6 @@ ass="talla-select"><!DOCTYPE html>
 
     .btn-comprar { background: #FF007F; color: white; border: none; padding: 10px 20px; font-size: 1.1em; font-weight: bold; border-radius: 30px; cursor: pointer; margin-top: 15px; box-shadow: 0 0 10px #FF007F; width: 100%; }
 
-    /* ESTILO RECIBO / TICKET DIGITAL CYBERPUNK */
     .recibo-box { background: #0d041a; border: 2px dashed #00e5ff; padding: 15px; border-radius: 12px; text-align: left; font-family: monospace; font-size: 0.85em; color: #00e5ff; margin-bottom: 15px; box-shadow: inset 0 0 10px rgba(0,229,255,0.2); }
     .recibo-line { display: flex; justify-content: space-between; margin-bottom: 5px; }
 
@@ -299,7 +297,6 @@ ass="talla-select"><!DOCTYPE html>
 </head>
 <body>
 
-<!-- POPUP DE ANUNCIOS FLASH (OFERTA DE BIENVENIDA) -->
 <div id="modalPromoFlash" class="modal" style="display: flex;">
   <div class="modal-content" style="border: 2px solid #00e5ff; box-shadow: 0 0 40px rgba(0,229,255,0.6);">
     <button class="cerrar-modal" onclick="cerrarPromoFlash()">×</button>
@@ -361,7 +358,7 @@ ass="talla-select"><!DOCTYPE html>
       <button class="btn-filtro" onclick="filtrar('lamparas', event)">💡 Lámparas</button>
     </div>
 
-    <!-- PANEL DE CONTROLES AVANZADOS (ORDEN Y SLIDER DE PRECIOS) -->
+    <!-- PANEL DE CONTROLES AVANZADOS CON SLIDER DE 1$ A 1000$ -->
     <div class="panel-controles-avanzados">
       <select id="selectOrden" class="ordenar-select" onchange="ordenarProductos()">
         <option value="defecto">⚡ Ordenar por: Destacados</option>
@@ -370,8 +367,8 @@ ass="talla-select"><!DOCTYPE html>
       </select>
 
       <div class="precio-slider-box">
-        <span>💵 Máx: $<span id="lblPrecioMax">50</span></span>
-        <input type="range" id="sliderPrecio" min="10" max="50" step="5" value="50" oninput="filtrarPorPrecio()">
+        <span>💵 Máx: $<span id="lblPrecioMax">1000</span></span>
+        <input type="range" id="sliderPrecio" min="1" max="1000" step="10" value="1000" oninput="filtrarPorPrecio()">
       </div>
     </div>
   </div>
@@ -563,7 +560,6 @@ ass="talla-select"><!DOCTYPE html>
   </div>
 </div>
 
-<!-- MODAL DE CARRITO CON RECIBO DIGITAL -->
 <div id="modalCarrito" class="modal">
   <div class="modal-content" style="width: 450px;">
     <button class="cerrar-modal" onclick="cerrarCarritoModal()">×</button>
@@ -571,7 +567,6 @@ ass="talla-select"><!DOCTYPE html>
     
     <div id="listaCarritoDetalle" style="max-height: 180px; overflow-y: auto; margin-bottom: 12px; padding-right: 5px;"></div>
     
-    <!-- RECIBO DIGITAL CYBERPUNK -->
     <div id="reciboDigital" class="recibo-box" style="display: none;">
       <div style="text-align: center; font-weight: bold; margin-bottom: 8px; color: #FF007F;">--- RECIBO DIGITAL SAKURA ---</div>
       <div id="reciboContenido"></div>
@@ -872,429 +867,6 @@ ass="talla-select"><!DOCTYPE html>
       htmlRecibo += `<div style="border-top: 1px dashed #00e5ff; margin-top: 5px; padding-top: 5px;" class="recibo-line"><strong>TOTAL USD:</strong> <strong>$${totalPrecio.toFixed(2)}</strong></div>`;
       htmlRecibo += `<div class="recibo-line"><strong>TOTAL BS:</strong> <strong>Bs. ${totalBs.toFixed(2)}</strong></div>`;
       reciboContenido.innerHTML = htmlRecibo;
-    }
-
-    let totalPrecio = carrito.reduce((sum, item) => sum + item.precio, 0);
-    let totalBs = totalPrecio * tasaBcvActual;
-    document.getElementById('modalCarritoTotal').innerText = `Total: $${totalPrecio.toFixed(2)} (≈ Bs. ${totalBs.toLocaleString('es-VE', {minimumFractionDigits: 2, maximumFractionDigits: 2})})`;
-    document.getElementById('modalCarrito').style.display = 'flex';
-  }
-
-  function cerrarCarritoModal() {
-    reproducirSonido();
-    document.getElementById('modalCarrito').style.display = 'none';
-  }
-
-  function enviarPedidoWhatsApp() {
-    reproducirSonido();
-    if (carrito.length === 0) {
-      alert("¡Tu carrito está vacío!");
-      return;
-    }
-
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 }
-    });
-
-    let mensaje = "¡Hola Sakura Gameverse! 🌸👾 Deseo realizar el siguiente pedido:\n\n";
-    let total = 0;
-    carrito.forEach((item, index) => {
-      mensaje += `${index + 1}. ${item.titulo} - $${item.precio.toFixed(2)}\n`;
-      total += item.precio;
-    });
-    let totalBs = total * tasaBcvActual;
-    mensaje += `\n*Total a pagar: $${total.toFixed(2)} (Bs. ${totalBs.toFixed(2)})*\n¡Espero su respuesta para coordinar el pago y el envío (ZOOM / MRW)!`;
-    
-    let url = "https://wa.me/584244970576?text=" + encodeURIComponent(mensaje);
-    
-    setTimeout(() => {
-      window.open(url, '_blank');
-      cerrarCarritoModal();
-    }, 800);
-  }
-
-  function abrirSugerenciaModal() {
-    reproducirSonido();
-    document.getElementById('modalSugerencias').style.display = 'flex';
-  }
-
-  function cerrarSugerenciaModal() {
-    reproducirSonido();
-    document.getElementById('modalSugerencias').style.display = 'none';
-  }
-
-  function enviarSugerenciaWhatsApp() {
-    reproducirSonido();
-    let nombre = document.getElementById('sugNombre').value.trim();
-    let deseo = document.getElementById('sugDeseo').value.trim();
-
-    if (!nombre || !deseo) {
-      alert("Por favor completa tu nombre y la sugerencia.");
-      return;
-    }
-
-    let mensaje = `💡 *Sugerencia de Mercancía* 💡\n\n*Cliente:* ${nombre}\n*Sugerencia:* ${deseo}\n\n¡Enviado desde Sakura Gameverse! 🌸`;
-    let url = "https://wa.me/584244970576?text=" + encodeURIComponent(mensaje);
-    window.open(url, '_blank');
-    cerrarSugerenciaModal();
-  }
-
-  let reviews = JSON.parse(localStorage.getItem('sakura_reviews')) || [
-    { nombre: "Ángel G.", estrellas: "⭐⭐⭐⭐⭐", texto: "¡Excelente tienda! Los hoodies y mandos llegaron por ZOOM impecables. 10/10." },
-    { nombre: "Valeria Otaku", estrellas: "⭐⭐⭐⭐⭐", texto: "La ropa es de muy buena calidad y el pedido llegó rapidísimo por MRW. ¡Recomendado!" }
-  ];
-
-  function renderReviews() {
-    let contenedor = document.getElementById('contenedorReviews');
-    contenedor.innerHTML = "";
-    reviews.forEach((rev, index) => {
-      contenedor.innerHTML += `
-        <div class="review-card">
-          <button class="btn-del-review" onclick="eliminarReview(${index})" title="Borrar reseña indeseada">Eliminar ❌</button>
-          <div class="review-author">${rev.nombre}</div>
-          <div class="review-stars">${rev.estrellas}</div>
-          <div class="review-text">${rev.texto}</div>
-        </div>
-      `;
-    });
-  }
-
-  function agregarReview() {
-    reproducirSonido();
-    let nombre = document.getElementById('revNombre').value.trim();
-    let estrellas = document.getElementById('revEstrellas').value;
-    let texto = document.getElementById('revTexto').value.trim();
-
-    if (!nombre || !texto) {
-      alert("Por favor ingresa tu nombre y tu comentario.");
-      return;
-    }
-
-    reviews.unshift({ nombre, estrellas, texto });
-    localStorage.setItem('sakura_reviews', JSON.stringify(reviews));
-    
-    document.getElementById('revNombre').value = "";
-    document.getElementById('revTexto').value = "";
-    renderReviews();
-    alert("¡Gracias por tu reseña! Ya ha sido publicada.");
-  }
-
-  function eliminarReview(index) {
-    reproducirSonido();
-    if (confirm("¿Estás seguro de eliminar esta reseña?")) {
-      reviews.splice(index, 1);
-      localStorage.setItem('sakura_reviews', JSON.stringify(reviews));
-      renderReviews();
-    }
-  }
-
-  renderReviews();
-</script>
-
-</body>
-</html>
-
-        <option value="S">Talla S</option>
-        <option value="M" selected>Talla M</option>
-        <option value="L">Talla L</option>
-        <option value="XL">Talla XL</option>
-        <option value="XXL">Talla XXL</option>
-      </select>
-    </div>
-
-    <button class="btn-comprar" onclick="agregarAlCarrito()">¡Añadir al Carrito! 🛒</button>
-  </div>
-</div>
-
-<div id="modalFaq" class="modal">
-  <div class="modal-content" style="width: 450px;">
-    <button class="cerrar-modal" onclick="cerrarFaqModal()">×</button>
-    <h2 style="color: #00e5ff; margin-top: 0;">❓ Preguntas Frecuentes</h2>
-    
-    <div class="faq-item">
-      <div class="faq-question"><i class="fas fa-map-marker-alt"></i> ¿Hacen entregas personales?</div>
-      <div class="faq-answer">Sí, realizamos entregas personales exclusivamente en <strong>Bejuma y Miranda (Estado Carabobo)</strong>. Escríbenos al WhatsApp para coordinar.</div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-question"><i class="fas fa-clock"></i> ¿Cuánto tardan los encargos?</div>
-      <div class="faq-answer">Los artículos bajo la modalidad de encargo se solicitan con el 100% de pago adelantado y tienen un tiempo estimado de entrega de <strong>1 mes a 2 meses</strong>.</div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-question"><i class="fas fa-coins"></i> ¿Cómo se calcula el Pago Móvil?</div>
-      <div class="faq-answer">Puedes ver el precio exacto en bolívares reflejado debajo de cada producto usando la tasa BCV del día que puedes actualizar en la parte superior de la tienda.</div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-question"><i class="fas fa-shipping-fast"></i> ¿Por cuáles empresas envían?</div>
-      <div class="faq-answer">Realizamos envíos nacionales con cobro a destino exclusivamente a través de <strong>ZOOM</strong> y <strong>MRW</strong>.</div>
-    </div>
-  </div>
-</div>
-
-<div id="modalCarrito" class="modal">
-  <div class="modal-content" style="width: 450px;">
-    <button class="cerrar-modal" onclick="cerrarCarritoModal()">×</button>
-    <h2 style="color: #00e5ff; margin-top: 0;">🛒 Tu Carrito de Compras</h2>
-    <div id="listaCarritoDetalle" style="max-height: 250px; overflow-y: auto; margin-bottom: 15px; padding-right: 5px;"></div>
-    <h3 id="modalCarritoTotal" style="color: #FF007F; margin-bottom: 15px;">Total: $0.00</h3>
-    <div style="display: flex; gap: 10px;">
-      <button class="btn-clear" style="flex: 1; padding: 10px;" onclick="vaciarCarrito()">Vaciar</button>
-      <button class="btn-checkout" style="flex: 2; padding: 10px;" onclick="enviarPedidoWhatsApp()">Enviar al WhatsApp 📱</button>
-    </div>
-  </div>
-</div>
-
-<div id="modalSugerencias" class="modal">
-  <div class="modal-content">
-    <button class="cerrar-modal" onclick="cerrarSugerenciaModal()">×</button>
-    <h2 style="color: #FF007F; margin-top: 0;">💡 Sugerir Mercancía</h2>
-    <input type="text" id="sugNombre" class="sugerencia-input" placeholder="Tu Nombre o Apodo">
-    <textarea id="sugDeseo" class="sugerencia-input" rows="3" placeholder="¿Qué producto o anime te gustaría que trajéramos?"></textarea>
-    <button class="btn-sugerencia" onclick="enviarSugerenciaWhatsApp()">Enviar Sugerencia 🚀</button>
-  </div>
-</div>
-
-<div class="cart-bar" onclick="abrirCarritoModal()">
-  <div class="cart-info" id="cartText">🛒 Ver Carrito: 0 ítems ($0.00)</div>
-  <div class="cart-buttons" onclick="event.stopPropagation()">
-    <button class="btn-checkout" onclick="abrirCarritoModal()">Revisar 🛒</button>
-  </div>
-</div>
-
-<div class="floating-buttons">
-  <a href="https://www.tiktok.com/@sakuragameverse" class="tiktok-btn" target="_blank" title="Síguenos en TikTok"><i class="fab fa-tiktok"></i></a>
-  <a href="https://www.instagram.com/sakuragameverse?stkn=bDQ5NXRla2Vyano1" class="instagram-btn" target="_blank" title="Síguenos en Instagram"><i class="fab fa-instagram"></i></a>
-  <button class="faq-btn" onclick="abrirFaqModal()" title="Preguntas Frecuentes"><i class="fas fa-question"></i></button>
-  <button class="sugerencia-btn" onclick="abrirSugerenciaModal()" title="Sugerir Mercancía"><i class="fas fa-lightbulb"></i></button>
-  <a href="https://wa.me/584244970576" class="whatsapp-btn" target="_blank" title="Escríbenos al WhatsApp"><i class="fab fa-whatsapp"></i></a>
-</div>
-
-<script>
-  // SECUENCIA DE CARGA ÉPICA TIPO VIDEOJUEGO
-  let textosCarga = ["Cargando texturas...", "Sincronizando tasa BCV...", "Cargando inventario otaku...", "¡Gameverse listo!"];
-  let indiceCarga = 0;
-  let textElem = document.getElementById('loadingText');
-  
-  let intervaloCarga = setInterval(() => {
-    indiceCarga++;
-    if (indiceCarga < textosCarga.length) {
-      textElem.innerText = textosCarga[indiceCarga];
-    }
-  }, 500);
-
-  setTimeout(() => {
-    clearInterval(intervaloCarga);
-    let splash = document.getElementById('splash-screen');
-    if (splash) {
-      splash.style.opacity = '0';
-      setTimeout(() => splash.style.display = 'none', 600);
-    }
-  }, 2000);
-
-  let tasaBcvActual = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 36.50;
-  document.getElementById('inputTasaBcv').value = tasaBcvActual;
-
-  function cambiarTasaBcvManual() {
-    let val = parseFloat(document.getElementById('inputTasaBcv').value);
-    if (!isNaN(val) && val > 0) {
-      tasaBcvActual = val;
-      localStorage.setItem('sakura_tasa_bcv', tasaBcvActual);
-      actualizarPreciosEnBs();
-    }
-  }
-
-  function actualizarPreciosEnBs() {
-    let etiquetasBs = document.querySelectorAll('.card-bs');
-    etiquetasBs.forEach(etiqueta => {
-      let usd = parseFloat(etiqueta.getAttribute('data-usd'));
-      let totalBs = usd * tasaBcvActual;
-      etiqueta.innerText = `≈ Bs. ${totalBs.toLocaleString('es-VE', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-    });
-  }
-
-  actualizarPreciosEnBs();
-
-  function reproducirSonido() {
-    try {
-      let ctx = new (window.AudioContext || window.webkitAudioContext)();
-      let osc = ctx.createOscillator();
-      let gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(587.33, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.1);
-      gain.gain.setValueAtTime(0.1, ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(0.01, ctx.currentTime + 0.1);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start();
-      osc.stop(ctx.currentTime + 0.1);
-    } catch(e) {}
-  }
-
-  function crearDestello(event) {
-    let x = event.clientX;
-    let y = event.clientY;
-    let iconos = ['🌸', '✨', '💜', '⚡', '🎮'];
-    let span = document.createElement('span');
-    span.innerText = iconos[Math.floor(Math.random() * iconos.length)];
-    span.style.position = 'fixed';
-    span.style.left = x + 'px';
-    span.style.top = y + 'px';
-    span.style.fontSize = '20px';
-    span.style.pointerEvents = 'none';
-    span.style.zIndex = '3000';
-    span.style.transition = 'all 0.6s ease-out';
-    document.body.appendChild(span);
-
-    setTimeout(() => {
-      span.style.transform = `translate(${(Math.random() - 0.5) * 80}px, ${-60 - Math.random() * 40}px) scale(1.5)`;
-      span.style.opacity = '0';
-    }, 20);
-
-    setTimeout(() => span.remove(), 600);
-  }
-
-  let carrito = [];
-  let productoActual = null;
-
-  function filtrar(categoria, evento) {
-    reproducirSonido();
-    let botones = document.querySelectorAll('.btn-filtro');
-    botones.forEach(btn => btn.classList.remove('activo'));
-    evento.target.classList.add('activo');
-
-    let productos = document.querySelectorAll('#catalogo .item-producto');
-    productos.forEach(prod => {
-      if (categoria === 'todos' || prod.getAttribute('data-categoria') === categoria) {
-        prod.style.display = 'block';
-      } else {
-        prod.style.display = 'none';
-      }
-    });
-  }
-
-  function ordenarProductos() {
-    reproducirSonido();
-    let criterio = document.getElementById('selectOrden').value;
-    let catalogo = document.getElementById('catalogo');
-    let productos = Array.from(catalogo.getElementsByClassName('item-producto'));
-
-    productos.sort((a, b) => {
-      let precioA = parseFloat(a.getAttribute('data-precio'));
-      let precioB = parseFloat(b.getAttribute('data-precio'));
-
-      if (criterio === 'menor') return precioA - precioB;
-      if (criterio === 'mayor') return precioB - precioA;
-      return 0;
-    });
-
-    productos.forEach(prod => catalogo.appendChild(prod));
-  }
-
-  function buscarProductos() {
-    let texto = document.getElementById('buscador').value.toLowerCase();
-    let productos = document.querySelectorAll('.item-producto');
-    productos.forEach(prod => {
-      let nombre = prod.getAttribute('data-nombre');
-      if (nombre.includes(texto)) {
-        prod.style.display = 'block';
-      } else {
-        prod.style.display = 'none';
-      }
-    });
-  }
-
-  function abrirModal(img, titulo, precio, descripcion, disponibilidad, esRopa) {
-    productoActual = { img, titulo, precio, esRopa };
-    document.getElementById('modalImg').src = img;
-    document.getElementById('modalTitulo').innerText = titulo;
-    document.getElementById('modalPrecio').innerText = "$" + precio.toFixed(2);
-    document.getElementById('modalDesc').innerText = descripcion;
-    document.getElementById('modalTag').innerText = disponibilidad;
-
-    let tallasCont = document.getElementById('tallasContainer');
-    if (esRopa) {
-      tallasCont.style.display = 'block';
-    } else {
-      tallasCont.style.display = 'none';
-    }
-
-    document.getElementById('miModal').style.display = 'flex';
-  }
-
-  function cerrarModal() {
-    reproducirSonido();
-    document.getElementById('miModal').style.display = 'none';
-  }
-
-  function abrirFaqModal() {
-    reproducirSonido();
-    document.getElementById('modalFaq').style.display = 'flex';
-  }
-
-  function cerrarFaqModal() {
-    reproducirSonido();
-    document.getElementById('modalFaq').style.display = 'none';
-  }
-
-  function agregarAlCarrito() {
-    reproducirSonido();
-    let itemParaCarrito = { ...productoActual };
-    
-    if (itemParaCarrito.esRopa) {
-      let tallaSeleccionada = document.getElementById('selectTalla').value;
-      itemParaCarrito.titulo += ` (Talla: ${tallaSeleccionada})`;
-    }
-
-    carrito.push(itemParaCarrito);
-    actualizarCarritoUI();
-    cerrarModal();
-  }
-
-  function vaciarCarrito() {
-    reproducirSonido();
-    carrito = [];
-    actualizarCarritoUI();
-    abrirCarritoModal();
-  }
-
-  function eliminarItemCarrito(index) {
-    reproducirSonido();
-    carrito.splice(index, 1);
-    actualizarCarritoUI();
-    abrirCarritoModal();
-  }
-
-  function actualizarCarritoUI() {
-    let totalItems = carrito.length;
-    let totalPrecio = carrito.reduce((sum, item) => sum + item.precio, 0);
-    document.getElementById('cartText').innerText = `🛒 Ver Carrito: ${totalItems} ítems ($${totalPrecio.toFixed(2)})`;
-  }
-
-  function abrirCarritoModal() {
-    reproducirSonido();
-    let contenedor = document.getElementById('listaCarritoDetalle');
-    contenedor.innerHTML = "";
-    
-    if (carrito.length === 0) {
-      contenedor.innerHTML = "<p style='color: #aaa;'>Tu carrito está vacío.</p>";
-    } else {
-      carrito.forEach((item, index) => {
-        contenedor.innerHTML += `
-          <div class="cart-item-row">
-            <img src="${item.img}" class="cart-item-img">
-            <div class="cart-item-info">
-              <strong>${item.titulo}</strong><br>
-              <span style="color: #00e5ff;">$${item.precio.toFixed(2)}</span>
-            </div>
-            <button class="cart-item-del" onclick="eliminarItemCarrito(${index})">❌</button>
-          </div>
-        `;
-      });
     }
 
     let totalPrecio = carrito.reduce((sum, item) => sum + item.precio, 0);
