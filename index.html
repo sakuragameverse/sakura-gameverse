@@ -19,17 +19,37 @@
       --hero-bg: #11052C;
     }
 
-    body.neon-mode {
-      --bg-color: #1a0033;
-      --card-bg: linear-gradient(135deg, #2b0b4a 0%, #17022e 100%);
-      --text-color: #fff0f5;
-      --primary-color: #ff3399;
-      --secondary-color: #ff99cc;
-      --border-color: rgba(255,153,204,0.5);
-      --hero-bg: #2b0b4a;
+    body.theme-rosa {
+      --bg-color: #0d041a;
+      --card-bg: linear-gradient(135deg, #1a0b38 0%, #11052C 100%);
+      --text-color: white;
+      --primary-color: #FF007F;
+      --secondary-color: #00e5ff;
+      --border-color: rgba(0,229,255,0.3);
+      --hero-bg: #11052C;
     }
 
-    body.overdrive-mode {
+    body.theme-azul {
+      --bg-color: #020813;
+      --card-bg: linear-gradient(135deg, #071630 0%, #030a1c 100%);
+      --text-color: #e0f7ff;
+      --primary-color: #00bfff;
+      --secondary-color: #00ffcc;
+      --border-color: rgba(0,255,204,0.3);
+      --hero-bg: #071630;
+    }
+
+    body.theme-purpura {
+      --bg-color: #12021a;
+      --card-bg: linear-gradient(135deg, #28053b 0%, #170224 100%);
+      --text-color: #fce8ff;
+      --primary-color: #b000ff;
+      --secondary-color: #ff00ea;
+      --border-color: rgba(255,0,234,0.3);
+      --hero-bg: #28053b;
+    }
+
+    body.theme-overdrive {
       --bg-color: #2b0500;
       --card-bg: linear-gradient(135deg, #4a0d00 0%, #2b0500 100%);
       --text-color: #fff5e6;
@@ -45,8 +65,26 @@
     ::-webkit-scrollbar-track { background: var(--bg-color); }
     ::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
 
+    /* NOTIFICACIÓN INTEGRADA ARRIBA (NO INTERRUMPE) */
+    #socialProofContainer {
+      background: rgba(17, 5, 44, 0.95);
+      border-bottom: 1px solid var(--secondary-color);
+      padding: 8px 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85em;
+      position: relative;
+      z-index: 2000;
+      box-shadow: inset 0 0 10px rgba(0,229,255,0.2);
+    }
+    #socialProofContainer .sp-icon { font-size: 18px; color: var(--secondary-color); }
+    #socialProofContainer .sp-text { color: var(--text-color); font-weight: bold; }
+    #socialProofContainer .sp-sub { color: #aaa; font-size: 0.9em; font-weight: normal; }
+
     .ticker-bar {
-      background: linear-gradient(90deg, #FF007F, #00e5ff, #FF007F);
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--primary-color));
       background-size: 200% 100%;
       animation: gradient-move 5s linear infinite;
       color: #0d041a;
@@ -72,25 +110,6 @@
       0% { transform: translateX(100%); }
       100% { transform: translateX(-100%); }
     }
-
-    /* NOTIFICACIÓN INTEGRADA ARRIBA (NO INTERRUMPE) */
-    #socialProofContainer {
-      background: rgba(17, 5, 44, 0.95);
-      border-bottom: 1px solid var(--secondary-color);
-      padding: 8px 15px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.85em;
-      position: relative;
-      z-index: 2000;
-      box-shadow: inset 0 0 10px rgba(0,229,255,0.2);
-      transition: all 0.5s ease;
-    }
-    #socialProofContainer .sp-icon { font-size: 18px; color: var(--secondary-color); }
-    #socialProofContainer .sp-text { color: var(--text-color); font-weight: bold; }
-    #socialProofContainer .sp-sub { color: #aaa; font-size: 0.9em; font-weight: normal; }
 
     #splash-screen {
       position: fixed;
@@ -161,11 +180,37 @@
       100% { width: 100%; }
     }
 
-    .hero-banner { background-color: var(--hero-bg); text-align: center; padding: 40px 20px; border-bottom: 3px solid var(--primary-color); box-shadow: 0 0 20px rgba(255, 0, 127, 0.4); position: relative; z-index: 2; transition: background 0.4s ease; }
-    .hero-logo { max-width: 240px; margin-bottom: 10px; filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1)); cursor: pointer; transition: transform 0.2s; }
+    .hero-banner { background-color: var(--hero-bg); text-align: center; padding: 30px 20px 20px 20px; border-bottom: 3px solid var(--primary-color); box-shadow: 0 0 20px rgba(255, 0, 127, 0.4); position: relative; z-index: 2; transition: background 0.4s ease; }
+    .hero-logo { max-width: 220px; margin-bottom: 10px; filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1)); cursor: pointer; transition: transform 0.2s; }
     .hero-logo:hover { transform: scale(1.05); }
-    .hero-title { font-size: 1.2em; font-weight: bold; margin-bottom: 15px; letter-spacing: 1px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
+    .hero-title { font-size: 1.1em; font-weight: bold; margin-bottom: 15px; letter-spacing: 1px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
     
+    /* TEMPORIZADOR DE OFERTA RELÁMPAGO */
+    .flash-sale-banner {
+      background: linear-gradient(135deg, rgba(255,0,127,0.2) 0%, rgba(0,229,255,0.2) 100%);
+      border: 1px dashed var(--secondary-color);
+      padding: 10px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.85em;
+      font-weight: bold;
+      color: var(--text-color);
+      box-shadow: 0 0 15px rgba(0,229,255,0.2);
+    }
+    .countdown-timer {
+      background: var(--bg-color);
+      border: 1px solid var(--primary-color);
+      padding: 4px 10px;
+      border-radius: 8px;
+      color: var(--secondary-color);
+      font-family: monospace;
+      font-size: 1em;
+      box-shadow: 0 0 8px var(--primary-color);
+    }
+
     .bcv-box {
       background: rgba(0, 229, 255, 0.1);
       border: 1px solid var(--secondary-color);
@@ -370,7 +415,7 @@
       opacity: 0;
     }
     .menu-desplegable-flotante.abierto {
-      max-height: 500px;
+      max-height: 600px;
       opacity: 1;
     }
 
@@ -383,6 +428,7 @@
     .faq-btn { background-color: var(--secondary-color); color: #0d041a; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px var(--secondary-color); cursor: pointer; border: none; font-weight: bold; }
     .theme-btn { background-color: #ffcc00; color: #0d041a; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px #ffcc00; cursor: pointer; border: none; font-weight: bold; }
     .gacha-btn { background-color: #9900ff; color: white; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px #9900ff; cursor: pointer; border: none; }
+    .chest-btn { background-color: #ff9900; color: #0d041a; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px #ff9900; cursor: pointer; border: none; font-weight: bold; }
     .music-btn { background-color: #ff0055; color: white; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px #ff0055; cursor: pointer; border: none; }
     .gamer-profile-btn { background-color: #00ffcc; color: #0d041a; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px #00ffcc; cursor: pointer; border: none; font-weight: bold; }
     .fav-floating-btn { background-color: #ff3366; color: white; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 18px; text-decoration: none; box-shadow: 0 0 10px #ff3366; cursor: pointer; border: none; position: relative; }
@@ -398,7 +444,7 @@
 </head>
 <body>
 
-<!-- BARRA DE NOTIFICACIÓN ESTÁTICA SUPERIOR (NO INTERRUMPE) -->
+<!-- BARRA DE NOTIFICACIÓN SUPERIOR -->
 <div id="socialProofContainer">
   <div class="sp-icon"><i class="fas fa-shopping-bag"></i></div>
   <div>
@@ -409,7 +455,7 @@
 
 <div class="ticker-bar">
   <div class="ticker-content">
-    🔥 ¡Bienvenidos a Sakura Gameverse! Envíos seguros a todo el país exclusivamente por ZOOM y MRW 📦 | 🎮 Cupón activo: OTAKU10 | ⚡ ¡Abre el menú flotante para descubrir música y gacha! 🌸
+    🔥 ¡Bienvenidos a Sakura Gameverse! Envíos seguros a todo el país exclusivamente por ZOOM y MRW 📦 | 🎮 Cupón activo: OTAKU10 | ⚡ ¡Abre el menú flotante para descubrir cofre diario, música y gacha! 🌸
   </div>
 </div>
 
@@ -419,22 +465,53 @@
     <div style="font-size: 40px; margin-bottom: 10px;">🎁</div>
     <h2 style="color: var(--secondary-color); margin-top: 0;">¡Bienvenido a Sakura Gameverse!</h2>
     <p style="font-size: 0.95em; line-height: 1.5; opacity: 0.9; margin-bottom: 15px;">
-      Usa el código <strong>OTAKU10</strong> en tu carrito o abre el menú flotante para girar la ruleta Gacha. Entregas en <strong>Bejuma y Miranda</strong> y envíos por <strong>ZOOM y MRW</strong>.
+      Usa el código <strong>OTAKU10</strong> o abre el menú flotante para reclamar tu <strong>Cofre Diario</strong> y girar la ruleta Gacha. Entregas en <strong>Bejuma y Miranda</strong> y envíos por <strong>ZOOM y MRW</strong>.
     </p>
     <button class="btn-sugerencia" onclick="cerrarPromoFlash()">¡A Explorar Catálogo! 🚀</button>
   </div>
 </div>
 
+<!-- MODAL COFRE DIARIO -->
+<div id="modalCofreDiario" class="modal">
+  <div class="modal-content" style="width: 420px; border: 2px solid #ff9900;">
+    <button class="cerrar-modal" onclick="cerrarCofreModal()">×</button>
+    <div style="font-size: 45px; margin-bottom: 5px;">📦✨</div>
+    <h2 style="color: #ff9900; margin-top: 0;">Cofre de Recompensa Diaria</h2>
+    <p id="mensajeCofreInfo" style="font-size: 0.9em; opacity: 0.9; margin-bottom: 15px;">¡Abre tu cofre una vez al día para ganar bonos de XP y cupones sorpresa!</p>
+    <div id="cofreResultado" style="background: var(--bg-color); border: 2px dashed #ff9900; padding: 20px; border-radius: 12px; font-size: 1.1em; font-weight: bold; color: var(--secondary-color); margin-bottom: 15px;">
+      Cofre listo para abrir 🗝️
+    </div>
+    <button class="btn-sugerencia" id="btnReclamarCofre" style="background: #ff9900; color: #0d041a;" onclick="abrirCofreDiario()">¡Abrir Cofre Diario! 🔓</button>
+  </div>
+</div>
+
+<!-- MODAL GACHA VISUAL ANIMADO -->
 <div id="modalGacha" class="modal">
   <div class="modal-content" style="width: 420px; border: 2px solid #9900ff;">
     <button class="cerrar-modal" onclick="cerrarGachaModal()">×</button>
     <div style="font-size: 40px; margin-bottom: 5px;">🎰</div>
     <h2 style="color: #ffcc00; margin-top: 0;">Ruleta Gacha Otaku</h2>
-    <p style="font-size: 0.9em; opacity: 0.9; margin-bottom: 15px;">¡Prueba tu suerte y gana un cupón de descuento sorpresa para tu compra!</p>
-    <div id="gachaResultado" style="background: var(--bg-color); border: 2px dashed #9900ff; padding: 20px; border-radius: 12px; font-size: 1.2em; font-weight: bold; color: var(--secondary-color); margin-bottom: 15px;">
+    <p style="font-size: 0.9em; opacity: 0.9; margin-bottom: 15px;">¡Prueba tu suerte y descubre tu recompensa épica!</p>
+    <div id="gachaResultado" style="background: var(--bg-color); border: 2px dashed #9900ff; padding: 20px; border-radius: 12px; font-size: 1.1em; font-weight: bold; color: var(--secondary-color); margin-bottom: 15px; min-height: 60px; display: flex; align-items: center; justify-content: center;">
       Presiona el botón para girar 🎁
     </div>
     <button class="btn-sugerencia" style="background: #9900ff; color: white;" onclick="girarRuletaGacha()">¡Girar Ruleta Gacha! ⚡</button>
+  </div>
+</div>
+
+<!-- MODAL SELECTOR DE TEMA -->
+<div id="modalTemas" class="modal">
+  <div class="modal-content" style="width: 400px; border: 2px solid #ffcc00;">
+    <button class="cerrar-modal" onclick="cerrarTemasModal()">×</button>
+    <div style="font-size: 40px; margin-bottom: 5px;">🎨</div>
+    <h2 style="color: #ffcc00; margin-top: 0;">Selecciona tu Estilo</h2>
+    <p style="font-size: 0.9em; opacity: 0.9; margin-bottom: 15px;">Personaliza la estética visual de tu tienda:</p>
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <button class="btn-sugerencia" style="background: #FF007F; color: white;" onclick="cambiarTema('theme-rosa')">🌸 Rosa Cyberpunk (Default)</button>
+      <button class="btn-sugerencia" style="background: #00bfff; color: #0d041a;" onclick="cambiarTema('theme-azul')">⚡ Azul Neón Matrix</button>
+      <button class="btn-sugerencia" style="background: #b000ff; color: white;" onclick="cambiarTema('theme-purpura')">💜 Púrpura Anime</button>
+      <button class="btn-sugerencia" style="background: #ffaa00; color: #0d041a;" onclick="cambiarTema('theme-overdrive')">🔥 Naranja Overdrive</button>
+    </div>
   </div>
 </div>
 
@@ -487,6 +564,16 @@
   <img src="logo.webp" alt="Sakura Gameverse" class="hero-logo" onclick="activarEasterEggLogo()" title="¡Haz clic aquí para modo secreto!">
   <div class="hero-title">✨ Bienvenidos a Sakura Gameverse ✨<br>Donde tu pasión por el gaming nunca hace game over. 👾🌸</div>
   
+  <!-- OFERTA RELÁMPAGO CON CUENTA REGRESIVA -->
+  <div class="flash-sale-banner">
+    <i class="fas fa-bolt" style="color: #ffcc00; font-size: 1.2em;"></i>
+    <div>
+      <strong>¡OFERTA RELÁMPAGO ACTIVA!</strong><br>
+      Termina en: <span id="countdownTimer" class="countdown-timer">12:00:00</span>
+    </div>
+  </div>
+  <br>
+
   <div class="bcv-box">
     <i class="fas fa-coins"></i> Tasa BCV (Bs/$): 
     <input type="number" id="inputTasaBcv" class="bcv-input" step="0.01" value="36.50" oninput="cambiarTasaBcvManual()">
@@ -835,10 +922,11 @@
 <div class="floating-buttons">
   <div class="menu-desplegable-flotante" id="menuFlotante">
     <button class="fav-floating-btn" onclick="abrirFavoritosModal()" title="Ver Favoritos"><i class="fas fa-heart"></i><div class="fav-badge-count" id="favCount">0</div></button>
+    <button class="chest-btn" onclick="abrirCofreModal()" title="Cofre Diario de Recompensa"><i class="fas fa-gift"></i></button>
     <button class="gacha-btn" onclick="abrirGachaModal()" title="Ruleta Gacha de Descuentos"><i class="fas fa-dice"></i></button>
     <button class="music-btn" onclick="toggleMusicaLoFi()" title="Reproducir/Pausar Música Lo-Fi"><i class="fas fa-music" id="iconoMusica"></i></button>
     <button class="gamer-profile-btn" onclick="abrirGamerProfileModal()" title="Perfil Gamer & XP"><i class="fas fa-user-astronaut"></i></button>
-    <button class="theme-btn" onclick="alternarTema()" title="Cambiar Tema Visual"><i class="fas fa-palette"></i></button>
+    <button class="theme-btn" onclick="abrirTemasModal()" title="Cambiar Tema Visual"><i class="fas fa-palette"></i></button>
     <a href="https://www.tiktok.com/@sakuragameverse" class="tiktok-btn" target="_blank" title="Síguenos en TikTok"><i class="fab fa-tiktok"></i></a>
     <a href="https://www.instagram.com/sakuragameverse?stkn=bDQ5NXRla2Vyano1" class="instagram-btn" target="_blank" title="Síguenos en Instagram"><i class="fab fa-instagram"></i></a>
     <button class="faq-btn" onclick="abrirFaqModal()" title="Preguntas Frecuentes"><i class="fas fa-question"></i></button>
@@ -872,6 +960,59 @@
     }
   }, 2000);
 
+  // TEMPORIZADOR DE OFERTA RELÁMPAGO (12 Horas)
+  let tiempoRestante = 12 * 3600;
+  function iniciarCountdown() {
+    let timerElem = document.getElementById('countdownTimer');
+    setInterval(() => {
+      if (tiempoRestante > 0) tiempoRestante--;
+      let horas = Math.floor(tiempoRestante / 3600);
+      let minutos = Math.floor((tiempoRestante % 3600) / 60);
+      let segundos = tiempoRestante % 60;
+      timerElem.innerText = `${String(horas).padStart(2,'0')}:${String(minutos).padStart(2,'0')}:${String(segundos).padStart(2,'0')}`;
+    }, 1000);
+  }
+  iniciarCountdown();
+
+  // COFRE DIARIO CON MEMORIA LOCAL
+  function abrirCofreModal() {
+    reproducirSonido();
+    verificarEstadoCofre();
+    document.getElementById('modalCofreDiario').style.display = 'flex';
+  }
+  function cerrarCofreModal() {
+    reproducirSonido();
+    document.getElementById('modalCofreDiario').style.display = 'none';
+  }
+
+  function verificarEstadoCofre() {
+    let ultimoReclamo = localStorage.getItem('sakura_ultimo_cofre');
+    let ahora = new Date().getTime();
+    let btn = document.getElementById('btnReclamarCofre');
+    let res = document.getElementById('cofreResultado');
+
+    if (ultimoReclamo && (ahora - parseInt(ultimoReclamo) < 86400000)) {
+      btn.style.display = 'none';
+      res.innerHTML = "⏳ Ya abriste tu cofre hoy. ¡Vuelve mañana por más XP y premios!";
+    } else {
+      btn.style.display = 'block';
+      res.innerHTML = "Cofre listo para abrir 🗝️";
+    }
+  }
+
+  function abrirCofreDiario() {
+    reproducirSonido();
+    localStorage.setItem('sakura_ultimo_cofre', new Date().getTime());
+    
+    gamerProfile.xp += 100;
+    localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
+    document.getElementById('lblXp').innerText = gamerProfile.xp + " XP";
+
+    confetti({ particleCount: 150, spread: 90, origin: { y: 0.5 } });
+    document.getElementById('cofreResultado').innerHTML = "🎉 ¡Felicidades! Ganaste +100 XP y el cupón secreto <strong>OTAKU10</strong>.";
+    document.getElementById('btnReclamarCofre').style.display = 'none';
+  }
+
   // ROTACIÓN DE PRUEBA SOCIAL ARRIBA
   const compradoresFake = [
     { nombre: "Gabriel S.", lugar: "Bejuma, Carabobo", item: "un Tomo de Manga" },
@@ -900,27 +1041,33 @@
     }
   }
 
-  let modoNeonActivo = localStorage.getItem('sakura_neon') === 'true';
-  if (modoNeonActivo) {
-    document.body.classList.add('neon-mode');
-  }
+  // SELECTOR DE TEMAS MÚLTIPLES
+  let temaActual = localStorage.getItem('sakura_tema') || 'theme-rosa';
+  document.body.className = temaActual;
 
-  function alternarTema() {
+  function abrirTemasModal() {
     reproducirSonido();
-    document.body.classList.remove('overdrive-mode');
-    document.body.classList.toggle('neon-mode');
-    let esNeon = document.body.classList.contains('neon-mode');
-    localStorage.setItem('sakura_neon', esNeon);
+    document.getElementById('modalTemas').style.display = 'flex';
+  }
+  function cerrarTemasModal() {
+    reproducirSonido();
+    document.getElementById('modalTemas').style.display = 'none';
+  }
+  function cambiarTema(claseTema) {
+    reproducirSonido();
+    document.body.className = claseTema;
+    localStorage.setItem('sakura_tema', claseTema);
+    cerrarTemasModal();
   }
 
   function activarEasterEggLogo() {
     reproducirSonido();
-    document.body.classList.toggle('overdrive-mode');
+    document.body.classList.toggle('theme-overdrive');
     confetti({ particleCount: 150, spread: 90, origin: { y: 0.4 } });
-    if (document.body.classList.contains('overdrive-mode')) {
+    if (document.body.classList.contains('theme-overdrive')) {
       alert("🔥 ¡MODO OVERDRIVE SUPREMO ACTIVADO! ¡Lluvia de poder otaku!");
     } else {
-      alert("✨ Modo normal restaurado.");
+      alert("✨ Modo restaurado.");
     }
   }
 
@@ -946,6 +1093,7 @@
   }
   function reproducingMusica() { return reproduciendoMusica; }
 
+  // GACHA VISUAL ANIMADO
   function abrirGachaModal() {
     reproducirSonido();
     document.getElementById('gachaResultado').innerText = "Presiona el botón para girar 🎁";
@@ -957,14 +1105,19 @@
   }
   function girarRuletaGacha() {
     reproducirSonido();
-    let premios = [
-      { texto: "🎉 ¡Felicidades! Ganaste 5% de descuento (Usa cupón GACHA5)", codigo: "GACHA5" },
-      { texto: "🔥 ¡Jackpot Otaku! Ganaste 15% de descuento (Usa cupón GAMERVIP)", codigo: "GAMERVIP" },
-      { texto: "🌸 ¡Premio Especial! 10% de descuento (Usa cupón OTAKU10)", codigo: "OTAKU10" }
-    ];
-    let premioGanado = premios[Math.floor(Math.random() * premios.length)];
-    document.getElementById('gachaResultado').innerHTML = `${premioGanado.texto}`;
-    confetti({ particleCount: 120, spread: 80, origin: { y: 0.5 } });
+    let resBox = document.getElementById('gachaResultado');
+    resBox.innerHTML = "🌀 Girando ruleta y abriendo cofre gacha...";
+    
+    setTimeout(() => {
+      let premios = [
+        { texto: "🎉 ¡Felicidades! Ganaste 5% de descuento (Usa cupón <strong>GACHA5</strong>)", codigo: "GACHA5" },
+        { texto: "🔥 ¡Jackpot Otaku! Ganaste 15% de descuento (Usa cupón <strong>GAMERVIP</strong>)", codigo: "GAMERVIP" },
+        { texto: "🌸 ¡Premio Especial! 10% de descuento (Usa cupón <strong>OTAKU10</strong>)", codigo: "OTAKU10" }
+      ];
+      let premioGanado = premios[Math.floor(Math.random() * premios.length)];
+      resBox.innerHTML = `${premioGanado.texto}`;
+      confetti({ particleCount: 140, spread: 85, origin: { y: 0.5 } });
+    }, 1000);
   }
 
   let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, rango: "Rango Hokage" };
@@ -1369,11 +1522,7 @@
       return;
     }
 
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 }
-    });
+    confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
 
     gamerProfile.xp += 100;
     localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
