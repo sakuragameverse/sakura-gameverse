@@ -6,6 +6,7 @@
   <title>Sakura Gameverse</title>
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
   <style>
     body { margin: 0; background-color: #0d041a; color: white; font-family: sans-serif; overflow-x: hidden; }
@@ -14,7 +15,6 @@
     ::-webkit-scrollbar-track { background: #0d041a; }
     ::-webkit-scrollbar-thumb { background: #FF007F; border-radius: 10px; }
 
-    /* PANTALLA DE CARGA CLÁSICA ILUMINADA */
     #splash-screen {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -108,40 +108,45 @@
     .card-price { color: #00e5ff; font-size: 1.2em; font-weight: bold; text-shadow: 0 0 5px rgba(0, 229, 255, 0.5); }
     .badge-encargo { position: absolute; top: 10px; right: 10px; background-color: #FF007F; color: white; padding: 5px 12px; font-size: 0.8em; font-weight: bold; border-radius: 20px; box-shadow: 0 0 10px #FF007F; z-index: 3; }
 
-    /* MODALES GENERALES */
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
     .modal-content { background: #11052C; padding: 20px; border-radius: 20px; text-align: center; max-width: 90%; width: 400px; border: 2px solid #FF007F; box-shadow: 0 0 30px rgba(255,0,127,0.5); position: relative; max-height: 90vh; overflow-y: auto; }
     .cerrar-modal { position: absolute; top: 10px; right: 15px; font-size: 25px; color: white; cursor: pointer; background: none; border: none; font-weight: bold; }
     .modal-img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
     .btn-comprar { background: #FF007F; color: white; border: none; padding: 10px 20px; font-size: 1.1em; font-weight: bold; border-radius: 30px; cursor: pointer; margin-top: 15px; box-shadow: 0 0 10px #FF007F; width: 100%; }
 
-    /* ESTILOS DEL MODAL DE CARRITO DETALLADO */
     .cart-item-row { display: flex; align-items: center; justify-content: space-between; background: #1a0b38; padding: 10px; border-radius: 10px; margin-bottom: 10px; border: 1px solid rgba(0,229,255,0.3); }
     .cart-item-img { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; margin-right: 10px; }
     .cart-item-info { flex-grow: 1; text-align: left; font-size: 0.9em; }
     .cart-item-del { background: #ff3366; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.8em; }
 
-    /* ESTILOS DEL MODAL DE SUGERENCIAS */
     .sugerencia-input { width: 100%; background: #0d041a; border: 1px solid #00e5ff; color: white; padding: 10px; border-radius: 10px; margin-bottom: 12px; box-sizing: border-box; outline: none; }
     .btn-sugerencia { background: #00e5ff; color: #0d041a; border: none; padding: 10px 20px; font-weight: bold; border-radius: 20px; cursor: pointer; width: 100%; box-shadow: 0 0 10px #00e5ff; }
 
-    /* BARRA DE CARRITO INFERIOR */
+    .reviews-section { background: #11052C; margin-top: 40px; padding: 30px 20px; border-radius: 15px; border: 1px solid #00e5ff; box-shadow: 0 0 15px rgba(0,229,255,0.2); }
+    .review-card { background: #1a0b38; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid rgba(255,0,127,0.3); position: relative; }
+    .review-author { font-weight: bold; color: #00e5ff; margin-bottom: 5px; }
+    .review-stars { color: #ffcc00; margin-bottom: 8px; }
+    .review-text { font-size: 0.95em; line-height: 1.4; }
+    .btn-del-review { position: absolute; top: 10px; right: 10px; background: #ff3366; color: white; border: none; border-radius: 5px; padding: 3px 8px; font-size: 0.75em; cursor: pointer; }
+    .review-form { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+
     .cart-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(17, 5, 44, 0.95); border-top: 2px solid #00e5ff; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; z-index: 1500; box-shadow: 0 -5px 20px rgba(0,229,255,0.3); backdrop-filter: blur(5px); flex-wrap: wrap; gap: 8px; cursor: pointer; }
     .cart-info { font-weight: bold; font-size: 1em; color: #00e5ff; }
     .cart-buttons { display: flex; gap: 8px; }
     .btn-checkout { background: #25D366; color: white; border: none; padding: 8px 15px; border-radius: 15px; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px #25D366; font-size: 0.9em; }
     .btn-clear { background: #ff3366; color: white; border: none; padding: 8px 12px; border-radius: 15px; font-weight: bold; cursor: pointer; font-size: 0.9em; }
 
-    .info-section { background: #11052C; margin-top: 50px; margin-bottom: 60px; padding: 30px 20px; border-radius: 15px; border: 1px solid #FF007F; box-shadow: 0 0 15px rgba(255,0,127,0.2); }
+    .info-section { background: #11052C; margin-top: 40px; margin-bottom: 60px; padding: 30px 20px; border-radius: 15px; border: 1px solid #FF007F; box-shadow: 0 0 15px rgba(255,0,127,0.2); }
     .info-title { color: #00e5ff; font-size: 1.4em; margin-bottom: 15px; text-align: center; }
     .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; font-size: 0.95em; line-height: 1.5; }
     .info-card { background: #1a0b38; padding: 15px; border-radius: 10px; border: 1px solid rgba(255,0,127,0.3); }
 
-    /* BOTONES FLOTANTES DERECHOS (WhatsApp y Sugerencias) */
+    /* BOTONES FLOTANTES DE LA DERECHA (TikTok, Instagram, Sugerencias, WhatsApp) */
     .floating-buttons { position: fixed; bottom: 75px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 1000; }
-    .whatsapp-btn { background-color: #25D366; color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 26px; text-decoration: none; animation: pulse-wa 2s infinite; box-shadow: 0 0 10px rgba(37,211,102,0.5); }
+    .whatsapp-btn { background-color: #25D366; color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 26px; text-decoration: none; box-shadow: 0 0 10px rgba(37,211,102,0.5); }
+    .instagram-btn { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 24px; text-decoration: none; box-shadow: 0 0 10px rgba(214,36,159,0.6); }
+    .tiktok-btn { background-color: #000000; color: white; border: 2px solid #00e5ff; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 22px; text-decoration: none; box-shadow: 0 0 10px rgba(0,229,255,0.6); }
     .sugerencia-btn { background-color: #FF007F; color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 24px; text-decoration: none; box-shadow: 0 0 10px #FF007F; cursor: pointer; border: none; }
-    @keyframes pulse-wa { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 
     .bg-elements { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
     .float-item { position: absolute; top: -10%; animation: fall linear infinite; opacity: 0.7; }
@@ -229,6 +234,23 @@
     </div>
   </div>
 
+  <div class="reviews-section">
+    <div class="info-title">💬 Reseñas de la Comunidad 🌟</div>
+    <div id="contenedorReviews"></div>
+    
+    <div class="review-form">
+      <h3 style="color: #FF007F; font-size: 1.1em; margin: 10px 0 5px 0;">Deja tu opinión:</h3>
+      <input type="text" id="revNombre" class="sugerencia-input" placeholder="Tu Nombre / GamerTag">
+      <select id="revEstrellas" class="sugerencia-input">
+        <option value="⭐⭐⭐⭐⭐">⭐⭐⭐⭐⭐ (5/5 Excelente)</option>
+        <option value="⭐⭐⭐⭐">⭐⭐⭐⭐ (4/5 Muy bueno)</option>
+        <option value="⭐⭐⭐">⭐⭐⭐ (3/5 Normal)</option>
+      </select>
+      <textarea id="revTexto" class="sugerencia-input" rows="2" placeholder="¿Qué te pareció el servicio o la mercancía?"></textarea>
+      <button class="btn-sugerencia" onclick="agregarReview()">Publicar Reseña 🚀</button>
+    </div>
+  </div>
+
   <div class="info-section">
     <div class="info-title">✨ Información y Envíos 📦</div>
     <div class="info-grid">
@@ -263,11 +285,10 @@
   <div class="modal-content" style="width: 450px;">
     <button class="cerrar-modal" onclick="cerrarCarritoModal()">×</button>
     <h2 style="color: #00e5ff; margin-top: 0;">🛒 Tu Carrito de Compras</h2>
-    <div id="listaCarritoDetalle" style="max-height: 250px; overflow-y: auto; margin-bottom: 15px; padding-right: 5px;">
-      </div>
+    <div id="listaCarritoDetalle" style="max-height: 250px; overflow-y: auto; margin-bottom: 15px; padding-right: 5px;"></div>
     <h3 id="modalCarritoTotal" style="color: #FF007F; margin-bottom: 15px;">Total: $0.00</h3>
     <div style="display: flex; gap: 10px;">
-      <button class="btn-clear" style="flex: 1; padding: 10px;" onclick="vaciarCarrito()">Vaciar Carrito</button>
+      <button class="btn-clear" style="flex: 1; padding: 10px;" onclick="vaciarCarrito()">Vaciar</button>
       <button class="btn-checkout" style="flex: 2; padding: 10px;" onclick="enviarPedidoWhatsApp()">Enviar al WhatsApp 📱</button>
     </div>
   </div>
@@ -277,7 +298,6 @@
   <div class="modal-content">
     <button class="cerrar-modal" onclick="cerrarSugerenciaModal()">×</button>
     <h2 style="color: #FF007F; margin-top: 0;">💡 Sugerir Mercancía</h2>
-    <p style="font-size: 0.85em; color: #ccc; margin-bottom: 15px;">¿Buscas un artículo, figura o manga en específico? ¡Dinos cuál y evaluaremos traerlo!</p>
     <input type="text" id="sugNombre" class="sugerencia-input" placeholder="Tu Nombre o Apodo">
     <textarea id="sugDeseo" class="sugerencia-input" rows="3" placeholder="¿Qué producto o anime te gustaría que trajéramos?"></textarea>
     <button class="btn-sugerencia" onclick="enviarSugerenciaWhatsApp()">Enviar Sugerencia 🚀</button>
@@ -292,8 +312,10 @@
 </div>
 
 <div class="floating-buttons">
+  <a href="https://www.tiktok.com/@sakuragameverse" class="tiktok-btn" target="_blank" title="Síguenos en TikTok"><i class="fab fa-tiktok"></i></a>
+  <a href="https://www.instagram.com/sakuragameverse?stkn=bDQ5NXRla2Vyano1" class="instagram-btn" target="_blank" title="Síguenos en Instagram"><i class="fab fa-instagram"></i></a>
   <button class="sugerencia-btn" onclick="abrirSugerenciaModal()" title="Sugerir Mercancía"><i class="fas fa-lightbulb"></i></button>
-  <a href="https://wa.me/584244970576" class="whatsapp-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
+  <a href="https://wa.me/584244970576" class="whatsapp-btn" target="_blank" title="Escríbenos al WhatsApp"><i class="fab fa-whatsapp"></i></a>
 </div>
 
 <script>
@@ -433,6 +455,13 @@
       alert("¡Tu carrito está vacío!");
       return;
     }
+
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
+
     let mensaje = "¡Hola Sakura Gameverse! 🌸👾 Deseo realizar el siguiente pedido:\n\n";
     let total = 0;
     carrito.forEach((item, index) => {
@@ -442,10 +471,13 @@
     mensaje += `\n*Total a pagar: $${total.toFixed(2)}*\n¡Espero su respuesta para coordinar el pago y el envío!`;
     
     let url = "https://wa.me/584244970576?text=" + encodeURIComponent(mensaje);
-    window.open(url, '_blank');
+    
+    setTimeout(() => {
+      window.open(url, '_blank');
+      cerrarCarritoModal();
+    }, 800);
   }
 
-  // FUNCIONES DE SUGERENCIA
   function abrirSugerenciaModal() {
     reproducirSonido();
     document.getElementById('modalSugerencias').style.display = 'flex';
@@ -471,6 +503,57 @@
     window.open(url, '_blank');
     cerrarSugerenciaModal();
   }
+
+  let reviews = JSON.parse(localStorage.getItem('sakura_reviews')) || [
+    { nombre: "Ángel G.", estrellas: "⭐⭐⭐⭐⭐", texto: "¡Excelente tienda! Las katanas llegaron impecables y el trato es de primera. 10/10." },
+    { nombre: "Valeria Otaku", estrellas: "⭐⭐⭐⭐⭐", texto: "Los peluches son súper suaves y el servicio por WhatsApp es rapidísimo. ¡Recomendado!" }
+  ];
+
+  function renderReviews() {
+    let contenedor = document.getElementById('contenedorReviews');
+    contenedor.innerHTML = "";
+    reviews.forEach((rev, index) => {
+      contenedor.innerHTML += `
+        <div class="review-card">
+          <button class="btn-del-review" onclick="eliminarReview(${index})" title="Borrar reseña indeseada">Eliminar ❌</button>
+          <div class="review-author">${rev.nombre}</div>
+          <div class="review-stars">${rev.estrellas}</div>
+          <div class="review-text">${rev.texto}</div>
+        </div>
+      `;
+    });
+  }
+
+  function agregarReview() {
+    reproducirSonido();
+    let nombre = document.getElementById('revNombre').value.trim();
+    let estrellas = document.getElementById('revEstrellas').value;
+    let texto = document.getElementById('revTexto').value.trim();
+
+    if (!nombre || !texto) {
+      alert("Por favor ingresa tu nombre y tu comentario.");
+      return;
+    }
+
+    reviews.unshift({ nombre, estrellas, texto });
+    localStorage.setItem('sakura_reviews', JSON.stringify(reviews));
+    
+    document.getElementById('revNombre').value = "";
+    document.getElementById('revTexto').value = "";
+    renderReviews();
+    alert("¡Gracias por tu reseña! Ya ha sido publicada.");
+  }
+
+  function eliminarReview(index) {
+    reproducirSonido();
+    if (confirm("¿Estás seguro de eliminar esta reseña?")) {
+      reviews.splice(index, 1);
+      localStorage.setItem('sakura_reviews', JSON.stringify(reviews));
+      renderReviews();
+    }
+  }
+
+  renderReviews();
 </script>
 
 </body>
