@@ -318,4 +318,296 @@
 
 <div id="modalSugerencias" class="modal">
   <div class="modal-content">
-    <button class="cerrar
+    <button class="cerrar-modal" onclick="cerrarSugerenciaModal()">×</button>
+    <h2 style="color: #FF007F; margin-top: 0;">💡 Sugerir Mercancía</h2>
+    <input type="text" id="sugNombre" class="sugerencia-input" placeholder="Tu Nombre o Apodo">
+    <textarea id="sugDeseo" class="sugerencia-input" rows="3" placeholder="¿Qué producto o anime te gustaría que trajéramos?"></textarea>
+    <button class="btn-sugerencia" onclick="enviarSugerenciaWhatsApp()">Enviar Sugerencia 🚀</button>
+  </div>
+</div>
+
+<div class="cart-bar" onclick="abrirCarritoModal()">
+  <div class="cart-info" id="cartText">🛒 Ver Carrito: 0 ítems ($0.00)</div>
+  <div class="cart-buttons" onclick="event.stopPropagation()">
+    <button class="btn-checkout" onclick="abrirCarritoModal()">Revisar 🛒</button>
+  </div>
+</div>
+
+<div class="floating-buttons">
+  <a href="https://www.tiktok.com/@sakuragameverse" class="tiktok-btn" target="_blank" title="Síguenos en TikTok"><i class="fab fa-tiktok"></i></a>
+  <a href="https://www.instagram.com/sakuragameverse?stkn=bDQ5NXRla2Vyano1" class="instagram-btn" target="_blank" title="Síguenos en Instagram"><i class="fab fa-instagram"></i></a>
+  <button class="sugerencia-btn" onclick="abrirSugerenciaModal()" title="Sugerir Mercancía"><i class="fas fa-lightbulb"></i></button>
+  <a href="https://wa.me/584244970576" class="whatsapp-btn" target="_blank" title="Escríbenos al WhatsApp"><i class="fab fa-whatsapp"></i></a>
+</div>
+
+<script>
+  setTimeout(() => {
+    let splash = document.getElementById('splash-screen');
+    if (splash) {
+      splash.style.opacity = '0';
+      setTimeout(() => splash.style.display = 'none', 500);
+    }
+  }, 1600);
+
+  // OBTENER TASA BCV EN VIVO (API PÚBLICA DE VENEZUELA)
+  let tasaBcvActual = 0;
+
+  async function cargarTasaBcv() {
+    try {
+      let respuesta = await fetch('https://ve.dolarapi.com/v1/dolares/bcv');
+      let datos = await respuesta.json();
+      tasaBcvActual = datos.promedio;
+      document.getElementById('tasaBcvDisplay').innerText = tasaBcvActual.toFixed(2);
+      actualizarPreciosEnBs();
+    } catch(e) {
+      // Tasa de respaldo por si falla la API
+      tasaBcvActual = 36.50; 
+      document.getElementById('tasaBcvDisplay').innerText = tasaBcvActual.toFixed(2) + " (Ref)";
+      actualizarPreciosEnBs();
+    }
+  }
+
+  function actualizarPreciosEnBs() {
+    let etiquetasBs = document.querySelectorAll('.card-bs');
+    etiquetasBs.forEach(etiqueta => {
+      let usd = parseFloat(etiqueta.getAttribute('data-usd'));
+      let totalBs = usd * tasaBcvActual;
+      etiqueta.innerText = `≈ Bs. ${totalBs.toLocaleString('es-VE', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    });
+  }
+
+  cargarTasaBcv();
+
+  function reproducirSonido() {
+    try {
+      let ctx = new (window.AudioContext || window.webkitAudioContext)();
+      let osc = ctx.createOscillator();
+      let gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.1);
+      gain.gain.setValueAtTime(0.1, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.1);
+    } catch(e) {}
+  }
+
+  let carrito = [];
+  let productoActual = null;
+
+  function filtrar(categoria, evento) {
+    reproducirSonido();
+    let botones = document.querySelectorAll('.btn-filtro');
+    botones.forEach(btn => btn.classList.remove('activo'));
+    evento.target.classList.add('activo');
+
+    let productos = document.querySelectorAll('.item-producto');
+    productos.forEach(prod => {
+      if (categoria === 'todos' || prod.getAttribute('data-categoria') === categoria) {
+        prod.style.display = 'block';
+      } else {
+        prod.style.display = 'none';
+      }
+    });
+  }
+
+  function buscarProductos() {
+    let texto = document.getElementById('buscador').value.toLowerCase();
+    let productos = document.querySelectorAll('.item-producto');
+    productos.forEach(prod => {
+      let nombre = prod.getAttribute('data-nombre');
+      if (nombre.includes(texto)) {
+        prod.style.display = 'block';
+      } else {
+        prod.style.display = 'none';
+      }
+    });
+  }
+
+  function abrirModal(img, titulo, precio, descripcion) {
+    productoActual = { img, titulo, precio };
+    document.getElementById('modalImg').src = img;
+    document.getElementById('modalTitulo').innerText = titulo;
+    document.getElementById('modalPrecio').innerText = "$" + precio.toFixed(2);
+    document.getElementById('modalDesc').innerText = descripcion;
+    document.getElementById('miModal').style.display = 'flex';
+  }
+
+  function cerrarModal() {
+    reproducirSonido();
+    document.getElementById('miModal').style.display = 'none';
+  }
+
+  function agregarAlCarrito() {
+    reproducirSonido();
+    carrito.push(productoActual);
+    actualizarCarritoUI();
+    cerrarModal();
+  }
+
+  function vaciarCarrito() {
+    reproducirSonido();
+    carrito = [];
+    actualizarCarritoUI();
+    abrirCarritoModal();
+  }
+
+  function eliminarItemCarrito(index) {
+    reproducirSonido();
+    carrito.splice(index, 1);
+    actualizarCarritoUI();
+    abrirCarritoModal();
+  }
+
+  function actualizarCarritoUI() {
+    let totalItems = carrito.length;
+    let totalPrecio = carrito.reduce((sum, item) => sum + item.precio, 0);
+    document.getElementById('cartText').innerText = `🛒 Ver Carrito: ${totalItems} ítems ($${totalPrecio.toFixed(2)})`;
+  }
+
+  function abrirCarritoModal() {
+    reproducirSonido();
+    let contenedor = document.getElementById('listaCarritoDetalle');
+    contenedor.innerHTML = "";
+    
+    if (carrito.length === 0) {
+      contenedor.innerHTML = "<p style='color: #aaa;'>Tu carrito está vacío.</p>";
+    } else {
+      carrito.forEach((item, index) => {
+        contenedor.innerHTML += `
+          <div class="cart-item-row">
+            <img src="${item.img}" class="cart-item-img">
+            <div class="cart-item-info">
+              <strong>${item.titulo}</strong><br>
+              <span style="color: #00e5ff;">$${item.precio.toFixed(2)}</span>
+            </div>
+            <button class="cart-item-del" onclick="eliminarItemCarrito(${index})">❌</button>
+          </div>
+        `;
+      });
+    }
+
+    let totalPrecio = carrito.reduce((sum, item) => sum + item.precio, 0);
+    let totalBs = totalPrecio * tasaBcvActual;
+    document.getElementById('modalCarritoTotal').innerText = `Total: $${totalPrecio.toFixed(2)} (≈ Bs. ${totalBs.toLocaleString('es-VE', {minimumFractionDigits: 2, maximumFractionDigits: 2})})`;
+    document.getElementById('modalCarrito').style.display = 'flex';
+  }
+
+  function cerrarCarritoModal() {
+    reproducirSonido();
+    document.getElementById('modalCarrito').style.display = 'none';
+  }
+
+  function enviarPedidoWhatsApp() {
+    reproducirSonido();
+    if (carrito.length === 0) {
+      alert("¡Tu carrito está vacío!");
+      return;
+    }
+
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
+
+    let mensaje = "¡Hola Sakura Gameverse! 🌸👾 Deseo realizar el siguiente pedido:\n\n";
+    let total = 0;
+    carrito.forEach((item, index) => {
+      mensaje += `${index + 1}. ${item.titulo} - $${item.precio.toFixed(2)}\n`;
+      total += item.precio;
+    });
+    let totalBs = total * tasaBcvActual;
+    mensaje += `\n*Total a pagar: $${total.toFixed(2)} (Bs. ${totalBs.toFixed(2)})*\n¡Espero su respuesta para coordinar el pago y el envío!`;
+    
+    let url = "https://wa.me/584244970576?text=" + encodeURIComponent(mensaje);
+    
+    setTimeout(() => {
+      window.open(url, '_blank');
+      cerrarCarritoModal();
+    }, 800);
+  }
+
+  function abrirSugerenciaModal() {
+    reproducirSonido();
+    document.getElementById('modalSugerencias').style.display = 'flex';
+  }
+
+  function cerrarSugerenciaModal() {
+    reproducirSonido();
+    document.getElementById('modalSugerencias').style.display = 'none';
+  }
+
+  function enviarSugerenciaWhatsApp() {
+    reproducirSonido();
+    let nombre = document.getElementById('sugNombre').value.trim();
+    let deseo = document.getElementById('sugDeseo').value.trim();
+
+    if (!nombre || !deseo) {
+      alert("Por favor completa tu nombre y la sugerencia.");
+      return;
+    }
+
+    let mensaje = `💡 *Sugerencia de Mercancía* 💡\n\n*Cliente:* ${nombre}\n*Sugerencia:* ${deseo}\n\n¡Enviado desde Sakura Gameverse! 🌸`;
+    let url = "https://wa.me/584244970576?text=" + encodeURIComponent(mensaje);
+    window.open(url, '_blank');
+    cerrarSugerenciaModal();
+  }
+
+  let reviews = JSON.parse(localStorage.getItem('sakura_reviews')) || [
+    { nombre: "Ángel G.", estrellas: "⭐⭐⭐⭐⭐", texto: "¡Excelente tienda! Las katanas llegaron impecables y el trato es de primera. 10/10." },
+    { nombre: "Valeria Otaku", estrellas: "⭐⭐⭐⭐⭐", texto: "Los peluches son súper suaves y el servicio por WhatsApp es rapidísimo. ¡Recomendado!" }
+  ];
+
+  function renderReviews() {
+    let contenedor = document.getElementById('contenedorReviews');
+    contenedor.innerHTML = "";
+    reviews.forEach((rev, index) => {
+      contenedor.innerHTML += `
+        <div class="review-card">
+          <button class="btn-del-review" onclick="eliminarReview(${index})" title="Borrar reseña indeseada">Eliminar ❌</button>
+          <div class="review-author">${rev.nombre}</div>
+          <div class="review-stars">${rev.estrellas}</div>
+          <div class="review-text">${rev.texto}</div>
+        </div>
+      `;
+    });
+  }
+
+  function agregarReview() {
+    reproducirSonido();
+    let nombre = document.getElementById('revNombre').value.trim();
+    let estrellas = document.getElementById('revEstrellas').value;
+    let texto = document.getElementById('revTexto').value.trim();
+
+    if (!nombre || !texto) {
+      alert("Por favor ingresa tu nombre y tu comentario.");
+      return;
+    }
+
+    reviews.unshift({ nombre, estrellas, texto });
+    localStorage.setItem('sakura_reviews', JSON.stringify(reviews));
+    
+    document.getElementById('revNombre').value = "";
+    document.getElementById('revTexto').value = "";
+    renderReviews();
+    alert("¡Gracias por tu reseña! Ya ha sido publicada.");
+  }
+
+  function eliminarReview(index) {
+    reproducirSonido();
+    if (confirm("¿Estás seguro de eliminar esta reseña?")) {
+      reviews.splice(index, 1);
+      localStorage.setItem('sakura_reviews', JSON.stringify(reviews));
+      renderReviews();
+    }
+  }
+
+  renderReviews();
+</script>
+
+</body>
+</html>
