@@ -15,7 +15,6 @@
     ::-webkit-scrollbar-track { background: #0d041a; }
     ::-webkit-scrollbar-thumb { background: #FF007F; border-radius: 10px; }
 
-    /* 1. TICKER SUPERIOR ROTATIVO (BANNER DE ANUNCIOS) */
     .ticker-bar {
       background: linear-gradient(90deg, #FF007F, #00e5ff, #FF007F);
       background-size: 200% 100%;
@@ -156,7 +155,6 @@
 
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
     
-    /* 2. EFECTO DE BRILLO NEÓN AVANZADO (HOVER CYBERPUNK) */
     .card { background-color: #1a0b38; border-radius: 15px; padding: 15px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.5); position: relative; border: 1px solid rgba(0,229,255,0.2); transition: all 0.3s ease; cursor: pointer; animation: card-pop 0.4s ease-out; }
     @keyframes card-pop {
       0% { transform: scale(0.8); opacity: 0; }
@@ -170,13 +168,16 @@
     .card img { width: 100%; height: 250px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
     .card-title { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; }
     .card-price { color: #00e5ff; font-size: 1.2em; font-weight: bold; text-shadow: 0 0 5px rgba(0, 229, 255, 0.5); margin-bottom: 3px; }
-    .card-bs { color: #ff99cc; font-size: 0.85em; font-weight: bold; }
+    .card-bs { color: #ff99cc; font-size: 0.85em; font-weight: bold; margin-bottom: 8px; }
     
     .badge-estado { position: absolute; top: 10px; right: 10px; padding: 5px 12px; font-size: 0.75em; font-weight: bold; border-radius: 20px; z-index: 3; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
     .badge-stock { background-color: #00e5ff; color: #0d041a; box-shadow: 0 0 10px #00e5ff; }
     .badge-encargo { background-color: #FF007F; color: white; box-shadow: 0 0 10px #FF007F; }
     .badge-nuevo { background-color: #ffcc00; color: #0d041a; box-shadow: 0 0 10px #ffcc00; }
     .badge-gamer { background-color: #7b2cbf; color: white; box-shadow: 0 0 10px #7b2cbf; }
+
+    /* CONTADOR DE STOCK / URGENCIA */
+    .card-stock-alert { color: #ff3366; font-size: 0.78em; font-weight: bold; background: rgba(255,51,102,0.1); border: 1px solid rgba(255,51,102,0.3); padding: 3px 8px; border-radius: 10px; display: inline-block; }
 
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
     .modal-content { background: #11052C; padding: 20px; border-radius: 20px; text-align: center; max-width: 90%; width: 400px; border: 2px solid #FF007F; box-shadow: 0 0 30px rgba(255,0,127,0.5); position: relative; max-height: 90vh; overflow-y: auto; }
@@ -189,6 +190,11 @@
     .talla-select { background: #0d041a; border: 1px solid #00e5ff; color: white; padding: 8px; border-radius: 10px; width: 100%; font-weight: bold; outline: none; text-align: center; }
 
     .btn-comprar { background: #FF007F; color: white; border: none; padding: 10px 20px; font-size: 1.1em; font-weight: bold; border-radius: 30px; cursor: pointer; margin-top: 15px; box-shadow: 0 0 10px #FF007F; width: 100%; }
+
+    /* ESTILOS DEL FAQ (PREGUNTAS FRECUENTES) */
+    .faq-item { background: #1a0b38; border: 1px solid rgba(0,229,255,0.3); border-radius: 10px; padding: 12px; margin-bottom: 10px; text-align: left; }
+    .faq-question { color: #00e5ff; font-weight: bold; font-size: 0.95em; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
+    .faq-answer { color: #ddd; font-size: 0.88em; line-height: 1.4; }
 
     .cart-item-row { display: flex; align-items: center; justify-content: space-between; background: #1a0b38; padding: 10px; border-radius: 10px; margin-bottom: 10px; border: 1px solid rgba(0,229,255,0.3); }
     .cart-item-img { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; margin-right: 10px; }
@@ -206,7 +212,6 @@
     .btn-del-review { position: absolute; top: 10px; right: 10px; background: #ff3366; color: white; border: none; border-radius: 5px; padding: 3px 8px; font-size: 0.75em; cursor: pointer; }
     .review-form { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
 
-    /* 3. INSIGNIAS DE MÉTODOS DE PAGO Y ENVÍOS ESTILIZADAS */
     .info-section { background: #11052C; margin-top: 40px; margin-bottom: 60px; padding: 30px 20px; border-radius: 15px; border: 1px solid #FF007F; box-shadow: 0 0 15px rgba(255,0,127,0.2); }
     .info-title { color: #00e5ff; font-size: 1.4em; margin-bottom: 20px; text-align: center; }
     .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; font-size: 0.95em; line-height: 1.5; }
@@ -227,6 +232,7 @@
     .instagram-btn { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 24px; text-decoration: none; box-shadow: 0 0 10px rgba(214,36,159,0.6); }
     .tiktok-btn { background-color: #000000; color: white; border: 2px solid #00e5ff; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 22px; text-decoration: none; box-shadow: 0 0 10px rgba(0,229,255,0.6); }
     .sugerencia-btn { background-color: #FF007F; color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 24px; text-decoration: none; box-shadow: 0 0 10px #FF007F; cursor: pointer; border: none; }
+    .faq-btn { background-color: #00e5ff; color: #0d041a; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 22px; text-decoration: none; box-shadow: 0 0 10px #00e5ff; cursor: pointer; border: none; font-weight: bold; }
 
     .bg-elements { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
     .float-item { position: absolute; top: -10%; animation: fall linear infinite; opacity: 0.7; }
@@ -238,7 +244,6 @@
 </head>
 <body>
 
-<!-- 1. TICKER ROTATIVO SUPERIOR -->
 <div class="ticker-bar">
   <div class="ticker-content">
     🔥 ¡Bienvenidos a Sakura Gameverse! Envíos seguros a todo el país exclusivamente por ZOOM y MRW 📦 | 🎮 Nuevos mandos PC, teclados y hoodies disponibles | ⚡ ¡Calcula tu pago móvil al instante con la tasa BCV del día! 🌸
@@ -304,6 +309,7 @@
         <div class="card-title">Hoodie Oversize Anime</div>
         <div class="card-price">$25.00</div>
         <div class="card-bs" data-usd="25.00">≈ Bs. 0.00</div>
+        <div class="card-stock-alert">⚠️ ¡Solo quedan 2 disponibles!</div>
       </div>
 
       <div class="card item-producto" data-nombre="mando gamer inalambrico pc" data-categoria="mandos" data-precio="28.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('lamparas.jpg', 'Mando Pro Inalámbrico PC', 28.00, 'Alta precisión, gatillos sensibles y batería de larga duración. Compatible con PC.', 'Envío Inmediato 📦', false)">
@@ -312,6 +318,7 @@
         <div class="card-title">Mando Pro Inalámbrico PC</div>
         <div class="card-price">$28.00</div>
         <div class="card-bs" data-usd="28.00">≈ Bs. 0.00</div>
+        <div class="card-stock-alert">⚠️ ¡Alta Demanda Gamer!</div>
       </div>
     </div>
   </div>
@@ -324,6 +331,7 @@
       <div class="card-title">Hoodie Oversize Anime</div>
       <div class="card-price">$25.00</div>
       <div class="card-bs" data-usd="25.00">≈ Bs. 0.00</div>
+      <div class="card-stock-alert">⚠️ ¡Solo quedan 2 disponibles!</div>
     </div>
 
     <div class="card item-producto" data-nombre="mando gamer inalambrico pc" data-categoria="mandos" data-precio="28.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('lamparas.jpg', 'Mando Pro Inalámbrico PC', 28.00, 'Alta precisión, gatillos sensibles y batería de larga duración. Compatible con PC.', 'Envío Inmediato 📦', false)">
@@ -332,6 +340,7 @@
       <div class="card-title">Mando Pro Inalámbrico PC</div>
       <div class="card-price">$28.00</div>
       <div class="card-bs" data-usd="28.00">≈ Bs. 0.00</div>
+      <div class="card-stock-alert">⚠️ ¡Alta Demanda Gamer!</div>
     </div>
 
     <div class="card item-producto" data-nombre="teclado mecanico gamer" data-categoria="teclados" data-precio="35.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('lamparas.jpg', 'Teclado Mecánico RGB', 35.00, 'Switches mecánicos, iluminación RGB y respuesta ultra rápida para gaming competitivo.', 'Envío Inmediato 📦', false)">
@@ -340,6 +349,7 @@
       <div class="card-title">Teclado Mecánico RGB</div>
       <div class="card-price">$35.00</div>
       <div class="card-bs" data-usd="35.00">≈ Bs. 0.00</div>
+      <div class="card-stock-alert">⚠️ ¡Quedan 3 unidades!</div>
     </div>
 
     <div class="card item-producto" data-nombre="audifonos gamer surround" data-categoria="audifonos" data-precio="30.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('accesorios.jpeg', 'Audífonos Gamer Surround', 30.00, 'Sonido envolvente 7.1, micrófono con cancelación de ruido y almohadillas ultra cómodas.', 'Envío Inmediato 📦', false)">
@@ -348,6 +358,7 @@
       <div class="card-title">Audífonos Gamer Surround</div>
       <div class="card-price">$30.00</div>
       <div class="card-bs" data-usd="30.00">≈ Bs. 0.00</div>
+      <div class="card-stock-alert">⚠️ ¡Últimas piezas!</div>
     </div>
 
     <div class="card item-producto" data-nombre="figura de coleccion" data-categoria="figuras" data-precio="35.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('figuras.jpg', 'Figura de Colección', 35.00, '¡Una figura épica para tu repisa! Detalles increíbles y acabados premium.', 'Envío Inmediato 📦', false)">
@@ -356,6 +367,7 @@
       <div class="card-title">Figura de Colección</div>
       <div class="card-price">$35.00</div>
       <div class="card-bs" data-usd="35.00">≈ Bs. 0.00</div>
+      <div class="card-stock-alert">⚠️ ¡Stock Limitado!</div>
     </div>
 
     <div class="card item-producto" data-nombre="peluche exclusivo" data-categoria="peluches" data-precio="20.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('peluche.jpg', 'Peluche Exclusivo', 20.00, 'Súper suave y kawaii. El compañero perfecto para tus largas noches de gaming.', 'Disponible por Encargo (100% inicial)', false)">
@@ -364,6 +376,7 @@
       <div class="card-title">Peluche Exclusivo</div>
       <div class="card-price">$20.00</div>
       <div class="card-bs" data-usd="20.00">≈ Bs. 0.00</div>
+      <div class="card-stock-alert">⚡ Modalidad Encargo</div>
     </div>
 
     <div class="card item-producto" data-nombre="katana replica anime" data-categoria="katanas" data-precio="45.00" onclick="crearDestello(event); reproducirSonido(); abrirModal('katanas.jpg', 'Katana Replica Anime', 45.00, 'Replica a escala real. Perfecta para cosplay o para darle un toque épico a tu cuarto.', 'Disponible por Encargo (100% inicial)', false)">
@@ -372,6 +385,7 @@
       <div class="card-title">Katana Replica Anime</div>
       <div class="card-price">$45.00</div>
       <div class="card-bs" data-usd="45.00">≈ Bs. 0.00</div>
+      <div class="card-stock-alert">⚡ Modalidad Encargo</div>
     </div>
   </div>
 
@@ -392,7 +406,6 @@
     </div>
   </div>
 
-  <!-- 3. SECCIÓN DE INFORMACIÓN CON INSIGNIAS ESTILIZADAS -->
   <div class="info-section">
     <div class="info-title">✨ Información, Pagos y Envíos 📦</div>
     <div class="info-grid">
@@ -447,6 +460,34 @@
   </div>
 </div>
 
+<!-- MODAL DE PREGUNTAS FRECUENTES (FAQ) -->
+<div id="modalFaq" class="modal">
+  <div class="modal-content" style="width: 450px;">
+    <button class="cerrar-modal" onclick="cerrarFaqModal()">×</button>
+    <h2 style="color: #00e5ff; margin-top: 0;">❓ Preguntas Frecuentes</h2>
+    
+    <div class="faq-item">
+      <div class="faq-question"><i class="fas fa-map-marker-alt"></i> ¿Hacen entregas personales?</div>
+      <div class="faq-answer">Sí, coordinamos entregas y puntos de encuentro seguros en Carabobo. Escríbenos al WhatsApp para verificar detalles.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question"><i class="fas fa-clock"></i> ¿Cuánto tardan los encargos?</div>
+      <div class="faq-answer">Los artículos bajo la modalidad de encargo se solicitan con el 100% de pago adelantado y suelen llegar en un plazo estimado de 15 a 25 días hábiles.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question"><i class="fas fa-coins"></i> ¿Cómo se calcula el Pago Móvil?</div>
+      <div class="faq-answer">Puedes ver el precio exacto en bolívares reflejado debajo de cada producto usando la tasa BCV del día que puedes actualizar en la parte superior de la tienda.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question"><i class="fas fa-shipping-fast"></i> ¿Por cuáles empresas envían?</div>
+      <div class="faq-answer">Realizamos envíos nacionales con cobro a destino exclusivamente a través de <strong>ZOOM</strong> y <strong>MRW</strong>.</div>
+    </div>
+  </div>
+</div>
+
 <div id="modalCarrito" class="modal">
   <div class="modal-content" style="width: 450px;">
     <button class="cerrar-modal" onclick="cerrarCarritoModal()">×</button>
@@ -480,6 +521,7 @@
 <div class="floating-buttons">
   <a href="https://www.tiktok.com/@sakuragameverse" class="tiktok-btn" target="_blank" title="Síguenos en TikTok"><i class="fab fa-tiktok"></i></a>
   <a href="https://www.instagram.com/sakuragameverse?stkn=bDQ5NXRla2Vyano1" class="instagram-btn" target="_blank" title="Síguenos en Instagram"><i class="fab fa-instagram"></i></a>
+  <button class="faq-btn" onclick="abrirFaqModal()" title="Preguntas Frecuentes"><i class="fas fa-question"></i></button>
   <button class="sugerencia-btn" onclick="abrirSugerenciaModal()" title="Sugerir Mercancía"><i class="fas fa-lightbulb"></i></button>
   <a href="https://wa.me/584244970576" class="whatsapp-btn" target="_blank" title="Escríbenos al WhatsApp"><i class="fab fa-whatsapp"></i></a>
 </div>
@@ -533,7 +575,6 @@
     } catch(e) {}
   }
 
-  // 4. EFECTO DE DESTELLOS KAWAII / GAMER AL HACER CLIC
   function crearDestello(event) {
     let x = event.clientX;
     let y = event.clientY;
@@ -628,6 +669,16 @@
   function cerrarModal() {
     reproducirSonido();
     document.getElementById('miModal').style.display = 'none';
+  }
+
+  function abrirFaqModal() {
+    reproducirSonido();
+    document.getElementById('modalFaq').style.display = 'flex';
+  }
+
+  function cerrarFaqModal() {
+    reproducirSonido();
+    document.getElementById('modalFaq').style.display = 'none';
   }
 
   function agregarAlCarrito() {
