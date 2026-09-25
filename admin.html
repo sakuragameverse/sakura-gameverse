@@ -3,176 +3,570 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin - Sakura Gameverse 🌸</title>
+  <title>Admin Dashboard - Sakura Gameverse</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
   <style>
-    body { background-color: #0d041a; color: white; font-family: sans-serif; margin: 0; padding: 20px; }
-    .container { max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1a0b38 0%, #11052C 100%); padding: 20px; border-radius: 15px; border: 1px solid rgba(0,229,255,0.3); box-shadow: 0 0 20px rgba(0,229,255,0.2); }
-    h2, h3 { color: #00e5ff; text-align: center; }
-    h3 { color: #FF007F; margin-top: 30px; }
-    input, select, button { width: 100%; padding: 12px; margin: 8px 0; box-sizing: border-box; background: #0d041a; color: white; border: 1px solid #00e5ff; border-radius: 8px; font-size: 1em; }
-    button { background: #FF007F; border: none; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px #FF007F; transition: transform 0.2s; }
-    button:active { transform: scale(0.95); }
-    .btn-logout { background: #333; box-shadow: none; border: 1px solid #555; }
-    .btn-delete { background: #ff3366; box-shadow: none; width: auto; padding: 8px 15px; font-size: 0.9em; }
+    :root {
+      --bg-color: #0d041a;
+      --card-bg: linear-gradient(135deg, #1a0b38 0%, #11052C 100%);
+      --text-color: white;
+      --primary-color: #FF007F;
+      --secondary-color: #00e5ff;
+      --border-color: rgba(0,229,255,0.3);
+      --hero-bg: #11052C;
+    }
+
+    body { margin: 0; background-color: var(--bg-color); color: var(--text-color); font-family: sans-serif; overflow-x: hidden; }
+
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-color); }
+    ::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
+
+    .admin-header {
+      background: var(--hero-bg);
+      border-bottom: 2px solid var(--primary-color);
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(255,0,127,0.3);
+    }
+    .admin-title { font-size: 1.3em; font-weight: bold; color: var(--secondary-color); text-shadow: 0 0 8px rgba(0,229,255,0.5); }
+
+    .admin-container { max-width: 1100px; margin: 0 auto; padding: 25px 15px; }
+
+    .admin-tabs {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+      scrollbar-width: thin;
+    }
+
+    .tab-btn {
+      background: var(--hero-bg);
+      color: var(--text-color);
+      border: 1px solid var(--secondary-color);
+      padding: 10px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tab-btn:hover { background: rgba(0,229,255,0.2); box-shadow: 0 0 10px rgba(0,229,255,0.4); }
+    .tab-btn.activo {
+      background: var(--secondary-color);
+      color: #0d041a;
+      box-shadow: 0 0 15px var(--secondary-color);
+      border-color: #fff;
+    }
+
+    .seccion-panel { display: none; animation: fadeIn 0.4s ease; }
+    .seccion-panel.activa { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 25px; }
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+    }
+    .stat-card h3 { color: var(--secondary-color); margin: 0 0 10px 0; font-size: 0.95em; }
+    .stat-value { font-size: 1.5em; font-weight: bold; color: var(--text-color); text-shadow: 0 0 8px rgba(255,255,255,0.3); }
+
+    .admin-card-form {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 25px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+    }
+    .admin-card-form h3 { color: var(--primary-color); margin-top: 0; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 15px; }
+    .admin-input {
+      background: var(--bg-color);
+      border: 1px solid var(--secondary-color);
+      color: var(--text-color);
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.9em;
+      outline: none;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .admin-input:focus { box-shadow: 0 0 10px var(--secondary-color); }
+
+    .fotos-container-admin {
+      background: rgba(0, 229, 255, 0.05);
+      border: 1px dashed var(--secondary-color);
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+    }
+    .fotos-container-admin h4 { color: var(--secondary-color); margin: 0 0 10px 0; font-size: 0.95em; }
     
-    .card { background: #11052C; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px dashed #FF007F; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-    .card-info { flex-grow: 1; }
-    .badge { background: #00e5ff; color: #0d041a; padding: 3px 8px; border-radius: 10px; font-size: 0.8em; font-weight: bold; }
-    
-    #dashboard { display: none; }
+    .file-input-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      font-size: 0.85em;
+      color: var(--text-color);
+    }
+    .file-input-wrapper input[type="file"] {
+      background: var(--bg-color);
+      border: 1px solid var(--primary-color);
+      color: var(--text-color);
+      padding: 6px;
+      border-radius: 8px;
+      font-size: 0.85em;
+      cursor: pointer;
+    }
+
+    .btn-admin-accion {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-weight: bold;
+      border-radius: 20px;
+      cursor: pointer;
+      box-shadow: 0 0 10px var(--primary-color);
+      transition: transform 0.2s;
+    }
+    .btn-admin-accion:hover { transform: scale(1.03); }
+
+    .tabla-responsive { width: 100%; overflow-x: auto; }
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card-bg);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      font-size: 0.9em;
+      text-align: left;
+    }
+    .admin-table th, .admin-table td { padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .admin-table th { background: var(--hero-bg); color: var(--secondary-color); font-weight: bold; }
+    .admin-table tr:hover { background: rgba(0,229,255,0.03); }
+
+    .badge-estado-pedido {
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.75em;
+      font-weight: bold;
+    }
+    .estado-pendiente { background: rgba(255,204,0,0.2); color: #ffcc00; border: 1px solid #ffcc00; }
+    .estado-pagado { background: rgba(37,211,102,0.2); color: #25D366; border: 1px solid #25D366; }
+
+    .btn-eliminar-fila {
+      background: #ff3366; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8em;
+    }
+    .btn-volver-tienda {
+      display: inline-flex; align-items: center; gap: 8px; background: var(--secondary-color); color: #0d041a; font-weight: bold; text-decoration: none; padding: 8px 16px; border-radius: 20px; margin-bottom: 15px; box-shadow: 0 0 10px rgba(0,229,255,0.3);
+    }
+
+    #loginScreen {
+      max-width: 400px;
+      margin: 10vh auto;
+      text-align: center;
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 20px;
+      border: 2px solid var(--primary-color);
+      box-shadow: 0 0 30px rgba(255,0,127,0.4);
+    }
+    #loginScreen input { margin-bottom: 15px; }
   </style>
 </head>
 <body>
 
-  <!-- PANTALLA DE LOGIN -->
-  <div class="container" id="loginScreen">
-    <h2>🔐 Ingreso Autorizado</h2>
-    <p style="text-align: center; font-size: 0.9em; color: #aaa;">Solo personal de Sakura Gameverse</p>
-    <input type="email" id="email" placeholder="Correo de administrador">
-    <input type="password" id="pass" placeholder="Contraseña">
-    <button onclick="iniciarSesion()">Entrar al Sistema 🚀</button>
+<!-- PANTALLA DE LOGIN -->
+<div id="loginScreen">
+  <div style="font-size: 50px; margin-bottom: 10px;">🔐</div>
+  <h2 style="color: var(--secondary-color); margin-top: 0;">Ingreso Autorizado</h2>
+  <p style="font-size: 0.9em; color: #aaa; margin-bottom: 25px;">Solo personal de Sakura Gameverse</p>
+  
+  <input type="email" id="email" class="admin-input" placeholder="Correo de administrador">
+  <input type="password" id="pass" class="admin-input" placeholder="Contraseña">
+  
+  <button class="btn-admin-accion" style="width: 100%;" onclick="iniciarSesion()">Entrar al Sistema 🚀</button>
+</div>
+
+<!-- PANEL PRINCIPAL (OCULTO HASTA INICIAR SESIÓN) -->
+<div id="mainDashboard" style="display: none;">
+  <div class="admin-header">
+    <div class="admin-title">⚙️ Panel de Control & Administración General</div>
+    <button class="btn-eliminar-fila" style="margin-top: 10px;" onclick="cerrarSesion()">Cerrar Sesión 🔒</button>
   </div>
 
-  <!-- PANTALLA DEL INVENTARIO -->
-  <div class="container" id="dashboard">
-    <h2>🌸 Panel de Control Nube</h2>
-    <button class="btn-logout" onclick="cerrarSesion()">Cerrar Sesión 🔒</button>
-    
-    <h3>➕ Añadir Nuevo Producto</h3>
-    <input type="text" id="pNombre" placeholder="Nombre del producto (Ej: Katana Zoro)">
-    <input type="number" id="pPrecio" placeholder="Precio en dólares (Ej: 25.50)" step="0.01">
-    
-    <select id="pCategoria">
-      <option value="mangas">📚 Mangas</option>
-      <option value="ropa">👕 Ropa / Hoodies</option>
-      <option value="mandos">🎮 Mandos PC</option>
-      <option value="teclados">⌨️ Teclados</option>
-      <option value="audifonos">🎧 Audífonos</option>
-      <option value="figuras">🗿 Figuras</option>
-      <option value="peluches">🧸 Peluches</option>
-      <option value="cartas">🃏 Cartas TCG</option>
-      <option value="katanas">⚔️ Katanas</option>
-      <option value="lamparas">💡 Lámparas</option>
-    </select>
-    
-    <select id="pEstado">
-      <option value="Envío Inmediato 📦">📦 Stock Inmediato</option>
-      <option value="Por Encargo ⚡">⚡ Por Encargo</option>
-    </select>
-    
-    <input type="text" id="pImagen" placeholder="URL o nombre de foto (Ej: figuras.jpg)">
-    <button onclick="guardarProducto()">Guardar en la Nube ☁️</button>
+  <div class="admin-container">
+    <a href="index.html" class="btn-volver-tienda"><i class="fas fa-arrow-left"></i> Volver a la Tienda Web</a>
 
-    <h3>📦 Inventario Actual</h3>
-    <div id="listaProductos">Cargando inventario...</div>
+    <div class="admin-tabs">
+      <button class="tab-btn activo" onclick="cambiarTab('dash', event)"><i class="fas fa-chart-line"></i> Dashboard</button>
+      <button class="tab-btn" onclick="cambiarTab('inventario', event)"><i class="fas fa-boxes"></i> Inventario Nube</button>
+      <button class="tab-btn" onclick="cambiarTab('pedidos', event)"><i class="fas fa-shopping-cart"></i> Pedidos</button>
+      <button class="tab-btn" onclick="cambiarTab('cupones', event)"><i class="fas fa-ticket-alt"></i> Cupones</button>
+      <button class="tab-btn" onclick="cambiarTab('comunidad', event)"><i class="fas fa-users"></i> Comunidad & XP</button>
+      <button class="tab-btn" onclick="cambiarTab('finanzas', event)"><i class="fas fa-coins"></i> Tasa BCV & Pagos</button>
+    </div>
+
+    <!-- SECCIÓN 1: DASHBOARD -->
+    <div id="seccion-dash" class="seccion-panel activa">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>⚡ Tasa BCV Actual</h3>
+          <div class="stat-value" id="statTasa">Bs. 0.00</div>
+        </div>
+        <div class="stat-card">
+          <h3>📦 Productos en Nube</h3>
+          <div class="stat-value" id="statProductos">0</div>
+        </div>
+        <div class="stat-card">
+          <h3>🛒 Pedidos Recibidos</h3>
+          <div class="stat-value" id="statPedidos">0</div>
+        </div>
+        <div class="stat-card">
+          <h3>🎟️ Cupones Activos</h3>
+          <div class="stat-value" id="statCupones">3</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 2: INVENTARIO CON CARGA DIRECTA DE ARCHIVOS -->
+    <div id="seccion-inventario" class="seccion-panel">
+      <div class="admin-card-form">
+        <h3><i class="fas fa-plus-circle"></i> Agregar Producto a Firebase con Fotos</h3>
+        <div class="form-grid">
+          <input type="text" id="nuevoNombre" class="admin-input" placeholder="Nombre del Producto">
+          <input type="number" id="nuevoPrecio" class="admin-input" placeholder="Precio USD ($)" step="0.01">
+          <select id="nuevaCategoria" class="admin-input">
+            <option value="mangas">Mangas</option>
+            <option value="ropa">Ropa / Hoodies</option>
+            <option value="mandos">Mandos PC</option>
+            <option value="teclados">Teclados</option>
+            <option value="audifonos">Audífonos</option>
+            <option value="figuras">Figuras</option>
+            <option value="peluches">Peluches</option>
+            <option value="cartas">Cartas TCG</option>
+            <option value="katanas">Katanas</option>
+            <option value="lamparas">Lámparas</option>
+          </select>
+          <select id="nuevoEstado" class="admin-input">
+            <option value="Envío Inmediato 📦">Stock Inmediato 📦</option>
+            <option value="Por Encargo ⚡">Por Encargo ⚡</option>
+          </select>
+        </div>
+
+        <div class="fotos-container-admin">
+          <h4>📸 Seleccionar hasta 5 fotos directo de tu dispositivo:</h4>
+          <div class="form-grid">
+            <div class="file-input-wrapper">
+              <label>Foto 1 (Principal):</label>
+              <input type="file" id="fileFoto1" accept="image/*">
+            </div>
+            <div class="file-input-wrapper">
+              <label>Foto 2 (Opcional):</label>
+              <input type="file" id="fileFoto2" accept="image/*">
+            </div>
+            <div class="file-input-wrapper">
+              <label>Foto 3 (Opcional):</label>
+              <input type="file" id="fileFoto3" accept="image/*">
+            </div>
+            <div class="file-input-wrapper">
+              <label>Foto 4 (Opcional):</label>
+              <input type="file" id="fileFoto4" accept="image/*">
+            </div>
+            <div class="file-input-wrapper">
+              <label>Foto 5 (Opcional):</label>
+              <input type="file" id="fileFoto5" accept="image/*">
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-admin-accion" onclick="procesarYGuardarProducto()">Guardar Producto en la Nube ☁️</button>
+      </div>
+
+      <div class="admin-card-form">
+        <h3><i class="fas fa-list"></i> Catálogo Activo en Firebase</h3>
+        <div class="tabla-responsive">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Categoría</th>
+                <th>Precio ($)</th>
+                <th>Fotos 📸</th>
+                <th>Modalidad</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="tablaInventarioAdmin"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 3: PEDIDOS -->
+    <div id="seccion-pedidos" class="seccion-panel">
+      <div class="admin-card-form">
+        <h3><i class="fas fa-clipboard-list"></i> Registro de Pedidos (Próximamente)</h3>
+        <p style="color: #aaa; font-size: 0.9em;">Los pedidos llegarán aquí de forma automática en una próxima actualización.</p>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 4: CUPONES -->
+    <div id="seccion-cupones" class="seccion-panel">
+      <div class="admin-card-form">
+        <h3><i class="fas fa-ticket-alt"></i> Crear Nuevo Cupón de Descuento (Local)</h3>
+        <div class="form-grid">
+          <input type="text" id="inputCodigoCupon" class="admin-input" placeholder="Código (Ej: OTAKU10)">
+          <input type="number" id="inputPorcentajeCupon" class="admin-input" placeholder="Descuento % (Ej: 10)" min="1" max="100">
+        </div>
+        <button class="btn-admin-accion" onclick="alert('Función de guardar códigos en construcción.')">Crear Cupón 🎟️</button>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 5: COMUNIDAD & XP -->
+    <div id="seccion-comunidad" class="seccion-panel">
+      <div class="admin-card-form">
+        <h3><i class="fas fa-users"></i> Gestión de Jugadores (Próximamente)</h3>
+        <p style="color: #aaa; font-size: 0.9em;">Busca y modifica la XP y Rango de los usuarios registrados.</p>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 6: TASA BCV & FINANZAS -->
+    <div id="seccion-finanzas" class="seccion-panel">
+      <div class="admin-card-form">
+        <h3><i class="fas fa-coins"></i> Tasa BCV Oficial</h3>
+        <div style="display: flex; gap: 10px; max-width: 350px; margin-bottom: 20px;">
+          <input type="number" id="adminInputTasa" class="admin-input" step="0.01">
+          <button class="btn-admin-accion" onclick="guardarTasaAdmin()">Actualizar 🚀</button>
+        </div>
+      </div>
+
+      <div class="admin-card-form">
+        <h3><i class="fas fa-credit-card"></i> Datos de Pago (Pago Móvil / Binance)</h3>
+        <div class="form-grid">
+          <div><label style="font-size:0.85em; color:var(--secondary-color);">Banco:</label><input type="text" id="pagoBanco" class="admin-input"></div>
+          <div><label style="font-size:0.85em; color:var(--secondary-color);">Teléfono:</label><input type="text" id="pagoTelefono" class="admin-input"></div>
+          <div><label style="font-size:0.85em; color:var(--secondary-color);">Cédula:</label><input type="text" id="pagoCedula" class="admin-input"></div>
+          <div><label style="font-size:0.85em; color:var(--secondary-color);">Binance:</label><input type="text" id="pagoBinance" class="admin-input"></div>
+        </div>
+        <button class="btn-admin-accion" onclick="guardarDatosPagoAdmin()">Guardar Datos 💾</button>
+      </div>
+    </div>
   </div>
+</div>
 
-  <script type="module">
-    // Importaciones oficiales de Firebase
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, orderBy, query } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+<!-- LÓGICA FIREBASE Y FUNCIONES DEL PANEL -->
+<script type="module">
+  // Importaciones Firebase
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, orderBy, query } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
-    // Tus llaves maestras
-    const firebaseConfig = {
-      apiKey: "AIzaSyDH1DZqaIi5sKRXspXDUWbMUZ4nr5JIy8Q",
-      authDomain: "sakura-gameverse.firebaseapp.com",
-      projectId: "sakura-gameverse",
-      storageBucket: "sakura-gameverse.firebasestorage.app",
-      messagingSenderId: "226328425516",
-      appId: "1:226328425516:web:8dc11761639228c6120d89"
-    };
+  // Configuración de Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyDH1DZqaIi5sKRXspXDUWbMUZ4nr5JIy8Q",
+    authDomain: "sakura-gameverse.firebaseapp.com",
+    projectId: "sakura-gameverse",
+    storageBucket: "sakura-gameverse.firebasestorage.app",
+    messagingSenderId: "226328425516",
+    appId: "1:226328425516:web:8dc11761639228c6120d89"
+  };
 
-    // Inicializar la magia
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-    // Funciones de Login
-    window.iniciarSesion = () => {
-      const e = document.getElementById('email').value;
-      const p = document.getElementById('pass').value;
-      if(!e || !p) return alert("Faltan datos, jefe.");
-      signInWithEmailAndPassword(auth, e, p).catch(err => alert("Acceso denegado: " + err.message));
-    };
+  // Exponer funciones al entorno global (window) para que funcionen con los botones del HTML
+  window.cambiarTab = (tabId, evento) => {
+    let botones = document.querySelectorAll('.tab-btn');
+    botones.forEach(btn => btn.classList.remove('activo'));
+    evento.currentTarget.classList.add('activo');
+    let secciones = document.querySelectorAll('.seccion-panel');
+    secciones.forEach(sec => sec.classList.remove('activa'));
+    document.getElementById('seccion-' + tabId).classList.add('activa');
+  };
 
-    window.cerrarSesion = () => signOut(auth);
+  // SISTEMA DE LOGIN
+  window.iniciarSesion = () => {
+    const e = document.getElementById('email').value;
+    const p = document.getElementById('pass').value;
+    if(!e || !p) return alert("Faltan datos, jefe. 👾");
+    signInWithEmailAndPassword(auth, e, p).catch(err => alert("Acceso denegado: " + err.message));
+  };
 
-    // Detector de estado de sesión
-    onAuthStateChanged(auth, user => {
-      if(user) {
-        document.getElementById('loginScreen').style.display = 'none';
-        document.getElementById('dashboard').style.display = 'block';
-        cargarProductos();
-      } else {
-        document.getElementById('loginScreen').style.display = 'block';
-        document.getElementById('dashboard').style.display = 'none';
-      }
-    });
+  window.cerrarSesion = () => signOut(auth);
 
-    // Guardar producto en Firestore
-    window.guardarProducto = async () => {
-      const nombre = document.getElementById('pNombre').value.trim();
-      const precio = parseFloat(document.getElementById('pPrecio').value);
-      const categoria = document.getElementById('pCategoria').value;
-      const estado = document.getElementById('pEstado').value;
-      const imagen = document.getElementById('pImagen').value.trim() || 'logo.webp';
+  onAuthStateChanged(auth, user => {
+    if(user) {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('mainDashboard').style.display = 'block';
+      window.cargarInventarioNube();
+    } else {
+      document.getElementById('loginScreen').style.display = 'block';
+      document.getElementById('mainDashboard').style.display = 'none';
+    }
+  });
 
-      if(!nombre || isNaN(precio)) return alert("¡Ey! El nombre y el precio son obligatorios. 👾");
+  // GESTIÓN DE TASA BCV Y FINANZAS (LOCAL)
+  let tasaBcv = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 854.46;
+  document.getElementById('statTasa').innerText = `Bs. ${tasaBcv.toFixed(2)}`;
+  document.getElementById('adminInputTasa').value = tasaBcv;
 
-      try {
-        await addDoc(collection(db, "productos"), { 
-          nombre, precio, categoria, estado, fotos: [imagen], timestamp: Date.now() 
-        });
-        alert("¡Producto guardado exitosamente en la nube! ✨");
+  window.guardarTasaAdmin = () => {
+    let nuevaTasa = parseFloat(document.getElementById('adminInputTasa').value);
+    if (!isNaN(nuevaTasa) && nuevaTasa > 0) {
+      localStorage.setItem('sakura_tasa_bcv', nuevaTasa);
+      tasaBcv = nuevaTasa;
+      document.getElementById('statTasa').innerText = `Bs. ${tasaBcv.toFixed(2)}`;
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+      alert("⚡ ¡Tasa BCV actualizada con éxito!");
+    }
+  };
+
+  let datosPago = JSON.parse(localStorage.getItem('sakura_datos_pago')) || { banco: "Banesco (0134)", telefono: "0424-4970576", cedula: "V-27000000", binance: "sakuragameverse@gmail.com" };
+  document.getElementById('pagoBanco').value = datosPago.banco;
+  document.getElementById('pagoTelefono').value = datosPago.telefono;
+  document.getElementById('pagoCedula').value = datosPago.cedula;
+  document.getElementById('pagoBinance').value = datosPago.binance;
+
+  window.guardarDatosPagoAdmin = () => {
+    datosPago.banco = document.getElementById('pagoBanco').value;
+    datosPago.telefono = document.getElementById('pagoTelefono').value;
+    datosPago.cedula = document.getElementById('pagoCedula').value;
+    datosPago.binance = document.getElementById('pagoBinance').value;
+    localStorage.setItem('sakura_datos_pago', JSON.stringify(datosPago));
+    alert("💾 ¡Datos de pago guardados!");
+  };
+
+  // CARGAR INVENTARIO DESDE FIREBASE
+  window.cargarInventarioNube = async () => {
+    try {
+      const q = query(collection(db, "productos"), orderBy("timestamp", "desc"));
+      const querySnapshot = await getDocs(q);
+      let tbody = document.getElementById('tablaInventarioAdmin');
+      tbody.innerHTML = "";
+      
+      let contador = 0;
+      querySnapshot.forEach((doc) => {
+        contador++;
+        let p = doc.data();
+        let numFotos = p.fotos ? p.fotos.length : 0;
+        let colorClase = p.estado.includes("Encargo") ? "estado-pendiente" : "estado-pagado";
         
-        // Limpiar campos
-        document.getElementById('pNombre').value = "";
-        document.getElementById('pPrecio').value = "";
-        document.getElementById('pImagen').value = "";
-        
-        cargarProductos();
-      } catch (error) {
-        alert("Error al guardar: " + error.message);
-      }
-    };
+        tbody.innerHTML += `
+          <tr>
+            <td><strong>${p.nombre}</strong></td>
+            <td>${p.categoria}</td>
+            <td style="color: var(--secondary-color);">$${p.precio.toFixed(2)}</td>
+            <td><span style="color: #ffcc00; font-weight: bold;">🖼️ ${numFotos} foto(s)</span></td>
+            <td><span class="badge-estado-pedido ${colorClase}">${p.estado}</span></td>
+            <td><button class="btn-eliminar-fila" onclick="eliminarProductoAdmin('${doc.id}')"><i class="fas fa-trash"></i> Eliminar</button></td>
+          </tr>
+        `;
+      });
+      document.getElementById('statProductos').innerText = contador;
+    } catch (error) {
+      console.error("Error al cargar:", error);
+    }
+  };
 
-    // Cargar y mostrar productos desde Firestore
-    window.cargarProductos = async () => {
-      try {
-        const q = query(collection(db, "productos"), orderBy("timestamp", "desc"));
-        const querySnapshot = await getDocs(q);
-        let html = "";
+  // GUARDAR PRODUCTO EN FIREBASE (CON FOTOS BASE64)
+  window.procesarYGuardarProducto = () => {
+    let nombre = document.getElementById('nuevoNombre').value.trim();
+    let precio = parseFloat(document.getElementById('nuevoPrecio').value);
+    let categoria = document.getElementById('nuevaCategoria').value;
+    let estado = document.getElementById('nuevoEstado').value;
+
+    if (!nombre || isNaN(precio) || precio <= 0) {
+      alert("Por favor ingresa un nombre y un precio válido.");
+      return;
+    }
+
+    let inputFiles = [
+      document.getElementById('fileFoto1').files[0],
+      document.getElementById('fileFoto2').files[0],
+      document.getElementById('fileFoto3').files[0],
+      document.getElementById('fileFoto4').files[0],
+      document.getElementById('fileFoto5').files[0]
+    ];
+
+    let archivosValidos = inputFiles.filter(file => file !== undefined);
+
+    if (archivosValidos.length === 0) {
+      alert("Por favor selecciona al menos la primera foto principal desde tu dispositivo.");
+      return;
+    }
+
+    let fotosProcesadas = [];
+    let leidos = 0;
+
+    // Convertir imágenes a Base64 para guardarlas directo en Firestore
+    archivosValidos.forEach((file, idx) => {
+      let reader = new FileReader();
+      reader.onload = async function(e) {
+        fotosProcesadas[idx] = e.target.result;
+        leidos++;
         
-        if (querySnapshot.empty) {
-          html = "<p style='color: #aaa; text-align: center;'>El inventario está vacío.</p>";
-        } else {
-          querySnapshot.forEach((doc) => {
-            let p = doc.data();
-            html += `
-              <div class="card">
-                <div class="card-info">
-                  <div style="font-size: 1.1em; font-weight: bold; color: #00e5ff; margin-bottom: 5px;">${p.nombre}</div>
-                  <div style="color: white; margin-bottom: 5px;">Precio: <strong style="color: #FF007F;">$${p.precio.toFixed(2)}</strong></div>
-                  <span class="badge">${p.categoria}</span> <span class="badge" style="background: #FF007F; color: white;">${p.estado}</span>
-                </div>
-                <button class="btn-delete" onclick="borrarProducto('${doc.id}')">🗑️ Borrar</button>
-              </div>`;
-          });
+        // Cuando todas las fotos se hayan procesado, subimos a Firebase
+        if (leidos === archivosValidos.length) {
+          try {
+            await addDoc(collection(db, "productos"), {
+              nombre: nombre,
+              precio: precio,
+              categoria: categoria,
+              estado: estado,
+              fotos: fotosProcesadas,
+              timestamp: Date.now()
+            });
+            
+            alert("¡Producto guardado exitosamente en la nube! ☁️✨");
+            window.cargarInventarioNube();
+            
+            // Limpiar formulario
+            document.getElementById('nuevoNombre').value = "";
+            document.getElementById('nuevoPrecio').value = "";
+            document.getElementById('fileFoto1').value = "";
+            document.getElementById('fileFoto2').value = "";
+            document.getElementById('fileFoto3').value = "";
+            document.getElementById('fileFoto4').value = "";
+            document.getElementById('fileFoto5').value = "";
+          } catch (error) {
+            alert("Error al subir a la nube: " + error.message);
+          }
         }
-        document.getElementById('listaProductos').innerHTML = html;
-      } catch (error) {
-        document.getElementById('listaProductos').innerHTML = "Error cargando datos: Verifica que la base de datos esté en Modo de Prueba.";
-      }
-    };
+      };
+      reader.readAsDataURL(file);
+    });
+  };
 
-    // Borrar producto de Firestore
-    window.borrarProducto = async (id) => {
-      if(confirm("¿Estás 100% seguro de eliminar este artículo? 😱")) {
+  // ELIMINAR PRODUCTO DE FIREBASE
+  window.eliminarProductoAdmin = async (id) => {
+    if(confirm("¿Estás 100% seguro de eliminar este artículo de la nube? 😱")) {
+      try {
         await deleteDoc(doc(db, "productos", id));
-        cargarProductos();
+        window.cargarInventarioNube();
+      } catch(error) {
+        alert("Error al eliminar: " + error.message);
       }
-    };
-  </script>
+    }
+  };
+</script>
+
 </body>
 </html>
