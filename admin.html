@@ -108,6 +108,15 @@
     }
     .admin-input:focus { box-shadow: 0 0 10px var(--secondary-color); }
 
+    .fotos-container-admin {
+      background: rgba(0, 229, 255, 0.05);
+      border: 1px dashed var(--secondary-color);
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+    }
+    .fotos-container-admin h4 { color: var(--secondary-color); margin: 0 0 10px 0; font-size: 0.95em; }
+
     .btn-admin-accion {
       background: var(--primary-color);
       color: white;
@@ -194,10 +203,10 @@
     </div>
   </div>
 
-  <!-- SECCIÓN 2: INVENTARIO -->
+  <!-- SECCIÓN 2: INVENTARIO CON 5 FOTOS -->
   <div id="seccion-inventario" class="seccion-panel">
     <div class="admin-card-form">
-      <h3><i class="fas fa-plus-circle"></i> Agregar Nuevo Producto</h3>
+      <h3><i class="fas fa-plus-circle"></i> Agregar Nuevo Producto con Galería (Hasta 5 Fotos)</h3>
       <div class="form-grid">
         <input type="text" id="nuevoNombre" class="admin-input" placeholder="Nombre del Producto">
         <input type="number" id="nuevoPrecio" class="admin-input" placeholder="Precio USD ($)" step="0.01">
@@ -218,7 +227,19 @@
           <option value="Por Encargo">Por Encargo ⚡</option>
         </select>
       </div>
-      <button class="btn-admin-accion" onclick="agregarProductoAdmin()">Guardar Producto 💾</button>
+
+      <div class="fotos-container-admin">
+        <h4>📸 Galería de Fotos (Nombres de archivo o Enlaces)</h4>
+        <div class="form-grid">
+          <input type="text" id="foto1" class="admin-input" placeholder="Foto 1 (Principal - Ej: figura1.jpg)">
+          <input type="text" id="foto2" class="admin-input" placeholder="Foto 2 (Opcional)">
+          <input type="text" id="foto3" class="admin-input" placeholder="Foto 3 (Opcional)">
+          <input type="text" id="foto4" class="admin-input" placeholder="Foto 4 (Opcional)">
+          <input type="text" id="foto5" class="admin-input" placeholder="Foto 5 (Opcional)">
+        </div>
+      </div>
+
+      <button class="btn-admin-accion" onclick="agregarProductoAdmin()">Guardar Producto con Fotos 💾</button>
     </div>
 
     <div class="admin-card-form">
@@ -230,6 +251,7 @@
               <th>Producto</th>
               <th>Categoría</th>
               <th>Precio ($)</th>
+              <th>Fotos 📸</th>
               <th>Modalidad</th>
               <th>Acción</th>
             </tr>
@@ -266,7 +288,7 @@
     <div class="admin-card-form">
       <h3><i class="fas fa-ticket-alt"></i> Crear Nuevo Cupón de Descuento</h3>
       <div class="form-grid">
-        <input type="text" id="inputCodigoCupon" class="admin-input" placeholder="Código (Ej: OTOKUPRO)">
+        <input type="text" id="inputCodigoCupon" class="admin-input" placeholder="Código (Ej: OTAKU10)">
         <input type="number" id="inputPorcentajeCupon" class="admin-input" placeholder="Descuento % (Ej: 10)" min="1" max="100">
       </div>
       <button class="btn-admin-accion" onclick="agregarCuponAdmin()">Crear Cupón 🎟️</button>
@@ -372,21 +394,23 @@
     alert("💾 ¡Datos de pago guardados!");
   }
 
-  // INVENTARIO
+  // INVENTARIO CON 5 FOTOS
   let listaInventario = JSON.parse(localStorage.getItem('sakura_inventario_admin')) || [
-    { nombre: "Tomo Manga Original", categoria: "Mangas", precio: 12.00, estado: "Inmediato" },
-    { nombre: "Booster Box Cartas TCG", categoria: "Cartas", precio: 40.00, estado: "Inmediato" }
+    { nombre: "Tomo Manga Original", categoria: "Mangas", precio: 12.00, estado: "Inmediato", fotos: ["figuras.jpg"] },
+    { nombre: "Booster Box Cartas TCG", categoria: "Cartas", precio: 40.00, estado: "Inmediato", fotos: ["accesorios.jpeg"] }
   ];
 
   function renderInventarioAdmin() {
     let tbody = document.getElementById('tablaInventarioAdmin');
     tbody.innerHTML = "";
     listaInventario.forEach((item, index) => {
+      let numFotos = item.fotos ? item.fotos.filter(f => f.trim() !== "").length : 0;
       tbody.innerHTML += `
         <tr>
           <td><strong>${item.nombre}</strong></td>
           <td>${item.categoria}</td>
           <td style="color: var(--secondary-color);">$${item.precio.toFixed(2)}</td>
+          <td><span style="color: #ffcc00; font-weight: bold;">🖼️ ${numFotos} foto(s)</span></td>
           <td><span class="badge-estado-pedido estado-pagado">${item.estado}</span></td>
           <td><button class="btn-eliminar-fila" onclick="eliminarProductoAdmin(${index})">Eliminar</button></td>
         </tr>
@@ -402,13 +426,30 @@
     let categoria = document.getElementById('nuevaCategoria').value;
     let estado = document.getElementById('nuevoEstado').value;
 
-    if (!nombre || isNaN(precio) || precio <= 0) { alert("Completa los campos correctamente."); return; }
-    listaInventario.push({ nombre, categoria, precio, estado });
+    let f1 = document.getElementById('foto1').value.trim();
+    let f2 = document.getElementById('foto2').value.trim();
+    let f3 = document.getElementById('foto3').value.trim();
+    let f4 = document.getElementById('foto4').value.trim();
+    let f5 = document.getElementById('foto5').value.trim();
+
+    let fotosArray = [f1, f2, f3, f4, f5].filter(f => f !== "");
+
+    if (!nombre || isNaN(precio) || precio <= 0) { alert("Completa el nombre y el precio correctamente."); return; }
+    if (fotosArray.length === 0) { alert("Por lo menos añade la primera foto principal."); return; }
+
+    listaInventario.push({ nombre, categoria, precio, estado, fotos: fotosArray });
     localStorage.setItem('sakura_inventario_admin', JSON.stringify(listaInventario));
     renderInventarioAdmin();
+
     document.getElementById('nuevoNombre').value = "";
     document.getElementById('nuevoPrecio').value = "";
-    alert("📦 ¡Producto agregado!");
+    document.getElementById('foto1').value = "";
+    document.getElementById('foto2').value = "";
+    document.getElementById('foto3').value = "";
+    document.getElementById('foto4').value = "";
+    document.getElementById('foto5').value = "";
+
+    alert("📦 ¡Producto agregado con su galería de fotos!");
   }
 
   function eliminarProductoAdmin(index) {
@@ -419,7 +460,7 @@
     }
   }
 
-  // PEDIDOS SINCRONIZADOS
+  // PEDIDOS
   let listaPedidos = JSON.parse(localStorage.getItem('sakura_pedidos')) || [];
   function renderPedidosAdmin() {
     let tbody = document.getElementById('tablaPedidosAdmin');
@@ -449,7 +490,7 @@
     renderPedidosAdmin();
   }
 
-  // CUPONES DINÁMICOS
+  // CUPONES
   let listaCupones = JSON.parse(localStorage.getItem('sakura_cupones')) || [
     { codigo: "OTAKU10", descuento: 10 },
     { codigo: "GACHA5", descuento: 5 },
