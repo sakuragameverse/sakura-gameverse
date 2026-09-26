@@ -48,7 +48,6 @@
     .splash-box { background: var(--hero-bg); border: 3px solid var(--primary-color); padding: 30px 40px; border-radius: 20px; text-align: center; box-shadow: 0 0 30px var(--primary-color), 0 0 60px rgba(0, 229, 255, 0.4); animation: box-pulse 1.5s infinite alternate; max-width: 90%; width: 320px; }
     @keyframes box-pulse { 0% { box-shadow: 0 0 15px var(--primary-color), inset 0 0 10px rgba(255,0,127,0.3); border-color: var(--primary-color); } 100% { box-shadow: 0 0 35px var(--secondary-color), 0 0 50px var(--primary-color), inset 0 0 20px rgba(0,229,255,0.4); border-color: var(--secondary-color); } }
     
-    /* LOGO AMPLIADO CON SOMBREADO NEÓN EN SPLASH */
     .splash-logo { max-width: 260px; margin-bottom: 15px; filter: drop-shadow(0 0 12px var(--secondary-color)) drop-shadow(0 0 25px var(--primary-color)); cursor: pointer; transition: transform 0.3s ease; }
     .splash-logo:hover { transform: scale(1.05); }
 
@@ -59,18 +58,94 @@
 
     .hero-banner { background-color: var(--hero-bg); text-align: center; padding: 30px 20px 20px 20px; border-bottom: 3px solid var(--primary-color); box-shadow: 0 0 20px rgba(255, 0, 127, 0.4); position: relative; z-index: 2; transition: background 0.4s ease; }
     
-    /* LOGO AMPLIADO CON SOMBREADO NEÓN EN HERO BANNER */
     .hero-logo { max-width: 270px; margin-bottom: 10px; filter: drop-shadow(0 0 15px var(--secondary-color)) drop-shadow(0 0 30px var(--primary-color)); cursor: pointer; transition: transform 0.3s ease; }
     .hero-logo:hover { transform: scale(1.06); filter: drop-shadow(0 0 20px var(--secondary-color)) drop-shadow(0 0 35px var(--secondary-color)); }
 
     .hero-title { font-size: 1.1em; font-weight: bold; margin-bottom: 12px; letter-spacing: 1px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
     
-    .banner-slider-container { position: relative; width: 100%; max-width: 800px; margin: 15px auto; border-radius: 15px; overflow: hidden; box-shadow: 0 0 20px rgba(0,229,255,0.3); aspect-ratio: 21/9; background: var(--card-bg); display: none; }
-    .banner-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.8s ease; object-fit: cover; cursor: pointer; }
-    .banner-slide.active { opacity: 1; z-index: 2; }
-    .banner-dots { position: absolute; bottom: 10px; width: 100%; text-align: center; z-index: 5; }
-    .banner-dot { display: inline-block; width: 8px; height: 8px; background: rgba(255,255,255,0.5); margin: 0 4px; border-radius: 50%; cursor: pointer; }
-    .banner-dot.active { background: var(--secondary-color); box-shadow: 0 0 8px var(--secondary-color); }
+    /* ESTILOS DEL BANNER CARRUSEL PRO */
+    .banner-slider-container {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      margin: 20px auto;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(0, 229, 255, 0.25), 0 4px 10px rgba(0,0,0,0.5);
+      aspect-ratio: 21/9;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      display: none;
+    }
+    .banner-slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.8s ease-in-out;
+      cursor: pointer;
+    }
+    .banner-slide.active {
+      opacity: 1;
+      z-index: 2;
+    }
+    .banner-control-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      color: var(--secondary-color);
+      border: 1px solid var(--secondary-color);
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.9em;
+      z-index: 10;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(4px);
+    }
+    .banner-control-btn:hover {
+      background: rgba(0, 229, 255, 0.3);
+      color: white;
+      box-shadow: 0 0 10px var(--secondary-color);
+    }
+    .banner-prev { left: 12px; }
+    .banner-next { right: 12px; }
+
+    .banner-dots {
+      position: absolute;
+      bottom: 12px;
+      right: 20px;
+      display: flex;
+      gap: 6px;
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 6px 10px;
+      border-radius: 20px;
+      backdrop-filter: blur(4px);
+    }
+    .banner-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .banner-dot.active {
+      background: var(--secondary-color);
+      width: 20px;
+      border-radius: 4px;
+      box-shadow: 0 0 8px var(--secondary-color);
+    }
 
     .store-status-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(37, 211, 102, 0.15); border: 1px solid #25D366; padding: 5px 12px; border-radius: 20px; font-size: 0.85em; font-weight: bold; color: #25D366; margin-bottom: 12px; box-shadow: 0 0 10px rgba(37,211,102,0.3); }
     .status-dot { width: 10px; height: 10px; background-color: #25D366; border-radius: 50%; box-shadow: 0 0 8px #25D366; animation: pulse-dot 1.5s infinite; }
@@ -313,6 +388,7 @@
 
   <div class="hero-title">✨ Bienvenidos a Sakura Gameverse ✨<br>Donde tu pasión por el gaming nunca hace game over. 👾🌸</div>
   
+  <!-- Banner Carrusel Pro Conectado a Firebase -->
   <div id="bannerSliderContainer" class="banner-slider-container"></div>
 
   <div class="flash-sale-banner">
@@ -595,7 +671,13 @@
         index++;
       });
       htmlDots += '</div>';
-      container.innerHTML = htmlImgs + htmlDots;
+
+      let flechasHtml = index > 1 ? `
+        <div class="banner-control-btn banner-prev" onclick="rotarBanner(-1)"><i class="fas fa-chevron-left"></i></div>
+        <div class="banner-control-btn banner-next" onclick="rotarBanner(1)"><i class="fas fa-chevron-right"></i></div>
+      ` : '';
+
+      container.innerHTML = htmlImgs + flechasHtml + htmlDots;
       
       iniciarAutoSliderBanners(index);
     } catch (e) { console.error("Error cargando banners:", e); }
@@ -1129,7 +1211,7 @@
     reviews.unshift({ nombre: n, estrellas: e, texto: t });
     localStorage.setItem('sakura_reviews', JSON.stringify(reviews));
     document.getElementById('revNombre').value = "";
-    document.getElementById('revTexto5').value = "";
+    document.getElementById('revTexto').value = "";
     renderReviews();
     alert("¡Reseña publicada!");
   }
