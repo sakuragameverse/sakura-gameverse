@@ -271,13 +271,22 @@
 
     <!-- SECCIÓN 4: CUPONES -->
     <div id="seccion-cupones" class="seccion-panel">
-      <div class="admin-card-form">
-        <h3><i class="fas fa-ticket-alt"></i> Crear Nuevo Cupón de Descuento (Local)</h3>
+      <div class="admin-card-form" style="border-color: #ffcc00; box-shadow: 0 5px 15px rgba(255,204,0,0.3);">
+        <h3 style="color: #ffcc00;"><i class="fas fa-ticket-alt"></i> Gestión de Cupones Descuento en la Nube</h3>
+        <p style="font-size: 0.85em; color: #aaa; margin-bottom: 15px;">Crea cupones activos que tus clientes podrán aplicar instantáneamente en el carrito de compras.</p>
+        
         <div class="form-grid">
-          <input type="text" id="inputCodigoCupon" class="admin-input" placeholder="Código (Ej: OTAKU10)">
-          <input type="number" id="inputPorcentajeCupon" class="admin-input" placeholder="Descuento % (Ej: 10)" min="1" max="100">
+          <input type="text" id="adminCuponCodigo" class="admin-input" placeholder="Código (Ej: OTAKU10)">
+          <input type="number" id="adminCuponPorcentaje" class="admin-input" placeholder="Descuento en % (Ej: 10)">
         </div>
-        <button class="btn-admin-accion" onclick="alert('Función de guardar códigos en construcción.')">Crear Cupón 🎟️</button>
+        <button class="btn-admin-accion" style="background: #ffcc00; color: #0d041a; margin-top: 15px; box-shadow: 0 0 10px #ffcc00;" onclick="guardarCuponAdmin()">Crear / Actualizar Cupón 🚀</button>
+      </div>
+
+      <div class="admin-card-form">
+        <h3><i class="fas fa-list"></i> Cupones Activos en la Tienda</h3>
+        <div id="listaCuponesAdmin" style="font-size: 0.9em;">
+          Cargando cupones...
+        </div>
       </div>
     </div>
 
@@ -360,6 +369,7 @@
       window.cargarInventarioNube();
       window.cargarBannersNube();
       window.cargarConfigCategoriasAdmin(); 
+      cargarCuponesAdmin();
     } else {
       document.getElementById('loginScreen').style.display = 'block';
       document.getElementById('mainDashboard').style.display = 'none';
@@ -396,6 +406,69 @@
     localStorage.setItem('sakura_datos_pago', JSON.stringify(datosPago));
     alert("💾 ¡Datos de pago guardados!");
   };
+
+  // ----------------------------------------------------
+  // GESTIÓN DE CUPONES EN FIREBASE
+  // ----------------------------------------------------
+  window.guardarCuponAdmin = async () => {
+    let codigo = document.getElementById('adminCuponCodigo').value.trim().toUpperCase();
+    let porcentaje = parseFloat(document.getElementById('adminCuponPorcentaje').value);
+
+    if (!codigo || isNaN(porcentaje)) {
+      return alert("⚠️ Por favor, rellena el código y el porcentaje correctamente.");
+    }
+
+    try {
+      await setDoc(doc(db, "cupones", codigo), {
+        codigo: codigo,
+        porcentaje: porcentaje,
+        timestamp: Date.now()
+      });
+      alert(`🎉 ¡Cupón ${codigo} (${porcentaje}%) creado exitosamente en la nube!`);
+      document.getElementById('adminCuponCodigo').value = "";
+      document.getElementById('adminCuponPorcentaje').value = "";
+      cargarCuponesAdmin();
+    } catch (error) {
+      alert("❌ Error al guardar el cupón: " + error.message);
+    }
+  };
+
+  async function cargarCuponesAdmin() {
+    let contenedor = document.getElementById('listaCuponesAdmin');
+    if(!contenedor) return;
+    contenedor.innerHTML = "Cargando cupones...";
+    try {
+      const querySnapshot = await getDocs(collection(db, "cupones"));
+      document.getElementById('statCupones').innerText = querySnapshot.size;
+      if(querySnapshot.empty) {
+        contenedor.innerHTML = "<p style='color:#aaa;'>No hay cupones activos.</p>";
+        return;
+      }
+      let html = "";
+      querySnapshot.forEach((docSnap) => {
+        let c = docSnap.data();
+        html += `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,229,255,0.1); padding:8px 12px; border-radius:8px; margin-top:8px; border: 1px solid rgba(0,229,255,0.2);">
+          <span>🎫 <strong>${c.codigo}</strong> (-${c.porcentaje}%)</span>
+          <button class="btn-eliminar-fila" onclick="eliminarCuponAdmin('${c.codigo}')">❌ Eliminar</button>
+        </div>`;
+      });
+      contenedor.innerHTML = html;
+    } catch(e) {
+      contenedor.innerHTML = "Error al cargar cupones.";
+    }
+  }
+
+  window.eliminarCuponAdmin = async (codigo) => {
+    if(confirm(`¿Seguro que deseas eliminar el cupón ${codigo}?`)) {
+      try {
+        await deleteDoc(doc(db, "cupones", codigo));
+        alert("🗑️ Cupón eliminado.");
+        cargarCuponesAdmin();
+      } catch(e) {
+        alert("Error al eliminar: " + e.message);
+      }
+    }
+  }
 
   // ----------------------------------------------------
   // GESTIÓN DE CONFIGURACIÓN DE CATEGORÍAS (FOTOS Y NOMBRES)
@@ -453,7 +526,6 @@
 
     let guardarEnFirebase = async (data) => {
       try {
-        // Usamos setDoc con {merge: true} para que no borre la foto si solo cambias el nombre y viceversa.
         await setDoc(doc(db, "configuracion", "cat_img_" + catId), data, { merge: true });
         alert(`¡La configuración de ${catId.toUpperCase()} se actualizó con éxito! ✨`);
         document.getElementById('inputNombreCategoria').value = "";
