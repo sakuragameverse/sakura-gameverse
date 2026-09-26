@@ -320,21 +320,39 @@
       </div>
     </div>
 
-    <!-- SECCIÓN BANNERS CON CARGA LOCAL DE ARCHIVOS -->
+    <!-- SECCIÓN BANNERS CON HASTA 5 FOTOS LOCALES -->
     <div id="seccion-banners" class="seccion-panel">
       <div class="admin-card-form" style="border-color: #ff9900; box-shadow: 0 5px 15px rgba(255,153,0,0.3);">
-        <h3 style="color: #ff9900;"><i class="fas fa-images"></i> Subir Nuevo Banner Promocional</h3>
-        <p style="font-size: 0.85em; color: #aaa; margin-bottom: 15px;">Selecciona la imagen directamente desde tu dispositivo para el carrusel de inicio.</p>
+        <h3 style="color: #ff9900;"><i class="fas fa-images"></i> Subir Banners Promocionales (Hasta 5 Fotos)</h3>
+        <p style="font-size: 0.85em; color: #aaa; margin-bottom: 15px;">Selecciona varias imágenes de tu dispositivo para agregarlas directamente al carrusel de inicio.</p>
         
-        <div class="form-grid">
-          <div class="file-input-wrapper" style="grid-column: 1 / -1;">
-            <label>Imagen del Banner:</label>
-            <input type="file" id="fileBannerImg" accept="image/*">
+        <div class="fotos-container-admin" style="border-color: #ff9900; background: rgba(255,153,0,0.05);">
+          <h4 style="color: #ff9900;">📸 Selecciona las imágenes para los banners:</h4>
+          <div class="form-grid">
+            <div class="file-input-wrapper">
+              <label>Banner 1:</label>
+              <input type="file" id="fileBanner1" accept="image/*">
+            </div>
+            <div class="file-input-wrapper">
+              <label>Banner 2 (Opcional):</label>
+              <input type="file" id="fileBanner2" accept="image/*">
+            </div>
+            <div class="file-input-wrapper">
+              <label>Banner 3 (Opcional):</label>
+              <input type="file" id="fileBanner3" accept="image/*">
+            </div>
+            <div class="file-input-wrapper">
+              <label>Banner 4 (Opcional):</label>
+              <input type="file" id="fileBanner4" accept="image/*">
+            </div>
+            <div class="file-input-wrapper">
+              <label>Banner 5 (Opcional):</label>
+              <input type="file" id="fileBanner5" accept="image/*">
+            </div>
           </div>
-          <input type="url" id="nuevoBannerLink" class="admin-input" placeholder="URL al hacer clic (Opcional)" style="grid-column: 1 / -1;">
         </div>
         
-        <button class="btn-admin-accion" style="background: #ff9900; color: #0d041a; margin-top: 15px; box-shadow: 0 0 10px #ff9900;" onclick="guardarBannerNube()">Publicar Banner 🖼️</button>
+        <button class="btn-admin-accion" style="background: #ff9900; color: #0d041a; margin-top: 15px; box-shadow: 0 0 10px #ff9900;" onclick="guardarBannersMultiplesNube()">Publicar Banners 🖼️✨</button>
       </div>
 
       <div class="admin-card-form">
@@ -344,7 +362,7 @@
             <thead>
               <tr>
                 <th>Miniatura</th>
-                <th>Enlace Destino</th>
+                <th>Fecha / ID</th>
                 <th>Acción</th>
               </tr>
             </thead>
@@ -427,7 +445,7 @@
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // Exponer funciones al entorno global (window) para que funcionen con los botones del HTML
+  // Exponer funciones al entorno global (window)
   window.cambiarTab = (tabId, evento) => {
     let botones = document.querySelectorAll('.tab-btn');
     botones.forEach(btn => btn.classList.remove('activo'));
@@ -491,7 +509,7 @@
   };
 
   // ----------------------------------------------------
-  // GESTIÓN DE BANNERS EN FIREBASE (CON ARCHIVOS LOCALES)
+  // GESTIÓN DE BANNERS MÚLTIPLES EN FIREBASE
   // ----------------------------------------------------
   window.cargarBannersNube = async () => {
     try {
@@ -501,16 +519,15 @@
       tbody.innerHTML = "";
       
       if (querySnapshot.empty) {
-        tbody.innerHTML = "<tr><td colspan='3' style='color:#aaa; text-align:center;'>Aún no hay banners. ¡Sube tu primera promo!</td></tr>";
+        tbody.innerHTML = "<tr><td colspan='3' style='color:#aaa; text-align:center;'>Aún no hay banners. ¡Sube tus promos!</td></tr>";
       }
 
       querySnapshot.forEach((doc) => {
         let b = doc.data();
-        let linkHtml = b.linkUrl ? `<a href="${b.linkUrl}" target="_blank" style="color: var(--secondary-color);">Ver link</a>` : 'Sin enlace';
         tbody.innerHTML += `
           <tr>
             <td><img src="${b.imgUrl}" style="height: 50px; border-radius: 8px; object-fit: cover; border: 1px solid var(--secondary-color);"></td>
-            <td>${linkHtml}</td>
+            <td>Registrado en Nube</td>
             <td><button class="btn-eliminar-fila" onclick="eliminarBannerAdmin('${doc.id}')"><i class="fas fa-trash"></i></button></td>
           </tr>
         `;
@@ -520,33 +537,48 @@
     }
   };
 
-  window.guardarBannerNube = () => {
-    let inputFile = document.getElementById('fileBannerImg').files[0];
-    let linkUrl = document.getElementById('nuevoBannerLink').value.trim();
+  window.guardarBannersMultiplesNube = () => {
+    let inputFiles = [
+      document.getElementById('fileBanner1').files[0],
+      document.getElementById('fileBanner2').files[0],
+      document.getElementById('fileBanner3').files[0],
+      document.getElementById('fileBanner4').files[0],
+      document.getElementById('fileBanner5').files[0]
+    ];
 
-    if (!inputFile) {
-      alert("⚠️ Por favor selecciona una imagen para el banner desde tu dispositivo.");
+    let archivosValidos = inputFiles.filter(file => file !== undefined);
+
+    if (archivosValidos.length === 0) {
+      alert("⚠️ Por favor selecciona al menos una imagen de banner desde tu dispositivo.");
       return;
     }
 
-    let reader = new FileReader();
-    reader.onload = async function(e) {
-      let base64Image = e.target.result;
-      try {
-        await addDoc(collection(db, "banners"), {
-          imgUrl: base64Image,
-          linkUrl: linkUrl,
-          timestamp: Date.now()
-        });
-        alert("¡Banner publicado con éxito en tu tienda! 🖼️✨");
-        document.getElementById('fileBannerImg').value = "";
-        document.getElementById('nuevoBannerLink').value = "";
-        window.cargarBannersNube();
-      } catch (error) {
-        alert("Error al subir el banner: " + error.message);
-      }
-    };
-    reader.readAsDataURL(inputFile);
+    let subidos = 0;
+    archivosValidos.forEach(file => {
+      let reader = new FileReader();
+      reader.onload = async function(e) {
+        let base64Image = e.target.result;
+        try {
+          await addDoc(collection(db, "banners"), {
+            imgUrl: base64Image,
+            timestamp: Date.now() + subidos // Asegura orden relativo
+          });
+          subidos++;
+          if (subidos === archivosValidos.length) {
+            alert(`¡Se subieron ${subidos} banner(s) con éxito a la tienda! 🖼️✨`);
+            document.getElementById('fileBanner1').value = "";
+            document.getElementById('fileBanner2').value = "";
+            document.getElementById('fileBanner3').value = "";
+            document.getElementById('fileBanner4').value = "";
+            document.getElementById('fileBanner5').value = "";
+            window.cargarBannersNube();
+          }
+        } catch (error) {
+          alert("Error al subir banner: " + error.message);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
   };
 
   window.eliminarBannerAdmin = async (id) => {
