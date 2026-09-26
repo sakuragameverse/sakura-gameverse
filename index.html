@@ -30,16 +30,12 @@
     ::-webkit-scrollbar-track { background: var(--bg-color); }
     ::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
 
-    #socialProofContainer {
-      background: rgba(17, 5, 44, 0.95); border-bottom: 1px solid var(--secondary-color); padding: 8px 15px; display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 0.85em; position: relative; z-index: 2000; box-shadow: inset 0 0 10px rgba(0,229,255,0.2);
-    }
+    #socialProofContainer { background: rgba(17, 5, 44, 0.95); border-bottom: 1px solid var(--secondary-color); padding: 8px 15px; display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 0.85em; position: relative; z-index: 2000; box-shadow: inset 0 0 10px rgba(0,229,255,0.2); }
     #socialProofContainer .sp-icon { font-size: 18px; color: var(--secondary-color); }
     #socialProofContainer .sp-text { color: var(--text-color); font-weight: bold; }
     #socialProofContainer .sp-sub { color: #aaa; font-size: 0.9em; font-weight: normal; }
 
-    .ticker-bar {
-      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--primary-color)); background-size: 200% 100%; animation: gradient-move 5s linear infinite; color: #0d041a; font-weight: bold; font-size: 0.9em; text-align: center; padding: 8px 10px; position: relative; z-index: 2001; box-shadow: 0 2px 10px rgba(0,229,255,0.4); white-space: nowrap; overflow: hidden;
-    }
+    .ticker-bar { background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--primary-color)); background-size: 200% 100%; animation: gradient-move 5s linear infinite; color: #0d041a; font-weight: bold; font-size: 0.9em; text-align: center; padding: 8px 10px; position: relative; z-index: 2001; box-shadow: 0 2px 10px rgba(0,229,255,0.4); white-space: nowrap; overflow: hidden; }
     .ticker-content { display: inline-block; animation: ticker-slide 18s linear infinite; }
     @keyframes gradient-move { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
     @keyframes ticker-slide { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
@@ -87,7 +83,6 @@
     .search-box { text-align: center; margin-bottom: 20px; }
     .search-input { background: var(--hero-bg); border: 2px solid var(--secondary-color); color: var(--text-color); padding: 10px 20px; width: 80%; max-width: 400px; border-radius: 25px; font-size: 1em; outline: none; box-shadow: 0 0 10px rgba(0,229,255,0.3); }
     
-    /* --- INICIO ESTILOS DEL CARRUSEL VISUAL DE CATEGORÍAS --- */
     .categorias-visuales-section { margin: 25px 0 35px 0; position: relative; }
     .categorias-visuales-header { font-size: 1.3em; font-weight: bold; color: var(--text-color); margin-bottom: 15px; padding-left: 5px; border-left: 4px solid var(--primary-color); line-height: 1; }
     .carrusel-wrapper { position: relative; display: flex; align-items: center; }
@@ -105,7 +100,6 @@
     .carrusel-arrow:hover { background: var(--secondary-color); color: #0d041a; transform: translateY(-50%) scale(1.1); }
     .arrow-prev { left: -15px; }
     .arrow-next { right: -15px; }
-    /* --- FIN ESTILOS DEL CARRUSEL VISUAL --- */
 
     .controles-superiores { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-bottom: 30px; }
     .filtros { display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 100%; padding-bottom: 10px; justify-content: flex-start; gap: 8px; scrollbar-width: thin; }
@@ -163,6 +157,10 @@
     .btn-cupon { background: var(--secondary-color); color: #0d041a; border: none; padding: 0 15px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 0.85em; }
     .recibo-box { background: var(--bg-color); border: 2px dashed var(--secondary-color); padding: 15px; border-radius: 12px; text-align: left; font-family: monospace; font-size: 0.85em; color: var(--secondary-color); margin-bottom: 15px; box-shadow: inset 0 0 10px rgba(0,229,255,0.2); }
     .recibo-line { display: flex; justify-content: space-between; margin-bottom: 5px; }
+
+    /* ESTILO PARA LOS BOTONES PEQUEÑOS DE COPIAR PAGOS */
+    .btn-copiar-mini { background: rgba(0,229,255,0.1); color: var(--secondary-color); border: 1px solid var(--secondary-color); border-radius: 8px; padding: 5px 12px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+    .btn-copiar-mini:hover { background: var(--secondary-color); color: #0d041a; transform: scale(1.1); box-shadow: 0 0 8px var(--secondary-color); }
 
     .faq-item { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; margin-bottom: 10px; text-align: left; }
     .faq-question { color: var(--secondary-color); font-weight: bold; font-size: 0.95em; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
@@ -329,7 +327,6 @@
 
   <div class="hero-title">✨ Bienvenidos a Sakura Gameverse ✨<br>Donde tu pasión por el gaming nunca hace game over. 👾🌸</div>
   
-  <!-- Banner Carrusel Pro Conectado a Firebase -->
   <div id="bannerSliderContainer" class="banner-slider-container"></div>
 
   <div class="flash-sale-banner">
@@ -352,7 +349,6 @@
     <input type="text" id="buscador" class="search-input" placeholder="🔍 Buscar manga, hoodie, figura..." onkeyup="buscarProductos()">
   </div>
 
-  <!-- --- INICIO DEL NUEVO CARRUSEL DE CATEGORÍAS VISUALES --- -->
   <div class="categorias-visuales-section">
     <div class="categorias-visuales-header">Categorías</div>
     <div class="carrusel-wrapper">
@@ -451,7 +447,6 @@
       <button class="carrusel-arrow arrow-next" onclick="scrollCategoriasVisuales(1)"><i class="fas fa-chevron-right"></i></button>
     </div>
   </div>
-  <!-- --- FIN DEL NUEVO CARRUSEL DE CATEGORÍAS VISUALES --- -->
 
   <div class="controles-superiores">
     <div class="filtros">
@@ -505,13 +500,8 @@
   </div>
 
   <div class="info-section">
-    <div class="info-title">✨ Información, Pagos y Envíos 📦</div>
+    <div class="info-title">✨ Información y Envíos 📦</div>
     <div class="info-grid">
-      <div class="info-card">
-        <h4><i class="fas fa-credit-card" style="color: var(--secondary-color);"></i> Métodos de Pago</h4>
-        <div style="margin-top: 8px;" id="cajaDatosPagoInfo"></div>
-        <button class="btn-sugerencia" style="margin-top: 10px; padding: 6px; font-size: 0.85em;" onclick="copiarDatosPago()"><i class="fas fa-copy"></i> Copiar Datos de Pago</button>
-      </div>
       <div class="info-card">
         <h4><i class="fas fa-truck-fast" style="color: var(--primary-color);"></i> Envíos Nacionales</h4>
         Despachos seguros y embalaje protegido a todo el país exclusivamente a través de:<br>
@@ -593,12 +583,24 @@
   <div class="modal-content" style="width: 450px;">
     <button class="cerrar-modal" onclick="cerrarCarritoModal()">×</button>
     <h2 style="color: var(--secondary-color); margin-top: 0; text-align: center;">🛒 Tu Carrito de Compras</h2>
+    
     <div class="cupon-box"><input type="text" id="inputCupon" class="cupon-input" placeholder="Código de Cupón (Ej: OTAKU10)"><button class="btn-cupon" onclick="aplicarCupon()">Aplicar</button></div>
     <div id="mensajeCupon" style="font-size: 0.8em; margin-bottom: 8px; color: var(--secondary-color);"></div>
     <div id="listaCarritoDetalle" style="max-height: 150px; overflow-y: auto; margin-bottom: 12px; padding-right: 5px;"></div>
     <div id="reciboDigital" class="recibo-box" style="display: none;"><div style="text-align: center; font-weight: bold; margin-bottom: 8px; color: var(--primary-color);">--- RECIBO DIGITAL SAKURA ---</div><div id="reciboContenido"></div></div>
+    
+    <!-- NUEVA SECCIÓN DE PAGOS EN EL CARRITO CON ESTILOS NEÓN -->
+    <div id="paymentMethodsCart" style="display: none; border: 2px solid var(--secondary-color); border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 0 20px rgba(0,229,255,0.3); background: var(--card-bg);">
+      <h3 style="color: var(--primary-color); margin-top: 0; display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 1.1em; text-shadow: 0 0 5px rgba(255,0,127,0.4);">
+        <i class="fas fa-credit-card"></i> Métodos de Pago
+      </h3>
+      <div id="cajaDatosPagoInfo" style="font-size: 0.9em; line-height: 1.6;">
+        <!-- Se llena con JS desde Firebase -->
+      </div>
+    </div>
+
     <h3 id="modalCarritoTotal" style="color: var(--primary-color); margin-bottom: 15px; text-align: center;">Total: $0.00</h3>
-    <div style="display: flex; gap: 10px;"><button class="btn-clear" style="flex: 1; padding: 10px;" onclick="vaciarCarrito()">Vaciar</button><button class="btn-checkout" style="flex: 2; padding: 10px;" onclick="enviarPedidoWhatsApp()">Enviar al WhatsApp 📱</button></div>
+    <div style="display: flex; gap: 10px;"><button class="btn-clear" style="flex: 1; padding: 10px; background: transparent; border: 1px solid #ff3366; color: #ff3366; border-radius: 20px; font-weight: bold; cursor: pointer;" onclick="vaciarCarrito()">Vaciar</button><button class="btn-checkout" style="flex: 2; padding: 10px; background: #25D366; color: white; border: none; border-radius: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px #25D366;" onclick="enviarPedidoWhatsApp()">Enviar al WhatsApp 📱</button></div>
   </div>
 </div>
 
@@ -631,7 +633,7 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-  import { getFirestore, collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+  import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDH1DZqaIi5sKRXspXDUWbMUZ4nr5JIy8Q",
@@ -656,6 +658,53 @@
       localStorage.setItem('sakura_tasa_bcv', tasaBcvActual);
       renderizarProductosEnTienda(productosNubeGlobal);
     }
+  }
+
+  // --- CARGAR DATOS DE PAGO DESDE FIREBASE ---
+  let datosPago = { banco: "Banesco (0134)", telefono: "0424-4970576", cedula: "V-27000000", binance: "sakuragameverse@gmail.com" };
+  
+  async function cargarDatosPagoNube() {
+    try {
+      const docRef = doc(db, "configuracion", "datos_pago");
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        datosPago = docSnap.data();
+      }
+      renderizarDatosPago();
+    } catch(e) { 
+      console.error("Error al cargar datos de pago", e); 
+      renderizarDatosPago(); 
+    }
+  }
+
+  function renderizarDatosPago() {
+    let caja = document.getElementById('cajaDatosPagoInfo');
+    if(!caja) return;
+    caja.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px; margin-bottom:6px;">
+        <span>🏦 ${datosPago.banco}</span>
+        <button class="btn-copiar-mini" onclick="copiarTexto('${datosPago.banco}')"><i class="fas fa-copy"></i></button>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px; margin-bottom:6px;">
+        <span>📱 Pago Móvil: ${datosPago.telefono}</span>
+        <button class="btn-copiar-mini" onclick="copiarTexto('${datosPago.telefono}')"><i class="fas fa-copy"></i></button>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px; margin-bottom:6px;">
+        <span>🪪 Cédula: ${datosPago.cedula}</span>
+        <button class="btn-copiar-mini" onclick="copiarTexto('${datosPago.cedula}')"><i class="fas fa-copy"></i></button>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="word-break: break-all; margin-right: 10px;">🪙 Binance:<br>${datosPago.binance}</span>
+        <button class="btn-copiar-mini" onclick="copiarTexto('${datosPago.binance}')"><i class="fas fa-copy"></i></button>
+      </div>
+    `;
+  }
+
+  window.copiarTexto = function(texto) {
+    reproducirSonido();
+    navigator.clipboard.writeText(texto).then(() => {
+      alert("📋 ¡Dato copiado exitosamente!");
+    });
   }
 
   async function cargarBannersDeNube() {
@@ -721,8 +770,6 @@
     let contenedor = document.getElementById('catalogoNube');
     if (!contenedor) return;
     contenedor.innerHTML = "";
-
-    // Actualizar contadores del carrusel visual
     let conteo = { mangas: 0, ropa: 0, mandos: 0, teclados: 0, audifonos: 0, figuras: 0, peluches: 0, cartas: 0, katanas: 0, lamparas: 0 };
     let elTodos = document.getElementById('count-todos');
     if(elTodos) elTodos.innerText = lista.length + " productos";
@@ -761,14 +808,12 @@
       `;
     });
 
-    // Pintar los números en el HTML
     for(let cat in conteo) {
       let elem = document.getElementById('count-' + cat);
       if(elem) elem.innerText = conteo[cat] + " productos";
     }
   }
 
-  // --- OBTENER FOTOS DE CATEGORÍAS DESDE FIREBASE ---
   async function cargarFotosCategoriasNube() {
     try {
       const q = query(collection(db, "configuracion"), orderBy("timestamp", "desc"));
@@ -786,7 +831,8 @@
   window.addEventListener('DOMContentLoaded', () => { 
     cargarBannersDeNube(); 
     cargarProductosDeNube(); 
-    cargarFotosCategoriasNube(); // Cargamos las fotos dinámicas
+    cargarFotosCategoriasNube();
+    cargarDatosPagoNube(); 
   });
 </script>
 
@@ -815,39 +861,34 @@
     track.scrollBy({ left: direccion * scrollAmount, behavior: 'smooth' });
   }
 
-  // --- LÓGICA DE AUTO-SCROLL PARA EL CARRUSEL DE CATEGORÍAS ---
   let intervaloCategorias;
   function iniciarAutoScrollCategorias() {
     let track = document.getElementById('categoriasTrack');
     if(!track) return;
     intervaloCategorias = setInterval(() => {
-      // Si llegamos casi al final del scroll, regresamos al inicio
       if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) {
         track.scrollTo({ left: 0, behavior: 'smooth' });
       } else {
         track.scrollBy({ left: 155, behavior: 'smooth' });
       }
-    }, 3500); // 3.5 segundos por salto
+    }, 3500); 
   }
 
   window.addEventListener('DOMContentLoaded', () => {
-    // Retrasamos un poco el inicio para asegurar que todo haya cargado
     setTimeout(() => {
       iniciarAutoScrollCategorias();
       let track = document.getElementById('categoriasTrack');
       if (track) {
-        // Pausar si el usuario pasa el mouse o toca
         track.addEventListener('mouseenter', () => clearInterval(intervaloCategorias));
         track.addEventListener('mouseleave', iniciarAutoScrollCategorias);
         track.addEventListener('touchstart', () => clearInterval(intervaloCategorias));
         track.addEventListener('touchend', () => {
           clearInterval(intervaloCategorias);
-          setTimeout(iniciarAutoScrollCategorias, 2000); // Se reanuda 2s después de tocar
+          setTimeout(iniciarAutoScrollCategorias, 2000);
         });
       }
     }, 500);
   });
-  // --- FIN AUTO-SCROLL ---
 
   window.cambiarFotoTarjeta = function(event, cardIndex, direccion) {
     event.stopPropagation(); reproducirSonido();
@@ -893,18 +934,6 @@
     let splash = document.getElementById('splash-screen');
     if (splash) { splash.style.opacity = '0'; setTimeout(() => splash.style.display = 'none', 600); }
   }, 2000);
-
-  let datosPago = JSON.parse(localStorage.getItem('sakura_datos_pago')) || { banco: "Banesco (0134)", telefono: "0424-4970576", cedula: "V-27000000", binance: "sakuragameverse@gmail.com" };
-  function renderizarDatosPago() {
-    let caja = document.getElementById('cajaDatosPagoInfo');
-    if(caja) caja.innerHTML = `🏦 ${datosPago.banco}<br>📱 Pago Móvil: ${datosPago.telefono}<br>🪪 Cédula: ${datosPago.cedula}<br>🪙 Binance: ${datosPago.binance}`;
-  }
-  renderizarDatosPago();
-
-  function copiarDatosPago() {
-    reproducirSonido(); let texto = `DATOS DE PAGO:\nBanco: ${datosPago.banco}\nTeléfono: ${datosPago.telefono}\nCédula: ${datosPago.cedula}\nBinance: ${datosPago.binance}`;
-    navigator.clipboard.writeText(texto).then(() => alert("📋 ¡Datos copiados al portapapeles!"));
-  }
 
   let tiempoRestante = 12 * 3600;
   setInterval(() => {
@@ -982,35 +1011,24 @@
   let carrito = JSON.parse(localStorage.getItem('sakura_carrito')) || [];
   let productoActual = null; let descuentoAplicado = 0; let categoriaActualFiltro = 'todos'; let estadoActualFiltro = 'todos';
 
-  // --- NUEVA LÓGICA DE FILTRADO SINCRONIZADA ---
   window.filtrar = function(cat, evento) {
     reproducirSonido();
-    
-    // Apagar todos los botones de texto y tarjetas visuales
     document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('activo'));
     document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('activa'));
-
-    // Encender el botón de texto correspondiente
     let btnFiltroTexto = document.querySelector(`.btn-filtro[onclick*="'${cat}'"]`);
     if(btnFiltroTexto) btnFiltroTexto.classList.add('activo');
-
-    // Encender la tarjeta visual correspondiente
     let cardVisual = document.querySelector(`.cat-card[onclick*="'${cat}'"]`);
     if(cardVisual) cardVisual.classList.add('activa');
-
-    categoriaActualFiltro = cat;
-    estadoActualFiltro = 'todos';
+    categoriaActualFiltro = cat; estadoActualFiltro = 'todos';
     aplicarFiltrosCombinados();
   }
 
   window.filtrarEstado = function(est, evento) {
     reproducirSonido();
     document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('activo'));
-    document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('activa')); // Desactiva visuales
+    document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('activa'));
     if(evento && evento.currentTarget) evento.currentTarget.classList.add('activo');
-    
-    estadoActualFiltro = est;
-    categoriaActualFiltro = 'todos';
+    estadoActualFiltro = est; categoriaActualFiltro = 'todos';
     aplicarFiltrosCombinados();
   }
 
@@ -1019,7 +1037,6 @@
     document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('activo'));
     document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('activa'));
     if(evento && evento.currentTarget) evento.currentTarget.classList.add('activo');
-
     let productos = document.querySelectorAll('#catalogoNube .item-producto');
     productos.forEach(prod => {
       let precio = parseFloat(prod.getAttribute('data-precio'));
@@ -1039,9 +1056,7 @@
   }
 
   function ordenarProductos() {
-    reproducirSonido();
-    let modo = document.getElementById('selectOrden').value;
-    let contenedor = document.getElementById('catalogoNube');
+    reproducirSonido(); let modo = document.getElementById('selectOrden').value; let contenedor = document.getElementById('catalogoNube');
     let cards = Array.from(contenedor.querySelectorAll('.item-producto'));
     if (modo === 'menor') { cards.sort((a, b) => parseFloat(a.getAttribute('data-precio')) - parseFloat(b.getAttribute('data-precio')));
     } else if (modo === 'mayor') { cards.sort((a, b) => parseFloat(b.getAttribute('data-precio')) - parseFloat(a.getAttribute('data-precio')));
@@ -1052,8 +1067,7 @@
   function buscarProductos() {
     let texto = document.getElementById('buscador').value.toLowerCase();
     document.querySelectorAll('.item-producto').forEach(prod => {
-      let nombre = prod.getAttribute('data-nombre');
-      prod.style.display = nombre.includes(texto) ? 'block' : 'none';
+      let nombre = prod.getAttribute('data-nombre'); prod.style.display = nombre.includes(texto) ? 'block' : 'none';
     });
   }
 
@@ -1070,10 +1084,18 @@
 
   function abrirCarritoModal() {
     reproducirSonido(); let cont = document.getElementById('listaCarritoDetalle'); let reciboBox = document.getElementById('reciboDigital'); let reciboContenido = document.getElementById('reciboContenido');
+    let paymentBox = document.getElementById('paymentMethodsCart');
     cont.innerHTML = ""; reciboContenido.innerHTML = "";
-    if(carrito.length === 0) { cont.innerHTML = "<p style='color:#aaa;'>Tu carrito está vacío.</p>"; reciboBox.style.display = 'none'; document.getElementById('modalCarritoTotal').innerText = "Total: $0.00";
+    
+    if(carrito.length === 0) { 
+      cont.innerHTML = "<p style='color:#aaa;'>Tu carrito está vacío.</p>"; 
+      reciboBox.style.display = 'none'; 
+      paymentBox.style.display = 'none';
+      document.getElementById('modalCarritoTotal').innerText = "Total: $0.00";
     } else {
-      reciboBox.style.display = 'block'; let html = "";
+      reciboBox.style.display = 'block'; 
+      paymentBox.style.display = 'block';
+      let html = "";
       carrito.forEach((item, i) => {
         cont.innerHTML += `<div class="cart-item-row"><img src="${item.img}" class="cart-item-img"><div class="cart-item-info"><strong>${item.titulo}</strong><br><span style="color:var(--secondary-color);">$${item.precio.toFixed(2)}</span></div><button class="cart-item-del" onclick="carrito.splice(${i},1);actualizarCarritoUI();abrirCarritoModal();">❌</button></div>`;
         html += `<div class="recibo-line"><span>${item.titulo}</span><span>$${item.precio.toFixed(2)}</span></div>`;
