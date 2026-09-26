@@ -47,15 +47,22 @@
     #splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg-color); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.6s ease; }
     .splash-box { background: var(--hero-bg); border: 3px solid var(--primary-color); padding: 30px 40px; border-radius: 20px; text-align: center; box-shadow: 0 0 30px var(--primary-color), 0 0 60px rgba(0, 229, 255, 0.4); animation: box-pulse 1.5s infinite alternate; max-width: 90%; width: 320px; }
     @keyframes box-pulse { 0% { box-shadow: 0 0 15px var(--primary-color), inset 0 0 10px rgba(255,0,127,0.3); border-color: var(--primary-color); } 100% { box-shadow: 0 0 35px var(--secondary-color), 0 0 50px var(--primary-color), inset 0 0 20px rgba(0,229,255,0.4); border-color: var(--secondary-color); } }
-    .splash-logo { max-width: 220px; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2)); cursor: pointer; }
+    
+    /* LOGO AMPLIADO CON SOMBREADO NEÓN EN SPLASH */
+    .splash-logo { max-width: 260px; margin-bottom: 15px; filter: drop-shadow(0 0 12px var(--secondary-color)) drop-shadow(0 0 25px var(--primary-color)); cursor: pointer; transition: transform 0.3s ease; }
+    .splash-logo:hover { transform: scale(1.05); }
+
     .loading-text { color: var(--secondary-color); font-weight: bold; font-size: 1em; letter-spacing: 1px; margin-bottom: 15px; text-shadow: 0 0 10px rgba(0,229,255,0.7); min-height: 20px; }
     .loading-bar-container { width: 100%; height: 8px; background: var(--bg-color); border-radius: 10px; border: 1px solid var(--primary-color); overflow: hidden; }
     .loading-bar { width: 0%; height: 100%; background: var(--secondary-color); box-shadow: 0 0 10px var(--secondary-color); animation: load-progress 2s linear forwards; }
     @keyframes load-progress { 0% { width: 0%; } 50% { width: 65%; } 100% { width: 100%; } }
 
     .hero-banner { background-color: var(--hero-bg); text-align: center; padding: 30px 20px 20px 20px; border-bottom: 3px solid var(--primary-color); box-shadow: 0 0 20px rgba(255, 0, 127, 0.4); position: relative; z-index: 2; transition: background 0.4s ease; }
-    .hero-logo { max-width: 220px; margin-bottom: 10px; filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1)); cursor: pointer; transition: transform 0.2s; }
-    .hero-logo:hover { transform: scale(1.05); }
+    
+    /* LOGO AMPLIADO CON SOMBREADO NEÓN EN HERO BANNER */
+    .hero-logo { max-width: 270px; margin-bottom: 10px; filter: drop-shadow(0 0 15px var(--secondary-color)) drop-shadow(0 0 30px var(--primary-color)); cursor: pointer; transition: transform 0.3s ease; }
+    .hero-logo:hover { transform: scale(1.06); filter: drop-shadow(0 0 20px var(--secondary-color)) drop-shadow(0 0 35px var(--secondary-color)); }
+
     .hero-title { font-size: 1.1em; font-weight: bold; margin-bottom: 12px; letter-spacing: 1px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
     
     .banner-slider-container { position: relative; width: 100%; max-width: 800px; margin: 15px auto; border-radius: 15px; overflow: hidden; box-shadow: 0 0 20px rgba(0,229,255,0.3); aspect-ratio: 21/9; background: var(--card-bg); display: none; }
@@ -1122,7 +1129,7 @@
     reviews.unshift({ nombre: n, estrellas: e, texto: t });
     localStorage.setItem('sakura_reviews', JSON.stringify(reviews));
     document.getElementById('revNombre').value = "";
-    document.getElementById('revTexto').value = "";
+    document.getElementById('revTexto5').value = "";
     renderReviews();
     alert("¡Reseña publicada!");
   }
