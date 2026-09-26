@@ -320,15 +320,18 @@
       </div>
     </div>
 
-    <!-- SECCIÓN NUEVA: BANNERS -->
+    <!-- SECCIÓN BANNERS CON CARGA LOCAL DE ARCHIVOS -->
     <div id="seccion-banners" class="seccion-panel">
       <div class="admin-card-form" style="border-color: #ff9900; box-shadow: 0 5px 15px rgba(255,153,0,0.3);">
         <h3 style="color: #ff9900;"><i class="fas fa-images"></i> Subir Nuevo Banner Promocional</h3>
-        <p style="font-size: 0.85em; color: #aaa; margin-bottom: 15px;">Solo pega el link de la imagen que quieres mostrar en el carrusel de inicio.</p>
+        <p style="font-size: 0.85em; color: #aaa; margin-bottom: 15px;">Selecciona la imagen directamente desde tu dispositivo para el carrusel de inicio.</p>
         
         <div class="form-grid">
-          <input type="url" id="nuevoBannerUrl" class="admin-input" placeholder="URL de la imagen (Ej: https://...)">
-          <input type="url" id="nuevoBannerLink" class="admin-input" placeholder="URL al hacer clic (Opcional)">
+          <div class="file-input-wrapper" style="grid-column: 1 / -1;">
+            <label>Imagen del Banner:</label>
+            <input type="file" id="fileBannerImg" accept="image/*">
+          </div>
+          <input type="url" id="nuevoBannerLink" class="admin-input" placeholder="URL al hacer clic (Opcional)" style="grid-column: 1 / -1;">
         </div>
         
         <button class="btn-admin-accion" style="background: #ff9900; color: #0d041a; margin-top: 15px; box-shadow: 0 0 10px #ff9900;" onclick="guardarBannerNube()">Publicar Banner 🖼️</button>
@@ -449,7 +452,7 @@
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('mainDashboard').style.display = 'block';
       window.cargarInventarioNube();
-      window.cargarBannersNube(); // Carga de Banners
+      window.cargarBannersNube();
     } else {
       document.getElementById('loginScreen').style.display = 'block';
       document.getElementById('mainDashboard').style.display = 'none';
@@ -488,7 +491,7 @@
   };
 
   // ----------------------------------------------------
-  // GESTIÓN DE BANNERS EN FIREBASE
+  // GESTIÓN DE BANNERS EN FIREBASE (CON ARCHIVOS LOCALES)
   // ----------------------------------------------------
   window.cargarBannersNube = async () => {
     try {
@@ -517,28 +520,33 @@
     }
   };
 
-  window.guardarBannerNube = async () => {
-    let imgUrl = document.getElementById('nuevoBannerUrl').value.trim();
+  window.guardarBannerNube = () => {
+    let inputFile = document.getElementById('fileBannerImg').files[0];
     let linkUrl = document.getElementById('nuevoBannerLink').value.trim();
 
-    if (!imgUrl) {
-      alert("⚠️ Por favor pega el link de la imagen de tu banner.");
+    if (!inputFile) {
+      alert("⚠️ Por favor selecciona una imagen para el banner desde tu dispositivo.");
       return;
     }
 
-    try {
-      await addDoc(collection(db, "banners"), {
-        imgUrl: imgUrl,
-        linkUrl: linkUrl,
-        timestamp: Date.now()
-      });
-      alert("¡Banner publicado con éxito en tu tienda! 🖼️✨");
-      document.getElementById('nuevoBannerUrl').value = "";
-      document.getElementById('nuevoBannerLink').value = "";
-      window.cargarBannersNube();
-    } catch (error) {
-      alert("Error al subir el banner: " + error.message);
-    }
+    let reader = new FileReader();
+    reader.onload = async function(e) {
+      let base64Image = e.target.result;
+      try {
+        await addDoc(collection(db, "banners"), {
+          imgUrl: base64Image,
+          linkUrl: linkUrl,
+          timestamp: Date.now()
+        });
+        alert("¡Banner publicado con éxito en tu tienda! 🖼️✨");
+        document.getElementById('fileBannerImg').value = "";
+        document.getElementById('nuevoBannerLink').value = "";
+        window.cargarBannersNube();
+      } catch (error) {
+        alert("Error al subir el banner: " + error.message);
+      }
+    };
+    reader.readAsDataURL(inputFile);
   };
 
   window.eliminarBannerAdmin = async (id) => {
