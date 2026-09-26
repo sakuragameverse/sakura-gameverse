@@ -125,12 +125,12 @@
           <div class="stat-value" id="statProductos">0</div>
         </div>
         <div class="stat-card">
-          <h3>🛒 Pedidos Recibidos</h3>
+          <h3>🛒 Pedidos Registrados</h3>
           <div class="stat-value" id="statPedidos">0</div>
         </div>
         <div class="stat-card">
           <h3>🎟️ Cupones Activos</h3>
-          <div class="stat-value" id="statCupones">3</div>
+          <div class="stat-value" id="statCupones">0</div>
         </div>
       </div>
     </div>
@@ -261,11 +261,32 @@
       </div>
     </div>
 
-    <!-- SECCIÓN 3: PEDIDOS -->
+    <!-- SECCIÓN: PEDIDOS -->
     <div id="seccion-pedidos" class="seccion-panel">
+      <div class="admin-card-form" style="border-color: #25D366; box-shadow: 0 5px 15px rgba(37,211,102,0.3);">
+        <h3 style="color: #25D366;"><i class="fas fa-shopping-cart"></i> Registro y Gestión de Pedidos</h3>
+        <p style="font-size: 0.85em; color: #aaa; margin-bottom: 15px;">Registra manualmente los pedidos recibidos por WhatsApp o clientes locales para llevar el control.</p>
+
+        <div class="form-grid">
+          <input type="text" id="inputClientePedido" class="admin-input" placeholder="Nombre del Cliente (Ej: Gabriel S.)">
+          <input type="text" id="inputDetallePedido" class="admin-input" placeholder="Detalle (Ej: Miku Legendaria + T-Shirt)">
+          <input type="number" id="inputTotalPedido" class="admin-input" placeholder="Total USD ($)" step="0.01">
+          <select id="selectEstadoPedido" class="admin-input">
+            <option value="Pendiente ⏳">Pendiente ⏳</option>
+            <option value="Pagado / Enviado ✅">Pagado / Enviado ✅</option>
+          </select>
+        </div>
+        <button class="btn-admin-accion" style="background: #25D366; color: white; margin-top: 15px; box-shadow: 0 0 10px #25D366;" onclick="guardarPedidoAdmin()">Registrar Pedido 📦</button>
+      </div>
+
       <div class="admin-card-form">
-        <h3><i class="fas fa-clipboard-list"></i> Registro de Pedidos (Próximamente)</h3>
-        <p style="color: #aaa; font-size: 0.9em;">Los pedidos llegarán aquí de forma automática en una próxima actualización.</p>
+        <h3><i class="fas fa-list"></i> Lista de Pedidos en la Nube</h3>
+        <div class="tabla-responsive">
+          <table class="admin-table">
+            <thead><tr><th>Cliente</th><th>Productos</th><th>Total</th><th>Estado</th><th>Acción</th></tr></thead>
+            <tbody id="tablaPedidosAdmin"></tbody>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -290,11 +311,29 @@
       </div>
     </div>
 
-    <!-- SECCIÓN 5: COMUNIDAD & XP -->
+    <!-- SECCIÓN: COMUNIDAD & XP (RANGOS NINJA EDITABLES) -->
     <div id="seccion-comunidad" class="seccion-panel">
+      <div class="admin-card-form" style="border-color: #9900ff; box-shadow: 0 5px 15px rgba(153,0,255,0.3);">
+        <h3 style="color: #9900ff;"><i class="fas fa-user-astronaut"></i> Configuración de Rangos Ninja & Experiencia (XP)</h3>
+        <p style="font-size: 0.85em; color: #aaa; margin-bottom: 15px;">Define los umbrales de XP necesarios para escalar desde **Genin** hasta **Hokage**.</p>
+
+        <div class="form-grid">
+          <div><label style="font-size:0.85em; color:#9900ff;">Genin (Mínimo XP):</label><input type="number" id="xpGenin" class="admin-input" value="0"></div>
+          <div><label style="font-size:0.85em; color:#9900ff;">Chūnin (Mínimo XP):</label><input type="number" id="xpChunin" class="admin-input" value="300"></div>
+          <div><label style="font-size:0.85em; color:#9900ff;">Jōnin (Mínimo XP):</label><input type="number" id="xpJonin" class="admin-input" value="600"></div>
+          <div><label style="font-size:0.85em; color:#9900ff;">Hokage (Mínimo XP):</label><input type="number" id="xpHokage" class="admin-input" value="1000"></div>
+        </div>
+        <button class="btn-admin-accion" style="background: #9900ff; color: white; margin-top: 15px; box-shadow: 0 0 10px #9900ff;" onclick="guardarConfigRangosAdmin()">Guardar Rangos Ninja ⚡</button>
+      </div>
+
       <div class="admin-card-form">
-        <h3><i class="fas fa-users"></i> Gestión de Jugadores (Próximamente)</h3>
-        <p style="color: #aaa; font-size: 0.9em;">Busca y modifica la XP y Rango de los usuarios registrados.</p>
+        <h3><i class="fas fa-trophy"></i> Registro de Jugadores / Clientes en la Nube</h3>
+        <div class="tabla-responsive">
+          <table class="admin-table">
+            <thead><tr><th>GamerTag</th><th>Puntos XP</th><th>Rango Actual</th><th>Acción</th></tr></thead>
+            <tbody id="tablaJugadoresAdmin"></tbody>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -370,6 +409,9 @@
       window.cargarBannersNube();
       window.cargarConfigCategoriasAdmin(); 
       cargarCuponesAdmin();
+      cargarPedidosAdmin();
+      cargarJugadoresAdmin();
+      cargarConfigRangosAdmin();
     } else {
       document.getElementById('loginScreen').style.display = 'block';
       document.getElementById('mainDashboard').style.display = 'none';
@@ -405,6 +447,137 @@
     datosPago.binance = document.getElementById('pagoBinance').value;
     localStorage.setItem('sakura_datos_pago', JSON.stringify(datosPago));
     alert("💾 ¡Datos de pago guardados!");
+  };
+
+  // ----------------------------------------------------
+  // GESTIÓN DE PEDIDOS EN FIREBASE
+  // ----------------------------------------------------
+  window.guardarPedidoAdmin = async () => {
+    let cliente = document.getElementById('inputClientePedido').value.trim();
+    let detalle = document.getElementById('inputDetallePedido').value.trim();
+    let total = parseFloat(document.getElementById('inputTotalPedido').value);
+    let estado = document.getElementById('selectEstadoPedido').value;
+
+    if(!cliente || !detalle || isNaN(total)) {
+      return alert("⚠️ Por favor completa los datos del pedido.");
+    }
+
+    try {
+      await addDoc(collection(db, "pedidos"), {
+        cliente, detalle, total, estado, timestamp: Date.now()
+      });
+      alert("📦 ¡Pedido registrado exitosamente!");
+      document.getElementById('inputClientePedido').value = "";
+      document.getElementById('inputDetallePedido').value = "";
+      document.getElementById('inputTotalPedido').value = "";
+      cargarPedidosAdmin();
+    } catch(e) {
+      alert("Error al registrar pedido: " + e.message);
+    }
+  }
+
+  async function cargarPedidosAdmin() {
+    let tbody = document.getElementById('tablaPedidosAdmin');
+    if(!tbody) return;
+    try {
+      const q = query(collection(db, "pedidos"), orderBy("timestamp", "desc"));
+      const querySnapshot = await getDocs(q);
+      document.getElementById('statPedidos').innerText = querySnapshot.size;
+      tbody.innerHTML = "";
+      if(querySnapshot.empty) {
+        tbody.innerHTML = "<tr><td colspan='5' style='color:#aaa; text-align:center;'>No hay pedidos registrados.</td></tr>";
+        return;
+      }
+      querySnapshot.forEach((docSnap) => {
+        let p = docSnap.data();
+        let badgeClase = p.estado.includes("Pagado") ? "estado-pagado" : "estado-pendiente";
+        tbody.innerHTML += `
+          <tr>
+            <td><strong>${p.cliente}</strong></td>
+            <td>${p.detalle}</td>
+            <td style="color:var(--secondary-color);">$${p.total.toFixed(2)}</td>
+            <td><span class="badge-estado-pedido ${badgeClase}">${p.estado}</span></td>
+            <td><button class="btn-eliminar-fila" onclick="eliminarPedidoAdmin('${doc.id}')">❌</button></td>
+          </tr>
+        `;
+      });
+    } catch(e) {
+      tbody.innerHTML = "<tr><td colspan='5' style='color:#aaa; text-align:center;'>Error al cargar pedidos.</td></tr>";
+    }
+  }
+
+  window.eliminarPedidoAdmin = async (id) => {
+    if(confirm("¿Eliminar este pedido?")) {
+      await deleteDoc(doc(db, "pedidos", id));
+      cargarPedidosAdmin();
+    }
+  }
+
+  // ----------------------------------------------------
+  // GESTIÓN DE RANGOS NINJA Y XP
+  // ----------------------------------------------------
+  window.guardarConfigRangosAdmin = async () => {
+    let umbrales = {
+      genin: parseInt(document.getElementById('xpGenin').value) || 0,
+      chunin: parseInt(document.getElementById('xpChunin').value) || 300,
+      jonin: parseInt(document.getElementById('xpJonin').value) || 600,
+      hokage: parseInt(document.getElementById('xpHokage').value) || 1000
+    };
+    try {
+      await setDoc(doc(db, "configuracion", "rangos_ninja"), umbrales);
+      localStorage.setItem('sakura_rangos_ninja', JSON.stringify(umbrales));
+      alert("⚡ ¡Umbrales de rangos ninja actualizados con éxito!");
+    } catch(e) {
+      alert("Error al guardar rangos: " + e.message);
+    }
+  };
+
+  async function cargarConfigRangosAdmin() {
+    try {
+      const docSnap = await getDocs(collection(db, "configuracion"));
+      docSnap.forEach(d => {
+        if(d.id === "rangos_ninja") {
+          let r = d.data();
+          if(r.genin !== undefined) document.getElementById('xpGenin').value = r.genin;
+          if(r.chunin !== undefined) document.getElementById('xpChunin').value = r.chunin;
+          if(r.jonin !== undefined) document.getElementById('xpJonin').value = r.jonin;
+          if(r.hokage !== undefined) document.getElementById('xpHokage').value = r.hokage;
+        }
+      });
+    } catch(e) {}
+  }
+
+  async function cargarJugadoresAdmin() {
+    let tbody = document.getElementById('tablaJugadoresAdmin');
+    if(!tbody) return;
+    try {
+      const querySnapshot = await getDocs(collection(db, "jugadores"));
+      tbody.innerHTML = "";
+      if(querySnapshot.empty) {
+        tbody.innerHTML = "<tr><td colspan='4' style='color:#aaa; text-align:center;'>Aún no hay jugadores registrados en la nube. (Los jugadores se registran al usar el perfil en la tienda).</td></tr>";
+        return;
+      }
+      querySnapshot.forEach((docSnap) => {
+        let j = docSnap.data();
+        tbody.innerHTML += `
+          <tr>
+            <td><strong>${j.tag || 'Genin Anónimo'}</strong></td>
+            <td style="color:var(--secondary-color);">${j.xp || 0} XP</td>
+            <td><span style="color:#ffcc00; font-weight:bold;">${j.rango || 'Genin 🍃'}</span></td>
+            <td><button class="btn-eliminar-fila" onclick="eliminarJugadorAdmin('${docSnap.id}')">❌</button></td>
+          </tr>
+        `;
+      });
+    } catch(e) {
+      tbody.innerHTML = "<tr><td colspan='4' style='color:#aaa; text-align:center;'>Error al cargar jugadores.</td></tr>";
+    }
+  }
+
+  window.eliminarJugadorAdmin = async (id) => {
+    if(confirm("¿Seguro que deseas eliminar este perfil de jugador?")) {
+      await deleteDoc(doc(db, "jugadores", id));
+      cargarJugadoresAdmin();
+    }
   };
 
   // ----------------------------------------------------
@@ -499,9 +672,7 @@
         }
       });
       if(vacio) tbody.innerHTML = "<tr><td colspan='4' style='color:#aaa; text-align:center;'>Aún no tienes configuraciones personalizadas. Se muestra todo por defecto.</td></tr>";
-    } catch (error) {
-      console.error("Error al cargar configuraciones de categorías:", error);
-    }
+    } catch (error) {}
   };
 
   window.guardarConfigCategoriaNube = async () => {
@@ -510,52 +681,34 @@
     let fileInput = document.getElementById('fileFotoCategoria').files[0];
 
     if (!fileInput && !nuevoNombre) { 
-      alert("⚠️ Ey! Tienes que seleccionar una nueva imagen o escribir un nuevo nombre para guardar cambios."); 
+      alert("⚠️ Selecciona una imagen o escribe un nuevo nombre."); 
       return; 
     }
 
-    let updateData = {
-      tipo: "categoria_foto",
-      categoriaId: catId,
-      timestamp: Date.now()
-    };
-
-    if (nuevoNombre) {
-      updateData.nombrePersonalizado = nuevoNombre;
-    }
+    let updateData = { tipo: "categoria_foto", categoriaId: catId, timestamp: Date.now() };
+    if (nuevoNombre) updateData.nombrePersonalizado = nuevoNombre;
 
     let guardarEnFirebase = async (data) => {
       try {
         await setDoc(doc(db, "configuracion", "cat_img_" + catId), data, { merge: true });
-        alert(`¡La configuración de ${catId.toUpperCase()} se actualizó con éxito! ✨`);
+        alert(`¡Configuración de ${catId.toUpperCase()} actualizada! ✨`);
         document.getElementById('inputNombreCategoria').value = "";
         document.getElementById('fileFotoCategoria').value = "";
         window.cargarConfigCategoriasAdmin();
-      } catch (error) {
-        alert("Error al guardar: " + error.message);
-      }
+      } catch (error) { alert("Error al guardar: " + error.message); }
     };
 
     if (fileInput) {
       let reader = new FileReader();
-      reader.onload = function(e) {
-        updateData.imgUrl = e.target.result;
-        guardarEnFirebase(updateData);
-      };
+      reader.onload = function(e) { updateData.imgUrl = e.target.result; guardarEnFirebase(updateData); };
       reader.readAsDataURL(fileInput);
-    } else {
-      guardarEnFirebase(updateData);
-    }
+    } else { guardarEnFirebase(updateData); }
   };
 
   window.eliminarConfigCategoriaAdmin = async (id) => {
-    if(confirm("¿Seguro que quieres borrarla? La tienda volverá a mostrar el nombre y logo por defecto en esa tarjeta. 🗑️")) {
-      try {
-        await deleteDoc(doc(db, "configuracion", id));
-        window.cargarConfigCategoriasAdmin();
-      } catch(error) {
-        alert("Error al eliminar: " + error.message);
-      }
+    if(confirm("¿Seguro que quieres borrarla?")) {
+      await deleteDoc(doc(db, "configuracion", id));
+      window.cargarConfigCategoriasAdmin();
     }
   };
 
@@ -568,11 +721,7 @@
       const querySnapshot = await getDocs(q);
       let tbody = document.getElementById('tablaBannersAdmin');
       tbody.innerHTML = "";
-      
-      if (querySnapshot.empty) {
-        tbody.innerHTML = "<tr><td colspan='3' style='color:#aaa; text-align:center;'>Aún no hay banners. ¡Sube tus promos!</td></tr>";
-      }
-
+      if (querySnapshot.empty) { tbody.innerHTML = "<tr><td colspan='3' style='color:#aaa; text-align:center;'>Aún no hay banners.</td></tr>"; }
       querySnapshot.forEach((doc) => {
         let b = doc.data();
         tbody.innerHTML += `
@@ -583,52 +732,39 @@
           </tr>
         `;
       });
-    } catch (error) { console.error("Error al cargar banners:", error); }
+    } catch (error) {}
   };
 
   window.guardarBannersMultiplesNube = () => {
     let inputFiles = [
-      document.getElementById('fileBanner1').files[0],
-      document.getElementById('fileBanner2').files[0],
-      document.getElementById('fileBanner3').files[0],
-      document.getElementById('fileBanner4').files[0],
+      document.getElementById('fileBanner1').files[0], document.getElementById('fileBanner2').files[0],
+      document.getElementById('fileBanner3').files[0], document.getElementById('fileBanner4').files[0],
       document.getElementById('fileBanner5').files[0]
     ];
-
     let archivosValidos = inputFiles.filter(file => file !== undefined);
-
-    if (archivosValidos.length === 0) {
-      alert("⚠️ Por favor selecciona al menos una imagen de banner desde tu dispositivo.");
-      return;
-    }
-
+    if (archivosValidos.length === 0) return alert("Selecciona al menos una imagen de banner.");
     let subidos = 0;
     archivosValidos.forEach(file => {
       let reader = new FileReader();
       reader.onload = async function(e) {
-        let base64Image = e.target.result;
-        try {
-          await addDoc(collection(db, "banners"), { imgUrl: base64Image, timestamp: Date.now() + subidos });
-          subidos++;
-          if (subidos === archivosValidos.length) {
-            alert(`¡Se subieron ${subidos} banner(s) con éxito a la tienda! 🖼️✨`);
-            document.getElementById('fileBanner1').value = ""; document.getElementById('fileBanner2').value = "";
-            document.getElementById('fileBanner3').value = ""; document.getElementById('fileBanner4').value = "";
-            document.getElementById('fileBanner5').value = "";
-            window.cargarBannersNube();
-          }
-        } catch (error) { alert("Error al subir banner: " + error.message); }
+        await addDoc(collection(db, "banners"), { imgUrl: e.target.result, timestamp: Date.now() + subidos });
+        subidos++;
+        if (subidos === archivosValidos.length) {
+          alert(`¡Se subieron ${subidos} banner(s)! 🖼️✨`);
+          document.getElementById('fileBanner1').value = ""; document.getElementById('fileBanner2').value = "";
+          document.getElementById('fileBanner3').value = ""; document.getElementById('fileBanner4').value = "";
+          document.getElementById('fileBanner5').value = "";
+          window.cargarBannersNube();
+        }
       };
       reader.readAsDataURL(file);
     });
   };
 
   window.eliminarBannerAdmin = async (id) => {
-    if(confirm("¿Seguro que quieres quitar este banner de la tienda pública? 🗑️")) {
-      try {
-        await deleteDoc(doc(db, "banners", id));
-        window.cargarBannersNube();
-      } catch(error) { alert("Error al eliminar: " + error.message); }
+    if(confirm("¿Eliminar este banner?")) {
+      await deleteDoc(doc(db, "banners", id));
+      window.cargarBannersNube();
     }
   };
 
@@ -641,14 +777,12 @@
       const querySnapshot = await getDocs(q);
       let tbody = document.getElementById('tablaInventarioAdmin');
       tbody.innerHTML = "";
-      
       let contador = 0;
       querySnapshot.forEach((doc) => {
         contador++;
         let p = doc.data();
         let numFotos = p.fotos ? p.fotos.length : 0;
         let colorClase = p.estado.includes("Encargo") ? "estado-pendiente" : "estado-pagado";
-        
         tbody.innerHTML += `
           <tr>
             <td><strong>${p.nombre}</strong></td>
@@ -661,7 +795,7 @@
         `;
       });
       document.getElementById('statProductos').innerText = contador;
-    } catch (error) { console.error("Error al cargar:", error); }
+    } catch (error) {}
   };
 
   window.procesarYGuardarProducto = () => {
@@ -670,38 +804,30 @@
     let categoria = document.getElementById('nuevaCategoria').value;
     let estado = document.getElementById('nuevoEstado').value;
 
-    if (!nombre || isNaN(precio) || precio <= 0) { alert("Por favor ingresa un nombre y un precio válido."); return; }
-
+    if (!nombre || isNaN(precio) || precio <= 0) return alert("Ingresa nombre y precio válido.");
     let inputFiles = [
       document.getElementById('fileFoto1').files[0], document.getElementById('fileFoto2').files[0],
       document.getElementById('fileFoto3').files[0], document.getElementById('fileFoto4').files[0],
       document.getElementById('fileFoto5').files[0]
     ];
     let archivosValidos = inputFiles.filter(file => file !== undefined);
+    if (archivosValidos.length === 0) return alert("Selecciona al menos una foto principal.");
 
-    if (archivosValidos.length === 0) { alert("Por favor selecciona al menos la primera foto principal desde tu dispositivo."); return; }
-
-    let fotosProcesadas = [];
-    let leidos = 0;
-
+    let fotosProcesadas = []; let leidos = 0;
     archivosValidos.forEach((file, idx) => {
       let reader = new FileReader();
       reader.onload = async function(e) {
-        fotosProcesadas[idx] = e.target.result;
-        leidos++;
+        fotosProcesadas[idx] = e.target.result; leidos++;
         if (leidos === archivosValidos.length) {
-          try {
-            await addDoc(collection(db, "productos"), {
-              nombre: nombre, precio: precio, categoria: categoria,
-              estado: estado, fotos: fotosProcesadas, timestamp: Date.now()
-            });
-            alert("¡Producto guardado exitosamente en la nube! ☁️✨");
-            window.cargarInventarioNube();
-            document.getElementById('nuevoNombre').value = ""; document.getElementById('nuevoPrecio').value = "";
-            document.getElementById('fileFoto1').value = ""; document.getElementById('fileFoto2').value = "";
-            document.getElementById('fileFoto3').value = ""; document.getElementById('fileFoto4').value = "";
-            document.getElementById('fileFoto5').value = "";
-          } catch (error) { alert("Error al subir a la nube: " + error.message); }
+          await addDoc(collection(db, "productos"), {
+            nombre, precio, categoria, estado, fotos: fotosProcesadas, timestamp: Date.now()
+          });
+          alert("¡Producto guardado en la nube! ☁️✨");
+          window.cargarInventarioNube();
+          document.getElementById('nuevoNombre').value = ""; document.getElementById('nuevoPrecio').value = "";
+          document.getElementById('fileFoto1').value = ""; document.getElementById('fileFoto2').value = "";
+          document.getElementById('fileFoto3').value = ""; document.getElementById('fileFoto4').value = "";
+          document.getElementById('fileFoto5').value = "";
         }
       };
       reader.readAsDataURL(file);
@@ -709,11 +835,9 @@
   };
 
   window.eliminarProductoAdmin = async (id) => {
-    if(confirm("¿Estás 100% seguro de eliminar este artículo de la nube? 😱")) {
-      try {
-        await deleteDoc(doc(db, "productos", id));
-        window.cargarInventarioNube();
-      } catch(error) { alert("Error al eliminar: " + error.message); }
+    if(confirm("¿Eliminar este artículo?")) {
+      await deleteDoc(doc(db, "productos", id));
+      window.cargarInventarioNube();
     }
   };
 </script>
