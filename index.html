@@ -329,6 +329,7 @@
 
   <div class="hero-title">✨ Bienvenidos a Sakura Gameverse ✨<br>Donde tu pasión por el gaming nunca hace game over. 👾🌸</div>
   
+  <!-- Banner Carrusel Pro Conectado a Firebase -->
   <div id="bannerSliderContainer" class="banner-slider-container"></div>
 
   <div class="flash-sale-banner">
@@ -358,9 +359,8 @@
       <button class="carrusel-arrow arrow-prev" onclick="scrollCategoriasVisuales(-1)"><i class="fas fa-chevron-left"></i></button>
       
       <div class="carrusel-track" id="categoriasTrack">
-        <!-- TARJETAS DE CATEGORÍA (Cambia 'logo.webp' por tus propias imágenes cuadradas) -->
         <div class="cat-card activa" onclick="filtrar('todos')">
-          <img src="logo.webp" class="cat-img" alt="Todos">
+          <img src="logo.webp" id="img-cat-todos" class="cat-img" alt="Todos">
           <div class="cat-info">
             <div class="cat-title">Todo el Loot</div>
             <div class="cat-count" id="count-todos">0 productos</div>
@@ -368,7 +368,7 @@
         </div>
         
         <div class="cat-card" onclick="filtrar('mangas')">
-          <img src="logo.webp" class="cat-img" alt="Mangas">
+          <img src="logo.webp" id="img-cat-mangas" class="cat-img" alt="Mangas">
           <div class="cat-info">
             <div class="cat-title">Mangas Y Cómics</div>
             <div class="cat-count" id="count-mangas">0 productos</div>
@@ -376,7 +376,7 @@
         </div>
 
         <div class="cat-card" onclick="filtrar('ropa')">
-          <img src="logo.webp" class="cat-img" alt="Ropa">
+          <img src="logo.webp" id="img-cat-ropa" class="cat-img" alt="Ropa">
           <div class="cat-info">
             <div class="cat-title">Clothing</div>
             <div class="cat-count" id="count-ropa">0 productos</div>
@@ -384,7 +384,7 @@
         </div>
 
         <div class="cat-card" onclick="filtrar('cartas')">
-          <img src="logo.webp" class="cat-img" alt="TCG">
+          <img src="logo.webp" id="img-cat-cartas" class="cat-img" alt="TCG">
           <div class="cat-info">
             <div class="cat-title">TCG/Cartas</div>
             <div class="cat-count" id="count-cartas">0 productos</div>
@@ -392,7 +392,7 @@
         </div>
 
         <div class="cat-card" onclick="filtrar('figuras')">
-          <img src="logo.webp" class="cat-img" alt="Figuras">
+          <img src="logo.webp" id="img-cat-figuras" class="cat-img" alt="Figuras">
           <div class="cat-info">
             <div class="cat-title">Figuras Anime</div>
             <div class="cat-count" id="count-figuras">0 productos</div>
@@ -400,7 +400,7 @@
         </div>
 
         <div class="cat-card" onclick="filtrar('mandos')">
-          <img src="logo.webp" class="cat-img" alt="Mandos">
+          <img src="logo.webp" id="img-cat-mandos" class="cat-img" alt="Mandos">
           <div class="cat-info">
             <div class="cat-title">Videojuegos</div>
             <div class="cat-count" id="count-mandos">0 productos</div>
@@ -408,7 +408,7 @@
         </div>
 
         <div class="cat-card" onclick="filtrar('audifonos')">
-          <img src="logo.webp" class="cat-img" alt="Audífonos">
+          <img src="logo.webp" id="img-cat-audifonos" class="cat-img" alt="Audífonos">
           <div class="cat-info">
             <div class="cat-title">Electrónica Audio</div>
             <div class="cat-count" id="count-audifonos">0 productos</div>
@@ -416,7 +416,7 @@
         </div>
         
         <div class="cat-card" onclick="filtrar('teclados')">
-          <img src="logo.webp" class="cat-img" alt="Teclados">
+          <img src="logo.webp" id="img-cat-teclados" class="cat-img" alt="Teclados">
           <div class="cat-info">
             <div class="cat-title">Teclados PC</div>
             <div class="cat-count" id="count-teclados">0 productos</div>
@@ -424,7 +424,7 @@
         </div>
 
         <div class="cat-card" onclick="filtrar('peluches')">
-          <img src="logo.webp" class="cat-img" alt="Peluches">
+          <img src="logo.webp" id="img-cat-peluches" class="cat-img" alt="Peluches">
           <div class="cat-info">
             <div class="cat-title">Peluches Kawaii</div>
             <div class="cat-count" id="count-peluches">0 productos</div>
@@ -432,7 +432,7 @@
         </div>
         
         <div class="cat-card" onclick="filtrar('katanas')">
-          <img src="logo.webp" class="cat-img" alt="Katanas">
+          <img src="logo.webp" id="img-cat-katanas" class="cat-img" alt="Katanas">
           <div class="cat-info">
             <div class="cat-title">Katanas Replicas</div>
             <div class="cat-count" id="count-katanas">0 productos</div>
@@ -440,7 +440,7 @@
         </div>
         
         <div class="cat-card" onclick="filtrar('lamparas')">
-          <img src="logo.webp" class="cat-img" alt="Lámparas">
+          <img src="logo.webp" id="img-cat-lamparas" class="cat-img" alt="Lámparas">
           <div class="cat-info">
             <div class="cat-title">Lámparas Neón</div>
             <div class="cat-count" id="count-lamparas">0 productos</div>
@@ -455,17 +455,17 @@
 
   <div class="controles-superiores">
     <div class="filtros">
-      <button class="btn-filtro activo" onclick="filtrar('todos')">🌟 Todos</button>
-      <button class="btn-filtro" onclick="filtrar('mangas')">📚 Mangas</button>
-      <button class="btn-filtro" onclick="filtrar('ropa')">👕 Ropa / Hoodies</button>
-      <button class="btn-filtro" onclick="filtrar('mandos')">🎮 Mandos PC</button>
-      <button class="btn-filtro" onclick="filtrar('teclados')">⌨️ Teclados</button>
-      <button class="btn-filtro" onclick="filtrar('audifonos')">🎧 Audífonos</button>
-      <button class="btn-filtro" onclick="filtrar('figuras')">🗿 Figuras</button>
-      <button class="btn-filtro" onclick="filtrar('peluches')">🧸 Peluches</button>
-      <button class="btn-filtro" onclick="filtrar('cartas')">🃏 Cartas TCG</button>
-      <button class="btn-filtro" onclick="filtrar('katanas')">⚔️ Katanas</button>
-      <button class="btn-filtro" onclick="filtrar('lamparas')">💡 Lámparas</button>
+      <button class="btn-filtro activo" onclick="filtrar('todos', event)">🌟 Todos</button>
+      <button class="btn-filtro" onclick="filtrar('mangas', event)">📚 Mangas</button>
+      <button class="btn-filtro" onclick="filtrar('ropa', event)">👕 Ropa / Hoodies</button>
+      <button class="btn-filtro" onclick="filtrar('mandos', event)">🎮 Mandos PC</button>
+      <button class="btn-filtro" onclick="filtrar('teclados', event)">⌨️ Teclados</button>
+      <button class="btn-filtro" onclick="filtrar('audifonos', event)">🎧 Audífonos</button>
+      <button class="btn-filtro" onclick="filtrar('figuras', event)">🗿 Figuras</button>
+      <button class="btn-filtro" onclick="filtrar('peluches', event)">🧸 Peluches</button>
+      <button class="btn-filtro" onclick="filtrar('cartas', event)">🃏 Cartas TCG</button>
+      <button class="btn-filtro" onclick="filtrar('katanas', event)">⚔️ Katanas</button>
+      <button class="btn-filtro" onclick="filtrar('lamparas', event)">💡 Lámparas</button>
       <button class="btn-filtro" onclick="filtrarPorPresupuesto(0, 15, event)">💵 Menos de $15</button>
       <button class="btn-filtro" onclick="filtrarPorPresupuesto(15, 35, event)">🪙 De $15 a $35</button>
       <button class="btn-filtro" onclick="filtrarPorPresupuesto(35, 10000, event)">💎 Más de $35</button>
@@ -768,7 +768,26 @@
     }
   }
 
-  window.addEventListener('DOMContentLoaded', () => { cargarBannersDeNube(); cargarProductosDeNube(); });
+  // --- OBTENER FOTOS DE CATEGORÍAS DESDE FIREBASE ---
+  async function cargarFotosCategoriasNube() {
+    try {
+      const q = query(collection(db, "configuracion"), orderBy("timestamp", "desc"));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        let conf = doc.data();
+        if(conf.tipo === 'categoria_foto') {
+          let catImgEl = document.getElementById(`img-cat-${conf.categoriaId}`);
+          if(catImgEl) catImgEl.src = conf.imgUrl;
+        }
+      });
+    } catch (e) { console.error("Error al cargar fotos de categorías:", e); }
+  }
+
+  window.addEventListener('DOMContentLoaded', () => { 
+    cargarBannersDeNube(); 
+    cargarProductosDeNube(); 
+    cargarFotosCategoriasNube(); // Cargamos las fotos dinámicas
+  });
 </script>
 
 <script>
@@ -792,9 +811,43 @@
   window.scrollCategoriasVisuales = function(direccion) {
     reproducirSonido();
     let track = document.getElementById('categoriasTrack');
-    let scrollAmount = 155; // Desplazamiento ajustado
+    let scrollAmount = 155; 
     track.scrollBy({ left: direccion * scrollAmount, behavior: 'smooth' });
   }
+
+  // --- LÓGICA DE AUTO-SCROLL PARA EL CARRUSEL DE CATEGORÍAS ---
+  let intervaloCategorias;
+  function iniciarAutoScrollCategorias() {
+    let track = document.getElementById('categoriasTrack');
+    if(!track) return;
+    intervaloCategorias = setInterval(() => {
+      // Si llegamos casi al final del scroll, regresamos al inicio
+      if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) {
+        track.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        track.scrollBy({ left: 155, behavior: 'smooth' });
+      }
+    }, 3500); // 3.5 segundos por salto
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    // Retrasamos un poco el inicio para asegurar que todo haya cargado
+    setTimeout(() => {
+      iniciarAutoScrollCategorias();
+      let track = document.getElementById('categoriasTrack');
+      if (track) {
+        // Pausar si el usuario pasa el mouse o toca
+        track.addEventListener('mouseenter', () => clearInterval(intervaloCategorias));
+        track.addEventListener('mouseleave', iniciarAutoScrollCategorias);
+        track.addEventListener('touchstart', () => clearInterval(intervaloCategorias));
+        track.addEventListener('touchend', () => {
+          clearInterval(intervaloCategorias);
+          setTimeout(iniciarAutoScrollCategorias, 2000); // Se reanuda 2s después de tocar
+        });
+      }
+    }, 500);
+  });
+  // --- FIN AUTO-SCROLL ---
 
   window.cambiarFotoTarjeta = function(event, cardIndex, direccion) {
     event.stopPropagation(); reproducirSonido();
