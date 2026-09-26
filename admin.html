@@ -25,168 +25,56 @@
     ::-webkit-scrollbar-track { background: var(--bg-color); }
     ::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
 
-    .admin-header {
-      background: var(--hero-bg);
-      border-bottom: 2px solid var(--primary-color);
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 0 20px rgba(255,0,127,0.3);
-    }
+    .admin-header { background: var(--hero-bg); border-bottom: 2px solid var(--primary-color); padding: 20px; text-align: center; box-shadow: 0 0 20px rgba(255,0,127,0.3); }
     .admin-title { font-size: 1.3em; font-weight: bold; color: var(--secondary-color); text-shadow: 0 0 8px rgba(0,229,255,0.5); }
 
     .admin-container { max-width: 1100px; margin: 0 auto; padding: 25px 15px; }
 
-    .admin-tabs {
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      padding-bottom: 15px;
-      margin-bottom: 25px;
-      scrollbar-width: thin;
-    }
+    .admin-tabs { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 15px; margin-bottom: 25px; scrollbar-width: thin; }
 
-    .tab-btn {
-      background: var(--hero-bg);
-      color: var(--text-color);
-      border: 1px solid var(--secondary-color);
-      padding: 10px 20px;
-      border-radius: 25px;
-      cursor: pointer;
-      font-weight: bold;
-      white-space: nowrap;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .tab-btn { background: var(--hero-bg); color: var(--text-color); border: 1px solid var(--secondary-color); padding: 10px 20px; border-radius: 25px; cursor: pointer; font-weight: bold; white-space: nowrap; transition: all 0.3s ease; display: flex; align-items: center; gap: 8px; }
     .tab-btn:hover { background: rgba(0,229,255,0.2); box-shadow: 0 0 10px rgba(0,229,255,0.4); }
-    .tab-btn.activo {
-      background: var(--secondary-color);
-      color: #0d041a;
-      box-shadow: 0 0 15px var(--secondary-color);
-      border-color: #fff;
-    }
+    .tab-btn.activo { background: var(--secondary-color); color: #0d041a; box-shadow: 0 0 15px var(--secondary-color); border-color: #fff; }
 
     .seccion-panel { display: none; animation: fadeIn 0.4s ease; }
     .seccion-panel.activa { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
     .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 25px; }
-    .stat-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 15px;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-    }
+    .stat-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 15px; padding: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
     .stat-card h3 { color: var(--secondary-color); margin: 0 0 10px 0; font-size: 0.95em; }
     .stat-value { font-size: 1.5em; font-weight: bold; color: var(--text-color); text-shadow: 0 0 8px rgba(255,255,255,0.3); }
 
-    .admin-card-form {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 15px;
-      padding: 20px;
-      margin-bottom: 25px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-    }
+    .admin-card-form { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 15px; padding: 20px; margin-bottom: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
     .admin-card-form h3 { color: var(--primary-color); margin-top: 0; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
 
     .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 15px; }
-    .admin-input {
-      background: var(--bg-color);
-      border: 1px solid var(--secondary-color);
-      color: var(--text-color);
-      padding: 10px 14px;
-      border-radius: 10px;
-      font-size: 0.9em;
-      outline: none;
-      width: 100%;
-      box-sizing: border-box;
-    }
+    .admin-input { background: var(--bg-color); border: 1px solid var(--secondary-color); color: var(--text-color); padding: 10px 14px; border-radius: 10px; font-size: 0.9em; outline: none; width: 100%; box-sizing: border-box; }
     .admin-input:focus { box-shadow: 0 0 10px var(--secondary-color); }
 
-    .fotos-container-admin {
-      background: rgba(0, 229, 255, 0.05);
-      border: 1px dashed var(--secondary-color);
-      padding: 15px;
-      border-radius: 12px;
-      margin-bottom: 15px;
-    }
+    .fotos-container-admin { background: rgba(0, 229, 255, 0.05); border: 1px dashed var(--secondary-color); padding: 15px; border-radius: 12px; margin-bottom: 15px; }
     .fotos-container-admin h4 { color: var(--secondary-color); margin: 0 0 10px 0; font-size: 0.95em; }
     
-    .file-input-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      font-size: 0.85em;
-      color: var(--text-color);
-    }
-    .file-input-wrapper input[type="file"] {
-      background: var(--bg-color);
-      border: 1px solid var(--primary-color);
-      color: var(--text-color);
-      padding: 6px;
-      border-radius: 8px;
-      font-size: 0.85em;
-      cursor: pointer;
-    }
+    .file-input-wrapper { display: flex; flex-direction: column; gap: 5px; font-size: 0.85em; color: var(--text-color); }
+    .file-input-wrapper input[type="file"] { background: var(--bg-color); border: 1px solid var(--primary-color); color: var(--text-color); padding: 6px; border-radius: 8px; font-size: 0.85em; cursor: pointer; }
 
-    .btn-admin-accion {
-      background: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      font-weight: bold;
-      border-radius: 20px;
-      cursor: pointer;
-      box-shadow: 0 0 10px var(--primary-color);
-      transition: transform 0.2s;
-    }
+    .btn-admin-accion { background: var(--primary-color); color: white; border: none; padding: 10px 20px; font-weight: bold; border-radius: 20px; cursor: pointer; box-shadow: 0 0 10px var(--primary-color); transition: transform 0.2s; }
     .btn-admin-accion:hover { transform: scale(1.03); }
 
     .tabla-responsive { width: 100%; overflow-x: auto; }
-    .admin-table {
-      width: 100%;
-      border-collapse: collapse;
-      background: var(--card-bg);
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid var(--border-color);
-      font-size: 0.9em;
-      text-align: left;
-    }
+    .admin-table { width: 100%; border-collapse: collapse; background: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); font-size: 0.9em; text-align: left; }
     .admin-table th, .admin-table td { padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
     .admin-table th { background: var(--hero-bg); color: var(--secondary-color); font-weight: bold; }
     .admin-table tr:hover { background: rgba(0,229,255,0.03); }
 
-    .badge-estado-pedido {
-      padding: 4px 10px;
-      border-radius: 8px;
-      font-size: 0.75em;
-      font-weight: bold;
-    }
+    .badge-estado-pedido { padding: 4px 10px; border-radius: 8px; font-size: 0.75em; font-weight: bold; }
     .estado-pendiente { background: rgba(255,204,0,0.2); color: #ffcc00; border: 1px solid #ffcc00; }
     .estado-pagado { background: rgba(37,211,102,0.2); color: #25D366; border: 1px solid #25D366; }
 
-    .btn-eliminar-fila {
-      background: #ff3366; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8em;
-    }
-    .btn-volver-tienda {
-      display: inline-flex; align-items: center; gap: 8px; background: var(--secondary-color); color: #0d041a; font-weight: bold; text-decoration: none; padding: 8px 16px; border-radius: 20px; margin-bottom: 15px; box-shadow: 0 0 10px rgba(0,229,255,0.3);
-    }
+    .btn-eliminar-fila { background: #ff3366; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8em; }
+    .btn-volver-tienda { display: inline-flex; align-items: center; gap: 8px; background: var(--secondary-color); color: #0d041a; font-weight: bold; text-decoration: none; padding: 8px 16px; border-radius: 20px; margin-bottom: 15px; box-shadow: 0 0 10px rgba(0,229,255,0.3); }
 
-    #loginScreen {
-      max-width: 400px;
-      margin: 10vh auto;
-      text-align: center;
-      background: var(--card-bg);
-      padding: 30px;
-      border-radius: 20px;
-      border: 2px solid var(--primary-color);
-      box-shadow: 0 0 30px rgba(255,0,127,0.4);
-    }
+    #loginScreen { max-width: 400px; margin: 10vh auto; text-align: center; background: var(--card-bg); padding: 30px; border-radius: 20px; border: 2px solid var(--primary-color); box-shadow: 0 0 30px rgba(255,0,127,0.4); }
     #loginScreen input { margin-bottom: 15px; }
   </style>
 </head>
@@ -204,7 +92,7 @@
   <button class="btn-admin-accion" style="width: 100%;" onclick="iniciarSesion()">Entrar al Sistema 🚀</button>
 </div>
 
-<!-- PANEL PRINCIPAL (OCULTO HASTA INICIAR SESIÓN) -->
+<!-- PANEL PRINCIPAL -->
 <div id="mainDashboard" style="display: none;">
   <div class="admin-header">
     <div class="admin-title">⚙️ Panel de Control & Administración General</div>
@@ -218,6 +106,7 @@
       <button class="tab-btn activo" onclick="cambiarTab('dash', event)"><i class="fas fa-chart-line"></i> Dashboard</button>
       <button class="tab-btn" onclick="cambiarTab('inventario', event)"><i class="fas fa-boxes"></i> Inventario Nube</button>
       <button class="tab-btn" onclick="cambiarTab('banners', event)"><i class="fas fa-images"></i> Banners Promos</button>
+      <button class="tab-btn" onclick="cambiarTab('fotoscat', event)"><i class="fas fa-th-large"></i> Categorías (Fotos)</button>
       <button class="tab-btn" onclick="cambiarTab('pedidos', event)"><i class="fas fa-shopping-cart"></i> Pedidos</button>
       <button class="tab-btn" onclick="cambiarTab('cupones', event)"><i class="fas fa-ticket-alt"></i> Cupones</button>
       <button class="tab-btn" onclick="cambiarTab('comunidad', event)"><i class="fas fa-users"></i> Comunidad & XP</button>
@@ -246,7 +135,7 @@
       </div>
     </div>
 
-    <!-- SECCIÓN 2: INVENTARIO CON CARGA DIRECTA DE ARCHIVOS -->
+    <!-- SECCIÓN 2: INVENTARIO -->
     <div id="seccion-inventario" class="seccion-panel">
       <div class="admin-card-form">
         <h3><i class="fas fa-plus-circle"></i> Agregar Producto a Firebase con Fotos</h3>
@@ -274,26 +163,11 @@
         <div class="fotos-container-admin">
           <h4>📸 Seleccionar hasta 5 fotos directo de tu dispositivo:</h4>
           <div class="form-grid">
-            <div class="file-input-wrapper">
-              <label>Foto 1 (Principal):</label>
-              <input type="file" id="fileFoto1" accept="image/*">
-            </div>
-            <div class="file-input-wrapper">
-              <label>Foto 2 (Opcional):</label>
-              <input type="file" id="fileFoto2" accept="image/*">
-            </div>
-            <div class="file-input-wrapper">
-              <label>Foto 3 (Opcional):</label>
-              <input type="file" id="fileFoto3" accept="image/*">
-            </div>
-            <div class="file-input-wrapper">
-              <label>Foto 4 (Opcional):</label>
-              <input type="file" id="fileFoto4" accept="image/*">
-            </div>
-            <div class="file-input-wrapper">
-              <label>Foto 5 (Opcional):</label>
-              <input type="file" id="fileFoto5" accept="image/*">
-            </div>
+            <div class="file-input-wrapper"><label>Foto 1 (Principal):</label><input type="file" id="fileFoto1" accept="image/*"></div>
+            <div class="file-input-wrapper"><label>Foto 2 (Opcional):</label><input type="file" id="fileFoto2" accept="image/*"></div>
+            <div class="file-input-wrapper"><label>Foto 3 (Opcional):</label><input type="file" id="fileFoto3" accept="image/*"></div>
+            <div class="file-input-wrapper"><label>Foto 4 (Opcional):</label><input type="file" id="fileFoto4" accept="image/*"></div>
+            <div class="file-input-wrapper"><label>Foto 5 (Opcional):</label><input type="file" id="fileFoto5" accept="image/*"></div>
           </div>
         </div>
 
@@ -304,23 +178,14 @@
         <h3><i class="fas fa-list"></i> Catálogo Activo en Firebase</h3>
         <div class="tabla-responsive">
           <table class="admin-table">
-            <thead>
-              <tr>
-                <th>Producto</th>
-                <th>Categoría</th>
-                <th>Precio ($)</th>
-                <th>Fotos 📸</th>
-                <th>Modalidad</th>
-                <th>Acción</th>
-              </tr>
-            </thead>
+            <thead><tr><th>Producto</th><th>Categoría</th><th>Precio ($)</th><th>Fotos 📸</th><th>Modalidad</th><th>Acción</th></tr></thead>
             <tbody id="tablaInventarioAdmin"></tbody>
           </table>
         </div>
       </div>
     </div>
 
-    <!-- SECCIÓN BANNERS CON HASTA 5 FOTOS LOCALES -->
+    <!-- SECCIÓN BANNERS -->
     <div id="seccion-banners" class="seccion-panel">
       <div class="admin-card-form" style="border-color: #ff9900; box-shadow: 0 5px 15px rgba(255,153,0,0.3);">
         <h3 style="color: #ff9900;"><i class="fas fa-images"></i> Subir Banners Promocionales (Hasta 5 Fotos)</h3>
@@ -329,26 +194,11 @@
         <div class="fotos-container-admin" style="border-color: #ff9900; background: rgba(255,153,0,0.05);">
           <h4 style="color: #ff9900;">📸 Selecciona las imágenes para los banners:</h4>
           <div class="form-grid">
-            <div class="file-input-wrapper">
-              <label>Banner 1:</label>
-              <input type="file" id="fileBanner1" accept="image/*">
-            </div>
-            <div class="file-input-wrapper">
-              <label>Banner 2 (Opcional):</label>
-              <input type="file" id="fileBanner2" accept="image/*">
-            </div>
-            <div class="file-input-wrapper">
-              <label>Banner 3 (Opcional):</label>
-              <input type="file" id="fileBanner3" accept="image/*">
-            </div>
-            <div class="file-input-wrapper">
-              <label>Banner 4 (Opcional):</label>
-              <input type="file" id="fileBanner4" accept="image/*">
-            </div>
-            <div class="file-input-wrapper">
-              <label>Banner 5 (Opcional):</label>
-              <input type="file" id="fileBanner5" accept="image/*">
-            </div>
+            <div class="file-input-wrapper"><label>Banner 1:</label><input type="file" id="fileBanner1" accept="image/*"></div>
+            <div class="file-input-wrapper"><label>Banner 2 (Opcional):</label><input type="file" id="fileBanner2" accept="image/*"></div>
+            <div class="file-input-wrapper"><label>Banner 3 (Opcional):</label><input type="file" id="fileBanner3" accept="image/*"></div>
+            <div class="file-input-wrapper"><label>Banner 4 (Opcional):</label><input type="file" id="fileBanner4" accept="image/*"></div>
+            <div class="file-input-wrapper"><label>Banner 5 (Opcional):</label><input type="file" id="fileBanner5" accept="image/*"></div>
           </div>
         </div>
         
@@ -359,14 +209,51 @@
         <h3><i class="fas fa-list"></i> Banners Activos en Tienda</h3>
         <div class="tabla-responsive">
           <table class="admin-table">
+            <thead><tr><th>Miniatura</th><th>Fecha / ID</th><th>Acción</th></tr></thead>
+            <tbody id="tablaBannersAdmin"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN NUEVA: FOTOS DE CATEGORÍAS -->
+    <div id="seccion-fotoscat" class="seccion-panel">
+      <div class="admin-card-form" style="border-color: #00ffcc; box-shadow: 0 5px 15px rgba(0,255,204,0.3);">
+        <h3 style="color: #00ffcc;"><i class="fas fa-th-large"></i> Cambiar Fotos del Carrusel de Categorías</h3>
+        <p style="font-size: 0.85em; color: #aaa; margin-bottom: 15px;">Selecciona la categoría a la que quieres cambiarle la foto. Esta reemplazará la imagen repetida en el menú principal.</p>
+
+        <div class="form-grid">
+          <select id="selectCategoriaFoto" class="admin-input">
+            <option value="todos">Todo el Loot</option>
+            <option value="mangas">Mangas Y Cómics</option>
+            <option value="ropa">Clothing</option>
+            <option value="cartas">TCG/Cartas</option>
+            <option value="figuras">Figuras Anime</option>
+            <option value="mandos">Videojuegos (Mandos)</option>
+            <option value="audifonos">Electrónica Audio</option>
+            <option value="teclados">Teclados PC</option>
+            <option value="peluches">Peluches Kawaii</option>
+            <option value="katanas">Katanas Replicas</option>
+            <option value="lamparas">Lámparas Neón</option>
+          </select>
+          <input type="file" id="fileFotoCategoria" class="admin-input" accept="image/*" style="padding: 7px;">
+        </div>
+
+        <button class="btn-admin-accion" style="background: #00ffcc; color: #0d041a; margin-top: 15px; box-shadow: 0 0 10px #00ffcc;" onclick="guardarFotoCategoriaNube()">Subir / Actualizar Foto 🖼️</button>
+      </div>
+
+      <div class="admin-card-form">
+        <h3><i class="fas fa-list"></i> Fotos Actuales de las Categorías</h3>
+        <div class="tabla-responsive">
+          <table class="admin-table">
             <thead>
               <tr>
                 <th>Miniatura</th>
-                <th>Fecha / ID</th>
+                <th>Categoría</th>
                 <th>Acción</th>
               </tr>
             </thead>
-            <tbody id="tablaBannersAdmin"></tbody>
+            <tbody id="tablaCategoriasAdmin"></tbody>
           </table>
         </div>
       </div>
@@ -424,12 +311,11 @@
   </div>
 </div>
 
-<!-- LÓGICA FIREBASE Y FUNCIONES DEL PANEL -->
 <script type="module">
   // Importaciones Firebase
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
   import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, orderBy, query } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, orderBy, query, setDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
   // Configuración de Firebase
   const firebaseConfig = {
@@ -445,7 +331,7 @@
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // Exponer funciones al entorno global (window)
+  // Funciones de Pestañas
   window.cambiarTab = (tabId, evento) => {
     let botones = document.querySelectorAll('.tab-btn');
     botones.forEach(btn => btn.classList.remove('activo'));
@@ -471,13 +357,14 @@
       document.getElementById('mainDashboard').style.display = 'block';
       window.cargarInventarioNube();
       window.cargarBannersNube();
+      window.cargarFotosCategoriasAdmin(); // Llama a las fotos de las categorías al entrar
     } else {
       document.getElementById('loginScreen').style.display = 'block';
       document.getElementById('mainDashboard').style.display = 'none';
     }
   });
 
-  // GESTIÓN DE TASA BCV Y FINANZAS (LOCAL)
+  // GESTIÓN DE TASA BCV Y FINANZAS
   let tasaBcv = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 854.46;
   document.getElementById('statTasa').innerText = `Bs. ${tasaBcv.toFixed(2)}`;
   document.getElementById('adminInputTasa').value = tasaBcv;
@@ -509,7 +396,76 @@
   };
 
   // ----------------------------------------------------
-  // GESTIÓN DE BANNERS MÚLTIPLES EN FIREBASE
+  // NUEVO: GESTIÓN DE FOTOS DE CATEGORÍAS
+  // ----------------------------------------------------
+  window.cargarFotosCategoriasAdmin = async () => {
+    try {
+      const q = query(collection(db, "configuracion"), orderBy("timestamp", "desc"));
+      const querySnapshot = await getDocs(q);
+      let tbody = document.getElementById('tablaCategoriasAdmin');
+      tbody.innerHTML = "";
+      
+      let vacio = true;
+      querySnapshot.forEach((documento) => {
+        let conf = documento.data();
+        // Filtra solo los documentos que sean de fotos de categoría
+        if (conf.tipo === 'categoria_foto') {
+          vacio = false;
+          tbody.innerHTML += `
+            <tr>
+              <td><img src="${conf.imgUrl}" style="height: 50px; width: 50px; border-radius: 8px; object-fit: cover; border: 1px solid var(--secondary-color);"></td>
+              <td style="text-transform: capitalize; font-weight: bold; color: var(--secondary-color);">${conf.categoriaId}</td>
+              <td><button class="btn-eliminar-fila" onclick="eliminarFotoCategoriaAdmin('${documento.id}')"><i class="fas fa-trash"></i> Restaurar Defecto</button></td>
+            </tr>
+          `;
+        }
+      });
+      if(vacio) tbody.innerHTML = "<tr><td colspan='3' style='color:#aaa; text-align:center;'>Aún no tienes fotos personalizadas. Se está mostrando el logo por defecto.</td></tr>";
+    } catch (error) {
+      console.error("Error al cargar fotos de categorías:", error);
+    }
+  };
+
+  window.guardarFotoCategoriaNube = () => {
+    let catId = document.getElementById('selectCategoriaFoto').value;
+    let fileInput = document.getElementById('fileFotoCategoria').files[0];
+
+    if (!fileInput) { alert("⚠️ Selecciona la imagen desde tu dispositivo primero."); return; }
+
+    let reader = new FileReader();
+    reader.onload = async function(e) {
+      let base64Image = e.target.result;
+      try {
+        // Usamos setDoc para que si vuelves a subir una foto de la misma categoría, sobrescriba la anterior y no se acumulen
+        await setDoc(doc(db, "configuracion", "cat_img_" + catId), {
+          tipo: "categoria_foto",
+          categoriaId: catId,
+          imgUrl: base64Image,
+          timestamp: Date.now()
+        });
+        alert(`¡La foto para ${catId.toUpperCase()} se actualizó con éxito! 🖼️✨`);
+        document.getElementById('fileFotoCategoria').value = "";
+        window.cargarFotosCategoriasAdmin();
+      } catch (error) {
+        alert("Error al subir imagen: " + error.message);
+      }
+    };
+    reader.readAsDataURL(fileInput);
+  };
+
+  window.eliminarFotoCategoriaAdmin = async (id) => {
+    if(confirm("¿Seguro que quieres borrarla? La tienda volverá a mostrar el logo por defecto en esa tarjeta. 🗑️")) {
+      try {
+        await deleteDoc(doc(db, "configuracion", id));
+        window.cargarFotosCategoriasAdmin();
+      } catch(error) {
+        alert("Error al eliminar: " + error.message);
+      }
+    }
+  };
+
+  // ----------------------------------------------------
+  // GESTIÓN DE BANNERS MÚLTIPLES
   // ----------------------------------------------------
   window.cargarBannersNube = async () => {
     try {
@@ -532,9 +488,7 @@
           </tr>
         `;
       });
-    } catch (error) {
-      console.error("Error al cargar banners:", error);
-    }
+    } catch (error) { console.error("Error al cargar banners:", error); }
   };
 
   window.guardarBannersMultiplesNube = () => {
@@ -559,23 +513,16 @@
       reader.onload = async function(e) {
         let base64Image = e.target.result;
         try {
-          await addDoc(collection(db, "banners"), {
-            imgUrl: base64Image,
-            timestamp: Date.now() + subidos // Asegura orden relativo
-          });
+          await addDoc(collection(db, "banners"), { imgUrl: base64Image, timestamp: Date.now() + subidos });
           subidos++;
           if (subidos === archivosValidos.length) {
             alert(`¡Se subieron ${subidos} banner(s) con éxito a la tienda! 🖼️✨`);
-            document.getElementById('fileBanner1').value = "";
-            document.getElementById('fileBanner2').value = "";
-            document.getElementById('fileBanner3').value = "";
-            document.getElementById('fileBanner4').value = "";
+            document.getElementById('fileBanner1').value = ""; document.getElementById('fileBanner2').value = "";
+            document.getElementById('fileBanner3').value = ""; document.getElementById('fileBanner4').value = "";
             document.getElementById('fileBanner5').value = "";
             window.cargarBannersNube();
           }
-        } catch (error) {
-          alert("Error al subir banner: " + error.message);
-        }
+        } catch (error) { alert("Error al subir banner: " + error.message); }
       };
       reader.readAsDataURL(file);
     });
@@ -586,14 +533,12 @@
       try {
         await deleteDoc(doc(db, "banners", id));
         window.cargarBannersNube();
-      } catch(error) {
-        alert("Error al eliminar: " + error.message);
-      }
+      } catch(error) { alert("Error al eliminar: " + error.message); }
     }
   };
 
   // ----------------------------------------------------
-  // GESTIÓN DE PRODUCTOS EN FIREBASE
+  // GESTIÓN DE PRODUCTOS
   // ----------------------------------------------------
   window.cargarInventarioNube = async () => {
     try {
@@ -621,9 +566,7 @@
         `;
       });
       document.getElementById('statProductos').innerText = contador;
-    } catch (error) {
-      console.error("Error al cargar:", error);
-    }
+    } catch (error) { console.error("Error al cargar:", error); }
   };
 
   window.procesarYGuardarProducto = () => {
@@ -632,25 +575,16 @@
     let categoria = document.getElementById('nuevaCategoria').value;
     let estado = document.getElementById('nuevoEstado').value;
 
-    if (!nombre || isNaN(precio) || precio <= 0) {
-      alert("Por favor ingresa un nombre y un precio válido.");
-      return;
-    }
+    if (!nombre || isNaN(precio) || precio <= 0) { alert("Por favor ingresa un nombre y un precio válido."); return; }
 
     let inputFiles = [
-      document.getElementById('fileFoto1').files[0],
-      document.getElementById('fileFoto2').files[0],
-      document.getElementById('fileFoto3').files[0],
-      document.getElementById('fileFoto4').files[0],
+      document.getElementById('fileFoto1').files[0], document.getElementById('fileFoto2').files[0],
+      document.getElementById('fileFoto3').files[0], document.getElementById('fileFoto4').files[0],
       document.getElementById('fileFoto5').files[0]
     ];
-
     let archivosValidos = inputFiles.filter(file => file !== undefined);
 
-    if (archivosValidos.length === 0) {
-      alert("Por favor selecciona al menos la primera foto principal desde tu dispositivo.");
-      return;
-    }
+    if (archivosValidos.length === 0) { alert("Por favor selecciona al menos la primera foto principal desde tu dispositivo."); return; }
 
     let fotosProcesadas = [];
     let leidos = 0;
@@ -660,31 +594,19 @@
       reader.onload = async function(e) {
         fotosProcesadas[idx] = e.target.result;
         leidos++;
-        
         if (leidos === archivosValidos.length) {
           try {
             await addDoc(collection(db, "productos"), {
-              nombre: nombre,
-              precio: precio,
-              categoria: categoria,
-              estado: estado,
-              fotos: fotosProcesadas,
-              timestamp: Date.now()
+              nombre: nombre, precio: precio, categoria: categoria,
+              estado: estado, fotos: fotosProcesadas, timestamp: Date.now()
             });
-            
             alert("¡Producto guardado exitosamente en la nube! ☁️✨");
             window.cargarInventarioNube();
-            
-            document.getElementById('nuevoNombre').value = "";
-            document.getElementById('nuevoPrecio').value = "";
-            document.getElementById('fileFoto1').value = "";
-            document.getElementById('fileFoto2').value = "";
-            document.getElementById('fileFoto3').value = "";
-            document.getElementById('fileFoto4').value = "";
+            document.getElementById('nuevoNombre').value = ""; document.getElementById('nuevoPrecio').value = "";
+            document.getElementById('fileFoto1').value = ""; document.getElementById('fileFoto2').value = "";
+            document.getElementById('fileFoto3').value = ""; document.getElementById('fileFoto4').value = "";
             document.getElementById('fileFoto5').value = "";
-          } catch (error) {
-            alert("Error al subir a la nube: " + error.message);
-          }
+          } catch (error) { alert("Error al subir a la nube: " + error.message); }
         }
       };
       reader.readAsDataURL(file);
@@ -696,9 +618,7 @@
       try {
         await deleteDoc(doc(db, "productos", id));
         window.cargarInventarioNube();
-      } catch(error) {
-        alert("Error al eliminar: " + error.message);
-      }
+      } catch(error) { alert("Error al eliminar: " + error.message); }
     }
   };
 </script>
