@@ -106,7 +106,7 @@
       <button class="tab-btn activo" onclick="cambiarTab('dash', event)"><i class="fas fa-chart-line"></i> Dashboard</button>
       <button class="tab-btn" onclick="cambiarTab('inventario', event)"><i class="fas fa-boxes"></i> Inventario Nube</button>
       <button class="tab-btn" onclick="cambiarTab('banners', event)"><i class="fas fa-images"></i> Banners Promos</button>
-      <button class="tab-btn" onclick="cambiarTab('fotoscat', event)"><i class="fas fa-th-large"></i> Categorías (Fotos)</button>
+      <button class="tab-btn" onclick="cambiarTab('fotoscat', event)"><i class="fas fa-th-large"></i> Personalizar Categorías</button>
       <button class="tab-btn" onclick="cambiarTab('pedidos', event)"><i class="fas fa-shopping-cart"></i> Pedidos</button>
       <button class="tab-btn" onclick="cambiarTab('cupones', event)"><i class="fas fa-ticket-alt"></i> Cupones</button>
       <button class="tab-btn" onclick="cambiarTab('comunidad', event)"><i class="fas fa-users"></i> Comunidad & XP</button>
@@ -216,14 +216,14 @@
       </div>
     </div>
 
-    <!-- SECCIÓN NUEVA: FOTOS DE CATEGORÍAS -->
+    <!-- SECCIÓN: FOTOS Y NOMBRES DE CATEGORÍAS -->
     <div id="seccion-fotoscat" class="seccion-panel">
       <div class="admin-card-form" style="border-color: #00ffcc; box-shadow: 0 5px 15px rgba(0,255,204,0.3);">
-        <h3 style="color: #00ffcc;"><i class="fas fa-th-large"></i> Cambiar Fotos del Carrusel de Categorías</h3>
-        <p style="font-size: 0.85em; color: #aaa; margin-bottom: 15px;">Selecciona la categoría a la que quieres cambiarle la foto. Esta reemplazará la imagen repetida en el menú principal.</p>
+        <h3 style="color: #00ffcc;"><i class="fas fa-th-large"></i> Personalizar Categorías (Fotos y Nombres)</h3>
+        <p style="font-size: 0.85em; color: #aaa; margin-bottom: 15px;">Selecciona la categoría y cambia su imagen, su nombre visible en la tienda, o ambos al mismo tiempo.</p>
 
         <div class="form-grid">
-          <select id="selectCategoriaFoto" class="admin-input">
+          <select id="selectCategoriaConfig" class="admin-input">
             <option value="todos">Todo el Loot</option>
             <option value="mangas">Mangas Y Cómics</option>
             <option value="ropa">Clothing</option>
@@ -236,20 +236,22 @@
             <option value="katanas">Katanas Replicas</option>
             <option value="lamparas">Lámparas Neón</option>
           </select>
+          <input type="text" id="inputNombreCategoria" class="admin-input" placeholder="Nuevo Nombre (Ej: Mangas Geniales)">
           <input type="file" id="fileFotoCategoria" class="admin-input" accept="image/*" style="padding: 7px;">
         </div>
 
-        <button class="btn-admin-accion" style="background: #00ffcc; color: #0d041a; margin-top: 15px; box-shadow: 0 0 10px #00ffcc;" onclick="guardarFotoCategoriaNube()">Subir / Actualizar Foto 🖼️</button>
+        <button class="btn-admin-accion" style="background: #00ffcc; color: #0d041a; margin-top: 15px; box-shadow: 0 0 10px #00ffcc;" onclick="guardarConfigCategoriaNube()">Guardar Cambios 🚀✨</button>
       </div>
 
       <div class="admin-card-form">
-        <h3><i class="fas fa-list"></i> Fotos Actuales de las Categorías</h3>
+        <h3><i class="fas fa-list"></i> Configuraciones Actuales de las Categorías</h3>
         <div class="tabla-responsive">
           <table class="admin-table">
             <thead>
               <tr>
                 <th>Miniatura</th>
-                <th>Categoría</th>
+                <th>Categoría (ID)</th>
+                <th>Nombre Visible</th>
                 <th>Acción</th>
               </tr>
             </thead>
@@ -357,7 +359,7 @@
       document.getElementById('mainDashboard').style.display = 'block';
       window.cargarInventarioNube();
       window.cargarBannersNube();
-      window.cargarFotosCategoriasAdmin(); // Llama a las fotos de las categorías al entrar
+      window.cargarConfigCategoriasAdmin(); 
     } else {
       document.getElementById('loginScreen').style.display = 'block';
       document.getElementById('mainDashboard').style.display = 'none';
@@ -396,9 +398,9 @@
   };
 
   // ----------------------------------------------------
-  // NUEVO: GESTIÓN DE FOTOS DE CATEGORÍAS
+  // GESTIÓN DE CONFIGURACIÓN DE CATEGORÍAS (FOTOS Y NOMBRES)
   // ----------------------------------------------------
-  window.cargarFotosCategoriasAdmin = async () => {
+  window.cargarConfigCategoriasAdmin = async () => {
     try {
       const q = query(collection(db, "configuracion"), orderBy("timestamp", "desc"));
       const querySnapshot = await getDocs(q);
@@ -408,56 +410,77 @@
       let vacio = true;
       querySnapshot.forEach((documento) => {
         let conf = documento.data();
-        // Filtra solo los documentos que sean de fotos de categoría
         if (conf.tipo === 'categoria_foto') {
           vacio = false;
+          let imagenMostrar = conf.imgUrl ? `<img src="${conf.imgUrl}" style="height: 50px; width: 50px; border-radius: 8px; object-fit: cover; border: 1px solid var(--secondary-color);">` : `<span style="color:#aaa;">Sin foto</span>`;
+          let nombreMostrar = conf.nombrePersonalizado ? conf.nombrePersonalizado : `<span style="color:#aaa;">(Nombre por defecto)</span>`;
+          
           tbody.innerHTML += `
             <tr>
-              <td><img src="${conf.imgUrl}" style="height: 50px; width: 50px; border-radius: 8px; object-fit: cover; border: 1px solid var(--secondary-color);"></td>
+              <td>${imagenMostrar}</td>
               <td style="text-transform: capitalize; font-weight: bold; color: var(--secondary-color);">${conf.categoriaId}</td>
-              <td><button class="btn-eliminar-fila" onclick="eliminarFotoCategoriaAdmin('${documento.id}')"><i class="fas fa-trash"></i> Restaurar Defecto</button></td>
+              <td style="font-weight: bold;">${nombreMostrar}</td>
+              <td><button class="btn-eliminar-fila" onclick="eliminarConfigCategoriaAdmin('${documento.id}')"><i class="fas fa-trash"></i> Restaurar Defecto</button></td>
             </tr>
           `;
         }
       });
-      if(vacio) tbody.innerHTML = "<tr><td colspan='3' style='color:#aaa; text-align:center;'>Aún no tienes fotos personalizadas. Se está mostrando el logo por defecto.</td></tr>";
+      if(vacio) tbody.innerHTML = "<tr><td colspan='4' style='color:#aaa; text-align:center;'>Aún no tienes configuraciones personalizadas. Se muestra todo por defecto.</td></tr>";
     } catch (error) {
-      console.error("Error al cargar fotos de categorías:", error);
+      console.error("Error al cargar configuraciones de categorías:", error);
     }
   };
 
-  window.guardarFotoCategoriaNube = () => {
-    let catId = document.getElementById('selectCategoriaFoto').value;
+  window.guardarConfigCategoriaNube = async () => {
+    let catId = document.getElementById('selectCategoriaConfig').value;
+    let nuevoNombre = document.getElementById('inputNombreCategoria').value.trim();
     let fileInput = document.getElementById('fileFotoCategoria').files[0];
 
-    if (!fileInput) { alert("⚠️ Selecciona la imagen desde tu dispositivo primero."); return; }
+    if (!fileInput && !nuevoNombre) { 
+      alert("⚠️ Ey! Tienes que seleccionar una nueva imagen o escribir un nuevo nombre para guardar cambios."); 
+      return; 
+    }
 
-    let reader = new FileReader();
-    reader.onload = async function(e) {
-      let base64Image = e.target.result;
+    let updateData = {
+      tipo: "categoria_foto",
+      categoriaId: catId,
+      timestamp: Date.now()
+    };
+
+    if (nuevoNombre) {
+      updateData.nombrePersonalizado = nuevoNombre;
+    }
+
+    let guardarEnFirebase = async (data) => {
       try {
-        // Usamos setDoc para que si vuelves a subir una foto de la misma categoría, sobrescriba la anterior y no se acumulen
-        await setDoc(doc(db, "configuracion", "cat_img_" + catId), {
-          tipo: "categoria_foto",
-          categoriaId: catId,
-          imgUrl: base64Image,
-          timestamp: Date.now()
-        });
-        alert(`¡La foto para ${catId.toUpperCase()} se actualizó con éxito! 🖼️✨`);
+        // Usamos setDoc con {merge: true} para que no borre la foto si solo cambias el nombre y viceversa.
+        await setDoc(doc(db, "configuracion", "cat_img_" + catId), data, { merge: true });
+        alert(`¡La configuración de ${catId.toUpperCase()} se actualizó con éxito! ✨`);
+        document.getElementById('inputNombreCategoria').value = "";
         document.getElementById('fileFotoCategoria').value = "";
-        window.cargarFotosCategoriasAdmin();
+        window.cargarConfigCategoriasAdmin();
       } catch (error) {
-        alert("Error al subir imagen: " + error.message);
+        alert("Error al guardar: " + error.message);
       }
     };
-    reader.readAsDataURL(fileInput);
+
+    if (fileInput) {
+      let reader = new FileReader();
+      reader.onload = function(e) {
+        updateData.imgUrl = e.target.result;
+        guardarEnFirebase(updateData);
+      };
+      reader.readAsDataURL(fileInput);
+    } else {
+      guardarEnFirebase(updateData);
+    }
   };
 
-  window.eliminarFotoCategoriaAdmin = async (id) => {
-    if(confirm("¿Seguro que quieres borrarla? La tienda volverá a mostrar el logo por defecto en esa tarjeta. 🗑️")) {
+  window.eliminarConfigCategoriaAdmin = async (id) => {
+    if(confirm("¿Seguro que quieres borrarla? La tienda volverá a mostrar el nombre y logo por defecto en esa tarjeta. 🗑️")) {
       try {
         await deleteDoc(doc(db, "configuracion", id));
-        window.cargarFotosCategoriasAdmin();
+        window.cargarConfigCategoriasAdmin();
       } catch(error) {
         alert("Error al eliminar: " + error.message);
       }
