@@ -24,7 +24,6 @@
     body.theme-purpura { --bg-color: #12021a; --card-bg: linear-gradient(135deg, #28053b 0%, #170224 100%); --text-color: #fce8ff; --primary-color: #b000ff; --secondary-color: #ff00ea; --border-color: rgba(255,0,234,0.3); --hero-bg: #28053b; }
     body.theme-overdrive { --bg-color: #2b0500; --card-bg: linear-gradient(135deg, #4a0d00 0%, #2b0500 100%); --text-color: #fff5e6; --primary-color: #ffaa00; --secondary-color: #ff4400; --border-color: rgba(255,170,0,0.6); --hero-bg: #4a0d00; }
 
-    /* AÑADIDO: padding-bottom para que la barra inferior no tape contenido */
     body { margin: 0; background-color: var(--bg-color); color: var(--text-color); font-family: sans-serif; overflow-x: hidden; transition: background 0.4s ease, color 0.4s ease; padding-bottom: 75px; }
     
     ::-webkit-scrollbar { width: 8px; height: 8px; }
@@ -59,7 +58,6 @@
     .hero-logo:hover { transform: scale(1.05); }
     .hero-title { font-size: 1.1em; font-weight: bold; margin-bottom: 12px; letter-spacing: 1px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
     
-    /* ESTILOS DEL NUEVO BARRER DINÁMICO */
     .banner-slider-container { position: relative; width: 100%; max-width: 800px; margin: 15px auto; border-radius: 15px; overflow: hidden; box-shadow: 0 0 20px rgba(0,229,255,0.3); aspect-ratio: 21/9; background: var(--card-bg); display: none; }
     .banner-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.8s ease; object-fit: cover; cursor: pointer; }
     .banner-slide.active { opacity: 1; z-index: 2; }
@@ -116,7 +114,6 @@
 
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
     
-    /* MODIFICACIONES AL MODAL (ESTILO E-COMMERCE) */
     .modal-content { background: var(--hero-bg); padding: 20px; border-radius: 20px; text-align: left; max-width: 95%; width: 440px; border: 2px solid var(--primary-color); box-shadow: 0 0 30px rgba(255,0,127,0.5); position: relative; max-height: 92vh; overflow-y: auto; transition: background 0.4s ease; }
     .cerrar-modal { position: absolute; top: 10px; right: 15px; font-size: 25px; color: var(--text-color); cursor: pointer; background: none; border: none; font-weight: bold; z-index: 10; }
     .breadcrumbs { font-size: 0.85em; color: #aaa; margin-bottom: 12px; font-weight: bold; }
@@ -171,14 +168,12 @@
     .info-card h4 { color: var(--secondary-color); margin-top: 0; margin-bottom: 12px; font-size: 1.1em; display: flex; align-items: center; gap: 8px; }
     .badge-envio { display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 0, 127, 0.15); border: 1px solid var(--primary-color); padding: 4px 10px; border-radius: 8px; font-size: 0.85em; font-weight: bold; color: var(--text-color); margin: 3px; }
 
-    /* ESTILOS DE LA NUEVA BARRA INFERIOR */
     .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(17, 5, 44, 0.95); backdrop-filter: blur(10px); border-top: 2px solid var(--primary-color); display: flex; justify-content: space-around; align-items: center; padding: 10px 0; z-index: 1500; box-shadow: 0 -5px 20px rgba(255,0,127,0.3); }
     .nav-item { color: var(--text-color); display: flex; flex-direction: column; align-items: center; font-size: 0.75em; font-weight: bold; cursor: pointer; position: relative; transition: color 0.3s; width: 25%; }
     .nav-item i { font-size: 1.6em; margin-bottom: 4px; color: var(--secondary-color); transition: transform 0.3s; }
     .nav-item:hover i { transform: translateY(-3px) scale(1.1); color: var(--primary-color); }
     .nav-badge { position: absolute; top: -5px; right: 20%; background: #ff3366; color: white; font-size: 0.85em; font-weight: bold; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 8px #ff3366; }
 
-    /* ESTILOS DEL NUEVO MENÚ EN GRID (SECUNDARIO) */
     .menu-opciones-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 15px; }
     .btn-menu-opcion { display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--card-bg); border: 1px solid var(--border-color); padding: 15px 10px; border-radius: 15px; color: var(--text-color); text-decoration: none; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.2s; text-align: center; }
     .btn-menu-opcion i { font-size: 1.8em; margin-bottom: 8px; }
@@ -204,7 +199,7 @@
 
 <div class="ticker-bar">
   <div class="ticker-content">
-    🔥 ¡Bienvenidos a Sakura Gameverse! Envíos seguros a todo el país exclusivamente por ZOOM y MRW 📦 | 🎮 Cupón activo: OTAKU10 | ⚡ ¡Catálogo en la nube con carrusel activo! 🌸
+    🔥 Catálogo al mayor disponible por WhatsApp 📱 | Envíos seguros a todo el país por ZOOM y MRW 📦 | 🎮 Cupón activo: OTAKU10 🌸
   </div>
 </div>
 
@@ -242,7 +237,7 @@
     <div id="gachaResultado" style="background: var(--bg-color); border: 2px dashed #9900ff; padding: 20px; border-radius: 12px; font-size: 1.1em; font-weight: bold; color: var(--secondary-color); margin-bottom: 15px; min-height: 60px; display: flex; align-items: center; justify-content: center;">
       Presiona el botón para girar 🎁
     </div>
-    <button class="btn-sugerencia" style="background: #9900ff; color: white;" onclick="girarRuletaGacha()">¡Girar Ruleta Gacha! ⚡</button>
+    <button class="btn-sugerencia" style="background: #9900ff; color: white;" onclick="girarRuletaGacha()"><div>¡Girar Ruleta Gacha! ⚡</div></button>
   </div>
 </div>
 
@@ -306,13 +301,12 @@
   <img src="logo.webp" alt="Sakura Gameverse" class="hero-logo" onclick="activarEasterEggLogo()">
   
   <div class="store-status-badge">
-    <div class="status-dot"></div> Pedidos Abiertos (Bejuma & Miranda)
+    <div class="status-dot"></div> Estamos laborando
   </div>
 
   <div class="hero-title">✨ Bienvenidos a Sakura Gameverse ✨<br>Donde tu pasión por el gaming nunca hace game over. 👾🌸</div>
   
-  <div id="bannerSliderContainer" class="banner-slider-container">
-    </div>
+  <div id="bannerSliderContainer" class="banner-slider-container"></div>
 
   <div class="flash-sale-banner">
     <i class="fas fa-bolt" style="color: #ffcc00; font-size: 1.2em;"></i>
@@ -363,7 +357,7 @@
     </div>
   </div>
 
-  <h2 style="color: var(--primary-color); text-align: center; margin-bottom: 20px;">📦 Catálogo General en la Nube</h2>
+  <h2 style="color: var(--primary-color); text-align: center; margin-bottom: 20px;">📦 Catálogo</h2>
   <div class="grid" id="catalogoNube">
     <p style="text-align: center; color: var(--secondary-color);">Cargando inventario desde Firebase...</p>
   </div>
@@ -570,7 +564,6 @@
     }
   }
 
-  // --- NUEVA LÓGICA DE BANNERS DESDE FIREBASE ---
   async function cargarBannersDeNube() {
     try {
       const q = query(collection(db, "banners"), orderBy("timestamp", "desc"));
@@ -637,7 +630,6 @@
     bannerInterval = setInterval(() => rotarBanner(1), 5000);
   }
 
-  // --- LÓGICA DE PRODUCTOS ---
   async function cargarProductosDeNube() {
     try {
       const q = query(collection(db, "productos"), orderBy("timestamp", "desc"));
@@ -686,7 +678,6 @@
         <div class="carrusel-dots">${dotsHtml}</div>
       ` : '';
 
-      // AÑADIDO: Pasamos la variable '${categoria}' al final de la función para el Breadcrumb
       contenedor.innerHTML += `
         <div class="card item-producto" data-nombre="${prod.nombre.toLowerCase()}" data-categoria="${categoria}" data-estado="${prod.estado}" data-precio="${prod.precio}" onclick="crearDestello(event); abrirModalMulti(${fotosJson}, '${prod.nombre}', ${prod.precio}, 'Producto oficial de Sakura Gameverse.', '${prod.estado}', ${esRopa}, '${categoria}')">
           <button class="btn-fav-card" onclick="toggleFavorito(event, '${prod.nombre}', ${prod.precio}, '${fotosArray[0]}')"><i class="fas fa-heart"></i></button>
@@ -762,11 +753,9 @@
     dots[newIndex].classList.add('activa');
   }
 
-  // AÑADIDO: MODIFICACIÓN DEL MODAL PARA PARECERSE AL VIDEO
   function abrirModalMulti(fotosArray, titulo, precio, descripcion, disponibilidad, esRopa, categoriaRaw) {
     productoActual = { img: fotosArray[0], titulo, precio, esRopa };
     
-    // Configurar Breadcrumb
     let catBonita = categoriaRaw.charAt(0).toUpperCase() + categoriaRaw.slice(1);
     document.getElementById('modalBreadcrumbs').innerHTML = `Inicio / <span>${catBonita}</span>`;
     
@@ -857,7 +846,6 @@
     }
   }
 
-  // AÑADIDO: MANEJO DEL NUEVO MENÚ DE OPCIONES
   function abrirMenuOpciones() { reproducirSonido(); document.getElementById('modalOpcionesMenu').style.display = 'flex'; }
   function cerrarMenuOpciones() { document.getElementById('modalOpcionesMenu').style.display = 'none'; }
 
@@ -1031,7 +1019,6 @@
     actualizarBadges();
   }
 
-  // AÑADIDO: ACTUALIZAR BADGES DE LA BARRA INFERIOR
   function actualizarBadges() {
     document.getElementById('cartBadge').innerText = carrito.length;
     document.getElementById('favBadge').innerText = favoritos.length;
@@ -1140,7 +1127,6 @@
     alert("¡Reseña publicada!");
   }
 
-  // Inicializar insignias numéricas (badges) de la barra inferior al cargar
   actualizarBadges();
 </script>
 
