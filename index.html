@@ -292,9 +292,6 @@
     .panel-controles-avanzados { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; width: 100%; max-width: 650px; margin: 0 auto; }
     .ordenar-select { background: var(--hero-bg); border: 1px solid var(--primary-color); color: var(--text-color); padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; outline: none; box-shadow: 0 0 10px rgba(255,0,127,0.3); }
 
-    .precio-slider-box { background: var(--hero-bg); border: 1px solid var(--secondary-color); padding: 8px 15px; border-radius: 20px; display: inline-flex; align-items: center; gap: 10px; font-size: 0.9em; font-weight: bold; color: var(--secondary-color); box-shadow: 0 0 10px rgba(0,229,255,0.2); }
-    .precio-slider-box input { accent-color: var(--primary-color); cursor: pointer; width: 120px; }
-
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
     
     .card { 
@@ -413,12 +410,10 @@
     .modal-content { background: var(--hero-bg); padding: 20px; border-radius: 20px; text-align: center; max-width: 95%; width: 440px; border: 2px solid var(--primary-color); box-shadow: 0 0 30px rgba(255,0,127,0.5); position: relative; max-height: 92vh; overflow-y: auto; transition: background 0.4s ease; }
     .cerrar-modal { position: absolute; top: 10px; right: 15px; font-size: 25px; color: var(--text-color); cursor: pointer; background: none; border: none; font-weight: bold; }
     
-    /* IMAGEN DEL MODAL MÁS GRANDE Y LIMPIA */
     .modal-img { width: 100%; max-height: 350px; object-fit: contain; background: rgba(0,0,0,0.5); border-radius: 12px; margin-bottom: 15px; box-shadow: 0 0 15px rgba(0,229,255,0.2); }
     
     .modal-tag-info { display: inline-block; background: rgba(0,229,255,0.15); border: 1px solid var(--secondary-color); color: var(--secondary-color); padding: 4px 10px; border-radius: 10px; font-size: 0.8em; font-weight: bold; margin-bottom: 10px; }
     
-    /* MINIATURAS MÁS GRANDES Y CÓMODAS */
     .modal-miniaturas {
       display: flex;
       gap: 10px;
@@ -703,7 +698,7 @@
       <!-- FILTROS RÁPIDOS POR PRESUPUESTO -->
       <button class="btn-filtro" onclick="filtrarPorPresupuesto(0, 15, event)">💵 Menos de $15</button>
       <button class="btn-filtro" onclick="filtrarPorPresupuesto(15, 35, event)">🪙 De $15 a $35</button>
-      <button class="btn-filtro" onclick="filtrarPorPresupuesto(35, 1000, event)">💎 Más de $35</button>
+      <button class="btn-filtro" onclick="filtrarPorPresupuesto(35, 10000, event)">💎 Más de $35</button>
       <button class="btn-filtro" style="border-color: #00e5ff; color: #00e5ff;" onclick="filtrarEstado('Envío Inmediato 📦', event)">📦 Stock Inmediato</button>
       <button class="btn-filtro" style="border-color: #FF007F; color: #FF007F;" onclick="filtrarEstado('Por Encargo ⚡', event)">⚡ Por Encargo</button>
     </div>
@@ -714,11 +709,6 @@
         <option value="menor">📉 Precio: Menor a Mayor</option>
         <option value="mayor">📈 Precio: Mayor a Menor</option>
       </select>
-
-      <div class="precio-slider-box">
-        <span>💵 Máx: $<span id="lblPrecioMax">1000</span></span>
-        <input type="range" id="sliderPrecio" min="1" max="1000" step="10" value="1000" oninput="filtrarPorPrecio()">
-      </div>
     </div>
   </div>
 
@@ -985,7 +975,6 @@
 
 <!-- SCRIPT GENERAL Y DE INTERACCIÓN -->
 <script>
-  // 🎵 SFX AUDIOS RETRO (Web Audio API)
   window.reproducirSonido = function() {
     try {
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -1136,7 +1125,6 @@
     }
   }
 
-  // ✨ SISTEMA GAMER & XP
   let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, rango: "Novato Otaku ⚡" };
   document.getElementById('inputGamerTag').value = gamerProfile.tag;
   document.getElementById('lblRango').innerText = gamerProfile.rango;
@@ -1216,7 +1204,6 @@
   function cerrarGuiaTallasModal() { document.getElementById('modalGuiaTallas').style.display = 'none'; }
   function cerrarPromoFlash() { document.getElementById('modalPromoFlash').style.display = 'none'; }
 
-  // 🛒 CARRITO DE COMPRAS PERSISTENTE
   let carrito = JSON.parse(localStorage.getItem('sakura_carrito')) || [];
   let productoActual = null;
   let descuentoAplicado = 0;
@@ -1241,7 +1228,6 @@
     aplicarFiltrosCombinados();
   }
 
-  // 💵 FILTRO RÁPIDO POR PRESUPUESTO
   window.filtrarPorPresupuesto = function(min, max, evento) {
     reproducirSonido();
     document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('activo'));
@@ -1254,23 +1240,14 @@
     });
   }
 
-  function filtrarPorPrecio() {
-    let pMax = parseFloat(document.getElementById('sliderPrecio').value);
-    document.getElementById('lblPrecioMax').innerText = pMax;
-    aplicarFiltrosCombinados();
-  }
-
   function aplicarFiltrosCombinados() {
-    let pMax = parseFloat(document.getElementById('sliderPrecio').value);
     let productos = document.querySelectorAll('#catalogoNube .item-producto');
     productos.forEach(prod => {
       let cat = prod.getAttribute('data-categoria');
       let est = prod.getAttribute('data-estado');
-      let precio = parseFloat(prod.getAttribute('data-precio'));
       let cumpleCat = (categoriaActualFiltro === 'todos' || cat === categoriaActualFiltro);
       let cumpleEst = (estadoActualFiltro === 'todos' || est === estadoActualFiltro);
-      let cumplePrecio = (precio <= pMax);
-      prod.style.display = (cumpleCat && cumpleEst && cumplePrecio) ? 'block' : 'none';
+      prod.style.display = (cumpleCat && cumpleEst) ? 'block' : 'none';
     });
   }
 
@@ -1416,7 +1393,6 @@
     alert("¡Reseña publicada!");
   }
 
-  // Inicializar estado del carrito al cargar
   actualizarCarritoUI();
 </script>
 
