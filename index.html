@@ -59,7 +59,6 @@
 
     .hero-title { font-size: 1.1em; font-weight: bold; margin-bottom: 12px; letter-spacing: 1px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
     
-    /* MODIFICADO: Banner más robusto (16/9, borde más grueso, object-fit: cover) */
     .banner-slider-container { position: relative; width: 100%; max-width: 800px; margin: 20px auto; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 25px rgba(0, 229, 255, 0.25), 0 4px 10px rgba(0,0,0,0.5); aspect-ratio: 16/9; background: var(--card-bg); border: 2px solid var(--secondary-color); display: none; }
     .banner-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; background-color: #0d041a; opacity: 0; transition: opacity 0.8s ease-in-out; cursor: pointer; }
     .banner-slide.active { opacity: 1; z-index: 2; }
@@ -227,7 +226,7 @@
     <div style="font-size: 40px; margin-bottom: 10px;">🎁</div>
     <h2 style="color: var(--secondary-color); margin-top: 0;">¡Bienvenido a Sakura Gameverse!</h2>
     <p style="font-size: 0.95em; line-height: 1.5; opacity: 0.9; margin-bottom: 15px;">
-      Usa el código <strong>OTAKU10</strong> o abre el menú inferior para reclamar tu <strong>Cofre Diario</strong> y girar la ruleta Gacha. Entregas en <strong>Bejuma y Miranda</strong> y envíos por <strong>ZOOM y MRW</strong>.
+      Usa códigos de descuento activos o abre el menú inferior para reclamar tu <strong>Cofre Diario</strong> y girar la ruleta Gacha. Entregas en <strong>Bejuma y Miranda</strong> y envíos por <strong>ZOOM y MRW</strong>.
     </p>
     <button class="btn-sugerencia" onclick="cerrarPromoFlash()">¡A Explorar el loot! 🎁</button>
   </div>
@@ -347,7 +346,7 @@
         <div class="cat-card activa" onclick="filtrar('todos')">
           <img src="logo.webp" id="img-cat-todos" class="cat-img" alt="Todos">
           <div class="cat-info">
-            <div class="cat-title">Todo el Loot</div>
+            <div class="cat-title" id="title-cat-todos">Todo el Loot</div>
             <div class="cat-count" id="count-todos">0 productos</div>
           </div>
         </div>
@@ -355,7 +354,7 @@
         <div class="cat-card" onclick="filtrar('mangas')">
           <img src="logo.webp" id="img-cat-mangas" class="cat-img" alt="Mangas">
           <div class="cat-info">
-            <div class="cat-title">Mangas Y Cómics</div>
+            <div class="cat-title" id="title-cat-mangas">Mangas Y Cómics</div>
             <div class="cat-count" id="count-mangas">0 productos</div>
           </div>
         </div>
@@ -363,7 +362,7 @@
         <div class="cat-card" onclick="filtrar('ropa')">
           <img src="logo.webp" id="img-cat-ropa" class="cat-img" alt="Ropa">
           <div class="cat-info">
-            <div class="cat-title">Clothing</div>
+            <div class="cat-title" id="title-cat-ropa">Clothing</div>
             <div class="cat-count" id="count-ropa">0 productos</div>
           </div>
         </div>
@@ -371,7 +370,7 @@
         <div class="cat-card" onclick="filtrar('cartas')">
           <img src="logo.webp" id="img-cat-cartas" class="cat-img" alt="TCG">
           <div class="cat-info">
-            <div class="cat-title">TCG/Cartas</div>
+            <div class="cat-title" id="title-cat-cartas">TCG/Cartas</div>
             <div class="cat-count" id="count-cartas">0 productos</div>
           </div>
         </div>
@@ -379,7 +378,7 @@
         <div class="cat-card" onclick="filtrar('figuras')">
           <img src="logo.webp" id="img-cat-figuras" class="cat-img" alt="Figuras">
           <div class="cat-info">
-            <div class="cat-title">Figuras Anime</div>
+            <div class="cat-title" id="title-cat-figuras">Figuras Anime</div>
             <div class="cat-count" id="count-figuras">0 productos</div>
           </div>
         </div>
@@ -387,7 +386,7 @@
         <div class="cat-card" onclick="filtrar('mandos')">
           <img src="logo.webp" id="img-cat-mandos" class="cat-img" alt="Mandos">
           <div class="cat-info">
-            <div class="cat-title">Videojuegos</div>
+            <div class="cat-title" id="title-cat-mandos">Videojuegos</div>
             <div class="cat-count" id="count-mandos">0 productos</div>
           </div>
         </div>
@@ -395,7 +394,7 @@
         <div class="cat-card" onclick="filtrar('audifonos')">
           <img src="logo.webp" id="img-cat-audifonos" class="cat-img" alt="Audífonos">
           <div class="cat-info">
-            <div class="cat-title">Electrónica Audio</div>
+            <div class="cat-title" id="title-cat-audifonos">Electrónica Audio</div>
             <div class="cat-count" id="count-audifonos">0 productos</div>
           </div>
         </div>
@@ -403,7 +402,7 @@
         <div class="cat-card" onclick="filtrar('teclados')">
           <img src="logo.webp" id="img-cat-teclados" class="cat-img" alt="Teclados">
           <div class="cat-info">
-            <div class="cat-title">Teclados PC</div>
+            <div class="cat-title" id="title-cat-teclados">Teclados PC</div>
             <div class="cat-count" id="count-teclados">0 productos</div>
           </div>
         </div>
@@ -411,7 +410,7 @@
         <div class="cat-card" onclick="filtrar('peluches')">
           <img src="logo.webp" id="img-cat-peluches" class="cat-img" alt="Peluches">
           <div class="cat-info">
-            <div class="cat-title">Peluches Kawaii</div>
+            <div class="cat-title" id="title-cat-peluches">Peluches Kawaii</div>
             <div class="cat-count" id="count-peluches">0 productos</div>
           </div>
         </div>
@@ -419,7 +418,7 @@
         <div class="cat-card" onclick="filtrar('katanas')">
           <img src="logo.webp" id="img-cat-katanas" class="cat-img" alt="Katanas">
           <div class="cat-info">
-            <div class="cat-title">Katanas Replicas</div>
+            <div class="cat-title" id="title-cat-katanas">Katanas Replicas</div>
             <div class="cat-count" id="count-katanas">0 productos</div>
           </div>
         </div>
@@ -427,7 +426,7 @@
         <div class="cat-card" onclick="filtrar('lamparas')">
           <img src="logo.webp" id="img-cat-lamparas" class="cat-img" alt="Lámparas">
           <div class="cat-info">
-            <div class="cat-title">Lámparas Neón</div>
+            <div class="cat-title" id="title-cat-lamparas">Lámparas Neón</div>
             <div class="cat-count" id="count-lamparas">0 productos</div>
           </div>
         </div>
@@ -582,9 +581,7 @@
       <h3 style="color: var(--primary-color); margin-top: 0; display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 1.1em; text-shadow: 0 0 5px rgba(255,0,127,0.4);">
         <i class="fas fa-credit-card"></i> Métodos de Pago
       </h3>
-      <div id="cajaDatosPagoInfo" style="font-size: 0.9em; line-height: 1.6;">
-        <!-- Se llena con JS desde Firebase -->
-      </div>
+      <div id="cajaDatosPagoInfo" style="font-size: 0.9em; line-height: 1.6;"></div>
     </div>
 
     <h3 id="modalCarritoTotal" style="color: var(--primary-color); margin-bottom: 15px; text-align: center;">Total: $0.00</h3>
@@ -659,7 +656,6 @@
       }
       renderizarDatosPago();
     } catch(e) { 
-      console.error("Error al cargar datos de pago", e); 
       renderizarDatosPago(); 
     }
   }
@@ -748,7 +744,6 @@
       querySnapshot.forEach((doc) => { productosNubeGlobal.push({ id: doc.id, ...doc.data() }); });
       renderizarProductosEnTienda(productosNubeGlobal);
     } catch (error) {
-      console.error("Error al cargar la nube:", error);
       document.getElementById('catalogoNube').innerHTML = "<p style='color: #ff3366; text-align: center;'>Error al conectar con la base de datos.</p>";
     }
   }
@@ -801,7 +796,7 @@
     }
   }
 
-  async function cargarFotosCategoriasNube() {
+  async function cargarConfigCategoriasPublico() {
     try {
       const q = query(collection(db, "configuracion"), orderBy("timestamp", "desc"));
       const querySnapshot = await getDocs(q);
@@ -809,16 +804,52 @@
         let conf = doc.data();
         if(conf.tipo === 'categoria_foto') {
           let catImgEl = document.getElementById(`img-cat-${conf.categoriaId}`);
-          if(catImgEl) catImgEl.src = conf.imgUrl;
+          if(catImgEl && conf.imgUrl) catImgEl.src = conf.imgUrl;
+          let catTitleEl = document.getElementById(`title-cat-${conf.categoriaId}`);
+          if(catTitleEl && conf.nombrePersonalizado) catTitleEl.innerText = conf.nombrePersonalizado;
         }
       });
-    } catch (e) { console.error("Error al cargar fotos de categorías:", e); }
+    } catch (e) {}
+  }
+
+  window.aplicarCupon = async function() {
+    reproducirSonido(); 
+    let c = document.getElementById('inputCupon').value.trim().toUpperCase(); 
+    let msg = document.getElementById('mensajeCupon');
+    
+    if(!c) return;
+
+    try {
+      const querySnapshot = await getDocs(collection(db, "cupones"));
+      let cuponEncontrado = null;
+      
+      querySnapshot.forEach((docSnap) => {
+        let cuponData = docSnap.data();
+        if(cuponData.codigo === c) {
+          cuponEncontrado = cuponData;
+        }
+      });
+
+      if(cuponEncontrado) {
+        descuentoAplicado = cuponEncontrado.porcentaje / 100;
+        msg.style.color = "#25D366"; 
+        msg.innerText = `🎉 ¡Cupón aplicado (-${cuponEncontrado.porcentaje}%)!`;
+      } else {
+        descuentoAplicado = 0; 
+        msg.style.color = "#ff3366"; 
+        msg.innerText = "❌ Cupón inválido o expirado.";
+      }
+      abrirCarritoModal();
+    } catch(e) {
+      msg.style.color = "#ff3366";
+      msg.innerText = "❌ Error al validar cupón.";
+    }
   }
 
   window.addEventListener('DOMContentLoaded', () => { 
     cargarBannersDeNube(); 
     cargarProductosDeNube(); 
-    cargarFotosCategoriasNube();
+    cargarConfigCategoriasPublico();
     cargarDatosPagoNube(); 
   });
 </script>
@@ -1089,13 +1120,6 @@
 
   function cerrarCarritoModal() { document.getElementById('modalCarrito').style.display = 'none'; }
   function vaciarCarrito() { reproducirSonido(); carrito = []; descuentoAplicado = 0; actualizarCarritoUI(); abrirCarritoModal(); }
-
-  function aplicarCupon() {
-    reproducirSonido(); let c = document.getElementById('inputCupon').value.trim().toUpperCase(); let msg = document.getElementById('mensajeCupon');
-    if(c === "OTAKU10" || c === "OTAKUPAJERO") { descuentoAplicado = 0.10; msg.style.color = "#25D366"; msg.innerText = "🎉 ¡Cupón aplicado (-10%)!"; }
-    else { descuentoAplicado = 0; msg.style.color = "#ff3366"; msg.innerText = "❌ Cupón inválido."; }
-    abrirCarritoModal();
-  }
 
   function enviarPedidoWhatsApp() {
     reproducirSonido(); if(carrito.length === 0) return alert("Tu carrito está vacío.");
