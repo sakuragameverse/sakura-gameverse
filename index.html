@@ -63,7 +63,7 @@
 
     .hero-title { font-size: 1.1em; font-weight: bold; margin-bottom: 12px; letter-spacing: 1px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
     
-    /* ESTILOS DEL BANNER CARRUSEL PRO */
+    /* ESTILOS DEL BANNER CARRUSEL PRO - IMAGEN COMPLETA SIN RECORTAR */
     .banner-slider-container {
       position: relative;
       width: 100%;
@@ -83,7 +83,8 @@
       left: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain; /* <-- Cambiado de cover a contain para mostrar la imagen completa */
+      background-color: #0d041a; /* Fondo elegante para rellenar espacios si los hay */
       opacity: 0;
       transition: opacity 0.8s ease-in-out;
       cursor: pointer;
