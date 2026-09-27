@@ -174,7 +174,6 @@
     .review-author { font-weight: bold; color: var(--secondary-color); margin-bottom: 5px; }
     .review-stars { color: #ffcc00; margin-bottom: 8px; }
     .review-text { font-size: 0.95em; line-height: 1.4; }
-    .btn-del-review { position: absolute; top: 10px; right: 10px; background: #ff3366; color: white; border: none; border-radius: 5px; padding: 3px 8px; font-size: 0.75em; cursor: pointer; }
 
     .info-title { color: var(--secondary-color); font-size: 1.4em; margin-bottom: 20px; text-align: center; }
     .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; font-size: 0.95em; line-height: 1.5; }
@@ -743,7 +742,8 @@
 
   window.guardarJugadorEnNube = async function() {
     try {
-      await setDoc(doc(db, "jugadores", gamerProfile.tag), {
+      let idUnico = gamerProfile.tag.replace(/\s+/g, '_').toLowerCase();
+      await setDoc(doc(db, "jugadores", idUnico), {
         tag: gamerProfile.tag,
         xp: gamerProfile.xp,
         rango: gamerProfile.rango,
@@ -937,6 +937,7 @@
   function abrirCofreModal() { reproducirSonido(); document.getElementById('modalCofreDiario').style.display = 'flex'; }
   function cerrarCofreModal() { document.getElementById('modalCofreDiario').style.display = 'none'; }
   
+  // ÚNICA ACCIÓN QUE DA XP (Cofre Diario)
   function abrirCofreDiario() {
     reproducirSonido(); 
     let hoy = new Date().toDateString(); 
@@ -946,14 +947,27 @@
       return; 
     }
     localStorage.setItem('sakura_ultimo_cofre', hoy); 
-    ganarXP(50); // <--- Ajustado exactamente a 50 XP diarios
+    ganarXP(50); 
     confetti({ particleCount: 120, spread: 80, origin: { y: 0.5 } });
     document.getElementById('cofreResultado').innerHTML = "🎉 ¡Ganaste +50 XP diarios! ⚡";
   }
 
   function abrirGachaModal() { reproducirSonido(); document.getElementById('modalGacha').style.display = 'flex'; }
   function cerrarGachaModal() { document.getElementById('modalGacha').style.display = 'none'; }
-  function girarRuletaGacha() { reproducirSonido(); ganarXP(20); document.getElementById('gachaResultado').innerHTML = "🎉 ¡Ganaste 10% OFF! (Cupón: <strong>OTAKU10</strong>) +20 XP ⚡"; confetti({ particleCount: 100, spread: 70, origin: { y: 0.5 } }); }
+  
+  // Ruleta Gacha SIN ganar XP (solo cupón)
+  function girarRuletaGacha() { 
+    reproducirSonido(); 
+    let hoy = new Date().toDateString();
+    let ultimaGacha = localStorage.getItem('sakura_ultima_gacha');
+    if (ultimaGacha === hoy) {
+      document.getElementById('gachaResultado').innerHTML = "⏳ Ya giraste la ruleta hoy. ¡Vuelve mañana para probar tu suerte!";
+      return;
+    }
+    localStorage.setItem('sakura_ultima_gacha', hoy);
+    document.getElementById('gachaResultado').innerHTML = "🎉 ¡Ganaste 10% OFF! (Cupón: <strong>OTAKU10</strong>)"; 
+    confetti({ particleCount: 100, spread: 70, origin: { y: 0.5 } }); 
+  }
 
   function abrirGuiaTallasModal() { reproducirSonido(); document.getElementById('modalGuiaTallas').style.display = 'flex'; }
   function cerrarGuiaTallasModal() { document.getElementById('modalGuiaTallas').style.display = 'none'; }
@@ -1025,9 +1039,13 @@
   function cerrarModal() { document.getElementById('miModal').style.display = 'none'; }
 
   function agregarAlCarrito() {
-    reproducirSonido(); ganarXP(15); let item = { ...productoActual };
+    reproducirSonido(); 
+    let item = { ...productoActual };
     if(item.esRopa) item.titulo += ` (Talla: ${document.getElementById('selectTalla').value})`;
-    carrito.push(item); actualizarCarritoUI(); cerrarModal(); alert("🛒 ¡Añadido al carrito!");
+    carrito.push(item); 
+    actualizarCarritoUI(); 
+    cerrarModal(); 
+    alert("🛒 ¡Añadido al carrito!");
   }
 
   function actualizarCarritoUI() { localStorage.setItem('sakura_carrito', JSON.stringify(carrito)); actualizarBadges(); }
@@ -1085,7 +1103,10 @@
   let reviews = JSON.parse(localStorage.getItem('sakura_reviews')) || [ { nombre: "Gabriel S.", estrellas: "⭐⭐⭐⭐⭐", texto: "¡Excelente tienda en Bejuma!" } ];
   function renderReviews() {
     let c = document.getElementById('contenedorReviews'); c.innerHTML = "";
-    reviews.forEach((r, i) => { c.innerHTML += `<div class="review-card"><button class="btn-del-review" onclick="reviews.splice(${i},1);localStorage.setItem('sakura_reviews',JSON.stringify(reviews));renderReviews();">❌</button><div class="review-author">${r.nombre}</div><div class="review-stars">${r.estrellas}</div><div class="review-text">${r.texto}</div></div>`; });
+    // Reseñas renderizadas SIN botón de borrado público para que nadie pueda eliminarlas
+    reviews.forEach((r, i) => { 
+      c.innerHTML += `<div class="review-card"><div class="review-author">${r.nombre}</div><div class="review-stars">${r.estrellas}</div><div class="review-text">${r.texto}</div></div>`; 
+    });
   }
   renderReviews();
 
