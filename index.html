@@ -526,13 +526,14 @@
 <div class="bottom-nav">
   <div class="nav-item" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); reproducirSonido();"><i class="fas fa-home"></i><span>Inicio</span></div>
   <div class="nav-item" onclick="abrirFavoritosModal()"><i class="fas fa-heart"></i><span>Deseos</span><div class="nav-badge" id="favBadge">0</div></div>
-  <!-- BOTÓN DE CARRITO CORREGIDO CON CLIC DIRECTO Y BLOQUEO DE INTERFERENCIA -->
+  <!-- BOTÓN DEL CARRITO DIRECTO -->
   <div class="nav-item" onclick="abrirCarritoModal()"><i class="fas fa-shopping-cart"></i><span>Carrito</span><div class="nav-badge" id="cartBadge">0</div></div>
   <div class="nav-item" onclick="abrirMenuOpciones()"><i class="fas fa-bars"></i><span>Menú</span></div>
 </div>
 
 <audio id="audioLoFi" loop src="https://stream.zeno.fm/f3wvbbqmdg8uv"></audio>
 
+<!-- SCRIPT GENERAL UNIFICADO Y CORREGIDO -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
   import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
@@ -729,7 +730,6 @@
     } catch(e) { msg.style.color = "#ff3366"; msg.innerText = "❌ Error al validar cupón."; }
   }
 
-  // --- SINCRONIZACIÓN CON FIREBASE Y RANGOS NINJA ---
   let umbralesRangosNube = { genin: 0, chunin: 300, jonin: 600, hokage: 1000 };
 
   async function cargarUmbralesRangosNube() {
@@ -763,9 +763,8 @@
       actualizarRangoSegunXP();
     });
   });
-</script>
 
-<script>
+  // --- LÓGICA GENERAL DE LA TIENDA Y FUNCIONES EXPUESTAS ---
   window.reproducirSonido = function() {
     try {
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -780,7 +779,7 @@
     } catch(e) {}
   }
 
-  function crearDestello(e) { reproducirSonido(); }
+  window.crearDestello = function(e) { reproducirSonido(); }
 
   window.scrollCategoriasVisuales = function(direccion) {
     reproducirSonido();
@@ -801,16 +800,14 @@
     }, 3500); 
   }
 
-  window.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-      iniciarAutoScrollCategorias();
-      let track = document.getElementById('categoriasTrack');
-      if (track) {
-        track.addEventListener('mouseenter', () => clearInterval(intervaloCategorias));
-        track.addEventListener('mouseleave', iniciarAutoScrollCategorias);
-      }
-    }, 500);
-  });
+  setTimeout(() => {
+    iniciarAutoScrollCategorias();
+    let track = document.getElementById('categoriasTrack');
+    if (track) {
+      track.addEventListener('mouseenter', () => clearInterval(intervaloCategorias));
+      track.addEventListener('mouseleave', iniciarAutoScrollCategorias);
+    }
+  }, 500);
 
   window.cambiarFotoTarjeta = function(event, cardIndex, direccion) {
     event.stopPropagation(); reproducirSonido();
@@ -825,8 +822,8 @@
     imgs[newIndex].classList.add('activa'); dots[newIndex].classList.add('activa');
   }
 
-  function abrirModalMulti(fotosArray, titulo, precio, descripcion, disponibilidad, esRopa, categoriaRaw) {
-    productoActual = { img: fotosArray[0], titulo, precio, esRopa };
+  window.abrirModalMulti = function(fotosArray, titulo, precio, descripcion, disponibilidad, esRopa, categoriaRaw) {
+    window.productoActual = { img: fotosArray[0], titulo, precio, esRopa };
     let catBonita = categoriaRaw.charAt(0).toUpperCase() + categoriaRaw.slice(1);
     document.getElementById('modalBreadcrumbs').innerHTML = `Inicio / <span>${catBonita}</span>`;
     document.getElementById('modalImg').src = fotosArray[0];
@@ -845,8 +842,8 @@
     document.getElementById('miModal').style.display = 'flex';
   }
 
-  function cambiarFotoModal(urlFoto, elementoMini) {
-    reproducirSonido(); document.getElementById('modalImg').src = urlFoto; productoActual.img = urlFoto;
+  window.cambiarFotoModal = function(urlFoto, elementoMini) {
+    reproducirSonido(); document.getElementById('modalImg').src = urlFoto; window.productoActual.img = urlFoto;
     document.querySelectorAll('.modal-mini-img').forEach(m => m.classList.remove('activo'));
     elementoMini.classList.add('activo');
   }
@@ -858,21 +855,21 @@
 
   let temaActual = localStorage.getItem('sakura_tema') || 'theme-rosa';
   document.body.className = temaActual;
-  function abrirTemasModal() { reproducirSonido(); document.getElementById('modalTemas').style.display = 'flex'; }
-  function cerrarTemasModal() { document.getElementById('modalTemas').style.display = 'none'; }
-  function cambiarTema(t) { reproducirSonido(); document.body.className = t; localStorage.setItem('sakura_tema', t); cerrarTemasModal(); }
+  window.abrirTemasModal = function() { reproducirSonido(); document.getElementById('modalTemas').style.display = 'flex'; }
+  window.cerrarTemasModal = function() { document.getElementById('modalTemas').style.display = 'none'; }
+  window.cambiarTema = function(t) { reproducirSonido(); document.body.className = t; localStorage.setItem('sakura_tema', t); cerrarTemasModal(); }
 
-  function activarEasterEggLogo() { reproducirSonido(); document.body.classList.toggle('theme-overdrive'); confetti({ particleCount: 150, spread: 90, origin: { y: 0.4 } }); }
+  window.activarEasterEggLogo = function() { reproducirSonido(); document.body.classList.toggle('theme-overdrive'); confetti({ particleCount: 150, spread: 90, origin: { y: 0.4 } }); }
 
   let reproduciendoMusica = false;
-  function toggleMusicaLoFi() {
+  window.toggleMusicaLoFi = function() {
     reproducirSonido(); let audio = document.getElementById('audioLoFi'); let icono = document.getElementById('iconoMusica');
     if (!reproduciendoMusica) { audio.play().then(() => { reproduciendoMusica = true; icono.className = "fas fa-pause"; alert("🎵 ¡Música Lo-Fi activada!"); }).catch(e => alert("Interactúa con la pantalla primero."));
     } else { audio.pause(); reproduciendoMusica = false; icono.className = "fas fa-music"; alert("⏸️ Música pausada."); }
   }
 
-  function abrirMenuOpciones() { reproducirSonido(); document.getElementById('modalOpcionesMenu').style.display = 'flex'; }
-  function cerrarMenuOpciones() { document.getElementById('modalOpcionesMenu').style.display = 'none'; }
+  window.abrirMenuOpciones = function() { reproducirSonido(); document.getElementById('modalOpcionesMenu').style.display = 'flex'; }
+  window.cerrarMenuOpciones = function() { document.getElementById('modalOpcionesMenu').style.display = 'none'; }
 
   let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, rango: "Genin 🍃" };
   document.getElementById('inputGamerTag').value = gamerProfile.tag; 
@@ -881,25 +878,16 @@
 
   function actualizarRangoSegunXP() {
     let xp = gamerProfile.xp;
-    let u = typeof umbralesRangosNube !== 'undefined' ? umbralesRangosNube : { genin: 0, chunin: 300, jonin: 600, hokage: 1000 };
-    
-    if (xp >= (u.hokage ?? 1000)) {
-      gamerProfile.rango = "Hokage 👑";
-    } else if (xp >= (u.jonin ?? 600)) {
-      gamerProfile.rango = "Jōnin ⚔️";
-    } else if (xp >= (u.chunin ?? 300)) {
-      gamerProfile.rango = "Chūnin ⚡";
-    } else {
-      gamerProfile.rango = "Genin 🍃";
-    }
+    let u = umbralesRangosNube;
+    if (xp >= (u.hokage ?? 1000)) { gamerProfile.rango = "Hokage 👑"; }
+    else if (xp >= (u.jonin ?? 600)) { gamerProfile.rango = "Jōnin ⚔️"; }
+    else if (xp >= (u.chunin ?? 300)) { gamerProfile.rango = "Chūnin ⚡"; }
+    else { gamerProfile.rango = "Genin 🍃"; }
 
     localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
     document.getElementById('lblXp').innerText = gamerProfile.xp + " XP"; 
     document.getElementById('lblRango').innerText = gamerProfile.rango;
-    
-    if(typeof guardarJugadorEnNube === 'function') {
-      guardarJugadorEnNube();
-    }
+    window.guardarJugadorEnNube();
   }
 
   function ganarXP(cantidad) {
@@ -907,44 +895,44 @@
     actualizarRangoSegunXP();
   }
 
-  function abrirGamerProfileModal() { reproducirSonido(); document.getElementById('modalGamerProfile').style.display = 'flex'; }
-  function cerrarGamerProfileModal() { document.getElementById('modalGamerProfile').style.display = 'none'; }
-  function guardarGamerTag() { 
+  window.abrirGamerProfileModal = function() { reproducirSonido(); document.getElementById('modalGamerProfile').style.display = 'flex'; }
+  window.cerrarGamerProfileModal = function() { document.getElementById('modalGamerProfile').style.display = 'none'; }
+  window.guardarGamerTag = function() { 
     reproducirSonido(); 
     let t = document.getElementById('inputGamerTag').value.trim(); 
     if(t) { 
       gamerProfile.tag = t; 
       localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile)); 
-      if(typeof guardarJugadorEnNube === 'function') guardarJugadorEnNube();
-      alert("💾 ¡GamerTag guardado y sincronizado con la nube!"); 
+      window.guardarJugadorEnNube();
+      alert("💾 ¡GamerTag guardado y sincronizado!"); 
       cerrarGamerProfileModal(); 
     } 
   }
 
   let favoritos = JSON.parse(localStorage.getItem('sakura_favoritos')) || [];
-  function toggleFavorito(event, titulo, precio, img) {
+  window.toggleFavorito = function(event, titulo, precio, img) {
     event.stopPropagation(); reproducirSonido(); let idx = favoritos.findIndex(i => i.titulo === titulo);
     if(idx === -1) { favoritos.push({titulo, precio, img}); alert(`💖 ¡Añadido a favoritos!`); } else { favoritos.splice(idx, 1); alert(`💔 ¡Eliminado de favoritos!`); }
     localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos)); actualizarBadges();
   }
   
-  function abrirFavoritosModal() {
+  window.abrirFavoritosModal = function() {
     reproducirSonido(); let cont = document.getElementById('listaFavoritosDetalle');
     cont.innerHTML = favoritos.length === 0 ? "<p style='color:#aaa;'>Sin favoritos aún.</p>" : "";
     favoritos.forEach((item, i) => { cont.innerHTML += `<div class="cart-item-row"><img src="${item.img}" class="cart-item-img"><div class="cart-item-info"><strong>${item.titulo}</strong><br><span style="color:var(--secondary-color);">$${item.precio.toFixed(2)}</span></div><button class="cart-item-del" onclick="favoritos.splice(${i},1);localStorage.setItem('sakura_favoritos',JSON.stringify(favoritos));actualizarBadges();abrirFavoritosModal();">❌</button></div>`; });
     document.getElementById('modalFavoritos').style.display = 'flex';
   }
-  function cerrarFavoritosModal() { document.getElementById('modalFavoritos').style.display = 'none'; }
+  window.cerrarFavoritosModal = function() { document.getElementById('modalFavoritos').style.display = 'none'; }
 
-  function abrirCofreModal() { reproducirSonido(); document.getElementById('modalCofreDiario').style.display = 'flex'; }
-  function cerrarCofreModal() { document.getElementById('modalCofreDiario').style.display = 'none'; }
+  window.abrirCofreModal = function() { reproducirSonido(); document.getElementById('modalCofreDiario').style.display = 'flex'; }
+  window.cerrarCofreModal = function() { document.getElementById('modalCofreDiario').style.display = 'none'; }
   
-  function abrirCofreDiario() {
+  window.abrirCofreDiario = function() {
     reproducirSonido(); 
     let hoy = new Date().toDateString(); 
     let ultimoCofre = localStorage.getItem('sakura_ultimo_cofre');
     if (ultimoCofre === hoy) { 
-      document.getElementById('cofreResultado').innerHTML = "⏳ Ya abriste tu cofre de hoy. ¡Vuelve mañana por tus 50 XP!"; 
+      document.getElementById('cofreResultado').innerHTML = "⏳ Ya abriste tu cofre de hoy. ¡Vuelve mañana!"; 
       return; 
     }
     localStorage.setItem('sakura_ultimo_cofre', hoy); 
@@ -953,15 +941,15 @@
     document.getElementById('cofreResultado').innerHTML = "🎉 ¡Ganaste +50 XP diarios! ⚡";
   }
 
-  function abrirGachaModal() { reproducirSonido(); document.getElementById('modalGacha').style.display = 'flex'; }
-  function cerrarGachaModal() { document.getElementById('modalGacha').style.display = 'none'; }
+  window.abrirGachaModal = function() { reproducirSonido(); document.getElementById('modalGacha').style.display = 'flex'; }
+  window.cerrarGachaModal = function() { document.getElementById('modalGacha').style.display = 'none'; }
   
-  function girarRuletaGacha() { 
+  window.girarRuletaGacha = function() { 
     reproducirSonido(); 
     let hoy = new Date().toDateString();
     let ultimaGacha = localStorage.getItem('sakura_ultima_gacha');
     if (ultimaGacha === hoy) {
-      document.getElementById('gachaResultado').innerHTML = "⏳ Ya giraste la ruleta hoy. ¡Vuelve mañana para probar tu suerte!";
+      document.getElementById('gachaResultado').innerHTML = "⏳ Ya giraste la ruleta hoy. ¡Vuelve mañana!";
       return;
     }
     localStorage.setItem('sakura_ultima_gacha', hoy);
@@ -969,12 +957,12 @@
     confetti({ particleCount: 100, spread: 70, origin: { y: 0.5 } }); 
   }
 
-  function abrirGuiaTallasModal() { reproducirSonido(); document.getElementById('modalGuiaTallas').style.display = 'flex'; }
-  function cerrarGuiaTallasModal() { document.getElementById('modalGuiaTallas').style.display = 'none'; }
-  function cerrarPromoFlash() { document.getElementById('modalPromoFlash').style.display = 'none'; }
+  window.abrirGuiaTallasModal = function() { reproducirSonido(); document.getElementById('modalGuiaTallas').style.display = 'flex'; }
+  window.cerrarGuiaTallasModal = function() { document.getElementById('modalGuiaTallas').style.display = 'none'; }
+  window.cerrarPromoFlash = function() { document.getElementById('modalPromoFlash').style.display = 'none'; }
 
   let carrito = JSON.parse(localStorage.getItem('sakura_carrito')) || [];
-  let productoActual = null; let descuentoAplicado = 0; let categoriaActualFiltro = 'todos'; let estadoActualFiltro = 'todos';
+  window.productoActual = null; let descuentoAplicado = 0; let categoriaActualFiltro = 'todos'; let estadoActualFiltro = 'todos';
 
   window.filtrar = function(cat, evento) {
     reproducirSonido();
@@ -1020,7 +1008,7 @@
     });
   }
 
-  function ordenarProductos() {
+  window.ordenarProductos = function() {
     reproducirSonido(); let modo = document.getElementById('selectOrden').value; let contenedor = document.getElementById('catalogoNube');
     let cards = Array.from(contenedor.querySelectorAll('.item-producto'));
     if (modo === 'menor') { cards.sort((a, b) => parseFloat(a.getAttribute('data-precio')) - parseFloat(b.getAttribute('data-precio')));
@@ -1029,18 +1017,18 @@
     cards.forEach(card => contenedor.appendChild(card));
   }
 
-  function buscarProductos() {
+  window.buscarProductos = function() {
     let texto = document.getElementById('buscador').value.toLowerCase();
     document.querySelectorAll('.item-producto').forEach(prod => {
       let nombre = prod.getAttribute('data-nombre'); prod.style.display = nombre.includes(texto) ? 'block' : 'none';
     });
   }
 
-  function cerrarModal() { document.getElementById('miModal').style.display = 'none'; }
+  window.cerrarModal = function() { document.getElementById('miModal').style.display = 'none'; }
 
-  function agregarAlCarrito() {
+  window.agregarAlCarrito = function() {
     reproducirSonido(); 
-    let item = { ...productoActual };
+    let item = { ...window.productoActual };
     if(item.esRopa) item.titulo += ` (Talla: ${document.getElementById('selectTalla').value})`;
     carrito.push(item); 
     actualizarCarritoUI(); 
@@ -1051,7 +1039,7 @@
   function actualizarCarritoUI() { localStorage.setItem('sakura_carrito', JSON.stringify(carrito)); actualizarBadges(); }
   function actualizarBadges() { document.getElementById('cartBadge').innerText = carrito.length; document.getElementById('favBadge').innerText = favoritos.length; }
 
-  // Exponer la función globalmente para garantizar que se llame desde el HTML
+  // FUNCIÓN DEL CARRITO ASEGURADA Y GLOBAL
   window.abrirCarritoModal = function() {
     reproducirSonido(); 
     let cont = document.getElementById('listaCarritoDetalle'); 
@@ -1084,10 +1072,10 @@
     document.getElementById('modalCarrito').style.display = 'flex';
   }
 
-  function cerrarCarritoModal() { document.getElementById('modalCarrito').style.display = 'none'; }
-  function vaciarCarrito() { reproducirSonido(); carrito = []; descuentoAplicado = 0; actualizarCarritoUI(); abrirCarritoModal(); }
+  window.cerrarCarritoModal = function() { document.getElementById('modalCarrito').style.display = 'none'; }
+  window.vaciarCarrito = function() { reproducirSonido(); carrito = []; descuentoAplicado = 0; actualizarCarritoUI(); abrirCarritoModal(); }
 
-  function enviarPedidoWhatsApp() {
+  window.enviarPedidoWhatsApp = function() {
     reproducirSonido(); if(carrito.length === 0) return alert("Vacío.");
     let sub = carrito.reduce((s, i) => s + i.precio, 0); let tot = sub * (1 - descuentoAplicado); let totBs = tot * tasaBcvActual;
     let msg = `¡Hola Sakura Gameverse! 🌸👾 Deseo realizar este pedido:\n\n`;
@@ -1096,16 +1084,16 @@
     window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msg), '_blank'); cerrarCarritoModal();
   }
 
-  function compartirProductoWhatsApp() {
-    reproducirSonido(); let msg = `¡Mira esto en Sakura Gameverse! 🌸👾\n\n*${productoActual.titulo}*\nPrecio: $${productoActual.precio.toFixed(2)}\n\n¿Disponible?`; window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msg), '_blank');
+  window.compartirProductoWhatsApp = function() {
+    reproducirSonido(); let msg = `¡Mira esto en Sakura Gameverse! 🌸👾\n\n*${window.productoActual.titulo}*\nPrecio: $${window.productoActual.precio.toFixed(2)}\n\n¿Disponible?`; window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msg), '_blank');
   }
 
-  function abrirFaqModal() { reproducirSonido(); document.getElementById('modalFaq').style.display = 'flex'; }
-  function cerrarFaqModal() { document.getElementById('modalFaq').style.display = 'none'; }
-  function abrirSugerenciaModal() { reproducirSonido(); document.getElementById('modalSugerencias').style.display = 'flex'; }
-  function cerrarSugerenciaModal() { document.getElementById('modalSugerencias').style.display = 'none'; }
+  window.abrirFaqModal = function() { reproducirSonido(); document.getElementById('modalFaq').style.display = 'flex'; }
+  window.cerrarFaqModal = function() { document.getElementById('modalFaq').style.display = 'none'; }
+  window.abrirSugerenciaModal = function() { reproducirSonido(); document.getElementById('modalSugerencias').style.display = 'flex'; }
+  window.cerrarSugerenciaModal = function() { document.getElementById('modalSugerencias').style.display = 'none'; }
 
-  function enviarSugerenciaWhatsApp() {
+  window.enviarSugerenciaWhatsApp = function() {
     reproducirSonido(); let n = document.getElementById('sugNombre').value.trim(); let d = document.getElementById('sugDeseo').value.trim();
     if(!n || !d) return alert("Completa.");
     window.open("https://wa.me/584244970576?text=" + encodeURIComponent(`💡 *Sugerencia* 💡\nCliente: ${n}\nDeseo: ${d}`), '_blank'); cerrarSugerenciaModal();
@@ -1120,7 +1108,7 @@
   }
   renderReviews();
 
-  function agregarReview() {
+  window.agregarReview = function() {
     reproducirSonido(); let n = document.getElementById('revNombre').value.trim(); let e = document.getElementById('revEstrellas').value; let t = document.getElementById('revTexto').value.trim();
     if(!n || !t) return alert("Completa.");
     reviews.unshift({ nombre: n, estrellas: e, texto: t }); localStorage.setItem('sakura_reviews', JSON.stringify(reviews));
