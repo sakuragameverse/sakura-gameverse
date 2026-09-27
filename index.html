@@ -183,9 +183,10 @@
 
     .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(17, 5, 44, 0.95); backdrop-filter: blur(10px); border-top: 2px solid var(--primary-color); display: flex; justify-content: space-around; align-items: center; padding: 10px 0; z-index: 1500; box-shadow: 0 -5px 20px rgba(255,0,127,0.3); }
     .nav-item { color: var(--text-color); display: flex; flex-direction: column; align-items: center; font-size: 0.75em; font-weight: bold; cursor: pointer; position: relative; transition: color 0.3s; width: 25%; }
-    .nav-item i { font-size: 1.6em; margin-bottom: 4px; color: var(--secondary-color); transition: transform 0.3s; }
+    .nav-item i { font-size: 1.6em; margin-bottom: 4px; color: var(--secondary-color); transition: transform 0.3s; pointer-events: none; }
+    .nav-item span { pointer-events: none; }
     .nav-item:hover i { transform: translateY(-3px) scale(1.1); color: var(--primary-color); }
-    .nav-badge { position: absolute; top: -5px; right: 20%; background: #ff3366; color: white; font-size: 0.85em; font-weight: bold; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 8px #ff3366; }
+    .nav-badge { position: absolute; top: -5px; right: 20%; background: #ff3366; color: white; font-size: 0.85em; font-weight: bold; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 8px #ff3366; pointer-events: none; z-index: 10; }
 
     .menu-opciones-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 15px; }
     .btn-menu-opcion { display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--card-bg); border: 1px solid var(--border-color); padding: 15px 10px; border-radius: 15px; color: var(--text-color); text-decoration: none; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.2s; text-align: center; }
@@ -525,7 +526,7 @@
 <div class="bottom-nav">
   <div class="nav-item" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); reproducirSonido();"><i class="fas fa-home"></i><span>Inicio</span></div>
   <div class="nav-item" onclick="abrirFavoritosModal()"><i class="fas fa-heart"></i><span>Deseos</span><div class="nav-badge" id="favBadge">0</div></div>
-  <!-- CORRECCIÓN CLAVE AQUÍ: Se agregó el onclick para abrir el carrito y mostrar la factura y productos -->
+  <!-- BOTÓN DE CARRITO CORREGIDO CON CLIC DIRECTO Y BLOQUEO DE INTERFERENCIA -->
   <div class="nav-item" onclick="abrirCarritoModal()"><i class="fas fa-shopping-cart"></i><span>Carrito</span><div class="nav-badge" id="cartBadge">0</div></div>
   <div class="nav-item" onclick="abrirMenuOpciones()"><i class="fas fa-bars"></i><span>Menú</span></div>
 </div>
@@ -1050,24 +1051,35 @@
   function actualizarCarritoUI() { localStorage.setItem('sakura_carrito', JSON.stringify(carrito)); actualizarBadges(); }
   function actualizarBadges() { document.getElementById('cartBadge').innerText = carrito.length; document.getElementById('favBadge').innerText = favoritos.length; }
 
-  function abrirCarritoModal() {
-    reproducirSonido(); let cont = document.getElementById('listaCarritoDetalle'); let reciboBox = document.getElementById('reciboDigital'); let reciboContenido = document.getElementById('reciboContenido');
+  // Exponer la función globalmente para garantizar que se llame desde el HTML
+  window.abrirCarritoModal = function() {
+    reproducirSonido(); 
+    let cont = document.getElementById('listaCarritoDetalle'); 
+    let reciboBox = document.getElementById('reciboDigital'); 
+    let reciboContenido = document.getElementById('reciboContenido');
     let paymentBox = document.getElementById('paymentMethodsCart');
     cont.innerHTML = ""; reciboContenido.innerHTML = "";
+    
     if(carrito.length === 0) { 
-      cont.innerHTML = "<p style='color:#aaa;'>Vacío.</p>"; reciboBox.style.display = 'none'; paymentBox.style.display = 'none';
+      cont.innerHTML = "<p style='color:#aaa;'>Vacío.</p>"; 
+      reciboBox.style.display = 'none'; 
+      paymentBox.style.display = 'none';
       document.getElementById('modalCarritoTotal').innerText = "Total: $0.00";
     } else {
-      reciboBox.style.display = 'block'; paymentBox.style.display = 'block';
+      reciboBox.style.display = 'block'; 
+      paymentBox.style.display = 'block';
       let html = "";
       carrito.forEach((item, i) => {
         cont.innerHTML += `<div class="cart-item-row"><img src="${item.img}" class="cart-item-img"><div class="cart-item-info"><strong>${item.titulo}</strong><br><span style="color:var(--secondary-color);">$${item.precio.toFixed(2)}</span></div><button class="cart-item-del" onclick="carrito.splice(${i},1);actualizarCarritoUI();abrirCarritoModal();">❌</button></div>`;
         html += `<div class="recibo-line"><span>${item.titulo}</span><span>$${item.precio.toFixed(2)}</span></div>`;
       });
-      let sub = carrito.reduce((s, i) => s + i.precio, 0); let tot = sub * (1 - descuentoAplicado); let totBs = tot * tasaBcvActual;
+      let sub = carrito.reduce((s, i) => s + i.precio, 0); 
+      let tot = sub * (1 - descuentoAplicado); 
+      let totBs = tot * tasaBcvActual;
       html += `<div style="border-top:1px dashed var(--secondary-color); margin-top:5px; padding-top:5px;" class="recibo-line"><strong>TOTAL USD:</strong> <strong>$${tot.toFixed(2)}</strong></div>`;
       html += `<div class="recibo-line"><strong>TOTAL BS:</strong> <strong>Bs. ${totBs.toLocaleString('es-VE', {minimumFractionDigits:2, maximumFractionDigits:2})}</strong></div>`;
-      reciboContenido.innerHTML = html; document.getElementById('modalCarritoTotal').innerText = `Total: $${tot.toFixed(2)}`;
+      reciboContenido.innerHTML = html; 
+      document.getElementById('modalCarritoTotal').innerText = `Total: $${tot.toFixed(2)}`;
     }
     document.getElementById('modalCarrito').style.display = 'flex';
   }
