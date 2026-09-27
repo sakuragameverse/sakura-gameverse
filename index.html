@@ -229,7 +229,7 @@
     <button class="cerrar-modal" onclick="cerrarCofreModal()">×</button>
     <div style="font-size: 45px; margin-bottom: 5px;">📦✨</div>
     <h2 style="color: #ff9900; margin-top: 0;">Cofre de Recompensa Diaria</h2>
-    <div id="cofreResultado" style="background: var(--bg-color); border: 2px dashed #ff9900; padding: 20px; border-radius: 12px; font-size: 1.1em; font-weight: bold; color: var(--secondary-color); margin-bottom: 15px;">Cofre listo para abrir 🗝️</div>
+    <div id="cofreResultado" style="background: var(--bg-color); border: 2px dashed #ff9900; padding: 20px; border-radius: 12px; font-size: 1.1em; font-weight: bold; color: var(--secondary-color); margin-bottom: 15px;">Cofre listo para abrir 🗝️ (Recompensa: 50 XP diarios)</div>
     <button class="btn-sugerencia" style="background: #ff9900; color: #0d041a;" onclick="abrirCofreDiario()">¡Abrir Cofre Diario! 🔓</button>
   </div>
 </div>
@@ -534,7 +534,7 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-  import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+  import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDH1DZqaIi5sKRXspXDUWbMUZ4nr5JIy8Q",
@@ -728,8 +728,38 @@
     } catch(e) { msg.style.color = "#ff3366"; msg.innerText = "❌ Error al validar cupón."; }
   }
 
+  // --- SINCRONIZACIÓN CON FIREBASE Y RANGOS NINJA ---
+  let umbralesRangosNube = { genin: 0, chunin: 300, jonin: 600, hokage: 1000 };
+
+  async function cargarUmbralesRangosNube() {
+    try {
+      const docRef = doc(db, "configuracion", "rangos_ninja");
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        umbralesRangosNube = docSnap.data();
+      }
+    } catch(e) {}
+  }
+
+  window.guardarJugadorEnNube = async function() {
+    try {
+      await setDoc(doc(db, "jugadores", gamerProfile.tag), {
+        tag: gamerProfile.tag,
+        xp: gamerProfile.xp,
+        rango: gamerProfile.rango,
+        timestamp: Date.now()
+      });
+    } catch(e) {}
+  }
+
   window.addEventListener('DOMContentLoaded', () => { 
-    cargarBannersDeNube(); cargarProductosDeNube(); cargarConfigCategoriasPublico(); cargarDatosPagoNube(); 
+    cargarBannersDeNube(); 
+    cargarProductosDeNube(); 
+    cargarConfigCategoriasPublico(); 
+    cargarDatosPagoNube();
+    cargarUmbralesRangosNube().then(() => {
+      actualizarRangoSegunXP();
+    });
   });
 </script>
 
@@ -842,20 +872,52 @@
   function abrirMenuOpciones() { reproducirSonido(); document.getElementById('modalOpcionesMenu').style.display = 'flex'; }
   function cerrarMenuOpciones() { document.getElementById('modalOpcionesMenu').style.display = 'none'; }
 
-  let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, rango: "Novato Otaku ⚡" };
-  document.getElementById('inputGamerTag').value = gamerProfile.tag; document.getElementById('lblRango').innerText = gamerProfile.rango; document.getElementById('lblXp').innerText = gamerProfile.xp + " XP";
+  let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, rango: "Genin 🍃" };
+  document.getElementById('inputGamerTag').value = gamerProfile.tag; 
+  document.getElementById('lblRango').innerText = gamerProfile.rango; 
+  document.getElementById('lblXp').innerText = gamerProfile.xp + " XP";
+
+  function actualizarRangoSegunXP() {
+    let xp = gamerProfile.xp;
+    let u = typeof umbralesRangosNube !== 'undefined' ? umbralesRangosNube : { genin: 0, chunin: 300, jonin: 600, hokage: 1000 };
+    
+    if (xp >= (u.hokage ?? 1000)) {
+      gamerProfile.rango = "Hokage 👑";
+    } else if (xp >= (u.jonin ?? 600)) {
+      gamerProfile.rango = "Jōnin ⚔️";
+    } else if (xp >= (u.chunin ?? 300)) {
+      gamerProfile.rango = "Chūnin ⚡";
+    } else {
+      gamerProfile.rango = "Genin 🍃";
+    }
+
+    localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
+    document.getElementById('lblXp').innerText = gamerProfile.xp + " XP"; 
+    document.getElementById('lblRango').innerText = gamerProfile.rango;
+    
+    if(typeof guardarJugadorEnNube === 'function') {
+      guardarJugadorEnNube();
+    }
+  }
 
   function ganarXP(cantidad) {
     gamerProfile.xp += cantidad;
-    if (gamerProfile.xp >= 300 && gamerProfile.xp < 600) gamerProfile.rango = "Rango Chūnin ⚡";
-    if (gamerProfile.xp >= 600) gamerProfile.rango = "Hokage Legendario 🔥";
-    localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
-    document.getElementById('lblXp').innerText = gamerProfile.xp + " XP"; document.getElementById('lblRango').innerText = gamerProfile.rango;
+    actualizarRangoSegunXP();
   }
 
   function abrirGamerProfileModal() { reproducirSonido(); document.getElementById('modalGamerProfile').style.display = 'flex'; }
   function cerrarGamerProfileModal() { document.getElementById('modalGamerProfile').style.display = 'none'; }
-  function guardarGamerTag() { reproducirSonido(); let t = document.getElementById('inputGamerTag').value.trim(); if(t) { gamerProfile.tag = t; localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile)); alert("💾 ¡GamerTag guardado!"); cerrarGamerProfileModal(); } }
+  function guardarGamerTag() { 
+    reproducirSonido(); 
+    let t = document.getElementById('inputGamerTag').value.trim(); 
+    if(t) { 
+      gamerProfile.tag = t; 
+      localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile)); 
+      if(typeof guardarJugadorEnNube === 'function') guardarJugadorEnNube();
+      alert("💾 ¡GamerTag guardado y sincronizado con la nube!"); 
+      cerrarGamerProfileModal(); 
+    } 
+  }
 
   let favoritos = JSON.parse(localStorage.getItem('sakura_favoritos')) || [];
   function toggleFavorito(event, titulo, precio, img) {
@@ -874,16 +936,24 @@
 
   function abrirCofreModal() { reproducirSonido(); document.getElementById('modalCofreDiario').style.display = 'flex'; }
   function cerrarCofreModal() { document.getElementById('modalCofreDiario').style.display = 'none'; }
+  
   function abrirCofreDiario() {
-    reproducirSonido(); let hoy = new Date().toDateString(); let ultimoCofre = localStorage.getItem('sakura_ultimo_cofre');
-    if (ultimoCofre === hoy) { document.getElementById('cofreResultado').innerHTML = "⏳ Ya abriste tu cofre de hoy."; return; }
-    localStorage.setItem('sakura_ultimo_cofre', hoy); ganarXP(100); confetti({ particleCount: 120, spread: 80, origin: { y: 0.5 } });
-    document.getElementById('cofreResultado').innerHTML = "🎉 ¡Ganaste +100 XP! ⚡";
+    reproducirSonido(); 
+    let hoy = new Date().toDateString(); 
+    let ultimoCofre = localStorage.getItem('sakura_ultimo_cofre');
+    if (ultimoCofre === hoy) { 
+      document.getElementById('cofreResultado').innerHTML = "⏳ Ya abriste tu cofre de hoy. ¡Vuelve mañana por tus 50 XP!"; 
+      return; 
+    }
+    localStorage.setItem('sakura_ultimo_cofre', hoy); 
+    ganarXP(50); // <--- Ajustado exactamente a 50 XP diarios
+    confetti({ particleCount: 120, spread: 80, origin: { y: 0.5 } });
+    document.getElementById('cofreResultado').innerHTML = "🎉 ¡Ganaste +50 XP diarios! ⚡";
   }
 
   function abrirGachaModal() { reproducirSonido(); document.getElementById('modalGacha').style.display = 'flex'; }
   function cerrarGachaModal() { document.getElementById('modalGacha').style.display = 'none'; }
-  function girarRuletaGacha() { reproducirSonido(); ganarXP(50); document.getElementById('gachaResultado').innerHTML = "🎉 ¡Ganaste 10% OFF! (Cupón: <strong>OTAKU10</strong>) +50 XP ⚡"; confetti({ particleCount: 100, spread: 70, origin: { y: 0.5 } }); }
+  function girarRuletaGacha() { reproducirSonido(); ganarXP(20); document.getElementById('gachaResultado').innerHTML = "🎉 ¡Ganaste 10% OFF! (Cupón: <strong>OTAKU10</strong>) +20 XP ⚡"; confetti({ particleCount: 100, spread: 70, origin: { y: 0.5 } }); }
 
   function abrirGuiaTallasModal() { reproducirSonido(); document.getElementById('modalGuiaTallas').style.display = 'flex'; }
   function cerrarGuiaTallasModal() { document.getElementById('modalGuiaTallas').style.display = 'none'; }
