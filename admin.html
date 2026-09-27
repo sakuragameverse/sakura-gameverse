@@ -162,7 +162,7 @@
         </div>
 
         <div class="fotos-container-admin">
-          <h4>📸 Seleccionar hasta 5 fotos directo de tu dispositivo:</h4>
+          <h4>📸 Seleccionar hasta 5 fotos (Se comprimen automáticamente para la nube):</h4>
           <div class="form-grid">
             <div class="file-input-wrapper"><label>Foto 1 (Principal):</label><input type="file" id="fileFoto1" accept="image/*"></div>
             <div class="file-input-wrapper"><label>Foto 2 (Opcional):</label><input type="file" id="fileFoto2" accept="image/*"></div>
@@ -701,9 +701,10 @@
     };
 
     if (fileInput) {
-      let reader = new FileReader();
-      reader.onload = function(e) { updateData.imgUrl = e.target.result; guardarEnFirebase(updateData); };
-      reader.readAsDataURL(fileInput);
+      comprimirImagen(fileInput, 800, 0.7, (base64Optimizado) => {
+        updateData.imgUrl = base64Optimizado;
+        guardarEnFirebase(updateData);
+      });
     } else { guardarEnFirebase(updateData); }
   };
 
@@ -745,11 +746,12 @@
     ];
     let archivosValidos = inputFiles.filter(file => file !== undefined);
     if (archivosValidos.length === 0) return alert("Selecciona al menos una imagen de banner.");
+    
+    alert("⏳ Comprimiendo y subiendo banners...");
     let subidos = 0;
     archivosValidos.forEach(file => {
-      let reader = new FileReader();
-      reader.onload = async function(e) {
-        await addDoc(collection(db, "banners"), { imgUrl: e.target.result, timestamp: Date.now() + subidos });
+      comprimirImagen(file, 1200, 0.75, async (base64Optimizado) => {
+        await addDoc(collection(db, "banners"), { imgUrl: base64Optimizado, timestamp: Date.now() + subidos });
         subidos++;
         if (subidos === archivosValidos.length) {
           alert(`¡Se subieron ${subidos} banner(s)! 🖼️✨`);
@@ -758,8 +760,7 @@
           document.getElementById('fileBanner5').value = "";
           window.cargarBannersNube();
         }
-      };
-      reader.readAsDataURL(file);
+      });
     });
   };
 
@@ -771,7 +772,38 @@
   };
 
   // ----------------------------------------------------
-  // GESTIÓN DE PRODUCTOS (CORREGIDA Y OPTIMIZADA)
+  // COMPRESOR AUTOMÁTICO DE IMÁGENES (EVITA LÍMITE DE FIREBASE)
+  // ----------------------------------------------------
+  function comprimirImagen(file, maxWidth, calidad, callback) {
+    let reader = new FileReader();
+    reader.onload = function (e) {
+      let img = new Image();
+      img.src = e.target.result;
+      img.onload = function () {
+        let canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        let ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        // Exportar a JPEG comprimido
+        let dataUrl = canvas.toDataURL('image/jpeg', calidad);
+        callback(dataUrl);
+      };
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // ----------------------------------------------------
+  // GESTIÓN DE PRODUCTOS CON COMPRESIÓN AUTOMÁTICA
   // ----------------------------------------------------
   window.cargarInventarioNube = async () => {
     try {
@@ -816,15 +848,15 @@
     let archivosValidos = inputFiles.filter(file => file !== undefined);
     if (archivosValidos.length === 0) return alert("Selecciona al menos la Foto 1 principal.");
 
-    alert("⏳ Procesando imágenes, por favor espera un momento...");
+    alert("⏳ Comprimiendo fotos y guardando en la nube...");
 
     let fotosProcesadas = []; 
     let leidos = 0;
 
     archivosValidos.forEach((file) => {
-      let reader = new FileReader();
-      reader.onload = async function(e) {
-        fotosProcesadas.push(e.target.result); 
+      // Comprimimos cada foto a un ancho máximo de 800px y calidad 0.7 (quedan súper livianas, de ~100-200 KB)
+      comprimirImagen(file, 800, 0.7, async (base64Optimizado) => {
+        fotosProcesadas.push(base64Optimizado); 
         leidos++;
         
         if (leidos === archivosValidos.length) {
@@ -851,8 +883,7 @@
             alert("Error al subir a la nube: " + error.message); 
           }
         }
-      };
-      reader.readAsDataURL(file);
+      });
     });
   };
 
