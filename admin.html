@@ -351,7 +351,7 @@
         <h3><i class="fas fa-credit-card"></i> Datos de Pago (Pago Móvil / Binance)</h3>
         <div class="form-grid">
           <div><label style="font-size:0.85em; color:var(--secondary-color);">Banco:</label><input type="text" id="pagoBanco" class="admin-input"></div>
-          <div><label style="font-size:0.85em; color:var(--secondary-color);">Teléfono:</label><input type="text" id="pagoTelefono" class="admin-input"></div>
+          <div><label style="font-size:0.85em; color:var(--secondary-color);">Телефон:</label><input type="text" id="pagoTelefono" class="admin-input"></div>
           <div><label style="font-size:0.85em; color:var(--secondary-color);">Cédula:</label><input type="text" id="pagoCedula" class="admin-input"></div>
           <div><label style="font-size:0.85em; color:var(--secondary-color);">Binance:</label><input type="text" id="pagoBinance" class="admin-input"></div>
         </div>
@@ -497,7 +497,7 @@
             <td>${p.detalle}</td>
             <td style="color:var(--secondary-color);">$${p.total.toFixed(2)}</td>
             <td><span class="badge-estado-pedido ${badgeClase}">${p.estado}</span></td>
-            <td><button class="btn-eliminar-fila" onclick="eliminarPedidoAdmin('${doc.id}')">❌</button></td>
+            <td><button class="btn-eliminar-fila" onclick="eliminarPedidoAdmin('${docSnap.id}')">❌</button></td>
           </tr>
         `;
       });
@@ -554,7 +554,7 @@
       const querySnapshot = await getDocs(collection(db, "jugadores"));
       tbody.innerHTML = "";
       if(querySnapshot.empty) {
-        tbody.innerHTML = "<tr><td colspan='4' style='color:#aaa; text-align:center;'>Aún no hay jugadores registrados en la nube. (Los jugadores se registran al usar el perfil en la tienda).</td></tr>";
+        tbody.innerHTML = "<tr><td colspan='4' style='color:#aaa; text-align:center;'>Aún no hay jugadores registrados en la nube.</td></tr>";
         return;
       }
       querySnapshot.forEach((docSnap) => {
@@ -671,7 +671,7 @@
           `;
         }
       });
-      if(vacio) tbody.innerHTML = "<tr><td colspan='4' style='color:#aaa; text-align:center;'>Aún no tienes configuraciones personalizadas. Se muestra todo por defecto.</td></tr>";
+      if(vacio) tbody.innerHTML = "<tr><td colspan='4' style='color:#aaa; text-align:center;'>Aún no tienes configuraciones personalizadas.</td></tr>";
     } catch (error) {}
   };
 
@@ -769,7 +769,7 @@
   };
 
   // ----------------------------------------------------
-  // GESTIÓN DE PRODUCTOS
+  // GESTIÓN DE PRODUCTOS (CORREGIDA Y OPTIMIZADA)
   // ----------------------------------------------------
   window.cargarInventarioNube = async () => {
     try {
@@ -778,9 +778,9 @@
       let tbody = document.getElementById('tablaInventarioAdmin');
       tbody.innerHTML = "";
       let contador = 0;
-      querySnapshot.forEach((doc) => {
+      querySnapshot.forEach((docSnap) => {
         contador++;
-        let p = doc.data();
+        let p = docSnap.data();
         let numFotos = p.fotos ? p.fotos.length : 0;
         let colorClase = p.estado.includes("Encargo") ? "estado-pendiente" : "estado-pagado";
         tbody.innerHTML += `
@@ -790,7 +790,7 @@
             <td style="color: var(--secondary-color);">$${p.precio.toFixed(2)}</td>
             <td><span style="color: #ffcc00; font-weight: bold;">🖼️ ${numFotos} foto(s)</span></td>
             <td><span class="badge-estado-pedido ${colorClase}">${p.estado}</span></td>
-            <td><button class="btn-eliminar-fila" onclick="eliminarProductoAdmin('${doc.id}')"><i class="fas fa-trash"></i> Eliminar</button></td>
+            <td><button class="btn-eliminar-fila" onclick="eliminarProductoAdmin('${docSnap.id}')"><i class="fas fa-trash"></i> Eliminar</button></td>
           </tr>
         `;
       });
@@ -804,30 +804,52 @@
     let categoria = document.getElementById('nuevaCategoria').value;
     let estado = document.getElementById('nuevoEstado').value;
 
-    if (!nombre || isNaN(precio) || precio <= 0) return alert("Ingresa nombre y precio válido.");
+    if (!nombre || isNaN(precio) || precio <= 0) return alert("Ingresa un nombre y un precio válido.");
+    
     let inputFiles = [
       document.getElementById('fileFoto1').files[0], document.getElementById('fileFoto2').files[0],
       document.getElementById('fileFoto3').files[0], document.getElementById('fileFoto4').files[0],
       document.getElementById('fileFoto5').files[0]
     ];
     let archivosValidos = inputFiles.filter(file => file !== undefined);
-    if (archivosValidos.length === 0) return alert("Selecciona al menos una foto principal.");
+    if (archivosValidos.length === 0) return alert("Selecciona al menos la Foto 1 principal.");
 
-    let fotosProcesadas = []; let leidos = 0;
-    archivosValidos.forEach((file, idx) => {
+    alert("⏳ Procesando imágenes, por favor espera un momento...");
+
+    let fotosProcesadas = []; 
+    let leidos = 0;
+
+    archivosValidos.forEach((file) => {
       let reader = new FileReader();
       reader.onload = async function(e) {
-        fotosProcesadas[idx] = e.target.result; leidos++;
+        fotosProcesadas.push(e.target.result); 
+        leidos++;
+        
+        // Cuando terminemos de leer todas las imágenes seleccionadas, guardamos en Firebase
         if (leidos === archivosValidos.length) {
-          await addDoc(collection(db, "productos"), {
-            nombre, precio, categoria, estado, fotos: fotosProcesadas, timestamp: Date.now()
-          });
-          alert("¡Producto guardado en la nube! ☁️✨");
-          window.cargarInventarioNube();
-          document.getElementById('nuevoNombre').value = ""; document.getElementById('nuevoPrecio').value = "";
-          document.getElementById('fileFoto1').value = ""; document.getElementById('fileFoto2').value = "";
-          document.getElementById('fileFoto3').value = ""; document.getElementById('fileFoto4').value = "";
-          document.getElementById('fileFoto5').value = "";
+          try {
+            await addDoc(collection(db, "productos"), {
+              nombre: nombre, 
+              precio: precio, 
+              categoria: categoria,
+              estado: estado, 
+              fotos: fotosProcesadas, 
+              timestamp: Date.now()
+            });
+            alert("¡Producto guardado exitosamente en la nube! ☁️✨");
+            window.cargarInventarioNube();
+            
+            // Limpiar formulario
+            document.getElementById('nuevoNombre').value = ""; 
+            document.getElementById('nuevoPrecio').value = "";
+            document.getElementById('fileFoto1').value = ""; 
+            document.getElementById('fileFoto2').value = "";
+            document.getElementById('fileFoto3').value = ""; 
+            document.getElementById('fileFoto4').value = "";
+            document.getElementById('fileFoto5').value = "";
+          } catch (error) { 
+            alert("Error al subir a la nube (es posible que las imágenes pesen mucho): " + error.message); 
+          }
         }
       };
       reader.readAsDataURL(file);
@@ -835,9 +857,11 @@
   };
 
   window.eliminarProductoAdmin = async (id) => {
-    if(confirm("¿Eliminar este artículo?")) {
-      await deleteDoc(doc(db, "productos", id));
-      window.cargarInventarioNube();
+    if(confirm("¿Estás 100% seguro de eliminar este artículo de la nube?")) {
+      try {
+        await deleteDoc(doc(db, "productos", id));
+        window.cargarInventarioNube();
+      } catch(error) { alert("Error al eliminar: " + error.message); }
     }
   };
 </script>
