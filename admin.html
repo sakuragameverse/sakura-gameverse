@@ -80,7 +80,6 @@
 </head>
 <body>
 
-<!-- PANTALLA DE LOGIN -->
 <div id="loginScreen">
   <div style="font-size: 50px; margin-bottom: 10px;">🔐</div>
   <h2 style="color: var(--secondary-color); margin-top: 0;">Ingreso Autorizado</h2>
@@ -92,7 +91,6 @@
   <button class="btn-admin-accion" style="width: 100%;" onclick="iniciarSesion()">Entrar al Sistema 🚀</button>
 </div>
 
-<!-- PANEL PRINCIPAL -->
 <div id="mainDashboard" style="display: none;">
   <div class="admin-header">
     <div class="admin-title">⚙️ Panel de Control & Administración General</div>
@@ -113,29 +111,15 @@
       <button class="tab-btn" onclick="cambiarTab('finanzas', event)"><i class="fas fa-coins"></i> Tasa BCV & Pagos</button>
     </div>
 
-    <!-- SECCIÓN 1: DASHBOARD -->
     <div id="seccion-dash" class="seccion-panel activa">
       <div class="stats-grid">
-        <div class="stat-card">
-          <h3>⚡ Tasa BCV Actual</h3>
-          <div class="stat-value" id="statTasa">Bs. 0.00</div>
-        </div>
-        <div class="stat-card">
-          <h3>📦 Productos en Nube</h3>
-          <div class="stat-value" id="statProductos">0</div>
-        </div>
-        <div class="stat-card">
-          <h3>🛒 Pedidos Registrados</h3>
-          <div class="stat-value" id="statPedidos">0</div>
-        </div>
-        <div class="stat-card">
-          <h3>🎟️ Cupones Activos</h3>
-          <div class="stat-value" id="statCupones">0</div>
-        </div>
+        <div class="stat-card"><h3>⚡ Tasa BCV Actual</h3><div class="stat-value" id="statTasa">Bs. 0.00</div></div>
+        <div class="stat-card"><h3>📦 Productos en Nube</h3><div class="stat-value" id="statProductos">0</div></div>
+        <div class="stat-card"><h3>🛒 Pedidos Registrados</h3><div class="stat-value" id="statPedidos">0</div></div>
+        <div class="stat-card"><h3>🎟️ Cupones Activos</h3><div class="stat-value" id="statCupones">0</div></div>
       </div>
     </div>
 
-    <!-- SECCIÓN 2: INVENTARIO -->
     <div id="seccion-inventario" class="seccion-panel">
       <div class="admin-card-form">
         <h3><i class="fas fa-plus-circle"></i> Agregar Producto a Firebase con Fotos</h3>
@@ -153,6 +137,7 @@
             <option value="cartas">Cartas TCG</option>
             <option value="katanas">Katanas</option>
             <option value="lamparas">Lámparas</option>
+            <option value="accesorios">Accesorios 🎒</option>
           </select>
           <select id="nuevoEstado" class="admin-input">
             <option value="Envío Inmediato 📦">Stock Inmediato 📦</option>
@@ -185,43 +170,30 @@
       </div>
     </div>
 
-    <!-- SECCIÓN BANNERS -->
     <div id="seccion-banners" class="seccion-panel">
       <div class="admin-card-form" style="border-color: #ff9900; box-shadow: 0 5px 15px rgba(255,153,0,0.3);">
-        <h3 style="color: #ff9900;"><i class="fas fa-images"></i> Subir Banners Promocionales (Hasta 5 Fotos)</h3>
-        <p style="font-size: 0.85em; color: #aaa; margin-bottom: 15px;">Selecciona varias imágenes de tu dispositivo para agregarlas directamente al carrusel de inicio.</p>
-        
+        <h3 style="color: #ff9900;"><i class="fas fa-images"></i> Subir Banners Promocionales</h3>
         <div class="fotos-container-admin" style="border-color: #ff9900; background: rgba(255,153,0,0.05);">
-          <h4 style="color: #ff9900;">📸 Selecciona las imágenes para los banners:</h4>
+          <h4 style="color: #ff9900;">📸 Selecciona las imágenes:</h4>
           <div class="form-grid">
             <div class="file-input-wrapper"><label>Banner 1:</label><input type="file" id="fileBanner1" accept="image/*"></div>
-            <div class="file-input-wrapper"><label>Banner 2 (Opcional):</label><input type="file" id="fileBanner2" accept="image/*"></div>
-            <div class="file-input-wrapper"><label>Banner 3 (Opcional):</label><input type="file" id="fileBanner3" accept="image/*"></div>
-            <div class="file-input-wrapper"><label>Banner 4 (Opcional):</label><input type="file" id="fileBanner4" accept="image/*"></div>
-            <div class="file-input-wrapper"><label>Banner 5 (Opcional):</label><input type="file" id="fileBanner5" accept="image/*"></div>
+            <div class="file-input-wrapper"><label>Banner 2:</label><input type="file" id="fileBanner2" accept="image/*"></div>
+            <div class="file-input-wrapper"><label>Banner 3:</label><input type="file" id="fileBanner3" accept="image/*"></div>
+            <div class="file-input-wrapper"><label>Banner 4:</label><input type="file" id="fileBanner4" accept="image/*"></div>
+            <div class="file-input-wrapper"><label>Banner 5:</label><input type="file" id="fileBanner5" accept="image/*"></div>
           </div>
         </div>
-        
-        <button class="btn-admin-accion" style="background: #ff9900; color: #0d041a; margin-top: 15px; box-shadow: 0 0 10px #ff9900;" onclick="guardarBannersMultiplesNube()">Publicar Banners 🖼️✨</button>
+        <button class="btn-admin-accion" style="background: #ff9900; color: #0d041a; margin-top: 15px;" onclick="guardarBannersMultiplesNube()">Publicar Banners 🖼️✨</button>
       </div>
-
       <div class="admin-card-form">
-        <h3><i class="fas fa-list"></i> Banners Activos en Tienda</h3>
-        <div class="tabla-responsive">
-          <table class="admin-table">
-            <thead><tr><th>Miniatura</th><th>Fecha / ID</th><th>Acción</th></tr></thead>
-            <tbody id="tablaBannersAdmin"></tbody>
-          </table>
-        </div>
+        <h3><i class="fas fa-list"></i> Banners Activos</h3>
+        <div class="tabla-responsive"><table class="admin-table"><thead><tr><th>Miniatura</th><th>Estado</th><th>Acción</th></tr></thead><tbody id="tablaBannersAdmin"></tbody></table></div>
       </div>
     </div>
 
-    <!-- SECCIÓN: FOTOS Y NOMBRES DE CATEGORÍAS -->
     <div id="seccion-fotoscat" class="seccion-panel">
       <div class="admin-card-form" style="border-color: #00ffcc; box-shadow: 0 5px 15px rgba(0,255,204,0.3);">
-        <h3 style="color: #00ffcc;"><i class="fas fa-th-large"></i> Personalizar Categorías (Fotos y Nombres)</h3>
-        <p style="font-size: 0.85em; color: #aaa; margin-bottom: 15px;">Selecciona la categoría y cambia su imagen, su nombre visible en la tienda, o ambos al mismo tiempo.</p>
-
+        <h3 style="color: #00ffcc;"><i class="fas fa-th-large"></i> Personalizar Categorías</h3>
         <div class="form-grid">
           <select id="selectCategoriaConfig" class="admin-input">
             <option value="todos">Todo el Loot</option>
@@ -235,109 +207,68 @@
             <option value="peluches">Peluches Kawaii</option>
             <option value="katanas">Katanas Replicas</option>
             <option value="lamparas">Lámparas Neón</option>
+            <option value="accesorios">Accesorios</option>
           </select>
-          <input type="text" id="inputNombreCategoria" class="admin-input" placeholder="Nuevo Nombre (Ej: Mangas Geniales)">
+          <input type="text" id="inputNombreCategoria" class="admin-input" placeholder="Nuevo Nombre">
           <input type="file" id="fileFotoCategoria" class="admin-input" accept="image/*" style="padding: 7px;">
         </div>
-
-        <button class="btn-admin-accion" style="background: #00ffcc; color: #0d041a; margin-top: 15px; box-shadow: 0 0 10px #00ffcc;" onclick="guardarConfigCategoriaNube()">Guardar Cambios 🚀✨</button>
+        <button class="btn-admin-accion" style="background: #00ffcc; color: #0d041a; margin-top: 15px;" onclick="guardarConfigCategoriaNube()">Guardar Cambios 🚀✨</button>
       </div>
-
       <div class="admin-card-form">
-        <h3><i class="fas fa-list"></i> Configuraciones Actuales de las Categorías</h3>
-        <div class="tabla-responsive">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>Miniatura</th>
-                <th>Categoría (ID)</th>
-                <th>Nombre Visible</th>
-                <th>Acción</th>
-              </tr>
-            </thead>
-            <tbody id="tablaCategoriasAdmin"></tbody>
-          </table>
-        </div>
+        <h3><i class="fas fa-list"></i> Configuración Actual</h3>
+        <div class="tabla-responsive"><table class="admin-table"><thead><tr><th>Miniatura</th><th>ID</th><th>Nombre</th><th>Acción</th></tr></thead><tbody id="tablaCategoriasAdmin"></tbody></table></div>
       </div>
     </div>
 
-    <!-- SECCIÓN: PEDIDOS -->
     <div id="seccion-pedidos" class="seccion-panel">
       <div class="admin-card-form" style="border-color: #25D366; box-shadow: 0 5px 15px rgba(37,211,102,0.3);">
-        <h3 style="color: #25D366;"><i class="fas fa-shopping-cart"></i> Registro y Gestión de Pedidos</h3>
-        <p style="font-size: 0.85em; color: #aaa; margin-bottom: 15px;">Registra manualmente los pedidos recibidos por WhatsApp o clientes locales para llevar el control.</p>
-
+        <h3 style="color: #25D366;"><i class="fas fa-shopping-cart"></i> Registro de Pedidos</h3>
         <div class="form-grid">
-          <input type="text" id="inputClientePedido" class="admin-input" placeholder="Nombre del Cliente (Ej: Gabriel S.)">
-          <input type="text" id="inputDetallePedido" class="admin-input" placeholder="Detalle (Ej: Miku Legendaria + T-Shirt)">
-          <input type="number" id="inputTotalPedido" class="admin-input" placeholder="Total USD ($)" step="0.01">
-          <select id="selectEstadoPedido" class="admin-input">
-            <option value="Pendiente ⏳">Pendiente ⏳</option>
-            <option value="Pagado / Enviado ✅">Pagado / Enviado ✅</option>
-          </select>
+          <input type="text" id="inputClientePedido" class="admin-input" placeholder="Nombre del Cliente">
+          <input type="text" id="inputDetallePedido" class="admin-input" placeholder="Detalle">
+          <input type="number" id="inputTotalPedido" class="admin-input" placeholder="Total USD" step="0.01">
+          <select id="selectEstadoPedido" class="admin-input"><option value="Pendiente ⏳">Pendiente ⏳</option><option value="Pagado / Enviado ✅">Pagado / Enviado ✅</option></select>
         </div>
-        <button class="btn-admin-accion" style="background: #25D366; color: white; margin-top: 15px; box-shadow: 0 0 10px #25D366;" onclick="guardarPedidoAdmin()">Registrar Pedido 📦</button>
+        <button class="btn-admin-accion" style="background: #25D366; color: white; margin-top: 15px;" onclick="guardarPedidoAdmin()">Registrar Pedido 📦</button>
       </div>
-
       <div class="admin-card-form">
-        <h3><i class="fas fa-list"></i> Lista de Pedidos en la Nube</h3>
-        <div class="tabla-responsive">
-          <table class="admin-table">
-            <thead><tr><th>Cliente</th><th>Productos</th><th>Total</th><th>Estado</th><th>Acción</th></tr></thead>
-            <tbody id="tablaPedidosAdmin"></tbody>
-          </table>
-        </div>
+        <h3><i class="fas fa-list"></i> Lista de Pedidos</h3>
+        <div class="tabla-responsive"><table class="admin-table"><thead><tr><th>Cliente</th><th>Productos</th><th>Total</th><th>Estado</th><th>Acción</th></tr></thead><tbody id="tablaPedidosAdmin"></tbody></table></div>
       </div>
     </div>
 
-    <!-- SECCIÓN 4: CUPONES -->
     <div id="seccion-cupones" class="seccion-panel">
       <div class="admin-card-form" style="border-color: #ffcc00; box-shadow: 0 5px 15px rgba(255,204,0,0.3);">
-        <h3 style="color: #ffcc00;"><i class="fas fa-ticket-alt"></i> Gestión de Cupones Descuento en la Nube</h3>
-        <p style="font-size: 0.85em; color: #aaa; margin-bottom: 15px;">Crea cupones activos que tus clientes podrán aplicar instantáneamente en el carrito de compras.</p>
-        
+        <h3 style="color: #ffcc00;"><i class="fas fa-ticket-alt"></i> Cupones de Descuento</h3>
         <div class="form-grid">
           <input type="text" id="adminCuponCodigo" class="admin-input" placeholder="Código (Ej: OTAKU10)">
-          <input type="number" id="adminCuponPorcentaje" class="admin-input" placeholder="Descuento en % (Ej: 10)">
+          <input type="number" id="adminCuponPorcentaje" class="admin-input" placeholder="Descuento %">
         </div>
-        <button class="btn-admin-accion" style="background: #ffcc00; color: #0d041a; margin-top: 15px; box-shadow: 0 0 10px #ffcc00;" onclick="guardarCuponAdmin()">Crear / Actualizar Cupón 🚀</button>
+        <button class="btn-admin-accion" style="background: #ffcc00; color: #0d041a; margin-top: 15px;" onclick="guardarCuponAdmin()">Crear Cupón 🚀</button>
       </div>
-
       <div class="admin-card-form">
-        <h3><i class="fas fa-list"></i> Cupones Activos en la Tienda</h3>
-        <div id="listaCuponesAdmin" style="font-size: 0.9em;">
-          Cargando cupones...
-        </div>
+        <h3><i class="fas fa-list"></i> Cupones Activos</h3>
+        <div id="listaCuponesAdmin" style="font-size: 0.9em;">Cargando cupones...</div>
       </div>
     </div>
 
-    <!-- SECCIÓN: COMUNIDAD & XP (RANGOS NINJA EDITABLES) -->
     <div id="seccion-comunidad" class="seccion-panel">
       <div class="admin-card-form" style="border-color: #9900ff; box-shadow: 0 5px 15px rgba(153,0,255,0.3);">
-        <h3 style="color: #9900ff;"><i class="fas fa-user-astronaut"></i> Configuración de Rangos Ninja & Experiencia (XP)</h3>
-        <p style="font-size: 0.85em; color: #aaa; margin-bottom: 15px;">Define los umbrales de XP necesarios para escalar desde **Genin** hasta **Hokage**.</p>
-
+        <h3 style="color: #9900ff;"><i class="fas fa-user-astronaut"></i> Configuración de Rangos Ninja & XP</h3>
         <div class="form-grid">
-          <div><label style="font-size:0.85em; color:#9900ff;">Genin (Mínimo XP):</label><input type="number" id="xpGenin" class="admin-input" value="0"></div>
-          <div><label style="font-size:0.85em; color:#9900ff;">Chūnin (Mínimo XP):</label><input type="number" id="xpChunin" class="admin-input" value="300"></div>
-          <div><label style="font-size:0.85em; color:#9900ff;">Jōnin (Mínimo XP):</label><input type="number" id="xpJonin" class="admin-input" value="600"></div>
-          <div><label style="font-size:0.85em; color:#9900ff;">Hokage (Mínimo XP):</label><input type="number" id="xpHokage" class="admin-input" value="1000"></div>
+          <div><label style="font-size:0.85em; color:#9900ff;">Genin:</label><input type="number" id="xpGenin" class="admin-input" value="0"></div>
+          <div><label style="font-size:0.85em; color:#9900ff;">Chūnin:</label><input type="number" id="xpChunin" class="admin-input" value="300"></div>
+          <div><label style="font-size:0.85em; color:#9900ff;">Jōnin:</label><input type="number" id="xpJonin" class="admin-input" value="600"></div>
+          <div><label style="font-size:0.85em; color:#9900ff;">Hokage:</label><input type="number" id="xpHokage" class="admin-input" value="1000"></div>
         </div>
-        <button class="btn-admin-accion" style="background: #9900ff; color: white; margin-top: 15px; box-shadow: 0 0 10px #9900ff;" onclick="guardarConfigRangosAdmin()">Guardar Rangos Ninja ⚡</button>
+        <button class="btn-admin-accion" style="background: #9900ff; color: white; margin-top: 15px;" onclick="guardarConfigRangosAdmin()">Guardar Rangos Ninja ⚡</button>
       </div>
-
       <div class="admin-card-form">
-        <h3><i class="fas fa-trophy"></i> Registro de Jugadores / Clientes en la Nube</h3>
-        <div class="tabla-responsive">
-          <table class="admin-table">
-            <thead><tr><th>GamerTag</th><th>Puntos XP</th><th>Rango Actual</th><th>Acción</th></tr></thead>
-            <tbody id="tablaJugadoresAdmin"></tbody>
-          </table>
-        </div>
+        <h3><i class="fas fa-trophy"></i> Registro de Jugadores</h3>
+        <div class="tabla-responsive"><table class="admin-table"><thead><tr><th>GamerTag</th><th>XP</th><th>Rango</th><th>Acción</th></tr></thead><tbody id="tablaJugadoresAdmin"></tbody></table></div>
       </div>
     </div>
 
-    <!-- SECCIÓN 6: TASA BCV & FINANZAS -->
     <div id="seccion-finanzas" class="seccion-panel">
       <div class="admin-card-form">
         <h3><i class="fas fa-coins"></i> Tasa BCV Oficial</h3>
@@ -346,12 +277,11 @@
           <button class="btn-admin-accion" onclick="guardarTasaAdmin()">Actualizar 🚀</button>
         </div>
       </div>
-
       <div class="admin-card-form">
-        <h3><i class="fas fa-credit-card"></i> Datos de Pago (Pago Móvil / Binance)</h3>
+        <h3><i class="fas fa-credit-card"></i> Datos de Pago</h3>
         <div class="form-grid">
           <div><label style="font-size:0.85em; color:var(--secondary-color);">Banco:</label><input type="text" id="pagoBanco" class="admin-input"></div>
-          <div><label style="font-size:0.85em; color:var(--secondary-color);">Телефон:</label><input type="text" id="pagoTelefono" class="admin-input"></div>
+          <div><label style="font-size:0.85em; color:var(--secondary-color);">Teléfono:</label><input type="text" id="pagoTelefono" class="admin-input"></div>
           <div><label style="font-size:0.85em; color:var(--secondary-color);">Cédula:</label><input type="text" id="pagoCedula" class="admin-input"></div>
           <div><label style="font-size:0.85em; color:var(--secondary-color);">Binance:</label><input type="text" id="pagoBinance" class="admin-input"></div>
         </div>
@@ -362,12 +292,10 @@
 </div>
 
 <script type="module">
-  // Importaciones Firebase
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
   import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
   import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, orderBy, query, setDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
-  // Configuración de Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyDH1DZqaIi5sKRXspXDUWbMUZ4nr5JIy8Q",
     authDomain: "sakura-gameverse.firebaseapp.com",
@@ -381,7 +309,6 @@
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // Funciones de Pestañas
   window.cambiarTab = (tabId, evento) => {
     let botones = document.querySelectorAll('.tab-btn');
     botones.forEach(btn => btn.classList.remove('activo'));
@@ -391,7 +318,6 @@
     document.getElementById('seccion-' + tabId).classList.add('activa');
   };
 
-  // SISTEMA DE LOGIN
   window.iniciarSesion = () => {
     const e = document.getElementById('email').value;
     const p = document.getElementById('pass').value;
@@ -418,7 +344,6 @@
     }
   });
 
-  // GESTIÓN DE TASA BCV Y FINANZAS
   let tasaBcv = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 854.46;
   document.getElementById('statTasa').innerText = `Bs. ${tasaBcv.toFixed(2)}`;
   document.getElementById('adminInputTasa').value = tasaBcv;
@@ -449,31 +374,18 @@
     alert("💾 ¡Datos de pago guardados!");
   };
 
-  // ----------------------------------------------------
-  // GESTIÓN DE PEDIDOS EN FIREBASE
-  // ----------------------------------------------------
   window.guardarPedidoAdmin = async () => {
     let cliente = document.getElementById('inputClientePedido').value.trim();
     let detalle = document.getElementById('inputDetallePedido').value.trim();
     let total = parseFloat(document.getElementById('inputTotalPedido').value);
     let estado = document.getElementById('selectEstadoPedido').value;
-
-    if(!cliente || !detalle || isNaN(total)) {
-      return alert("⚠️ Por favor completa los datos del pedido.");
-    }
-
+    if(!cliente || !detalle || isNaN(total)) return alert("⚠️ Completa los datos.");
     try {
-      await addDoc(collection(db, "pedidos"), {
-        cliente, detalle, total, estado, timestamp: Date.now()
-      });
-      alert("📦 ¡Pedido registrado exitosamente!");
-      document.getElementById('inputClientePedido').value = "";
-      document.getElementById('inputDetallePedido').value = "";
-      document.getElementById('inputTotalPedido').value = "";
+      await addDoc(collection(db, "pedidos"), { cliente, detalle, total, estado, timestamp: Date.now() });
+      alert("📦 ¡Pedido registrado!");
+      document.getElementById('inputClientePedido').value = ""; document.getElementById('inputDetallePedido').value = ""; document.getElementById('inputTotalPedido').value = "";
       cargarPedidosAdmin();
-    } catch(e) {
-      alert("Error al registrar pedido: " + e.message);
-    }
+    } catch(e) { alert("Error: " + e.message); }
   }
 
   async function cargarPedidosAdmin() {
@@ -484,52 +396,21 @@
       const querySnapshot = await getDocs(q);
       document.getElementById('statPedidos').innerText = querySnapshot.size;
       tbody.innerHTML = "";
-      if(querySnapshot.empty) {
-        tbody.innerHTML = "<tr><td colspan='5' style='color:#aaa; text-align:center;'>No hay pedidos registrados.</td></tr>";
-        return;
-      }
+      if(querySnapshot.empty) { tbody.innerHTML = "<tr><td colspan='5' style='color:#aaa; text-align:center;'>No hay pedidos.</td></tr>"; return; }
       querySnapshot.forEach((docSnap) => {
         let p = docSnap.data();
         let badgeClase = p.estado.includes("Pagado") ? "estado-pagado" : "estado-pendiente";
-        tbody.innerHTML += `
-          <tr>
-            <td><strong>${p.cliente}</strong></td>
-            <td>${p.detalle}</td>
-            <td style="color:var(--secondary-color);">$${p.total.toFixed(2)}</td>
-            <td><span class="badge-estado-pedido ${badgeClase}">${p.estado}</span></td>
-            <td><button class="btn-eliminar-fila" onclick="eliminarPedidoAdmin('${docSnap.id}')">❌</button></td>
-          </tr>
-        `;
+        tbody.innerHTML += `<tr><td><strong>${p.cliente}</strong></td><td>${p.detalle}</td><td style="color:var(--secondary-color);">$${p.total.toFixed(2)}</td><td><span class="badge-estado-pedido ${badgeClase}">${p.estado}</span></td><td><button class="btn-eliminar-fila" onclick="eliminarPedidoAdmin('${docSnap.id}')">❌</button></td></tr>`;
       });
-    } catch(e) {
-      tbody.innerHTML = "<tr><td colspan='5' style='color:#aaa; text-align:center;'>Error al cargar pedidos.</td></tr>";
-    }
+    } catch(e) {}
   }
 
-  window.eliminarPedidoAdmin = async (id) => {
-    if(confirm("¿Eliminar este pedido?")) {
-      await deleteDoc(doc(db, "pedidos", id));
-      cargarPedidosAdmin();
-    }
-  }
+  window.eliminarPedidoAdmin = async (id) => { if(confirm("¿Eliminar?")) { await deleteDoc(doc(db, "pedidos", id)); cargarPedidosAdmin(); } }
 
-  // ----------------------------------------------------
-  // GESTIÓN DE RANGOS NINJA Y XP
-  // ----------------------------------------------------
   window.guardarConfigRangosAdmin = async () => {
-    let umbrales = {
-      genin: parseInt(document.getElementById('xpGenin').value) || 0,
-      chunin: parseInt(document.getElementById('xpChunin').value) || 300,
-      jonin: parseInt(document.getElementById('xpJonin').value) || 600,
-      hokage: parseInt(document.getElementById('xpHokage').value) || 1000
-    };
-    try {
-      await setDoc(doc(db, "configuracion", "rangos_ninja"), umbrales);
-      localStorage.setItem('sakura_rangos_ninja', JSON.stringify(umbrales));
-      alert("⚡ ¡Umbrales de rangos ninja actualizados con éxito!");
-    } catch(e) {
-      alert("Error al guardar rangos: " + e.message);
-    }
+    let umbrales = { genin: parseInt(document.getElementById('xpGenin').value)||0, chunin: parseInt(document.getElementById('xpChunin').value)||300, jonin: parseInt(document.getElementById('xpJonin').value)||600, hokage: parseInt(document.getElementById('xpHokage').value)||1000 };
+    await setDoc(doc(db, "configuracion", "rangos_ninja"), umbrales);
+    alert("⚡ ¡Rangos actualizados!");
   };
 
   async function cargarConfigRangosAdmin() {
@@ -538,264 +419,128 @@
       docSnap.forEach(d => {
         if(d.id === "rangos_ninja") {
           let r = d.data();
-          if(r.genin !== undefined) document.getElementById('xpGenin').value = r.genin;
-          if(r.chunin !== undefined) document.getElementById('xpChunin').value = r.chunin;
-          if(r.jonin !== undefined) document.getElementById('xpJonin').value = r.jonin;
-          if(r.hokage !== undefined) document.getElementById('xpHokage').value = r.hokage;
+          if(r.genin!==undefined) document.getElementById('xpGenin').value = r.genin;
+          if(r.chunin!==undefined) document.getElementById('xpChunin').value = r.chunin;
+          if(r.jonin!==undefined) document.getElementById('xpJonin').value = r.jonin;
+          if(r.hokage!==undefined) document.getElementById('xpHokage').value = r.hokage;
         }
       });
-    } catch(e) {}
+    } catch(e){}
   }
 
   async function cargarJugadoresAdmin() {
     let tbody = document.getElementById('tablaJugadoresAdmin');
     if(!tbody) return;
-    try {
-      const querySnapshot = await getDocs(collection(db, "jugadores"));
-      tbody.innerHTML = "";
-      if(querySnapshot.empty) {
-        tbody.innerHTML = "<tr><td colspan='4' style='color:#aaa; text-align:center;'>Aún no hay jugadores registrados en la nube.</td></tr>";
-        return;
-      }
-      querySnapshot.forEach((docSnap) => {
-        let j = docSnap.data();
-        tbody.innerHTML += `
-          <tr>
-            <td><strong>${j.tag || 'Genin Anónimo'}</strong></td>
-            <td style="color:var(--secondary-color);">${j.xp || 0} XP</td>
-            <td><span style="color:#ffcc00; font-weight:bold;">${j.rango || 'Genin 🍃'}</span></td>
-            <td><button class="btn-eliminar-fila" onclick="eliminarJugadorAdmin('${docSnap.id}')">❌</button></td>
-          </tr>
-        `;
-      });
-    } catch(e) {
-      tbody.innerHTML = "<tr><td colspan='4' style='color:#aaa; text-align:center;'>Error al cargar jugadores.</td></tr>";
-    }
+    const querySnapshot = await getDocs(collection(db, "jugadores"));
+    tbody.innerHTML = querySnapshot.empty ? "<tr><td colspan='4' style='color:#aaa; text-align:center;'>Sin jugadores.</td></tr>" : "";
+    querySnapshot.forEach((docSnap) => {
+      let j = docSnap.data();
+      tbody.innerHTML += `<tr><td><strong>${j.tag || 'Genin'}</strong></td><td style="color:var(--secondary-color);">${j.xp || 0} XP</td><td><span style="color:#ffcc00; font-weight:bold;">${j.rango || 'Genin'}</span></td><td><button class="btn-eliminar-fila" onclick="eliminarJugadorAdmin('${docSnap.id}')">❌</button></td></tr>`;
+    });
   }
 
-  window.eliminarJugadorAdmin = async (id) => {
-    if(confirm("¿Seguro que deseas eliminar este perfil de jugador?")) {
-      await deleteDoc(doc(db, "jugadores", id));
-      cargarJugadoresAdmin();
-    }
-  };
+  window.eliminarJugadorAdmin = async (id) => { if(confirm("¿Borrar?")) { await deleteDoc(doc(db, "jugadores", id)); cargarJugadoresAdmin(); } };
 
-  // ----------------------------------------------------
-  // GESTIÓN DE CUPONES EN FIREBASE
-  // ----------------------------------------------------
   window.guardarCuponAdmin = async () => {
     let codigo = document.getElementById('adminCuponCodigo').value.trim().toUpperCase();
     let porcentaje = parseFloat(document.getElementById('adminCuponPorcentaje').value);
-
-    if (!codigo || isNaN(porcentaje)) {
-      return alert("⚠️ Por favor, rellena el código y el porcentaje correctamente.");
-    }
-
-    try {
-      await setDoc(doc(db, "cupones", codigo), {
-        codigo: codigo,
-        porcentaje: porcentaje,
-        timestamp: Date.now()
-      });
-      alert(`🎉 ¡Cupón ${codigo} (${porcentaje}%) creado exitosamente en la nube!`);
-      document.getElementById('adminCuponCodigo').value = "";
-      document.getElementById('adminCuponPorcentaje').value = "";
-      cargarCuponesAdmin();
-    } catch (error) {
-      alert("❌ Error al guardar el cupón: " + error.message);
-    }
+    if (!codigo || isNaN(porcentaje)) return alert("Rellena los campos.");
+    await setDoc(doc(db, "cupones", codigo), { codigo, porcentaje, timestamp: Date.now() });
+    alert(`🎉 Cupón ${codigo} creado!`);
+    document.getElementById('adminCuponCodigo').value = ""; document.getElementById('adminCuponPorcentaje').value = "";
+    cargarCuponesAdmin();
   };
 
   async function cargarCuponesAdmin() {
     let contenedor = document.getElementById('listaCuponesAdmin');
     if(!contenedor) return;
-    contenedor.innerHTML = "Cargando cupones...";
-    try {
-      const querySnapshot = await getDocs(collection(db, "cupones"));
-      document.getElementById('statCupones').innerText = querySnapshot.size;
-      if(querySnapshot.empty) {
-        contenedor.innerHTML = "<p style='color:#aaa;'>No hay cupones activos.</p>";
-        return;
-      }
-      let html = "";
-      querySnapshot.forEach((docSnap) => {
-        let c = docSnap.data();
-        html += `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,229,255,0.1); padding:8px 12px; border-radius:8px; margin-top:8px; border: 1px solid rgba(0,229,255,0.2);">
-          <span>🎫 <strong>${c.codigo}</strong> (-${c.porcentaje}%)</span>
-          <button class="btn-eliminar-fila" onclick="eliminarCuponAdmin('${c.codigo}')">❌ Eliminar</button>
-        </div>`;
-      });
-      contenedor.innerHTML = html;
-    } catch(e) {
-      contenedor.innerHTML = "Error al cargar cupones.";
-    }
+    const querySnapshot = await getDocs(collection(db, "cupones"));
+    document.getElementById('statCupones').innerText = querySnapshot.size;
+    contenedor.innerHTML = querySnapshot.empty ? "<p style='color:#aaa;'>No hay cupones.</p>" : "";
+    querySnapshot.forEach((docSnap) => {
+      let c = docSnap.data();
+      contenedor.innerHTML += `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,229,255,0.1); padding:8px; border-radius:8px; margin-top:5px;"><span>🎫 <strong>${c.codigo}</strong> (-${c.porcentaje}%)</span><button class="btn-eliminar-fila" onclick="eliminarCuponAdmin('${c.codigo}')">❌</button></div>`;
+    });
   }
 
-  window.eliminarCuponAdmin = async (codigo) => {
-    if(confirm(`¿Seguro que deseas eliminar el cupón ${codigo}?`)) {
-      try {
-        await deleteDoc(doc(db, "cupones", codigo));
-        alert("🗑️ Cupón eliminado.");
-        cargarCuponesAdmin();
-      } catch(e) {
-        alert("Error al eliminar: " + e.message);
-      }
-    }
-  }
+  window.eliminarCuponAdmin = async (codigo) => { await deleteDoc(doc(db, "cupones", codigo)); cargarCuponesAdmin(); }
 
-  // ----------------------------------------------------
-  // GESTIÓN DE CONFIGURACIÓN DE CATEGORÍAS (FOTOS Y NOMBRES)
-  // ----------------------------------------------------
   window.cargarConfigCategoriasAdmin = async () => {
     try {
       const q = query(collection(db, "configuracion"), orderBy("timestamp", "desc"));
       const querySnapshot = await getDocs(q);
       let tbody = document.getElementById('tablaCategoriasAdmin');
       tbody.innerHTML = "";
-      
-      let vacio = true;
       querySnapshot.forEach((documento) => {
         let conf = documento.data();
         if (conf.tipo === 'categoria_foto') {
-          vacio = false;
-          let imagenMostrar = conf.imgUrl ? `<img src="${conf.imgUrl}" style="height: 50px; width: 50px; border-radius: 8px; object-fit: cover; border: 1px solid var(--secondary-color);">` : `<span style="color:#aaa;">Sin foto</span>`;
-          let nombreMostrar = conf.nombrePersonalizado ? conf.nombrePersonalizado : `<span style="color:#aaa;">(Nombre por defecto)</span>`;
-          
-          tbody.innerHTML += `
-            <tr>
-              <td>${imagenMostrar}</td>
-              <td style="text-transform: capitalize; font-weight: bold; color: var(--secondary-color);">${conf.categoriaId}</td>
-              <td style="font-weight: bold;">${nombreMostrar}</td>
-              <td><button class="btn-eliminar-fila" onclick="eliminarConfigCategoriaAdmin('${documento.id}')"><i class="fas fa-trash"></i> Restaurar Defecto</button></td>
-            </tr>
-          `;
+          let img = conf.imgUrl ? `<img src="${conf.imgUrl}" style="height:40px; width:40px; border-radius:6px; object-fit:cover;">` : "Sin foto";
+          tbody.innerHTML += `<tr><td>${img}</td><td>${conf.categoriaId}</td><td>${conf.nombrePersonalizado || 'Por defecto'}</td><td><button class="btn-eliminar-fila" onclick="eliminarConfigCategoriaAdmin('${documento.id}')">Borrar</button></td></tr>`;
         }
       });
-      if(vacio) tbody.innerHTML = "<tr><td colspan='4' style='color:#aaa; text-align:center;'>Aún no tienes configuraciones personalizadas.</td></tr>";
-    } catch (error) {}
+    } catch(e){}
   };
 
   window.guardarConfigCategoriaNube = async () => {
     let catId = document.getElementById('selectCategoriaConfig').value;
     let nuevoNombre = document.getElementById('inputNombreCategoria').value.trim();
     let fileInput = document.getElementById('fileFotoCategoria').files[0];
-
-    if (!fileInput && !nuevoNombre) { 
-      alert("⚠️ Selecciona una imagen o escribe un nuevo nombre."); 
-      return; 
-    }
-
+    if (!fileInput && !nuevoNombre) return alert("Selecciona foto o escribe un nombre.");
     let updateData = { tipo: "categoria_foto", categoriaId: catId, timestamp: Date.now() };
     if (nuevoNombre) updateData.nombrePersonalizado = nuevoNombre;
 
-    let guardarEnFirebase = async (data) => {
-      try {
-        await setDoc(doc(db, "configuracion", "cat_img_" + catId), data, { merge: true });
-        alert(`¡Configuración de ${catId.toUpperCase()} actualizada! ✨`);
-        document.getElementById('inputNombreCategoria').value = "";
-        document.getElementById('fileFotoCategoria').value = "";
-        window.cargarConfigCategoriasAdmin();
-      } catch (error) { alert("Error al guardar: " + error.message); }
+    let guardar = async (data) => {
+      await setDoc(doc(db, "configuracion", "cat_img_" + catId), data, { merge: true });
+      alert("¡Actualizado!");
+      window.cargarConfigCategoriasAdmin();
     };
-
     if (fileInput) {
       let reader = new FileReader();
-      reader.onload = function(e) { updateData.imgUrl = e.target.result; guardarEnFirebase(updateData); };
+      reader.onload = (e) => { updateData.imgUrl = e.target.result; guardar(updateData); };
       reader.readAsDataURL(fileInput);
-    } else { guardarEnFirebase(updateData); }
+    } else { guardar(updateData); }
   };
 
-  window.eliminarConfigCategoriaAdmin = async (id) => {
-    if(confirm("¿Seguro que quieres borrarla?")) {
-      await deleteDoc(doc(db, "configuracion", id));
-      window.cargarConfigCategoriasAdmin();
-    }
-  };
+  window.eliminarConfigCategoriaAdmin = async (id) => { await deleteDoc(doc(db, "configuracion", id)); window.cargarConfigCategoriasAdmin(); };
 
-  // ----------------------------------------------------
-  // GESTIÓN DE BANNERS MÚLTIPLES
-  // ----------------------------------------------------
   window.cargarBannersNube = async () => {
-    try {
-      const q = query(collection(db, "banners"), orderBy("timestamp", "desc"));
-      const querySnapshot = await getDocs(q);
-      let tbody = document.getElementById('tablaBannersAdmin');
-      tbody.innerHTML = "";
-      if (querySnapshot.empty) { tbody.innerHTML = "<tr><td colspan='3' style='color:#aaa; text-align:center;'>Aún no hay banners.</td></tr>"; }
-      querySnapshot.forEach((doc) => {
-        let b = doc.data();
-        tbody.innerHTML += `
-          <tr>
-            <td><img src="${b.imgUrl}" style="height: 50px; border-radius: 8px; object-fit: cover; border: 1px solid var(--secondary-color);"></td>
-            <td>Registrado en Nube</td>
-            <td><button class="btn-eliminar-fila" onclick="eliminarBannerAdmin('${doc.id}')"><i class="fas fa-trash"></i></button></td>
-          </tr>
-        `;
-      });
-    } catch (error) {}
+    const q = query(collection(db, "banners"), orderBy("timestamp", "desc"));
+    const querySnapshot = await getDocs(q);
+    let tbody = document.getElementById('tablaBannersAdmin');
+    tbody.innerHTML = querySnapshot.empty ? "<tr><td colspan='3' style='color:#aaa; text-align:center;'>Sin banners.</td></tr>" : "";
+    querySnapshot.forEach((doc) => {
+      let b = doc.data();
+      tbody.innerHTML += `<tr><td><img src="${b.imgUrl}" style="height:40px; border-radius:6px;"></td><td>Activo</td><td><button class="btn-eliminar-fila" onclick="eliminarBannerAdmin('${doc.id}')">❌</button></td></tr>`;
+    });
   };
 
   window.guardarBannersMultiplesNube = () => {
-    let inputFiles = [
-      document.getElementById('fileBanner1').files[0], document.getElementById('fileBanner2').files[0],
-      document.getElementById('fileBanner3').files[0], document.getElementById('fileBanner4').files[0],
-      document.getElementById('fileBanner5').files[0]
-    ];
-    let archivosValidos = inputFiles.filter(file => file !== undefined);
-    if (archivosValidos.length === 0) return alert("Selecciona al menos una imagen de banner.");
+    let inputFiles = [document.getElementById('fileBanner1').files[0], document.getElementById('fileBanner2').files[0], document.getElementById('fileBanner3').files[0], document.getElementById('fileBanner4').files[0], document.getElementById('fileBanner5').files[0]].filter(f => f!==undefined);
+    if(inputFiles.length===0) return alert("Selecciona al menos un banner.");
     let subidos = 0;
-    archivosValidos.forEach(file => {
+    inputFiles.forEach(file => {
       let reader = new FileReader();
-      reader.onload = async function(e) {
-        await addDoc(collection(db, "banners"), { imgUrl: e.target.result, timestamp: Date.now() + subidos });
+      reader.onload = async (e) => {
+        await addDoc(collection(db, "banners"), { imgUrl: e.target.result, timestamp: Date.now()+subidos });
         subidos++;
-        if (subidos === archivosValidos.length) {
-          alert(`¡Se subieron ${subidos} banner(s)! 🖼️✨`);
-          document.getElementById('fileBanner1').value = ""; document.getElementById('fileBanner2').value = "";
-          document.getElementById('fileBanner3').value = ""; document.getElementById('fileBanner4').value = "";
-          document.getElementById('fileBanner5').value = "";
-          window.cargarBannersNube();
-        }
+        if(subidos === inputFiles.length) { alert("¡Banners subidos!"); window.cargarBannersNube(); }
       };
       reader.readAsDataURL(file);
     });
   };
 
-  window.eliminarBannerAdmin = async (id) => {
-    if(confirm("¿Eliminar este banner?")) {
-      await deleteDoc(doc(db, "banners", id));
-      window.cargarBannersNube();
-    }
-  };
+  window.eliminarBannerAdmin = async (id) => { await deleteDoc(doc(db, "banners", id)); window.cargarBannersNube(); };
 
-  // ----------------------------------------------------
-  // GESTIÓN DE PRODUCTOS (CORREGIDA Y OPTIMIZADA)
-  // ----------------------------------------------------
   window.cargarInventarioNube = async () => {
-    try {
-      const q = query(collection(db, "productos"), orderBy("timestamp", "desc"));
-      const querySnapshot = await getDocs(q);
-      let tbody = document.getElementById('tablaInventarioAdmin');
-      tbody.innerHTML = "";
-      let contador = 0;
-      querySnapshot.forEach((docSnap) => {
-        contador++;
-        let p = docSnap.data();
-        let numFotos = p.fotos ? p.fotos.length : 0;
-        let colorClase = p.estado.includes("Encargo") ? "estado-pendiente" : "estado-pagado";
-        tbody.innerHTML += `
-          <tr>
-            <td><strong>${p.nombre}</strong></td>
-            <td>${p.categoria}</td>
-            <td style="color: var(--secondary-color);">$${p.precio.toFixed(2)}</td>
-            <td><span style="color: #ffcc00; font-weight: bold;">🖼️ ${numFotos} foto(s)</span></td>
-            <td><span class="badge-estado-pedido ${colorClase}">${p.estado}</span></td>
-            <td><button class="btn-eliminar-fila" onclick="eliminarProductoAdmin('${docSnap.id}')"><i class="fas fa-trash"></i> Eliminar</button></td>
-          </tr>
-        `;
-      });
-      document.getElementById('statProductos').innerText = contador;
-    } catch (error) {}
+    const q = query(collection(db, "productos"), orderBy("timestamp", "desc"));
+    const querySnapshot = await getDocs(q);
+    let tbody = document.getElementById('tablaInventarioAdmin');
+    tbody.innerHTML = ""; let contador = 0;
+    querySnapshot.forEach((docSnap) => {
+      contador++; let p = docSnap.data();
+      tbody.innerHTML += `<tr><td><strong>${p.nombre}</strong></td><td>${p.categoria}</td><td style="color:var(--secondary-color);">$${p.precio.toFixed(2)}</td><td>🖼️ ${p.fotos?.length || 0}</td><td>${p.estado}</td><td><button class="btn-eliminar-fila" onclick="eliminarProductoAdmin('${docSnap.id}')">❌</button></td></tr>`;
+    });
+    document.getElementById('statProductos').innerText = contador;
   };
 
   window.procesarYGuardarProducto = () => {
@@ -803,67 +548,28 @@
     let precio = parseFloat(document.getElementById('nuevoPrecio').value);
     let categoria = document.getElementById('nuevaCategoria').value;
     let estado = document.getElementById('nuevoEstado').value;
-
-    if (!nombre || isNaN(precio) || precio <= 0) return alert("Ingresa un nombre y un precio válido.");
-    
-    let inputFiles = [
-      document.getElementById('fileFoto1').files[0], document.getElementById('fileFoto2').files[0],
-      document.getElementById('fileFoto3').files[0], document.getElementById('fileFoto4').files[0],
-      document.getElementById('fileFoto5').files[0]
-    ];
-    let archivosValidos = inputFiles.filter(file => file !== undefined);
-    if (archivosValidos.length === 0) return alert("Selecciona al menos la Foto 1 principal.");
-
-    alert("⏳ Procesando imágenes, por favor espera un momento...");
-
-    let fotosProcesadas = []; 
-    let leidos = 0;
-
-    archivosValidos.forEach((file) => {
+    if (!nombre || isNaN(precio) || precio <= 0) return alert("Completa los datos.");
+    let inputFiles = [document.getElementById('fileFoto1').files[0], document.getElementById('fileFoto2').files[0], document.getElementById('fileFoto3').files[0], document.getElementById('fileFoto4').files[0], document.getElementById('fileFoto5'].files[0]].filter(f => f!==undefined);
+    if (inputFiles.length === 0) return alert("Selecciona al menos la Foto 1.");
+    alert("⏳ Subiendo producto...");
+    let fotosProcesadas = []; let leidos = 0;
+    inputFiles.forEach(file => {
       let reader = new FileReader();
-      reader.onload = async function(e) {
-        fotosProcesadas.push(e.target.result); 
-        leidos++;
-        
-        // Cuando terminemos de leer todas las imágenes seleccionadas, guardamos en Firebase
-        if (leidos === archivosValidos.length) {
-          try {
-            await addDoc(collection(db, "productos"), {
-              nombre: nombre, 
-              precio: precio, 
-              categoria: categoria,
-              estado: estado, 
-              fotos: fotosProcesadas, 
-              timestamp: Date.now()
-            });
-            alert("¡Producto guardado exitosamente en la nube! ☁️✨");
-            window.cargarInventarioNube();
-            
-            // Limpiar formulario
-            document.getElementById('nuevoNombre').value = ""; 
-            document.getElementById('nuevoPrecio').value = "";
-            document.getElementById('fileFoto1').value = ""; 
-            document.getElementById('fileFoto2').value = "";
-            document.getElementById('fileFoto3').value = ""; 
-            document.getElementById('fileFoto4').value = "";
-            document.getElementById('fileFoto5').value = "";
-          } catch (error) { 
-            alert("Error al subir a la nube (es posible que las imágenes pesen mucho): " + error.message); 
-          }
+      reader.onload = async (e) => {
+        fotosProcesadas.push(e.target.result); leidos++;
+        if (leidos === inputFiles.length) {
+          await addDoc(collection(db, "productos"), { nombre, precio, categoria, estado, fotos: fotosProcesadas, timestamp: Date.now() });
+          alert("¡Guardado en la nube! ☁️✨");
+          window.cargarInventarioNube();
+          document.getElementById('nuevoNombre').value = ""; document.getElementById('nuevoPrecio').value = "";
+          document.getElementById('fileFoto1').value = ""; document.getElementById('fileFoto2').value = ""; document.getElementById('fileFoto3').value = ""; document.getElementById('fileFoto4').value = ""; document.getElementById('fileFoto5').value = "";
         }
       };
       reader.readAsDataURL(file);
     });
   };
 
-  window.eliminarProductoAdmin = async (id) => {
-    if(confirm("¿Estás 100% seguro de eliminar este artículo de la nube?")) {
-      try {
-        await deleteDoc(doc(db, "productos", id));
-        window.cargarInventarioNube();
-      } catch(error) { alert("Error al eliminar: " + error.message); }
-    }
-  };
+  window.eliminarProductoAdmin = async (id) => { if(confirm("¿Borrar producto?")) { await deleteDoc(doc(db, "productos", id)); window.cargarInventarioNube(); } };
 </script>
 
 </body>
