@@ -525,6 +525,7 @@
 <div class="bottom-nav">
   <div class="nav-item" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); reproducirSonido();"><i class="fas fa-home"></i><span>Inicio</span></div>
   <div class="nav-item" onclick="abrirFavoritosModal()"><i class="fas fa-heart"></i><span>Deseos</span><div class="nav-badge" id="favBadge">0</div></div>
+  <!-- CORRECCIÓN CLAVE AQUÍ: Se agregó el onclick para abrir el carrito y mostrar la factura y productos -->
   <div class="nav-item" onclick="abrirCarritoModal()"><i class="fas fa-shopping-cart"></i><span>Carrito</span><div class="nav-badge" id="cartBadge">0</div></div>
   <div class="nav-item" onclick="abrirMenuOpciones()"><i class="fas fa-bars"></i><span>Menú</span></div>
 </div>
@@ -937,7 +938,6 @@
   function abrirCofreModal() { reproducirSonido(); document.getElementById('modalCofreDiario').style.display = 'flex'; }
   function cerrarCofreModal() { document.getElementById('modalCofreDiario').style.display = 'none'; }
   
-  // ÚNICA ACCIÓN QUE DA XP (Cofre Diario)
   function abrirCofreDiario() {
     reproducirSonido(); 
     let hoy = new Date().toDateString(); 
@@ -955,7 +955,6 @@
   function abrirGachaModal() { reproducirSonido(); document.getElementById('modalGacha').style.display = 'flex'; }
   function cerrarGachaModal() { document.getElementById('modalGacha').style.display = 'none'; }
   
-  // Ruleta Gacha SIN ganar XP (solo cupón)
   function girarRuletaGacha() { 
     reproducirSonido(); 
     let hoy = new Date().toDateString();
@@ -1103,7 +1102,6 @@
   let reviews = JSON.parse(localStorage.getItem('sakura_reviews')) || [ { nombre: "Gabriel S.", estrellas: "⭐⭐⭐⭐⭐", texto: "¡Excelente tienda en Bejuma!" } ];
   function renderReviews() {
     let c = document.getElementById('contenedorReviews'); c.innerHTML = "";
-    // Reseñas renderizadas SIN botón de borrado público para que nadie pueda eliminarlas
     reviews.forEach((r, i) => { 
       c.innerHTML += `<div class="review-card"><div class="review-author">${r.nombre}</div><div class="review-stars">${r.estrellas}</div><div class="review-text">${r.texto}</div></div>`; 
     });
