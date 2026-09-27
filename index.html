@@ -53,7 +53,6 @@
     @keyframes load-progress { 0% { width: 0%; } 50% { width: 65%; } 100% { width: 100%; } }
 
     .hero-banner { background-color: var(--hero-bg); text-align: center; padding: 30px 20px 20px 20px; border-bottom: 3px solid var(--primary-color); box-shadow: 0 0 20px rgba(255, 0, 127, 0.4); position: relative; z-index: 2; transition: background 0.4s ease; }
-    
     .hero-logo { max-width: 270px; margin-bottom: 10px; filter: drop-shadow(0 0 15px var(--secondary-color)) drop-shadow(0 0 30px var(--primary-color)); cursor: pointer; transition: transform 0.3s ease; }
     .hero-logo:hover { transform: scale(1.06); filter: drop-shadow(0 0 20px var(--secondary-color)) drop-shadow(0 0 35px var(--secondary-color)); }
 
@@ -95,8 +94,7 @@
     
     .carrusel-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(17, 5, 44, 0.8); color: var(--secondary-color); border: 1px solid var(--secondary-color); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; backdrop-filter: blur(4px); box-shadow: 0 0 10px rgba(0,229,255,0.3); transition: all 0.2s; }
     .carrusel-arrow:hover { background: var(--secondary-color); color: #0d041a; transform: translateY(-50%) scale(1.1); }
-    .arrow-prev { left: -15px; }
-    .arrow-next { right: -15px; }
+    .arrow-prev { left: -15px; } .arrow-next { right: -15px; }
 
     .controles-superiores { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-bottom: 30px; }
     .filtros { display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 100%; padding-bottom: 10px; justify-content: flex-start; gap: 8px; scrollbar-width: thin; }
@@ -113,7 +111,7 @@
     .card-img-container { position: relative; width: 100%; height: 250px; background-color: rgba(0,0,0,0.3); border-radius: 10px; margin-bottom: 15px; overflow: hidden; }
     .card-img-container img { width: 100%; height: 100%; object-fit: contain; display: none; }
     .card-img-container img.activa { display: block; }
-    .carrusel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.6); color: var(--secondary-color); border: 1px solid var(--secondary-color); border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.8em; z-index: 4; transition: background 0.2s; }
+    .carrusel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.6); color: var(--secondary-color); border: 1px solid var(--secondary-color); border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.8em; z-index: 4; }
     .carrusel-btn:hover { background: rgba(0, 229, 255, 0.3); }
     .carrusel-prev { left: 8px; } .carrusel-next { right: 8px; }
     .carrusel-dots { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; z-index: 4; }
@@ -131,11 +129,11 @@
     .btn-fav-card:hover { transform: scale(1.15); background: rgba(255,0,127,0.3); }
 
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-    .modal-content { background: var(--hero-bg); padding: 20px; border-radius: 20px; text-align: left; max-width: 95%; width: 440px; border: 2px solid var(--primary-color); box-shadow: 0 0 30px rgba(255,0,127,0.5); position: relative; max-height: 92vh; overflow-y: auto; transition: background 0.4s ease; }
+    .modal-content { background: var(--hero-bg); padding: 20px; border-radius: 20px; text-align: left; max-width: 95%; width: 440px; border: 2px solid var(--primary-color); box-shadow: 0 0 30px rgba(255,0,127,0.5); position: relative; max-height: 92vh; overflow-y: auto; }
     .cerrar-modal { position: absolute; top: 10px; right: 15px; font-size: 25px; color: var(--text-color); cursor: pointer; background: none; border: none; font-weight: bold; z-index: 10; }
     .breadcrumbs { font-size: 0.85em; color: #aaa; margin-bottom: 12px; font-weight: bold; }
     .breadcrumbs span { color: var(--secondary-color); }
-    .modal-img { width: 100%; max-height: 350px; object-fit: contain; background: rgba(0,0,0,0.5); border-radius: 12px; margin-bottom: 10px; box-shadow: 0 0 15px rgba(0,229,255,0.2); }
+    .modal-img { width: 100%; max-height: 350px; object-fit: contain; background: rgba(0,0,0,0.5); border-radius: 12px; margin-bottom: 10px; }
     .modal-tag-info { display: inline-block; background: rgba(0,229,255,0.15); border: 1px solid var(--secondary-color); color: var(--secondary-color); padding: 4px 10px; border-radius: 10px; font-size: 0.8em; font-weight: bold; margin-bottom: 10px; }
     .modal-miniaturas { display: flex; gap: 10px; justify-content: flex-start; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px; }
     .modal-mini-img { width: 65px; height: 65px; object-fit: cover; border-radius: 10px; cursor: pointer; border: 2px solid var(--secondary-color); opacity: 0.6; transition: all 0.2s; }
@@ -152,11 +150,11 @@
     .cupon-box { display: flex; gap: 8px; margin-bottom: 12px; }
     .cupon-input { flex-grow: 1; background: var(--bg-color); border: 1px solid var(--secondary-color); color: var(--text-color); padding: 8px; border-radius: 10px; font-size: 0.9em; outline: none; text-transform: uppercase; }
     .btn-cupon { background: var(--secondary-color); color: #0d041a; border: none; padding: 0 15px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 0.85em; }
-    .recibo-box { background: var(--bg-color); border: 2px dashed var(--secondary-color); padding: 15px; border-radius: 12px; text-align: left; font-family: monospace; font-size: 0.85em; color: var(--secondary-color); margin-bottom: 15px; box-shadow: inset 0 0 10px rgba(0,229,255,0.2); }
+    .recibo-box { background: var(--bg-color); border: 2px dashed var(--secondary-color); padding: 15px; border-radius: 12px; text-align: left; font-family: monospace; font-size: 0.85em; color: var(--secondary-color); margin-bottom: 15px; }
     .recibo-line { display: flex; justify-content: space-between; margin-bottom: 5px; }
 
-    .btn-copiar-mini { background: rgba(0,229,255,0.1); color: var(--secondary-color); border: 1px solid var(--secondary-color); border-radius: 8px; padding: 5px 12px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
-    .btn-copiar-mini:hover { background: var(--secondary-color); color: #0d041a; transform: scale(1.1); box-shadow: 0 0 8px var(--secondary-color); }
+    .btn-copiar-mini { background: rgba(0,229,255,0.1); color: var(--secondary-color); border: 1px solid var(--secondary-color); border-radius: 8px; padding: 5px 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .btn-copiar-mini:hover { background: var(--secondary-color); color: #0d041a; }
 
     .faq-item { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; margin-bottom: 10px; text-align: left; }
     .faq-question { color: var(--secondary-color); font-weight: bold; font-size: 0.95em; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
@@ -170,14 +168,13 @@
     .sugerencia-input { width: 100%; background: var(--bg-color); border: 1px solid var(--secondary-color); color: var(--text-color); padding: 10px; border-radius: 10px; margin-bottom: 12px; box-sizing: border-box; outline: none; }
     .btn-sugerencia { background: var(--secondary-color); color: #0d041a; border: none; padding: 10px 20px; font-weight: bold; border-radius: 20px; cursor: pointer; width: 100%; box-shadow: 0 0 10px var(--secondary-color); }
 
-    .reviews-section, .info-section { background: var(--hero-bg); margin-top: 40px; padding: 30px 20px; border-radius: 15px; border: 1px solid var(--secondary-color); box-shadow: 0 0 15px rgba(0,229,255,0.2); transition: background 0.4s ease; }
+    .reviews-section, .info-section { background: var(--hero-bg); margin-top: 40px; padding: 30px 20px; border-radius: 15px; border: 1px solid var(--secondary-color); box-shadow: 0 0 15px rgba(0,229,255,0.2); }
     .info-section { border-color: var(--primary-color); box-shadow: 0 0 15px rgba(255,0,127,0.2); margin-bottom: 20px; }
     .review-card { background: var(--card-bg); padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid rgba(255,0,127,0.3); position: relative; }
     .review-author { font-weight: bold; color: var(--secondary-color); margin-bottom: 5px; }
     .review-stars { color: #ffcc00; margin-bottom: 8px; }
     .review-text { font-size: 0.95em; line-height: 1.4; }
     .btn-del-review { position: absolute; top: 10px; right: 10px; background: #ff3366; color: white; border: none; border-radius: 5px; padding: 3px 8px; font-size: 0.75em; cursor: pointer; }
-    .review-form { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
 
     .info-title { color: var(--secondary-color); font-size: 1.4em; margin-bottom: 20px; text-align: center; }
     .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; font-size: 0.95em; line-height: 1.5; }
@@ -208,10 +205,7 @@
 
 <div id="socialProofContainer">
   <div class="sp-icon"><i class="fas fa-shopping-bag"></i></div>
-  <div>
-    <span class="sp-text" id="spTexto">¡Gabriel S. compró una miku Legendaria!</span> 
-    <span class="sp-sub" id="spLugar">(Bejuma)</span>
-  </div>
+  <div><span class="sp-text" id="spTexto">¡Gabriel S. compró una miku Legendaria!</span> <span class="sp-sub" id="spLugar">(Bejuma)</span></div>
 </div>
 
 <div class="ticker-bar">
@@ -221,13 +215,11 @@
 </div>
 
 <div id="modalPromoFlash" class="modal" style="display: flex;">
-  <div class="modal-content" style="border: 2px solid var(--secondary-color); box-shadow: 0 0 40px rgba(0,229,255,0.6); text-align: center;">
+  <div class="modal-content" style="border: 2px solid var(--secondary-color); text-align: center;">
     <button class="cerrar-modal" onclick="cerrarPromoFlash()">×</button>
     <div style="font-size: 40px; margin-bottom: 10px;">🎁</div>
     <h2 style="color: var(--secondary-color); margin-top: 0;">¡Bienvenido a Sakura Gameverse!</h2>
-    <p style="font-size: 0.95em; line-height: 1.5; opacity: 0.9; margin-bottom: 15px;">
-      Usa códigos de descuento activos o abre el menú inferior para reclamar tu <strong>Cofre Diario</strong> y girar la ruleta Gacha. Entregas en <strong>Bejuma y Miranda</strong> y envíos por <strong>ZOOM y MRW</strong>.
-    </p>
+    <p style="font-size: 0.95em; line-height: 1.5; margin-bottom: 15px;">Usa códigos de descuento activos o abre el menú inferior para reclamar tu <strong>Cofre Diario</strong> y girar la ruleta Gacha.</p>
     <button class="btn-sugerencia" onclick="cerrarPromoFlash()">¡A Explorar el loot! 🎁</button>
   </div>
 </div>
@@ -237,11 +229,8 @@
     <button class="cerrar-modal" onclick="cerrarCofreModal()">×</button>
     <div style="font-size: 45px; margin-bottom: 5px;">📦✨</div>
     <h2 style="color: #ff9900; margin-top: 0;">Cofre de Recompensa Diaria</h2>
-    <p id="mensajeCofreInfo" style="font-size: 0.9em; opacity: 0.9; margin-bottom: 15px;">¡Abre tu cofre una vez al día para ganar bonos de XP y cupones sorpresa!</p>
-    <div id="cofreResultado" style="background: var(--bg-color); border: 2px dashed #ff9900; padding: 20px; border-radius: 12px; font-size: 1.1em; font-weight: bold; color: var(--secondary-color); margin-bottom: 15px;">
-      Cofre listo para abrir 🗝️
-    </div>
-    <button class="btn-sugerencia" id="btnReclamarCofre" style="background: #ff9900; color: #0d041a;" onclick="abrirCofreDiario()">¡Abrir Cofre Diario! 🔓</button>
+    <div id="cofreResultado" style="background: var(--bg-color); border: 2px dashed #ff9900; padding: 20px; border-radius: 12px; font-size: 1.1em; font-weight: bold; color: var(--secondary-color); margin-bottom: 15px;">Cofre listo para abrir 🗝️</div>
+    <button class="btn-sugerencia" style="background: #ff9900; color: #0d041a;" onclick="abrirCofreDiario()">¡Abrir Cofre Diario! 🔓</button>
   </div>
 </div>
 
@@ -250,10 +239,7 @@
     <button class="cerrar-modal" onclick="cerrarGachaModal()">×</button>
     <div style="font-size: 40px; margin-bottom: 5px;">🎰</div>
     <h2 style="color: #ffcc00; margin-top: 0;">Ruleta Gacha Otaku</h2>
-    <p style="font-size: 0.9em; opacity: 0.9; margin-bottom: 15px;">¡Prueba tu suerte y descubre tu recompensa épica!</p>
-    <div id="gachaResultado" style="background: var(--bg-color); border: 2px dashed #9900ff; padding: 20px; border-radius: 12px; font-size: 1.1em; font-weight: bold; color: var(--secondary-color); margin-bottom: 15px; min-height: 60px; display: flex; align-items: center; justify-content: center;">
-      Presiona el botón para girar 🎁
-    </div>
+    <div id="gachaResultado" style="background: var(--bg-color); border: 2px dashed #9900ff; padding: 20px; border-radius: 12px; font-size: 1.1em; font-weight: bold; color: var(--secondary-color); margin-bottom: 15px; min-height: 60px; display: flex; align-items: center; justify-content: center;">Presiona el botón para girar 🎁</div>
     <button class="btn-sugerencia" style="background: #9900ff; color: white;" onclick="girarRuletaGacha()"><div>¡Girar Ruleta Gacha! ⚡</div></button>
   </div>
 </div>
@@ -261,7 +247,6 @@
 <div id="modalTemas" class="modal">
   <div class="modal-content" style="width: 400px; border: 2px solid #ffcc00; text-align: center;">
     <button class="cerrar-modal" onclick="cerrarTemasModal()">×</button>
-    <div style="font-size: 40px; margin-bottom: 5px;">🎨</div>
     <h2 style="color: #ffcc00; margin-top: 0;">Selecciona tu Estilo</h2>
     <div style="display: flex; flex-direction: column; gap: 10px;">
       <button class="btn-sugerencia" style="background: #FF007F; color: white;" onclick="cambiarTema('theme-rosa')">🌸 Rosa Cyberpunk</button>
@@ -275,7 +260,6 @@
 <div id="modalGamerProfile" class="modal">
   <div class="modal-content" style="width: 420px; border: 2px solid #00ffcc; text-align: center;">
     <button class="cerrar-modal" onclick="cerrarGamerProfileModal()">×</button>
-    <div style="font-size: 40px; margin-bottom: 5px;">👤</div>
     <h2 style="color: #00ffcc; margin-top: 0;">Perfil Gamer & XP</h2>
     <input type="text" id="inputGamerTag" class="sugerencia-input" placeholder="Tu GamerTag">
     <div style="background: var(--bg-color); padding: 12px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #00ffcc; text-align: left; font-size: 0.9em;">
@@ -304,9 +288,7 @@
   <div class="splash-box">
     <img src="logo.webp" alt="Logo" class="splash-logo" onclick="activarEasterEggLogo()">
     <div id="loadingText" class="loading-text">Cargando Gameverse🌸</div>
-    <div class="loading-bar-container">
-      <div class="loading-bar"></div>
-    </div>
+    <div class="loading-bar-container"><div class="loading-bar"></div></div>
   </div>
 </div>
 
@@ -316,16 +298,10 @@
 
 <div class="hero-banner">
   <img src="logo.webp" alt="Sakura Gameverse" class="hero-logo" onclick="activarEasterEggLogo()">
-  
-  <div class="store-status-badge">
-    <div class="status-dot"></div> Abierto de 10:00AM a 7:00PM 24/7
-  </div>
-
+  <div class="store-status-badge"><div class="status-dot"></div> Abierto de 10:00AM a 7:00PM 24/7</div>
   <div class="hero-title">✨ Bienvenidos a Sakura Gameverse ✨<br>Donde tu pasión por el gaming nunca hace game over. 👾🌸</div>
-  
   <div id="bannerSliderContainer" class="banner-slider-container"></div>
   <br>
-
   <div class="bcv-box">
     <i class="fas fa-coins"></i> Tasa BCV (Bs/$): 
     <input type="number" id="inputTasaBcv" class="bcv-input" step="0.01" value="854.46" oninput="cambiarTasaBcvManual()">
@@ -345,90 +321,51 @@
       <div class="carrusel-track" id="categoriasTrack">
         <div class="cat-card activa" onclick="filtrar('todos')">
           <img src="logo.webp" id="img-cat-todos" class="cat-img" alt="Todos">
-          <div class="cat-info">
-            <div class="cat-title" id="title-cat-todos">Todo el Loot</div>
-            <div class="cat-count" id="count-todos">0 productos</div>
-          </div>
+          <div class="cat-info"><div class="cat-title" id="title-cat-todos">Todo el Loot</div><div class="cat-count" id="count-todos">0 productos</div></div>
         </div>
-        
         <div class="cat-card" onclick="filtrar('mangas')">
           <img src="logo.webp" id="img-cat-mangas" class="cat-img" alt="Mangas">
-          <div class="cat-info">
-            <div class="cat-title" id="title-cat-mangas">Mangas</div>
-            <div class="cat-count" id="count-mangas">0 productos</div>
-          </div>
+          <div class="cat-info"><div class="cat-title" id="title-cat-mangas">Mangas Y Cómics</div><div class="cat-count" id="count-mangas">0 productos</div></div>
         </div>
-
         <div class="cat-card" onclick="filtrar('ropa')">
           <img src="logo.webp" id="img-cat-ropa" class="cat-img" alt="Ropa">
-          <div class="cat-info">
-            <div class="cat-title" id="title-cat-ropa">Clothing</div>
-            <div class="cat-count" id="count-ropa">0 productos</div>
-          </div>
+          <div class="cat-info"><div class="cat-title" id="title-cat-ropa">Clothing</div><div class="cat-count" id="count-ropa">0 productos</div></div>
         </div>
-
         <div class="cat-card" onclick="filtrar('cartas')">
           <img src="logo.webp" id="img-cat-cartas" class="cat-img" alt="TCG">
-          <div class="cat-info">
-            <div class="cat-title" id="title-cat-cartas">TCG/Cartas</div>
-            <div class="cat-count" id="count-cartas">0 productos</div>
-          </div>
+          <div class="cat-info"><div class="cat-title" id="title-cat-cartas">TCG/Cartas</div><div class="cat-count" id="count-cartas">0 productos</div></div>
         </div>
-
         <div class="cat-card" onclick="filtrar('figuras')">
           <img src="logo.webp" id="img-cat-figuras" class="cat-img" alt="Figuras">
-          <div class="cat-info">
-            <div class="cat-title" id="title-cat-figuras">Figuras Anime</div>
-            <div class="cat-count" id="count-figuras">0 productos</div>
-          </div>
+          <div class="cat-info"><div class="cat-title" id="title-cat-figuras">Figuras Anime</div><div class="cat-count" id="count-figuras">0 productos</div></div>
         </div>
-
         <div class="cat-card" onclick="filtrar('mandos')">
           <img src="logo.webp" id="img-cat-mandos" class="cat-img" alt="Mandos">
-          <div class="cat-info">
-            <div class="cat-title" id="title-cat-mandos">Mandos</div>
-            <div class="cat-count" id="count-mandos">0 productos</div>
-          </div>
+          <div class="cat-info"><div class="cat-title" id="title-cat-mandos">Videojuegos</div><div class="cat-count" id="count-mandos">0 productos</div></div>
         </div>
-
         <div class="cat-card" onclick="filtrar('audifonos')">
           <img src="logo.webp" id="img-cat-audifonos" class="cat-img" alt="Audífonos">
-          <div class="cat-info">
-            <div class="cat-title" id="title-cat-audifonos">Audífonos</div>
-            <div class="cat-count" id="count-audifonos">0 productos</div>
-          </div>
+          <div class="cat-info"><div class="cat-title" id="title-cat-audifonos">Electrónica Audio</div><div class="cat-count" id="count-audifonos">0 productos</div></div>
         </div>
-        
         <div class="cat-card" onclick="filtrar('teclados')">
           <img src="logo.webp" id="img-cat-teclados" class="cat-img" alt="Teclados">
-          <div class="cat-info">
-            <div class="cat-title" id="title-cat-teclados">Teclados</div>
-            <div class="cat-count" id="count-teclados">0 productos</div>
-          </div>
+          <div class="cat-info"><div class="cat-title" id="title-cat-teclados">Teclados PC</div><div class="cat-count" id="count-teclados">0 productos</div></div>
         </div>
-
         <div class="cat-card" onclick="filtrar('peluches')">
           <img src="logo.webp" id="img-cat-peluches" class="cat-img" alt="Peluches">
-          <div class="cat-info">
-            <div class="cat-title" id="title-cat-peluches">Peluches</div>
-            <div class="cat-count" id="count-peluches">0 productos</div>
-          </div>
+          <div class="cat-info"><div class="cat-title" id="title-cat-peluches">Peluches Kawaii</div><div class="cat-count" id="count-peluches">0 productos</div></div>
         </div>
-        
         <div class="cat-card" onclick="filtrar('katanas')">
           <img src="logo.webp" id="img-cat-katanas" class="cat-img" alt="Katanas">
-          <div class="cat-info">
-            <div class="cat-title" id="title-cat-katanas">Katanas</div>
-            <div class="cat-count" id="count-katanas">0 productos</div>
-          </div>
+          <div class="cat-info"><div class="cat-title" id="title-cat-katanas">Katanas Replicas</div><div class="cat-count" id="count-katanas">0 productos</div></div>
         </div>
-        
         <div class="cat-card" onclick="filtrar('lamparas')">
           <img src="logo.webp" id="img-cat-lamparas" class="cat-img" alt="Lámparas">
-          <div class="cat-info">
-            <div class="cat-title" id="title-cat-lamparas">Lámparas</div>
-            <div class="cat-count" id="count-lamparas">0 productos</div>
-          </div>
+          <div class="cat-info"><div class="cat-title" id="title-cat-lamparas">Lámparas Neón</div><div class="cat-count" id="count-lamparas">0 productos</div></div>
+        </div>
+        <div class="cat-card" onclick="filtrar('accesorios')">
+          <img src="logo.webp" id="img-cat-accesorios" class="cat-img" alt="Accesorios">
+          <div class="cat-info"><div class="cat-title" id="title-cat-accesorios">Accesorios 🎒</div><div class="cat-count" id="count-accesorios">0 productos</div></div>
         </div>
       </div>
       
@@ -449,6 +386,7 @@
       <button class="btn-filtro" onclick="filtrar('cartas', event)">🃏 Cartas TCG</button>
       <button class="btn-filtro" onclick="filtrar('katanas', event)">⚔️ Katanas</button>
       <button class="btn-filtro" onclick="filtrar('lamparas', event)">💡 Lámparas</button>
+      <button class="btn-filtro" onclick="filtrar('accesorios', event)">🎒 Accesorios</button>
       <button class="btn-filtro" onclick="filtrarPorPresupuesto(0, 15, event)">💵 Menos de $15</button>
       <button class="btn-filtro" onclick="filtrarPorPresupuesto(15, 35, event)">🪙 De $15 a $35</button>
       <button class="btn-filtro" onclick="filtrarPorPresupuesto(35, 10000, event)">💎 Más de $35</button>
@@ -466,14 +404,11 @@
   </div>
 
   <h2 style="color: var(--primary-color); text-align: center; margin-bottom: 20px;">📦 Catálogo</h2>
-  <div class="grid" id="catalogoNube">
-    <p style="text-align: center; color: var(--secondary-color);">Cargando inventario desde Firebase...</p>
-  </div>
+  <div class="grid" id="catalogoNube"><p style="text-align: center; color: var(--secondary-color);">Cargando inventario desde Firebase...</p></div>
 
   <div class="reviews-section">
     <div class="info-title">💬 Reseñas de la Comunidad 🌟</div>
     <div id="contenedorReviews"></div>
-    
     <div class="review-form">
       <h3 style="color: var(--primary-color); font-size: 1.1em; margin: 10px 0 5px 0;">Deja tu opinión:</h3>
       <input type="text" id="revNombre" class="sugerencia-input" placeholder="Tu Nombre / GamerTag">
@@ -492,15 +427,12 @@
     <div class="info-grid">
       <div class="info-card">
         <h4><i class="fas fa-truck-fast" style="color: var(--primary-color);"></i> Envíos Nacionales</h4>
-        Despachos seguros y embalaje protegido a todo el país exclusivamente a través de:<br>
-        <div style="margin-top: 10px;">
-          <span class="badge-envio"><i class="fas fa-box"></i> ZOOM</span>
-          <span class="badge-envio"><i class="fas fa-shipping-fast"></i> MRW</span>
-        </div>
+        Despachos seguros a todo el país a través de:<br>
+        <div style="margin-top: 10px;"><span class="badge-envio"><i class="fas fa-box"></i> ZOOM</span><span class="badge-envio"><i class="fas fa-shipping-fast"></i> MRW</span></div>
       </div>
       <div class="info-card">
         <h4><i class="fas fa-bolt" style="color: #ffcc00;"></i> Garantía & Encargos</h4>
-        Periféricos con garantía de prueba. Artículos bajo encargo con el <strong>100% de inicial</strong>. ¡Escríbenos al WhatsApp!
+        Periféricos con garantía. Artículos bajo encargo con el <strong>100% de inicial</strong>. ¡Escríbenos al WhatsApp!
       </div>
     </div>
   </div>
@@ -519,10 +451,7 @@
     <div id="tallasContainer" class="tallas-container">
       <label for="selectTalla">Selecciona tu Talla:</label>
       <select id="selectTalla" class="talla-select">
-        <option value="S">Talla S</option>
-        <option value="M" selected>Talla M</option>
-        <option value="L">Talla L</option>
-        <option value="XL">Talla XL</option>
+        <option value="S">Talla S</option><option value="M" selected>Talla M</option><option value="L">Talla L</option><option value="XL">Talla XL</option>
       </select>
       <span class="link-guia-tallas" onclick="abrirGuiaTallasModal()">Ver Guía de Tallas (cm) 📏</span>
     </div>
@@ -563,29 +492,24 @@
     <button class="cerrar-modal" onclick="cerrarFaqModal()">×</button>
     <h2 style="color: var(--secondary-color); margin-top: 0; text-align: center;">❓ Preguntas Frecuentes</h2>
     <div class="faq-item"><div class="faq-question"><i class="fas fa-map-marker-alt"></i> ¿Hacen entregas personales?</div><div class="faq-answer">Sí, en <strong>Bejuma y Miranda (Estado Carabobo)</strong>.</div></div>
-    <div class="faq-item"><div class="faq-question"><i class="fas fa-shipping-fast"></i> ¿Por cuáles empresas envían?</div><div class="faq-answer">Envíos nacionales con cobro a destino exclusivamente por <strong>ZOOM</strong> y <strong>MRW</strong>.</div></div>
+    <div class="faq-item"><div class="faq-question"><i class="fas fa-shipping-fast"></i> ¿Por cuáles empresas envían?</div><div class="faq-answer">Envíos nacionales con cobro a destino por <strong>ZOOM</strong> y <strong>MRW</strong>.</div></div>
   </div>
 </div>
 
 <div id="modalCarrito" class="modal">
   <div class="modal-content" style="width: 450px;">
     <button class="cerrar-modal" onclick="cerrarCarritoModal()">×</button>
-    <h2 style="color: var(--secondary-color); margin-top: 0; text-align: center;">🛒 Tu Carrito de Compras</h2>
-    
-    <div class="cupon-box"><input type="text" id="inputCupon" class="cupon-input" placeholder="Código de Cupón (Ej: OTAKU10)"><button class="btn-cupon" onclick="aplicarCupon()">Aplicar</button></div>
+    <h2 style="color: var(--secondary-color); margin-top: 0; text-align: center;">🛒 Tu Carrito</h2>
+    <div class="cupon-box"><input type="text" id="inputCupon" class="cupon-input" placeholder="Cupón (Ej: OTAKU10)"><button class="btn-cupon" onclick="aplicarCupon()">Aplicar</button></div>
     <div id="mensajeCupon" style="font-size: 0.8em; margin-bottom: 8px; color: var(--secondary-color);"></div>
-    <div id="listaCarritoDetalle" style="max-height: 150px; overflow-y: auto; margin-bottom: 12px; padding-right: 5px;"></div>
-    <div id="reciboDigital" class="recibo-box" style="display: none;"><div style="text-align: center; font-weight: bold; margin-bottom: 8px; color: var(--primary-color);">--- RECIBO DIGITAL SAKURA ---</div><div id="reciboContenido"></div></div>
-    
-    <div id="paymentMethodsCart" style="display: none; border: 2px solid var(--secondary-color); border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 0 20px rgba(0,229,255,0.3); background: var(--card-bg);">
-      <h3 style="color: var(--primary-color); margin-top: 0; display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 1.1em; text-shadow: 0 0 5px rgba(255,0,127,0.4);">
-        <i class="fas fa-credit-card"></i> Métodos de Pago
-      </h3>
+    <div id="listaCarritoDetalle" style="max-height: 150px; overflow-y: auto; margin-bottom: 12px;"></div>
+    <div id="reciboDigital" class="recibo-box" style="display: none;"><div style="text-align: center; font-weight: bold; margin-bottom: 8px; color: var(--primary-color);">--- RECIBO DIGITAL ---</div><div id="reciboContenido"></div></div>
+    <div id="paymentMethodsCart" style="display: none; border: 2px solid var(--secondary-color); border-radius: 12px; padding: 15px; margin-bottom: 15px; background: var(--card-bg);">
+      <h3 style="color: var(--primary-color); margin-top: 0; font-size: 1.1em;"><i class="fas fa-credit-card"></i> Métodos de Pago</h3>
       <div id="cajaDatosPagoInfo" style="font-size: 0.9em; line-height: 1.6;"></div>
     </div>
-
     <h3 id="modalCarritoTotal" style="color: var(--primary-color); margin-bottom: 15px; text-align: center;">Total: $0.00</h3>
-    <div style="display: flex; gap: 10px;"><button class="btn-clear" style="flex: 1; padding: 10px; background: transparent; border: 1px solid #ff3366; color: #ff3366; border-radius: 20px; font-weight: bold; cursor: pointer;" onclick="vaciarCarrito()">Vaciar</button><button class="btn-checkout" style="flex: 2; padding: 10px; background: #25D366; color: white; border: none; border-radius: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px #25D366;" onclick="enviarPedidoWhatsApp()">Enviar al WhatsApp 📱</button></div>
+    <div style="display: flex; gap: 10px;"><button style="flex: 1; padding: 10px; background: transparent; border: 1px solid #ff3366; color: #ff3366; border-radius: 20px; font-weight: bold; cursor: pointer;" onclick="vaciarCarrito()">Vaciar</button><button style="flex: 2; padding: 10px; background: #25D366; color: white; border: none; border-radius: 20px; font-weight: bold; cursor: pointer;" onclick="enviarPedidoWhatsApp()">Enviar al WhatsApp 📱</button></div>
   </div>
 </div>
 
@@ -593,25 +517,17 @@
   <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarSugerenciaModal()">×</button>
     <h2 style="color: var(--primary-color); margin-top: 0;">💡 Sugerir Mercancía</h2>
-    <input type="text" id="sugNombre" class="sugerencia-input" placeholder="Tu Nombre o Apodo">
+    <input type="text" id="sugNombre" class="sugerencia-input" placeholder="Tu Nombre">
     <textarea id="sugDeseo" class="sugerencia-input" rows="3" placeholder="¿Qué producto te gustaría que trajéramos?"></textarea>
     <button class="btn-sugerencia" onclick="enviarSugerenciaWhatsApp()">Enviar Sugerencia 🚀</button>
   </div>
 </div>
 
 <div class="bottom-nav">
-  <div class="nav-item" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); reproducirSonido();">
-    <i class="fas fa-home"></i><span>Inicio</span>
-  </div>
-  <div class="nav-item" onclick="abrirFavoritosModal()">
-    <i class="fas fa-heart"></i><span>Deseos</span><div class="nav-badge" id="favBadge">0</div>
-  </div>
-  <div class="nav-item" onclick="abrirCarritoModal()">
-    <i class="fas fa-shopping-cart"></i><span>Carrito</span><div class="nav-badge" id="cartBadge">0</div>
-  </div>
-  <div class="nav-item" onclick="abrirMenuOpciones()">
-    <i class="fas fa-bars"></i><span>Menú</span>
-  </div>
+  <div class="nav-item" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); reproducirSonido();"><i class="fas fa-home"></i><span>Inicio</span></div>
+  <div class="nav-item" onclick="abrirFavoritosModal()"><i class="fas fa-heart"></i><span>Deseos</span><div class="nav-badge" id="favBadge">0</div></div>
+  <div class="nav-item" onclick="abrirCarritoModal()"><i class="fas fa-shopping-cart"></i><span>Carrito</span><div class="nav-badge" id="cartBadge">0</div></div>
+  <div class="nav-item" onclick="abrirMenuOpciones()"><i class="fas fa-bars"></i><span>Menú</span></div>
 </div>
 
 <audio id="audioLoFi" loop src="https://stream.zeno.fm/f3wvbbqmdg8uv"></audio>
@@ -649,45 +565,26 @@
   
   async function cargarDatosPagoNube() {
     try {
-      const docRef = doc(db, "configuracion", "datos_pago");
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        datosPago = docSnap.data();
-      }
+      const docSnap = await getDoc(doc(db, "configuracion", "datos_pago"));
+      if (docSnap.exists()) datosPago = docSnap.data();
       renderizarDatosPago();
-    } catch(e) { 
-      renderizarDatosPago(); 
-    }
+    } catch(e) { renderizarDatosPago(); }
   }
 
   function renderizarDatosPago() {
     let caja = document.getElementById('cajaDatosPagoInfo');
     if(!caja) return;
     caja.innerHTML = `
-      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px; margin-bottom:6px;">
-        <span>🏦 ${datosPago.banco}</span>
-        <button class="btn-copiar-mini" onclick="copiarTexto('${datosPago.banco}')"><i class="fas fa-copy"></i></button>
-      </div>
-      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px; margin-bottom:6px;">
-        <span>📱 Pago Móvil: ${datosPago.telefono}</span>
-        <button class="btn-copiar-mini" onclick="copiarTexto('${datosPago.telefono}')"><i class="fas fa-copy"></i></button>
-      </div>
-      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px; margin-bottom:6px;">
-        <span>🪪 Cédula: ${datosPago.cedula}</span>
-        <button class="btn-copiar-mini" onclick="copiarTexto('${datosPago.cedula}')"><i class="fas fa-copy"></i></button>
-      </div>
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <span style="word-break: break-all; margin-right: 10px;">🪙 Binance:<br>${datosPago.binance}</span>
-        <button class="btn-copiar-mini" onclick="copiarTexto('${datosPago.binance}')"><i class="fas fa-copy"></i></button>
-      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px; margin-bottom:6px;"><span>🏦 ${datosPago.banco}</span><button class="btn-copiar-mini" onclick="copiarTexto('${datosPago.banco}')"><i class="fas fa-copy"></i></button></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px; margin-bottom:6px;"><span>📱 Pago Móvil: ${datosPago.telefono}</span><button class="btn-copiar-mini" onclick="copiarTexto('${datosPago.telefono}')"><i class="fas fa-copy"></i></button></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px; margin-bottom:6px;"><span>🪪 Cédula: ${datosPago.cedula}</span><button class="btn-copiar-mini" onclick="copiarTexto('${datosPago.cedula}')"><i class="fas fa-copy"></i></button></div>
+      <div style="display:flex; justify-content:space-between; align-items:center;"><span style="word-break: break-all; margin-right: 10px;">🪙 Binance:<br>${datosPago.binance}</span><button class="btn-copiar-mini" onclick="copiarTexto('${datosPago.binance}')"><i class="fas fa-copy"></i></button></div>
     `;
   }
 
   window.copiarTexto = function(texto) {
     reproducirSonido();
-    navigator.clipboard.writeText(texto).then(() => {
-      alert("📋 ¡Dato copiado exitosamente!");
-    });
+    navigator.clipboard.writeText(texto).then(() => alert("📋 ¡Dato copiado!"));
   }
 
   async function cargarBannersDeNube() {
@@ -700,8 +597,7 @@
       let htmlImgs = ''; let htmlDots = '<div class="banner-dots">'; let index = 0;
       querySnapshot.forEach((doc) => {
         let b = doc.data();
-        let linkAction = b.linkUrl ? `onclick="window.open('${b.linkUrl}', '_blank')"` : "";
-        htmlImgs += `<img src="${b.imgUrl}" class="banner-slide ${index === 0 ? 'active' : ''}" data-index="${index}" ${linkAction}>`;
+        htmlImgs += `<img src="${b.imgUrl}" class="banner-slide ${index === 0 ? 'active' : ''}" data-index="${index}">`;
         htmlDots += `<div class="banner-dot ${index === 0 ? 'active' : ''}" onclick="cambiarBannerManual(${index})"></div>`;
         index++;
       });
@@ -709,13 +605,12 @@
       let flechasHtml = index > 1 ? `<div class="banner-control-btn banner-prev" onclick="rotarBanner(-1)"><i class="fas fa-chevron-left"></i></div><div class="banner-control-btn banner-next" onclick="rotarBanner(1)"><i class="fas fa-chevron-right"></i></div>` : '';
       container.innerHTML = htmlImgs + flechasHtml + htmlDots;
       iniciarAutoSliderBanners(index);
-    } catch (e) { console.error("Error cargando banners:", e); }
+    } catch (e) {}
   }
 
   let bannerInterval; let totalBanners = 0;
   function iniciarAutoSliderBanners(total) {
-    totalBanners = total;
-    if(total <= 1) return;
+    totalBanners = total; if(total <= 1) return;
     bannerInterval = setInterval(() => rotarBanner(1), 5000); 
   }
   window.rotarBanner = function(direccion) {
@@ -724,8 +619,7 @@
     let currentIdx = Array.from(slides).findIndex(s => s.classList.contains('active'));
     slides[currentIdx].classList.remove('active'); dots[currentIdx].classList.remove('active');
     let nextIdx = currentIdx + direccion;
-    if(nextIdx >= totalBanners) nextIdx = 0;
-    if(nextIdx < 0) nextIdx = totalBanners - 1;
+    if(nextIdx >= totalBanners) nextIdx = 0; if(nextIdx < 0) nextIdx = totalBanners - 1;
     slides[nextIdx].classList.add('active'); dots[nextIdx].classList.add('active');
   }
   window.cambiarBannerManual = function(index) {
@@ -752,7 +646,7 @@
     let contenedor = document.getElementById('catalogoNube');
     if (!contenedor) return;
     contenedor.innerHTML = "";
-    let conteo = { mangas: 0, ropa: 0, mandos: 0, teclados: 0, audifonos: 0, figuras: 0, peluches: 0, cartas: 0, katanas: 0, lamparas: 0 };
+    let conteo = { mangas: 0, ropa: 0, mandos: 0, teclados: 0, audifonos: 0, figuras: 0, peluches: 0, cartas: 0, katanas: 0, lamparas: 0, accesorios: 0 };
     let elTodos = document.getElementById('count-todos');
     if(elTodos) elTodos.innerText = lista.length + " productos";
 
@@ -816,41 +710,26 @@
     reproducirSonido(); 
     let c = document.getElementById('inputCupon').value.trim().toUpperCase(); 
     let msg = document.getElementById('mensajeCupon');
-    
     if(!c) return;
-
     try {
       const querySnapshot = await getDocs(collection(db, "cupones"));
       let cuponEncontrado = null;
-      
       querySnapshot.forEach((docSnap) => {
         let cuponData = docSnap.data();
-        if(cuponData.codigo === c) {
-          cuponEncontrado = cuponData;
-        }
+        if(cuponData.codigo === c) cuponEncontrado = cuponData;
       });
-
       if(cuponEncontrado) {
         descuentoAplicado = cuponEncontrado.porcentaje / 100;
-        msg.style.color = "#25D366"; 
-        msg.innerText = `🎉 ¡Cupón aplicado (-${cuponEncontrado.porcentaje}%)!`;
+        msg.style.color = "#25D366"; msg.innerText = `🎉 ¡Cupón aplicado (-${cuponEncontrado.porcentaje}%)!`;
       } else {
-        descuentoAplicado = 0; 
-        msg.style.color = "#ff3366"; 
-        msg.innerText = "❌ Cupón inválido o expirado.";
+        descuentoAplicado = 0; msg.style.color = "#ff3366"; msg.innerText = "❌ Cupón inválido o expirado.";
       }
       abrirCarritoModal();
-    } catch(e) {
-      msg.style.color = "#ff3366";
-      msg.innerText = "❌ Error al validar cupón.";
-    }
+    } catch(e) { msg.style.color = "#ff3366"; msg.innerText = "❌ Error al validar cupón."; }
   }
 
   window.addEventListener('DOMContentLoaded', () => { 
-    cargarBannersDeNube(); 
-    cargarProductosDeNube(); 
-    cargarConfigCategoriasPublico();
-    cargarDatosPagoNube(); 
+    cargarBannersDeNube(); cargarProductosDeNube(); cargarConfigCategoriasPublico(); cargarDatosPagoNube(); 
   });
 </script>
 
@@ -860,8 +739,7 @@
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       const osc = audioCtx.createOscillator();
       const gainNode = audioCtx.createGain();
-      osc.type = 'square';
-      osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+      osc.type = 'square'; osc.frequency.setValueAtTime(440, audioCtx.currentTime);
       osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.08);
       gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
       gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
@@ -875,8 +753,7 @@
   window.scrollCategoriasVisuales = function(direccion) {
     reproducirSonido();
     let track = document.getElementById('categoriasTrack');
-    let scrollAmount = 155; 
-    track.scrollBy({ left: direccion * scrollAmount, behavior: 'smooth' });
+    track.scrollBy({ left: direccion * 155, behavior: 'smooth' });
   }
 
   let intervaloCategorias;
@@ -899,11 +776,6 @@
       if (track) {
         track.addEventListener('mouseenter', () => clearInterval(intervaloCategorias));
         track.addEventListener('mouseleave', iniciarAutoScrollCategorias);
-        track.addEventListener('touchstart', () => clearInterval(intervaloCategorias));
-        track.addEventListener('touchend', () => {
-          clearInterval(intervaloCategorias);
-          setTimeout(iniciarAutoScrollCategorias, 2000);
-        });
       }
     }, 500);
   });
@@ -916,8 +788,7 @@
     if (imgs.length <= 1) return;
     let currentIndex = Array.from(imgs).findIndex(img => img.classList.contains('activa'));
     let newIndex = currentIndex + direccion;
-    if (newIndex >= imgs.length) newIndex = 0;
-    if (newIndex < 0) newIndex = imgs.length - 1;
+    if (newIndex >= imgs.length) newIndex = 0; if (newIndex < 0) newIndex = imgs.length - 1;
     imgs.forEach(img => img.classList.remove('activa')); dots.forEach(d => d.classList.remove('activa'));
     imgs[newIndex].classList.add('activa'); dots[newIndex].classList.add('activa');
   }
@@ -964,7 +835,7 @@
   let reproduciendoMusica = false;
   function toggleMusicaLoFi() {
     reproducirSonido(); let audio = document.getElementById('audioLoFi'); let icono = document.getElementById('iconoMusica');
-    if (!reproduciendoMusica) { audio.play().then(() => { reproduciendoMusica = true; icono.className = "fas fa-pause"; alert("🎵 ¡Música Lo-Fi activada!"); }).catch(e => alert("⚠️ Interactúa un momento con la pantalla antes de activar el audio."));
+    if (!reproduciendoMusica) { audio.play().then(() => { reproduciendoMusica = true; icono.className = "fas fa-pause"; alert("🎵 ¡Música Lo-Fi activada!"); }).catch(e => alert("Interactúa con la pantalla primero."));
     } else { audio.pause(); reproduciendoMusica = false; icono.className = "fas fa-music"; alert("⏸️ Música pausada."); }
   }
 
@@ -1005,9 +876,9 @@
   function cerrarCofreModal() { document.getElementById('modalCofreDiario').style.display = 'none'; }
   function abrirCofreDiario() {
     reproducirSonido(); let hoy = new Date().toDateString(); let ultimoCofre = localStorage.getItem('sakura_ultimo_cofre');
-    if (ultimoCofre === hoy) { document.getElementById('cofreResultado').innerHTML = "⏳ Ya abriste tu cofre de hoy. ¡Vuelve mañana!"; return; }
+    if (ultimoCofre === hoy) { document.getElementById('cofreResultado').innerHTML = "⏳ Ya abriste tu cofre de hoy."; return; }
     localStorage.setItem('sakura_ultimo_cofre', hoy); ganarXP(100); confetti({ particleCount: 120, spread: 80, origin: { y: 0.5 } });
-    document.getElementById('cofreResultado').innerHTML = "🎉 ¡Ganaste +100 XP y desbloqueaste recompensas! ⚡";
+    document.getElementById('cofreResultado').innerHTML = "🎉 ¡Ganaste +100 XP! ⚡";
   }
 
   function abrirGachaModal() { reproducirSonido(); document.getElementById('modalGacha').style.display = 'flex'; }
@@ -1085,8 +956,8 @@
 
   function agregarAlCarrito() {
     reproducirSonido(); ganarXP(15); let item = { ...productoActual };
-    if(item.esRopa) { item.titulo += ` (Talla: ${document.getElementById('selectTalla').value})`; }
-    carrito.push(item); actualizarCarritoUI(); cerrarModal(); alert("🛒 ¡Producto añadido al carrito!");
+    if(item.esRopa) item.titulo += ` (Talla: ${document.getElementById('selectTalla').value})`;
+    carrito.push(item); actualizarCarritoUI(); cerrarModal(); alert("🛒 ¡Añadido al carrito!");
   }
 
   function actualizarCarritoUI() { localStorage.setItem('sakura_carrito', JSON.stringify(carrito)); actualizarBadges(); }
@@ -1096,21 +967,17 @@
     reproducirSonido(); let cont = document.getElementById('listaCarritoDetalle'); let reciboBox = document.getElementById('reciboDigital'); let reciboContenido = document.getElementById('reciboContenido');
     let paymentBox = document.getElementById('paymentMethodsCart');
     cont.innerHTML = ""; reciboContenido.innerHTML = "";
-    
     if(carrito.length === 0) { 
-      cont.innerHTML = "<p style='color:#aaa;'>Tu carrito está vacío.</p>"; 
-      reciboBox.style.display = 'none'; 
-      paymentBox.style.display = 'none';
+      cont.innerHTML = "<p style='color:#aaa;'>Vacío.</p>"; reciboBox.style.display = 'none'; paymentBox.style.display = 'none';
       document.getElementById('modalCarritoTotal').innerText = "Total: $0.00";
     } else {
-      reciboBox.style.display = 'block'; 
-      paymentBox.style.display = 'block';
+      reciboBox.style.display = 'block'; paymentBox.style.display = 'block';
       let html = "";
       carrito.forEach((item, i) => {
         cont.innerHTML += `<div class="cart-item-row"><img src="${item.img}" class="cart-item-img"><div class="cart-item-info"><strong>${item.titulo}</strong><br><span style="color:var(--secondary-color);">$${item.precio.toFixed(2)}</span></div><button class="cart-item-del" onclick="carrito.splice(${i},1);actualizarCarritoUI();abrirCarritoModal();">❌</button></div>`;
         html += `<div class="recibo-line"><span>${item.titulo}</span><span>$${item.precio.toFixed(2)}</span></div>`;
       });
-      let sub = carrito.reduce((s, i) => s + i.precio, 0); let tot = sub * (1 - descuentoAplicado); let tasaBcvActual = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 854.46; let totBs = tot * tasaBcvActual;
+      let sub = carrito.reduce((s, i) => s + i.precio, 0); let tot = sub * (1 - descuentoAplicado); let totBs = tot * tasaBcvActual;
       html += `<div style="border-top:1px dashed var(--secondary-color); margin-top:5px; padding-top:5px;" class="recibo-line"><strong>TOTAL USD:</strong> <strong>$${tot.toFixed(2)}</strong></div>`;
       html += `<div class="recibo-line"><strong>TOTAL BS:</strong> <strong>Bs. ${totBs.toLocaleString('es-VE', {minimumFractionDigits:2, maximumFractionDigits:2})}</strong></div>`;
       reciboContenido.innerHTML = html; document.getElementById('modalCarritoTotal').innerText = `Total: $${tot.toFixed(2)}`;
@@ -1122,16 +989,16 @@
   function vaciarCarrito() { reproducirSonido(); carrito = []; descuentoAplicado = 0; actualizarCarritoUI(); abrirCarritoModal(); }
 
   function enviarPedidoWhatsApp() {
-    reproducirSonido(); if(carrito.length === 0) return alert("Tu carrito está vacío.");
-    let sub = carrito.reduce((s, i) => s + i.precio, 0); let tot = sub * (1 - descuentoAplicado); let tasaBcvActual = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 854.46; let totBs = tot * tasaBcvActual;
+    reproducirSonido(); if(carrito.length === 0) return alert("Vacío.");
+    let sub = carrito.reduce((s, i) => s + i.precio, 0); let tot = sub * (1 - descuentoAplicado); let totBs = tot * tasaBcvActual;
     let msg = `¡Hola Sakura Gameverse! 🌸👾 Deseo realizar este pedido:\n\n`;
     carrito.forEach((i, idx) => { msg += `${idx+1}. ${i.titulo} - $${i.precio.toFixed(2)}\n`; });
-    msg += `\n*Total a pagar: $${tot.toFixed(2)} (Bs. ${totBs.toLocaleString('es-VE', {minimumFractionDigits:2, maximumFractionDigits:2})})*\n¡Espero instrucciones para el pago y envío por ZOOM / MRW!`;
+    msg += `\n*Total: $${tot.toFixed(2)} (Bs. ${totBs.toLocaleString('es-VE', {minimumFractionDigits:2, maximumFractionDigits:2})})*\n¡Espero instrucciones para el pago y envío por ZOOM / MRW!`;
     window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msg), '_blank'); cerrarCarritoModal();
   }
 
   function compartirProductoWhatsApp() {
-    reproducirSonido(); let msg = `¡Mira lo que encontré en Sakura Gameverse! 🌸👾\n\n*${productoActual.titulo}*\nPrecio: $${productoActual.precio.toFixed(2)}\n\n¿Aún lo tienen disponible?`; window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msg), '_blank');
+    reproducirSonido(); let msg = `¡Mira esto en Sakura Gameverse! 🌸👾\n\n*${productoActual.titulo}*\nPrecio: $${productoActual.precio.toFixed(2)}\n\n¿Disponible?`; window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msg), '_blank');
   }
 
   function abrirFaqModal() { reproducirSonido(); document.getElementById('modalFaq').style.display = 'flex'; }
@@ -1141,11 +1008,11 @@
 
   function enviarSugerenciaWhatsApp() {
     reproducirSonido(); let n = document.getElementById('sugNombre').value.trim(); let d = document.getElementById('sugDeseo').value.trim();
-    if(!n || !d) return alert("Llena todos los campos.");
+    if(!n || !d) return alert("Completa.");
     window.open("https://wa.me/584244970576?text=" + encodeURIComponent(`💡 *Sugerencia* 💡\nCliente: ${n}\nDeseo: ${d}`), '_blank'); cerrarSugerenciaModal();
   }
 
-  let reviews = JSON.parse(localStorage.getItem('sakura_reviews')) || [ { nombre: "Gabriel S.", estrellas: "⭐⭐⭐⭐⭐", texto: "¡Excelente tienda! Los productos llegaron impecables a Bejuma." } ];
+  let reviews = JSON.parse(localStorage.getItem('sakura_reviews')) || [ { nombre: "Gabriel S.", estrellas: "⭐⭐⭐⭐⭐", texto: "¡Excelente tienda en Bejuma!" } ];
   function renderReviews() {
     let c = document.getElementById('contenedorReviews'); c.innerHTML = "";
     reviews.forEach((r, i) => { c.innerHTML += `<div class="review-card"><button class="btn-del-review" onclick="reviews.splice(${i},1);localStorage.setItem('sakura_reviews',JSON.stringify(reviews));renderReviews();">❌</button><div class="review-author">${r.nombre}</div><div class="review-stars">${r.estrellas}</div><div class="review-text">${r.texto}</div></div>`; });
@@ -1154,9 +1021,9 @@
 
   function agregarReview() {
     reproducirSonido(); let n = document.getElementById('revNombre').value.trim(); let e = document.getElementById('revEstrellas').value; let t = document.getElementById('revTexto').value.trim();
-    if(!n || !t) return alert("Completa los campos.");
+    if(!n || !t) return alert("Completa.");
     reviews.unshift({ nombre: n, estrellas: e, texto: t }); localStorage.setItem('sakura_reviews', JSON.stringify(reviews));
-    document.getElementById('revNombre').value = ""; document.getElementById('revTexto').value = ""; renderReviews(); alert("¡Reseña publicada!");
+    document.getElementById('revNombre').value = ""; document.getElementById('revTexto').value = ""; renderReviews(); alert("¡Publicado!");
   }
 
   actualizarBadges();
