@@ -304,7 +304,7 @@
   <br>
   <div class="bcv-box">
     <i class="fas fa-coins"></i> Tasa BCV (Bs/$): 
-    <input type="number" id="inputTasaBcv" class="bcv-input" step="0.01" value="854.46" oninput="cambiarTasaBcvManual()">
+    <input type="number" id="inputTasaBcv" class="bcv-input" step="0.01" value="860" oninput="cambiarTasaBcvManual()">
   </div>
 </div>
 
@@ -549,7 +549,7 @@
   const db = getFirestore(app);
 
   let productosNubeGlobal = [];
-  let tasaBcvActual = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 854.46;
+  let tasaBcvActual = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 860;
   document.getElementById('inputTasaBcv').value = tasaBcvActual;
 
   window.cambiarTasaBcvManual = function() {
@@ -568,11 +568,11 @@
       if (docSnap.exists()) {
         window.datosPagoGlobal = docSnap.data();
       } else {
-        window.datosPagoGlobal = { banco: "Banesco (0134)", telefono: "0424-4970576", cedula: "V-27000000", binance: "sakuragameverse@gmail.com" };
+        window.datosPagoGlobal = { banco: "Venezuela (0102)", telefono: "0424-4970576", cedula: "V-24159896", binance: "n3lmary@gmail.com" };
       }
       renderizarDatosPago();
     } catch(e) {
-      window.datosPagoGlobal = { banco: "Banesco (0134)", telefono: "0424-4970576", cedula: "V-27000000", binance: "sakuragameverse@gmail.com" };
+      window.datosPagoGlobal = { banco: "Venezuela (0102)", telefono: "0424-4970576", cedula: "V-24159896", binance: "n3lmary@gmail.com" };
       renderizarDatosPago();
     }
   }
@@ -580,7 +580,7 @@
   function renderizarDatosPago() {
     let caja = document.getElementById('cajaDatosPagoInfo');
     if(!caja) return;
-    let dp = window.datosPagoGlobal || { banco: "Banesco (0134)", telefono: "0424-4970576", cedula: "V-27000000", binance: "sakuragameverse@gmail.com" };
+    let dp = window.datosPagoGlobal || { banco: "Venezuela (0102)", telefono: "0424-4970576", cedula: "V-24159896", binance: "n3lmary@gmail.com" };
     caja.innerHTML = `
       <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px; margin-bottom:6px;"><span>🏦 ${dp.banco}</span><button class="btn-copiar-mini" onclick="copiarTexto('${dp.banco}')"><i class="fas fa-copy"></i></button></div>
       <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px; margin-bottom:6px;"><span>📱 Pago Móvil: ${dp.telefono}</span><button class="btn-copiar-mini" onclick="copiarTexto('${dp.telefono}')"><i class="fas fa-copy"></i></button></div>
