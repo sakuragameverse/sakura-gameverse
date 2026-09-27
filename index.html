@@ -163,7 +163,7 @@
     .cart-item-row { display: flex; align-items: center; justify-content: space-between; background: var(--card-bg); padding: 10px; border-radius: 10px; margin-bottom: 10px; border: 1px solid var(--border-color); }
     .cart-item-img { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; margin-right: 10px; }
     .cart-item-info { flex-grow: 1; text-align: left; font-size: 0.9em; }
-    .cart-item-del { background: #ff3366; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.8em; }
+    .cart-item-del { background: #ff3366; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.9em; font-weight: bold; z-index: 10; }
 
     .sugerencia-input { width: 100%; background: var(--bg-color); border: 1px solid var(--secondary-color); color: var(--text-color); padding: 10px; border-radius: 10px; margin-bottom: 12px; box-sizing: border-box; outline: none; }
     .btn-sugerencia { background: var(--secondary-color); color: #0d041a; border: none; padding: 10px 20px; font-weight: bold; border-radius: 20px; cursor: pointer; width: 100%; box-shadow: 0 0 10px var(--secondary-color); }
@@ -526,14 +526,12 @@
 <div class="bottom-nav">
   <div class="nav-item" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); reproducirSonido();"><i class="fas fa-home"></i><span>Inicio</span></div>
   <div class="nav-item" onclick="abrirFavoritosModal()"><i class="fas fa-heart"></i><span>Deseos</span><div class="nav-badge" id="favBadge">0</div></div>
-  <!-- BOTÓN DEL CARRITO DIRECTO -->
   <div class="nav-item" onclick="abrirCarritoModal()"><i class="fas fa-shopping-cart"></i><span>Carrito</span><div class="nav-badge" id="cartBadge">0</div></div>
   <div class="nav-item" onclick="abrirMenuOpciones()"><i class="fas fa-bars"></i><span>Menú</span></div>
 </div>
 
 <audio id="audioLoFi" loop src="https://stream.zeno.fm/f3wvbbqmdg8uv"></audio>
 
-<!-- SCRIPT GENERAL UNIFICADO Y CORREGIDO -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
   import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
@@ -563,24 +561,31 @@
     }
   }
 
-  let datosPago = { banco: "Banesco (0134)", telefono: "0424-4970576", cedula: "V-27000000", binance: "sakuragameverse@gmail.com" };
-  
+  // --- SINCRONIZACIÓN DE DATOS DE PAGO CON EL PANEL ADMIN ---
   async function cargarDatosPagoNube() {
     try {
       const docSnap = await getDoc(doc(db, "configuracion", "datos_pago"));
-      if (docSnap.exists()) datosPago = docSnap.data();
+      if (docSnap.exists()) {
+        window.datosPagoGlobal = docSnap.data();
+      } else {
+        window.datosPagoGlobal = { banco: "Banesco (0134)", telefono: "0424-4970576", cedula: "V-27000000", binance: "sakuragameverse@gmail.com" };
+      }
       renderizarDatosPago();
-    } catch(e) { renderizarDatosPago(); }
+    } catch(e) {
+      window.datosPagoGlobal = { banco: "Banesco (0134)", telefono: "0424-4970576", cedula: "V-27000000", binance: "sakuragameverse@gmail.com" };
+      renderizarDatosPago();
+    }
   }
 
   function renderizarDatosPago() {
     let caja = document.getElementById('cajaDatosPagoInfo');
     if(!caja) return;
+    let dp = window.datosPagoGlobal || { banco: "Banesco (0134)", telefono: "0424-4970576", cedula: "V-27000000", binance: "sakuragameverse@gmail.com" };
     caja.innerHTML = `
-      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px; margin-bottom:6px;"><span>🏦 ${datosPago.banco}</span><button class="btn-copiar-mini" onclick="copiarTexto('${datosPago.banco}')"><i class="fas fa-copy"></i></button></div>
-      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px; margin-bottom:6px;"><span>📱 Pago Móvil: ${datosPago.telefono}</span><button class="btn-copiar-mini" onclick="copiarTexto('${datosPago.telefono}')"><i class="fas fa-copy"></i></button></div>
-      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px; margin-bottom:6px;"><span>🪪 Cédula: ${datosPago.cedula}</span><button class="btn-copiar-mini" onclick="copiarTexto('${datosPago.cedula}')"><i class="fas fa-copy"></i></button></div>
-      <div style="display:flex; justify-content:space-between; align-items:center;"><span style="word-break: break-all; margin-right: 10px;">🪙 Binance:<br>${datosPago.binance}</span><button class="btn-copiar-mini" onclick="copiarTexto('${datosPago.binance}')"><i class="fas fa-copy"></i></button></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px; margin-bottom:6px;"><span>🏦 ${dp.banco}</span><button class="btn-copiar-mini" onclick="copiarTexto('${dp.banco}')"><i class="fas fa-copy"></i></button></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px; margin-bottom:6px;"><span>📱 Pago Móvil: ${dp.telefono}</span><button class="btn-copiar-mini" onclick="copiarTexto('${dp.telefono}')"><i class="fas fa-copy"></i></button></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px; margin-bottom:6px;"><span>🪪 Cédula: ${dp.cedula}</span><button class="btn-copiar-mini" onclick="copiarTexto('${dp.cedula}')"><i class="fas fa-copy"></i></button></div>
+      <div style="display:flex; justify-content:space-between; align-items:center;"><span style="word-break: break-all; margin-right: 10px;">🪙 Binance:<br>${dp.binance}</span><button class="btn-copiar-mini" onclick="copiarTexto('${dp.binance}')"><i class="fas fa-copy"></i></button></div>
     `;
   }
 
@@ -764,7 +769,6 @@
     });
   });
 
-  // --- LÓGICA GENERAL DE LA TIENDA Y FUNCIONES EXPUESTAS ---
   window.reproducirSonido = function() {
     try {
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -1039,7 +1043,7 @@
   function actualizarCarritoUI() { localStorage.setItem('sakura_carrito', JSON.stringify(carrito)); actualizarBadges(); }
   function actualizarBadges() { document.getElementById('cartBadge').innerText = carrito.length; document.getElementById('favBadge').innerText = favoritos.length; }
 
-  // FUNCIÓN DEL CARRITO ASEGURADA Y GLOBAL
+  // FUNCIÓN PARA ABRIR EL CARRITO Y RENDERIZAR LOS PRODUCTOS CON ELIMINACIÓN CORREGIDA
   window.abrirCarritoModal = function() {
     reproducirSonido(); 
     let cont = document.getElementById('listaCarritoDetalle'); 
@@ -1058,7 +1062,7 @@
       paymentBox.style.display = 'block';
       let html = "";
       carrito.forEach((item, i) => {
-        cont.innerHTML += `<div class="cart-item-row"><img src="${item.img}" class="cart-item-img"><div class="cart-item-info"><strong>${item.titulo}</strong><br><span style="color:var(--secondary-color);">$${item.precio.toFixed(2)}</span></div><button class="cart-item-del" onclick="carrito.splice(${i},1);actualizarCarritoUI();abrirCarritoModal();">❌</button></div>`;
+        cont.innerHTML += `<div class="cart-item-row"><img src="${item.img}" class="cart-item-img"><div class="cart-item-info"><strong>${item.titulo}</strong><br><span style="color:var(--secondary-color);">$${item.precio.toFixed(2)}</span></div><button class="cart-item-del" onclick="removerDelCarrito(${i})">❌</button></div>`;
         html += `<div class="recibo-line"><span>${item.titulo}</span><span>$${item.precio.toFixed(2)}</span></div>`;
       });
       let sub = carrito.reduce((s, i) => s + i.precio, 0); 
@@ -1070,6 +1074,14 @@
       document.getElementById('modalCarritoTotal').innerText = `Total: $${tot.toFixed(2)}`;
     }
     document.getElementById('modalCarrito').style.display = 'flex';
+  }
+
+  // FUNCIÓN GLOBAL PARA QUITAR PRODUCTOS CORRECTAMENTE
+  window.removerDelCarrito = function(index) {
+    reproducirSonido();
+    carrito.splice(index, 1);
+    actualizarCarritoUI();
+    window.abrirCarritoModal();
   }
 
   window.cerrarCarritoModal = function() { document.getElementById('modalCarrito').style.display = 'none'; }
