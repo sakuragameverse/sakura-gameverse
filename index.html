@@ -327,7 +327,7 @@
         </div>
         <div class="cat-card" onclick="filtrar('recargas')">
           <img src="logo.webp" id="img-cat-recargas" class="cat-img" alt="Recargas">
-          <div class="cat-info"><div class="cat-title" id="title-cat-recargas">🎮 Recargas & Juegos</div><div class="cat-count" id="count-recargas">0 productos</div></div>
+          <div class="cat-info"><div class="cat-title" id="title-cat-recargas">🎮 Recargas Free Fire</div><div class="cat-count" id="count-recargas">0 productos</div></div>
         </div>
         <div class="cat-card" onclick="filtrar('mangas')">
           <img src="logo.webp" id="img-cat-mangas" class="cat-img" alt="Mangas">
@@ -382,18 +382,18 @@
   <div class="controles-superiores">
     <div class="filtros">
       <button class="btn-filtro activo" onclick="filtrar('todos', event)">🌟 Todos</button>
-      <button class="btn-filtro" style="border-color: #25D366; color: #25D366;" onclick="filtrar('recargas', event)">🎮 Recargas Free Fire</button>
-      <button class="btn-filtro" onclick="filtrar('mangas', event)">📚 Mangas</button>
-      <button class="btn-filtro" onclick="filtrar('ropa', event)">👕 Ropa / Hoodies</button>
-      <button class="btn-filtro" onclick="filtrar('mandos', event)">🎮 Mandos PC</button>
-      <button class="btn-filtro" onclick="filtrar('teclados', event)">⌨️ Teclados</button>
-      <button class="btn-filtro" onclick="filtrar('audifonos', event)">🎧 Audífonos</button>
-      <button class="btn-filtro" onclick="filtrar('figuras', event)">🗿 Figuras</button>
-      <button class="btn-filtro" onclick="filtrar('peluches', event)">🧸 Peluches</button>
-      <button class="btn-filtro" onclick="filtrar('cartas', event)">🃏 Cartas TCG</button>
-      <button class="btn-filtro" onclick="filtrar('katanas', event)">⚔️ Katanas</button>
-      <button class="btn-filtro" onclick="filtrar('lamparas', event)">💡 Lámparas</button>
-      <button class="btn-filtro" onclick="filtrar('accesorios', event)">🎒 Accesorios</button>
+      <button class="btn-filtro" style="border-color: #25D366; color: #25D366;" onclick="filtrar('recargas', event)" id="btn-filt-recargas">🎮 Recargas Free Fire</button>
+      <button class="btn-filtro" onclick="filtrar('mangas', event)" id="btn-filt-mangas">📚 Mangas</button>
+      <button class="btn-filtro" onclick="filtrar('ropa', event)" id="btn-filt-ropa">👕 Ropa / Hoodies</button>
+      <button class="btn-filtro" onclick="filtrar('mandos', event)" id="btn-filt-mandos">🎮 Mandos PC</button>
+      <button class="btn-filtro" onclick="filtrar('teclados', event)" id="btn-filt-teclados">⌨️ Teclados</button>
+      <button class="btn-filtro" onclick="filtrar('audifonos', event)" id="btn-filt-audifonos">🎧 Audífonos</button>
+      <button class="btn-filtro" onclick="filtrar('figuras', event)" id="btn-filt-figuras">🗿 Figuras</button>
+      <button class="btn-filtro" onclick="filtrar('peluches', event)" id="btn-filt-peluches">🧸 Peluches</button>
+      <button class="btn-filtro" onclick="filtrar('cartas', event)" id="btn-filt-cartas">🃏 Cartas TCG</button>
+      <button class="btn-filtro" onclick="filtrar('katanas', event)" id="btn-filt-katanas">⚔️ Katanas</button>
+      <button class="btn-filtro" onclick="filtrar('lamparas', event)" id="btn-filt-lamparas">💡 Lámparas</button>
+      <button class="btn-filtro" onclick="filtrar('accesorios', event)" id="btn-filt-accesorios">🎒 Accesorios</button>
       <button class="btn-filtro" onclick="filtrarPorPresupuesto(0, 15, event)">💵 Menos de $15</button>
       <button class="btn-filtro" onclick="filtrarPorPresupuesto(15, 35, event)">🪙 De $15 a $35</button>
       <button class="btn-filtro" onclick="filtrarPorPresupuesto(35, 10000, event)">💎 Más de $35</button>
@@ -743,6 +743,12 @@
           if(catImgEl && conf.imgUrl) catImgEl.src = conf.imgUrl;
           let catTitleEl = document.getElementById(`title-cat-${conf.categoriaId}`);
           if(catTitleEl && conf.nombrePersonalizado) catTitleEl.innerText = conf.nombrePersonalizado;
+          
+          let btnFiltroEl = document.getElementById(`btn-filt-${conf.categoriaId}`);
+          if(btnFiltroEl && conf.nombrePersonalizado) {
+            let iconoPrefijo = btnFiltroEl.innerText.split(' ')[0] || '📁';
+            btnFiltroEl.innerText = `${iconoPrefijo} ${conf.nombrePersonalizado}`;
+          }
         }
       });
     } catch (e) {}
