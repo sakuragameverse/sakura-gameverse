@@ -408,7 +408,7 @@
 
   <div class="reviews-section">
     <div class="info-title">💬 Reseñas de la Comunidad 🌟</div>
-    <div id="contenedorReviews"></div>
+    <div id="contenedorReviews"><p style="text-align: center; color: var(--secondary-color);">Cargando opiniones...</p></div>
     <div class="review-form">
       <h3 style="color: var(--primary-color); font-size: 1.1em; margin: 10px 0 5px 0;">Deja tu opinión:</h3>
       <input type="text" id="revNombre" class="sugerencia-input" placeholder="Tu Nombre / GamerTag">
@@ -534,7 +534,7 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-  import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+  import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, setDoc, addDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDH1DZqaIi5sKRXspXDUWbMUZ4nr5JIy8Q",
@@ -778,6 +778,7 @@
     cargarProductosDeNube(); 
     cargarConfigCategoriasPublico(); 
     cargarDatosPagoNube();
+    cargarReviewsNube();
     cargarUmbralesRangosNube().then(() => {
       actualizarRangoSegunXP();
     });
@@ -1123,20 +1124,56 @@
     window.open("https://wa.me/584244970576?text=" + encodeURIComponent(`💡 *Sugerencia* 💡\nCliente: ${n}\nDeseo: ${d}`), '_blank'); cerrarSugerenciaModal();
   }
 
-  let reviews = JSON.parse(localStorage.getItem('sakura_reviews')) || [ { nombre: "Gabriel S.", estrellas: "⭐⭐⭐⭐⭐", texto: "¡Excelente tienda en Bejuma!" } ];
-  function renderReviews() {
-    let c = document.getElementById('contenedorReviews'); c.innerHTML = "";
-    reviews.forEach((r, i) => { 
-      c.innerHTML += `<div class="review-card"><div class="review-author">${r.nombre}</div><div class="review-stars">${r.estrellas}</div><div class="review-text">${r.texto}</div></div>`; 
-    });
-  }
-  renderReviews();
+  // Carga de Reseñas de la Nube (Público: Solo lectura y publicación)
+  async function cargarReviewsNube() {
+    try {
+      const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"));
+      const querySnapshot = await getDocs(q);
+      let c = document.getElementById('contenedorReviews'); 
+      if(!c) return;
+      
+      c.innerHTML = "";
+      if (querySnapshot.empty) {
+        c.innerHTML = "<p style='color:#aaa; text-align:center;'>Aún no hay reseñas. ¡Sé el primero en dejar una! ✨</p>";
+        return;
+      }
 
-  window.agregarReview = function() {
-    reproducirSonido(); let n = document.getElementById('revNombre').value.trim(); let e = document.getElementById('revEstrellas').value; let t = document.getElementById('revTexto').value.trim();
-    if(!n || !t) return alert("Completa.");
-    reviews.unshift({ nombre: n, estrellas: e, texto: t }); localStorage.setItem('sakura_reviews', JSON.stringify(reviews));
-    document.getElementById('revNombre').value = ""; document.getElementById('revTexto').value = ""; renderReviews(); alert("¡Publicado!");
+      querySnapshot.forEach((docSnap) => {
+        let r = docSnap.data();
+        c.innerHTML += `
+          <div class="review-card">
+            <div class="review-author">${r.nombre}</div>
+            <div class="review-stars">${r.estrellas}</div>
+            <div class="review-text">${r.texto}</div>
+          </div>
+        `;
+      });
+    } catch (e) {
+      console.log("Error cargando reseñas de la nube:", e);
+    }
+  }
+
+  window.agregarReview = async function() {
+    reproducirSonido(); 
+    let n = document.getElementById('revNombre').value.trim(); 
+    let e = document.getElementById('revEstrellas').value; 
+    let t = document.getElementById('revTexto').value.trim();
+    if(!n || !t) return alert("Por favor completa tu nombre y tu opinión.");
+    
+    try {
+      await addDoc(collection(db, "reviews"), {
+        nombre: n,
+        estrellas: e,
+        texto: t,
+        timestamp: Date.now()
+      });
+      document.getElementById('revNombre').value = ""; 
+      document.getElementById('revTexto').value = ""; 
+      await cargarReviewsNube();
+      alert("🎉 ¡Reseña publicada con éxito!");
+    } catch(err) {
+      alert("❌ Error al publicar la reseña.");
+    }
   }
 
   actualizarBadges();
