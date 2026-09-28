@@ -3,11 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard - Sakura Gameverse</title>
-  
+  <title>Admin - Sakura Gameverse</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-
   <style>
     :root {
       --bg-color: #0d041a;
@@ -18,375 +15,70 @@
       --border-color: rgba(0,229,255,0.3);
       --hero-bg: #11052C;
     }
-
-    body { margin: 0; background-color: var(--bg-color); color: var(--text-color); font-family: sans-serif; overflow-x: hidden; }
-
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: var(--bg-color); }
-    ::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
-
-    .admin-header { background: var(--hero-bg); border-bottom: 2px solid var(--primary-color); padding: 20px; text-align: center; box-shadow: 0 0 20px rgba(255,0,127,0.3); }
-    .admin-title { font-size: 1.3em; font-weight: bold; color: var(--secondary-color); text-shadow: 0 0 8px rgba(0,229,255,0.5); }
-
-    .admin-container { max-width: 1100px; margin: 0 auto; padding: 25px 15px; }
-
-    .admin-tabs { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 15px; margin-bottom: 25px; scrollbar-width: thin; }
-
-    .tab-btn { background: var(--hero-bg); color: var(--text-color); border: 1px solid var(--secondary-color); padding: 10px 20px; border-radius: 25px; cursor: pointer; font-weight: bold; white-space: nowrap; transition: all 0.3s ease; display: flex; align-items: center; gap: 8px; }
-    .tab-btn:hover { background: rgba(0,229,255,0.2); box-shadow: 0 0 10px rgba(0,229,255,0.4); }
-    .tab-btn.activo { background: var(--secondary-color); color: #0d041a; box-shadow: 0 0 15px var(--secondary-color); border-color: #fff; }
-
-    .seccion-panel { display: none; animation: fadeIn 0.4s ease; }
-    .seccion-panel.activa { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 25px; }
-    .stat-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 15px; padding: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
-    .stat-card h3 { color: var(--secondary-color); margin: 0 0 10px 0; font-size: 0.95em; }
-    .stat-value { font-size: 1.5em; font-weight: bold; color: var(--text-color); text-shadow: 0 0 8px rgba(255,255,255,0.3); }
-
-    .admin-card-form { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 15px; padding: 20px; margin-bottom: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
-    .admin-card-form h3 { color: var(--primary-color); margin-top: 0; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
-
-    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 15px; }
-    .admin-input { background: var(--bg-color); border: 1px solid var(--secondary-color); color: var(--text-color); padding: 10px 14px; border-radius: 10px; font-size: 0.9em; outline: none; width: 100%; box-sizing: border-box; }
-    .admin-input:focus { box-shadow: 0 0 10px var(--secondary-color); }
-
-    .fotos-container-admin { background: rgba(0, 229, 255, 0.05); border: 1px dashed var(--secondary-color); padding: 15px; border-radius: 12px; margin-bottom: 15px; }
-    .fotos-container-admin h4 { color: var(--secondary-color); margin: 0 0 10px 0; font-size: 0.95em; }
-    
-    .file-input-wrapper { display: flex; flex-direction: column; gap: 5px; font-size: 0.85em; color: var(--text-color); }
-    .file-input-wrapper input[type="file"] { background: var(--bg-color); border: 1px solid var(--primary-color); color: var(--text-color); padding: 6px; border-radius: 8px; font-size: 0.85em; cursor: pointer; }
-
-    .btn-admin-accion { background: var(--primary-color); color: white; border: none; padding: 10px 20px; font-weight: bold; border-radius: 20px; cursor: pointer; box-shadow: 0 0 10px var(--primary-color); transition: transform 0.2s; }
-    .btn-admin-accion:hover { transform: scale(1.03); }
-
-    .tabla-responsive { width: 100%; overflow-x: auto; }
-    .admin-table { width: 100%; border-collapse: collapse; background: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); font-size: 0.9em; text-align: left; }
-    .admin-table th, .admin-table td { padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-    .admin-table th { background: var(--hero-bg); color: var(--secondary-color); font-weight: bold; }
-    .admin-table tr:hover { background: rgba(0,229,255,0.03); }
-
-    .badge-estado-pedido { padding: 4px 10px; border-radius: 8px; font-size: 0.75em; font-weight: bold; }
-    .estado-pendiente { background: rgba(255,204,0,0.2); color: #ffcc00; border: 1px solid #ffcc00; }
-    .estado-pagado { background: rgba(37,211,102,0.2); color: #25D366; border: 1px solid #25D366; }
-
-    .btn-eliminar-fila { background: #ff3366; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8em; }
-    .btn-volver-tienda { display: inline-flex; align-items: center; gap: 8px; background: var(--secondary-color); color: #0d041a; font-weight: bold; text-decoration: none; padding: 8px 16px; border-radius: 20px; margin-bottom: 15px; box-shadow: 0 0 10px rgba(0,229,255,0.3); }
-
-    #loginScreen { max-width: 400px; margin: 10vh auto; text-align: center; background: var(--card-bg); padding: 30px; border-radius: 20px; border: 2px solid var(--primary-color); box-shadow: 0 0 30px rgba(255,0,127,0.4); }
-    #loginScreen input { margin-bottom: 15px; }
+    body { margin: 0; background-color: var(--bg-color); color: var(--text-color); font-family: sans-serif; padding: 20px; }
+    .admin-container { max-width: 600px; margin: 0 auto; background: var(--hero-bg); border: 2px solid var(--primary-color); padding: 25px; border-radius: 20px; box-shadow: 0 0 25px rgba(255,0,127,0.4); }
+    h2 { color: var(--secondary-color); text-align: center; }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; color: var(--secondary-color); font-weight: bold; margin-bottom: 5px; }
+    .form-control { width: 100%; background: var(--bg-color); border: 1px solid var(--secondary-color); color: var(--text-color); padding: 10px; border-radius: 10px; box-sizing: border-box; outline: none; }
+    .btn-enviar { background: var(--primary-color); color: white; border: none; padding: 12px; width: 100%; font-weight: bold; border-radius: 20px; cursor: pointer; font-size: 1.1em; box-shadow: 0 0 10px var(--primary-color); }
+    .btn-enviar:hover { background: var(--secondary-color); color: #0d041a; }
+    .nav-regresar { display: block; text-align: center; margin-bottom: 15px; color: var(--secondary-color); text-decoration: none; font-weight: bold; }
   </style>
 </head>
 <body>
 
-<!-- PANTALLA DE LOGIN -->
-<div id="loginScreen">
-  <div style="font-size: 50px; margin-bottom: 10px;">🔐</div>
-  <h2 style="color: var(--secondary-color); margin-top: 0;">Ingreso Autorizado</h2>
-  <p style="font-size: 0.9em; color: #aaa; margin-bottom: 25px;">Solo personal de Sakura Gameverse</p>
+<div class="admin-container">
+  <a href="index.html" class="nav-regresar">⬅ Volver a la Tienda</a>
+  <h2>🛠️ Panel Admin - Sakura Gameverse</h2>
   
-  <input type="email" id="email" class="admin-input" placeholder="Correo de administrador">
-  <input type="password" id="pass" class="admin-input" placeholder="Contraseña">
-  
-  <button class="btn-admin-accion" style="width: 100%;" onclick="iniciarSesion()">Entrar al Sistema 🚀</button>
-</div>
-
-<!-- PANEL PRINCIPAL -->
-<div id="mainDashboard" style="display: none;">
-  <div class="admin-header">
-    <div class="admin-title">⚙️ Panel de Control & Administración General</div>
-    <button class="btn-eliminar-fila" style="margin-top: 10px;" onclick="cerrarSesion()">Cerrar Sesión 🔒</button>
+  <div class="form-group">
+    <label>Nombre del Producto:</label>
+    <input type="text" id="adminNombre" class="form-control" placeholder="Ej: Recarga de Diamantes / Juego">
   </div>
 
-  <div class="admin-container">
-    <a href="index.html" class="btn-volver-tienda"><i class="fas fa-arrow-left"></i> Volver a la Tienda Web</a>
-
-    <div class="admin-tabs">
-      <button class="tab-btn activo" onclick="cambiarTab('dash', event)"><i class="fas fa-chart-line"></i> Dashboard</button>
-      <button class="tab-btn" onclick="cambiarTab('inventario', event)"><i class="fas fa-boxes"></i> Inventario Nube</button>
-      <button class="tab-btn" onclick="cambiarTab('banners', event)"><i class="fas fa-images"></i> Banners Promos</button>
-      <button class="tab-btn" onclick="cambiarTab('fotoscat', event)"><i class="fas fa-th-large"></i> Personalizar Categorías</button>
-      <button class="tab-btn" onclick="cambiarTab('pedidos', event)"><i class="fas fa-shopping-cart"></i> Pedidos</button>
-      <button class="tab-btn" onclick="cambiarTab('cupones', event)"><i class="fas fa-ticket-alt"></i> Cupones</button>
-      <button class="tab-btn" onclick="cambiarTab('comunidad', event)"><i class="fas fa-users"></i> Comunidad & XP</button>
-      <button class="tab-btn" onclick="cambiarTab('comentarios', event)"><i class="fas fa-comments"></i> Comentarios</button>
-      <button class="tab-btn" onclick="cambiarTab('finanzas', event)"><i class="fas fa-coins"></i> Tasa BCV & Pagos</button>
-    </div>
-
-    <!-- SECCIÓN 1: DASHBOARD -->
-    <div id="seccion-dash" class="seccion-panel activa">
-      <div class="stats-grid">
-        <div class="stat-card">
-          <h3>⚡ Tasa BCV Actual</h3>
-          <div class="stat-value" id="statTasa">Bs. 0.00</div>
-        </div>
-        <div class="stat-card">
-          <h3>📦 Productos en Nube</h3>
-          <div class="stat-value" id="statProductos">0</div>
-        </div>
-        <div class="stat-card">
-          <h3>🛒 Pedidos Registrados</h3>
-          <div class="stat-value" id="statPedidos">0</div>
-        </div>
-        <div class="stat-card">
-          <h3>🎟️ Cupones Activos</h3>
-          <div class="stat-value" id="statCupones">0</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SECCIÓN 2: INVENTARIO -->
-    <div id="seccion-inventario" class="seccion-panel">
-      <div class="admin-card-form">
-        <h3><i class="fas fa-plus-circle"></i> Agregar Producto o Recarga a Firebase con Fotos</h3>
-        <div class="form-grid">
-          <input type="text" id="nuevoNombre" class="admin-input" placeholder="Nombre (Ej: Free Fire: 100+10 Diamantes)">
-          <input type="number" id="nuevoPrecio" class="admin-input" placeholder="Precio USD ($)" step="0.01">
-          <select id="nuevaCategoria" class="admin-input">
-            <option value="recargas">🎮 Recargas Free Fire</option>
-            <option value="mangas">Mangas</option>
-            <option value="ropa">Ropa / Hoodies</option>
-            <option value="mandos">Mandos PC</option>
-            <option value="teclados">Teclados</option>
-            <option value="audifonos">Audífonos</option>
-            <option value="figuras">Figuras</option>
-            <option value="peluches">Peluches</option>
-            <option value="cartas">Cartas TCG</option>
-            <option value="katanas">Katanas</option>
-            <option value="lamparas">Lámparas</option>
-            <option value="accesorios">Accesorios 🎒</option>
-          </select>
-          <select id="nuevoEstado" class="admin-input">
-            <option value="Recarga Directa ⚡">Recarga Directa ⚡ (Para Juegos)</option>
-            <option value="Envío Inmediato 📦">Stock Inmediato 📦</option>
-            <option value="Por Encargo ⚡">Por Encargo ⚡</option>
-          </select>
-        </div>
-
-        <div class="fotos-container-admin">
-          <h4>📸 Seleccionar hasta 5 fotos (Se comprimen automáticamente para la nube):</h4>
-          <div class="form-grid">
-            <div class="file-input-wrapper"><label>Foto 1 (Principal):</label><input type="file" id="fileFoto1" accept="image/*"></div>
-            <div class="file-input-wrapper"><label>Foto 2 (Opcional):</label><input type="file" id="fileFoto2" accept="image/*"></div>
-            <div class="file-input-wrapper"><label>Foto 3 (Opcional):</label><input type="file" id="fileFoto3" accept="image/*"></div>
-            <div class="file-input-wrapper"><label>Foto 4 (Opcional):</label><input type="file" id="fileFoto4" accept="image/*"></div>
-            <div class="file-input-wrapper"><label>Foto 5 (Opcional):</label><input type="file" id="fileFoto5" accept="image/*"></div>
-          </div>
-        </div>
-
-        <button class="btn-admin-accion" onclick="procesarYGuardarProducto()">Guardar en la Nube ☁️</button>
-      </div>
-
-      <div class="admin-card-form">
-        <h3><i class="fas fa-list"></i> Catálogo Activo en Firebase</h3>
-        <div class="tabla-responsive">
-          <table class="admin-table">
-            <thead><tr><th>Producto</th><th>Categoría</th><th>Precio ($)</th><th>Fotos 📸</th><th>Modalidad</th><th>Acción</th></tr></thead>
-            <tbody id="tablaInventarioAdmin"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- SECCIÓN BANNERS -->
-    <div id="seccion-banners" class="seccion-panel">
-      <div class="admin-card-form" style="border-color: #ff9900; box-shadow: 0 5px 15px rgba(255,153,0,0.3);">
-        <h3 style="color: #ff9900;"><i class="fas fa-images"></i> Subir Banners Promocionales (Hasta 5 Fotos)</h3>
-        <p style="font-size: 0.85em; color: #aaa; margin-bottom: 15px;">Selecciona varias imágenes de tu dispositivo para agregarlas directamente al carrusel de inicio.</p>
-        
-        <div class="fotos-container-admin" style="border-color: #ff9900; background: rgba(255,153,0,0.05);">
-          <h4 style="color: #ff9900;">📸 Selecciona las imágenes para los banners:</h4>
-          <div class="form-grid">
-            <div class="file-input-wrapper"><label>Banner 1:</label><input type="file" id="fileBanner1" accept="image/*"></div>
-            <div class="file-input-wrapper"><label>Banner 2 (Opcional):</label><input type="file" id="fileBanner2" accept="image/*"></div>
-            <div class="file-input-wrapper"><label>Banner 3 (Opcional):</label><input type="file" id="fileBanner3" accept="image/*"></div>
-            <div class="file-input-wrapper"><label>Banner 4 (Opcional):</label><input type="file" id="fileBanner4" accept="image/*"></div>
-            <div class="file-input-wrapper"><label>Banner 5 (Opcional):</label><input type="file" id="fileBanner5" accept="image/*"></div>
-          </div>
-        </div>
-        
-        <button class="btn-admin-accion" style="background: #ff9900; color: #0d041a; margin-top: 15px; box-shadow: 0 0 10px #ff9900;" onclick="guardarBannersMultiplesNube()">Publicar Banners 🖼️✨</button>
-      </div>
-
-      <div class="admin-card-form">
-        <h3><i class="fas fa-list"></i> Banners Activos en Tienda</h3>
-        <div class="tabla-responsive">
-          <table class="admin-table">
-            <thead><tr><th>Miniatura</th><th>Fecha / ID</th><th>Acción</th></tr></thead>
-            <tbody id="tablaBannersAdmin"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- SECCIÓN: FOTOS Y NOMBRES DE CATEGORÍAS -->
-    <div id="seccion-fotoscat" class="seccion-panel">
-      <div class="admin-card-form" style="border-color: #00ffcc; box-shadow: 0 5px 15px rgba(0,255,204,0.3);">
-        <h3 style="color: #00ffcc;"><i class="fas fa-th-large"></i> Personalizar Categorías (Fotos y Nombres)</h3>
-        <p style="font-size: 0.85em; color: #aaa; margin-bottom: 15px;">Selecciona la categoría y cambia su imagen, su nombre visible en la tienda, o ambos al mismo tiempo.</p>
-
-        <div class="form-grid">
-          <select id="selectCategoriaConfig" class="admin-input">
-            <option value="todos">Todo el Loot</option>
-            <option value="recargas">Recargas</option>
-            <option value="mangas">Mangas Y Cómics</option>
-            <option value="ropa">Clothing</option>
-            <option value="cartas">TCG/Cartas</option>
-            <option value="figuras">Figuras Anime</option>
-            <option value="mandos">Videojuegos (Mandos)</option>
-            <option value="audifonos">Electrónica Audio</option>
-            <option value="teclados">Teclados</option>
-            <option value="peluches">Peluches</option>
-            <option value="katanas">Katanas</option>
-            <option value="lamparas">Lámparas</option>
-            <option value="accesorios">Accesorios</option>
-          </select>
-          <input type="text" id="inputNombreCategoria" class="admin-input" placeholder="Nuevo Nombre (Ej: Recargas Free Fire)">
-          <input type="file" id="fileFotoCategoria" class="admin-input" accept="image/*" style="padding: 7px;">
-        </div>
-
-        <button class="btn-admin-accion" style="background: #00ffcc; color: #0d041a; margin-top: 15px; box-shadow: 0 0 10px #00ffcc;" onclick="guardarConfigCategoriaNube()">Guardar Cambios 🚀✨</button>
-      </div>
-
-      <div class="admin-card-form">
-        <h3><i class="fas fa-list"></i> Configuraciones Actuales de las Categorías</h3>
-        <div class="tabla-responsive">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>Miniatura</th>
-                <th>Categoría (ID)</th>
-                <th>Nombre Visible</th>
-                <th>Acción</th>
-              </tr>
-            </thead>
-            <tbody id="tablaCategoriasAdmin"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- SECCIÓN: PEDIDOS -->
-    <div id="seccion-pedidos" class="seccion-panel">
-      <div class="admin-card-form" style="border-color: #25D366; box-shadow: 0 5px 15px rgba(37,211,102,0.3);">
-        <h3 style="color: #25D366;"><i class="fas fa-shopping-cart"></i> Registro y Gestión de Pedidos</h3>
-        <p style="font-size: 0.85em; color: #aaa; margin-bottom: 15px;">Registra manualmente los pedidos recibidos por WhatsApp o clientes locales para llevar el control.</p>
-
-        <div class="form-grid">
-          <input type="text" id="inputClientePedido" class="admin-input" placeholder="Nombre del Cliente (Ej: Gabriel S.)">
-          <input type="text" id="inputDetallePedido" class="admin-input" placeholder="Detalle (Ej: 100+10 Diamantes [ID: 12345])">
-          <input type="number" id="inputTotalPedido" class="admin-input" placeholder="Total USD ($)" step="0.01">
-          <select id="selectEstadoPedido" class="admin-input">
-            <option value="Pendiente ⏳">Pendiente ⏳</option>
-            <option value="Pagado / Enviado ✅">Pagado / Enviado ✅</option>
-          </select>
-        </div>
-        <button class="btn-admin-accion" style="background: #25D366; color: white; margin-top: 15px; box-shadow: 0 0 10px #25D366;" onclick="guardarPedidoAdmin()">Registrar Pedido 📦</button>
-      </div>
-
-      <div class="admin-card-form">
-        <h3><i class="fas fa-list"></i> Lista de Pedidos en la Nube</h3>
-        <div class="tabla-responsive">
-          <table class="admin-table">
-            <thead><tr><th>Cliente</th><th>Productos</th><th>Total</th><th>Estado</th><th>Acción</th></tr></thead>
-            <tbody id="tablaPedidosAdmin"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- SECCIÓN 4: CUPONES -->
-    <div id="seccion-cupones" class="seccion-panel">
-      <div class="admin-card-form" style="border-color: #ffcc00; box-shadow: 0 5px 15px rgba(255,204,0,0.3);">
-        <h3 style="color: #ffcc00;"><i class="fas fa-ticket-alt"></i> Gestión de Cupones Descuento en la Nube</h3>
-        <p style="font-size: 0.85em; color: #aaa; margin-bottom: 15px;">Crea cupones activos que tus clientes podrán aplicar instantáneamente en el carrito de compras.</p>
-        
-        <div class="form-grid">
-          <input type="text" id="adminCuponCodigo" class="admin-input" placeholder="Código (Ej: OTAKU10)">
-          <input type="number" id="adminCuponPorcentaje" class="admin-input" placeholder="Descuento en % (Ej: 10)">
-        </div>
-        <button class="btn-admin-accion" style="background: #ffcc00; color: #0d041a; margin-top: 15px; box-shadow: 0 0 10px #ffcc00;" onclick="guardarCuponAdmin()">Crear / Actualizar Cupón 🚀</button>
-      </div>
-
-      <div class="admin-card-form">
-        <h3><i class="fas fa-list"></i> Cupones Activos en la Tienda</h3>
-        <div id="listaCuponesAdmin" style="font-size: 0.9em;">
-          Cargando cupones...
-        </div>
-      </div>
-    </div>
-
-    <!-- SECCIÓN: COMUNIDAD & XP (RANGOS NINJA EDITABLES) -->
-    <div id="seccion-comunidad" class="seccion-panel">
-      <div class="admin-card-form" style="border-color: #9900ff; box-shadow: 0 5px 15px rgba(153,0,255,0.3);">
-        <h3 style="color: #9900ff;"><i class="fas fa-user-astronaut"></i> Configuración de Rangos Ninja & Experiencia (XP)</h3>
-        <p style="font-size: 0.85em; color: #aaa; margin-bottom: 15px;">Define los umbrales de XP necesarios para escalar desde **Genin** hasta **Hokage**.</p>
-
-        <div class="form-grid">
-          <div><label style="font-size:0.85em; color:#9900ff;">Genin (Mínimo XP):</label><input type="number" id="xpGenin" class="admin-input" value="0"></div>
-          <div><label style="font-size:0.85em; color:#9900ff;">Chūnin (Mínimo XP):</label><input type="number" id="xpChunin" class="admin-input" value="300"></div>
-          <div><label style="font-size:0.85em; color:#9900ff;">Jōnin (Mínimo XP):</label><input type="number" id="xpJonin" class="admin-input" value="600"></div>
-          <div><label style="font-size:0.85em; color:#9900ff;">Hokage (Mínimo XP):</label><input type="number" id="xpHokage" class="admin-input" value="1000"></div>
-        </div>
-        <button class="btn-admin-accion" style="background: #9900ff; color: white; margin-top: 15px; box-shadow: 0 0 10px #9900ff;" onclick="guardarConfigRangosAdmin()">Guardar Rangos Ninja ⚡</button>
-      </div>
-
-      <div class="admin-card-form">
-        <h3><i class="fas fa-trophy"></i> Registro de Jugadores / Clientes en la Nube</h3>
-        <div class="tabla-responsive">
-          <table class="admin-table">
-            <thead><tr><th>GamerTag</th><th>Puntos XP</th><th>Rango Actual</th><th>Acción</th></tr></thead>
-            <tbody id="tablaJugadoresAdmin"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- SECCIÓN: MODERACIÓN DE COMENTARIOS / RESEÑAS -->
-    <div id="seccion-comentarios" class="seccion-panel">
-      <div class="admin-card-form" style="border-color: var(--primary-color); box-shadow: 0 5px 15px rgba(255,0,127,0.3);">
-        <h3 style="color: var(--primary-color);"><i class="fas fa-comments"></i> Moderación de Reseñas de la Comunidad</h3>
-        <p style="font-size: 0.85em; color: #aaa; margin-bottom: 15px;">Aquí puedes revisar todas las opiniones publicadas por los clientes en la tienda y eliminar las que consideres necesarias.</p>
-        <div class="tabla-responsive">
-          <table class="admin-table">
-            <thead><tr><th>Autor / GamerTag</th><th>Calificación</th><th>Opinión</th><th>Acción</th></tr></thead>
-            <tbody id="tablaComentariosAdmin">
-              <tr><td colspan="4" style="text-align:center; color:#aaa;">Cargando comentarios...</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- SECCIÓN 6: TASA BCV & FINANZAS -->
-    <div id="seccion-finanzas" class="seccion-panel">
-      <div class="admin-card-form">
-        <h3><i class="fas fa-coins"></i> Tasa BCV Oficial</h3>
-        <div style="display: flex; gap: 10px; max-width: 350px; margin-bottom: 20px;">
-          <input type="number" id="adminInputTasa" class="admin-input" step="0.01">
-          <button class="btn-admin-accion" onclick="guardarTasaAdmin()">Actualizar 🚀</button>
-        </div>
-      </div>
-
-      <div class="admin-card-form">
-        <h3><i class="fas fa-credit-card"></i> Datos de Pago (Pago Móvil / Binance)</h3>
-        <div class="form-grid">
-          <div><label style="font-size:0.85em; color:var(--secondary-color);">Banco:</label><input type="text" id="pagoBanco" class="admin-input"></div>
-          <div><label style="font-size:0.85em; color:var(--secondary-color);">Teléfono:</label><input type="text" id="pagoTelefono" class="admin-input"></div>
-          <div><label style="font-size:0.85em; color:var(--secondary-color);">Cédula:</label><input type="text" id="pagoCedula" class="admin-input"></div>
-          <div><label style="font-size:0.85em; color:var(--secondary-color);">Binance:</label><input type="text" id="pagoBinance" class="admin-input"></div>
-        </div>
-        <button class="btn-admin-accion" onclick="guardarDatosPagoAdmin()">Guardar Datos 💾</button>
-      </div>
-    </div>
+  <div class="form-group">
+    <label>Precio USD ($):</label>
+    <input type="number" id="adminPrecio" class="form-control" step="0.01" placeholder="25.00">
   </div>
+
+  <div class="form-group">
+    <label>Categoría:</label>
+    <select id="adminCategoria" class="form-control">
+      <option value="recargas">💎 Recargas</option>
+      <option value="mangas">📚 Mangas</option>
+      <option value="ropa">👕 Ropa / Hoodies</option>
+      <option value="mandos">🎮 Mandos PC</option>
+      <option value="teclados">⌨️ Teclados</option>
+      <option value="audifonos">🎧 Audífonos</option>
+      <option value="figuras">🗿 Figuras</option>
+      <option value="peluches">🧸 Peluches</option>
+      <option value="cartas">🃏 Cartas TCG</option>
+      <option value="katanas">⚔️ Katanas</option>
+      <option value="lamparas">💡 Lámparas</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Estado:</label>
+    <select id="adminEstado" class="form-control">
+      <option value="Envío Inmediato 📦">Envío Inmediato 📦</option>
+      <option value="Por Encargo ⚡">Por Encargo ⚡</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Foto Principal (Archivo):</label>
+    <input type="file" id="adminFoto1" class="form-control" accept="image/*">
+  </div>
+
+  <button class="btn-enviar" onclick="subirProductoFirebase()">🚀 Subir Producto a la Nube</button>
 </div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, orderBy, query, setDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+  import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-storage.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDH1DZqaIi5sKRXspXDUWbMUZ4nr5JIy8Q",
@@ -398,535 +90,49 @@
   };
 
   const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
   const db = getFirestore(app);
+  const storage = getStorage(app);
 
-  window.cambiarTab = (tabId, evento) => {
-    let botones = document.querySelectorAll('.tab-btn');
-    botones.forEach(btn => btn.classList.remove('activo'));
-    evento.currentTarget.classList.add('activo');
-    let secciones = document.querySelectorAll('.seccion-panel');
-    secciones.forEach(sec => sec.classList.remove('activa'));
-    document.getElementById('seccion-' + tabId).classList.add('activa');
-  };
+  window.subirProductoFirebase = async function() {
+    let nombre = document.getElementById('adminNombre').value.trim();
+    let precio = parseFloat(document.getElementById('adminPrecio').value);
+    let categoria = document.getElementById('adminCategoria').value;
+    let estado = document.getElementById('adminEstado').value;
+    let fileInput = document.getElementById('adminFoto1');
 
-  window.iniciarSesion = () => {
-    const e = document.getElementById('email').value.trim();
-    const p = document.getElementById('pass').value.trim();
-    if(!e || !p) return alert("Faltan datos, jefe. 👾");
-    signInWithEmailAndPassword(auth, e, p).catch(err => alert("Acceso denegado: " + err.message));
-  };
-
-  window.cerrarSesion = () => signOut(auth);
-
-  onAuthStateChanged(auth, user => {
-    if(user) {
-      document.getElementById('loginScreen').style.display = 'none';
-      document.getElementById('mainDashboard').style.display = 'block';
-      window.cargarInventarioNube();
-      window.cargarBannersNube();
-      window.cargarConfigCategoriasAdmin(); 
-      cargarCuponesAdmin();
-      cargarPedidosAdmin();
-      cargarJugadoresAdmin();
-      cargarConfigRangosAdmin();
-      cargarComentariosAdmin();
-    } else {
-      document.getElementById('loginScreen').style.display = 'block';
-      document.getElementById('mainDashboard').style.display = 'none';
-    }
-  });
-
-  let tasaBcv = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 854.46;
-  document.getElementById('statTasa').innerText = `Bs. ${tasaBcv.toFixed(2)}`;
-  document.getElementById('adminInputTasa').value = tasaBcv;
-
-  window.guardarTasaAdmin = () => {
-    let nuevaTasa = parseFloat(document.getElementById('adminInputTasa').value);
-    if (!isNaN(nuevaTasa) && nuevaTasa > 0) {
-      localStorage.setItem('sakura_tasa_bcv', nuevaTasa);
-      tasaBcv = nuevaTasa;
-      document.getElementById('statTasa').innerText = `Bs. ${tasaBcv.toFixed(2)}`;
-      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-      alert("⚡ ¡Tasa BCV actualizada con éxito!");
-    }
-  };
-
-  let datosPago = JSON.parse(localStorage.getItem('sakura_datos_pago')) || { banco: "Banesco (0134)", telefono: "0424-4970576", cedula: "V-27000000", binance: "sakuragameverse@gmail.com" };
-  document.getElementById('pagoBanco').value = datosPago.banco;
-  document.getElementById('pagoTelefono').value = datosPago.telefono;
-  document.getElementById('pagoCedula').value = datosPago.cedula;
-  document.getElementById('pagoBinance').value = datosPago.binance;
-
-  window.guardarDatosPagoAdmin = () => {
-    datosPago.banco = document.getElementById('pagoBanco').value;
-    datosPago.telefono = document.getElementById('pagoTelefono').value;
-    datosPago.cedula = document.getElementById('pagoCedula').value;
-    datosPago.binance = document.getElementById('pagoBinance').value;
-    localStorage.setItem('sakura_datos_pago', JSON.stringify(datosPago));
-    alert("💾 ¡Datos de pago guardados!");
-  };
-
-  window.guardarPedidoAdmin = async () => {
-    let cliente = document.getElementById('inputClientePedido').value.trim();
-    let detalle = document.getElementById('inputDetallePedido').value.trim();
-    let total = parseFloat(document.getElementById('inputTotalPedido').value);
-    let estado = document.getElementById('selectEstadoPedido').value;
-
-    if(!cliente || !detalle || isNaN(total)) {
-      return alert("⚠️ Por favor completa los datos del pedido.");
+    if (!nombre || isNaN(precio)) {
+      alert("⚠️ Por favor ingresa un nombre y un precio válido.");
+      return;
     }
 
     try {
-      await addDoc(collection(db, "pedidos"), {
-        cliente, detalle, total, estado, timestamp: Date.now()
-      });
-      alert("📦 ¡Pedido registrado exitosamente!");
-      document.getElementById('inputClientePedido').value = "";
-      document.getElementById('inputDetallePedido').value = "";
-      document.getElementById('inputTotalPedido').value = "";
-      cargarPedidosAdmin();
-    } catch(e) {
-      alert("Error al registrar pedido: " + e.message);
-    }
-  }
+      let fotoUrl = "logo.webp"; 
 
-  async function cargarPedidosAdmin() {
-    let tbody = document.getElementById('tablaPedidosAdmin');
-    if(!tbody) return;
-    try {
-      const q = query(collection(db, "pedidos"), orderBy("timestamp", "desc"));
-      const querySnapshot = await getDocs(q);
-      document.getElementById('statPedidos').innerText = querySnapshot.size;
-      tbody.innerHTML = "";
-      if(querySnapshot.empty) {
-        tbody.innerHTML = "<tr><td colspan='5' style='color:#aaa; text-align:center;'>No hay pedidos registrados.</td></tr>";
-        return;
+      if (fileInput.files && fileInput.files[0]) {
+        let file = fileInput.files[0];
+        let storageRef = ref(storage, `productos/${Date.now()}_${file.name}`);
+        let snapshot = await uploadBytes(storageRef, file);
+        fotoUrl = await getDownloadURL(snapshot.ref);
       }
-      querySnapshot.forEach((docSnap) => {
-        let p = docSnap.data();
-        let badgeClase = p.estado.includes("Pagado") ? "estado-pagado" : "estado-pendiente";
-        tbody.innerHTML += `
-          <tr>
-            <td><strong>${p.cliente}</strong></td>
-            <td>${p.detalle}</td>
-            <td style="color:var(--secondary-color);">$${p.total.toFixed(2)}</td>
-            <td><span class="badge-estado-pedido ${badgeClase}">${p.estado}</span></td>
-            <td><button class="btn-eliminar-fila" onclick="eliminarPedidoAdmin('${docSnap.id}')">❌</button></td>
-          </tr>
-        `;
+
+      await addDoc(collection(db, "productos"), {
+        nombre: nombre,
+        precio: precio,
+        categoria: categoria,
+        estado: estado,
+        fotos: [fotoUrl],
+        timestamp: serverTimestamp()
       });
-    } catch(e) {
-      tbody.innerHTML = "<tr><td colspan='5' style='color:#aaa; text-align:center;'>Error al cargar pedidos.</td></tr>";
-    }
-  }
 
-  window.eliminarPedidoAdmin = async (id) => {
-    if(confirm("¿Eliminar este pedido?")) {
-      await deleteDoc(doc(db, "pedidos", id));
-      cargarPedidosAdmin();
-    }
-  }
-
-  window.guardarConfigRangosAdmin = async () => {
-    let umbrales = {
-      genin: parseInt(document.getElementById('xpGenin').value) || 0,
-      chunin: parseInt(document.getElementById('xpChunin').value) || 300,
-      jonin: parseInt(document.getElementById('xpJonin').value) || 600,
-      hokage: parseInt(document.getElementById('xpHokage').value) || 1000
-    };
-    try {
-      await setDoc(doc(db, "configuracion", "rangos_ninja"), umbrales);
-      localStorage.setItem('sakura_rangos_ninja', JSON.stringify(umbrales));
-      alert("⚡ ¡Umbrales de rangos ninja actualizados con éxito!");
-    } catch(e) {
-      alert("Error al guardar rangos: " + e.message);
-    }
-  };
-
-  async function cargarConfigRangosAdmin() {
-    try {
-      const docSnap = await getDocs(collection(db, "configuracion"));
-      docSnap.forEach(d => {
-        if(d.id === "rangos_ninja") {
-          let r = d.data();
-          if(r.genin !== undefined) document.getElementById('xpGenin').value = r.genin;
-          if(r.chunin !== undefined) document.getElementById('xpChunin').value = r.chunin;
-          if(r.jonin !== undefined) document.getElementById('xpJonin').value = r.jonin;
-          if(r.hokage !== undefined) document.getElementById('xpHokage').value = r.hokage;
-        }
-      });
-    } catch(e) {}
-  }
-
-  async function cargarJugadoresAdmin() {
-    let tbody = document.getElementById('tablaJugadoresAdmin');
-    if(!tbody) return;
-    try {
-      const querySnapshot = await getDocs(collection(db, "jugadores"));
-      tbody.innerHTML = "";
-      if(querySnapshot.empty) {
-        tbody.innerHTML = "<tr><td colspan='4' style='color:#aaa; text-align:center;'>Aún no hay jugadores registrados en la nube.</td></tr>";
-        return;
-      }
-      querySnapshot.forEach((docSnap) => {
-        let j = docSnap.data();
-        tbody.innerHTML += `
-          <tr>
-            <td><strong>${j.tag || 'Genin Anónimo'}</strong></td>
-            <td style="color:var(--secondary-color);">${j.xp || 0} XP</td>
-            <td><span style="color:#ffcc00; font-weight:bold;">${j.rango || 'Genin 🍃'}</span></td>
-            <td><button class="btn-eliminar-fila" onclick="eliminarJugadorAdmin('${docSnap.id}')">❌</button></td>
-          </tr>
-        `;
-      });
-    } catch(e) {
-      tbody.innerHTML = "<tr><td colspan='4' style='color:#aaa; text-align:center;'>Error al cargar jugadores.</td></tr>";
-    }
-  }
-
-  window.eliminarJugadorAdmin = async (id) => {
-    if(confirm("¿Seguro que deseas eliminar este perfil de jugador?")) {
-      await deleteDoc(doc(db, "jugadores", id));
-      cargarJugadoresAdmin();
-    }
-  };
-
-  async function cargarComentariosAdmin() {
-    let tbody = document.getElementById('tablaComentariosAdmin');
-    if(!tbody) return;
-    try {
-      const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"));
-      const querySnapshot = await getDocs(q);
-      tbody.innerHTML = "";
-      if(querySnapshot.empty) {
-        tbody.innerHTML = "<tr><td colspan='4' style='color:#aaa; text-align:center;'>No hay reseñas registradas.</td></tr>";
-        return;
-      }
-      querySnapshot.forEach((docSnap) => {
-        let r = docSnap.data();
-        tbody.innerHTML += `
-          <tr>
-            <td><strong>${r.nombre}</strong></td>
-            <td style="color:#ffcc00;">${r.estrellas}</td>
-            <td>${r.texto}</td>
-            <td><button class="btn-eliminar-fila" onclick="eliminarComentarioAdmin('${docSnap.id}')"><i class="fas fa-trash"></i> Eliminar</button></td>
-          </tr>
-        `;
-      });
-    } catch(e) {
-      tbody.innerHTML = "<tr><td colspan='4' style='color:#aaa; text-align:center;'>Error al cargar comentarios.</td></tr>";
-    }
-  }
-
-  window.eliminarComentarioAdmin = async (id) => {
-    if(confirm("¿Estás seguro de eliminar esta reseña?")) {
-      try {
-        await deleteDoc(doc(db, "reviews", id));
-        alert("🗑️ Reseña eliminada correctamente.");
-        cargarComentariosAdmin();
-      } catch(e) {
-        alert("Error al eliminar reseña: " + e.message);
-      }
-    }
-  }
-
-  window.guardarCuponAdmin = async () => {
-    let codigo = document.getElementById('adminCuponCodigo').value.trim().toUpperCase();
-    let porcentaje = parseFloat(document.getElementById('adminCuponPorcentaje').value);
-
-    if (!codigo || isNaN(porcentaje)) {
-      return alert("⚠️ Por favor, rellena el código y el porcentaje correctamente.");
-    }
-
-    try {
-      await setDoc(doc(db, "cupones", codigo), {
-        codigo: codigo,
-        porcentaje: porcentaje,
-        timestamp: Date.now()
-      });
-      alert(`🎉 ¡Cupón ${codigo} (${porcentaje}%) creado exitosamente en la nube!`);
-      document.getElementById('adminCuponCodigo').value = "";
-      document.getElementById('adminCuponPorcentaje').value = "";
-      cargarCuponesAdmin();
+      alert("🎉 ¡Producto subido exitosamente a Firebase!");
+      document.getElementById('adminNombre').value = "";
+      document.getElementById('adminPrecio').value = "";
+      fileInput.value = "";
     } catch (error) {
-      alert("❌ Error al guardar el cupón: " + error.message);
-    }
-  };
-
-  async function cargarCuponesAdmin() {
-    let contenedor = document.getElementById('listaCuponesAdmin');
-    if(!contenedor) return;
-    contenedor.innerHTML = "Cargando cupones...";
-    try {
-      const querySnapshot = await getDocs(collection(db, "cupones"));
-      document.getElementById('statCupones').innerText = querySnapshot.size;
-      if(querySnapshot.empty) {
-        contenedor.innerHTML = "<p style='color:#aaa;'>No hay cupones activos.</p>";
-        return;
-      }
-      let html = "";
-      querySnapshot.forEach((docSnap) => {
-        let c = docSnap.data();
-        html += `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,229,255,0.1); padding:8px 12px; border-radius:8px; margin-top:8px; border: 1px solid rgba(0,229,255,0.2);">
-          <span>🎫 <strong>${c.codigo}</strong> (-${c.porcentaje}%)</span>
-          <button class="btn-eliminar-fila" onclick="eliminarCuponAdmin('${c.codigo}')">❌ Eliminar</button>
-        </div>`;
-      });
-      contenedor.innerHTML = html;
-    } catch(e) {
-      contenedor.innerHTML = "Error al cargar cupones.";
+      console.error("Error al subir a Firebase:", error);
+      alert("❌ Error al conectar con Firebase. Revisa las reglas de Firestore y Storage en tu consola.");
     }
   }
-
-  window.eliminarCuponAdmin = async (codigo) => {
-    if(confirm(`¿Seguro que deseas eliminar el cupón ${codigo}?`)) {
-      try {
-        await deleteDoc(doc(db, "cupones", codigo));
-        alert("🗑️ Cupón eliminado.");
-        cargarCuponesAdmin();
-      } catch(e) {
-        alert("Error al eliminar: " + e.message);
-      }
-    }
-  }
-
-  window.cargarConfigCategoriasAdmin = async () => {
-    try {
-      const q = query(collection(db, "configuracion"), orderBy("timestamp", "desc"));
-      const querySnapshot = await getDocs(q);
-      let tbody = document.getElementById('tablaCategoriasAdmin');
-      tbody.innerHTML = "";
-      
-      let vacio = true;
-      querySnapshot.forEach((documento) => {
-        let conf = documento.data();
-        if (conf.tipo === 'categoria_foto') {
-          vacio = false;
-          let imagenMostrar = conf.imgUrl ? `<img src="${conf.imgUrl}" style="height: 50px; width: 50px; border-radius: 8px; object-fit: cover; border: 1px solid var(--secondary-color);">` : `<span style="color:#aaa;">Sin foto</span>`;
-          let nombreMostrar = conf.nombrePersonalizado ? conf.nombrePersonalizado : `<span style="color:#aaa;">(Nombre por defecto)</span>`;
-          
-          tbody.innerHTML += `
-            <tr>
-              <td>${imagenMostrar}</td>
-              <td style="text-transform: capitalize; font-weight: bold; color: var(--secondary-color);">${conf.categoriaId}</td>
-              <td style="font-weight: bold;">${nombreMostrar}</td>
-              <td><button class="btn-eliminar-fila" onclick="eliminarConfigCategoriaAdmin('${documento.id}')"><i class="fas fa-trash"></i> Restaurar Defecto</button></td>
-            </tr>
-          `;
-        }
-      });
-      if(vacio) tbody.innerHTML = "<tr><td colspan='4' style='color:#aaa; text-align:center;'>Aún no tienes configuraciones personalizadas.</td></tr>";
-    } catch (error) {}
-  };
-
-  window.guardarConfigCategoriaNube = async () => {
-    let catId = document.getElementById('selectCategoriaConfig').value;
-    let nuevoNombre = document.getElementById('inputNombreCategoria').value.trim();
-    let fileInput = document.getElementById('fileFotoCategoria').files[0];
-
-    if (!fileInput && !nuevoNombre) { 
-      alert("⚠️ Selecciona una imagen o escribe un nuevo nombre."); 
-      return; 
-    }
-
-    let updateData = { tipo: "categoria_foto", categoriaId: catId, timestamp: Date.now() };
-    if (nuevoNombre) updateData.nombrePersonalizado = nuevoNombre;
-
-    let guardarEnFirebase = async (data) => {
-      try {
-        await setDoc(doc(db, "configuracion", "cat_img_" + catId), data, { merge: true });
-        alert(`¡Configuración de ${catId.toUpperCase()} actualizada! ✨`);
-        document.getElementById('inputNombreCategoria').value = "";
-        document.getElementById('fileFotoCategoria').value = "";
-        window.cargarConfigCategoriasAdmin();
-      } catch (error) { alert("Error al guardar: " + error.message); }
-    };
-
-    if (fileInput) {
-      comprimirImagen(fileInput, 800, 0.7, (base64Optimizado) => {
-        updateData.imgUrl = base64Optimizado;
-        guardarEnFirebase(updateData);
-      });
-    } else { guardarEnFirebase(updateData); }
-  };
-
-  window.eliminarConfigCategoriaAdmin = async (id) => {
-    if(confirm("¿Seguro que quieres borrarla?")) {
-      await deleteDoc(doc(db, "configuracion", id));
-      window.cargarConfigCategoriasAdmin();
-    }
-  };
-
-  window.cargarBannersNube = async () => {
-    try {
-      const q = query(collection(db, "banners"), orderBy("timestamp", "desc"));
-      const querySnapshot = await getDocs(q);
-      let tbody = document.getElementById('tablaBannersAdmin');
-      tbody.innerHTML = "";
-      if (querySnapshot.empty) { tbody.innerHTML = "<tr><td colspan='3' style='color:#aaa; text-align:center;'>Aún no hay banners.</td></tr>"; }
-      querySnapshot.forEach((doc) => {
-        let b = doc.data();
-        tbody.innerHTML += `
-          <tr>
-            <td><img src="${b.imgUrl}" style="height: 50px; border-radius: 8px; object-fit: cover; border: 1px solid var(--secondary-color);"></td>
-            <td>Registrado en Nube</td>
-            <td><button class="btn-eliminar-fila" onclick="eliminarBannerAdmin('${doc.id}')"><i class="fas fa-trash"></i></button></td>
-          </tr>
-        `;
-      });
-    } catch (error) {}
-  };
-
-  window.guardarBannersMultiplesNube = () => {
-    let inputFiles = [
-      document.getElementById('fileBanner1').files[0], document.getElementById('fileBanner2').files[0],
-      document.getElementById('fileBanner3').files[0], document.getElementById('fileBanner4').files[0],
-      document.getElementById('fileBanner5').files[0]
-    ];
-    let archivosValidos = inputFiles.filter(file => file !== undefined);
-    if (archivosValidos.length === 0) return alert("Selecciona al menos una imagen de banner.");
-    
-    alert("⏳ Comprimiendo y subiendo banners...");
-    let subidos = 0;
-    archivosValidos.forEach(file => {
-      comprimirImagen(file, 1200, 0.75, async (base64Optimizado) => {
-        await addDoc(collection(db, "banners"), { imgUrl: base64Optimizado, timestamp: Date.now() + subidos });
-        subidos++;
-        if (subidos === archivosValidos.length) {
-          alert(`¡Se subieron ${subidos} banner(s)! 🖼️✨`);
-          document.getElementById('fileBanner1').value = ""; document.getElementById('fileBanner2').value = "";
-          document.getElementById('fileBanner3').value = ""; document.getElementById('fileBanner4').value = "";
-          document.getElementById('fileBanner5').value = "";
-          window.cargarBannersNube();
-        }
-      });
-    });
-  };
-
-  window.eliminarBannerAdmin = async (id) => {
-    if(confirm("¿Eliminar este banner?")) {
-      await deleteDoc(doc(db, "banners", id));
-      window.cargarBannersNube();
-    }
-  };
-
-  function comprimirImagen(file, maxWidth, calidad, callback) {
-    let reader = new FileReader();
-    reader.onload = function (e) {
-      let img = new Image();
-      img.src = e.target.result;
-      img.onload = function () {
-        let canvas = document.createElement('canvas');
-        let width = img.width;
-        let height = img.height;
-
-        if (width > maxWidth) {
-          height = Math.round((height * maxWidth) / width);
-          width = maxWidth;
-        }
-
-        canvas.width = width;
-        canvas.height = height;
-        let ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, width, height);
-
-        let dataUrl = canvas.toDataURL('image/jpeg', calidad);
-        callback(dataUrl);
-      };
-    };
-    reader.readAsDataURL(file);
-  }
-
-  window.cargarInventarioNube = async () => {
-    try {
-      const q = query(collection(db, "productos"), orderBy("timestamp", "desc"));
-      const querySnapshot = await getDocs(q);
-      let tbody = document.getElementById('tablaInventarioAdmin');
-      tbody.innerHTML = "";
-      let contador = 0;
-      querySnapshot.forEach((docSnap) => {
-        contador++;
-        let p = docSnap.data();
-        let numFotos = p.fotos ? p.fotos.length : 0;
-        let colorClase = p.estado.includes("Encargo") ? "estado-pendiente" : "estado-pagado";
-        tbody.innerHTML += `
-          <tr>
-            <td><strong>${p.nombre}</strong></td>
-            <td>${p.categoria}</td>
-            <td style="color: var(--secondary-color);">$${p.precio.toFixed(2)}</td>
-            <td><span style="color: #ffcc00; font-weight: bold;">🖼️ ${numFotos} foto(s)</span></td>
-            <td><span class="badge-estado-pedido ${colorClase}">${p.estado}</span></td>
-            <td><button class="btn-eliminar-fila" onclick="eliminarProductoAdmin('${docSnap.id}')"><i class="fas fa-trash"></i> Eliminar</button></td>
-          </tr>
-        `;
-      });
-      document.getElementById('statProductos').innerText = contador;
-    } catch (error) {}
-  };
-
-  window.procesarYGuardarProducto = () => {
-    let nombre = document.getElementById('nuevoNombre').value.trim();
-    let precio = parseFloat(document.getElementById('nuevoPrecio').value);
-    let categoria = document.getElementById('nuevaCategoria').value;
-    let estado = document.getElementById('nuevoEstado').value;
-
-    if (!nombre || isNaN(precio) || precio <= 0) return alert("Ingresa un nombre y un precio válido.");
-    
-    let inputFiles = [
-      document.getElementById('fileFoto1').files[0], document.getElementById('fileFoto2').files[0],
-      document.getElementById('fileFoto3').files[0], document.getElementById('fileFoto4').files[0],
-      document.getElementById('fileFoto5').files[0]
-    ];
-    let archivosValidos = inputFiles.filter(file => file !== undefined);
-    if (archivosValidos.length === 0) return alert("Selecciona al menos la Foto 1 principal.");
-
-    alert("⏳ Comprimiendo fotos y guardando en la nube...");
-
-    let fotosProcesadas = []; 
-    let leidos = 0;
-
-    archivosValidos.forEach((file) => {
-      comprimirImagen(file, 800, 0.7, async (base64Optimizado) => {
-        fotosProcesadas.push(base64Optimizado); 
-        leidos++;
-        
-        if (leidos === archivosValidos.length) {
-          try {
-            await addDoc(collection(db, "productos"), {
-              nombre: nombre, 
-              precio: precio, 
-              categoria: categoria,
-              estado: estado, 
-              fotos: fotosProcesadas, 
-              timestamp: Date.now()
-            });
-            alert("¡Producto o recarga guardada exitosamente en la nube! ☁️✨");
-            window.cargarInventarioNube();
-            
-            document.getElementById('nuevoNombre').value = ""; 
-            document.getElementById('nuevoPrecio').value = "";
-            document.getElementById('fileFoto1').value = ""; 
-            document.getElementById('fileFoto2').value = "";
-            document.getElementById('fileFoto3').value = ""; 
-            document.getElementById('fileFoto4').value = "";
-            document.getElementById('fileFoto5').value = "";
-          } catch (error) { 
-            alert("Error al subir a la nube: " + error.message); 
-          }
-        }
-      });
-    });
-  };
-
-  window.eliminarProductoAdmin = async (id) => {
-    if(confirm("¿Estás 100% seguro de eliminar este artículo de la nube?")) {
-      try {
-        await deleteDoc(doc(db, "productos", id));
-        window.cargarInventarioNube();
-      } catch(error) { alert("Error al eliminar: " + error.message); }
-    }
-  };
 </script>
 
 </body>
