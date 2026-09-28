@@ -125,6 +125,7 @@
     .badge-estado { position: absolute; top: 10px; right: 10px; padding: 5px 12px; font-size: 0.75em; font-weight: bold; border-radius: 20px; z-index: 3; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
     .badge-stock { background-color: #00e5ff; color: #0d041a; box-shadow: 0 0 10px #00e5ff; }
     .badge-encargo { background-color: #FF007F; color: white; box-shadow: 0 0 10px #FF007F; }
+    .badge-digital { background-color: #25D366; color: #0d041a; box-shadow: 0 0 10px #25D366; }
     .btn-fav-card { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.6); border: 1px solid var(--secondary-color); color: #ff3366; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1em; z-index: 3; transition: transform 0.2s; }
     .btn-fav-card:hover { transform: scale(1.15); background: rgba(255,0,127,0.3); }
 
@@ -139,9 +140,10 @@
     .modal-mini-img { width: 65px; height: 65px; object-fit: cover; border-radius: 10px; cursor: pointer; border: 2px solid var(--secondary-color); opacity: 0.6; transition: all 0.2s; }
     .modal-mini-img:hover, .modal-mini-img.activo { opacity: 1; transform: scale(1.08); box-shadow: 0 0 10px var(--secondary-color); }
 
-    .tallas-container { margin: 15px 0; display: none; text-align: left; }
-    .tallas-container label { display: block; color: var(--secondary-color); font-size: 0.9em; font-weight: bold; margin-bottom: 5px; }
-    .talla-select { background: var(--bg-color); border: 1px solid var(--secondary-color); color: var(--text-color); padding: 8px; border-radius: 10px; width: 100%; font-weight: bold; outline: none; text-align: center; }
+    .tallas-container, .recarga-container { margin: 15px 0; display: none; text-align: left; }
+    .tallas-container label, .recarga-container label { display: block; color: var(--secondary-color); font-size: 0.9em; font-weight: bold; margin-bottom: 5px; }
+    .talla-select, .recarga-input { background: var(--bg-color); border: 1px solid var(--secondary-color); color: var(--text-color); padding: 8px; border-radius: 10px; width: 100%; font-weight: bold; outline: none; box-sizing: border-box; }
+    .recarga-input { text-align: left; }
     .link-guia-tallas { color: var(--secondary-color); font-size: 0.8em; text-decoration: underline; cursor: pointer; margin-top: 5px; display: inline-block; }
 
     .btn-comprar { background: var(--primary-color); color: white; border: none; padding: 12px 20px; font-size: 1.1em; font-weight: bold; border-radius: 30px; cursor: pointer; margin-top: 15px; box-shadow: 0 0 10px var(--primary-color); width: 100%; }
@@ -310,7 +312,7 @@
 
 <div class="container">
   <div class="search-box">
-    <input type="text" id="buscador" class="search-input" placeholder="🔍 Buscar manga, hoodie, figura..." onkeyup="buscarProductos()">
+    <input type="text" id="buscador" class="search-input" placeholder="🔍 Buscar manga, recarga, figura..." onkeyup="buscarProductos()">
   </div>
 
   <div class="categorias-visuales-section">
@@ -322,6 +324,10 @@
         <div class="cat-card activa" onclick="filtrar('todos')">
           <img src="logo.webp" id="img-cat-todos" class="cat-img" alt="Todos">
           <div class="cat-info"><div class="cat-title" id="title-cat-todos">Todo el Loot</div><div class="cat-count" id="count-todos">0 productos</div></div>
+        </div>
+        <div class="cat-card" onclick="filtrar('recargas')">
+          <img src="logo.webp" id="img-cat-recargas" class="cat-img" alt="Recargas">
+          <div class="cat-info"><div class="cat-title" id="title-cat-recargas">🎮 Recargas & Juegos</div><div class="cat-count" id="count-recargas">0 productos</div></div>
         </div>
         <div class="cat-card" onclick="filtrar('mangas')">
           <img src="logo.webp" id="img-cat-mangas" class="cat-img" alt="Mangas">
@@ -376,6 +382,7 @@
   <div class="controles-superiores">
     <div class="filtros">
       <button class="btn-filtro activo" onclick="filtrar('todos', event)">🌟 Todos</button>
+      <button class="btn-filtro" style="border-color: #25D366; color: #25D366;" onclick="filtrar('recargas', event)">🎮 Recargas Free Fire</button>
       <button class="btn-filtro" onclick="filtrar('mangas', event)">📚 Mangas</button>
       <button class="btn-filtro" onclick="filtrar('ropa', event)">👕 Ropa / Hoodies</button>
       <button class="btn-filtro" onclick="filtrar('mandos', event)">🎮 Mandos PC</button>
@@ -403,7 +410,7 @@
     </div>
   </div>
 
-  <h2 style="color: var(--primary-color); text-align: center; margin-bottom: 20px;">📦 Catálogo</h2>
+  <h2 style="color: var(--primary-color); text-align: center; margin-bottom: 20px;">📦 Catálogo & Recargas</h2>
   <div class="grid" id="catalogoNube"><p style="text-align: center; color: var(--secondary-color);">Cargando inventario desde Firebase...</p></div>
 
   <div class="reviews-section">
@@ -448,6 +455,7 @@
     <h2 id="modalTitulo" style="color: var(--secondary-color); margin-bottom: 5px; margin-top: 0;">Título</h2>
     <h3 id="modalPrecio" style="color: var(--primary-color); margin-top: 0; font-size: 1.5em;">$0.00</h3>
     <p id="modalDesc" style="font-size: 0.9em; margin-bottom: 10px; opacity: 0.9;">Descripción aquí.</p>
+    
     <div id="tallasContainer" class="tallas-container">
       <label for="selectTalla">Selecciona tu Talla:</label>
       <select id="selectTalla" class="talla-select">
@@ -455,6 +463,14 @@
       </select>
       <span class="link-guia-tallas" onclick="abrirGuiaTallasModal()">Ver Guía de Tallas (cm) 📏</span>
     </div>
+
+    <div id="recargaContainer" class="recarga-container">
+      <label for="inputPlayerId">🎮 ID del Jugador (Free Fire / Juego):</label>
+      <input type="text" id="inputPlayerId" class="recarga-input" placeholder="Ej: 1234567890">
+      <label for="inputPlayerServer" style="margin-top: 8px;">Servidor / Detalles adicionales:</label>
+      <input type="text" id="inputPlayerServer" class="recarga-input" placeholder="Ej: US / Sudamérica">
+    </div>
+
     <button class="btn-comprar" onclick="agregarAlCarrito()"><i class="fas fa-cart-plus"></i> ¡Añadir al Carrito!</button>
     <button class="btn-compartir" onclick="compartirProductoWhatsApp()"><i class="fab fa-whatsapp"></i> Preguntar en WhatsApp</button>
   </div>
@@ -667,7 +683,7 @@
     let contenedor = document.getElementById('catalogoNube');
     if (!contenedor) return;
     contenedor.innerHTML = "";
-    let conteo = { mangas: 0, ropa: 0, mandos: 0, teclados: 0, audifonos: 0, figuras: 0, peluches: 0, cartas: 0, katanas: 0, lamparas: 0, accesorios: 0 };
+    let conteo = { recargas: 0, mangas: 0, ropa: 0, mandos: 0, teclados: 0, audifonos: 0, figuras: 0, peluches: 0, cartas: 0, katanas: 0, lamparas: 0, accesorios: 0 };
     let elTodos = document.getElementById('count-todos');
     if(elTodos) elTodos.innerText = lista.length + " productos";
 
@@ -680,9 +696,14 @@
       let precioBs = prod.precio * tasaBcvActual;
       let fotosArray = (prod.fotos && prod.fotos.length > 0) ? prod.fotos : ['logo.webp'];
       let fotosJson = JSON.stringify(fotosArray).replace(/"/g, '&quot;');
-      let badgeClase = (prod.estado && prod.estado.includes("Encargo")) ? 'badge-encargo' : 'badge-stock';
       let categoria = prod.categoria || 'mangas';
+      
+      let badgeClase = 'badge-stock';
+      if(prod.estado && prod.estado.includes("Encargo")) badgeClase = 'badge-encargo';
+      if(categoria.toLowerCase() === 'recargas') badgeClase = 'badge-digital';
+
       let esRopa = categoria.toLowerCase().includes('ropa') || categoria.toLowerCase().includes('hoodie');
+      let esRecarga = categoria.toLowerCase() === 'recargas';
 
       if(conteo[categoria] !== undefined) conteo[categoria]++;
 
@@ -694,9 +715,9 @@
       let botonesCarrusel = fotosArray.length > 1 ? `<div class="carrusel-btn carrusel-prev" onclick="cambiarFotoTarjeta(event, ${indexProd}, -1)"><i class="fas fa-chevron-left"></i></div><div class="carrusel-btn carrusel-next" onclick="cambiarFotoTarjeta(event, ${indexProd}, 1)"><i class="fas fa-chevron-right"></i></div><div class="carrusel-dots">${dotsHtml}</div>` : '';
 
       contenedor.innerHTML += `
-        <div class="card item-producto" data-nombre="${prod.nombre.toLowerCase()}" data-categoria="${categoria}" data-estado="${prod.estado}" data-precio="${prod.precio}" onclick="crearDestello(event); abrirModalMulti(${fotosJson}, '${prod.nombre}', ${prod.precio}, 'Producto oficial de Sakura Gameverse.', '${prod.estado}', ${esRopa}, '${categoria}')">
+        <div class="card item-producto" data-nombre="${prod.nombre.toLowerCase()}" data-categoria="${categoria}" data-estado="${prod.estado}" data-precio="${prod.precio}" onclick="crearDestello(event); abrirModalMulti(${fotosJson}, '${prod.nombre}', ${prod.precio}, '${prod.descripcion || 'Producto oficial de Sakura Gameverse.'}', '${prod.estado}', ${esRopa}, '${categoria}', ${esRecarga})">
           <button class="btn-fav-card" onclick="toggleFavorito(event, '${prod.nombre}', ${prod.precio}, '${fotosArray[0]}')"><i class="fas fa-heart"></i></button>
-          <div class="badge-estado ${badgeClase}">${prod.estado}</div>
+          <div class="badge-estado ${badgeClase}">${prod.estado || (esRecarga ? 'Recarga Directa ⚡' : 'Disponible')}</div>
           <div class="card-img-container" id="carrusel-card-${indexProd}">${imgsHtml}${botonesCarrusel}</div>
           <div class="card-title">${prod.nombre}</div>
           <div class="precio-container"><span class="card-price">$${prod.precio.toFixed(2)}</span></div>
@@ -841,8 +862,8 @@
     imgs[newIndex].classList.add('activa'); dots[newIndex].classList.add('activa');
   }
 
-  window.abrirModalMulti = function(fotosArray, titulo, precio, descripcion, disponibilidad, esRopa, categoriaRaw) {
-    window.productoActual = { img: fotosArray[0], titulo, precio, esRopa };
+  window.abrirModalMulti = function(fotosArray, titulo, precio, descripcion, disponibilidad, esRopa, categoriaRaw, esRecarga) {
+    window.productoActual = { img: fotosArray[0], titulo, precio, esRopa, esRecarga };
     let catBonita = categoriaRaw.charAt(0).toUpperCase() + categoriaRaw.slice(1);
     document.getElementById('modalBreadcrumbs').innerHTML = `Inicio / <span>${catBonita}</span>`;
     document.getElementById('modalImg').src = fotosArray[0];
@@ -850,7 +871,10 @@
     document.getElementById('modalPrecio').innerText = "$" + precio.toFixed(2);
     document.getElementById('modalDesc').innerText = descripcion;
     document.getElementById('modalTag').innerText = disponibilidad;
+    
     document.getElementById('tallasContainer').style.display = esRopa ? 'block' : 'none';
+    document.getElementById('recargaContainer').style.display = esRecarga ? 'block' : 'none';
+
     let contenedorMinis = document.getElementById('modalContainerMinis');
     contenedorMinis.innerHTML = "";
     if (fotosArray.length > 1) {
@@ -1048,7 +1072,15 @@
   window.agregarAlCarrito = function() {
     reproducirSonido(); 
     let item = { ...window.productoActual };
-    if(item.esRopa) item.titulo += ` (Talla: ${document.getElementById('selectTalla').value})`;
+    if(item.esRopa) {
+      item.titulo += ` (Talla: ${document.getElementById('selectTalla').value})`;
+    }
+    if(item.esRecarga) {
+      let playerId = document.getElementById('inputPlayerId').value.trim();
+      let playerServer = document.getElementById('inputPlayerServer').value.trim();
+      if(!playerId) return alert("Por favor ingresa tu ID de jugador para la recarga.");
+      item.titulo += ` [ID: ${playerId}${playerServer ? ' / Servidor: ' + playerServer : ''}]`;
+    }
     carrito.push(item); 
     actualizarCarritoUI(); 
     cerrarModal(); 
@@ -1105,7 +1137,7 @@
     let sub = carrito.reduce((s, i) => s + i.precio, 0); let tot = sub * (1 - descuentoAplicado); let totBs = tot * tasaBcvActual;
     let msg = `¡Hola Sakura Gameverse! 🌸👾 Deseo realizar este pedido:\n\n`;
     carrito.forEach((i, idx) => { msg += `${idx+1}. ${i.titulo} - $${i.precio.toFixed(2)}\n`; });
-    msg += `\n*Total: $${tot.toFixed(2)} (Bs. ${totBs.toLocaleString('es-VE', {minimumFractionDigits:2, maximumFractionDigits:2})})*\n¡Espero instrucciones para el pago y envío por ZOOM / MRW!`;
+    msg += `\n*Total: $${tot.toFixed(2)} (Bs. ${totBs.toLocaleString('es-VE', {minimumFractionDigits:2, maximumFractionDigits:2})})*\n¡Espero instrucciones para el pago!`;
     window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msg), '_blank'); cerrarCarritoModal();
   }
 
@@ -1124,7 +1156,6 @@
     window.open("https://wa.me/584244970576?text=" + encodeURIComponent(`💡 *Sugerencia* 💡\nCliente: ${n}\nDeseo: ${d}`), '_blank'); cerrarSugerenciaModal();
   }
 
-  // Carga de Reseñas de la Nube (Público: Solo lectura y publicación)
   async function cargarReviewsNube() {
     try {
       const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"));
