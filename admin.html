@@ -110,6 +110,7 @@
       <button class="tab-btn" onclick="cambiarTab('pedidos', event)"><i class="fas fa-shopping-cart"></i> Pedidos</button>
       <button class="tab-btn" onclick="cambiarTab('cupones', event)"><i class="fas fa-ticket-alt"></i> Cupones</button>
       <button class="tab-btn" onclick="cambiarTab('comunidad', event)"><i class="fas fa-users"></i> Comunidad & XP</button>
+      <button class="tab-btn" onclick="cambiarTab('comentarios', event)"><i class="fas fa-comments"></i> Comentarios</button>
       <button class="tab-btn" onclick="cambiarTab('finanzas', event)"><i class="fas fa-coins"></i> Tasa BCV & Pagos</button>
     </div>
 
@@ -339,6 +340,22 @@
       </div>
     </div>
 
+    <!-- SECCIÓN: MODERACIÓN DE COMENTARIOS / RESEÑAS -->
+    <div id="seccion-comentarios" class="seccion-panel">
+      <div class="admin-card-form" style="border-color: var(--primary-color); box-shadow: 0 5px 15px rgba(255,0,127,0.3);">
+        <h3 style="color: var(--primary-color);"><i class="fas fa-comments"></i> Moderación de Reseñas de la Comunidad</h3>
+        <p style="font-size: 0.85em; color: #aaa; margin-bottom: 15px;">Aquí puedes revisar todas las opiniones publicadas por los clientes en la tienda y eliminar las que consideres necesarias.</p>
+        <div class="tabla-responsive">
+          <table class="admin-table">
+            <thead><tr><th>Autor / GamerTag</th><th>Calificación</th><th>Opinión</th><th>Acción</th></tr></thead>
+            <tbody id="tablaComentariosAdmin">
+              <tr><td colspan="4" style="text-align:center; color:#aaa;">Cargando comentarios...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
     <!-- SECCIÓN 6: TASA BCV & FINANZAS -->
     <div id="seccion-finanzas" class="seccion-panel">
       <div class="admin-card-form">
@@ -414,6 +431,7 @@
       cargarPedidosAdmin();
       cargarJugadoresAdmin();
       cargarConfigRangosAdmin();
+      cargarComentariosAdmin();
     } else {
       document.getElementById('loginScreen').style.display = 'block';
       document.getElementById('mainDashboard').style.display = 'none';
@@ -581,6 +599,48 @@
       cargarJugadoresAdmin();
     }
   };
+
+  // ----------------------------------------------------
+  // GESTIÓN DE COMENTARIOS / RESEÑAS (ADMIN)
+  // ----------------------------------------------------
+  async function cargarComentariosAdmin() {
+    let tbody = document.getElementById('tablaComentariosAdmin');
+    if(!tbody) return;
+    try {
+      const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"));
+      const querySnapshot = await getDocs(q);
+      tbody.innerHTML = "";
+      if(querySnapshot.empty) {
+        tbody.innerHTML = "<tr><td colspan='4' style='color:#aaa; text-align:center;'>No hay reseñas registradas.</td></tr>";
+        return;
+      }
+      querySnapshot.forEach((docSnap) => {
+        let r = docSnap.data();
+        tbody.innerHTML += `
+          <tr>
+            <td><strong>${r.nombre}</strong></td>
+            <td style="color:#ffcc00;">${r.estrellas}</td>
+            <td>${r.texto}</td>
+            <td><button class="btn-eliminar-fila" onclick="eliminarComentarioAdmin('${docSnap.id}')"><i class="fas fa-trash"></i> Eliminar</button></td>
+          </tr>
+        `;
+      });
+    } catch(e) {
+      tbody.innerHTML = "<tr><td colspan='4' style='color:#aaa; text-align:center;'>Error al cargar comentarios.</td></tr>";
+    }
+  }
+
+  window.eliminarComentarioAdmin = async (id) => {
+    if(confirm("¿Estás seguro de eliminar esta reseña?")) {
+      try {
+        await deleteDoc(doc(db, "reviews", id));
+        alert("🗑️ Reseña eliminada correctamente.");
+        cargarComentariosAdmin();
+      } catch(e) {
+        alert("Error al eliminar reseña: " + e.message);
+      }
+    }
+  }
 
   // ----------------------------------------------------
   // GESTIÓN DE CUPONES EN FIREBASE
@@ -794,7 +854,6 @@
         let ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
 
-        // Exportar a JPEG comprimido
         let dataUrl = canvas.toDataURL('image/jpeg', calidad);
         callback(dataUrl);
       };
@@ -854,7 +913,6 @@
     let leidos = 0;
 
     archivosValidos.forEach((file) => {
-      // Comprimimos cada foto a un ancho máximo de 800px y calidad 0.7 (quedan súper livianas, de ~100-200 KB)
       comprimirImagen(file, 800, 0.7, async (base64Optimizado) => {
         fotosProcesadas.push(base64Optimizado); 
         leidos++;
