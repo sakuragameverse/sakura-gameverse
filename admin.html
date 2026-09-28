@@ -139,11 +139,12 @@
     <!-- SECCIÓN 2: INVENTARIO -->
     <div id="seccion-inventario" class="seccion-panel">
       <div class="admin-card-form">
-        <h3><i class="fas fa-plus-circle"></i> Agregar Producto a Firebase con Fotos</h3>
+        <h3><i class="fas fa-plus-circle"></i> Agregar Producto o Recarga a Firebase con Fotos</h3>
         <div class="form-grid">
-          <input type="text" id="nuevoNombre" class="admin-input" placeholder="Nombre del Producto">
+          <input type="text" id="nuevoNombre" class="admin-input" placeholder="Nombre (Ej: Free Fire: 100+10 Diamantes)">
           <input type="number" id="nuevoPrecio" class="admin-input" placeholder="Precio USD ($)" step="0.01">
           <select id="nuevaCategoria" class="admin-input">
+            <option value="recargas">🎮 Recargas Free Fire</option>
             <option value="mangas">Mangas</option>
             <option value="ropa">Ropa / Hoodies</option>
             <option value="mandos">Mandos PC</option>
@@ -157,6 +158,7 @@
             <option value="accesorios">Accesorios 🎒</option>
           </select>
           <select id="nuevoEstado" class="admin-input">
+            <option value="Recarga Directa ⚡">Recarga Directa ⚡ (Para Juegos)</option>
             <option value="Envío Inmediato 📦">Stock Inmediato 📦</option>
             <option value="Por Encargo ⚡">Por Encargo ⚡</option>
           </select>
@@ -173,7 +175,7 @@
           </div>
         </div>
 
-        <button class="btn-admin-accion" onclick="procesarYGuardarProducto()">Guardar Producto en la Nube ☁️</button>
+        <button class="btn-admin-accion" onclick="procesarYGuardarProducto()">Guardar en la Nube ☁️</button>
       </div>
 
       <div class="admin-card-form">
@@ -227,6 +229,7 @@
         <div class="form-grid">
           <select id="selectCategoriaConfig" class="admin-input">
             <option value="todos">Todo el Loot</option>
+            <option value="recargas">🎮 Recargas Free Fire</option>
             <option value="mangas">Mangas Y Cómics</option>
             <option value="ropa">Clothing</option>
             <option value="cartas">TCG/Cartas</option>
@@ -239,7 +242,7 @@
             <option value="lamparas">Lámparas Neón</option>
             <option value="accesorios">Accesorios 🎒</option>
           </select>
-          <input type="text" id="inputNombreCategoria" class="admin-input" placeholder="Nuevo Nombre (Ej: Mangas Geniales)">
+          <input type="text" id="inputNombreCategoria" class="admin-input" placeholder="Nuevo Nombre (Ej: Recargas Free Fire)">
           <input type="file" id="fileFotoCategoria" class="admin-input" accept="image/*" style="padding: 7px;">
         </div>
 
@@ -272,7 +275,7 @@
 
         <div class="form-grid">
           <input type="text" id="inputClientePedido" class="admin-input" placeholder="Nombre del Cliente (Ej: Gabriel S.)">
-          <input type="text" id="inputDetallePedido" class="admin-input" placeholder="Detalle (Ej: Miku Legendaria + T-Shirt)">
+          <input type="text" id="inputDetallePedido" class="admin-input" placeholder="Detalle (Ej: 100+10 Diamantes [ID: 12345])">
           <input type="number" id="inputTotalPedido" class="admin-input" placeholder="Total USD ($)" step="0.01">
           <select id="selectEstadoPedido" class="admin-input">
             <option value="Pendiente ⏳">Pendiente ⏳</option>
@@ -381,12 +384,10 @@
 </div>
 
 <script type="module">
-  // Importaciones Firebase
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
   import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
   import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, orderBy, query, setDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
-  // Configuración de Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyDH1DZqaIi5sKRXspXDUWbMUZ4nr5JIy8Q",
     authDomain: "sakura-gameverse.firebaseapp.com",
@@ -400,7 +401,6 @@
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // Funciones de Pestañas
   window.cambiarTab = (tabId, evento) => {
     let botones = document.querySelectorAll('.tab-btn');
     botones.forEach(btn => btn.classList.remove('activo'));
@@ -410,7 +410,6 @@
     document.getElementById('seccion-' + tabId).classList.add('activa');
   };
 
-  // SISTEMA DE LOGIN
   window.iniciarSesion = () => {
     const e = document.getElementById('email').value.trim();
     const p = document.getElementById('pass').value.trim();
@@ -438,7 +437,6 @@
     }
   });
 
-  // GESTIÓN DE TASA BCV Y FINANZAS
   let tasaBcv = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 854.46;
   document.getElementById('statTasa').innerText = `Bs. ${tasaBcv.toFixed(2)}`;
   document.getElementById('adminInputTasa').value = tasaBcv;
@@ -469,9 +467,6 @@
     alert("💾 ¡Datos de pago guardados!");
   };
 
-  // ----------------------------------------------------
-  // GESTIÓN DE PEDIDOS EN FIREBASE
-  // ----------------------------------------------------
   window.guardarPedidoAdmin = async () => {
     let cliente = document.getElementById('inputClientePedido').value.trim();
     let detalle = document.getElementById('inputDetallePedido').value.trim();
@@ -533,9 +528,6 @@
     }
   }
 
-  // ----------------------------------------------------
-  // GESTIÓN DE RANGOS NINJA Y XP
-  // ----------------------------------------------------
   window.guardarConfigRangosAdmin = async () => {
     let umbrales = {
       genin: parseInt(document.getElementById('xpGenin').value) || 0,
@@ -600,9 +592,6 @@
     }
   };
 
-  // ----------------------------------------------------
-  // GESTIÓN DE COMENTARIOS / RESEÑAS (ADMIN)
-  // ----------------------------------------------------
   async function cargarComentariosAdmin() {
     let tbody = document.getElementById('tablaComentariosAdmin');
     if(!tbody) return;
@@ -642,9 +631,6 @@
     }
   }
 
-  // ----------------------------------------------------
-  // GESTIÓN DE CUPONES EN FIREBASE
-  // ----------------------------------------------------
   window.guardarCuponAdmin = async () => {
     let codigo = document.getElementById('adminCuponCodigo').value.trim().toUpperCase();
     let porcentaje = parseFloat(document.getElementById('adminCuponPorcentaje').value);
@@ -705,9 +691,6 @@
     }
   }
 
-  // ----------------------------------------------------
-  // GESTIÓN DE CONFIGURACIÓN DE CATEGORÍAS (FOTOS Y NOMBRES)
-  // ----------------------------------------------------
   window.cargarConfigCategoriasAdmin = async () => {
     try {
       const q = query(collection(db, "configuracion"), orderBy("timestamp", "desc"));
@@ -775,9 +758,6 @@
     }
   };
 
-  // ----------------------------------------------------
-  // GESTIÓN DE BANNERS MÚLTIPLES
-  // ----------------------------------------------------
   window.cargarBannersNube = async () => {
     try {
       const q = query(collection(db, "banners"), orderBy("timestamp", "desc"));
@@ -831,9 +811,6 @@
     }
   };
 
-  // ----------------------------------------------------
-  // COMPRESOR AUTOMÁTICO DE IMÁGENES (EVITA LÍMITE DE FIREBASE)
-  // ----------------------------------------------------
   function comprimirImagen(file, maxWidth, calidad, callback) {
     let reader = new FileReader();
     reader.onload = function (e) {
@@ -861,9 +838,6 @@
     reader.readAsDataURL(file);
   }
 
-  // ----------------------------------------------------
-  // GESTIÓN DE PRODUCTOS CON COMPRESIÓN AUTOMÁTICA
-  // ----------------------------------------------------
   window.cargarInventarioNube = async () => {
     try {
       const q = query(collection(db, "productos"), orderBy("timestamp", "desc"));
@@ -927,7 +901,7 @@
               fotos: fotosProcesadas, 
               timestamp: Date.now()
             });
-            alert("¡Producto guardado exitosamente en la nube! ☁️✨");
+            alert("¡Producto o recarga guardada exitosamente en la nube! ☁️✨");
             window.cargarInventarioNube();
             
             document.getElementById('nuevoNombre').value = ""; 
