@@ -58,9 +58,8 @@
 
     .hero-title { font-size: 1.1em; font-weight: bold; margin-bottom: 12px; letter-spacing: 1px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
     
-    .banner-slider-container { position: relative; width: 100%; max-width: 800px; margin: 20px auto; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 25px rgba(0, 229, 255, 0.25), 0 4px 10px rgba(0,0,0,0.5); aspect-ratio: 16/9; background: var(--card-bg); border: 2px solid var(--secondary-color); display: none; }
-    .banner-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; background-color: #0d041a; opacity: 0; transition: opacity 0.8s ease-in-out; cursor: pointer; }
-    .banner-slide.active { opacity: 1; z-index: 2; }
+    .banner-slider-container { position: relative; width: 100%; max-width: 800px; margin: 20px auto; border-radius: 20px; overflow: hidden; box-shadow: 0 8px 25px rgba(0, 229, 255, 0.25), 0 4px 10px rgba(0,0,0,0.5); aspect-ratio: 16/9; background: var(--card-bg); border: 2px solid var(--secondary-color); display: none; }
+    .banner-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; background-color: #0d041a; opacity: 0; transition: opacity 0.8s ease-in-out; cursor: pointer; border-radius: 18px; }
     .banner-control-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.5); color: var(--secondary-color); border: 1px solid var(--secondary-color); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.9em; z-index: 10; transition: all 0.2s ease; backdrop-filter: blur(4px); }
     .banner-control-btn:hover { background: rgba(0, 229, 255, 0.3); color: white; box-shadow: 0 0 10px var(--secondary-color); }
     .banner-prev { left: 12px; } .banner-next { right: 12px; }
@@ -561,7 +560,6 @@
     }
   }
 
-  // --- SINCRONIZACIÓN DE DATOS DE PAGO CON EL PANEL ADMIN ---
   async function cargarDatosPagoNube() {
     try {
       const docSnap = await getDoc(doc(db, "configuracion", "datos_pago"));
@@ -1043,7 +1041,6 @@
   function actualizarCarritoUI() { localStorage.setItem('sakura_carrito', JSON.stringify(carrito)); actualizarBadges(); }
   function actualizarBadges() { document.getElementById('cartBadge').innerText = carrito.length; document.getElementById('favBadge').innerText = favoritos.length; }
 
-  // FUNCIÓN PARA ABRIR EL CARRITO Y RENDERIZAR LOS PRODUCTOS CON ELIMINACIÓN CORREGIDA
   window.abrirCarritoModal = function() {
     reproducirSonido(); 
     let cont = document.getElementById('listaCarritoDetalle'); 
@@ -1076,7 +1073,6 @@
     document.getElementById('modalCarrito').style.display = 'flex';
   }
 
-  // FUNCIÓN GLOBAL PARA QUITAR PRODUCTOS CORRECTAMENTE
   window.removerDelCarrito = function(index) {
     reproducirSonido();
     carrito.splice(index, 1);
