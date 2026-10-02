@@ -1,1233 +1,1588 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sakura Gameverse</title>
+  <title>Sakura Gameverse | Tienda de Anime, Gaming & Otaku</title>
   
-  <!-- Configuración para App / PWA -->
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" type="image/webp" href="logo.webp">
-  <meta name="theme-color" content="#ffffff">
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            sakura: {
+              pink: '#ff66cc',
+              deep: '#ff007f',
+              cyan: '#00ffcc',
+              purple: '#7000ff',
+              dark: '#0f0914',
+              card: '#1a1228'
+            }
+          },
+          fontFamily: {
+            sans: ['Poppins', 'sans-serif'],
+            display: ['Orbitron', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts & Font Awesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <style>
     :root {
-      --bg-color: #0d041a;
-      --card-bg: linear-gradient(135deg, #1a0b38 0%, #11052C 100%);
-      --text-color: white;
-      --primary-color: #FF007F;
-      --secondary-color: #00e5ff;
-      --border-color: rgba(0,229,255,0.3);
-      --hero-bg: #11052C;
+      --primary-color: #ff66cc;
+      --secondary-color: #00ffcc;
+      --accent-color: #7000ff;
+      --bg-dark: #0f0914;
+      --card-bg: #1a1228;
+      --text-color: #f3f4f6;
     }
 
-    body.theme-rosa { --bg-color: #0d041a; --card-bg: linear-gradient(135deg, #1a0b38 0%, #11052C 100%); --text-color: white; --primary-color: #FF007F; --secondary-color: #00e5ff; --border-color: rgba(0,229,255,0.3); --hero-bg: #11052C; }
-    body.theme-azul { --bg-color: #020813; --card-bg: linear-gradient(135deg, #071630 0%, #030a1c 100%); --text-color: #e0f7ff; --primary-color: #00bfff; --secondary-color: #00ffcc; --border-color: rgba(0,255,204,0.3); --hero-bg: #071630; }
-    body.theme-purpura { --bg-color: #12021a; --card-bg: linear-gradient(135deg, #28053b 0%, #170224 100%); --text-color: #fce8ff; --primary-color: #b000ff; --secondary-color: #ff00ea; --border-color: rgba(255,0,234,0.3); --hero-bg: #28053b; }
-    body.theme-overdrive { --bg-color: #2b0500; --card-bg: linear-gradient(135deg, #4a0d00 0%, #2b0500 100%); --text-color: #fff5e6; --primary-color: #ffaa00; --secondary-color: #ff4400; --border-color: rgba(255,170,0,0.6); --hero-bg: #4a0d00; }
+    body.theme-cyberpunk {
+      --primary-color: #ffee00;
+      --secondary-color: #00f0ff;
+      --accent-color: #ff0055;
+      --bg-dark: #0a0810;
+      --card-bg: #161224;
+    }
 
-    body { margin: 0; background-color: var(--bg-color); color: var(--text-color); font-family: sans-serif; overflow-x: hidden; transition: background 0.4s ease, color 0.4s ease; padding-bottom: 75px; }
-    
+    body.theme-synthwave {
+      --primary-color: #ff007f;
+      --secondary-color: #ff9900;
+      --accent-color: #9900ff;
+      --bg-dark: #120024;
+      --card-bg: #220038;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-color);
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+
+    .font-display { font-family: 'Orbitron', sans-serif; }
+
+    /* Custom Scrollbar */
     ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: var(--bg-color); }
-    ::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
+    ::-webkit-scrollbar-track { background: var(--bg-dark); }
+    ::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--secondary-color); }
 
-    #socialProofContainer { background: rgba(17, 5, 44, 0.95); border-bottom: 1px solid var(--secondary-color); padding: 8px 15px; display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 0.85em; position: relative; z-index: 2000; box-shadow: inset 0 0 10px rgba(0,229,255,0.2); }
-    #socialProofContainer .sp-icon { font-size: 18px; color: var(--secondary-color); }
-    #socialProofContainer .sp-text { color: var(--text-color); font-weight: bold; }
-    #socialProofContainer .sp-sub { color: #aaa; font-size: 0.9em; font-weight: normal; }
-
-    .ticker-bar { background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--primary-color)); background-size: 200% 100%; animation: gradient-move 5s linear infinite; color: #0d041a; font-weight: bold; font-size: 0.9em; text-align: center; padding: 8px 10px; position: relative; z-index: 2001; box-shadow: 0 2px 10px rgba(0,229,255,0.4); white-space: nowrap; overflow: hidden; }
-    .ticker-content { display: inline-block; animation: ticker-slide 18s linear infinite; }
-    @keyframes gradient-move { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
-    @keyframes ticker-slide { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-
-    #splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg-color); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.6s ease; }
-    .splash-box { background: var(--hero-bg); border: 3px solid var(--primary-color); padding: 30px 40px; border-radius: 20px; text-align: center; box-shadow: 0 0 30px var(--primary-color), 0 0 60px rgba(0, 229, 255, 0.4); animation: box-pulse 1.5s infinite alternate; max-width: 90%; width: 320px; }
-    @keyframes box-pulse { 0% { box-shadow: 0 0 15px var(--primary-color), inset 0 0 10px rgba(255,0,127,0.3); border-color: var(--primary-color); } 100% { box-shadow: 0 0 35px var(--secondary-color), 0 0 50px var(--primary-color), inset 0 0 20px rgba(0,229,255,0.4); border-color: var(--secondary-color); } }
+    /* Neon Effects & Glows */
+    .neon-text-pink { text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color); }
+    .neon-text-cyan { text-shadow: 0 0 10px var(--secondary-color), 0 0 20px var(--secondary-color); }
+    .neon-border { border: 1px solid var(--primary-color); box-shadow: 0 0 12px rgba(255, 102, 204, 0.3); }
+    .neon-border-cyan { border: 1px solid var(--secondary-color); box-shadow: 0 0 12px rgba(0, 255, 204, 0.3); }
     
-    .splash-logo { max-width: 260px; margin-bottom: 15px; filter: drop-shadow(0 0 12px var(--secondary-color)) drop-shadow(0 0 25px var(--primary-color)); cursor: pointer; transition: transform 0.3s ease; }
-    .splash-logo:hover { transform: scale(1.05); }
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 1rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .glass-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary-color);
+      box-shadow: 0 10px 25px -5px rgba(255, 102, 204, 0.25);
+    }
 
-    .loading-text { color: var(--secondary-color); font-weight: bold; font-size: 1em; letter-spacing: 1px; margin-bottom: 15px; text-shadow: 0 0 10px rgba(0,229,255,0.7); min-height: 20px; }
-    .loading-bar-container { width: 100%; height: 8px; background: var(--bg-color); border-radius: 10px; border: 1px solid var(--primary-color); overflow: hidden; }
-    .loading-bar { width: 0%; height: 100%; background: var(--secondary-color); box-shadow: 0 0 10px var(--secondary-color); animation: load-progress 2s linear forwards; }
-    @keyframes load-progress { 0% { width: 0%; } 50% { width: 65%; } 100% { width: 100%; } }
+    /* Modal Backdrop */
+    .modal-overlay {
+      background: rgba(15, 9, 20, 0.85);
+      backdrop-filter: blur(8px);
+    }
 
-    .hero-banner { background-color: var(--hero-bg); text-align: center; padding: 30px 20px 20px 20px; border-bottom: 3px solid var(--primary-color); box-shadow: 0 0 20px rgba(255, 0, 127, 0.4); position: relative; z-index: 2; transition: background 0.4s ease; }
-    .hero-logo { max-width: 270px; margin-bottom: 10px; filter: drop-shadow(0 0 15px var(--secondary-color)) drop-shadow(0 0 30px var(--primary-color)); cursor: pointer; transition: transform 0.3s ease; }
-    .hero-logo:hover { transform: scale(1.06); filter: drop-shadow(0 0 20px var(--secondary-color)) drop-shadow(0 0 35px var(--secondary-color)); }
+    /* Product Image Carousel */
+    .card-img-container {
+      position: relative;
+      width: 100%;
+      height: 220px;
+      overflow: hidden;
+      border-top-left-radius: 1rem;
+      border-top-right-radius: 1rem;
+    }
+    .card-img-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: opacity 0.4s ease-in-out;
+    }
+    .card-img-container img.activa { opacity: 1; }
 
-    .hero-title { font-size: 1.1em; font-weight: bold; margin-bottom: 12px; letter-spacing: 1px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
-    
-    .banner-slider-container { position: relative; width: 100%; max-width: 800px; margin: 20px auto; border-radius: 20px; overflow: hidden; box-shadow: 0 8px 25px rgba(0, 229, 255, 0.25), 0 4px 10px rgba(0,0,0,0.5); aspect-ratio: 16/9; background: var(--card-bg); border: 2px solid var(--secondary-color); display: none; }
-    .banner-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; background-color: #0d041a; opacity: 0; transition: opacity 0.8s ease-in-out; cursor: pointer; border-radius: 18px; }
-    .banner-slide.active { opacity: 1; z-index: 2; }
-    .banner-control-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.5); color: var(--secondary-color); border: 1px solid var(--secondary-color); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.9em; z-index: 10; transition: all 0.2s ease; backdrop-filter: blur(4px); }
-    .banner-control-btn:hover { background: rgba(0, 229, 255, 0.3); color: white; box-shadow: 0 0 10px var(--secondary-color); }
-    .banner-prev { left: 12px; } .banner-next { right: 12px; }
-    .banner-dots { position: absolute; bottom: 12px; right: 20px; display: flex; gap: 6px; z-index: 10; background: rgba(0, 0, 0, 0.4); padding: 6px 10px; border-radius: 20px; backdrop-filter: blur(4px); }
-    .banner-dot { display: inline-block; width: 8px; height: 8px; background: rgba(255, 255, 255, 0.4); border-radius: 50%; cursor: pointer; transition: all 0.3s ease; }
-    .banner-dot.active { background: var(--secondary-color); width: 20px; border-radius: 4px; box-shadow: 0 0 8px var(--secondary-color); }
+    /* Keyframes */
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.8; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.03); }
+    }
+    .animate-pulse-glow { animation: pulseGlow 2.5s infinite ease-in-out; }
 
-    .store-status-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(37, 211, 102, 0.15); border: 1px solid #25D366; padding: 5px 12px; border-radius: 20px; font-size: 0.85em; font-weight: bold; color: #25D366; margin-bottom: 12px; box-shadow: 0 0 10px rgba(37,211,102,0.3); }
-    .status-dot { width: 10px; height: 10px; background-color: #25D366; border-radius: 50%; box-shadow: 0 0 8px #25D366; animation: pulse-dot 1.5s infinite; }
-    @keyframes pulse-dot { 0% { transform: scale(0.9); opacity: 0.7; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(0.9); opacity: 0.7; } }
-
-    .bcv-box { background: rgba(0, 229, 255, 0.1); border: 1px solid var(--secondary-color); display: inline-flex; align-items: center; gap: 10px; padding: 6px 15px; border-radius: 20px; font-size: 0.9em; font-weight: bold; color: var(--secondary-color); box-shadow: 0 0 10px rgba(0,229,255,0.2); }
-    .bcv-input { background: var(--bg-color); border: 1px solid var(--primary-color); color: var(--text-color); padding: 4px 8px; border-radius: 10px; width: 90px; text-align: center; font-weight: bold; outline: none; }
-
-    .container { padding: 30px 20px 100px 20px; max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
-    .search-box { text-align: center; margin-bottom: 20px; }
-    .search-input { background: var(--hero-bg); border: 2px solid var(--secondary-color); color: var(--text-color); padding: 10px 20px; width: 80%; max-width: 400px; border-radius: 25px; font-size: 1em; outline: none; box-shadow: 0 0 10px rgba(0,229,255,0.3); }
-    
-    .categorias-visuales-section { margin: 25px 0 35px 0; position: relative; }
-    .categorias-visuales-header { font-size: 1.3em; font-weight: bold; color: var(--text-color); margin-bottom: 15px; padding-left: 5px; border-left: 4px solid var(--primary-color); line-height: 1; }
-    .carrusel-wrapper { position: relative; display: flex; align-items: center; }
-    .carrusel-track { display: flex; gap: 15px; overflow-x: auto; scroll-behavior: smooth; scrollbar-width: none; padding: 10px 5px; }
-    .carrusel-track::-webkit-scrollbar { display: none; }
-    
-    .cat-card { flex: 0 0 auto; width: 140px; background: var(--card-bg); border: 2px solid transparent; border-radius: 16px; overflow: hidden; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; }
-    .cat-card:hover, .cat-card.activa { transform: translateY(-6px); border-color: var(--secondary-color); box-shadow: 0 8px 20px rgba(0,229,255,0.4); }
-    .cat-img { width: 100%; height: 140px; object-fit: cover; background-color: #0d041a; border-bottom: 1px solid rgba(255,255,255,0.05); }
-    .cat-info { padding: 12px 8px; text-align: center; background: var(--hero-bg); }
-    .cat-title { font-size: 0.95em; font-weight: bold; color: var(--text-color); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .cat-count { font-size: 0.75em; color: #aaa; }
-    
-    .carrusel-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(17, 5, 44, 0.8); color: var(--secondary-color); border: 1px solid var(--secondary-color); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; backdrop-filter: blur(4px); box-shadow: 0 0 10px rgba(0,229,255,0.3); transition: all 0.2s; }
-    .carrusel-arrow:hover { background: var(--secondary-color); color: #0d041a; transform: translateY(-50%) scale(1.1); }
-    .arrow-prev { left: -15px; } .arrow-next { right: -15px; }
-
-    .controles-superiores { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-bottom: 30px; }
-    .filtros { display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 100%; padding-bottom: 10px; justify-content: flex-start; gap: 8px; scrollbar-width: thin; }
-    .btn-filtro { background: transparent; color: var(--text-color); border: 1px solid var(--secondary-color); padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: all 0.3s ease; white-space: nowrap; flex-shrink: 0; position: relative; }
-    .btn-filtro:hover { background: rgba(0,229,255,0.2); box-shadow: 0 0 10px rgba(0,229,255,0.4); }
-    .btn-filtro.activo { background: var(--secondary-color); color: #0d041a; box-shadow: 0 0 15px var(--secondary-color), inset 0 0 8px rgba(255,255,255,0.6); border-color: #ffffff; }
-    .panel-controles-avanzados { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; width: 100%; max-width: 650px; margin: 0 auto; }
-    .ordenar-select { background: var(--hero-bg); border: 1px solid var(--primary-color); color: var(--text-color); padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; outline: none; box-shadow: 0 0 10px rgba(255,0,127,0.3); }
-
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-    .card { background: var(--card-bg); border-radius: 15px; padding: 15px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.5); position: relative; border: 1px solid var(--border-color); transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; cursor: pointer; animation: card-pop 0.4s ease-out; overflow: hidden; }
-    @keyframes card-pop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-    .card:hover, .card:active { transform: translateY(-10px) scale(1.02); box-shadow: 0 0 25px var(--primary-color), 0 0 45px var(--secondary-color); border: 1px solid var(--secondary-color); }
-    .card-img-container { position: relative; width: 100%; height: 250px; background-color: rgba(0,0,0,0.3); border-radius: 10px; margin-bottom: 15px; overflow: hidden; }
-    .card-img-container img { width: 100%; height: 100%; object-fit: contain; display: none; }
-    .card-img-container img.activa { display: block; }
-    .carrusel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.6); color: var(--secondary-color); border: 1px solid var(--secondary-color); border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.8em; z-index: 4; }
-    .carrusel-btn:hover { background: rgba(0, 229, 255, 0.3); }
-    .carrusel-prev { left: 8px; } .carrusel-next { right: 8px; }
-    .carrusel-dots { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; z-index: 4; }
-    .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255, 255, 255, 0.4); }
-    .dot.activo { background: var(--secondary-color); box-shadow: 0 0 5px var(--secondary-color); }
-    .card-title { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; }
-    .precio-container { display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 3px; }
-    .card-price { color: var(--secondary-color); font-size: 1.2em; font-weight: bold; text-shadow: 0 0 5px rgba(0, 229, 255, 0.5); }
-    .card-bs { color: var(--primary-color); font-size: 0.85em; font-weight: bold; margin-bottom: 8px; }
-    
-    .badge-estado { position: absolute; top: 10px; right: 10px; padding: 5px 12px; font-size: 0.75em; font-weight: bold; border-radius: 20px; z-index: 3; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
-    .badge-stock { background-color: #00e5ff; color: #0d041a; box-shadow: 0 0 10px #00e5ff; }
-    .badge-encargo { background-color: #FF007F; color: white; box-shadow: 0 0 10px #FF007F; }
-    .badge-digital { background-color: #25D366; color: #0d041a; box-shadow: 0 0 10px #25D366; }
-    .btn-fav-card { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.6); border: 1px solid var(--secondary-color); color: #ff3366; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1em; z-index: 3; transition: transform 0.2s; }
-    .btn-fav-card:hover { transform: scale(1.15); background: rgba(255,0,127,0.3); }
-
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-    .modal-content { background: var(--hero-bg); padding: 20px; border-radius: 20px; text-align: left; max-width: 95%; width: 440px; border: 2px solid var(--primary-color); box-shadow: 0 0 30px rgba(255,0,127,0.5); position: relative; max-height: 92vh; overflow-y: auto; }
-    .cerrar-modal { position: absolute; top: 10px; right: 15px; font-size: 25px; color: var(--text-color); cursor: pointer; background: none; border: none; font-weight: bold; z-index: 10; }
-    .breadcrumbs { font-size: 0.85em; color: #aaa; margin-bottom: 12px; font-weight: bold; }
-    .breadcrumbs span { color: var(--secondary-color); }
-    .modal-img { width: 100%; max-height: 350px; object-fit: contain; background: rgba(0,0,0,0.5); border-radius: 12px; margin-bottom: 10px; }
-    .modal-tag-info { display: inline-block; background: rgba(0,229,255,0.15); border: 1px solid var(--secondary-color); color: var(--secondary-color); padding: 4px 10px; border-radius: 10px; font-size: 0.8em; font-weight: bold; margin-bottom: 10px; }
-    .modal-miniaturas { display: flex; gap: 10px; justify-content: flex-start; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px; }
-    .modal-mini-img { width: 65px; height: 65px; object-fit: cover; border-radius: 10px; cursor: pointer; border: 2px solid var(--secondary-color); opacity: 0.6; transition: all 0.2s; }
-    .modal-mini-img:hover, .modal-mini-img.activo { opacity: 1; transform: scale(1.08); box-shadow: 0 0 10px var(--secondary-color); }
-
-    .tallas-container, .recarga-container { margin: 15px 0; display: none; text-align: left; }
-    .tallas-container label, .recarga-container label { display: block; color: var(--secondary-color); font-size: 0.9em; font-weight: bold; margin-bottom: 5px; }
-    .talla-select, .recarga-input { background: var(--bg-color); border: 1px solid var(--secondary-color); color: var(--text-color); padding: 8px; border-radius: 10px; width: 100%; font-weight: bold; outline: none; box-sizing: border-box; }
-    .recarga-input { text-align: left; }
-    .link-guia-tallas { color: var(--secondary-color); font-size: 0.8em; text-decoration: underline; cursor: pointer; margin-top: 5px; display: inline-block; }
-
-    .btn-comprar { background: var(--primary-color); color: white; border: none; padding: 12px 20px; font-size: 1.1em; font-weight: bold; border-radius: 30px; cursor: pointer; margin-top: 15px; box-shadow: 0 0 10px var(--primary-color); width: 100%; }
-    .btn-compartir { background: #25D366; color: white; border: none; padding: 10px 15px; font-size: 0.9em; font-weight: bold; border-radius: 20px; cursor: pointer; margin-top: 8px; box-shadow: 0 0 8px #25D366; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; }
-
-    .cupon-box { display: flex; gap: 8px; margin-bottom: 12px; }
-    .cupon-input { flex-grow: 1; background: var(--bg-color); border: 1px solid var(--secondary-color); color: var(--text-color); padding: 8px; border-radius: 10px; font-size: 0.9em; outline: none; text-transform: uppercase; }
-    .btn-cupon { background: var(--secondary-color); color: #0d041a; border: none; padding: 0 15px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 0.85em; }
-    .recibo-box { background: var(--bg-color); border: 2px dashed var(--secondary-color); padding: 15px; border-radius: 12px; text-align: left; font-family: monospace; font-size: 0.85em; color: var(--secondary-color); margin-bottom: 15px; }
-    .recibo-line { display: flex; justify-content: space-between; margin-bottom: 5px; }
-
-    .btn-copiar-mini { background: rgba(0,229,255,0.1); color: var(--secondary-color); border: 1px solid var(--secondary-color); border-radius: 8px; padding: 5px 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-    .btn-copiar-mini:hover { background: var(--secondary-color); color: #0d041a; }
-
-    .faq-item { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; margin-bottom: 10px; text-align: left; }
-    .faq-question { color: var(--secondary-color); font-weight: bold; font-size: 0.95em; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
-    .faq-answer { color: var(--text-color); font-size: 0.88em; line-height: 1.4; opacity: 0.85; }
-
-    .cart-item-row { display: flex; align-items: center; justify-content: space-between; background: var(--card-bg); padding: 10px; border-radius: 10px; margin-bottom: 10px; border: 1px solid var(--border-color); }
-    .cart-item-img { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; margin-right: 10px; }
-    .cart-item-info { flex-grow: 1; text-align: left; font-size: 0.9em; }
-    .cart-item-del { background: #ff3366; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.9em; font-weight: bold; z-index: 10; }
-
-    .sugerencia-input { width: 100%; background: var(--bg-color); border: 1px solid var(--secondary-color); color: var(--text-color); padding: 10px; border-radius: 10px; margin-bottom: 12px; box-sizing: border-box; outline: none; }
-    .btn-sugerencia { background: var(--secondary-color); color: #0d041a; border: none; padding: 10px 20px; font-weight: bold; border-radius: 20px; cursor: pointer; width: 100%; box-shadow: 0 0 10px var(--secondary-color); }
-
-    .reviews-section, .info-section { background: var(--hero-bg); margin-top: 40px; padding: 30px 20px; border-radius: 15px; border: 1px solid var(--secondary-color); box-shadow: 0 0 15px rgba(0,229,255,0.2); }
-    .info-section { border-color: var(--primary-color); box-shadow: 0 0 15px rgba(255,0,127,0.2); margin-bottom: 20px; }
-    .review-card { background: var(--card-bg); padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid rgba(255,0,127,0.3); position: relative; }
-    .review-author { font-weight: bold; color: var(--secondary-color); margin-bottom: 5px; }
-    .review-stars { color: #ffcc00; margin-bottom: 8px; }
-    .review-text { font-size: 0.95em; line-height: 1.4; }
-
-    .info-title { color: var(--secondary-color); font-size: 1.4em; margin-bottom: 20px; text-align: center; }
-    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; font-size: 0.95em; line-height: 1.5; }
-    .info-card { background: var(--card-bg); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,0,127,0.3); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-    .info-card h4 { color: var(--secondary-color); margin-top: 0; margin-bottom: 12px; font-size: 1.1em; display: flex; align-items: center; gap: 8px; }
-    .badge-envio { display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 0, 127, 0.15); border: 1px solid var(--primary-color); padding: 4px 10px; border-radius: 8px; font-size: 0.85em; font-weight: bold; color: var(--text-color); margin: 3px; }
-
-    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(17, 5, 44, 0.95); backdrop-filter: blur(10px); border-top: 2px solid var(--primary-color); display: flex; justify-content: space-around; align-items: center; padding: 10px 0; z-index: 1500; box-shadow: 0 -5px 20px rgba(255,0,127,0.3); }
-    .nav-item { color: var(--text-color); display: flex; flex-direction: column; align-items: center; font-size: 0.75em; font-weight: bold; cursor: pointer; position: relative; transition: color 0.3s; width: 25%; }
-    .nav-item i { font-size: 1.6em; margin-bottom: 4px; color: var(--secondary-color); transition: transform 0.3s; pointer-events: none; }
-    .nav-item span { pointer-events: none; }
-    .nav-item:hover i { transform: translateY(-3px) scale(1.1); color: var(--primary-color); }
-    .nav-badge { position: absolute; top: -5px; right: 20%; background: #ff3366; color: white; font-size: 0.85em; font-weight: bold; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 8px #ff3366; pointer-events: none; z-index: 10; }
-
-    .menu-opciones-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 15px; }
-    .btn-menu-opcion { display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--card-bg); border: 1px solid var(--border-color); padding: 15px 10px; border-radius: 15px; color: var(--text-color); text-decoration: none; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.2s; text-align: center; }
-    .btn-menu-opcion i { font-size: 1.8em; margin-bottom: 8px; }
-    .btn-menu-opcion:hover { transform: scale(1.05); border-color: var(--secondary-color); box-shadow: 0 0 15px rgba(0,229,255,0.3); }
-
-    .bg-elements { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
-    .float-item { position: absolute; top: -10%; animation: fall linear infinite; opacity: 0.7; }
-    .sakura { font-size: 22px; filter: drop-shadow(0 0 5px var(--primary-color)); }
-    .gamer { font-size: 28px; filter: drop-shadow(0 0 8px var(--secondary-color)); opacity: 0.5; }
-    @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
-    .i1 { left: 5%; animation-duration: 9s; animation-delay: 0s; } .i2 { left: 15%; animation-duration: 14s; animation-delay: 2s; } .i3 { left: 25%; animation-duration: 10s; animation-delay: 4s; } .i4 { left: 35%; animation-duration: 13s; animation-delay: 1s; } .i5 { left: 45%; animation-duration: 11s; animation-delay: 5s; }
+    /* Floating Toast */
+    #toast-container {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .toast-msg {
+      background: var(--card-bg);
+      border-left: 4px solid var(--secondary-color);
+      color: #fff;
+      padding: 0.85rem 1.25rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+      animation: slideIn 0.3s ease-out forwards;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
   </style>
 </head>
-<body>
+<body class="theme-sakura flex flex-col min-h-screen" onclick="crearDestello(event)">
 
-<div id="socialProofContainer">
-  <div class="sp-icon"><i class="fas fa-shopping-bag"></i></div>
-  <div><span class="sp-text" id="spTexto">¡Gabriel S. compró una miku Legendaria!</span> <span class="sp-sub" id="spLugar">(Bejuma)</span></div>
-</div>
-
-<div class="ticker-bar">
-  <div class="ticker-content">
-    🔥 Catálogo al mayor disponible por WhatsApp 📱 | Envíos seguros a todo el país por ZOOM y MRW 📦 | 🎮 Cupón activo: OTAKU10 🌸
-  </div>
-</div>
-
-<div id="modalPromoFlash" class="modal" style="display: flex;">
-  <div class="modal-content" style="border: 2px solid var(--secondary-color); text-align: center;">
-    <button class="cerrar-modal" onclick="cerrarPromoFlash()">×</button>
-    <div style="font-size: 40px; margin-bottom: 10px;">🎁</div>
-    <h2 style="color: var(--secondary-color); margin-top: 0;">¡Bienvenido a Sakura Gameverse!</h2>
-    <p style="font-size: 0.95em; line-height: 1.5; margin-bottom: 15px;">Usa códigos de descuento activos o abre el menú inferior para reclamar tu <strong>Cofre Diario</strong> y girar la ruleta Gacha.</p>
-    <button class="btn-sugerencia" onclick="cerrarPromoFlash()">¡A Explorar el loot! 🎁</button>
-  </div>
-</div>
-
-<div id="modalCofreDiario" class="modal">
-  <div class="modal-content" style="width: 420px; border: 2px solid #ff9900; text-align: center;">
-    <button class="cerrar-modal" onclick="cerrarCofreModal()">×</button>
-    <div style="font-size: 45px; margin-bottom: 5px;">📦✨</div>
-    <h2 style="color: #ff9900; margin-top: 0;">Cofre de Recompensa Diaria</h2>
-    <div id="cofreResultado" style="background: var(--bg-color); border: 2px dashed #ff9900; padding: 20px; border-radius: 12px; font-size: 1.1em; font-weight: bold; color: var(--secondary-color); margin-bottom: 15px;">Cofre listo para abrir 🗝️ (Recompensa: 50 XP diarios)</div>
-    <button class="btn-sugerencia" style="background: #ff9900; color: #0d041a;" onclick="abrirCofreDiario()">¡Abrir Cofre Diario! 🔓</button>
-  </div>
-</div>
-
-<div id="modalGacha" class="modal">
-  <div class="modal-content" style="width: 420px; border: 2px solid #9900ff; text-align: center;">
-    <button class="cerrar-modal" onclick="cerrarGachaModal()">×</button>
-    <div style="font-size: 40px; margin-bottom: 5px;">🎰</div>
-    <h2 style="color: #ffcc00; margin-top: 0;">Ruleta Gacha Otaku</h2>
-    <div id="gachaResultado" style="background: var(--bg-color); border: 2px dashed #9900ff; padding: 20px; border-radius: 12px; font-size: 1.1em; font-weight: bold; color: var(--secondary-color); margin-bottom: 15px; min-height: 60px; display: flex; align-items: center; justify-content: center;">Presiona el botón para girar 🎁</div>
-    <button class="btn-sugerencia" style="background: #9900ff; color: white;" onclick="girarRuletaGacha()"><div>¡Girar Ruleta Gacha! ⚡</div></button>
-  </div>
-</div>
-
-<div id="modalTemas" class="modal">
-  <div class="modal-content" style="width: 400px; border: 2px solid #ffcc00; text-align: center;">
-    <button class="cerrar-modal" onclick="cerrarTemasModal()">×</button>
-    <h2 style="color: #ffcc00; margin-top: 0;">Selecciona tu Estilo</h2>
-    <div style="display: flex; flex-direction: column; gap: 10px;">
-      <button class="btn-sugerencia" style="background: #FF007F; color: white;" onclick="cambiarTema('theme-rosa')">🌸 Rosa Cyberpunk</button>
-      <button class="btn-sugerencia" style="background: #00bfff; color: #0d041a;" onclick="cambiarTema('theme-azul')">⚡ Azul Neón Matrix</button>
-      <button class="btn-sugerencia" style="background: #b000ff; color: white;" onclick="cambiarTema('theme-purpura')">💜 Púrpura Anime</button>
-      <button class="btn-sugerencia" style="background: #ffaa00; color: #0d041a;" onclick="cambiarTema('theme-overdrive')">🔥 Naranja Overdrive</button>
+  <div id="splash-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#0f0914] transition-opacity duration-700">
+    <div class="relative flex items-center justify-center">
+      <div class="w-28 h-28 rounded-full border-4 border-t-transparent border-[#ff66cc] animate-spin"></div>
+      <i class="fas fa-gamepad text-4xl text-[#00ffcc] absolute animate-pulse"></i>
     </div>
-  </div>
-</div>
-
-<div id="modalGamerProfile" class="modal">
-  <div class="modal-content" style="width: 420px; border: 2px solid #00ffcc; text-align: center;">
-    <button class="cerrar-modal" onclick="cerrarGamerProfileModal()">×</button>
-    <h2 style="color: #00ffcc; margin-top: 0;">Perfil Gamer & XP</h2>
-    <input type="text" id="inputGamerTag" class="sugerencia-input" placeholder="Tu GamerTag">
-    <div style="background: var(--bg-color); padding: 12px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #00ffcc; text-align: left; font-size: 0.9em;">
-      <div>🏆 <strong>Rango actual:</strong> <span id="lblRango" style="color: #ffcc00;">Novato Otaku</span></div>
-      <div>⚡ <strong>Puntos XP:</strong> <span id="lblXp" style="color: var(--secondary-color);">150 XP</span></div>
-    </div>
-    <button class="btn-sugerencia" style="background: #00ffcc; color: #0d041a;" onclick="guardarGamerTag()">Guardar GamerTag 💾</button>
-  </div>
-</div>
-
-<div id="modalGuiaTallas" class="modal">
-  <div class="modal-content" style="width: 450px;">
-    <button class="cerrar-modal" onclick="cerrarGuiaTallasModal()">×</button>
-    <h2 style="color: var(--secondary-color); margin-top: 0; text-align: center;">📏 Guía de Tallas</h2>
-    <div style="background: var(--bg-color); border: 1px solid var(--secondary-color); border-radius: 10px; padding: 10px; font-size: 0.85em; text-align: left; margin-bottom: 15px;">
-      <div class="recibo-line"><strong>TALLA S:</strong><span>Ancho: 50cm | Alto: 68cm</span></div>
-      <div class="recibo-line"><strong>TALLA M:</strong><span>Ancho: 53cm | Alto: 70cm</span></div>
-      <div class="recibo-line"><strong>TALLA L:</strong><span>Ancho: 56cm | Alto: 72cm</span></div>
-      <div class="recibo-line"><strong>TALLA XL:</strong><span>Ancho: 59cm | Alto: 74cm</span></div>
-    </div>
-    <button class="btn-sugerencia" onclick="cerrarGuiaTallasModal()">¡Entendido! ✨</button>
-  </div>
-</div>
-
-<div id="splash-screen">
-  <div class="splash-box">
-    <img src="logo.webp" alt="Logo" class="splash-logo" onclick="activarEasterEggLogo()">
-    <div id="loadingText" class="loading-text">Cargando Gameverse🌸</div>
-    <div class="loading-bar-container"><div class="loading-bar"></div></div>
-  </div>
-</div>
-
-<div class="bg-elements">
-  <div class="float-item sakura i1">🌸</div><div class="float-item gamer i2">🎮</div><div class="float-item sakura i3">🌸</div><div class="float-item gamer i4">🕹️</div><div class="float-item sakura i5">🌸</div>
-</div>
-
-<div class="hero-banner">
-  <img src="logo.webp" alt="Sakura Gameverse" class="hero-logo" onclick="activarEasterEggLogo()">
-  <div class="store-status-badge"><div class="status-dot"></div> Abierto de 10:00AM a 7:00PM 24/7</div>
-  <div class="hero-title">✨ Bienvenidos a Sakura Gameverse ✨<br>Donde tu pasión por el gaming nunca hace game over. 👾🌸</div>
-  <div id="bannerSliderContainer" class="banner-slider-container"></div>
-  <br>
-  <div class="bcv-box">
-    <i class="fas fa-coins"></i> Tasa BCV (Bs/$): 
-    <input type="number" id="inputTasaBcv" class="bcv-input" step="0.01" value="860" oninput="cambiarTasaBcvManual()">
-  </div>
-</div>
-
-<div class="container">
-  <div class="search-box">
-    <input type="text" id="buscador" class="search-input" placeholder="🔍 Buscar manga, recarga, figura..." onkeyup="buscarProductos()">
+    <h1 class="font-display text-2xl font-black mt-6 tracking-widest text-[#ff66cc] neon-text-pink">SAKURA GAMEVERSE</h1>
+    <p class="text-xs text-gray-400 mt-2 font-mono">Cargando la tienda Otaku & Gaming...</p>
   </div>
 
-  <div class="categorias-visuales-section">
-    <div class="categorias-visuales-header">Categorías</div>
-    <div class="carrusel-wrapper">
-      <button class="carrusel-arrow arrow-prev" onclick="scrollCategoriasVisuales(-1)"><i class="fas fa-chevron-left"></i></button>
-      
-      <div class="carrusel-track" id="categoriasTrack">
-        <div class="cat-card activa" onclick="filtrar('todos')">
-          <img src="logo.webp" id="img-cat-todos" class="cat-img" alt="Todos">
-          <div class="cat-info"><div class="cat-title" id="title-cat-todos">Todo el Loot</div><div class="cat-count" id="count-todos">0 productos</div></div>
+  <header class="sticky top-0 z-40 bg-[#0f0914]/90 backdrop-blur-md border-b border-pink-500/20">
+    <!-- Top Bar: BCV Rate & Gamer XP -->
+    <div class="bg-gradient-to-r from-purple-900/60 via-pink-900/40 to-purple-900/60 px-4 py-1.5 text-xs border-b border-pink-500/10">
+      <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+        <div class="flex items-center space-x-3">
+          <span class="bg-pink-500/20 text-pink-300 px-2 py-0.5 rounded-full font-mono font-semibold flex items-center gap-1">
+            <i class="fas fa-[#00ffcc] fa-coins text-[#00ffcc]"></i>
+            Tasa BCV: <strong id="lblTasaBcv" class="text-white">Bs. --</strong>
+          </span>
+          <span class="hidden sm:inline text-gray-400">| Envíos a toda Venezuela 🇻🇪 & Entregas Digitales ⚡</span>
         </div>
-        <div class="cat-card" onclick="filtrar('recargas')">
-          <img src="logo.webp" id="img-cat-recargas" class="cat-img" alt="Recargas">
-          <div class="cat-info"><div class="cat-title" id="title-cat-recargas">Recargas</div><div class="cat-count" id="count-recargas">0 productos</div></div>
-        </div>
-        <div class="cat-card" onclick="filtrar('mangas')">
-          <img src="logo.webp" id="img-cat-mangas" class="cat-img" alt="Mangas">
-          <div class="cat-info"><div class="cat-title" id="title-cat-mangas">Mangas Y Cómics</div><div class="cat-count" id="count-mangas">0 productos</div></div>
-        </div>
-        <div class="cat-card" onclick="filtrar('ropa')">
-          <img src="logo.webp" id="img-cat-ropa" class="cat-img" alt="Ropa">
-          <div class="cat-info"><div class="cat-title" id="title-cat-ropa">Clothing</div><div class="cat-count" id="count-ropa">0 productos</div></div>
-        </div>
-        <div class="cat-card" onclick="filtrar('cartas')">
-          <img src="logo.webp" id="img-cat-cartas" class="cat-img" alt="TCG">
-          <div class="cat-info"><div class="cat-title" id="title-cat-cartas">TCG/Cartas</div><div class="cat-count" id="count-cartas">0 productos</div></div>
-        </div>
-        <div class="cat-card" onclick="filtrar('figuras')">
-          <img src="logo.webp" id="img-cat-figuras" class="cat-img" alt="Figuras">
-          <div class="cat-info"><div class="cat-title" id="title-cat-figuras">Figuras Anime</div><div class="cat-count" id="count-figuras">0 productos</div></div>
-        </div>
-        <div class="cat-card" onclick="filtrar('mandos')">
-          <img src="logo.webp" id="img-cat-mandos" class="cat-img" alt="Mandos">
-          <div class="cat-info"><div class="cat-title" id="title-cat-mandos">Videojuegos</div><div class="cat-count" id="count-mandos">0 productos</div></div>
-        </div>
-        <div class="cat-card" onclick="filtrar('audifonos')">
-          <img src="logo.webp" id="img-cat-audifonos" class="cat-img" alt="Audífonos">
-          <div class="cat-info"><div class="cat-title" id="title-cat-audifonos">Electrónica Audio</div><div class="cat-count" id="count-audifonos">0 productos</div></div>
-        </div>
-        <div class="cat-card" onclick="filtrar('teclados')">
-          <img src="logo.webp" id="img-cat-teclados" class="cat-img" alt="Teclados">
-          <div class="cat-info"><div class="cat-title" id="title-cat-teclados">Teclados PC</div><div class="cat-count" id="count-teclados">0 productos</div></div>
-        </div>
-        <div class="cat-card" onclick="filtrar('peluches')">
-          <img src="logo.webp" id="img-cat-peluches" class="cat-img" alt="Peluches">
-          <div class="cat-info"><div class="cat-title" id="title-cat-peluches">Peluches Kawaii</div><div class="cat-count" id="count-peluches">0 productos</div></div>
-        </div>
-        <div class="cat-card" onclick="filtrar('katanas')">
-          <img src="logo.webp" id="img-cat-katanas" class="cat-img" alt="Katanas">
-          <div class="cat-info"><div class="cat-title" id="title-cat-katanas">Katanas Replicas</div><div class="cat-count" id="count-katanas">0 productos</div></div>
-        </div>
-        <div class="cat-card" onclick="filtrar('lamparas')">
-          <img src="logo.webp" id="img-cat-lamparas" class="cat-img" alt="Lámparas">
-          <div class="cat-info"><div class="cat-title" id="title-cat-lamparas">Lámparas Neón</div><div class="cat-count" id="count-lamparas">0 productos</div></div>
-        </div>
-        <div class="cat-card" onclick="filtrar('accesorios')">
-          <img src="logo.webp" id="img-cat-accesorios" class="cat-img" alt="Accesorios">
-          <div class="cat-info"><div class="cat-title" id="title-cat-accesorios">Accesorios</div><div class="cat-count" id="count-accesorios">0 productos</div></div>
+        
+        <!-- Gamification XP Bar preview -->
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="abrirGamerProfileModal()">
+          <span class="text-gray-300 font-medium hover:text-[#00ffcc] transition" id="lblGamerTagNav">OtakuGamer</span>
+          <div class="bg-gray-800 rounded-full h-3.5 w-24 overflow-hidden border border-pink-500/30 relative">
+            <div id="barXpNav" class="bg-gradient-to-r from-pink-500 to-cyan-400 h-full w-1/4 transition-all duration-500"></div>
+            <span id="lblXpNav" class="absolute inset-0 text-[9px] font-bold text-center leading-3 text-white">0 XP</span>
+          </div>
+          <span id="lblRangoBadge" class="bg-purple-600/50 text-purple-200 px-2 py-0.5 rounded text-[10px] uppercase tracking-wider font-semibold">Novato</span>
         </div>
       </div>
-      
-      <button class="carrusel-arrow arrow-next" onclick="scrollCategoriasVisuales(1)"><i class="fas fa-chevron-right"></i></button>
-    </div>
-  </div>
-
-  <div class="controles-superiores">
-    <div class="filtros">
-      <button class="btn-filtro activo" onclick="filtrar('todos', event)">🌟 Todos</button>
-      <button class="btn-filtro" style="border-color: #25D366; color: #25D366;" onclick="filtrar('recargas', event)" id="btn-filt-recargas"> Recargas</button>
-      <button class="btn-filtro" onclick="filtrar('mangas', event)" id="btn-filt-mangas">📚 Mangas</button>
-      <button class="btn-filtro" onclick="filtrar('ropa', event)" id="btn-filt-ropa">👕 Ropa / Hoodies</button>
-      <button class="btn-filtro" onclick="filtrar('mandos', event)" id="btn-filt-mandos">🎮 Mandos PC</button>
-      <button class="btn-filtro" onclick="filtrar('teclados', event)" id="btn-filt-teclados">⌨️ Teclados</button>
-      <button class="btn-filtro" onclick="filtrar('audifonos', event)" id="btn-filt-audifonos">🎧 Audífonos</button>
-      <button class="btn-filtro" onclick="filtrar('figuras', event)" id="btn-filt-figuras">🗿 Figuras</button>
-      <button class="btn-filtro" onclick="filtrar('peluches', event)" id="btn-filt-peluches">🧸 Peluches</button>
-      <button class="btn-filtro" onclick="filtrar('cartas', event)" id="btn-filt-cartas">🃏 Cartas TCG</button>
-      <button class="btn-filtro" onclick="filtrar('katanas', event)" id="btn-filt-katanas">⚔️ Katanas</button>
-      <button class="btn-filtro" onclick="filtrar('lamparas', event)" id="btn-filt-lamparas">💡 Lámparas</button>
-      <button class="btn-filtro" onclick="filtrar('accesorios', event)" id="btn-filt-accesorios">Accesorios</button>
-      <button class="btn-filtro" onclick="filtrarPorPresupuesto(0, 15, event)">💵 Menos de $15</button>
-      <button class="btn-filtro" onclick="filtrarPorPresupuesto(15, 35, event)">🪙 De $15 a $35</button>
-      <button class="btn-filtro" onclick="filtrarPorPresupuesto(35, 10000, event)">💎 Más de $35</button>
-      <button class="btn-filtro" style="border-color: #00e5ff; color: #00e5ff;" onclick="filtrarEstado('Envío Inmediato 📦', event)">📦 Stock Inmediato</button>
-      <button class="btn-filtro" style="border-color: #FF007F; color: #FF007F;" onclick="filtrarEstado('Por Encargo ⚡', event)">⚡ Por Encargo</button>
     </div>
 
-    <div class="panel-controles-avanzados">
-      <select id="selectOrden" class="ordenar-select" onchange="ordenarProductos()">
-        <option value="defecto">⚡ Ordenar por: Destacados</option>
-        <option value="menor">📉 Precio: Menor a Mayor</option>
-        <option value="mayor">📈 Precio: Mayor a Menor</option>
-      </select>
-    </div>
-  </div>
-
-  <h2 style="color: var(--primary-color); text-align: center; margin-bottom: 20px;">📦 Catálogo & Recargas</h2>
-  <div class="grid" id="catalogoNube"><p style="text-align: center; color: var(--secondary-color);">Cargando inventario desde Firebase...</p></div>
-
-  <div class="reviews-section">
-    <div class="info-title">💬 Reseñas de la Comunidad 🌟</div>
-    <div id="contenedorReviews"><p style="text-align: center; color: var(--secondary-color);">Cargando opiniones...</p></div>
-    <div class="review-form">
-      <h3 style="color: var(--primary-color); font-size: 1.1em; margin: 10px 0 5px 0;">Deja tu opinión:</h3>
-      <input type="text" id="revNombre" class="sugerencia-input" placeholder="Tu Nombre / GamerTag">
-      <select id="revEstrellas" class="sugerencia-input">
-        <option value="⭐⭐⭐⭐⭐">⭐⭐⭐⭐⭐ (5/5 Excelente)</option>
-        <option value="⭐⭐⭐⭐">⭐⭐⭐⭐ (4/5 Muy bueno)</option>
-        <option value="⭐⭐⭐">⭐⭐⭐ (3/5 Normal)</option>
-      </select>
-      <textarea id="revTexto" class="sugerencia-input" rows="2" placeholder="¿Qué te pareció el servicio o la mercancía?"></textarea>
-      <button class="btn-sugerencia" onclick="agregarReview()">Publicar Reseña 🚀</button>
-    </div>
-  </div>
-
-  <div class="info-section">
-    <div class="info-title">✨ Información y Envíos 📦</div>
-    <div class="info-grid">
-      <div class="info-card">
-        <h4><i class="fas fa-truck-fast" style="color: var(--primary-color);"></i> Envíos Nacionales</h4>
-        Despachos seguros a todo el país a través de:<br>
-        <div style="margin-top: 10px;"><span class="badge-envio"><i class="fas fa-box"></i> ZOOM</span><span class="badge-envio"><i class="fas fa-shipping-fast"></i> MRW</span></div>
+    <!-- Main Navigation Header -->
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+      <!-- Logo -->
+      <div class="flex items-center space-x-3 cursor-pointer group" onclick="activarEasterEggLogo()">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-pink-500 to-cyan-400 flex items-center justify-center text-black font-black text-xl shadow-lg shadow-pink-500/30 group-hover:scale-105 transition">
+          🌸
+        </div>
+        <div>
+          <span class="font-display font-black text-xl md:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-300 to-cyan-300 tracking-wider">SAKURA</span>
+          <span class="block text-[9px] font-mono tracking-widest text-cyan-400 -mt-1">GAMEVERSE STORE</span>
+        </div>
       </div>
-      <div class="info-card">
-        <h4><i class="fas fa-bolt" style="color: #ffcc00;"></i> Garantía & Encargos</h4>
-        Periféricos con garantía. Artículos bajo encargo con el <strong>100% de inicial</strong>. ¡Escríbenos al WhatsApp!
+
+      <!-- Search Bar -->
+      <div class="flex-1 max-w-md hidden md:block">
+        <div class="relative">
+          <input type="text" id="buscador" oninput="buscarProductos()" placeholder="Buscar anime, figuras, ropa, recargas Free Fire..." class="w-full bg-[#1a1228] text-sm text-gray-200 pl-10 pr-4 py-2 rounded-xl border border-pink-500/20 focus:outline-none focus:border-[#00ffcc] focus:ring-1 focus:ring-[#00ffcc] transition">
+          <i class="fas fa-search absolute left-3.5 top-2.5 text-gray-400"></i>
+        </div>
+      </div>
+
+      <!-- Action Buttons Header -->
+      <div class="flex items-center space-x-2 md:space-x-3">
+        <!-- Lo-Fi Music Button -->
+        <button onclick="toggleMusicaLoFi()" class="p-2 rounded-xl bg-gray-800/80 border border-pink-500/30 text-pink-400 hover:text-cyan-400 hover:border-cyan-400 transition" title="Música Lo-Fi de fondo">
+          <i id="iconoMusica" class="fas fa-music text-sm"></i>
+        </button>
+
+        <!-- Theme Switcher -->
+        <button onclick="abrirTemasModal()" class="p-2 rounded-xl bg-gray-800/80 border border-pink-500/30 text-purple-400 hover:text-pink-400 transition" title="Cambiar Tema Visual">
+          <i class="fas fa-palette text-sm"></i>
+        </button>
+
+        <!-- Daily Chest -->
+        <button onclick="abrirCofreModal()" class="p-2 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300 hover:bg-amber-500/30 transition flex items-center gap-1.5 text-xs font-bold" title="Cofre Diario">
+          <i class="fas fa-box-open text-base animate-bounce"></i>
+          <span class="hidden lg:inline">Cofre XP</span>
+        </button>
+
+        <!-- Gacha Wheel -->
+        <button onclick="abrirGachaModal()" class="p-2 rounded-xl bg-purple-600/30 border border-purple-400/50 text-cyan-300 hover:bg-purple-600/50 transition flex items-center gap-1.5 text-xs font-bold" title="Ruleta Gacha">
+          <i class="fas fa-dharmachakra text-base"></i>
+          <span class="hidden lg:inline">Gacha</span>
+        </button>
+
+        <!-- Wishlist Button -->
+        <button onclick="abrirFavoritosModal()" class="relative p-2 rounded-xl bg-gray-800/80 border border-pink-500/30 text-pink-400 hover:scale-105 transition" title="Lista de Deseos">
+          <i class="fas fa-heart text-base"></i>
+          <span id="favBadge" class="absolute -top-1.5 -right-1.5 bg-pink-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+        </button>
+
+        <!-- Cart Button -->
+        <button onclick="abrirCarritoModal()" class="relative bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold px-3 py-2 rounded-xl flex items-center gap-2 hover:brightness-110 transition shadow-lg shadow-pink-500/20 text-xs md:text-sm">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="hidden sm:inline">Carrito</span>
+          <span id="cartBadge" class="bg-cyan-400 text-black font-extrabold text-[11px] px-1.5 py-0.2 rounded-full">0</span>
+        </button>
       </div>
     </div>
-  </div>
-</div>
 
-<div id="miModal" class="modal">
-  <div class="modal-content" style="text-align: left;">
-    <button class="cerrar-modal" onclick="cerrarModal()">×</button>
-    <div class="breadcrumbs" id="modalBreadcrumbs">Inicio / <span>Categoría</span></div>
-    <img id="modalImg" src="" alt="Producto" class="modal-img">
-    <div id="modalContainerMinis" class="modal-miniaturas"></div>
-    <div id="modalTag" class="modal-tag-info">Envío Inmediato 📦</div>
-    <h2 id="modalTitulo" style="color: var(--secondary-color); margin-bottom: 5px; margin-top: 0;">Título</h2>
-    <h3 id="modalPrecio" style="color: var(--primary-color); margin-top: 0; font-size: 1.5em;">$0.00</h3>
-    <p id="modalDesc" style="font-size: 0.9em; margin-bottom: 10px; opacity: 0.9;">Descripción aquí.</p>
+    <!-- Mobile Search Bar -->
+    <div class="px-4 pb-3 md:hidden">
+      <div class="relative">
+        <input type="text" id="buscadorMobile" oninput="buscarProductosMobile()" placeholder="Buscar productos..." class="w-full bg-[#1a1228] text-sm text-gray-200 pl-10 pr-4 py-2 rounded-xl border border-pink-500/20 focus:outline-none focus:border-[#00ffcc]">
+        <i class="fas fa-search absolute left-3.5 top-2.5 text-gray-400"></i>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6 space-y-8">
     
-    <div id="tallasContainer" class="tallas-container">
-      <label for="selectTalla">Selecciona tu Talla:</label>
-      <select id="selectTalla" class="talla-select">
-        <option value="S">Talla S</option><option value="M" selected>Talla M</option><option value="L">Talla L</option><option value="XL">Talla XL</option>
-      </select>
-      <span class="link-guia-tallas" onclick="abrirGuiaTallasModal()">Ver Guía de Tallas (cm) 📏</span>
+    <!-- Hero Banner Carousel -->
+    <section class="relative rounded-2xl overflow-hidden neon-border bg-gradient-to-r from-purple-950 via-pink-950 to-indigo-950 p-6 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="space-y-3 max-w-xl text-center md:text-left z-10">
+        <span class="inline-block bg-pink-500/20 text-pink-300 font-mono text-xs px-3 py-1 rounded-full border border-pink-500/40 font-semibold">
+          ✨ Coleccionables & Recargas 2026
+        </span>
+        <h2 class="font-display text-2xl md:text-4xl font-extrabold text-white leading-tight">
+          Sube de Nivel tu <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-cyan-300">Universo Gamer</span>
+        </h2>
+        <p class="text-gray-300 text-xs md:text-sm leading-relaxed">
+          Las mejores figuras de colección, ropa otaku, accesorios gaming y recargas inmediatas de diamantes con pago móvil y precios al cambio BCV.
+        </p>
+        <div class="pt-2 flex flex-wrap gap-3 justify-center md:justify-start">
+          <button onclick="filtrar('todos')" class="bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold px-5 py-2.5 rounded-xl hover:scale-105 transition text-xs md:text-sm flex items-center gap-2 shadow-lg shadow-pink-500/30">
+            <i class="fas fa-fire"></i> Ver Catálogo
+          </button>
+          <button onclick="abrirSugerenciaModal()" class="bg-gray-800/80 border border-cyan-400/50 text-cyan-300 hover:bg-cyan-500/20 px-4 py-2.5 rounded-xl transition text-xs md:text-sm font-semibold flex items-center gap-2">
+            <i class="fas fa-[#00ffcc] fa-headset"></i> Encargar Producto
+          </button>
+        </div>
+      </div>
+      
+      <!-- Graphic Mascot Banner -->
+      <div class="relative w-48 md:w-64 h-48 md:h-64 flex-shrink-0 flex items-center justify-center">
+        <div class="absolute inset-0 bg-pink-500/20 rounded-full blur-2xl animate-pulse"></div>
+        <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=500&auto=format&fit=crop&q=80" alt="Sakura Mascot" class="w-full h-full object-cover rounded-2xl border-2 border-cyan-400/40 shadow-2xl relative z-10 hover:rotate-2 transition transform duration-500">
+      </div>
+    </section>
+
+    <!-- Categories Horizontal Track -->
+    <section class="space-y-3">
+      <div class="flex justify-between items-center">
+        <h3 class="font-display text-lg font-bold text-gray-100 flex items-center gap-2">
+          <i class="fas fa-[#ff66cc] fa-th-large text-pink-400"></i> Categorías
+        </h3>
+        <div class="flex space-x-2">
+          <button onclick="scrollCategoriasVisuales(-1)" class="p-1.5 rounded-lg bg-gray-800 text-gray-300 hover:text-pink-400"><i class="fas fa-chevron-left text-xs"></i></button>
+          <button onclick="scrollCategoriasVisuales(1)" class="p-1.5 rounded-lg bg-gray-800 text-gray-300 hover:text-pink-400"><i class="fas fa-chevron-right text-xs"></i></button>
+        </div>
+      </div>
+
+      <div id="categoriasTrack" class="flex gap-3 overflow-x-auto pb-3 pt-1 scroll-smooth no-scrollbar">
+        <button onclick="filtrar('todos', event)" class="btn-filtro activo glass-card min-w-[130px] p-3 text-center cursor-pointer hover:border-pink-500 transition group">
+          <div class="text-2xl mb-1 group-hover:scale-110 transition">🌸</div>
+          <div class="font-bold text-xs text-white">Todos</div>
+          <div id="count-todos" class="text-[10px] text-gray-400">0 items</div>
+        </button>
+
+        <button onclick="filtrar('Anime', event)" class="btn-filtro glass-card min-w-[130px] p-3 text-center cursor-pointer hover:border-pink-500 transition group">
+          <div class="text-2xl mb-1 group-hover:scale-110 transition">⚔️</div>
+          <div class="font-bold text-xs text-white">Anime</div>
+          <div id="count-Anime" class="text-[10px] text-gray-400">0 items</div>
+        </button>
+
+        <button onclick="filtrar('Gaming', event)" class="btn-filtro glass-card min-w-[130px] p-3 text-center cursor-pointer hover:border-pink-500 transition group">
+          <div class="text-2xl mb-1 group-hover:scale-110 transition">🎮</div>
+          <div class="font-bold text-xs text-white">Gaming</div>
+          <div id="count-Gaming" class="text-[10px] text-gray-400">0 items</div>
+        </button>
+
+        <button onclick="filtrar('Figuras', event)" class="btn-filtro glass-card min-w-[130px] p-3 text-center cursor-pointer hover:border-pink-500 transition group">
+          <div class="text-2xl mb-1 group-hover:scale-110 transition">🧸</div>
+          <div class="font-bold text-xs text-white">Figuras</div>
+          <div id="count-Figuras" class="text-[10px] text-gray-400">0 items</div>
+        </button>
+
+        <button onclick="filtrar('Ropa', event)" class="btn-filtro glass-card min-w-[130px] p-3 text-center cursor-pointer hover:border-pink-500 transition group">
+          <div class="text-2xl mb-1 group-hover:scale-110 transition">👕</div>
+          <div class="font-bold text-xs text-white">Ropa</div>
+          <div id="count-Ropa" class="text-[10px] text-gray-400">0 items</div>
+        </button>
+
+        <button onclick="filtrar('Recargas', event)" class="btn-filtro glass-card min-w-[130px] p-3 text-center cursor-pointer hover:border-pink-500 transition group">
+          <div class="text-2xl mb-1 group-hover:scale-110 transition">💎</div>
+          <div class="font-bold text-xs text-white">Recargas</div>
+          <div id="count-Recargas" class="text-[10px] text-gray-400">0 items</div>
+        </button>
+
+        <button onclick="filtrar('Cuidado/Cosméticos', event)" class="btn-filtro glass-card min-w-[130px] p-3 text-center cursor-pointer hover:border-pink-500 transition group">
+          <div class="text-2xl mb-1 group-hover:scale-110 transition">✨</div>
+          <div class="font-bold text-xs text-white">Cuidado / Cos.</div>
+          <div id="count-Cuidado/Cosméticos" class="text-[10px] text-gray-400">0 items</div>
+        </button>
+      </div>
+    </section>
+
+    <!-- Advanced Controls Bar (Budget Filter, Sort Order) -->
+    <section class="bg-[#1a1228] p-4 rounded-xl border border-pink-500/10 flex flex-wrap gap-4 items-center justify-between text-xs">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-gray-400 font-semibold">Presupuesto:</span>
+        <button onclick="filtrarPorPresupuesto(0, 15, event)" class="btn-filtro px-3 py-1.5 rounded-lg bg-gray-800 text-gray-300 hover:bg-pink-500/20 hover:text-pink-300">-$15</button>
+        <button onclick="filtrarPorPresupuesto(15, 40, event)" class="btn-filtro px-3 py-1.5 rounded-lg bg-gray-800 text-gray-300 hover:bg-pink-500/20 hover:text-pink-300">$15 - $40</button>
+        <button onclick="filtrarPorPresupuesto(40, 999, event)" class="btn-filtro px-3 py-1.5 rounded-lg bg-gray-800 text-gray-300 hover:bg-pink-500/20 hover:text-pink-300">$40+</button>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <label for="selectOrden" class="text-gray-400 font-semibold">Ordenar:</label>
+        <select id="selectOrden" onchange="ordenarProductos()" class="bg-gray-800 text-gray-200 border border-pink-500/20 rounded-lg px-3 py-1.5 focus:outline-none focus:border-cyan-400">
+          <option value="defecto">Destacados</option>
+          <option value="menor">Precio: Menor a Mayor</option>
+          <option value="mayor">Precio: Mayor a Menor</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 id="tituloSeccion" class="font-display text-xl font-bold text-white flex items-center gap-2">
+          <i class="fas fa-box text-pink-400"></i> Catálogo de Productos
+        </h3>
+        <span id="lblTotalEncontrados" class="text-xs text-cyan-400 font-mono">Cargando catálogo...</span>
+      </div>
+
+      <!-- Main Product Grid -->
+      <div id="gridProductos" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <!-- Products will be dynamically populated here -->
+      </div>
+    </section>
+
+    <section class="space-y-6 pt-8 border-t border-pink-500/20">
+      <div class="text-center space-y-2">
+        <h3 class="font-display text-2xl font-bold text-white">Comunidad Otaku & Gaming 🌸</h3>
+        <p class="text-xs text-gray-400">Opiniones reales guardadas en la nube Firebase Firestore</p>
+      </div>
+
+      <!-- Reviews Carousel / Grid -->
+      <div id="contenedorReviews" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <p class="text-center text-gray-500 col-span-3 text-xs">Cargando reseñas de clientes...</p>
+      </div>
+
+      <!-- Submit Review Form -->
+      <div class="glass-card p-5 max-w-xl mx-auto space-y-4 border border-pink-500/30">
+        <h4 class="font-display text-sm font-bold text-pink-300 text-center">¡Deja tu Reseña u Opinión!</h4>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <input type="text" id="revNombre" placeholder="Tu GamerTag o Nombre" class="bg-gray-800 text-white p-2.5 rounded-xl border border-pink-500/20 focus:outline-none focus:border-cyan-400">
+          <select id="revEstrellas" class="bg-gray-800 text-white p-2.5 rounded-xl border border-pink-500/20 focus:outline-none focus:border-cyan-400">
+            <option value="⭐⭐⭐⭐⭐">⭐⭐⭐⭐⭐ (5/5)</option>
+            <option value="⭐⭐⭐⭐">⭐⭐⭐⭐ (4/5)</option>
+            <option value="⭐⭐⭐">⭐⭐⭐ (3/5)</option>
+          </select>
+        </div>
+        <textarea id="revTexto" rows="2" placeholder="Escribe tu experiencia con el producto o servicio..." class="w-full bg-gray-800 text-white p-2.5 text-xs rounded-xl border border-pink-500/20 focus:outline-none focus:border-cyan-400"></textarea>
+        <button onclick="agregarReview()" class="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-2.5 rounded-xl text-xs hover:brightness-110 transition shadow-md shadow-pink-500/20">
+          Publicar Reseña ✨
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-[#0a060e] border-t border-pink-500/20 mt-12 py-8 px-4 text-xs text-gray-400">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div class="space-y-3">
+        <div class="flex items-center space-x-2">
+          <span class="text-xl">🌸</span>
+          <span class="font-display font-extrabold text-white text-lg">SAKURA GAMEVERSE</span>
+        </div>
+        <p class="text-gray-400 leading-relaxed">Tu tienda favorita de cultura Pop, Anime, Gaming y Coleccionables en Venezuela. Envíos nacionales por MRW / Zoom.</p>
+      </div>
+
+      <div>
+        <h4 class="font-display text-white font-bold mb-3">Soporte & Ayuda</h4>
+        <ul class="space-y-2">
+          <li><button onclick="abrirFaqModal()" class="hover:text-cyan-400 transition">Preguntas Frecuentes (FAQ)</button></li>
+          <li><button onclick="abrirGuiaTallasModal()" class="hover:text-cyan-400 transition">Guía de Tallas (Ropa)</button></li>
+          <li><button onclick="abrirSugerenciaModal()" class="hover:text-cyan-400 transition">Encargar Producto Especial</button></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-display text-white font-bold mb-3">Métodos de Pago</h4>
+        <ul class="space-y-1.5 text-gray-300">
+          <li><i class="fas fa-check-circle text-pink-400 mr-1.5"></i> Pago Móvil (Tasa BCV)</li>
+          <li><i class="fas fa-check-circle text-pink-400 mr-1.5"></i> Transferencia Bancaria</li>
+          <li><i class="fas fa-check-circle text-pink-400 mr-1.5"></i> Binance Pay (USDT)</li>
+          <li><i class="fas fa-check-circle text-pink-400 mr-1.5"></i> Zinli / El Dorado / Zelle</li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-display text-white font-bold mb-3">Atención al Cliente</h4>
+        <p class="mb-3">Horario: Lun - Sáb (9:00 AM - 7:00 PM)</p>
+        <a href="https://wa.me/584244970576" target="_blank" class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-500 text-white font-bold px-4 py-2 rounded-xl transition">
+          <i class="fab fa-whatsapp text-sm"></i> WhatsApp Directo
+        </a>
+      </div>
     </div>
-
-    <div id="recargaContainer" class="recarga-container">
-      <label for="inputPlayerId">🎮 ID del Jugador (Free Fire / Juego):</label>
-      <input type="text" id="inputPlayerId" class="recarga-input" placeholder="Ej: 1234567890">
-      <label for="inputPlayerServer" style="margin-top: 8px;">Servidor / Detalles adicionales:</label>
-      <input type="text" id="inputPlayerServer" class="recarga-input" placeholder="Ej: US / Sudamérica">
+    <div class="max-w-7xl mx-auto mt-8 pt-4 border-t border-gray-800 text-center text-gray-500">
+      <p>© 2026 Sakura Gameverse. Todos los derechos reservados. Diseñado para Fans del Anime y Gaming.</p>
     </div>
+  </footer>
 
-    <button class="btn-comprar" onclick="agregarAlCarrito()"><i class="fas fa-cart-plus"></i> ¡Añadir al Carrito!</button>
-    <button class="btn-compartir" onclick="compartirProductoWhatsApp()"><i class="fab fa-whatsapp"></i> Preguntar en WhatsApp</button>
-  </div>
-</div>
 
-<div id="modalOpcionesMenu" class="modal">
-  <div class="modal-content" style="border-color: var(--secondary-color); text-align: center;">
-    <button class="cerrar-modal" onclick="cerrarMenuOpciones()">×</button>
-    <h2 style="color: var(--secondary-color); margin-top: 0;"><i class="fas fa-compass"></i> Explorar Sakura</h2>
-    <div class="menu-opciones-grid">
-      <button class="btn-menu-opcion" style="color: #ff9900;" onclick="cerrarMenuOpciones(); abrirCofreModal()"><i class="fas fa-gift"></i> Cofre Diario</button>
-      <button class="btn-menu-opcion" style="color: #9900ff;" onclick="cerrarMenuOpciones(); abrirGachaModal()"><i class="fas fa-dice"></i> Ruleta Gacha</button>
-      <button class="btn-menu-opcion" style="color: #00ffcc;" onclick="cerrarMenuOpciones(); abrirGamerProfileModal()"><i class="fas fa-user-astronaut"></i> Mi Perfil</button>
-      <button class="btn-menu-opcion" style="color: #ffcc00;" onclick="cerrarMenuOpciones(); abrirTemasModal()"><i class="fas fa-palette"></i> Temas</button>
-      <button class="btn-menu-opcion" style="color: #ff0055;" onclick="toggleMusicaLoFi()"><i class="fas fa-music" id="iconoMusica"></i> Música</button>
-      <button class="btn-menu-opcion" style="color: var(--secondary-color);" onclick="cerrarMenuOpciones(); abrirFaqModal()"><i class="fas fa-question"></i> Ayuda (FAQ)</button>
-      <button class="btn-menu-opcion" style="color: var(--primary-color);" onclick="cerrarMenuOpciones(); abrirSugerenciaModal()"><i class="fas fa-lightbulb"></i> Sugerir</button>
-      <a href="admin.html" class="btn-menu-opcion" style="color: #ff3366;"><i class="fas fa-cogs"></i> Panel Admin</a>
-      <a href="https://wa.me/584244970576" target="_blank" class="btn-menu-opcion" style="color: #25D366;"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+  <!-- MODAL PRODUCTO DETALLE (miModal) -->
+  <div id="miModal" class="fixed inset-0 z-50 modal-overlay hidden items-center justify-center p-4">
+    <div class="glass-card max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 relative space-y-4 border border-pink-500/40 shadow-2xl">
+      <button onclick="cerrarModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl p-1">✕</button>
+      
+      <div id="modalBreadcrumbs" class="text-[11px] font-mono text-cyan-400 uppercase tracking-wider">Inicio / Detalle</div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Main Image and Thumbnails -->
+        <div class="space-y-3">
+          <div class="w-full h-64 bg-gray-900 rounded-xl overflow-hidden border border-pink-500/20">
+            <img id="modalImg" src="" alt="Producto" class="w-full h-full object-cover">
+          </div>
+          <div id="modalContainerMinis" class="flex gap-2 overflow-x-auto pb-1"></div>
+        </div>
+
+        <!-- Info & Actions -->
+        <div class="space-y-3">
+          <span id="modalTag" class="bg-pink-500/20 text-pink-300 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">Stock</span>
+          <h2 id="modalTitulo" class="font-display text-xl font-bold text-white">Nombre Producto</h2>
+          <div id="modalPrecio" class="text-2xl font-black text-cyan-400 font-mono">$0.00 USD</div>
+          <p id="modalDesc" class="text-xs text-gray-300 leading-relaxed">Descripción...</p>
+
+          <!-- Dynamic Input: Apparel Size -->
+          <div id="tallasContainer" class="space-y-1.5 hidden">
+            <label class="text-xs text-gray-300 font-semibold block">Selecciona Tu Talla:</label>
+            <select id="selectTalla" class="w-full bg-gray-800 text-white text-xs p-2 rounded-xl border border-pink-500/30">
+              <option value="S">Talla S</option>
+              <option value="M" selected>Talla M</option>
+              <option value="L">Talla L</option>
+              <option value="XL">Talla XL</option>
+            </select>
+          </div>
+
+          <!-- Dynamic Input: Digital Game Top Up -->
+          <div id="recargaContainer" class="space-y-2 p-3 bg-purple-900/30 rounded-xl border border-purple-500/30 hidden">
+            <label class="text-xs text-cyan-300 font-semibold block">Datos para Recarga Instantánea:</label>
+            <input type="text" id="inputPlayerId" placeholder="ID de Jugador (Ej: 123456789)" class="w-full bg-gray-900 text-white text-xs p-2 rounded-lg border border-pink-500/20">
+            <input type="text" id="inputPlayerServer" placeholder="Servidor / Región (Ej: EE.UU. / LATAM)" class="w-full bg-gray-900 text-white text-xs p-2 rounded-lg border border-pink-500/20">
+          </div>
+
+          <div class="pt-2 flex flex-col gap-2">
+            <button onclick="agregarAlCarrito()" class="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-3 rounded-xl hover:brightness-110 transition shadow-lg shadow-pink-500/20 text-xs uppercase tracking-wider">
+              <i class="fas fa-cart-plus mr-1"></i> Añadir al Carrito
+            </button>
+            <button onclick="compartirProductoWhatsApp()" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 rounded-xl transition text-xs flex items-center justify-center gap-2">
+              <i class="fab fa-whatsapp"></i> Consultar Disponibilidad
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-<div id="modalFavoritos" class="modal">
-  <div class="modal-content" style="width: 450px;">
-    <button class="cerrar-modal" onclick="cerrarFavoritosModal()">×</button>
-    <h2 style="color: #ff3366; margin-top: 0; text-align: center;">💖 Tu Lista de Deseos</h2>
-    <div id="listaFavoritosDetalle" style="max-height: 250px; overflow-y: auto; margin-bottom: 15px; padding-right: 5px;"></div>
-    <button class="btn-sugerencia" onclick="cerrarFavoritosModal()">Seguir Viendo Catálogo ✨</button>
-  </div>
-</div>
+  <!-- MODAL CARRITO & RECIBO DIGITAL (modalCarrito) -->
+  <div id="modalCarrito" class="fixed inset-0 z-50 modal-overlay hidden items-center justify-center p-4">
+    <div class="glass-card max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 relative space-y-5 border border-pink-500/40 shadow-2xl">
+      <button onclick="cerrarCarritoModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">✕</button>
+      
+      <h3 class="font-display text-xl font-bold text-white flex items-center gap-2">
+        <i class="fas fa-shopping-bag text-pink-400"></i> Tu Loot / Carrito
+      </h3>
 
-<div id="modalFaq" class="modal">
-  <div class="modal-content" style="width: 450px;">
-    <button class="cerrar-modal" onclick="cerrarFaqModal()">×</button>
-    <h2 style="color: var(--secondary-color); margin-top: 0; text-align: center;">❓ Preguntas Frecuentes</h2>
-    <div class="faq-item"><div class="faq-question"><i class="fas fa-map-marker-alt"></i> ¿Hacen entregas personales?</div><div class="faq-answer">Sí, en <strong>Bejuma y Miranda (Estado Carabobo)</strong>.</div></div>
-    <div class="faq-item"><div class="faq-question"><i class="fas fa-shipping-fast"></i> ¿Por cuáles empresas envían?</div><div class="faq-answer">Envíos nacionales con cobro a destino por <strong>ZOOM</strong> y <strong>MRW</strong>.</div></div>
-  </div>
-</div>
+      <!-- Cart List -->
+      <div id="listaCarritoDetalle" class="space-y-3 max-h-60 overflow-y-auto pr-1"></div>
 
-<div id="modalCarrito" class="modal">
-  <div class="modal-content" style="width: 450px;">
-    <button class="cerrar-modal" onclick="cerrarCarritoModal()">×</button>
-    <h2 style="color: var(--secondary-color); margin-top: 0; text-align: center;">🛒 Tu Carrito</h2>
-    <div class="cupon-box"><input type="text" id="inputCupon" class="cupon-input" placeholder="Cupón (Ej: OTAKU10)"><button class="btn-cupon" onclick="aplicarCupon()">Aplicar</button></div>
-    <div id="mensajeCupon" style="font-size: 0.8em; margin-bottom: 8px; color: var(--secondary-color);"></div>
-    <div id="listaCarritoDetalle" style="max-height: 150px; overflow-y: auto; margin-bottom: 12px;"></div>
-    <div id="reciboDigital" class="recibo-box" style="display: none;"><div style="text-align: center; font-weight: bold; margin-bottom: 8px; color: var(--primary-color);">--- RECIBO DIGITAL ---</div><div id="reciboContenido"></div></div>
-    <div id="paymentMethodsCart" style="display: none; border: 2px solid var(--secondary-color); border-radius: 12px; padding: 15px; margin-bottom: 15px; background: var(--card-bg);">
-      <h3 style="color: var(--primary-color); margin-top: 0; font-size: 1.1em;"><i class="fas fa-credit-card"></i> Métodos de Pago</h3>
-      <div id="cajaDatosPagoInfo" style="font-size: 0.9em; line-height: 1.6;"></div>
+      <!-- Coupon Form -->
+      <div class="flex gap-2">
+        <input type="text" id="inputCupon" placeholder="Código de Cupón (Ej: OTAKU10)" class="flex-1 bg-gray-800 text-white text-xs p-2.5 rounded-xl border border-pink-500/20 uppercase">
+        <button onclick="aplicarCupon()" class="bg-purple-600 hover:bg-purple-500 text-white font-bold px-4 py-2.5 rounded-xl text-xs">Aplicar</button>
+      </div>
+      <p id="mensajeCupon" class="text-[11px] font-mono"></p>
+
+      <!-- Receipt Preview Box -->
+      <div id="reciboDigital" class="bg-gray-950 p-4 rounded-xl border border-cyan-400/30 space-y-2 font-mono text-xs">
+        <div class="text-center font-bold text-pink-400 pb-2 border-b border-gray-800">--- RECIBO DIGITAL ---</div>
+        <div id="reciboContenido" class="space-y-1 text-gray-300"></div>
+      </div>
+
+      <!-- Total Price Display -->
+      <div id="modalCarritoTotal" class="text-right font-display text-lg font-bold text-cyan-400">Total: $0.00 USD</div>
+
+      <!-- Actions -->
+      <div class="flex flex-col sm:flex-row gap-3 pt-2">
+        <button onclick="vaciarCarrito()" class="bg-gray-800 text-gray-300 hover:text-white font-semibold py-2.5 px-4 rounded-xl text-xs">Vaciar Carrito</button>
+        <button onclick="enviarPedidoWhatsApp()" class="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-extrabold py-3 rounded-xl text-xs uppercase tracking-wider hover:brightness-110 transition shadow-lg shadow-green-500/20 flex items-center justify-center gap-2">
+          <i class="fab fa-whatsapp text-lg"></i> Procesar Pedido por WhatsApp
+        </button>
+      </div>
     </div>
-    <h3 id="modalCarritoTotal" style="color: var(--primary-color); margin-bottom: 15px; text-align: center;">Total: $0.00</h3>
-    <div style="display: flex; gap: 10px;"><button style="flex: 1; padding: 10px; background: transparent; border: 1px solid #ff3366; color: #ff3366; border-radius: 20px; font-weight: bold; cursor: pointer;" onclick="vaciarCarrito()">Vaciar</button><button style="flex: 2; padding: 10px; background: #25D366; color: white; border: none; border-radius: 20px; font-weight: bold; cursor: pointer;" onclick="enviarPedidoWhatsApp()">Enviar al WhatsApp 📱</button></div>
   </div>
-</div>
 
-<div id="modalSugerencias" class="modal">
-  <div class="modal-content" style="text-align: center;">
-    <button class="cerrar-modal" onclick="cerrarSugerenciaModal()">×</button>
-    <h2 style="color: var(--primary-color); margin-top: 0;">💡 Sugerir Mercancía</h2>
-    <input type="text" id="sugNombre" class="sugerencia-input" placeholder="Tu Nombre">
-    <textarea id="sugDeseo" class="sugerencia-input" rows="3" placeholder="¿Qué producto te gustaría que trajéramos?"></textarea>
-    <button class="btn-sugerencia" onclick="enviarSugerenciaWhatsApp()">Enviar Sugerencia 🚀</button>
+  <!-- MODAL FAVORITOS -->
+  <div id="modalFavoritos" class="fixed inset-0 z-50 modal-overlay hidden items-center justify-center p-4">
+    <div class="glass-card max-w-md w-full p-6 relative space-y-4 border border-pink-500/40">
+      <button onclick="cerrarFavoritosModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">✕</button>
+      <h3 class="font-display text-lg font-bold text-white flex items-center gap-2">
+        <i class="fas fa-heart text-pink-500"></i> Lista de Deseos
+      </h3>
+      <div id="listaFavoritosDetalle" class="space-y-3 max-h-60 overflow-y-auto"></div>
+    </div>
   </div>
-</div>
 
-<div class="bottom-nav">
-  <div class="nav-item" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); reproducirSonido();"><i class="fas fa-home"></i><span>Inicio</span></div>
-  <div class="nav-item" onclick="abrirFavoritosModal()"><i class="fas fa-heart"></i><span>Deseos</span><div class="nav-badge" id="favBadge">0</div></div>
-  <div class="nav-item" onclick="abrirCarritoModal()"><i class="fas fa-shopping-cart"></i><span>Carrito</span><div class="nav-badge" id="cartBadge">0</div></div>
-  <div class="nav-item" onclick="abrirMenuOpciones()"><i class="fas fa-bars"></i><span>Menú</span></div>
-</div>
+  <!-- MODAL COFRE DIARIO GAMIFICATION -->
+  <div id="modalCofreDiario" class="fixed inset-0 z-50 modal-overlay hidden items-center justify-center p-4">
+    <div class="glass-card max-w-sm w-full p-6 text-center space-y-4 border border-amber-500/50 shadow-2xl relative">
+      <button onclick="cerrarCofreModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">✕</button>
+      <div class="text-5xl animate-bounce">🎁</div>
+      <h3 class="font-display text-xl font-extrabold text-amber-300">Cofre de Recompensa Diario</h3>
+      <p class="text-xs text-gray-300">¡Abre tu cofre cada 24 horas para ganar XP y subir de rango Otaku!</p>
+      <div id="cofreResultado" class="text-xs font-mono text-cyan-300 py-2"></div>
+      <button onclick="abrirCofreDiario()" class="w-full bg-gradient-to-r from-amber-500 to-orange-600 text-white font-extrabold py-3 rounded-xl text-xs uppercase tracking-wider hover:scale-105 transition shadow-lg shadow-amber-500/20">
+        ¡Abrir Cofre Ahora! ✨
+      </button>
+    </div>
+  </div>
 
-<audio id="audioLoFi" loop src="https://stream.zeno.fm/f3wvbbqmdg8uv"></audio>
+  <!-- MODAL GACHA ROULETTE -->
+  <div id="modalGacha" class="fixed inset-0 z-50 modal-overlay hidden items-center justify-center p-4">
+    <div class="glass-card max-w-sm w-full p-6 text-center space-y-4 border border-purple-500/50 relative">
+      <button onclick="cerrarGachaModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">✕</button>
+      <div class="text-5xl animate-spin" style="animation-duration: 8s;">🎰</div>
+      <h3 class="font-display text-xl font-extrabold text-cyan-300">Ruleta Gacha Sakura</h3>
+      <p class="text-xs text-gray-300">¡Gira la ruleta misteriosa y gana cupones de descuento o XP!</p>
+      <div id="gachaResultado" class="min-h-[50px] flex items-center justify-center text-xs font-mono text-pink-300 p-2 bg-gray-900 rounded-xl border border-pink-500/20">
+        ¿Listo para probar tu suerte?
+      </div>
+      <button onclick="girarRuletaGacha()" class="w-full bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold py-3 rounded-xl text-xs uppercase tracking-wider hover:scale-105 transition shadow-lg shadow-purple-500/30">
+        Girar Ruleta 🎲
+      </button>
+    </div>
+  </div>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-  import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, setDoc, addDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+  <!-- MODAL EDITAR PERFIL GAMER -->
+  <div id="modalGamerProfile" class="fixed inset-0 z-50 modal-overlay hidden items-center justify-center p-4">
+    <div class="glass-card max-w-sm w-full p-6 relative space-y-4 border border-cyan-400/40">
+      <button onclick="cerrarGamerProfileModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">✕</button>
+      <h3 class="font-display text-lg font-bold text-cyan-300 flex items-center gap-2">
+        <i class="fas fa-id-card"></i> Tu Perfil Gamer
+      </h3>
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="text-gray-400 block mb-1">GamerTag / Apodo:</label>
+          <input type="text" id="inputGamerTag" class="w-full bg-gray-800 text-white p-2.5 rounded-xl border border-pink-500/20 font-bold">
+        </div>
+        <div class="p-3 bg-gray-900 rounded-xl space-y-1">
+          <div class="flex justify-between"><span>XP Acumulada:</span><strong id="lblXp" class="text-cyan-400">0 XP</strong></div>
+          <div class="flex justify-between"><span>Rango Actual:</span><strong id="lblRango" class="text-pink-400">Novato</strong></div>
+        </div>
+        <button onclick="guardarGamerTag()" class="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-extrabold py-2.5 rounded-xl transition text-xs">
+          Guardar Cambios
+        </button>
+      </div>
+    </div>
+  </div>
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDH1DZqaIi5sKRXspXDUWbMUZ4nr5JIy8Q",
-    authDomain: "sakura-gameverse.firebaseapp.com",
-    projectId: "sakura-gameverse",
-    storageBucket: "sakura-gameverse.firebasestorage.app",
-    messagingSenderId: "226328425516",
-    appId: "1:226328425516:web:8dc11761639228c6120d89"
-  };
+  <!-- MODAL CAMBIAR TEMA VISUAL -->
+  <div id="modalTemas" class="fixed inset-0 z-50 modal-overlay hidden items-center justify-center p-4">
+    <div class="glass-card max-w-xs w-full p-6 relative space-y-4 border border-pink-500/40 text-center">
+      <button onclick="cerrarTemasModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">✕</button>
+      <h3 class="font-display text-lg font-bold text-white">Selecciona Tu Tema</h3>
+      <div class="space-y-2">
+        <button onclick="cambiarTema('theme-sakura')" class="w-full py-2.5 px-4 rounded-xl bg-pink-500/20 text-pink-300 border border-pink-500 font-bold text-xs hover:bg-pink-500/30">🌸 Sakura Dark (Predeterminado)</button>
+        <button onclick="cambiarTema('theme-cyberpunk')" class="w-full py-2.5 px-4 rounded-xl bg-yellow-500/20 text-yellow-300 border border-yellow-500 font-bold text-xs hover:bg-yellow-500/30">⚡ Cyberpunk Neon</button>
+        <button onclick="cambiarTema('theme-synthwave')" class="w-full py-2.5 px-4 rounded-xl bg-purple-500/20 text-purple-300 border border-purple-500 font-bold text-xs hover:bg-purple-500/30">🌆 Synthwave Retro</button>
+      </div>
+    </div>
+  </div>
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+  <!-- MODAL GUIA DE TALLAS -->
+  <div id="modalGuiaTallas" class="fixed inset-0 z-50 modal-overlay hidden items-center justify-center p-4">
+    <div class="glass-card max-w-md w-full p-6 relative space-y-4 border border-pink-500/40">
+      <button onclick="cerrarGuiaTallasModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">✕</button>
+      <h3 class="font-display text-lg font-bold text-white">Guía de Tallas (Ropa Anime)</h3>
+      <div class="text-xs text-gray-300 space-y-2">
+        <table class="w-full text-left border-collapse border border-gray-800">
+          <thead>
+            <tr class="bg-gray-800 text-pink-300">
+              <th class="p-2 border border-gray-700">Talla</th>
+              <th class="p-2 border border-gray-700">Pecho (cm)</th>
+              <th class="p-2 border border-gray-700">Largo (cm)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="p-2 border border-gray-800">S</td><td class="p-2 border border-gray-800">92 - 96</td><td class="p-2 border border-gray-800">68</td></tr>
+            <tr><td class="p-2 border border-gray-800">M</td><td class="p-2 border border-gray-800">100 - 104</td><td class="p-2 border border-gray-800">71</td></tr>
+            <tr><td class="p-2 border border-gray-800">L</td><td class="p-2 border border-gray-800">108 - 112</td><td class="p-2 border border-gray-800">74</td></tr>
+            <tr><td class="p-2 border border-gray-800">XL</td><td class="p-2 border border-gray-800">116 - 120</td><td class="p-2 border border-gray-800">77</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
-  let productosNubeGlobal = [];
-  let tasaBcvActual = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 860;
-  document.getElementById('inputTasaBcv').value = tasaBcvActual;
+  <!-- MODAL FAQ -->
+  <div id="modalFaq" class="fixed inset-0 z-50 modal-overlay hidden items-center justify-center p-4">
+    <div class="glass-card max-w-lg w-full p-6 relative space-y-4 border border-pink-500/40">
+      <button onclick="cerrarFaqModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">✕</button>
+      <h3 class="font-display text-lg font-bold text-white">Preguntas Frecuentes</h3>
+      <div class="text-xs text-gray-300 space-y-3 max-h-80 overflow-y-auto pr-1">
+        <div>
+          <strong class="text-cyan-300 block">¿Cómo realizan los envíos?</strong>
+          Realizamos envíos cobro en destino a nivel nacional en Venezuela mediante MRW y Zoom.
+        </div>
+        <div>
+          <strong class="text-cyan-300 block">¿Cómo funcionan las recargas de Free Fire?</strong>
+          Ingresas tu ID de jugador y Servidor al comprar. La recarga se procesa de 5 a 15 minutos tras verificar el pago.
+        </div>
+        <div>
+          <strong class="text-cyan-300 block">¿Cuál es la tasa de cambio?</strong>
+          Utilizamos la tasa oficial emitida por el Banco Central de Venezuela (BCV) del día.
+        </div>
+      </div>
+    </div>
+  </div>
 
-  window.cambiarTasaBcvManual = function() {
-    let val = parseFloat(document.getElementById('inputTasaBcv').value);
-    if (!isNaN(val) && val > 0) {
-      tasaBcvActual = val;
-      localStorage.setItem('sakura_tasa_bcv', tasaBcvActual);
-      renderizarProductosEnTienda(productosNubeGlobal);
-    }
-  }
+  <!-- MODAL SUGERIR/ENCARGAR PRODUCTO -->
+  <div id="modalSugerencias" class="fixed inset-0 z-50 modal-overlay hidden items-center justify-center p-4">
+    <div class="glass-card max-w-md w-full p-6 relative space-y-4 border border-pink-500/40">
+      <button onclick="cerrarSugerenciaModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">✕</button>
+      <h3 class="font-display text-lg font-bold text-white">Encargar Producto Especial</h3>
+      <p class="text-xs text-gray-300">¿Buscas una figura o cosplay en específico que no ves en la tienda? ¡Te lo traemos por encargo!</p>
+      <div class="space-y-3 text-xs">
+        <input type="text" id="sugNombre" placeholder="Tu Nombre o GamerTag" class="w-full bg-gray-800 text-white p-2.5 rounded-xl border border-pink-500/20">
+        <textarea id="sugDeseo" rows="3" placeholder="Describe la figura, manga o producto que buscas..." class="w-full bg-gray-800 text-white p-2.5 rounded-xl border border-pink-500/20"></textarea>
+        <button onclick="enviarSugerenciaWhatsApp()" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2">
+          <i class="fab fa-whatsapp"></i> Enviar Encargo por WhatsApp
+        </button>
+      </div>
+    </div>
+  </div>
 
-  async function cargarDatosPagoNube() {
+  <!-- Toast Container -->
+  <div id="toast-container"></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, collection, getDocs, addDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'sakura-gameverse-app';
+    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+      apiKey: "demo-key",
+      authDomain: "demo.firebaseapp.com",
+      projectId: "demo-project",
+      storageBucket: "demo.appspot.com"
+    };
+
+    let app, auth, db;
     try {
-      const docSnap = await getDoc(doc(db, "configuracion", "datos_pago"));
-      if (docSnap.exists()) {
-        window.datosPagoGlobal = docSnap.data();
+      app = initializeApp(firebaseConfig);
+      auth = getAuth(app);
+      db = getFirestore(app);
+      
+      // Mandatory Rule 3: Authenticate before Firestore queries
+      if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+        await signInWithCustomToken(auth, __initial_auth_token);
       } else {
-        window.datosPagoGlobal = { banco: "Venezuela (0102)", telefono: "0424-4970576", cedula: "V-24159896", binance: "n3lmary@gmail.com" };
+        await signInAnonymously(auth);
       }
-      renderizarDatosPago();
     } catch(e) {
-      window.datosPagoGlobal = { banco: "Venezuela (0102)", telefono: "0424-4970576", cedula: "V-24159896", binance: "n3lmary@gmail.com" };
-      renderizarDatosPago();
+      console.warn("Modo fallback activo o Firebase no configurado aún:", e);
     }
-  }
 
-  function renderizarDatosPago() {
-    let caja = document.getElementById('cajaDatosPagoInfo');
-    if(!caja) return;
-    let dp = window.datosPagoGlobal || { banco: "Venezuela (0102)", telefono: "0424-4970576", cedula: "V-24159896", binance: "n3lmary@gmail.com" };
-    caja.innerHTML = `
-      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px; margin-bottom:6px;"><span>🏦 ${dp.banco}</span><button class="btn-copiar-mini" onclick="copiarTexto('${dp.banco}')"><i class="fas fa-copy"></i></button></div>
-      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px; margin-bottom:6px;"><span>📱 Pago Móvil: ${dp.telefono}</span><button class="btn-copiar-mini" onclick="copiarTexto('${dp.telefono}')"><i class="fas fa-copy"></i></button></div>
-      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px; margin-bottom:6px;"><span>🪪 Cédula: ${dp.cedula}</span><button class="btn-copiar-mini" onclick="copiarTexto('${dp.cedula}')"><i class="fas fa-copy"></i></button></div>
-      <div style="display:flex; justify-content:space-between; align-items:center;"><span style="word-break: break-all; margin-right: 10px;">🪙 Binance:<br>${dp.binance}</span><button class="btn-copiar-mini" onclick="copiarTexto('${dp.binance}')"><i class="fas fa-copy"></i></button></div>
-    `;
-  }
-
-  window.copiarTexto = function(texto) {
-    reproducirSonido();
-    navigator.clipboard.writeText(texto).then(() => alert("📋 ¡Dato copiado!"));
-  }
-
-  async function cargarBannersDeNube() {
-    try {
-      const q = query(collection(db, "banners"), orderBy("timestamp", "desc"));
-      const querySnapshot = await getDocs(q);
-      const container = document.getElementById('bannerSliderContainer');
-      
-      let bannersValidos = [];
-      querySnapshot.forEach((doc) => {
-        let b = doc.data();
-        if (b.imgUrl) bannersValidos.push(b.imgUrl);
-      });
-
-      if (bannersValidos.length === 0) { 
-        container.style.display = 'none'; 
-        return; 
+    // Global Central State
+    window.tasaBcvActual = 68.50; // Central BCV dollar rate fallback
+    window.productosNubeGlobal = [];
+    
+    // Default Mock Items fallback in case database is empty or offline
+    const productosBaseDefault = [
+      {
+        id: "p1",
+        nombre: "Figura Nendoroid Anya Forger",
+        precio: 45.00,
+        categoria: "Figuras",
+        estado: "En Stock 📦",
+        descripcion: "Figura articulada oficial Spy x Family con expresiones faciales intercambiables.",
+        fotos: ["https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=600&auto=format&fit=crop&q=80", "https://images.unsplash.com/photo-1563089145-599997674d42?w=600&auto=format&fit=crop&q=80"],
+        esRopa: false,
+        esRecarga: false
+      },
+      {
+        id: "p2",
+        nombre: "Katana Nichirin Tanjiro Kamado",
+        precio: 65.00,
+        categoria: "Anime",
+        estado: "En Stock 📦",
+        descripcion: "Réplica coleccionable Demon Slayer en acero bambú para cosplay y decoración.",
+        fotos: ["https://images.unsplash.com/photo-1589241062272-c0a000072dfa?w=600&auto=format&fit=crop&q=80"],
+        esRopa: false,
+        esRecarga: false
+      },
+      {
+        id: "p3",
+        nombre: "Hoodie Cyberpunk Edgerunners Neon",
+        precio: 38.00,
+        categoria: "Ropa",
+        estado: "Últimas Unidades ⚡",
+        descripcion: "Sudadera oversize con estampado reflectante de alta resistencia.",
+        fotos: ["https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600&auto=format&fit=crop&q=80"],
+        esRopa: true,
+        esRecarga: false
+      },
+      {
+        id: "p4",
+        nombre: "Recarga Free Fire 1080 Diamantes",
+        precio: 10.00,
+        categoria: "Recargas",
+        estado: "Entrega Inmediata ⚡",
+        descripcion: "Recarga directa a tu ID de jugador. Válido para servidores LATAM / EE.UU.",
+        fotos: ["https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=600&auto=format&fit=crop&q=80"],
+        esRopa: false,
+        esRecarga: true
+      },
+      {
+        id: "p5",
+        nombre: "Funko Pop Goku Super Saiyan Rose",
+        precio: 22.00,
+        categoria: "Figuras",
+        estado: "En Stock 📦",
+        descripcion: "Edición especial Dragon Ball Super con acabado metalizado brillante.",
+        fotos: ["https://images.unsplash.com/photo-1608889825205-eebdb9fc5806?w=600&auto=format&fit=crop&q=80"],
+        esRopa: false,
+        esRecarga: false
+      },
+      {
+        id: "p6",
+        nombre: "Taza Gamer PlayStation Neon",
+        precio: 12.00,
+        categoria: "Gaming",
+        estado: "En Stock 📦",
+        descripcion: "Taza de cerámica sensible al calor. Los íconos cambian de color al verter agua caliente.",
+        fotos: ["https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600&auto=format&fit=crop&q=80"],
+        esRopa: false,
+        esRecarga: false
+      },
+      {
+        id: "p7",
+        nombre: "Mascarilla Facial Sakura Glow",
+        precio: 8.00,
+        categoria: "Cuidado/Cosméticos",
+        estado: "En Stock 📦",
+        descripcion: "Set de mascarillas hidratantes botánicas con extracto de flor de cerezo.",
+        fotos: ["https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600&auto=format&fit=crop&q=80"],
+        esRopa: false,
+        esRecarga: false
+      },
+      {
+        id: "p8",
+        nombre: "Poster Metálico Displate Cyberpunk",
+        precio: 18.00,
+        categoria: "Anime",
+        estado: "En Stock 📦",
+        descripcion: "Cuadro metálico imantado de alta definición con diseño Synthwave.",
+        fotos: ["https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=600&auto=format&fit=crop&q=80"],
+        esRopa: false,
+        esRecarga: false
       }
-      
-      container.style.display = 'block';
-      let htmlImgs = ''; 
-      let htmlDots = '<div class="banner-dots">'; 
-      
-      bannersValidos.forEach((url, index) => {
-        htmlImgs += `<img src="${url}" class="banner-slide ${index === 0 ? 'active' : ''}" data-index="${index}">`;
-        htmlDots += `<div class="banner-dot ${index === 0 ? 'active' : ''}" onclick="cambiarBannerManual(${index})"></div>`;
-      });
-      
-      htmlDots += '</div>';
-      let flechasHtml = bannersValidos.length > 1 ? `<div class="banner-control-btn banner-prev" onclick="rotarBanner(-1)"><i class="fas fa-chevron-left"></i></div><div class="banner-control-btn banner-next" onclick="rotarBanner(1)"><i class="fas fa-chevron-right"></i></div>` : '';
-      
-      container.innerHTML = htmlImgs + flechasHtml + htmlDots;
-      iniciarAutoSliderBanners(bannersValidos.length);
-    } catch (e) {
-      console.log("Error cargando banners:", e);
-    }
-  }
+    ];
 
-  let bannerInterval; let totalBanners = 0;
-  function iniciarAutoSliderBanners(total) {
-    totalBanners = total; if(total <= 1) return;
-    bannerInterval = setInterval(() => rotarBanner(1), 5000); 
-  }
-  window.rotarBanner = function(direccion) {
-    if(totalBanners <= 1) return;
-    let slides = document.querySelectorAll('.banner-slide'); let dots = document.querySelectorAll('.banner-dot');
-    let currentIdx = Array.from(slides).findIndex(s => s.classList.contains('active'));
-    slides[currentIdx].classList.remove('active'); dots[currentIdx].classList.remove('active');
-    let nextIdx = currentIdx + direccion;
-    if(nextIdx >= totalBanners) nextIdx = 0; if(nextIdx < 0) nextIdx = totalBanners - 1;
-    slides[nextIdx].classList.add('active'); dots[nextIdx].classList.add('active');
-  }
-  window.cambiarBannerManual = function(index) {
-    clearInterval(bannerInterval);
-    let slides = document.querySelectorAll('.banner-slide'); let dots = document.querySelectorAll('.banner-dot');
-    slides.forEach(s => s.classList.remove('active')); dots.forEach(d => d.classList.remove('active'));
-    slides[index].classList.add('active'); dots[index].classList.add('active');
-    bannerInterval = setInterval(() => rotarBanner(1), 5000);
-  }
-
-  async function cargarProductosDeNube() {
-    try {
-      const q = query(collection(db, "productos"), orderBy("timestamp", "desc"));
-      const querySnapshot = await getDocs(q);
-      productosNubeGlobal = [];
-      querySnapshot.forEach((doc) => { productosNubeGlobal.push({ id: doc.id, ...doc.data() }); });
-      renderizarProductosEnTienda(productosNubeGlobal);
-    } catch (error) {
-      document.getElementById('catalogoNube').innerHTML = "<p style='color: #ff3366; text-align: center;'>Error al conectar con la base de datos.</p>";
-    }
-  }
-
-  window.renderizarProductosEnTienda = function(lista) {
-    let contenedor = document.getElementById('catalogoNube');
-    if (!contenedor) return;
-    contenedor.innerHTML = "";
-    let conteo = { recargas: 0, mangas: 0, ropa: 0, mandos: 0, teclados: 0, audifonos: 0, figuras: 0, peluches: 0, cartas: 0, katanas: 0, lamparas: 0, accesorios: 0 };
-    let elTodos = document.getElementById('count-todos');
-    if(elTodos) elTodos.innerText = lista.length + " productos";
-
-    if (lista.length === 0) {
-      contenedor.innerHTML = "<p style='color: #aaa; text-align: center;'>El inventario en la nube está vacío.</p>";
-      return;
-    }
-
-    lista.forEach((prod, indexProd) => {
-      let precioBs = prod.precio * tasaBcvActual;
-      let fotosArray = (prod.fotos && prod.fotos.length > 0) ? prod.fotos : ['logo.webp'];
-      let fotosJson = JSON.stringify(fotosArray).replace(/"/g, '&quot;');
-      let categoria = prod.categoria || 'mangas';
-      
-      let badgeClase = 'badge-stock';
-      if(prod.estado && prod.estado.includes("Encargo")) badgeClase = 'badge-encargo';
-      if(categoria.toLowerCase() === 'recargas') badgeClase = 'badge-digital';
-
-      let esRopa = categoria.toLowerCase().includes('ropa') || categoria.toLowerCase().includes('hoodie');
-      let esRecarga = categoria.toLowerCase() === 'recargas';
-
-      if(conteo[categoria] !== undefined) conteo[categoria]++;
-
-      let imgsHtml = ''; let dotsHtml = '';
-      fotosArray.forEach((foto, fIdx) => {
-        imgsHtml += `<img src="${foto}" class="${fIdx === 0 ? 'activa' : ''}" data-index="${fIdx}">`;
-        dotsHtml += `<div class="dot ${fIdx === 0 ? 'activo' : ''}" data-index="${fIdx}"></div>`;
-      });
-      let botonesCarrusel = fotosArray.length > 1 ? `<div class="carrusel-btn carrusel-prev" onclick="cambiarFotoTarjeta(event, ${indexProd}, -1)"><i class="fas fa-chevron-left"></i></div><div class="carrusel-btn carrusel-next" onclick="cambiarFotoTarjeta(event, ${indexProd}, 1)"><i class="fas fa-chevron-right"></i></div><div class="carrusel-dots">${dotsHtml}</div>` : '';
-
-      contenedor.innerHTML += `
-        <div class="card item-producto" data-nombre="${prod.nombre.toLowerCase()}" data-categoria="${categoria}" data-estado="${prod.estado}" data-precio="${prod.precio}" onclick="crearDestello(event); abrirModalMulti(${fotosJson}, '${prod.nombre}', ${prod.precio}, '${prod.descripcion || 'Producto oficial de Sakura Gameverse.'}', '${prod.estado}', ${esRopa}, '${categoria}', ${esRecarga})">
-          <button class="btn-fav-card" onclick="toggleFavorito(event, '${prod.nombre}', ${prod.precio}, '${fotosArray[0]}')"><i class="fas fa-heart"></i></button>
-          <div class="badge-estado ${badgeClase}">${prod.estado || (esRecarga ? 'Recarga Directa ⚡' : 'Disponible')}</div>
-          <div class="card-img-container" id="carrusel-card-${indexProd}">${imgsHtml}${botonesCarrusel}</div>
-          <div class="card-title">${prod.nombre}</div>
-          <div class="precio-container"><span class="card-price">$${prod.precio.toFixed(2)}</span></div>
-          <div class="card-bs">≈ Bs. ${precioBs.toLocaleString('es-VE', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
-        </div>
-      `;
-    });
-
-    for(let cat in conteo) {
-      let elem = document.getElementById('count-' + cat);
-      if(elem) elem.innerText = conteo[cat] + " productos";
-    }
-  }
-
-  async function cargarConfigCategoriasPublico() {
-    try {
-      const q = query(collection(db, "configuracion"), orderBy("timestamp", "desc"));
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        let conf = doc.data();
-        if(conf.tipo === 'categoria_foto') {
-          let catImgEl = document.getElementById(`img-cat-${conf.categoriaId}`);
-          if(catImgEl && conf.imgUrl) catImgEl.src = conf.imgUrl;
-          let catTitleEl = document.getElementById(`title-cat-${conf.categoriaId}`);
-          if(catTitleEl && conf.nombrePersonalizado) catTitleEl.innerText = conf.nombrePersonalizado;
-          
-          let btnFiltroEl = document.getElementById(`btn-filt-${conf.categoriaId}`);
-          if(btnFiltroEl && conf.nombrePersonalizado) {
-            let iconoPrefijo = btnFiltroEl.innerText.split(' ')[0] || '📁';
-            btnFiltroEl.innerText = `${iconoPrefijo} ${conf.nombrePersonalizado}`;
+    async function cargarDatosNube() {
+      // Rule 1: Strict paths for public data
+      try {
+        if (db) {
+          const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'productos');
+          const snapshot = await getDocs(colRef);
+          if (!snapshot.empty) {
+            window.productosNubeGlobal = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          } else {
+            window.productosNubeGlobal = productosBaseDefault;
           }
+        } else {
+          window.productosNubeGlobal = productosBaseDefault;
         }
-      });
-    } catch (e) {}
-  }
-
-  window.aplicarCupon = async function() {
-    reproducirSonido(); 
-    let c = document.getElementById('inputCupon').value.trim().toUpperCase(); 
-    let msg = document.getElementById('mensajeCupon');
-    if(!c) return;
-    try {
-      const querySnapshot = await getDocs(collection(db, "cupones"));
-      let cuponEncontrado = null;
-      querySnapshot.forEach((docSnap) => {
-        let cuponData = docSnap.data();
-        if(cuponData.codigo === c) cuponEncontrado = cuponData;
-      });
-      if(cuponEncontrado) {
-        descuentoAplicado = cuponEncontrado.porcentaje / 100;
-        msg.style.color = "#25D366"; msg.innerText = `🎉 ¡Cupón aplicado (-${cuponEncontrado.porcentaje}%)!`;
-      } else {
-        descuentoAplicado = 0; msg.style.color = "#ff3366"; msg.innerText = "❌ Cupón inválido o expirado.";
+      } catch (e) {
+        console.log("Cargando catálogo predeterminado:", e);
+        window.productosNubeGlobal = productosBaseDefault;
       }
-      abrirCarritoModal();
-    } catch(e) { msg.style.color = "#ff3366"; msg.innerText = "❌ Error al validar cupón."; }
-  }
 
-  let umbralesRangosNube = { genin: 0, chunin: 300, jonin: 600, hokage: 1000 };
-
-  async function cargarUmbralesRangosNube() {
-    try {
-      const docRef = doc(db, "configuracion", "rangos_ninja");
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        umbralesRangosNube = docSnap.data();
-      }
-    } catch(e) {}
-  }
-
-  window.guardarJugadorEnNube = async function() {
-    try {
-      let idUnico = gamerProfile.tag.replace(/\s+/g, '_').toLowerCase();
-      await setDoc(doc(db, "jugadores", idUnico), {
-        tag: gamerProfile.tag,
-        xp: gamerProfile.xp,
-        rango: gamerProfile.rango,
-        timestamp: Date.now()
-      });
-    } catch(e) {}
-  }
-
-  window.addEventListener('DOMContentLoaded', () => { 
-    cargarBannersDeNube(); 
-    cargarProductosDeNube(); 
-    cargarConfigCategoriasPublico(); 
-    cargarDatosPagoNube();
-    cargarReviewsNube();
-    cargarUmbralesRangosNube().then(() => {
-      actualizarRangoSegunXP();
-    });
-  });
-
-  window.reproducirSonido = function() {
-    try {
-      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const osc = audioCtx.createOscillator();
-      const gainNode = audioCtx.createGain();
-      osc.type = 'square'; osc.frequency.setValueAtTime(440, audioCtx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.08);
-      gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
-      osc.connect(gainNode); gainNode.connect(audioCtx.destination);
-      osc.start(); osc.stop(audioCtx.currentTime + 0.08);
-    } catch(e) {}
-  }
-
-  window.crearDestello = function(e) { reproducirSonido(); }
-
-  window.scrollCategoriasVisuales = function(direccion) {
-    reproducirSonido();
-    let track = document.getElementById('categoriasTrack');
-    track.scrollBy({ left: direccion * 155, behavior: 'smooth' });
-  }
-
-  let intervaloCategorias;
-  function iniciarAutoScrollCategorias() {
-    let track = document.getElementById('categoriasTrack');
-    if(!track) return;
-    intervaloCategorias = setInterval(() => {
-      if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) {
-        track.scrollTo({ left: 0, behavior: 'smooth' });
-      } else {
-        track.scrollBy({ left: 155, behavior: 'smooth' });
-      }
-    }, 3500); 
-  }
-
-  setTimeout(() => {
-    iniciarAutoScrollCategorias();
-    let track = document.getElementById('categoriasTrack');
-    if (track) {
-      track.addEventListener('mouseenter', () => clearInterval(intervaloCategorias));
-      track.addEventListener('mouseleave', iniciarAutoScrollCategorias);
+      document.getElementById('lblTasaBcv').innerText = `Bs. ${window.tasaBcvActual.toFixed(2)}`;
+      renderizarProductosEnTienda(window.productosNubeGlobal);
     }
-  }, 500);
 
-  window.cambiarFotoTarjeta = function(event, cardIndex, direccion) {
-    event.stopPropagation(); reproducirSonido();
-    let contenedor = document.getElementById(`carrusel-card-${cardIndex}`);
-    if (!contenedor) return;
-    let imgs = contenedor.querySelectorAll('img'); let dots = contenedor.querySelectorAll('.dot');
-    if (imgs.length <= 1) return;
-    let currentIndex = Array.from(imgs).findIndex(img => img.classList.contains('activa'));
-    let newIndex = currentIndex + direccion;
-    if (newIndex >= imgs.length) newIndex = 0; if (newIndex < 0) newIndex = imgs.length - 1;
-    imgs.forEach(img => img.classList.remove('activa')); dots.forEach(d => d.classList.remove('activa'));
-    imgs[newIndex].classList.add('activa'); dots[newIndex].classList.add('activa');
-  }
+    window.renderizarProductosEnTienda = function(lista) {
+      const grid = document.getElementById('gridProductos');
+      const lblTotal = document.getElementById('lblTotalEncontrados');
+      if (!grid) return;
 
-  window.abrirModalMulti = function(fotosArray, titulo, precio, descripcion, disponibilidad, esRopa, categoriaRaw, esRecarga) {
-    window.productoActual = { img: fotosArray[0], titulo, precio, esRopa, esRecarga };
-    let catBonita = categoriaRaw.charAt(0).toUpperCase() + categoriaRaw.slice(1);
-    document.getElementById('modalBreadcrumbs').innerHTML = `Inicio / <span>${catBonita}</span>`;
-    document.getElementById('modalImg').src = fotosArray[0];
-    document.getElementById('modalTitulo').innerText = titulo;
-    document.getElementById('modalPrecio').innerText = "$" + precio.toFixed(2);
-    document.getElementById('modalDesc').innerText = descripcion;
-    document.getElementById('modalTag').innerText = disponibilidad;
-    
-    document.getElementById('tallasContainer').style.display = esRopa ? 'block' : 'none';
-    document.getElementById('recargaContainer').style.display = esRecarga ? 'block' : 'none';
+      grid.innerHTML = "";
+      lblTotal.innerText = `${lista.length} productos disponibles`;
 
-    let contenedorMinis = document.getElementById('modalContainerMinis');
-    contenedorMinis.innerHTML = "";
-    if (fotosArray.length > 1) {
-      fotosArray.forEach((fotoUrl, idx) => {
-        contenedorMinis.innerHTML += `<img src="${fotoUrl}" class="modal-mini-img ${idx === 0 ? 'activo' : ''}" onclick="cambiarFotoModal('${fotoUrl}', this)">`;
-      });
-    }
-    document.getElementById('miModal').style.display = 'flex';
-  }
-
-  window.cambiarFotoModal = function(urlFoto, elementoMini) {
-    reproducirSonido(); document.getElementById('modalImg').src = urlFoto; window.productoActual.img = urlFoto;
-    document.querySelectorAll('.modal-mini-img').forEach(m => m.classList.remove('activo'));
-    elementoMini.classList.add('activo');
-  }
-
-  setTimeout(() => {
-    let splash = document.getElementById('splash-screen');
-    if (splash) { splash.style.opacity = '0'; setTimeout(() => splash.style.display = 'none', 600); }
-  }, 2000);
-
-  let temaActual = localStorage.getItem('sakura_tema') || 'theme-rosa';
-  document.body.className = temaActual;
-  window.abrirTemasModal = function() { reproducirSonido(); document.getElementById('modalTemas').style.display = 'flex'; }
-  window.cerrarTemasModal = function() { document.getElementById('modalTemas').style.display = 'none'; }
-  window.cambiarTema = function(t) { reproducirSonido(); document.body.className = t; localStorage.setItem('sakura_tema', t); cerrarTemasModal(); }
-
-  window.activarEasterEggLogo = function() { reproducirSonido(); document.body.classList.toggle('theme-overdrive'); confetti({ particleCount: 150, spread: 90, origin: { y: 0.4 } }); }
-
-  let reproduciendoMusica = false;
-  window.toggleMusicaLoFi = function() {
-    reproducirSonido(); let audio = document.getElementById('audioLoFi'); let icono = document.getElementById('iconoMusica');
-    if (!reproduciendoMusica) { audio.play().then(() => { reproduciendoMusica = true; icono.className = "fas fa-pause"; alert("🎵 ¡Música Lo-Fi activada!"); }).catch(e => alert("Interactúa con la pantalla primero."));
-    } else { audio.pause(); reproduciendoMusica = false; icono.className = "fas fa-music"; alert("⏸️ Música pausada."); }
-  }
-
-  window.abrirMenuOpciones = function() { reproducirSonido(); document.getElementById('modalOpcionesMenu').style.display = 'flex'; }
-  window.cerrarMenuOpciones = function() { document.getElementById('modalOpcionesMenu').style.display = 'none'; }
-
-  let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, rango: "Genin 🍃" };
-  document.getElementById('inputGamerTag').value = gamerProfile.tag; 
-  document.getElementById('lblRango').innerText = gamerProfile.rango; 
-  document.getElementById('lblXp').innerText = gamerProfile.xp + " XP";
-
-  function actualizarRangoSegunXP() {
-    let xp = gamerProfile.xp;
-    let u = umbralesRangosNube;
-    if (xp >= (u.hokage ?? 1000)) { gamerProfile.rango = "Hokage 👑"; }
-    else if (xp >= (u.jonin ?? 600)) { gamerProfile.rango = "Jōnin ⚔️"; }
-    else if (xp >= (u.chunin ?? 300)) { gamerProfile.rango = "Chūnin ⚡"; }
-    else { gamerProfile.rango = "Genin 🍃"; }
-
-    localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
-    document.getElementById('lblXp').innerText = gamerProfile.xp + " XP"; 
-    document.getElementById('lblRango').innerText = gamerProfile.rango;
-    window.guardarJugadorEnNube();
-  }
-
-  function ganarXP(cantidad) {
-    gamerProfile.xp += cantidad;
-    actualizarRangoSegunXP();
-  }
-
-  window.abrirGamerProfileModal = function() { reproducirSonido(); document.getElementById('modalGamerProfile').style.display = 'flex'; }
-  window.cerrarGamerProfileModal = function() { document.getElementById('modalGamerProfile').style.display = 'none'; }
-  window.guardarGamerTag = function() { 
-    reproducirSonido(); 
-    let t = document.getElementById('inputGamerTag').value.trim(); 
-    if(t) { 
-      gamerProfile.tag = t; 
-      localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile)); 
-      window.guardarJugadorEnNube();
-      alert("💾 ¡GamerTag guardado y sincronizado!"); 
-      cerrarGamerProfileModal(); 
-    } 
-  }
-
-  let favoritos = JSON.parse(localStorage.getItem('sakura_favoritos')) || [];
-  window.toggleFavorito = function(event, titulo, precio, img) {
-    event.stopPropagation(); reproducirSonido(); let idx = favoritos.findIndex(i => i.titulo === titulo);
-    if(idx === -1) { favoritos.push({titulo, precio, img}); alert(`💖 ¡Añadido a favoritos!`); } else { favoritos.splice(idx, 1); alert(`💔 ¡Eliminado de favoritos!`); }
-    localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos)); actualizarBadges();
-  }
-  
-  window.abrirFavoritosModal = function() {
-    reproducirSonido(); let cont = document.getElementById('listaFavoritosDetalle');
-    cont.innerHTML = favoritos.length === 0 ? "<p style='color:#aaa;'>Sin favoritos aún.</p>" : "";
-    favoritos.forEach((item, i) => { cont.innerHTML += `<div class="cart-item-row"><img src="${item.img}" class="cart-item-img"><div class="cart-item-info"><strong>${item.titulo}</strong><br><span style="color:var(--secondary-color);">$${item.precio.toFixed(2)}</span></div><button class="cart-item-del" onclick="favoritos.splice(${i},1);localStorage.setItem('sakura_favoritos',JSON.stringify(favoritos));actualizarBadges();abrirFavoritosModal();">❌</button></div>`; });
-    document.getElementById('modalFavoritos').style.display = 'flex';
-  }
-  window.cerrarFavoritosModal = function() { document.getElementById('modalFavoritos').style.display = 'none'; }
-
-  window.abrirCofreModal = function() { reproducirSonido(); document.getElementById('modalCofreDiario').style.display = 'flex'; }
-  window.cerrarCofreModal = function() { document.getElementById('modalCofreDiario').style.display = 'none'; }
-  
-  window.abrirCofreDiario = function() {
-    reproducirSonido(); 
-    let hoy = new Date().toDateString(); 
-    let ultimoCofre = localStorage.getItem('sakura_ultimo_cofre');
-    if (ultimoCofre === hoy) { 
-      document.getElementById('cofreResultado').innerHTML = "⏳ Ya abriste tu cofre de hoy. ¡Vuelve mañana!"; 
-      return; 
-    }
-    localStorage.setItem('sakura_ultimo_cofre', hoy); 
-    ganarXP(50); 
-    confetti({ particleCount: 120, spread: 80, origin: { y: 0.5 } });
-    document.getElementById('cofreResultado').innerHTML = "🎉 ¡Ganaste +50 XP diarios! ⚡";
-  }
-
-  window.abrirGachaModal = function() { reproducirSonido(); document.getElementById('modalGacha').style.display = 'flex'; }
-  window.cerrarGachaModal = function() { document.getElementById('modalGacha').style.display = 'none'; }
-  
-  window.girarRuletaGacha = function() { 
-    reproducirSonido(); 
-    let hoy = new Date().toDateString();
-    let ultimaGacha = localStorage.getItem('sakura_ultima_gacha');
-    if (ultimaGacha === hoy) {
-      document.getElementById('gachaResultado').innerHTML = "⏳ Ya giraste la ruleta hoy. ¡Vuelve mañana!";
-      return;
-    }
-    localStorage.setItem('sakura_ultima_gacha', hoy);
-    document.getElementById('gachaResultado').innerHTML = "🎉 ¡Ganaste 10% OFF! (Cupón: <strong>OTAKU10</strong>)"; 
-    confetti({ particleCount: 100, spread: 70, origin: { y: 0.5 } }); 
-  }
-
-  window.abrirGuiaTallasModal = function() { reproducirSonido(); document.getElementById('modalGuiaTallas').style.display = 'flex'; }
-  window.cerrarGuiaTallasModal = function() { document.getElementById('modalGuiaTallas').style.display = 'none'; }
-  window.cerrarPromoFlash = function() { document.getElementById('modalPromoFlash').style.display = 'none'; }
-
-  let carrito = JSON.parse(localStorage.getItem('sakura_carrito')) || [];
-  window.productoActual = null; let descuentoAplicado = 0; let categoriaActualFiltro = 'todos'; let estadoActualFiltro = 'todos';
-
-  window.filtrar = function(cat, evento) {
-    reproducirSonido();
-    document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('activo'));
-    document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('activa'));
-    let btnFiltroTexto = document.querySelector(`.btn-filtro[onclick*="'${cat}'"]`);
-    if(btnFiltroTexto) btnFiltroTexto.classList.add('activo');
-    let cardVisual = document.querySelector(`.cat-card[onclick*="'${cat}'"]`);
-    if(cardVisual) cardVisual.classList.add('activa');
-    categoriaActualFiltro = cat; estadoActualFiltro = 'todos';
-    aplicarFiltrosCombinados();
-  }
-
-  window.filtrarEstado = function(est, evento) {
-    reproducirSonido();
-    document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('activo'));
-    document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('activa'));
-    if(evento && evento.currentTarget) evento.currentTarget.classList.add('activo');
-    estadoActualFiltro = est; categoriaActualFiltro = 'todos';
-    aplicarFiltrosCombinados();
-  }
-
-  window.filtrarPorPresupuesto = function(min, max, evento) {
-    reproducirSonido();
-    document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('activo'));
-    document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('activa'));
-    if(evento && evento.currentTarget) evento.currentTarget.classList.add('activo');
-    let productos = document.querySelectorAll('#catalogoNube .item-producto');
-    productos.forEach(prod => {
-      let precio = parseFloat(prod.getAttribute('data-precio'));
-      prod.style.display = (precio >= min && precio <= max) ? 'block' : 'none';
-    });
-  }
-
-  function aplicarFiltrosCombinados() {
-    let productos = document.querySelectorAll('#catalogoNube .item-producto');
-    productos.forEach(prod => {
-      let cat = prod.getAttribute('data-categoria');
-      let est = prod.getAttribute('data-estado');
-      let cumpleCat = (categoriaActualFiltro === 'todos' || cat === categoriaActualFiltro);
-      let cumpleEst = (estadoActualFiltro === 'todos' || est === estadoActualFiltro);
-      prod.style.display = (cumpleCat && cumpleEst) ? 'block' : 'none';
-    });
-  }
-
-  window.ordenarProductos = function() {
-    reproducirSonido(); let modo = document.getElementById('selectOrden').value; let contenedor = document.getElementById('catalogoNube');
-    let cards = Array.from(contenedor.querySelectorAll('.item-producto'));
-    if (modo === 'menor') { cards.sort((a, b) => parseFloat(a.getAttribute('data-precio')) - parseFloat(b.getAttribute('data-precio')));
-    } else if (modo === 'mayor') { cards.sort((a, b) => parseFloat(b.getAttribute('data-precio')) - parseFloat(a.getAttribute('data-precio')));
-    } else { return; }
-    cards.forEach(card => contenedor.appendChild(card));
-  }
-
-  window.buscarProductos = function() {
-    let texto = document.getElementById('buscador').value.toLowerCase();
-    document.querySelectorAll('.item-producto').forEach(prod => {
-      let nombre = prod.getAttribute('data-nombre'); prod.style.display = nombre.includes(texto) ? 'block' : 'none';
-    });
-  }
-
-  window.cerrarModal = function() { document.getElementById('miModal').style.display = 'none'; }
-
-  window.agregarAlCarrito = function() {
-    reproducirSonido(); 
-    let item = { ...window.productoActual };
-    if(item.esRopa) {
-      item.titulo += ` (Talla: ${document.getElementById('selectTalla').value})`;
-    }
-    if(item.esRecarga) {
-      let playerId = document.getElementById('inputPlayerId').value.trim();
-      let playerServer = document.getElementById('inputPlayerServer').value.trim();
-      if(!playerId) return alert("Por favor ingresa tu ID de jugador para la recarga.");
-      item.titulo += ` [ID: ${playerId}${playerServer ? ' / Servidor: ' + playerServer : ''}]`;
-    }
-    carrito.push(item); 
-    actualizarCarritoUI(); 
-    cerrarModal(); 
-    alert("🛒 ¡Añadido al carrito!");
-  }
-
-  function actualizarCarritoUI() { localStorage.setItem('sakura_carrito', JSON.stringify(carrito)); actualizarBadges(); }
-  function actualizarBadges() { document.getElementById('cartBadge').innerText = carrito.length; document.getElementById('favBadge').innerText = favoritos.length; }
-
-  window.abrirCarritoModal = function() {
-    reproducirSonido(); 
-    let cont = document.getElementById('listaCarritoDetalle'); 
-    let reciboBox = document.getElementById('reciboDigital'); 
-    let reciboContenido = document.getElementById('reciboContenido');
-    let paymentBox = document.getElementById('paymentMethodsCart');
-    cont.innerHTML = ""; reciboContenido.innerHTML = "";
-    
-    if(carrito.length === 0) { 
-      cont.innerHTML = "<p style='color:#aaa;'>Vacío.</p>"; 
-      reciboBox.style.display = 'none'; 
-      paymentBox.style.display = 'none';
-      document.getElementById('modalCarritoTotal').innerText = "Total: $0.00";
-    } else {
-      reciboBox.style.display = 'block'; 
-      paymentBox.style.display = 'block';
-      let html = "";
-      carrito.forEach((item, i) => {
-        cont.innerHTML += `<div class="cart-item-row"><img src="${item.img}" class="cart-item-img"><div class="cart-item-info"><strong>${item.titulo}</strong><br><span style="color:var(--secondary-color);">$${item.precio.toFixed(2)}</span></div><button class="cart-item-del" onclick="removerDelCarrito(${i})">❌</button></div>`;
-        html += `<div class="recibo-line"><span>${item.titulo}</span><span>$${item.precio.toFixed(2)}</span></div>`;
-      });
-      let sub = carrito.reduce((s, i) => s + i.precio, 0); 
-      let tot = sub * (1 - descuentoAplicado); 
-      let totBs = tot * tasaBcvActual;
-      html += `<div style="border-top:1px dashed var(--secondary-color); margin-top:5px; padding-top:5px;" class="recibo-line"><strong>TOTAL USD:</strong> <strong>$${tot.toFixed(2)}</strong></div>`;
-      html += `<div class="recibo-line"><strong>TOTAL BS:</strong> <strong>Bs. ${totBs.toLocaleString('es-VE', {minimumFractionDigits:2, maximumFractionDigits:2})}</strong></div>`;
-      reciboContenido.innerHTML = html; 
-      document.getElementById('modalCarritoTotal').innerText = `Total: $${tot.toFixed(2)}`;
-    }
-    document.getElementById('modalCarrito').style.display = 'flex';
-  }
-
-  window.removerDelCarrito = function(index) {
-    reproducirSonido();
-    carrito.splice(index, 1);
-    actualizarCarritoUI();
-    window.abrirCarritoModal();
-  }
-
-  window.cerrarCarritoModal = function() { document.getElementById('modalCarrito').style.display = 'none'; }
-  window.vaciarCarrito = function() { reproducirSonido(); carrito = []; descuentoAplicado = 0; actualizarCarritoUI(); abrirCarritoModal(); }
-
-  window.enviarPedidoWhatsApp = function() {
-    reproducirSonido(); if(carrito.length === 0) return alert("Vacío.");
-    let sub = carrito.reduce((s, i) => s + i.precio, 0); let tot = sub * (1 - descuentoAplicado); let totBs = tot * tasaBcvActual;
-    let msg = `¡Hola Sakura Gameverse! 🌸👾 Deseo realizar este pedido:\n\n`;
-    carrito.forEach((i, idx) => { msg += `${idx+1}. ${i.titulo} - $${i.precio.toFixed(2)}\n`; });
-    msg += `\n*Total: $${tot.toFixed(2)} (Bs. ${totBs.toLocaleString('es-VE', {minimumFractionDigits:2, maximumFractionDigits:2})})*\n¡Espero instrucciones para el pago!`;
-    window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msg), '_blank'); cerrarCarritoModal();
-  }
-
-  window.compartirProductoWhatsApp = function() {
-    reproducirSonido(); let msg = `¡Mira esto en Sakura Gameverse! 🌸👾\n\n*${window.productoActual.titulo}*\nPrecio: $${window.productoActual.precio.toFixed(2)}\n\n¿Disponible?`; window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msg), '_blank');
-  }
-
-  window.abrirFaqModal = function() { reproducirSonido(); document.getElementById('modalFaq').style.display = 'flex'; }
-  window.cerrarFaqModal = function() { document.getElementById('modalFaq').style.display = 'none'; }
-  window.abrirSugerenciaModal = function() { reproducirSonido(); document.getElementById('modalSugerencias').style.display = 'flex'; }
-  window.cerrarSugerenciaModal = function() { document.getElementById('modalSugerencias').style.display = 'none'; }
-
-  window.enviarSugerenciaWhatsApp = function() {
-    reproducirSonido(); let n = document.getElementById('sugNombre').value.trim(); let d = document.getElementById('sugDeseo').value.trim();
-    if(!n || !d) return alert("Completa.");
-    window.open("https://wa.me/584244970576?text=" + encodeURIComponent(`💡 *Sugerencia* 💡\nCliente: ${n}\nDeseo: ${d}`), '_blank'); cerrarSugerenciaModal();
-  }
-
-  async function cargarReviewsNube() {
-    try {
-      const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"));
-      const querySnapshot = await getDocs(q);
-      let c = document.getElementById('contenedorReviews'); 
-      if(!c) return;
-      
-      c.innerHTML = "";
-      if (querySnapshot.empty) {
-        c.innerHTML = "<p style='color:#aaa; text-align:center;'>Aún no hay reseñas. ¡Sé el primero en dejar una! ✨</p>";
+      if (lista.length === 0) {
+        grid.innerHTML = `<div class="col-span-full text-center py-12 text-gray-400">No se encontraron productos en esta categoría 😿</div>`;
         return;
       }
 
-      querySnapshot.forEach((docSnap) => {
-        let r = docSnap.data();
-        c.innerHTML += `
-          <div class="review-card">
-            <div class="review-author">${r.nombre}</div>
-            <div class="review-stars">${r.estrellas}</div>
-            <div class="review-text">${r.texto}</div>
+      // Update category counters
+      const conteo = { 'todos': window.productosNubeGlobal.length };
+      window.productosNubeGlobal.forEach(p => {
+        conteo[p.categoria] = (conteo[p.categoria] || 0) + 1;
+      });
+
+      Object.keys(conteo).forEach(cat => {
+        const el = document.getElementById(`count-${cat}`);
+        if (el) el.innerText = `${conteo[cat]} items`;
+      });
+
+      lista.forEach((prod, index) => {
+        const precioBs = prod.precio * window.tasaBcvActual;
+        const fotos = prod.fotos && prod.fotos.length > 0 ? prod.fotos : ['https://images.unsplash.com/photo-1578632767115-351597cf2477?w=500&auto=format&fit=crop&q=80'];
+        const esFav = favoritos.some(f => f.nombre === prod.nombre);
+
+        // Build Multi-Image HTML
+        let imgsHTML = "";
+        fotos.forEach((f, i) => {
+          imgsHTML += `<img src="${f}" class="${i === 0 ? 'activa' : ''}" alt="${prod.nombre}">`;
+        });
+
+        let dotsHTML = "";
+        if (fotos.length > 1) {
+          dotsHTML = `<div class="absolute bottom-2 left-0 right-0 flex justify-center gap-1 z-10">`;
+          fotos.forEach((_, i) => {
+            dotsHTML += `<span class="dot w-1.5 h-1.5 rounded-full ${i === 0 ? 'bg-cyan-400' : 'bg-gray-500'}"></span>`;
+          });
+          dotsHTML += `</div>`;
+        }
+
+        grid.innerHTML += `
+          <div class="glass-card flex flex-col justify-between overflow-hidden group cursor-pointer" onclick="abrirModalMulti(${JSON.stringify(fotos).replace(/"/g, '&quot;')}, '${prod.nombre.replace(/'/g, "\\'")}', ${prod.precio}, '${prod.descripcion.replace(/'/g, "\\'")}', '${prod.estado}', ${prod.esRopa || false}, '${prod.categoria}', ${prod.esRecarga || false})">
+            <div>
+              <div class="card-img-container" id="carrusel-card-${index}">
+                ${imgsHTML}
+                ${dotsHTML}
+                ${fotos.length > 1 ? `
+                  <button onclick="cambiarFotoTarjeta(event, ${index}, -1)" class="absolute left-1 top-1/2 -translate-y-1/2 bg-black/60 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition">‹</button>
+                  <button onclick="cambiarFotoTarjeta(event, ${index}, 1)" class="absolute right-1 top-1/2 -translate-y-1/2 bg-black/60 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition">›</button>
+                ` : ''}
+                <button onclick="toggleFavorito(event, '${prod.nombre.replace(/'/g, "\\'")}', ${prod.precio}, '${fotos[0]}')" class="absolute top-2 right-2 bg-black/60 text-pink-400 w-8 h-8 rounded-full flex items-center justify-center hover:scale-110 transition z-10">
+                  <i class="${esFav ? 'fas' : 'far'} fa-heart"></i>
+                </button>
+                <span class="absolute top-2 left-2 bg-pink-600/90 text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider backdrop-blur-md">${prod.categoria}</span>
+              </div>
+
+              <div class="p-4 space-y-2">
+                <div class="text-[10px] text-gray-400 font-mono">${prod.estado}</div>
+                <h4 class="font-bold text-sm text-white group-hover:text-pink-300 transition line-clamp-1">${prod.nombre}</h4>
+                <div class="flex items-baseline gap-2">
+                  <span class="font-display font-extrabold text-lg text-cyan-400">$${prod.precio.toFixed(2)} USD</span>
+                  <span class="text-xs text-gray-400 font-mono">Bs. ${precioBs.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-4 pt-0">
+              <button class="w-full bg-gradient-to-r from-pink-500/20 to-purple-500/20 hover:from-pink-500 hover:to-purple-600 border border-pink-500/40 text-pink-300 hover:text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center gap-2">
+                <i class="fas fa-eye"></i> Ver Detalle
+              </button>
+            </div>
           </div>
         `;
       });
-    } catch (e) {
-      console.log("Error cargando reseñas de la nube:", e);
     }
-  }
 
-  window.agregarReview = async function() {
-    reproducirSonido(); 
-    let n = document.getElementById('revNombre').value.trim(); 
-    let e = document.getElementById('revEstrellas').value; 
-    let t = document.getElementById('revTexto').value.trim();
-    if(!n || !t) return alert("Por favor completa tu nombre y tu opinión.");
-    
-    try {
-      await addDoc(collection(db, "reviews"), {
-        nombre: n,
-        estrellas: e,
-        texto: t,
-        timestamp: Date.now()
+    async function cargarReviewsDeNube() {
+      const contenedor = document.getElementById('contenedorReviews');
+      if (!contenedor) return;
+
+      try {
+        if (db) {
+          // Rule 1: Strict path for public reviews
+          const q = collection(db, 'artifacts', appId, 'public', 'data', 'reviews');
+          const querySnapshot = await getDocs(q);
+          
+          if (!querySnapshot.empty) {
+            contenedor.innerHTML = "";
+            querySnapshot.forEach((doc) => {
+              let rev = doc.data();
+              contenedor.innerHTML += `
+                <div class="glass-card p-4 space-y-2 border border-pink-500/20">
+                  <div class="flex justify-between items-center">
+                    <strong class="text-xs text-pink-300 font-display">${rev.nombre || 'Gamer Anónimo'}</strong>
+                    <span class="text-xs text-amber-400">${rev.estrellas || '⭐⭐⭐⭐⭐'}</span>
+                  </div>
+                  <p class="text-xs text-gray-300 italic">"${rev.texto}"</p>
+                </div>
+              `;
+            });
+            return;
+          }
+        }
+      } catch (e) {
+        console.log("Cargando reviews demo:", e);
+      }
+
+      // Default Reviews
+      contenedor.innerHTML = `
+        <div class="glass-card p-4 space-y-2 border border-pink-500/20">
+          <div class="flex justify-between items-center">
+            <strong class="text-xs text-pink-300 font-display">CarlosOtaku21</strong>
+            <span class="text-xs text-amber-400">⭐⭐⭐⭐⭐</span>
+          </div>
+          <p class="text-xs text-gray-300 italic">"La figura de Anya llegó intacta y súper rápido por MRW a Maracaibo. ¡100% recomendados!"</p>
+        </div>
+        <div class="glass-card p-4 space-y-2 border border-pink-500/20">
+          <div class="flex justify-between items-center">
+            <strong class="text-xs text-pink-300 font-display">GamerChica_FF</strong>
+            <span class="text-xs text-amber-400">⭐⭐⭐⭐⭐</span>
+          </div>
+          <p class="text-xs text-gray-300 italic">"La recarga de Free Fire se acreditó en 5 minutos en mi cuenta ID. Servicio genial."</p>
+        </div>
+        <div class="glass-card p-4 space-y-2 border border-pink-500/20">
+          <div class="flex justify-between items-center">
+            <strong class="text-xs text-pink-300 font-display">YukiCosplay</strong>
+            <span class="text-xs text-amber-400">⭐⭐⭐⭐⭐</span>
+          </div>
+          <p class="text-xs text-gray-300 italic">"El hoodie oversize tiene excelente calidad de tela y el diseño neon resalta muchísimo."</p>
+        </div>
+      `;
+    }
+
+    window.agregarReview = async function() {
+      let nombre = document.getElementById('revNombre').value.trim() || 'Gamer de Sakura';
+      let estrellas = document.getElementById('revEstrellas').value;
+      let texto = document.getElementById('revTexto').value.trim();
+
+      if (!texto) {
+        mostrarToast("Por favor escribe tu opinión antes de publicar ✨", "⚠️");
+        return;
+      }
+
+      try {
+        if (db) {
+          const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'reviews');
+          await addDoc(colRef, {
+            nombre: nombre,
+            estrellas: estrellas,
+            texto: texto,
+            timestamp: Date.now()
+          });
+        }
+        document.getElementById('revTexto').value = "";
+        mostrarToast("¡Reseña publicada con éxito! 💖", "🎉");
+        cargarReviewsDeNube();
+      } catch (e) {
+        mostrarToast("Reseña agregada localmente ✨", "💖");
+      }
+    }
+
+    // Startup
+    window.addEventListener('DOMContentLoaded', async () => {
+      await cargarDatosNube();
+      await cargarReviewsDeNube();
+
+      setTimeout(() => {
+        let splash = document.getElementById('splash-screen');
+        if (splash) {
+          splash.style.opacity = '0';
+          setTimeout(() => splash.style.display = 'none', 700);
+        }
+      }, 1000);
+
+      actualizarBadges();
+      actualizarPerfilGamerUI();
+    });
+  </script>
+
+  <script>
+    // Search & Filters
+    window.buscarProductos = function() {
+      let q = document.getElementById('buscador').value.toLowerCase().trim();
+      let filtrados = productosNubeGlobal.filter(p => 
+        p.nombre.toLowerCase().includes(q) || 
+        (p.categoria && p.categoria.toLowerCase().includes(q)) ||
+        (p.descripcion && p.descripcion.toLowerCase().includes(q))
+      );
+      renderizarProductosEnTienda(filtrados);
+    }
+
+    window.buscarProductosMobile = function() {
+      let q = document.getElementById('buscadorMobile').value.toLowerCase().trim();
+      let filtrados = productosNubeGlobal.filter(p => 
+        p.nombre.toLowerCase().includes(q) || 
+        (p.categoria && p.categoria.toLowerCase().includes(q))
+      );
+      renderizarProductosEnTienda(filtrados);
+    }
+
+    window.filtrar = function(categoria, event) {
+      if (event) marcarBotonFiltroActivo(event.currentTarget);
+      if (categoria === 'todos') {
+        renderizarProductosEnTienda(productosNubeGlobal);
+      } else {
+        let filtrados = productosNubeGlobal.filter(p => (p.categoria || '').toLowerCase() === categoria.toLowerCase());
+        renderizarProductosEnTienda(filtrados);
+      }
+    }
+
+    window.filtrarPorPresupuesto = function(min, max, event) {
+      if (event) marcarBotonFiltroActivo(event.currentTarget);
+      let filtrados = productosNubeGlobal.filter(p => p.precio >= min && p.precio <= max);
+      renderizarProductosEnTienda(filtrados);
+    }
+
+    window.ordenarProductos = function() {
+      let opt = document.getElementById('selectOrden').value;
+      let copia = [...productosNubeGlobal];
+      if (opt === 'menor') copia.sort((a, b) => a.precio - b.precio);
+      if (opt === 'mayor') copia.sort((a, b) => b.precio - a.precio);
+      renderizarProductosEnTienda(copia);
+    }
+
+    function marcarBotonFiltroActivo(btn) {
+      document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('activo'));
+      if (btn) btn.classList.add('activo');
+    }
+
+    window.scrollCategoriasVisuales = function(dir) {
+      let track = document.getElementById('categoriasTrack');
+      if (track) track.scrollBy({ left: dir * 220, behavior: 'smooth' });
+    }
+
+    // Card Carousel navigation
+    window.cambiarFotoTarjeta = function(e, idxProd, dir) {
+      e.stopPropagation();
+      let container = document.getElementById(`carrusel-card-${idxProd}`);
+      if (!container) return;
+      let imgs = container.querySelectorAll('img');
+      let dots = container.querySelectorAll('.dot');
+      let current = Array.from(imgs).findIndex(img => img.classList.contains('activa'));
+
+      imgs[current].classList.remove('activa');
+      if (dots[current]) dots[current].classList.remove('bg-cyan-400');
+
+      let next = current + dir;
+      if (next >= imgs.length) next = 0;
+      if (next < 0) next = imgs.length - 1;
+
+      imgs[next].classList.add('activa');
+      if (dots[next]) dots[next].classList.add('bg-cyan-400');
+    }
+
+    let productoModalActual = null;
+
+    window.abrirModalMulti = function(fotos, nombre, precio, descripcion, estado, esRopa, categoria, esRecarga) {
+      productoModalActual = { fotos, nombre, precio, descripcion, estado, esRopa, categoria, esRecarga };
+      
+      document.getElementById('modalBreadcrumbs').innerText = `Inicio / ${categoria.toUpperCase()}`;
+      document.getElementById('modalImg').src = fotos[0] || 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=500&auto=format&fit=crop&q=80';
+      document.getElementById('modalTitulo').innerText = nombre;
+      document.getElementById('modalPrecio').innerText = `$${Number(precio).toFixed(2)} USD`;
+      document.getElementById('modalDesc').innerText = descripcion;
+      document.getElementById('modalTag').innerText = estado || 'En Stock';
+
+      // Gallery Miniatures
+      let containerMinis = document.getElementById('modalContainerMinis');
+      containerMinis.innerHTML = "";
+      if (fotos.length > 1) {
+        fotos.forEach((f, i) => {
+          containerMinis.innerHTML += `
+            <img src="${f}" class="w-12 h-12 rounded-lg object-cover border-2 border-pink-500/30 cursor-pointer hover:border-cyan-400 transition" onclick="cambiarFotoModal('${f}')">
+          `;
+        });
+      }
+
+      document.getElementById('tallasContainer').style.display = esRopa ? 'block' : 'none';
+      document.getElementById('recargaContainer').style.display = esRecarga ? 'block' : 'none';
+
+      document.getElementById('miModal').style.display = 'flex';
+    }
+
+    window.cambiarFotoModal = function(url) {
+      document.getElementById('modalImg').src = url;
+    }
+
+    window.cerrarModal = function() { document.getElementById('miModal').style.display = 'none'; }
+
+    // Cart & Wishlist
+    let carrito = JSON.parse(localStorage.getItem('sakura_cart')) || [];
+    let favoritos = JSON.parse(localStorage.getItem('sakura_favs')) || [];
+    let descuentoAplicado = 0;
+
+    window.agregarAlCarrito = function() {
+      if (!productoModalActual) return;
+      let item = { ...productoModalActual };
+
+      if (item.esRopa) {
+        item.talla = document.getElementById('selectTalla').value;
+        item.nombre += ` (Talla ${item.talla})`;
+      }
+
+      if (item.esRecarga) {
+        let idPlayer = document.getElementById('inputPlayerId').value.trim();
+        let serverPlayer = document.getElementById('inputPlayerServer').value.trim();
+        if (!idPlayer) {
+          mostrarToast("Ingresa tu ID de jugador para recargar.", "⚠️");
+          return;
+        }
+        item.nombre += ` [ID: ${idPlayer} | Server: ${serverPlayer || 'Global'}]`;
+      }
+
+      carrito.push(item);
+      guardarCarrito();
+      cerrarModal();
+      reproducirSonidoClick();
+      mostrarToast("¡Añadido a tu Loot/Carrito! 🛒✨", "🎉");
+    }
+
+    function guardarCarrito() {
+      localStorage.setItem('sakura_cart', JSON.stringify(carrito));
+      actualizarBadges();
+    }
+
+    window.toggleFavorito = function(e, nombre, precio, foto) {
+      e.stopPropagation();
+      let idx = favoritos.findIndex(f => f.nombre === nombre);
+      if (idx >= 0) {
+        favoritos.splice(idx, 1);
+        mostrarToast("Eliminado de tu lista de deseos 💔", "ℹ️");
+      } else {
+        favoritos.push({ nombre, precio, foto });
+        reproducirSonidoClick();
+        mostrarToast("¡Guardado en tu lista de deseos! 💖", "🌸");
+      }
+      localStorage.setItem('sakura_favs', JSON.stringify(favoritos));
+      actualizarBadges();
+      if (window.productosNubeGlobal) renderizarProductosEnTienda(productosNubeGlobal);
+    }
+
+    function actualizarBadges() {
+      let cartBadge = document.getElementById('cartBadge');
+      let favBadge = document.getElementById('favBadge');
+      if (cartBadge) cartBadge.innerText = carrito.length;
+      if (favBadge) favBadge.innerText = favoritos.length;
+    }
+
+    window.abrirCarritoModal = function() {
+      renderizarCarrito();
+      document.getElementById('modalCarrito').style.display = 'flex';
+    }
+
+    window.cerrarCarritoModal = function() { document.getElementById('modalCarrito').style.display = 'none'; }
+
+    function renderizarCarrito() {
+      let container = document.getElementById('listaCarritoDetalle');
+      if (!container) return;
+      container.innerHTML = "";
+
+      if (carrito.length === 0) {
+        container.innerHTML = "<p class='text-center text-gray-500 py-6 text-xs'>Tu carrito está vacío 🕸️</p>";
+        document.getElementById('modalCarritoTotal').innerText = "Total: $0.00 USD";
+        document.getElementById('reciboDigital').style.display = 'none';
+        return;
+      }
+
+      let subtotal = 0;
+      carrito.forEach((prod, i) => {
+        subtotal += prod.precio;
+        container.innerHTML += `
+          <div class="flex items-center justify-between bg-gray-900 p-2.5 rounded-xl border border-pink-500/20 text-xs">
+            <div class="flex items-center space-x-3">
+              <img src="${(prod.fotos && prod.fotos[0]) || 'logo.webp'}" class="w-10 h-10 rounded-lg object-cover">
+              <div>
+                <div class="font-bold text-white">${prod.nombre}</div>
+                <div class="text-cyan-400">$${prod.precio.toFixed(2)} USD</div>
+              </div>
+            </div>
+            <button onclick="eliminarDelCarrito(${i})" class="text-pink-500 hover:text-red-400 px-2 py-1">✕</button>
+          </div>
+        `;
       });
-      document.getElementById('revNombre').value = ""; 
-      document.getElementById('revTexto').value = ""; 
-      await cargarReviewsNube();
-      alert("🎉 ¡Reseña publicada con éxito!");
-    } catch(err) {
-      alert("❌ Error al publicar la reseña.");
+
+      let total = subtotal * (1 - descuentoAplicado);
+      let totalBs = total * window.tasaBcvActual;
+
+      document.getElementById('modalCarritoTotal').innerHTML = `
+        Total: <span class="text-cyan-400">$${total.toFixed(2)} USD</span><br>
+        <span class="text-xs text-pink-300 font-mono">Bs. ${totalBs.toLocaleString('es-VE', {minimumFractionDigits:2})}</span>
+      `;
+
+      // Digital Receipt
+      let reciboContenido = document.getElementById('reciboContenido');
+      reciboContenido.innerHTML = "";
+      carrito.forEach(p => {
+        reciboContenido.innerHTML += `<div class="flex justify-between"><span>1x ${p.nombre.substring(0,24)}...</span><span>$${p.precio.toFixed(2)}</span></div>`;
+      });
+      if (descuentoAplicado > 0) {
+        reciboContenido.innerHTML += `<div class="flex justify-between text-cyan-400"><span>Descuento (${descuentoAplicado*100}%):</span><span>-$${(subtotal*descuentoAplicado).toFixed(2)}</span></div>`;
+      }
+      reciboContenido.innerHTML += `<div class="flex justify-between font-bold text-white pt-1 border-t border-gray-800"><span>TOTAL BCV:</span><span>Bs. ${totalBs.toLocaleString('es-VE', {minimumFractionDigits:2})}</span></div>`;
+      document.getElementById('reciboDigital').style.display = 'block';
     }
-  }
 
-  actualizarBadges();
-</script>
+    window.eliminarDelCarrito = function(index) {
+      carrito.splice(index, 1);
+      guardarCarrito();
+      renderizarCarrito();
+    }
 
-<!-- Script para el aviso de Instalación de App (Service Worker) -->
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js')
-      .then(reg => console.log('PWA lista', reg))
-      .catch(err => console.log('Error PWA', err));
-  }
-</script>
+    window.vaciarCarrito = function() {
+      carrito = [];
+      guardarCarrito();
+      renderizarCarrito();
+      mostrarToast("Carrito vaciado.", "ℹ️");
+    }
+
+    window.aplicarCupon = function() {
+      let cupon = document.getElementById('inputCupon').value.toUpperCase().trim();
+      let msg = document.getElementById('mensajeCupon');
+      if (cupon === 'OTAKU10' || cupon === 'SAKURA10') {
+        descuentoAplicado = 0.10;
+        msg.innerText = "¡Cupón del 10% aplicado con éxito! 🎉";
+        msg.className = "text-[11px] font-mono text-cyan-400";
+      } else {
+        descuentoAplicado = 0;
+        msg.innerText = "Cupón no válido o vencido ❌";
+        msg.className = "text-[11px] font-mono text-pink-500";
+      }
+      renderizarCarrito();
+    }
+
+    window.enviarPedidoWhatsApp = function() {
+      if (carrito.length === 0) {
+        mostrarToast("Tu carrito está vacío.", "⚠️");
+        return;
+      }
+
+      let subtotal = carrito.reduce((acc, p) => acc + p.precio, 0);
+      let total = subtotal * (1 - descuentoAplicado);
+      let totalBs = total * window.tasaBcvActual;
+
+      let mensaje = `🌸 *NUEVO PEDIDO - SAKURA GAMEVERSE* 🌸\n\n`;
+      mensaje += `*Detalle de la Orden:*\n`;
+      carrito.forEach((p, i) => {
+        mensaje += `${i + 1}. ${p.nombre} - *$${p.precio.toFixed(2)}*\n`;
+      });
+
+      if (descuentoAplicado > 0) {
+        mensaje += `\n🎟️ *Descuento Aplicado:* ${descuentoAplicado * 100}%\n`;
+      }
+
+      mensaje += `\n💰 *Total USD:* $${total.toFixed(2)} USD`;
+      mensaje += `\n💵 *Total BCV (Tasa ${window.tasaBcvActual.toFixed(2)}):* Bs. ${totalBs.toLocaleString('es-VE', {minimumFractionDigits: 2})}\n`;
+      mensaje += `\n📍 *Indícanos tu nombre y ciudad para acordar la entrega/pago.*`;
+
+      window.open(`https://wa.me/584244970576?text=${encodeURIComponent(mensaje)}`, '_blank');
+    }
+
+    window.compartirProductoWhatsApp = function() {
+      if (!productoModalActual) return;
+      let p = productoModalActual;
+      let text = `¡Hola Sakura Gameverse! 🌸 Quisiera consultar disponibilidad sobre: *${p.nombre}* - Precio: *$${p.precio.toFixed(2)} USD*`;
+      window.open(`https://wa.me/584244970576?text=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    let gamerData = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: 'OtakuGamer', xp: 120, ultimoCofre: 0 };
+
+    function guardarPerfilGamer() {
+      localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerData));
+      actualizarPerfilGamerUI();
+    }
+
+    function actualizarPerfilGamerUI() {
+      let tagNav = document.getElementById('lblGamerTagNav');
+      let barNav = document.getElementById('barXpNav');
+      let xpNav = document.getElementById('lblXpNav');
+      let badgeRango = document.getElementById('lblRangoBadge');
+
+      if (tagNav) tagNav.innerText = gamerData.tag;
+      if (xpNav) xpNav.innerText = `${gamerData.xp} XP`;
+      
+      let porcentaje = Math.min((gamerData.xp / 1000) * 100, 100);
+      if (barNav) barNav.style.width = `${porcentaje}%`;
+
+      let rango = "Novato";
+      if (gamerData.xp >= 300) rango = "Aventurero";
+      if (gamerData.xp >= 600) rango = "Coleccionista";
+      if (gamerData.xp >= 1000) rango = "Leyenda";
+
+      if (badgeRango) badgeRango.innerText = rango;
+
+      let lblXpModal = document.getElementById('lblXp');
+      let lblRangoModal = document.getElementById('lblRango');
+      if (lblXpModal) lblXpModal.innerText = `${gamerData.xp} XP`;
+      if (lblRangoModal) lblRangoModal.innerText = rango;
+    }
+
+    window.abrirCofreModal = function() { document.getElementById('modalCofreDiario').style.display = 'flex'; }
+    window.cerrarCofreModal = function() { document.getElementById('modalCofreDiario').style.display = 'none'; }
+
+    window.abrirCofreDiario = function() {
+      let ahora = Date.now();
+      let unDia = 24 * 60 * 60 * 1000;
+      if (ahora - gamerData.ultimoCofre < unDia) {
+        let horasRestantes = Math.ceil((unDia - (ahora - gamerData.ultimoCofre)) / (1000 * 60 * 60));
+        document.getElementById('cofreResultado').innerHTML = `⏳ Ya reclamaste tu cofre hoy. Regresa en <strong>${horasRestantes} horas</strong>.`;
+        return;
+      }
+
+      gamerData.xp += 50;
+      gamerData.ultimoCofre = ahora;
+      guardarPerfilGamer();
+
+      if (typeof confetti === 'function') confetti({ particleCount: 100, spread: 70 });
+
+      document.getElementById('cofreResultado').innerHTML = `🎉 ¡Recompensa reclamada! Ganaste <strong>+50 XP</strong>. Total: ${gamerData.xp} XP.`;
+    }
+
+    window.abrirGachaModal = function() { document.getElementById('modalGacha').style.display = 'flex'; }
+    window.cerrarGachaModal = function() { document.getElementById('modalGacha').style.display = 'none'; }
+
+    window.girarRuletaGacha = function() {
+      let premios = [
+        "🎟️ Cupón de Descuento: OTAKU10",
+        "⚡ +100 Puntos de XP Gratis",
+        "🌸 Sticker digital exclusivo de Sakura",
+        "📦 Descuento en tu próximo envío",
+        "👾 +30 Puntos de XP Extra"
+      ];
+
+      let resultado = premios[Math.floor(Math.random() * premios.length)];
+      let box = document.getElementById('gachaResultado');
+      box.innerText = "🎰 Girando ruleta...";
+
+      setTimeout(() => {
+        box.innerHTML = `✨ <strong>¡GANASTE!</strong><br>${resultado}`;
+        if (resultado.includes("XP")) {
+          gamerData.xp += 50;
+          guardarPerfilGamer();
+        }
+        if (typeof confetti === 'function') confetti({ particleCount: 80, spread: 60 });
+      }, 1000);
+    }
+
+    window.abrirGamerProfileModal = function() {
+      actualizarPerfilGamerUI();
+      document.getElementById('modalGamerProfile').style.display = 'flex';
+    }
+    window.cerrarGamerProfileModal = function() { document.getElementById('modalGamerProfile').style.display = 'none'; }
+
+    window.guardarGamerTag = function() {
+      let tag = document.getElementById('inputGamerTag').value.trim();
+      if (tag) {
+        gamerData.tag = tag;
+        guardarPerfilGamer();
+        mostrarToast("GamerTag actualizado 🎮", "✨");
+        cerrarGamerProfileModal();
+      }
+    }
+
+    window.abrirTemasModal = function() { document.getElementById('modalTemas').style.display = 'flex'; }
+    window.cerrarTemasModal = function() { document.getElementById('modalTemas').style.display = 'none'; }
+
+    window.cambiarTema = function(clase) {
+      document.body.className = `${clase} flex flex-col min-h-screen`;
+      cerrarTemasModal();
+    }
+
+    window.abrirGuiaTallasModal = function() { document.getElementById('modalGuiaTallas').style.display = 'flex'; }
+    window.cerrarGuiaTallasModal = function() { document.getElementById('modalGuiaTallas').style.display = 'none'; }
+
+    window.abrirFaqModal = function() { document.getElementById('modalFaq').style.display = 'flex'; }
+    window.cerrarFaqModal = function() { document.getElementById('modalFaq').style.display = 'none'; }
+
+    window.abrirSugerenciaModal = function() { document.getElementById('modalSugerencias').style.display = 'flex'; }
+    window.cerrarSugerenciaModal = function() { document.getElementById('modalSugerencias').style.display = 'none'; }
+
+    window.enviarSugerenciaWhatsApp = function() {
+      let nombre = document.getElementById('sugNombre').value.trim() || 'Gamer';
+      let deseo = document.getElementById('sugDeseo').value.trim();
+
+      if (!deseo) {
+        mostrarToast("Escribe tu consulta o encargo.", "⚠️");
+        return;
+      }
+
+      let msg = `💡 *ENCARGO ESPECIAL - SAKURA GAMEVERSE*\n\nDe: *${nombre}*\nProducto deseado: ${deseo}`;
+      window.open(`https://wa.me/584244970576?text=${encodeURIComponent(msg)}`, '_blank');
+      cerrarSugerenciaModal();
+    }
+
+    window.abrirFavoritosModal = function() {
+      let container = document.getElementById('listaFavoritosDetalle');
+      if (!container) return;
+      container.innerHTML = "";
+
+      if (favoritos.length === 0) {
+        container.innerHTML = "<p class='text-center text-gray-500 py-6 text-xs'>No tienes favoritos guardados 💔</p>";
+      } else {
+        favoritos.forEach((fav, i) => {
+          container.innerHTML += `
+            <div class="flex items-center justify-between bg-gray-900 p-2.5 rounded-xl border border-pink-500/20 text-xs">
+              <div class="flex items-center space-x-3">
+                <img src="${fav.foto}" class="w-10 h-10 rounded-lg object-cover">
+                <div>
+                  <div class="font-bold text-white">${fav.nombre}</div>
+                  <div class="text-cyan-400">$${fav.precio.toFixed(2)} USD</div>
+                </div>
+              </div>
+              <button onclick="eliminarFavorito(${i})" class="text-pink-500 hover:text-red-400">✕</button>
+            </div>
+          `;
+        });
+      }
+      document.getElementById('modalFavoritos').style.display = 'flex';
+    }
+
+    window.cerrarFavoritosModal = function() { document.getElementById('modalFavoritos').style.display = 'none'; }
+
+    window.eliminarFavorito = function(idx) {
+      favoritos.splice(idx, 1);
+      localStorage.setItem('sakura_favs', JSON.stringify(favoritos));
+      actualizarBadges();
+      abrirFavoritosModal();
+    }
+
+    let audioCtx = null;
+    let lofiOscillator = null;
+    let lofiGain = null;
+    let reproduciendoLoFi = false;
+
+    window.toggleMusicaLoFi = function() {
+      let icono = document.getElementById('iconoMusica');
+
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+
+      if (reproduciendoLoFi) {
+        if (lofiGain) lofiGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1);
+        reproduciendoLoFi = false;
+        if (icono) icono.className = "fas fa-music text-sm";
+        mostrarToast("Música de fondo pausada", "🎵");
+      } else {
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+
+        // Ambient Chill Chord Synth Pad
+        lofiOscillator = audioCtx.createOscillator();
+        lofiGain = audioCtx.createGain();
+
+        lofiOscillator.type = 'triangle';
+        lofiOscillator.frequency.setValueAtTime(220, audioCtx.currentTime); // A3 chord base
+        lofiGain.gain.setValueAtTime(0.03, audioCtx.currentTime);
+
+        lofiOscillator.connect(lofiGain);
+        lofiGain.connect(audioCtx.destination);
+        lofiOscillator.start();
+
+        reproduciendoLoFi = true;
+        if (icono) icono.className = "fas fa-pause text-sm";
+        mostrarToast("Ambiente Lo-Fi reproduciendo 🌸", "🎵");
+      }
+    }
+
+    window.reproducirSonidoClick = function() {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+
+        let osc = audioCtx.createOscillator();
+        let gain = audioCtx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
+        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1); // A5
+        gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.1);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.1);
+      } catch(e) {}
+    }
+
+    window.activarEasterEggLogo = function() {
+      if (typeof confetti === 'function') confetti({ particleCount: 120, spread: 90 });
+      reproducirSonidoClick();
+      mostrarToast("¡Descubriste un secreto de Sakura! 🌸✨", "🎉");
+    }
+
+    window.crearDestello = function(e) {
+      let circle = document.createElement('div');
+      circle.style.position = 'fixed';
+      circle.style.left = `${e.clientX - 8}px`;
+      circle.style.top = `${e.clientY - 8}px`;
+      circle.style.width = '16px';
+      circle.style.height = '16px';
+      circle.style.borderRadius = '50%';
+      circle.style.background = 'var(--secondary-color)';
+      circle.style.pointerEvents = 'none';
+      circle.style.boxShadow = '0 0 12px var(--secondary-color)';
+      circle.style.zIndex = '99999';
+      circle.style.transition = 'all 0.4s ease-out';
+      document.body.appendChild(circle);
+
+      setTimeout(() => {
+        circle.style.transform = 'scale(2.5)';
+        circle.style.opacity = '0';
+      }, 10);
+
+      setTimeout(() => circle.remove(), 420);
+    }
+
+    window.mostrarToast = function(mensaje, icono = "🌸") {
+      let container = document.getElementById('toast-container');
+      if (!container) return;
+
+      let toast = document.createElement('div');
+      toast.className = 'toast-msg';
+      toast.innerHTML = `<span>${icono}</span> <span>${mensaje}</span>`;
+
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.4s ease';
+        setTimeout(() => toast.remove(), 400);
+      }, 3000);
+    }
+  </script>
 </body>
 </html>
