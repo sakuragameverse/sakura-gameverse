@@ -10,7 +10,9 @@
   <link rel="icon" type="image/webp" href="logo.webp">
   <meta name="theme-color" content="#ffffff">
   
+  <!-- Fuentes e Iconos -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
   <style>
@@ -35,6 +37,171 @@
     ::-webkit-scrollbar-track { background: var(--bg-color); }
     ::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
 
+    /* --- PANTALLA DE CARGA RETRO ARCADE AE86 --- */
+    #splash-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, #180933 0%, #080214 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 99999;
+      transition: opacity 0.5s ease-out;
+      overflow: hidden;
+      font-family: 'Press Start 2P', monospace;
+    }
+
+    .arcade-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 90%;
+      max-width: 480px;
+    }
+
+    .arcade-logo-text {
+      font-size: 0.9em;
+      color: var(--secondary-color);
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px var(--secondary-color), 0 0 20px var(--primary-color);
+      margin-bottom: 25px;
+      text-align: center;
+      animation: logo-glow 1.5s infinite alternate;
+    }
+    @keyframes logo-glow {
+      0% { opacity: 0.8; transform: scale(0.99); }
+      100% { opacity: 1; transform: scale(1.02); }
+    }
+
+    .road-arena {
+      position: relative;
+      width: 100%;
+      height: 90px;
+      margin-bottom: 25px;
+      overflow: hidden;
+      border-bottom: 3px solid var(--primary-color);
+      box-shadow: 0 4px 15px rgba(255, 0, 127, 0.4);
+    }
+
+    .road-track-lines {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 200%;
+      height: 4px;
+      background: repeating-linear-gradient(90deg, var(--secondary-color) 0px, var(--secondary-color) 20px, transparent 20px, transparent 40px);
+      animation: road-run 0.35s linear infinite;
+    }
+    @keyframes road-run {
+      from { transform: translateX(0); }
+      to { transform: translateX(-40px); }
+    }
+
+    .ae86-runner {
+      position: absolute;
+      bottom: 4px;
+      left: 30%;
+      width: 110px;
+      height: 48px;
+      transition: transform 0.1s linear;
+    }
+
+    .ae86-body-vibe {
+      width: 100%;
+      height: 100%;
+      animation: engine-rumble 0.12s infinite alternate;
+    }
+    @keyframes engine-rumble {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-1.5px); }
+    }
+
+    .ae86-svg {
+      width: 100%;
+      height: 100%;
+      shape-rendering: crispEdges;
+      filter: drop-shadow(0 0 8px rgba(0,229,255,0.4));
+    }
+
+    .faro-beam {
+      position: absolute;
+      right: -55px;
+      top: 15px;
+      width: 60px;
+      height: 25px;
+      background: linear-gradient(90deg, rgba(0, 229, 255, 0.65) 0%, rgba(0, 229, 255, 0) 100%);
+      clip-path: polygon(0 30%, 100% 0, 100% 100%, 0 70%);
+      pointer-events: none;
+      animation: flicker-light 0.1s infinite alternate;
+    }
+    @keyframes flicker-light {
+      0% { opacity: 0.85; }
+      100% { opacity: 1; }
+    }
+
+    .nitro-flame {
+      display: none;
+      position: absolute;
+      left: -28px;
+      bottom: 8px;
+      width: 30px;
+      height: 12px;
+      background: linear-gradient(270deg, #ff007f, #00e5ff, transparent);
+      clip-path: polygon(100% 30%, 0 50%, 100% 70%, 70% 50%);
+      animation: nitro-burn 0.08s infinite alternate;
+    }
+    @keyframes nitro-burn {
+      0% { transform: scaleX(0.8); }
+      100% { transform: scaleX(1.3); }
+    }
+
+    .launch-turbo {
+      animation: turbo-out 0.65s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+    }
+    @keyframes turbo-out {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-20px); }
+      100% { transform: translateX(130vw); }
+    }
+
+    .pixel-meter-box {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .pixel-meter-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.6em;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    .pixel-meter-outer {
+      width: 100%;
+      height: 18px;
+      background: rgba(0, 0, 0, 0.7);
+      border: 3px solid var(--secondary-color);
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.4), inset 0 0 6px rgba(0,0,0,0.8);
+      padding: 2px;
+      box-sizing: border-box;
+    }
+
+    .pixel-meter-bar {
+      width: 0%;
+      height: 100%;
+      background: repeating-linear-gradient(90deg, var(--primary-color) 0px, var(--primary-color) 8px, #080214 8px, #080214 10px);
+      box-shadow: 0 0 10px var(--primary-color);
+      transition: width 0.15s steps(15);
+    }
+
+    /* --- SOCIAL PROOF & TICKER --- */
     #socialProofContainer { background: rgba(17, 5, 44, 0.95); border-bottom: 1px solid var(--secondary-color); padding: 8px 15px; display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 0.85em; position: relative; z-index: 2000; box-shadow: inset 0 0 10px rgba(0,229,255,0.2); }
     #socialProofContainer .sp-icon { font-size: 18px; color: var(--secondary-color); }
     #socialProofContainer .sp-text { color: var(--text-color); font-weight: bold; }
@@ -45,22 +212,10 @@
     @keyframes gradient-move { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
     @keyframes ticker-slide { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-    #splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg-color); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.6s ease; }
-    .splash-box { background: var(--hero-bg); border: 3px solid var(--primary-color); padding: 30px 40px; border-radius: 20px; text-align: center; box-shadow: 0 0 30px var(--primary-color), 0 0 60px rgba(0, 229, 255, 0.4); animation: box-pulse 1.5s infinite alternate; max-width: 90%; width: 320px; }
-    @keyframes box-pulse { 0% { box-shadow: 0 0 15px var(--primary-color), inset 0 0 10px rgba(255,0,127,0.3); border-color: var(--primary-color); } 100% { box-shadow: 0 0 35px var(--secondary-color), 0 0 50px var(--primary-color), inset 0 0 20px rgba(0,229,255,0.4); border-color: var(--secondary-color); } }
-    
-    .splash-logo { max-width: 260px; margin-bottom: 15px; filter: drop-shadow(0 0 12px var(--secondary-color)) drop-shadow(0 0 25px var(--primary-color)); cursor: pointer; transition: transform 0.3s ease; }
-    .splash-logo:hover { transform: scale(1.05); }
-
-    .loading-text { color: var(--secondary-color); font-weight: bold; font-size: 1em; letter-spacing: 1px; margin-bottom: 15px; text-shadow: 0 0 10px rgba(0,229,255,0.7); min-height: 20px; }
-    .loading-bar-container { width: 100%; height: 8px; background: var(--bg-color); border-radius: 10px; border: 1px solid var(--primary-color); overflow: hidden; }
-    .loading-bar { width: 0%; height: 100%; background: var(--secondary-color); box-shadow: 0 0 10px var(--secondary-color); animation: load-progress 2s linear forwards; }
-    @keyframes load-progress { 0% { width: 0%; } 50% { width: 65%; } 100% { width: 100%; } }
-
+    /* --- HERO BANNER & SLIDER --- */
     .hero-banner { background-color: var(--hero-bg); text-align: center; padding: 30px 20px 20px 20px; border-bottom: 3px solid var(--primary-color); box-shadow: 0 0 20px rgba(255, 0, 127, 0.4); position: relative; z-index: 2; transition: background 0.4s ease; }
     .hero-logo { max-width: 270px; margin-bottom: 10px; filter: drop-shadow(0 0 15px var(--secondary-color)) drop-shadow(0 0 30px var(--primary-color)); cursor: pointer; transition: transform 0.3s ease; }
     .hero-logo:hover { transform: scale(1.06); filter: drop-shadow(0 0 20px var(--secondary-color)) drop-shadow(0 0 35px var(--secondary-color)); }
-
     .hero-title { font-size: 1.1em; font-weight: bold; margin-bottom: 12px; letter-spacing: 1px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
     
     .banner-slider-container { position: relative; width: 100%; max-width: 800px; margin: 20px auto; border-radius: 20px; overflow: hidden; box-shadow: 0 8px 25px rgba(0, 229, 255, 0.25), 0 4px 10px rgba(0,0,0,0.5); aspect-ratio: 16/9; background: var(--card-bg); border: 2px solid var(--secondary-color); display: none; }
@@ -80,6 +235,7 @@
     .bcv-box { background: rgba(0, 229, 255, 0.1); border: 1px solid var(--secondary-color); display: inline-flex; align-items: center; gap: 10px; padding: 6px 15px; border-radius: 20px; font-size: 0.9em; font-weight: bold; color: var(--secondary-color); box-shadow: 0 0 10px rgba(0,229,255,0.2); }
     .bcv-input { background: var(--bg-color); border: 1px solid var(--primary-color); color: var(--text-color); padding: 4px 8px; border-radius: 10px; width: 90px; text-align: center; font-weight: bold; outline: none; }
 
+    /* --- CONTENEDOR & CARRUSEL DE CATEGORÍAS --- */
     .container { padding: 30px 20px 100px 20px; max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
     .search-box { text-align: center; margin-bottom: 20px; }
     .search-input { background: var(--hero-bg); border: 2px solid var(--secondary-color); color: var(--text-color); padding: 10px 20px; width: 80%; max-width: 400px; border-radius: 25px; font-size: 1em; outline: none; box-shadow: 0 0 10px rgba(0,229,255,0.3); }
@@ -101,7 +257,7 @@
     .carrusel-arrow:hover { background: var(--secondary-color); color: #0d041a; transform: translateY(-50%) scale(1.1); }
     .arrow-prev { left: -15px; } .arrow-next { right: -15px; }
 
-    /* Controles modernos de Colecciones & Filtros */
+    /* --- BARRA DINÁMICA DE UNIVERSOS / COLECCIONES --- */
     .controles-superiores { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 30px; width: 100%; }
     .colecciones-header { font-size: 0.95em; font-weight: bold; color: var(--secondary-color); text-shadow: 0 0 8px rgba(0,229,255,0.4); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
     .filtros { display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 100%; padding-bottom: 8px; justify-content: flex-start; gap: 8px; scrollbar-width: none; width: 100%; }
@@ -112,6 +268,7 @@
     .panel-controles-avanzados { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; width: 100%; max-width: 650px; margin: 5px auto 0 auto; }
     .ordenar-select { background: var(--hero-bg); border: 1px solid var(--primary-color); color: var(--text-color); padding: 8px 15px; border-radius: 20px; font-weight: bold; font-size: 0.88em; cursor: pointer; outline: none; box-shadow: 0 0 10px rgba(255,0,127,0.3); }
 
+    /* --- CATÁLOGO & PRODUCTOS --- */
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
     .card { background: var(--card-bg); border-radius: 15px; padding: 15px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.5); position: relative; border: 1px solid var(--border-color); transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; cursor: pointer; animation: card-pop 0.4s ease-out; overflow: hidden; }
     @keyframes card-pop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
@@ -137,6 +294,7 @@
     .btn-fav-card { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.6); border: 1px solid var(--secondary-color); color: #ff3366; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1em; z-index: 3; transition: transform 0.2s; }
     .btn-fav-card:hover { transform: scale(1.15); background: rgba(255,0,127,0.3); }
 
+    /* --- MODALES --- */
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
     .modal-content { background: var(--hero-bg); padding: 20px; border-radius: 20px; text-align: left; max-width: 95%; width: 440px; border: 2px solid var(--primary-color); box-shadow: 0 0 30px rgba(255,0,127,0.5); position: relative; max-height: 92vh; overflow-y: auto; }
     .cerrar-modal { position: absolute; top: 10px; right: 15px; font-size: 25px; color: var(--text-color); cursor: pointer; background: none; border: none; font-weight: bold; z-index: 10; }
@@ -178,6 +336,7 @@
     .sugerencia-input { width: 100%; background: var(--bg-color); border: 1px solid var(--secondary-color); color: var(--text-color); padding: 10px; border-radius: 10px; margin-bottom: 12px; box-sizing: border-box; outline: none; }
     .btn-sugerencia { background: var(--secondary-color); color: #0d041a; border: none; padding: 10px 20px; font-weight: bold; border-radius: 20px; cursor: pointer; width: 100%; box-shadow: 0 0 10px var(--secondary-color); }
 
+    /* --- RESEÑAS E INFO --- */
     .reviews-section, .info-section { background: var(--hero-bg); margin-top: 40px; padding: 30px 20px; border-radius: 15px; border: 1px solid var(--secondary-color); box-shadow: 0 0 15px rgba(0,229,255,0.2); }
     .info-section { border-color: var(--primary-color); box-shadow: 0 0 15px rgba(255,0,127,0.2); margin-bottom: 20px; }
     .review-card { background: var(--card-bg); padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid rgba(255,0,127,0.3); position: relative; }
@@ -191,6 +350,7 @@
     .info-card h4 { color: var(--secondary-color); margin-top: 0; margin-bottom: 12px; font-size: 1.1em; display: flex; align-items: center; gap: 8px; }
     .badge-envio { display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 0, 127, 0.15); border: 1px solid var(--primary-color); padding: 4px 10px; border-radius: 8px; font-size: 0.85em; font-weight: bold; color: var(--text-color); margin: 3px; }
 
+    /* --- NAVEGACIÓN INFERIOR & FLOTANTES --- */
     .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(17, 5, 44, 0.95); backdrop-filter: blur(10px); border-top: 2px solid var(--primary-color); display: flex; justify-content: space-around; align-items: center; padding: 10px 0; z-index: 1500; box-shadow: 0 -5px 20px rgba(255,0,127,0.3); }
     .nav-item { color: var(--text-color); display: flex; flex-direction: column; align-items: center; font-size: 0.75em; font-weight: bold; cursor: pointer; position: relative; transition: color 0.3s; width: 25%; }
     .nav-item i { font-size: 1.6em; margin-bottom: 4px; color: var(--secondary-color); transition: transform 0.3s; pointer-events: none; }
@@ -213,6 +373,76 @@
 </head>
 <body>
 
+<!-- PANTALLA DE CARGA RETRO ARCADE -->
+<div id="splash-screen">
+  <div class="arcade-stage">
+    <div class="arcade-logo-text">SAKURA GAMEVERSE</div>
+
+    <div class="road-arena">
+      <div class="road-track-lines"></div>
+
+      <div class="ae86-runner" id="ae86Runner">
+        <div class="ae86-body-vibe">
+          <div class="nitro-flame" id="nitroFlame"></div>
+          
+          <!-- Sprite en SVG del Toyota AE86 Trueno Panda -->
+          <svg class="ae86-svg" viewBox="0 0 60 26">
+            <!-- Chasis Superior Blanco -->
+            <polygon points="12,12 20,4 38,4 47,12 56,12 56,15 10,15" fill="#f4f6fa" />
+            
+            <!-- Ventanillas ahumadas con reflejos cian -->
+            <polygon points="21,5 36,5 44,12 21,12" fill="#141a29" />
+            <polygon points="23,6 30,6 30,11 23,11" fill="#00e5ff" opacity="0.6" />
+            <polygon points="32,6 36,6 42,11 32,11" fill="#00e5ff" opacity="0.4" />
+
+            <!-- Chasis Inferior Negro/Panda -->
+            <polygon points="4,15 58,15 57,19 3,19" fill="#181528" />
+            <rect x="2" y="17" width="57" height="3" fill="#0d041a" />
+
+            <!-- Faros Pop-Up levantados -->
+            <rect x="49" y="8" width="5" height="4" fill="#f4f6fa" />
+            <rect x="53" y="9" width="1" height="3" fill="#00e5ff" />
+
+            <!-- Luz trasera roja y direccional -->
+            <rect x="4" y="14" width="3" height="3" fill="#ff0055" />
+            <rect x="55" y="16" width="2" height="2" fill="#ffaa00" />
+
+            <!-- Emblema de Flor de Cerezo en la puerta -->
+            <circle cx="28" cy="14" r="1.5" fill="#ff007f" />
+            <rect x="31" y="13.5" width="4" height="1" fill="#ffffff" opacity="0.8" />
+
+            <!-- Ruedas Watanabe (8-spokes) -->
+            <g transform="translate(14, 19)">
+              <circle cx="0" cy="0" r="4.5" fill="#05030a" />
+              <circle cx="0" cy="0" r="2.8" fill="#3a3f58" />
+              <circle cx="0" cy="0" r="1" fill="#00e5ff" />
+            </g>
+            <g transform="translate(45, 19)">
+              <circle cx="0" cy="0" r="4.5" fill="#05030a" />
+              <circle cx="0" cy="0" r="2.8" fill="#3a3f58" />
+              <circle cx="0" cy="0" r="1" fill="#00e5ff" />
+            </g>
+          </svg>
+
+          <!-- Haz de luz del faro -->
+          <div class="faro-beam"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Barra de progreso segmentada -->
+    <div class="pixel-meter-box">
+      <div class="pixel-meter-info">
+        <span>CARGANDO GAMEVERSE...</span>
+        <span id="loadPctTxt">0%</span>
+      </div>
+      <div class="pixel-meter-outer">
+        <div class="pixel-meter-bar" id="pixelMeterBar"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="socialProofContainer">
   <div class="sp-icon"><i class="fas fa-shopping-bag"></i></div>
   <div><span class="sp-text" id="spTexto">¡Gabriel S. compró una miku Legendaria!</span> <span class="sp-sub" id="spLugar">(Bejuma)</span></div>
@@ -224,6 +454,7 @@
   </div>
 </div>
 
+<!-- MODAL PROMO FLASH -->
 <div id="modalPromoFlash" class="modal" style="display: flex;">
   <div class="modal-content" style="border: 2px solid var(--secondary-color); text-align: center;">
     <button class="cerrar-modal" onclick="cerrarPromoFlash()">×</button>
@@ -234,6 +465,7 @@
   </div>
 </div>
 
+<!-- MODAL COFRE DIARIO -->
 <div id="modalCofreDiario" class="modal">
   <div class="modal-content" style="width: 420px; border: 2px solid #ff9900; text-align: center;">
     <button class="cerrar-modal" onclick="cerrarCofreModal()">×</button>
@@ -244,6 +476,7 @@
   </div>
 </div>
 
+<!-- MODAL GACHA -->
 <div id="modalGacha" class="modal">
   <div class="modal-content" style="width: 420px; border: 2px solid #9900ff; text-align: center;">
     <button class="cerrar-modal" onclick="cerrarGachaModal()">×</button>
@@ -254,6 +487,7 @@
   </div>
 </div>
 
+<!-- MODAL TEMAS -->
 <div id="modalTemas" class="modal">
   <div class="modal-content" style="width: 400px; border: 2px solid #ffcc00; text-align: center;">
     <button class="cerrar-modal" onclick="cerrarTemasModal()">×</button>
@@ -267,6 +501,7 @@
   </div>
 </div>
 
+<!-- MODAL GAMER PROFILE -->
 <div id="modalGamerProfile" class="modal">
   <div class="modal-content" style="width: 420px; border: 2px solid #00ffcc; text-align: center;">
     <button class="cerrar-modal" onclick="cerrarGamerProfileModal()">×</button>
@@ -280,6 +515,7 @@
   </div>
 </div>
 
+<!-- MODAL GUÍA DE TALLAS -->
 <div id="modalGuiaTallas" class="modal">
   <div class="modal-content" style="width: 450px;">
     <button class="cerrar-modal" onclick="cerrarGuiaTallasModal()">×</button>
@@ -291,14 +527,6 @@
       <div class="recibo-line"><strong>TALLA XL:</strong><span>Ancho: 59cm | Alto: 74cm</span></div>
     </div>
     <button class="btn-sugerencia" onclick="cerrarGuiaTallasModal()">¡Entendido! ✨</button>
-  </div>
-</div>
-
-<div id="splash-screen">
-  <div class="splash-box">
-    <img src="logo.webp" alt="Logo" class="splash-logo" onclick="activarEasterEggLogo()">
-    <div id="loadingText" class="loading-text">Cargando Gameverse🌸</div>
-    <div class="loading-bar-container"><div class="loading-bar"></div></div>
   </div>
 </div>
 
@@ -393,7 +621,7 @@
     <div class="colecciones-header"><i class="fas fa-meteor"></i> Colecciones & Universos:</div>
     <div class="filtros" id="contenedorColecciones">
       <button class="btn-filtro activo" onclick="filtrarColeccion('todos', event)">🌟 Todo el Universo</button>
-      <!-- Se generan solas desde Firebase según los productos -->
+      <!-- Se autogeneran con Firebase -->
     </div>
 
     <div class="panel-controles-avanzados">
@@ -414,6 +642,7 @@
   <h2 style="color: var(--primary-color); text-align: center; margin-bottom: 20px;">📦 Catálogo & Recargas</h2>
   <div class="grid" id="catalogoNube"><p style="text-align: center; color: var(--secondary-color);">Cargando inventario desde Firebase...</p></div>
 
+  <!-- RESEÑAS -->
   <div class="reviews-section">
     <div class="info-title">💬 Reseñas de la Comunidad 🌟</div>
     <div id="contenedorReviews"><p style="text-align: center; color: var(--secondary-color);">Cargando opiniones...</p></div>
@@ -430,6 +659,7 @@
     </div>
   </div>
 
+  <!-- ENVÍOS E INFORMACIÓN -->
   <div class="info-section">
     <div class="info-title">✨ Información y Envíos 📦</div>
     <div class="info-grid">
@@ -446,6 +676,7 @@
   </div>
 </div>
 
+<!-- MODAL PRODUCTO DETALLE -->
 <div id="miModal" class="modal">
   <div class="modal-content" style="text-align: left;">
     <button class="cerrar-modal" onclick="cerrarModal()">×</button>
@@ -477,6 +708,7 @@
   </div>
 </div>
 
+<!-- MODAL MENÚ DE OPCIONES -->
 <div id="modalOpcionesMenu" class="modal">
   <div class="modal-content" style="border-color: var(--secondary-color); text-align: center;">
     <button class="cerrar-modal" onclick="cerrarMenuOpciones()">×</button>
@@ -495,6 +727,7 @@
   </div>
 </div>
 
+<!-- MODAL FAVORITOS -->
 <div id="modalFavoritos" class="modal">
   <div class="modal-content" style="width: 450px;">
     <button class="cerrar-modal" onclick="cerrarFavoritosModal()">×</button>
@@ -504,6 +737,7 @@
   </div>
 </div>
 
+<!-- MODAL FAQ -->
 <div id="modalFaq" class="modal">
   <div class="modal-content" style="width: 450px;">
     <button class="cerrar-modal" onclick="cerrarFaqModal()">×</button>
@@ -513,6 +747,7 @@
   </div>
 </div>
 
+<!-- MODAL CARRITO -->
 <div id="modalCarrito" class="modal">
   <div class="modal-content" style="width: 450px;">
     <button class="cerrar-modal" onclick="cerrarCarritoModal()">×</button>
@@ -530,6 +765,7 @@
   </div>
 </div>
 
+<!-- MODAL SUGERENCIAS -->
 <div id="modalSugerencias" class="modal">
   <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarSugerenciaModal()">×</button>
@@ -540,6 +776,7 @@
   </div>
 </div>
 
+<!-- NAVEGACIÓN INFERIOR -->
 <div class="bottom-nav">
   <div class="nav-item" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); reproducirSonido();"><i class="fas fa-home"></i><span>Inicio</span></div>
   <div class="nav-item" onclick="abrirFavoritosModal()"><i class="fas fa-heart"></i><span>Deseos</span><div class="nav-badge" id="favBadge">0</div></div>
@@ -569,7 +806,7 @@
   let tasaBcvActual = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 860;
   document.getElementById('inputTasaBcv').value = tasaBcvActual;
 
-  /* --- CONTROL GLOBAL DE AUDIO (EVITA FUGAS DE MEMORIA) --- */
+  /* --- CONTROL GLOBAL DE AUDIO SIN SATURACIÓN --- */
   let globalAudioCtx = null;
   window.reproducirSonido = function() {
     try {
@@ -599,6 +836,46 @@
     return String(str).replace(/[&<>"']/g, function(m) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
     });
+  }
+
+  /* --- ANIMACIÓN SPLASH SCREEN ARCADE AE86 --- */
+  function ejecutarAnimacionSplash() {
+    let porcentaje = 0;
+    const bar = document.getElementById('pixelMeterBar');
+    const txt = document.getElementById('loadPctTxt');
+    const car = document.getElementById('ae86Runner');
+    const nitro = document.getElementById('nitroFlame');
+    const splash = document.getElementById('splash-screen');
+
+    if (!bar || !txt || !splash) return;
+
+    const intervaloCarga = setInterval(() => {
+      porcentaje += Math.floor(Math.random() * 5) + 3;
+
+      if (porcentaje >= 100) {
+        porcentaje = 100;
+        clearInterval(intervaloCarga);
+        bar.style.width = '100%';
+        txt.innerText = '100% OK!';
+
+        nitro.style.display = 'block';
+        reproducirSonido();
+
+        setTimeout(() => {
+          car.classList.add('launch-turbo');
+        }, 150);
+
+        setTimeout(() => {
+          splash.style.opacity = '0';
+          setTimeout(() => {
+            splash.style.display = 'none';
+          }, 500);
+        }, 600);
+      } else {
+        bar.style.width = porcentaje + '%';
+        txt.innerText = porcentaje + '%';
+      }
+    }, 70);
   }
 
   window.cambiarTasaBcvManual = function() {
@@ -971,6 +1248,7 @@
   };
 
   window.addEventListener('DOMContentLoaded', () => { 
+    ejecutarAnimacionSplash();
     cargarBannersDeNube(); 
     cargarProductosDeNube(); 
     cargarConfigCategoriasPublico(); 
@@ -1036,11 +1314,6 @@
     document.querySelectorAll('.modal-mini-img').forEach(m => m.classList.remove('activo'));
     elementoMini.classList.add('activo');
   };
-
-  setTimeout(() => {
-    let splash = document.getElementById('splash-screen');
-    if (splash) { splash.style.opacity = '0'; setTimeout(() => splash.style.display = 'none', 600); }
-  }, 2000);
 
   let temaActual = localStorage.getItem('sakura_tema') || 'theme-rosa';
   document.body.className = temaActual;
