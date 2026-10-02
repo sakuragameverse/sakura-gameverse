@@ -139,10 +139,32 @@
     <!-- SECCIÓN 2: INVENTARIO -->
     <div id="seccion-inventario" class="seccion-panel">
       <div class="admin-card-form">
-        <h3><i class="fas fa-plus-circle"></i> Agregar Producto o Recarga a Firebase con Fotos</h3>
+        <h3><i class="fas fa-plus-circle"></i> Agregar Producto o Recarga a Firebase</h3>
         <div class="form-grid">
-          <input type="text" id="nuevoNombre" class="admin-input" placeholder="Nombre (Ej: Recarga / Producto)">
+          <input type="text" id="nuevoNombre" class="admin-input" placeholder="Nombre (Ej: Figura Hatsune Miku)">
           <input type="number" id="nuevoPrecio" class="admin-input" placeholder="Precio USD ($)" step="0.01">
+          
+          <!-- Campo con sugerencias de Franquicias / Colecciones -->
+          <input type="text" id="nuevaColeccion" class="admin-input" list="franquiciasSugeridas" placeholder="🎌 Colección / Franquicia (Ej: Hatsune Miku, Naruto...)">
+          <datalist id="franquiciasSugeridas">
+            <option value="Hatsune Miku">
+            <option value="Genshin Impact">
+            <option value="Honkai Star Rail">
+            <option value="Zenless Zone Zero">
+            <option value="Naruto">
+            <option value="One Piece">
+            <option value="Dragon Ball">
+            <option value="Demon Slayer">
+            <option value="Jujutsu Kaisen">
+            <option value="Bleach">
+            <option value="Attack on Titan">
+            <option value="Spy x Family">
+            <option value="Evangelion">
+            <option value="Pokémon">
+            <option value="Free Fire">
+            <option value="General">
+          </datalist>
+
           <select id="nuevaCategoria" class="admin-input">
             <option value="recargas">💎 Recargas</option>
             <option value="mangas">Mangas</option>
@@ -157,6 +179,7 @@
             <option value="lamparas">Lámparas</option>
             <option value="accesorios">Accesorios 🎒</option>
           </select>
+          
           <select id="nuevoEstado" class="admin-input">
             <option value="Recarga Directa ⚡">Recarga Directa ⚡ (Para Juegos)</option>
             <option value="Envío Inmediato 📦">Stock Inmediato 📦</option>
@@ -182,7 +205,17 @@
         <h3><i class="fas fa-list"></i> Catálogo Activo en Firebase</h3>
         <div class="tabla-responsive">
           <table class="admin-table">
-            <thead><tr><th>Producto</th><th>Categoría</th><th>Precio ($)</th><th>Fotos 📸</th><th>Modalidad</th><th>Acción</th></tr></thead>
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Colección</th>
+                <th>Categoría</th>
+                <th>Precio ($)</th>
+                <th>Fotos 📸</th>
+                <th>Modalidad</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
             <tbody id="tablaInventarioAdmin"></tbody>
           </table>
         </div>
@@ -371,6 +404,7 @@
 
       <div class="admin-card-form">
         <h3><i class="fas fa-credit-card"></i> Datos de Pago (Pago Móvil / Binance)</h3>
+        <p style="font-size: 0.85em; color: #aaa; margin-bottom: 15px;">Se sincronizan directamente con la base de datos de Firebase para que los clientes los vean en su carrito.</p>
         <div class="form-grid">
           <div><label style="font-size:0.85em; color:var(--secondary-color);">Banco:</label><input type="text" id="pagoBanco" class="admin-input"></div>
           <div><label style="font-size:0.85em; color:var(--secondary-color);">Teléfono:</label><input type="text" id="pagoTelefono" class="admin-input"></div>
@@ -386,7 +420,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
   import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, orderBy, query, setDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, getDoc, orderBy, query, setDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDH1DZqaIi5sKRXspXDUWbMUZ4nr5JIy8Q",
@@ -400,6 +434,13 @@
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
+
+  function sanitizarHTML(str) {
+    if (!str) return '';
+    return String(str).replace(/[&<>"']/g, function(m) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+    });
+  }
 
   window.cambiarTab = (tabId, evento) => {
     let botones = document.querySelectorAll('.tab-btn');
@@ -431,40 +472,65 @@
       cargarJugadoresAdmin();
       cargarConfigRangosAdmin();
       cargarComentariosAdmin();
+      cargarDatosPagoAdmin();
     } else {
       document.getElementById('loginScreen').style.display = 'block';
       document.getElementById('mainDashboard').style.display = 'none';
     }
   });
 
-  let tasaBcv = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 854.46;
+  let tasaBcv = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 860;
   document.getElementById('statTasa').innerText = `Bs. ${tasaBcv.toFixed(2)}`;
   document.getElementById('adminInputTasa').value = tasaBcv;
 
-  window.guardarTasaAdmin = () => {
+  window.guardarTasaAdmin = async () => {
     let nuevaTasa = parseFloat(document.getElementById('adminInputTasa').value);
     if (!isNaN(nuevaTasa) && nuevaTasa > 0) {
       localStorage.setItem('sakura_tasa_bcv', nuevaTasa);
       tasaBcv = nuevaTasa;
       document.getElementById('statTasa').innerText = `Bs. ${tasaBcv.toFixed(2)}`;
+      try {
+        await setDoc(doc(db, "configuracion", "tasa_bcv"), { tasa: nuevaTasa, timestamp: Date.now() });
+      } catch(e) {}
       confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
       alert("⚡ ¡Tasa BCV actualizada con éxito!");
     }
   };
 
-  let datosPago = JSON.parse(localStorage.getItem('sakura_datos_pago')) || { banco: "Banesco (0134)", telefono: "0424-4970576", cedula: "V-27000000", binance: "sakuragameverse@gmail.com" };
-  document.getElementById('pagoBanco').value = datosPago.banco;
-  document.getElementById('pagoTelefono').value = datosPago.telefono;
-  document.getElementById('pagoCedula').value = datosPago.cedula;
-  document.getElementById('pagoBinance').value = datosPago.binance;
+  async function cargarDatosPagoAdmin() {
+    try {
+      const docSnap = await getDoc(doc(db, "configuracion", "datos_pago"));
+      if (docSnap.exists()) {
+        let dp = docSnap.data();
+        document.getElementById('pagoBanco').value = dp.banco || "";
+        document.getElementById('pagoTelefono').value = dp.telefono || "";
+        document.getElementById('pagoCedula').value = dp.cedula || "";
+        document.getElementById('pagoBinance').value = dp.binance || "";
+      } else {
+        let local = JSON.parse(localStorage.getItem('sakura_datos_pago')) || { banco: "Venezuela (0102)", telefono: "0424-4970576", cedula: "V-24159896", binance: "n3lmary@gmail.com" };
+        document.getElementById('pagoBanco').value = local.banco;
+        document.getElementById('pagoTelefono').value = local.telefono;
+        document.getElementById('pagoCedula').value = local.cedula;
+        document.getElementById('pagoBinance').value = local.binance;
+      }
+    } catch(e) {}
+  }
 
-  window.guardarDatosPagoAdmin = () => {
-    datosPago.banco = document.getElementById('pagoBanco').value;
-    datosPago.telefono = document.getElementById('pagoTelefono').value;
-    datosPago.cedula = document.getElementById('pagoCedula').value;
-    datosPago.binance = document.getElementById('pagoBinance').value;
-    localStorage.setItem('sakura_datos_pago', JSON.stringify(datosPago));
-    alert("💾 ¡Datos de pago guardados!");
+  window.guardarDatosPagoAdmin = async () => {
+    let banco = document.getElementById('pagoBanco').value.trim();
+    let telefono = document.getElementById('pagoTelefono').value.trim();
+    let cedula = document.getElementById('pagoCedula').value.trim();
+    let binance = document.getElementById('pagoBinance').value.trim();
+
+    let data = { banco, telefono, cedula, binance, timestamp: Date.now() };
+
+    try {
+      await setDoc(doc(db, "configuracion", "datos_pago"), data);
+      localStorage.setItem('sakura_datos_pago', JSON.stringify(data));
+      alert("💾 ¡Datos de pago sincronizados en la nube!");
+    } catch(e) {
+      alert("Error al guardar en la nube: " + e.message);
+    }
   };
 
   window.guardarPedidoAdmin = async () => {
@@ -489,7 +555,7 @@
     } catch(e) {
       alert("Error al registrar pedido: " + e.message);
     }
-  }
+  };
 
   async function cargarPedidosAdmin() {
     let tbody = document.getElementById('tablaPedidosAdmin');
@@ -508,10 +574,10 @@
         let badgeClase = p.estado.includes("Pagado") ? "estado-pagado" : "estado-pendiente";
         tbody.innerHTML += `
           <tr>
-            <td><strong>${p.cliente}</strong></td>
-            <td>${p.detalle}</td>
-            <td style="color:var(--secondary-color);">$${p.total.toFixed(2)}</td>
-            <td><span class="badge-estado-pedido ${badgeClase}">${p.estado}</span></td>
+            <td><strong>${sanitizarHTML(p.cliente)}</strong></td>
+            <td>${sanitizarHTML(p.detalle)}</td>
+            <td style="color:var(--secondary-color);">$${Number(p.total).toFixed(2)}</td>
+            <td><span class="badge-estado-pedido ${badgeClase}">${sanitizarHTML(p.estado)}</span></td>
             <td><button class="btn-eliminar-fila" onclick="eliminarPedidoAdmin('${docSnap.id}')">❌</button></td>
           </tr>
         `;
@@ -526,7 +592,7 @@
       await deleteDoc(doc(db, "pedidos", id));
       cargarPedidosAdmin();
     }
-  }
+  };
 
   window.guardarConfigRangosAdmin = async () => {
     let umbrales = {
@@ -573,9 +639,9 @@
         let j = docSnap.data();
         tbody.innerHTML += `
           <tr>
-            <td><strong>${j.tag || 'Genin Anónimo'}</strong></td>
+            <td><strong>${sanitizarHTML(j.tag || 'Genin Anónimo')}</strong></td>
             <td style="color:var(--secondary-color);">${j.xp || 0} XP</td>
-            <td><span style="color:#ffcc00; font-weight:bold;">${j.rango || 'Genin 🍃'}</span></td>
+            <td><span style="color:#ffcc00; font-weight:bold;">${sanitizarHTML(j.rango || 'Genin 🍃')}</span></td>
             <td><button class="btn-eliminar-fila" onclick="eliminarJugadorAdmin('${docSnap.id}')">❌</button></td>
           </tr>
         `;
@@ -607,9 +673,9 @@
         let r = docSnap.data();
         tbody.innerHTML += `
           <tr>
-            <td><strong>${r.nombre}</strong></td>
-            <td style="color:#ffcc00;">${r.estrellas}</td>
-            <td>${r.texto}</td>
+            <td><strong>${sanitizarHTML(r.nombre)}</strong></td>
+            <td style="color:#ffcc00;">${sanitizarHTML(r.estrellas)}</td>
+            <td>${sanitizarHTML(r.texto)}</td>
             <td><button class="btn-eliminar-fila" onclick="eliminarComentarioAdmin('${docSnap.id}')"><i class="fas fa-trash"></i> Eliminar</button></td>
           </tr>
         `;
@@ -629,7 +695,7 @@
         alert("Error al eliminar reseña: " + e.message);
       }
     }
-  }
+  };
 
   window.guardarCuponAdmin = async () => {
     let codigo = document.getElementById('adminCuponCodigo').value.trim().toUpperCase();
@@ -669,7 +735,7 @@
       querySnapshot.forEach((docSnap) => {
         let c = docSnap.data();
         html += `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,229,255,0.1); padding:8px 12px; border-radius:8px; margin-top:8px; border: 1px solid rgba(0,229,255,0.2);">
-          <span>🎫 <strong>${c.codigo}</strong> (-${c.porcentaje}%)</span>
+          <span>🎫 <strong>${sanitizarHTML(c.codigo)}</strong> (-${c.porcentaje}%)</span>
           <button class="btn-eliminar-fila" onclick="eliminarCuponAdmin('${c.codigo}')">❌ Eliminar</button>
         </div>`;
       });
@@ -689,7 +755,7 @@
         alert("Error al eliminar: " + e.message);
       }
     }
-  }
+  };
 
   window.cargarConfigCategoriasAdmin = async () => {
     try {
@@ -704,12 +770,12 @@
         if (conf.tipo === 'categoria_foto') {
           vacio = false;
           let imagenMostrar = conf.imgUrl ? `<img src="${conf.imgUrl}" style="height: 50px; width: 50px; border-radius: 8px; object-fit: cover; border: 1px solid var(--secondary-color);">` : `<span style="color:#aaa;">Sin foto</span>`;
-          let nombreMostrar = conf.nombrePersonalizado ? conf.nombrePersonalizado : `<span style="color:#aaa;">(Nombre por defecto)</span>`;
+          let nombreMostrar = conf.nombrePersonalizado ? sanitizarHTML(conf.nombrePersonalizado) : `<span style="color:#aaa;">(Nombre por defecto)</span>`;
           
           tbody.innerHTML += `
             <tr>
               <td>${imagenMostrar}</td>
-              <td style="text-transform: capitalize; font-weight: bold; color: var(--secondary-color);">${conf.categoriaId}</td>
+              <td style="text-transform: capitalize; font-weight: bold; color: var(--secondary-color);">${sanitizarHTML(conf.categoriaId)}</td>
               <td style="font-weight: bold;">${nombreMostrar}</td>
               <td><button class="btn-eliminar-fila" onclick="eliminarConfigCategoriaAdmin('${documento.id}')"><i class="fas fa-trash"></i> Restaurar Defecto</button></td>
             </tr>
@@ -765,13 +831,13 @@
       let tbody = document.getElementById('tablaBannersAdmin');
       tbody.innerHTML = "";
       if (querySnapshot.empty) { tbody.innerHTML = "<tr><td colspan='3' style='color:#aaa; text-align:center;'>Aún no hay banners.</td></tr>"; }
-      querySnapshot.forEach((doc) => {
-        let b = doc.data();
+      querySnapshot.forEach((docSnap) => {
+        let b = docSnap.data();
         tbody.innerHTML += `
           <tr>
             <td><img src="${b.imgUrl}" style="height: 50px; border-radius: 8px; object-fit: cover; border: 1px solid var(--secondary-color);"></td>
             <td>Registrado en Nube</td>
-            <td><button class="btn-eliminar-fila" onclick="eliminarBannerAdmin('${doc.id}')"><i class="fas fa-trash"></i></button></td>
+            <td><button class="btn-eliminar-fila" onclick="eliminarBannerAdmin('${docSnap.id}')"><i class="fas fa-trash"></i></button></td>
           </tr>
         `;
       });
@@ -849,25 +915,31 @@
         contador++;
         let p = docSnap.data();
         let numFotos = p.fotos ? p.fotos.length : 0;
-        let colorClase = p.estado.includes("Encargo") ? "estado-pendiente" : "estado-pagado";
+        let colorClase = (p.estado && p.estado.includes("Encargo")) ? "estado-pendiente" : "estado-pagado";
+        let coleccionMostrar = p.coleccion ? p.coleccion : "General";
+
         tbody.innerHTML += `
           <tr>
-            <td><strong>${p.nombre}</strong></td>
-            <td>${p.categoria}</td>
-            <td style="color: var(--secondary-color);">$${p.precio.toFixed(2)}</td>
+            <td><strong>${sanitizarHTML(p.nombre)}</strong></td>
+            <td><span style="color: var(--secondary-color); font-weight: bold;">🎌 ${sanitizarHTML(coleccionMostrar)}</span></td>
+            <td>${sanitizarHTML(p.categoria)}</td>
+            <td style="color: var(--secondary-color);">$${Number(p.precio).toFixed(2)}</td>
             <td><span style="color: #ffcc00; font-weight: bold;">🖼️ ${numFotos} foto(s)</span></td>
-            <td><span class="badge-estado-pedido ${colorClase}">${p.estado}</span></td>
+            <td><span class="badge-estado-pedido ${colorClase}">${sanitizarHTML(p.estado || 'Disponible')}</span></td>
             <td><button class="btn-eliminar-fila" onclick="eliminarProductoAdmin('${docSnap.id}')"><i class="fas fa-trash"></i> Eliminar</button></td>
           </tr>
         `;
       });
       document.getElementById('statProductos').innerText = contador;
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error al cargar inventario:", error);
+    }
   };
 
   window.procesarYGuardarProducto = () => {
     let nombre = document.getElementById('nuevoNombre').value.trim();
     let precio = parseFloat(document.getElementById('nuevoPrecio').value);
+    let coleccion = document.getElementById('nuevaColeccion').value.trim() || 'General';
     let categoria = document.getElementById('nuevaCategoria').value;
     let estado = document.getElementById('nuevoEstado').value;
 
@@ -896,6 +968,7 @@
             await addDoc(collection(db, "productos"), {
               nombre: nombre, 
               precio: precio, 
+              coleccion: coleccion,
               categoria: categoria,
               estado: estado, 
               fotos: fotosProcesadas, 
@@ -906,6 +979,7 @@
             
             document.getElementById('nuevoNombre').value = ""; 
             document.getElementById('nuevoPrecio').value = "";
+            document.getElementById('nuevaColeccion').value = "";
             document.getElementById('fileFoto1').value = ""; 
             document.getElementById('fileFoto2').value = "";
             document.getElementById('fileFoto3').value = ""; 
