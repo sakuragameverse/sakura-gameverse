@@ -212,7 +212,7 @@
       border-color: var(--secondary-color);
     }
 
-    /* --- CARGADOR DE FOTOS WEBP --- */
+    /* --- CARGADOR INTELIGENTE WEBP --- */
     .btn-file-select {
       width: 100%;
       min-height: 46px;
@@ -256,7 +256,7 @@
       position: absolute;
       top: 2px;
       right: 2px;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.85);
       color: #ff3366;
       border: none;
       width: 20px;
@@ -493,7 +493,7 @@
           </select>
         </div>
 
-        <!-- CARGADOR INTELIGENTE DE FOTOS WEBP -->
+        <!-- CARGADOR INTELIGENTE DE FOTOS WEBP (DIRECTO A FIRESTORE) -->
         <div class="form-group">
           <label class="form-label">Fotos del Producto (Hasta 5 imágenes):</label>
           
@@ -503,7 +503,7 @@
           </button>
           
           <div id="txtEstadoSubida" class="upload-status-text">
-            <i class="fas fa-spinner fa-spin"></i> Optimizando fotos a formato WebP...
+            <i class="fas fa-spinner fa-spin"></i> Optimizando fotos a formato WebP ultraliviano...
           </div>
 
           <!-- Miniaturas Previsualizadas -->
@@ -669,7 +669,6 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
   import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, setDoc, addDoc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
-  import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-storage.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDH1DZqaIi5sKRXspXDUWbMUZ4nr5JIy8Q",
@@ -682,10 +681,9 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
-  const storage = getStorage(app);
 
   let productosAdminGlobal = [];
-  let fotosBufferProducto = []; // Almacena URLs existentes y nuevos Blobs WebP
+  let fotosBufferProducto = []; // Almacena directamente los DataURLs WebP
   const PIN_MAESTRO = "1234";
 
   window.verificarPinAcceso = function() {
@@ -739,8 +737,8 @@
     });
   }
 
-  /* --- CONVERSOR CLIENT-SIDE A WEBP --- */
-  function comprimirYConvertirAWebP(archivo, maxDim = 1000, calidad = 0.82) {
+  /* --- CONVERSOR CLIENT-SIDE DIRECTO A WEBP ULTRALIVIANO --- */
+  function comprimirYConvertirAWebP(archivo, maxDim = 600, calidad = 0.72) {
     return new Promise((resolve, reject) => {
       const lector = new FileReader();
       lector.onload = (e) => {
@@ -765,13 +763,9 @@
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, ancho, alto);
 
-          canvas.toBlob((blob) => {
-            if (blob) {
-              resolve(blob);
-            } else {
-              reject(new Error("No se pudo comprimir la imagen"));
-            }
-          }, 'image/webp', calidad);
+          // Genera el DataURL en WebP (~20KB-30KB por foto)
+          const dataUrl = canvas.toDataURL('image/webp', calidad);
+          resolve(dataUrl);
         };
         img.onerror = reject;
         img.src = e.target.result;
@@ -781,13 +775,13 @@
     });
   }
 
-  /* --- SELECCIÓN Y PROCESAMIENTO DE FOTOS --- */
+  /* --- SELECCIÓN Y PROCESAMIENTO INMEDIATO --- */
   window.procesarArchivosGaleria = async function(e) {
     const archivos = Array.from(e.target.files);
     if (!archivos.length) return;
 
     if (fotosBufferProducto.length + archivos.length > 5) {
-      alert("Puedes subir un máximo de 5 fotos por producto.");
+      alert("Puedes añadir un máximo de 5 fotos por producto.");
       return;
     }
 
@@ -796,13 +790,8 @@
 
     for (let archivo of archivos) {
       try {
-        const webpBlob = await comprimirYConvertirAWebP(archivo);
-        const urlTemporal = URL.createObjectURL(webpBlob);
-        fotosBufferProducto.push({
-          tipo: 'nuevo',
-          blob: webpBlob,
-          previewUrl: urlTemporal
-        });
+        const webpDataUrl = await comprimirYConvertirAWebP(archivo, 600, 0.72);
+        fotosBufferProducto.push(webpDataUrl);
       } catch (err) {
         console.error("Error al procesar foto:", err);
       }
@@ -810,15 +799,14 @@
 
     txtEstado.style.display = 'none';
     renderizarMiniaturasFotos();
-    e.target.value = ""; // Limpiar input para permitir reselección
+    e.target.value = "";
   };
 
   function renderizarMiniaturasFotos() {
     const cont = document.getElementById('contenedorPreviewFotos');
     cont.innerHTML = "";
 
-    fotosBufferProducto.forEach((item, index) => {
-      const url = item.tipo === 'existente' ? item.url : item.previewUrl;
+    fotosBufferProducto.forEach((url, index) => {
       cont.innerHTML += `
         <div class="preview-foto-item">
           <img src="${url}">
@@ -833,7 +821,7 @@
     renderizarMiniaturasFotos();
   };
 
-  // --- CRUD PRODUCTOS CON SUBIDA A STORAGE ---
+  // --- CRUD PRODUCTOS DIRECTO A FIRESTORE ---
   async function cargarProductosAdmin() {
     try {
       const q = query(collection(db, "productos"), orderBy("timestamp", "desc"));
@@ -899,25 +887,9 @@
 
     const btn = document.getElementById('btnGuardarProd');
     btn.disabled = true;
-    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Subiendo a la nube...`;
+    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Guardando...`;
 
     try {
-      let urlsFinales = [];
-
-      // Subir fotos a Firebase Storage en formato WebP
-      for (let item of fotosBufferProducto) {
-        if (item.tipo === 'existente') {
-          urlsFinales.push(item.url);
-        } else if (item.tipo === 'nuevo') {
-          const nombreArchivo = `prod_${Date.now()}_${Math.random().toString(36).substring(2, 8)}.webp`;
-          const storageRef = ref(storage, `productos/${nombreArchivo}`);
-          
-          await uploadBytes(storageRef, item.blob, { contentType: 'image/webp' });
-          const downloadUrl = await getDownloadURL(storageRef);
-          urlsFinales.push(downloadUrl);
-        }
-      }
-
       const data = {
         nombre,
         precio,
@@ -925,7 +897,7 @@
         coleccion,
         estado,
         descripcion: desc,
-        fotos: urlsFinales,
+        fotos: fotosBufferProducto,
         timestamp: Date.now()
       };
 
@@ -960,11 +932,8 @@
     document.getElementById('prodEstado').value = p.estado || 'Envío Inmediato 📦';
     document.getElementById('prodDesc').value = p.descripcion || '';
 
-    // Cargar fotos existentes en el buffer de previsualización
-    fotosBufferProducto = (p.fotos || []).map(url => ({
-      tipo: 'existente',
-      url: url
-    }));
+    // Cargar fotos guardadas
+    fotosBufferProducto = p.fotos ? [...p.fotos] : [];
     renderizarMiniaturasFotos();
 
     document.getElementById('formProdTitulo').innerHTML = `<i class="fas fa-pen"></i> Editando Producto`;
@@ -1070,7 +1039,7 @@
     cargarPedidosAdmin();
   };
 
-  // --- BANNERS EN WEBP ---
+  // --- BANNERS EN WEBP DIRECTOS ---
   async function cargarBannersAdmin() {
     const q = query(collection(db, "banners"), orderBy("timestamp", "desc"));
     const snapshot = await getDocs(q);
@@ -1082,7 +1051,7 @@
       cont.innerHTML += `
         <div class="item-card-row">
           <img src="${b.imgUrl}" style="width: 70px; height: 40px; object-fit: cover; border-radius: 4px;">
-          <div style="flex-grow: 1; font-size: 0.8em; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${b.imgUrl}</div>
+          <div style="flex-grow: 1; font-size: 0.8em; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Banner WebP</div>
           <button class="btn-action-touch btn-del" onclick="eliminarBanner('${d.id}')"><i class="fas fa-trash"></i></button>
         </div>
       `;
@@ -1096,22 +1065,16 @@
 
     const btn = document.getElementById('btnSubirBanner');
     btn.disabled = true;
-    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Subiendo WebP...`;
+    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Optimizando...`;
 
     try {
-      const webpBlob = await comprimirYConvertirAWebP(file, 1280, 0.85);
-      const nombreArchivo = `banner_${Date.now()}.webp`;
-      const storageRef = ref(storage, `banners/${nombreArchivo}`);
-      
-      await uploadBytes(storageRef, webpBlob, { contentType: 'image/webp' });
-      const downloadUrl = await getDownloadURL(storageRef);
-
-      await addDoc(collection(db, "banners"), { imgUrl: downloadUrl, timestamp: Date.now() });
+      const webpDataUrl = await comprimirYConvertirAWebP(file, 900, 0.75);
+      await addDoc(collection(db, "banners"), { imgUrl: webpDataUrl, timestamp: Date.now() });
       document.getElementById('bannerFileInput').value = "";
       cargarBannersAdmin();
       alert("¡Banner publicado con éxito!");
     } catch (err) {
-      alert("Error al subir banner: " + err.message);
+      alert("Error al guardar banner: " + err.message);
     } finally {
       btn.disabled = false;
       btn.innerText = "Publicar Banner";
