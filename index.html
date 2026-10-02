@@ -84,7 +84,7 @@
     .search-box { text-align: center; margin-bottom: 20px; }
     .search-input { background: var(--hero-bg); border: 2px solid var(--secondary-color); color: var(--text-color); padding: 10px 20px; width: 80%; max-width: 400px; border-radius: 25px; font-size: 1em; outline: none; box-shadow: 0 0 10px rgba(0,229,255,0.3); }
     
-    .categorias-visuales-section { margin: 25px 0 35px 0; position: relative; }
+    .categorias-visuales-section { margin: 25px 0 25px 0; position: relative; }
     .categorias-visuales-header { font-size: 1.3em; font-weight: bold; color: var(--text-color); margin-bottom: 15px; padding-left: 5px; border-left: 4px solid var(--primary-color); line-height: 1; }
     .carrusel-wrapper { position: relative; display: flex; align-items: center; }
     .carrusel-track { display: flex; gap: 15px; overflow-x: auto; scroll-behavior: smooth; scrollbar-width: none; padding: 10px 5px; }
@@ -101,13 +101,16 @@
     .carrusel-arrow:hover { background: var(--secondary-color); color: #0d041a; transform: translateY(-50%) scale(1.1); }
     .arrow-prev { left: -15px; } .arrow-next { right: -15px; }
 
-    .controles-superiores { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-bottom: 30px; }
-    .filtros { display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 100%; padding-bottom: 10px; justify-content: flex-start; gap: 8px; scrollbar-width: thin; }
-    .btn-filtro { background: transparent; color: var(--text-color); border: 1px solid var(--secondary-color); padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: all 0.3s ease; white-space: nowrap; flex-shrink: 0; position: relative; }
+    /* Controles modernos de Colecciones & Filtros */
+    .controles-superiores { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 30px; width: 100%; }
+    .colecciones-header { font-size: 0.95em; font-weight: bold; color: var(--secondary-color); text-shadow: 0 0 8px rgba(0,229,255,0.4); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+    .filtros { display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 100%; padding-bottom: 8px; justify-content: flex-start; gap: 8px; scrollbar-width: none; width: 100%; }
+    .filtros::-webkit-scrollbar { display: none; }
+    .btn-filtro { background: transparent; color: var(--text-color); border: 1px solid var(--secondary-color); padding: 7px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 0.85em; transition: all 0.3s ease; white-space: nowrap; flex-shrink: 0; position: relative; }
     .btn-filtro:hover { background: rgba(0,229,255,0.2); box-shadow: 0 0 10px rgba(0,229,255,0.4); }
     .btn-filtro.activo { background: var(--secondary-color); color: #0d041a; box-shadow: 0 0 15px var(--secondary-color), inset 0 0 8px rgba(255,255,255,0.6); border-color: #ffffff; }
-    .panel-controles-avanzados { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; width: 100%; max-width: 650px; margin: 0 auto; }
-    .ordenar-select { background: var(--hero-bg); border: 1px solid var(--primary-color); color: var(--text-color); padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; outline: none; box-shadow: 0 0 10px rgba(255,0,127,0.3); }
+    .panel-controles-avanzados { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; width: 100%; max-width: 650px; margin: 5px auto 0 auto; }
+    .ordenar-select { background: var(--hero-bg); border: 1px solid var(--primary-color); color: var(--text-color); padding: 8px 15px; border-radius: 20px; font-weight: bold; font-size: 0.88em; cursor: pointer; outline: none; box-shadow: 0 0 10px rgba(255,0,127,0.3); }
 
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
     .card { background: var(--card-bg); border-radius: 15px; padding: 15px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.5); position: relative; border: 1px solid var(--border-color); transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; cursor: pointer; animation: card-pop 0.4s ease-out; overflow: hidden; }
@@ -317,64 +320,65 @@
 
 <div class="container">
   <div class="search-box">
-    <input type="text" id="buscador" class="search-input" placeholder="🔍 Buscar manga, recarga, figura..." onkeyup="buscarProductos()">
+    <input type="text" id="buscador" class="search-input" placeholder="🔍 Buscar por nombre o universo (Miku, Naruto, etc)..." onkeyup="buscarProductos()">
   </div>
 
+  <!-- Carrusel Visual Único de Categorías -->
   <div class="categorias-visuales-section">
     <div class="categorias-visuales-header">Categorías</div>
     <div class="carrusel-wrapper">
       <button class="carrusel-arrow arrow-prev" onclick="scrollCategoriasVisuales(-1)"><i class="fas fa-chevron-left"></i></button>
       
       <div class="carrusel-track" id="categoriasTrack">
-        <div class="cat-card activa" onclick="filtrar('todos')">
+        <div class="cat-card activa" onclick="filtrarCategoria('todos')">
           <img src="logo.webp" id="img-cat-todos" class="cat-img" alt="Todos">
           <div class="cat-info"><div class="cat-title" id="title-cat-todos">Todo el Loot</div><div class="cat-count" id="count-todos">0 productos</div></div>
         </div>
-        <div class="cat-card" onclick="filtrar('recargas')">
+        <div class="cat-card" onclick="filtrarCategoria('recargas')">
           <img src="logo.webp" id="img-cat-recargas" class="cat-img" alt="Recargas">
           <div class="cat-info"><div class="cat-title" id="title-cat-recargas">Recargas</div><div class="cat-count" id="count-recargas">0 productos</div></div>
         </div>
-        <div class="cat-card" onclick="filtrar('mangas')">
+        <div class="cat-card" onclick="filtrarCategoria('mangas')">
           <img src="logo.webp" id="img-cat-mangas" class="cat-img" alt="Mangas">
           <div class="cat-info"><div class="cat-title" id="title-cat-mangas">Mangas Y Cómics</div><div class="cat-count" id="count-mangas">0 productos</div></div>
         </div>
-        <div class="cat-card" onclick="filtrar('ropa')">
+        <div class="cat-card" onclick="filtrarCategoria('ropa')">
           <img src="logo.webp" id="img-cat-ropa" class="cat-img" alt="Ropa">
           <div class="cat-info"><div class="cat-title" id="title-cat-ropa">Clothing</div><div class="cat-count" id="count-ropa">0 productos</div></div>
         </div>
-        <div class="cat-card" onclick="filtrar('cartas')">
+        <div class="cat-card" onclick="filtrarCategoria('cartas')">
           <img src="logo.webp" id="img-cat-cartas" class="cat-img" alt="TCG">
           <div class="cat-info"><div class="cat-title" id="title-cat-cartas">TCG/Cartas</div><div class="cat-count" id="count-cartas">0 productos</div></div>
         </div>
-        <div class="cat-card" onclick="filtrar('figuras')">
+        <div class="cat-card" onclick="filtrarCategoria('figuras')">
           <img src="logo.webp" id="img-cat-figuras" class="cat-img" alt="Figuras">
           <div class="cat-info"><div class="cat-title" id="title-cat-figuras">Figuras Anime</div><div class="cat-count" id="count-figuras">0 productos</div></div>
         </div>
-        <div class="cat-card" onclick="filtrar('mandos')">
+        <div class="cat-card" onclick="filtrarCategoria('mandos')">
           <img src="logo.webp" id="img-cat-mandos" class="cat-img" alt="Mandos">
           <div class="cat-info"><div class="cat-title" id="title-cat-mandos">Videojuegos</div><div class="cat-count" id="count-mandos">0 productos</div></div>
         </div>
-        <div class="cat-card" onclick="filtrar('audifonos')">
+        <div class="cat-card" onclick="filtrarCategoria('audifonos')">
           <img src="logo.webp" id="img-cat-audifonos" class="cat-img" alt="Audífonos">
           <div class="cat-info"><div class="cat-title" id="title-cat-audifonos">Electrónica Audio</div><div class="cat-count" id="count-audifonos">0 productos</div></div>
         </div>
-        <div class="cat-card" onclick="filtrar('teclados')">
+        <div class="cat-card" onclick="filtrarCategoria('teclados')">
           <img src="logo.webp" id="img-cat-teclados" class="cat-img" alt="Teclados">
           <div class="cat-info"><div class="cat-title" id="title-cat-teclados">Teclados PC</div><div class="cat-count" id="count-teclados">0 productos</div></div>
         </div>
-        <div class="cat-card" onclick="filtrar('peluches')">
+        <div class="cat-card" onclick="filtrarCategoria('peluches')">
           <img src="logo.webp" id="img-cat-peluches" class="cat-img" alt="Peluches">
           <div class="cat-info"><div class="cat-title" id="title-cat-peluches">Peluches Kawaii</div><div class="cat-count" id="count-peluches">0 productos</div></div>
         </div>
-        <div class="cat-card" onclick="filtrar('katanas')">
+        <div class="cat-card" onclick="filtrarCategoria('katanas')">
           <img src="logo.webp" id="img-cat-katanas" class="cat-img" alt="Katanas">
           <div class="cat-info"><div class="cat-title" id="title-cat-katanas">Katanas Replicas</div><div class="cat-count" id="count-katanas">0 productos</div></div>
         </div>
-        <div class="cat-card" onclick="filtrar('lamparas')">
+        <div class="cat-card" onclick="filtrarCategoria('lamparas')">
           <img src="logo.webp" id="img-cat-lamparas" class="cat-img" alt="Lámparas">
           <div class="cat-info"><div class="cat-title" id="title-cat-lamparas">Lámparas Neón</div><div class="cat-count" id="count-lamparas">0 productos</div></div>
         </div>
-        <div class="cat-card" onclick="filtrar('accesorios')">
+        <div class="cat-card" onclick="filtrarCategoria('accesorios')">
           <img src="logo.webp" id="img-cat-accesorios" class="cat-img" alt="Accesorios">
           <div class="cat-info"><div class="cat-title" id="title-cat-accesorios">Accesorios</div><div class="cat-count" id="count-accesorios">0 productos</div></div>
         </div>
@@ -384,31 +388,23 @@
     </div>
   </div>
 
+  <!-- Barra Dinámica de Colecciones & Universos + Controles Compactos -->
   <div class="controles-superiores">
-    <div class="filtros">
-      <button class="btn-filtro activo" onclick="filtrar('todos', event)">🌟 Todos</button>
-      <button class="btn-filtro" style="border-color: #25D366; color: #25D366;" onclick="filtrar('recargas', event)" id="btn-filt-recargas"> Recargas</button>
-      <button class="btn-filtro" onclick="filtrar('mangas', event)" id="btn-filt-mangas">📚 Mangas</button>
-      <button class="btn-filtro" onclick="filtrar('ropa', event)" id="btn-filt-ropa">👕 Ropa / Hoodies</button>
-      <button class="btn-filtro" onclick="filtrar('mandos', event)" id="btn-filt-mandos">🎮 Mandos PC</button>
-      <button class="btn-filtro" onclick="filtrar('teclados', event)" id="btn-filt-teclados">⌨️ Teclados</button>
-      <button class="btn-filtro" onclick="filtrar('audifonos', event)" id="btn-filt-audifonos">🎧 Audífonos</button>
-      <button class="btn-filtro" onclick="filtrar('figuras', event)" id="btn-filt-figuras">🗿 Figuras</button>
-      <button class="btn-filtro" onclick="filtrar('peluches', event)" id="btn-filt-peluches">🧸 Peluches</button>
-      <button class="btn-filtro" onclick="filtrar('cartas', event)" id="btn-filt-cartas">🃏 Cartas TCG</button>
-      <button class="btn-filtro" onclick="filtrar('katanas', event)" id="btn-filt-katanas">⚔️ Katanas</button>
-      <button class="btn-filtro" onclick="filtrar('lamparas', event)" id="btn-filt-lamparas">💡 Lámparas</button>
-      <button class="btn-filtro" onclick="filtrar('accesorios', event)" id="btn-filt-accesorios">Accesorios</button>
-      <button class="btn-filtro" onclick="filtrarPorPresupuesto(0, 15, event)">💵 Menos de $15</button>
-      <button class="btn-filtro" onclick="filtrarPorPresupuesto(15, 35, event)">🪙 De $15 a $35</button>
-      <button class="btn-filtro" onclick="filtrarPorPresupuesto(35, 10000, event)">💎 Más de $35</button>
-      <button class="btn-filtro" style="border-color: #00e5ff; color: #00e5ff;" onclick="filtrarEstado('Envío Inmediato 📦', event)">📦 Stock Inmediato</button>
-      <button class="btn-filtro" style="border-color: #FF007F; color: #FF007F;" onclick="filtrarEstado('Por Encargo ⚡', event)">⚡ Por Encargo</button>
+    <div class="colecciones-header"><i class="fas fa-meteor"></i> Colecciones & Universos:</div>
+    <div class="filtros" id="contenedorColecciones">
+      <button class="btn-filtro activo" onclick="filtrarColeccion('todos', event)">🌟 Todo el Universo</button>
+      <!-- Se generan solas desde Firebase según los productos -->
     </div>
 
     <div class="panel-controles-avanzados">
+      <select id="selectEstado" class="ordenar-select" onchange="filtrarEstadoDropdown(this.value)">
+        <option value="todos">📦 Todo el inventario</option>
+        <option value="Envío Inmediato 📦">⚡ Solo Stock Inmediato</option>
+        <option value="Por Encargo ⚡">⏳ Bajo Encargo</option>
+      </select>
+
       <select id="selectOrden" class="ordenar-select" onchange="ordenarProductos()">
-        <option value="defecto">⚡ Ordenar por: Destacados</option>
+        <option value="defecto">⚡ Ordenar: Destacados</option>
         <option value="menor">📉 Precio: Menor a Mayor</option>
         <option value="mayor">📈 Precio: Mayor a Menor</option>
       </select>
@@ -744,6 +740,7 @@
       let precioBs = (prod.precio || 0) * tasaBcvActual;
       let fotosArray = (prod.fotos && prod.fotos.length > 0) ? prod.fotos : ['logo.webp'];
       let categoria = prod.categoria || 'mangas';
+      let coleccion = prod.coleccion || 'General';
       
       let badgeClase = 'badge-stock';
       if(prod.estado && prod.estado.includes("Encargo")) badgeClase = 'badge-encargo';
@@ -762,7 +759,14 @@
       let botonesCarrusel = fotosArray.length > 1 ? `<div class="carrusel-btn carrusel-prev" onclick="cambiarFotoTarjeta(event, ${indexProd}, -1)"><i class="fas fa-chevron-left"></i></div><div class="carrusel-btn carrusel-next" onclick="cambiarFotoTarjeta(event, ${indexProd}, 1)"><i class="fas fa-chevron-right"></i></div><div class="carrusel-dots">${dotsHtml}</div>` : '';
 
       contenedor.innerHTML += `
-        <div class="card item-producto" data-id="${prod.id}" data-nombre="${sanitizarHTML(prod.nombre).toLowerCase()}" data-categoria="${categoria}" data-estado="${prod.estado || ''}" data-precio="${prod.precio}" onclick="crearDestello(event); abrirModalPorId('${prod.id}')">
+        <div class="card item-producto" 
+             data-id="${prod.id}" 
+             data-nombre="${sanitizarHTML(prod.nombre).toLowerCase()}" 
+             data-categoria="${categoria}" 
+             data-coleccion="${sanitizarHTML(coleccion).toLowerCase()}" 
+             data-estado="${prod.estado || ''}" 
+             data-precio="${prod.precio}" 
+             onclick="crearDestello(event); abrirModalPorId('${prod.id}')">
           <button class="btn-fav-card" onclick="toggleFavoritoPorId(event, '${prod.id}')"><i class="fas fa-heart"></i></button>
           <div class="badge-estado ${badgeClase}">${prod.estado || (esRecarga ? 'Recarga Directa ⚡' : 'Disponible')}</div>
           <div class="card-img-container" id="carrusel-card-${indexProd}">${imgsHtml}${botonesCarrusel}</div>
@@ -777,8 +781,88 @@
       let elem = document.getElementById('count-' + cat);
       if(elem) elem.innerText = conteo[cat] + " productos";
     }
+
+    renderizarBotonesColecciones(lista);
     aplicarFiltrosGlobales();
   };
+
+  /* --- SISTEMA UNIFICADO DE FILTROS --- */
+  let filtroGlobal = {
+    categoria: 'todos',
+    coleccion: 'todos',
+    estado: 'todos',
+    busqueda: ''
+  };
+
+  function renderizarBotonesColecciones(productos) {
+    const contenedor = document.getElementById('contenedorColecciones');
+    if (!contenedor) return;
+
+    const coleccionesUnicas = new Set();
+    productos.forEach(p => {
+      if (p.coleccion && p.coleccion.trim() !== '' && p.coleccion.toLowerCase() !== 'general') {
+        coleccionesUnicas.add(p.coleccion.trim());
+      }
+    });
+
+    let html = `<button class="btn-filtro ${filtroGlobal.coleccion === 'todos' ? 'activo' : ''}" onclick="filtrarColeccion('todos', event)">🌟 Todo el Universo</button>`;
+
+    coleccionesUnicas.forEach(col => {
+      const activo = filtroGlobal.coleccion.toLowerCase() === col.toLowerCase() ? 'activo' : '';
+      html += `<button class="btn-filtro ${activo}" onclick="filtrarColeccion('${col}', event)">🎌 ${sanitizarHTML(col)}</button>`;
+    });
+
+    contenedor.innerHTML = html;
+  }
+
+  window.filtrarCategoria = function(cat) {
+    reproducirSonido();
+    document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('activa'));
+    let cardVisual = document.querySelector(`.cat-card[onclick*="'${cat}'"]`);
+    if(cardVisual) cardVisual.classList.add('activa');
+    filtroGlobal.categoria = cat;
+    aplicarFiltrosGlobales();
+  };
+
+  window.filtrarColeccion = function(col, evento) {
+    reproducirSonido();
+    document.querySelectorAll('#contenedorColecciones .btn-filtro').forEach(b => b.classList.remove('activo'));
+    if (evento && evento.currentTarget) evento.currentTarget.classList.add('activo');
+    filtroGlobal.coleccion = col;
+    aplicarFiltrosGlobales();
+  };
+
+  window.filtrarEstadoDropdown = function(est) {
+    reproducirSonido();
+    filtroGlobal.estado = est;
+    aplicarFiltrosGlobales();
+  };
+
+  window.buscarProductos = function() {
+    filtroGlobal.busqueda = document.getElementById('buscador').value.trim().toLowerCase();
+    aplicarFiltrosGlobales();
+  };
+
+  function aplicarFiltrosGlobales() {
+    let productos = document.querySelectorAll('#catalogoNube .item-producto');
+    productos.forEach(card => {
+      let cat = card.getAttribute('data-categoria') || '';
+      let est = card.getAttribute('data-estado') || '';
+      let col = card.getAttribute('data-coleccion') || '';
+      let nom = card.getAttribute('data-nombre') || '';
+
+      let cumpleCat = (filtroGlobal.categoria === 'todos' || cat === filtroGlobal.categoria);
+      let cumpleCol = (filtroGlobal.coleccion === 'todos' || col === filtroGlobal.coleccion.toLowerCase());
+      let cumpleEst = (filtroGlobal.estado === 'todos' || est.includes(filtroGlobal.estado));
+      let cumpleBusqueda = (!filtroGlobal.busqueda || nom.includes(filtroGlobal.busqueda) || col.includes(filtroGlobal.busqueda));
+
+      if (cumpleCat && cumpleCol && cumpleEst && cumpleBusqueda) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
 
   /* --- APERTURA SEGURA DE MODAL POR ID --- */
   window.abrirModalPorId = function(prodId) {
@@ -831,12 +915,6 @@
           if(catImgEl && conf.imgUrl) catImgEl.src = conf.imgUrl;
           let catTitleEl = document.getElementById(`title-cat-${conf.categoriaId}`);
           if(catTitleEl && conf.nombrePersonalizado) catTitleEl.innerText = conf.nombrePersonalizado;
-          
-          let btnFiltroEl = document.getElementById(`btn-filt-${conf.categoriaId}`);
-          if(btnFiltroEl && conf.nombrePersonalizado) {
-            let iconoPrefijo = btnFiltroEl.innerText.split(' ')[0] || '📁';
-            btnFiltroEl.innerText = `${iconoPrefijo} ${conf.nombrePersonalizado}`;
-          }
         }
       });
     } catch (e) {}
@@ -1107,73 +1185,6 @@
   let carrito = JSON.parse(localStorage.getItem('sakura_carrito')) || [];
   window.productoActual = null; 
   let descuentoAplicado = 0;
-
-  /* --- SISTEMA UNIFICADO DE FILTRADO Y BÚSQUEDA --- */
-  let filtroGlobal = {
-    categoria: 'todos',
-    estado: 'todos',
-    presupuestoMin: 0,
-    presupuestoMax: Infinity,
-    busqueda: ''
-  };
-
-  function aplicarFiltrosGlobales() {
-    let productos = document.querySelectorAll('#catalogoNube .item-producto');
-    productos.forEach(card => {
-      let cat = card.getAttribute('data-categoria') || '';
-      let est = card.getAttribute('data-estado') || '';
-      let precio = parseFloat(card.getAttribute('data-precio')) || 0;
-      let nom = card.getAttribute('data-nombre') || '';
-
-      let cumpleCat = (filtroGlobal.categoria === 'todos' || cat === filtroGlobal.categoria);
-      let cumpleEst = (filtroGlobal.estado === 'todos' || est === filtroGlobal.estado);
-      let cumplePrecio = (precio >= filtroGlobal.presupuestoMin && precio <= filtroGlobal.presupuestoMax);
-      let cumpleBusqueda = (!filtroGlobal.busqueda || nom.includes(filtroGlobal.busqueda));
-
-      if (cumpleCat && cumpleEst && cumplePrecio && cumpleBusqueda) {
-        card.style.display = 'block';
-      } else {
-        card.style.display = 'none';
-      }
-    });
-  }
-
-  window.filtrar = function(cat, evento) {
-    reproducirSonido();
-    document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('activo'));
-    document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('activa'));
-    
-    let btnFiltroTexto = document.querySelector(`.btn-filtro[onclick*="'${cat}'"]`);
-    if(btnFiltroTexto) btnFiltroTexto.classList.add('activo');
-    let cardVisual = document.querySelector(`.cat-card[onclick*="'${cat}'"]`);
-    if(cardVisual) cardVisual.classList.add('activa');
-    
-    filtroGlobal.categoria = cat;
-    filtroGlobal.estado = 'todos';
-    aplicarFiltrosGlobales();
-  };
-
-  window.filtrarEstado = function(est, evento) {
-    reproducirSonido();
-    document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('activo'));
-    if(evento && evento.currentTarget) evento.currentTarget.classList.add('activo');
-    filtroGlobal.estado = est;
-    aplicarFiltrosGlobales();
-  };
-
-  window.filtrarPorPresupuesto = function(min, max, evento) {
-    reproducirSonido();
-    document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('activo'));
-    if(evento && evento.currentTarget) evento.currentTarget.classList.add('activo');
-    filtroGlobal.presupuestoMin = min;
-    filtroGlobal.presupuestoMax = max;
-    aplicarFiltrosGlobales();
-  };
-
-  window.buscarProductos = function() {
-    filtroGlobal.busqueda = document.getElementById('buscador').value.trim().toLowerCase();
-    aplicarFiltrosGlobales();
-  };
 
   window.ordenarProductos = function() {
     reproducirSonido(); 
