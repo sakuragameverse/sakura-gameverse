@@ -257,16 +257,11 @@
     .carrusel-arrow:hover { background: var(--secondary-color); color: #0d041a; transform: translateY(-50%) scale(1.1); }
     .arrow-prev { left: -15px; } .arrow-next { right: -15px; }
 
-    /* --- BARRA DINÁMICA DE UNIVERSOS / COLECCIONES --- */
-    .controles-superiores { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 30px; width: 100%; }
-    .colecciones-header { font-size: 0.95em; font-weight: bold; color: var(--secondary-color); text-shadow: 0 0 8px rgba(0,229,255,0.4); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
-    .filtros { display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 100%; padding-bottom: 8px; justify-content: flex-start; gap: 8px; scrollbar-width: none; width: 100%; }
-    .filtros::-webkit-scrollbar { display: none; }
-    .btn-filtro { background: transparent; color: var(--text-color); border: 1px solid var(--secondary-color); padding: 7px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 0.85em; transition: all 0.3s ease; white-space: nowrap; flex-shrink: 0; position: relative; }
-    .btn-filtro:hover { background: rgba(0,229,255,0.2); box-shadow: 0 0 10px rgba(0,229,255,0.4); }
-    .btn-filtro.activo { background: var(--secondary-color); color: #0d041a; box-shadow: 0 0 15px var(--secondary-color), inset 0 0 8px rgba(255,255,255,0.6); border-color: #ffffff; }
-    .panel-controles-avanzados { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; width: 100%; max-width: 650px; margin: 5px auto 0 auto; }
-    .ordenar-select { background: var(--hero-bg); border: 1px solid var(--primary-color); color: var(--text-color); padding: 8px 15px; border-radius: 20px; font-weight: bold; font-size: 0.88em; cursor: pointer; outline: none; box-shadow: 0 0 10px rgba(255,0,127,0.3); }
+    /* --- CONTROLES COMPACTOS DESPLEGABLES --- */
+    .controles-superiores { display: flex; justify-content: center; align-items: center; margin-bottom: 25px; width: 100%; }
+    .panel-controles-avanzados { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; width: 100%; max-width: 800px; margin: 0 auto; }
+    .ordenar-select { background: var(--hero-bg); border: 1px solid var(--secondary-color); color: var(--text-color); padding: 9px 15px; border-radius: 20px; font-weight: bold; font-size: 0.88em; cursor: pointer; outline: none; box-shadow: 0 0 10px rgba(0,229,255,0.25); transition: border-color 0.3s, box-shadow 0.3s; }
+    .ordenar-select:focus, .ordenar-select:hover { border-color: var(--primary-color); box-shadow: 0 0 12px rgba(255,0,127,0.4); }
 
     /* --- CATÁLOGO & PRODUCTOS --- */
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
@@ -616,15 +611,13 @@
     </div>
   </div>
 
-  <!-- Barra Dinámica de Colecciones & Universos + Controles Compactos -->
+  <!-- Controles Compactos: Colecciones + Estado + Orden -->
   <div class="controles-superiores">
-    <div class="colecciones-header"><i class="fas fa-meteor"></i> Colecciones & Universos:</div>
-    <div class="filtros" id="contenedorColecciones">
-      <button class="btn-filtro activo" onclick="filtrarColeccion('todos', event)">🌟 Todo el Universo</button>
-      <!-- Se autogeneran con Firebase -->
-    </div>
-
     <div class="panel-controles-avanzados">
+      <select id="selectColeccion" class="ordenar-select" onchange="cambiarColeccionDropdown(this.value)">
+        <option value="todos">🌟 Todo el Universo (Colecciones)</option>
+      </select>
+
       <select id="selectEstado" class="ordenar-select" onchange="filtrarEstadoDropdown(this.value)">
         <option value="todos">📦 Todo el inventario</option>
         <option value="Envío Inmediato 📦">⚡ Solo Stock Inmediato</option>
@@ -1059,7 +1052,7 @@
       if(elem) elem.innerText = conteo[cat] + " productos";
     }
 
-    renderizarBotonesColecciones(lista);
+    renderizarSelectColecciones(lista);
     aplicarFiltrosGlobales();
   };
 
@@ -1071,9 +1064,10 @@
     busqueda: ''
   };
 
-  function renderizarBotonesColecciones(productos) {
-    const contenedor = document.getElementById('contenedorColecciones');
-    if (!contenedor) return;
+  /* --- POBLAR LISTA DESPLEGABLE DE COLECCIONES --- */
+  function renderizarSelectColecciones(productos) {
+    const select = document.getElementById('selectColeccion');
+    if (!select) return;
 
     const coleccionesUnicas = new Set();
     productos.forEach(p => {
@@ -1082,15 +1076,22 @@
       }
     });
 
-    let html = `<button class="btn-filtro ${filtroGlobal.coleccion === 'todos' ? 'activo' : ''}" onclick="filtrarColeccion('todos', event)">🌟 Todo el Universo</button>`;
+    let valorSeleccionado = filtroGlobal.coleccion;
+    let html = `<option value="todos">🌟 Todo el Universo (Colecciones)</option>`;
 
     coleccionesUnicas.forEach(col => {
-      const activo = filtroGlobal.coleccion.toLowerCase() === col.toLowerCase() ? 'activo' : '';
-      html += `<button class="btn-filtro ${activo}" onclick="filtrarColeccion('${col}', event)">🎌 ${sanitizarHTML(col)}</button>`;
+      html += `<option value="${sanitizarHTML(col)}">🎌 ${sanitizarHTML(col)}</option>`;
     });
 
-    contenedor.innerHTML = html;
+    select.innerHTML = html;
+    select.value = valorSeleccionado;
   }
+
+  window.cambiarColeccionDropdown = function(col) {
+    reproducirSonido();
+    filtroGlobal.coleccion = col;
+    aplicarFiltrosGlobales();
+  };
 
   window.filtrarCategoria = function(cat) {
     reproducirSonido();
@@ -1098,14 +1099,6 @@
     let cardVisual = document.querySelector(`.cat-card[onclick*="'${cat}'"]`);
     if(cardVisual) cardVisual.classList.add('activa');
     filtroGlobal.categoria = cat;
-    aplicarFiltrosGlobales();
-  };
-
-  window.filtrarColeccion = function(col, evento) {
-    reproducirSonido();
-    document.querySelectorAll('#contenedorColecciones .btn-filtro').forEach(b => b.classList.remove('activo'));
-    if (evento && evento.currentTarget) evento.currentTarget.classList.add('activo');
-    filtroGlobal.coleccion = col;
     aplicarFiltrosGlobales();
   };
 
@@ -1650,3 +1643,4 @@
 </script>
 </body>
 </html>
+
