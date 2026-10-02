@@ -263,6 +263,11 @@
     .ordenar-select { background: var(--hero-bg); border: 1px solid var(--secondary-color); color: var(--text-color); padding: 9px 15px; border-radius: 20px; font-weight: bold; font-size: 0.88em; cursor: pointer; outline: none; box-shadow: 0 0 10px rgba(0,229,255,0.25); transition: border-color 0.3s, box-shadow 0.3s; }
     .ordenar-select:focus, .ordenar-select:hover { border-color: var(--primary-color); box-shadow: 0 0 12px rgba(255,0,127,0.4); }
 
+    /* --- PESTAÑAS DEL CARRITO --- */
+    .cart-tabs { display: flex; gap: 8px; margin-bottom: 15px; background: rgba(0, 0, 0, 0.4); padding: 4px; border-radius: 25px; border: 1px solid var(--border-color); }
+    .cart-tab-btn { flex: 1; background: transparent; color: var(--text-color); border: none; padding: 8px 12px; border-radius: 20px; font-size: 0.82em; font-weight: bold; cursor: pointer; transition: all 0.25s ease; }
+    .cart-tab-btn.activo { background: var(--secondary-color); color: #0d041a; box-shadow: 0 0 10px var(--secondary-color); }
+
     /* --- CATÁLOGO & PRODUCTOS --- */
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
     .card { background: var(--card-bg); border-radius: 15px; padding: 15px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.5); position: relative; border: 1px solid var(--border-color); transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; cursor: pointer; animation: card-pop 0.4s ease-out; overflow: hidden; }
@@ -740,35 +745,57 @@
   </div>
 </div>
 
-<!-- MODAL CARRITO CON LOGÍSTICA DE ENVÍO Y DIRECCIÓN -->
+<!-- MODAL CARRITO CON 2 PESTAÑAS (FÍSICO Y DIGITAL) -->
 <div id="modalCarrito" class="modal">
   <div class="modal-content" style="width: 450px;">
     <button class="cerrar-modal" onclick="cerrarCarritoModal()">×</button>
     <h2 style="color: var(--secondary-color); margin-top: 0; text-align: center;">🛒 Tu Carrito</h2>
-    <div class="cupon-box"><input type="text" id="inputCupon" class="cupon-input" placeholder="Cupón (Ej: OTAKU10)"><button class="btn-cupon" onclick="aplicarCupon()">Aplicar</button></div>
-    <div id="mensajeCupon" style="font-size: 0.8em; margin-bottom: 8px; color: var(--secondary-color);"></div>
-    <div id="listaCarritoDetalle" style="max-height: 150px; overflow-y: auto; margin-bottom: 12px;"></div>
     
-    <!-- Selector Logístico de Envío -->
-    <div style="margin-bottom: 12px; text-align: left;">
-      <label for="selectMetodoEnvio" style="color: var(--secondary-color); font-size: 0.85em; font-weight: bold; display: block; margin-bottom: 5px;">
-        📦 Método de entrega / Envío:
-      </label>
-      <select id="selectMetodoEnvio" class="talla-select">
-        <option value="ZOOM (Cobro a destino)">📦 ZOOM (Envío nacional - Cobro a destino)</option>
-        <option value="MRW (Cobro a destino)">🚚 MRW (Envío nacional - Cobro a destino)</option>
-        <option value="Entrega Personal (Bejuma)">🤝 Entrega Personal (Bejuma, Carabobo)</option>
-        <option value="Entrega Personal (Miranda)">🤝 Entrega Personal (Miranda, Carabobo)</option>
-        <option value="Digital (Para Recargas)">⚡ Entrega Digital / Directa (Solo Recargas)</option>
-      </select>
+    <!-- Pestañas de Navegación del Carrito -->
+    <div class="cart-tabs">
+      <button class="cart-tab-btn activo" id="tabBtnFisico" onclick="cambiarPestanaCarrito('fisico')">
+        📦 Envíos Físicos (<span id="countCartFisico">0</span>)
+      </button>
+      <button class="cart-tab-btn" id="tabBtnDigital" onclick="cambiarPestanaCarrito('digital')">
+        ⚡ Recargas (<span id="countCartDigital">0</span>)
+      </button>
     </div>
 
-    <!-- Campo de Dirección o Agencia de Destino -->
-    <div style="margin-bottom: 12px; text-align: left;" id="boxDireccionEnvio">
-      <label for="inputDireccionEnvio" style="color: var(--secondary-color); font-size: 0.85em; font-weight: bold; display: block; margin-bottom: 5px;">
-        📍 Dirección de entrega / Agencia (Ciudad, Estado):
-      </label>
-      <input type="text" id="inputDireccionEnvio" class="sugerencia-input" style="margin-bottom: 0;" placeholder="Ej: ZOOM Bejuma / Av. Bolívar casa #12...">
+    <div class="cupon-box">
+      <input type="text" id="inputCupon" class="cupon-input" placeholder="Cupón (Ej: OTAKU10)">
+      <button class="btn-cupon" onclick="aplicarCupon()">Aplicar</button>
+    </div>
+    <div id="mensajeCupon" style="font-size: 0.8em; margin-bottom: 8px; color: var(--secondary-color);"></div>
+
+    <!-- Lista de Artículos según Pestaña Seleccionada -->
+    <div id="listaCarritoDetalle" style="max-height: 150px; overflow-y: auto; margin-bottom: 12px;"></div>
+    
+    <!-- APARTADO EXCLUSIVO PARA ARTÍCULOS FÍSICOS -->
+    <div id="apartadoEnvioFisico">
+      <div style="margin-bottom: 12px; text-align: left;">
+        <label for="selectMetodoEnvio" style="color: var(--secondary-color); font-size: 0.85em; font-weight: bold; display: block; margin-bottom: 5px;">
+          📦 Método de entrega / Envío:
+        </label>
+        <select id="selectMetodoEnvio" class="talla-select">
+          <option value="ZOOM (Cobro a destino)">📦 ZOOM (Envío nacional - Cobro a destino)</option>
+          <option value="MRW (Cobro a destino)">🚚 MRW (Envío nacional - Cobro a destino)</option>
+          <option value="Entrega Personal (Bejuma)">🤝 Entrega Personal (Bejuma, Carabobo)</option>
+          <option value="Entrega Personal (Miranda)">🤝 Entrega Personal (Miranda, Carabobo)</option>
+        </select>
+      </div>
+
+      <div style="margin-bottom: 12px; text-align: left;" id="boxDireccionEnvio">
+        <label for="inputDireccionEnvio" style="color: var(--secondary-color); font-size: 0.85em; font-weight: bold; display: block; margin-bottom: 5px;">
+          📍 Dirección de entrega / Agencia (Ciudad, Estado):
+        </label>
+        <input type="text" id="inputDireccionEnvio" class="sugerencia-input" style="margin-bottom: 0;" placeholder="Ej: ZOOM Bejuma / Calle Bolívar casa #12...">
+      </div>
+    </div>
+
+    <!-- APARTADO EXCLUSIVO PARA RECARGAS DIGITALES -->
+    <div id="apartadoRecargasDigitales" style="display: none; background: rgba(0, 229, 255, 0.05); border: 1px dashed var(--secondary-color); padding: 12px; border-radius: 10px; margin-bottom: 12px; text-align: left; font-size: 0.85em;">
+      <div style="color: var(--secondary-color); font-weight: bold; margin-bottom: 4px;">⚡ Entrega Digital Inmediata:</div>
+      <div style="color: #ccc; line-height: 1.4;">Las recargas se procesan directamente con el ID y Servidor especificados. No requiere datos de envío físico.</div>
     </div>
 
     <div id="reciboDigital" class="recibo-box" style="display: none;"><div style="text-align: center; font-weight: bold; margin-bottom: 8px; color: var(--primary-color);">--- RECIBO DIGITAL ---</div><div id="reciboContenido"></div></div>
@@ -1456,7 +1483,7 @@
   
   window.girarRuletaGacha = function() { 
     reproducirSonido(); 
-    let hoy = new Date().toDateString();
+    let hoy = new Date().toDateString(); 
     let ultimaGacha = localStorage.getItem('sakura_ultima_gacha');
     if (ultimaGacha === hoy) {
       document.getElementById('gachaResultado').innerHTML = "⏳ Ya giraste la ruleta hoy. ¡Vuelve mañana!";
@@ -1474,6 +1501,78 @@
   let carrito = JSON.parse(localStorage.getItem('sakura_carrito')) || [];
   window.productoActual = null; 
   let descuentoAplicado = 0;
+  let pestanaCarritoActual = 'fisico';
+
+  window.cambiarPestanaCarrito = function(tipo) {
+    reproducirSonido();
+    pestanaCarritoActual = tipo;
+
+    document.getElementById('tabBtnFisico').classList.toggle('activo', tipo === 'fisico');
+    document.getElementById('tabBtnDigital').classList.toggle('activo', tipo === 'digital');
+
+    document.getElementById('apartadoEnvioFisico').style.display = (tipo === 'fisico') ? 'block' : 'none';
+    document.getElementById('apartadoRecargasDigitales').style.display = (tipo === 'digital') ? 'block' : 'none';
+
+    renderizarListaCarrito();
+  };
+
+  function renderizarListaCarrito() {
+    let cont = document.getElementById('listaCarritoDetalle');
+    let reciboBox = document.getElementById('reciboDigital');
+    let reciboContenido = document.getElementById('reciboContenido');
+    let paymentBox = document.getElementById('paymentMethodsCart');
+    
+    cont.innerHTML = "";
+    reciboContenido.innerHTML = "";
+
+    let itemsFisicos = carrito.filter(i => !i.esRecarga);
+    let itemsDigitales = carrito.filter(i => i.esRecarga);
+
+    document.getElementById('countCartFisico').innerText = itemsFisicos.length;
+    document.getElementById('countCartDigital').innerText = itemsDigitales.length;
+
+    let itemsMostrados = (pestanaCarritoActual === 'fisico') ? itemsFisicos : itemsDigitales;
+
+    if (itemsMostrados.length === 0) {
+      cont.innerHTML = `<p style='color:#aaa; text-align:center;'>No hay ${pestanaCarritoActual === 'fisico' ? 'artículos físicos' : 'recargas'} en esta sección.</p>`;
+    } else {
+      itemsMostrados.forEach((item) => {
+        let idxOriginal = carrito.indexOf(item);
+        cont.innerHTML += `
+          <div class="cart-item-row">
+            <img src="${item.img}" class="cart-item-img" loading="lazy">
+            <div class="cart-item-info">
+              <strong>${sanitizarHTML(item.titulo)}</strong><br>
+              <span style="color:var(--secondary-color);">$${Number(item.precio).toFixed(2)}</span>
+            </div>
+            <button class="cart-item-del" onclick="removerDelCarrito(${idxOriginal})">❌</button>
+          </div>`;
+      });
+    }
+
+    if (carrito.length === 0) {
+      reciboBox.style.display = 'none';
+      paymentBox.style.display = 'none';
+      document.getElementById('modalCarritoTotal').innerText = "Total: $0.00";
+    } else {
+      reciboBox.style.display = 'block';
+      paymentBox.style.display = 'block';
+      let html = "";
+      carrito.forEach(item => {
+        html += `<div class="recibo-line"><span>${sanitizarHTML(item.titulo)}</span><span>$${Number(item.precio).toFixed(2)}</span></div>`;
+      });
+
+      let sub = carrito.reduce((s, i) => s + Number(i.precio), 0);
+      let tot = sub * (1 - descuentoAplicado);
+      let totBs = tot * tasaBcvActual;
+
+      html += `<div style="border-top:1px dashed var(--secondary-color); margin-top:5px; padding-top:5px;" class="recibo-line"><strong>TOTAL USD:</strong> <strong>$${tot.toFixed(2)}</strong></div>`;
+      html += `<div class="recibo-line"><strong>TOTAL BS:</strong> <strong>Bs. ${totBs.toLocaleString('es-VE', {minimumFractionDigits:2, maximumFractionDigits:2})}</strong></div>`;
+
+      reciboContenido.innerHTML = html;
+      document.getElementById('modalCarritoTotal').innerText = `Total: $${tot.toFixed(2)}`;
+    }
+  }
 
   window.ordenarProductos = function() {
     reproducirSonido(); 
@@ -1520,35 +1619,23 @@
   }
 
   window.abrirCarritoModal = function() {
-    reproducirSonido(); 
-    let cont = document.getElementById('listaCarritoDetalle'); 
-    let reciboBox = document.getElementById('reciboDigital'); 
-    let reciboContenido = document.getElementById('reciboContenido');
-    let paymentBox = document.getElementById('paymentMethodsCart');
-    cont.innerHTML = ""; 
-    reciboContenido.innerHTML = "";
+    reproducirSonido();
     
-    if(carrito.length === 0) { 
-      cont.innerHTML = "<p style='color:#aaa;'>Vacío.</p>"; 
-      reciboBox.style.display = 'none'; 
-      paymentBox.style.display = 'none';
-      document.getElementById('modalCarritoTotal').innerText = "Total: $0.00";
+    let tieneFisicos = carrito.some(i => !i.esRecarga);
+    let tieneDigitales = carrito.some(i => i.esRecarga);
+
+    if (tieneDigitales && !tieneFisicos) {
+      pestanaCarritoActual = 'digital';
     } else {
-      reciboBox.style.display = 'block'; 
-      paymentBox.style.display = 'block';
-      let html = "";
-      carrito.forEach((item, i) => {
-        cont.innerHTML += `<div class="cart-item-row"><img src="${item.img}" class="cart-item-img" loading="lazy" decoding="async"><div class="cart-item-info"><strong>${sanitizarHTML(item.titulo)}</strong><br><span style="color:var(--secondary-color);">$${Number(item.precio).toFixed(2)}</span></div><button class="cart-item-del" onclick="removerDelCarrito(${i})">❌</button></div>`;
-        html += `<div class="recibo-line"><span>${sanitizarHTML(item.titulo)}</span><span>$${Number(item.precio).toFixed(2)}</span></div>`;
-      });
-      let sub = carrito.reduce((s, i) => s + Number(i.precio), 0); 
-      let tot = sub * (1 - descuentoAplicado); 
-      let totBs = tot * tasaBcvActual;
-      html += `<div style="border-top:1px dashed var(--secondary-color); margin-top:5px; padding-top:5px;" class="recibo-line"><strong>TOTAL USD:</strong> <strong>$${tot.toFixed(2)}</strong></div>`;
-      html += `<div class="recibo-line"><strong>TOTAL BS:</strong> <strong>Bs. ${totBs.toLocaleString('es-VE', {minimumFractionDigits:2, maximumFractionDigits:2})}</strong></div>`;
-      reciboContenido.innerHTML = html; 
-      document.getElementById('modalCarritoTotal').innerText = `Total: $${tot.toFixed(2)}`;
+      pestanaCarritoActual = 'fisico';
     }
+
+    document.getElementById('tabBtnFisico').classList.toggle('activo', pestanaCarritoActual === 'fisico');
+    document.getElementById('tabBtnDigital').classList.toggle('activo', pestanaCarritoActual === 'digital');
+    document.getElementById('apartadoEnvioFisico').style.display = (pestanaCarritoActual === 'fisico') ? 'block' : 'none';
+    document.getElementById('apartadoRecargasDigitales').style.display = (pestanaCarritoActual === 'digital') ? 'block' : 'none';
+
+    renderizarListaCarrito();
     document.getElementById('modalCarrito').style.display = 'flex';
   };
 
@@ -1556,7 +1643,7 @@
     reproducirSonido();
     carrito.splice(index, 1);
     actualizarCarritoUI();
-    window.abrirCarritoModal();
+    renderizarListaCarrito();
   };
 
   window.cerrarCarritoModal = function() { document.getElementById('modalCarrito').style.display = 'none'; };
@@ -1565,18 +1652,22 @@
     carrito = []; 
     descuentoAplicado = 0; 
     actualizarCarritoUI(); 
-    abrirCarritoModal(); 
+    renderizarListaCarrito();
   };
 
   window.enviarPedidoWhatsApp = function() {
     reproducirSonido(); 
     if(carrito.length === 0) return alert("El carrito está vacío.");
     
+    let tieneFisicos = carrito.some(i => !i.esRecarga);
+    let tieneDigitales = carrito.some(i => i.esRecarga);
+
     let metodoEnvio = document.getElementById('selectMetodoEnvio') ? document.getElementById('selectMetodoEnvio').value : "No especificado";
     let direccionEnvio = document.getElementById('inputDireccionEnvio') ? document.getElementById('inputDireccionEnvio').value.trim() : "";
 
-    if (!metodoEnvio.includes("Digital") && !direccionEnvio) {
-      return alert("⚠️ Por favor indica la dirección de destino o la agencia donde retirarás el paquete.");
+    if (tieneFisicos && !direccionEnvio) {
+      cambiarPestanaCarrito('fisico');
+      return alert("⚠️ Por favor indica la dirección o agencia para los artículos físicos.");
     }
 
     let sub = carrito.reduce((s, i) => s + Number(i.precio), 0); 
@@ -1584,12 +1675,25 @@
     let totBs = tot * tasaBcvActual;
     
     let msg = `¡Hola Sakura Gameverse! 🌸👾 Deseo realizar este pedido:\n\n`;
-    carrito.forEach((i, idx) => { msg += `${idx+1}. ${i.titulo} - $${Number(i.precio).toFixed(2)}\n`; });
-    msg += `\n*Método de Entrega / Envío:* ${metodoEnvio}\n`;
-    if (direccionEnvio) {
-      msg += `*Dirección / Agencia:* ${direccionEnvio}\n`;
+    
+    if (tieneFisicos) {
+      msg += `📦 *PRODUCTOS FÍSICOS:*\n`;
+      carrito.filter(i => !i.esRecarga).forEach((i, idx) => {
+        msg += `  ${idx+1}. ${i.titulo} - $${Number(i.precio).toFixed(2)}\n`;
+      });
+      msg += `📍 *Envío:* ${metodoEnvio}\n`;
+      msg += `🏢 *Destino:* ${direccionEnvio}\n\n`;
     }
-    msg += `*Total: $${tot.toFixed(2)} (Bs. ${totBs.toLocaleString('es-VE', {minimumFractionDigits:2, maximumFractionDigits:2})})*\n\n¡Espero instrucciones para el pago!`;
+
+    if (tieneDigitales) {
+      msg += `⚡ *RECARGAS DIGITALES:*\n`;
+      carrito.filter(i => i.esRecarga).forEach((i, idx) => {
+        msg += `  ${idx+1}. ${i.titulo} - $${Number(i.precio).toFixed(2)}\n`;
+      });
+      msg += `🎮 *Entrega:* Directa a la cuenta\n\n`;
+    }
+
+    msg += `*Total: $${tot.toFixed(2)} (Bs. ${totBs.toLocaleString('es-VE', {minimumFractionDigits:2, maximumFractionDigits:2})})*\n¡Espero instrucciones para el pago!`;
     
     window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msg), '_blank'); 
     cerrarCarritoModal();
