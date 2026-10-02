@@ -5,46 +5,83 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sakura Gameverse</title>
   
-  <!-- Configuración para App / PWA -->
+  <!-- Configuración App / PWA -->
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/webp" href="logo.webp">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" content="#090314">
   
-  <!-- Fuentes e Iconos -->
+  <!-- Fuentes Profesionales Gamer / UI -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Press+Start+2P&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
   <style>
     :root {
-      --bg-color: #0d041a;
-      --card-bg: linear-gradient(135deg, #1a0b38 0%, #11052C 100%);
-      --text-color: white;
-      --primary-color: #FF007F;
+      --bg-color: #080212;
+      --card-bg: #120624;
+      --card-hover-bg: #190933;
+      --text-color: #e6e9f0;
+      --text-muted: #8b8f9e;
+      --primary-color: #ff007f;
       --secondary-color: #00e5ff;
-      --border-color: rgba(0,229,255,0.3);
-      --hero-bg: #11052C;
+      --border-color: rgba(0, 229, 255, 0.16);
+      --border-hover: rgba(0, 229, 255, 0.6);
+      --hero-bg: #0f0421;
+      --surface-dark: rgba(6, 1, 14, 0.85);
+      --radius-sm: 4px;
+      --radius-md: 8px;
     }
 
-    body.theme-rosa { --bg-color: #0d041a; --card-bg: linear-gradient(135deg, #1a0b38 0%, #11052C 100%); --text-color: white; --primary-color: #FF007F; --secondary-color: #00e5ff; --border-color: rgba(0,229,255,0.3); --hero-bg: #11052C; }
-    body.theme-azul { --bg-color: #020813; --card-bg: linear-gradient(135deg, #071630 0%, #030a1c 100%); --text-color: #e0f7ff; --primary-color: #00bfff; --secondary-color: #00ffcc; --border-color: rgba(0,255,204,0.3); --hero-bg: #071630; }
-    body.theme-purpura { --bg-color: #12021a; --card-bg: linear-gradient(135deg, #28053b 0%, #170224 100%); --text-color: #fce8ff; --primary-color: #b000ff; --secondary-color: #ff00ea; --border-color: rgba(255,0,234,0.3); --hero-bg: #28053b; }
-    body.theme-overdrive { --bg-color: #2b0500; --card-bg: linear-gradient(135deg, #4a0d00 0%, #2b0500 100%); --text-color: #fff5e6; --primary-color: #ffaa00; --secondary-color: #ff4400; --border-color: rgba(255,170,0,0.6); --hero-bg: #4a0d00; }
+    body.theme-rosa { --bg-color: #080212; --card-bg: #120624; --text-color: #e6e9f0; --primary-color: #ff007f; --secondary-color: #00e5ff; --hero-bg: #0f0421; }
+    body.theme-azul { --bg-color: #020712; --card-bg: #06152b; --text-color: #e0f4ff; --primary-color: #0099ff; --secondary-color: #00ffcc; --hero-bg: #040e1f; }
+    body.theme-purpura { --bg-color: #0c0214; --card-bg: #1b072c; --text-color: #f7e6ff; --primary-color: #b000ff; --secondary-color: #ff00c8; --hero-bg: #140421; }
+    body.theme-overdrive { --bg-color: #140301; --card-bg: #290a03; --text-color: #fff2ed; --primary-color: #ff5500; --secondary-color: #ffaa00; --hero-bg: #210701; }
 
-    body { margin: 0; background-color: var(--bg-color); color: var(--text-color); font-family: sans-serif; overflow-x: hidden; transition: background 0.4s ease, color 0.4s ease; padding-bottom: 75px; }
-    
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      overflow-x: hidden;
+      padding-bottom: 70px;
+    }
+
+    /* Malla de fondo sutil inspirada en CRT / Synthwave */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle at 50% 10%, rgba(255, 0, 127, 0.08) 0%, transparent 60%),
+                  linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+                  linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 100% 100%, 40px 40px, 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    h1, h2, h3, h4, .font-heading {
+      font-family: 'Chakra Petch', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: var(--bg-color); }
-    ::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: rgba(0, 229, 255, 0.3); border-radius: var(--radius-sm); }
+    ::-webkit-scrollbar-thumb:hover { background: var(--primary-color); }
 
     /* --- PANTALLA DE CARGA RETRO ARCADE AE86 --- */
     #splash-screen {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at center, #180933 0%, #080214 100%);
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: #06010d;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -60,39 +97,31 @@
       flex-direction: column;
       align-items: center;
       width: 90%;
-      max-width: 480px;
+      max-width: 460px;
     }
 
     .arcade-logo-text {
-      font-size: 0.9em;
+      font-size: 0.85em;
       color: var(--secondary-color);
       letter-spacing: 2px;
-      text-shadow: 0 0 10px var(--secondary-color), 0 0 20px var(--primary-color);
       margin-bottom: 25px;
       text-align: center;
-      animation: logo-glow 1.5s infinite alternate;
-    }
-    @keyframes logo-glow {
-      0% { opacity: 0.8; transform: scale(0.99); }
-      100% { opacity: 1; transform: scale(1.02); }
+      text-shadow: 0 0 10px rgba(0,229,255,0.5);
     }
 
     .road-arena {
       position: relative;
       width: 100%;
-      height: 90px;
+      height: 85px;
       margin-bottom: 25px;
       overflow: hidden;
-      border-bottom: 3px solid var(--primary-color);
-      box-shadow: 0 4px 15px rgba(255, 0, 127, 0.4);
+      border-bottom: 2px solid var(--primary-color);
     }
 
     .road-track-lines {
       position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 200%;
-      height: 4px;
+      bottom: 0; left: 0;
+      width: 200%; height: 3px;
       background: repeating-linear-gradient(90deg, var(--secondary-color) 0px, var(--secondary-color) 20px, transparent 20px, transparent 40px);
       animation: road-run 0.35s linear infinite;
     }
@@ -107,12 +136,10 @@
       left: 30%;
       width: 110px;
       height: 48px;
-      transition: transform 0.1s linear;
     }
 
     .ae86-body-vibe {
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       animation: engine-rumble 0.12s infinite alternate;
     }
     @keyframes engine-rumble {
@@ -120,43 +147,24 @@
       100% { transform: translateY(-1.5px); }
     }
 
-    .ae86-svg {
-      width: 100%;
-      height: 100%;
-      shape-rendering: crispEdges;
-      filter: drop-shadow(0 0 8px rgba(0,229,255,0.4));
-    }
+    .ae86-svg { width: 100%; height: 100%; shape-rendering: crispEdges; }
 
     .faro-beam {
       position: absolute;
-      right: -55px;
-      top: 15px;
-      width: 60px;
-      height: 25px;
-      background: linear-gradient(90deg, rgba(0, 229, 255, 0.65) 0%, rgba(0, 229, 255, 0) 100%);
+      right: -55px; top: 15px;
+      width: 60px; height: 25px;
+      background: linear-gradient(90deg, rgba(0, 229, 255, 0.6) 0%, transparent 100%);
       clip-path: polygon(0 30%, 100% 0, 100% 100%, 0 70%);
       pointer-events: none;
-      animation: flicker-light 0.1s infinite alternate;
-    }
-    @keyframes flicker-light {
-      0% { opacity: 0.85; }
-      100% { opacity: 1; }
     }
 
     .nitro-flame {
       display: none;
       position: absolute;
-      left: -28px;
-      bottom: 8px;
-      width: 30px;
-      height: 12px;
+      left: -28px; bottom: 8px;
+      width: 30px; height: 12px;
       background: linear-gradient(270deg, #ff007f, #00e5ff, transparent);
       clip-path: polygon(100% 30%, 0 50%, 100% 70%, 70% 50%);
-      animation: nitro-burn 0.08s infinite alternate;
-    }
-    @keyframes nitro-burn {
-      0% { transform: scaleX(0.8); }
-      100% { transform: scaleX(1.3); }
     }
 
     .launch-turbo {
@@ -178,197 +186,710 @@
     .pixel-meter-info {
       display: flex;
       justify-content: space-between;
-      font-size: 0.6em;
+      font-size: 0.55em;
       color: #fff;
       letter-spacing: 1px;
     }
 
     .pixel-meter-outer {
       width: 100%;
-      height: 18px;
-      background: rgba(0, 0, 0, 0.7);
-      border: 3px solid var(--secondary-color);
-      box-shadow: 0 0 12px rgba(0, 229, 255, 0.4), inset 0 0 6px rgba(0,0,0,0.8);
+      height: 14px;
+      background: #000;
+      border: 1px solid var(--secondary-color);
       padding: 2px;
-      box-sizing: border-box;
     }
 
     .pixel-meter-bar {
       width: 0%;
       height: 100%;
-      background: repeating-linear-gradient(90deg, var(--primary-color) 0px, var(--primary-color) 8px, #080214 8px, #080214 10px);
-      box-shadow: 0 0 10px var(--primary-color);
+      background: repeating-linear-gradient(90deg, var(--primary-color) 0px, var(--primary-color) 6px, #000 6px, #000 8px);
       transition: width 0.15s steps(15);
     }
 
-    /* --- SOCIAL PROOF & TICKER --- */
-    #socialProofContainer { background: rgba(17, 5, 44, 0.95); border-bottom: 1px solid var(--secondary-color); padding: 8px 15px; display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 0.85em; position: relative; z-index: 2000; box-shadow: inset 0 0 10px rgba(0,229,255,0.2); }
-    #socialProofContainer .sp-icon { font-size: 18px; color: var(--secondary-color); }
-    #socialProofContainer .sp-text { color: var(--text-color); font-weight: bold; }
-    #socialProofContainer .sp-sub { color: #aaa; font-size: 0.9em; font-weight: normal; }
+    /* --- NOTIFICACIÓN & TICKER SOBRIO --- */
+    .top-bar-notice {
+      background: #0b0318;
+      border-bottom: 1px solid var(--border-color);
+      padding: 7px 14px;
+      font-size: 0.85em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 10;
+    }
 
-    .ticker-bar { background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--primary-color)); background-size: 200% 100%; animation: gradient-move 5s linear infinite; color: #0d041a; font-weight: bold; font-size: 0.9em; text-align: center; padding: 8px 10px; position: relative; z-index: 2001; box-shadow: 0 2px 10px rgba(0,229,255,0.4); white-space: nowrap; overflow: hidden; }
-    .ticker-content { display: inline-block; animation: ticker-slide 18s linear infinite; }
-    @keyframes gradient-move { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+    .ticker-bar {
+      background: #0e0520;
+      border-bottom: 1px solid rgba(255, 0, 127, 0.2);
+      color: var(--secondary-color);
+      font-size: 0.8em;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 6px 0;
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+      z-index: 9;
+    }
+    .ticker-content { display: inline-block; animation: ticker-slide 22s linear infinite; }
     @keyframes ticker-slide { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-    /* --- HERO BANNER & SLIDER --- */
-    .hero-banner { background-color: var(--hero-bg); text-align: center; padding: 30px 20px 20px 20px; border-bottom: 3px solid var(--primary-color); box-shadow: 0 0 20px rgba(255, 0, 127, 0.4); position: relative; z-index: 2; transition: background 0.4s ease; }
-    .hero-logo { max-width: 270px; margin-bottom: 10px; filter: drop-shadow(0 0 15px var(--secondary-color)) drop-shadow(0 0 30px var(--primary-color)); cursor: pointer; transition: transform 0.3s ease; }
-    .hero-logo:hover { transform: scale(1.06); filter: drop-shadow(0 0 20px var(--secondary-color)) drop-shadow(0 0 35px var(--secondary-color)); }
-    .hero-title { font-size: 1.1em; font-weight: bold; margin-bottom: 12px; letter-spacing: 1px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
-    
-    .banner-slider-container { position: relative; width: 100%; max-width: 800px; margin: 20px auto; border-radius: 20px; overflow: hidden; box-shadow: 0 8px 25px rgba(0, 229, 255, 0.25), 0 4px 10px rgba(0,0,0,0.5); aspect-ratio: 16/9; background: var(--card-bg); border: 2px solid var(--secondary-color); display: none; }
-    .banner-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; background-color: #0d041a; opacity: 0; transition: opacity 0.8s ease-in-out; cursor: pointer; border-radius: 18px; }
+    /* --- HERO BANNER --- */
+    .hero-banner {
+      background: radial-gradient(ellipse at top, #1a0833 0%, var(--hero-bg) 70%);
+      text-align: center;
+      padding: 25px 20px;
+      border-bottom: 1px solid var(--border-color);
+      position: relative;
+      z-index: 2;
+    }
+    .hero-logo {
+      max-width: 230px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: transform 0.25s ease;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6));
+    }
+    .hero-logo:hover { transform: scale(1.03); }
+    .hero-title {
+      font-size: 1.15em;
+      color: #fff;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    .store-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(37, 211, 102, 0.1);
+      border: 1px solid rgba(37, 211, 102, 0.4);
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8em;
+      font-weight: 600;
+      color: #25d366;
+      margin-bottom: 12px;
+    }
+    .status-dot {
+      width: 7px; height: 7px;
+      background-color: #25D366;
+      border-radius: 50%;
+    }
+
+    .bcv-box {
+      background: rgba(0, 229, 255, 0.05);
+      border: 1px solid var(--border-color);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 5px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85em;
+      color: var(--secondary-color);
+    }
+    .bcv-input {
+      background: #07010f;
+      border: 1px solid var(--border-color);
+      color: #fff;
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      width: 85px;
+      text-align: center;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 1em;
+      outline: none;
+    }
+    .bcv-input:focus { border-color: var(--secondary-color); }
+
+    .banner-slider-container {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      margin: 18px auto 0 auto;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      aspect-ratio: 16/9;
+      background: #000;
+      border: 1px solid var(--border-color);
+      display: none;
+    }
+    .banner-slide {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      cursor: pointer;
+    }
     .banner-slide.active { opacity: 1; z-index: 2; }
-    .banner-control-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.5); color: var(--secondary-color); border: 1px solid var(--secondary-color); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.9em; z-index: 10; transition: all 0.2s ease; backdrop-filter: blur(4px); }
-    .banner-control-btn:hover { background: rgba(0, 229, 255, 0.3); color: white; box-shadow: 0 0 10px var(--secondary-color); }
-    .banner-prev { left: 12px; } .banner-next { right: 12px; }
-    .banner-dots { position: absolute; bottom: 12px; right: 20px; display: flex; gap: 6px; z-index: 10; background: rgba(0, 0, 0, 0.4); padding: 6px 10px; border-radius: 20px; backdrop-filter: blur(4px); }
-    .banner-dot { display: inline-block; width: 8px; height: 8px; background: rgba(255, 255, 255, 0.4); border-radius: 50%; cursor: pointer; transition: all 0.3s ease; }
-    .banner-dot.active { background: var(--secondary-color); width: 20px; border-radius: 4px; box-shadow: 0 0 8px var(--secondary-color); }
+    .banner-control-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.65);
+      color: var(--secondary-color);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      transition: all 0.2s ease;
+    }
+    .banner-control-btn:hover { background: var(--secondary-color); color: #000; }
+    .banner-prev { left: 10px; } .banner-next { right: 10px; }
+    .banner-dots {
+      position: absolute;
+      bottom: 10px; right: 15px;
+      display: flex; gap: 5px;
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+    }
+    .banner-dot {
+      width: 6px; height: 6px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+    }
+    .banner-dot.active { background: var(--secondary-color); width: 14px; }
 
-    .store-status-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(37, 211, 102, 0.15); border: 1px solid #25D366; padding: 5px 12px; border-radius: 20px; font-size: 0.85em; font-weight: bold; color: #25D366; margin-bottom: 12px; box-shadow: 0 0 10px rgba(37,211,102,0.3); }
-    .status-dot { width: 10px; height: 10px; background-color: #25D366; border-radius: 50%; box-shadow: 0 0 8px #25D366; animation: pulse-dot 1.5s infinite; }
-    @keyframes pulse-dot { 0% { transform: scale(0.9); opacity: 0.7; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(0.9); opacity: 0.7; } }
+    /* --- CONTENEDOR PRINCIPAL --- */
+    .container {
+      padding: 25px 18px 80px 18px;
+      max-width: 1180px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
 
-    .bcv-box { background: rgba(0, 229, 255, 0.1); border: 1px solid var(--secondary-color); display: inline-flex; align-items: center; gap: 10px; padding: 6px 15px; border-radius: 20px; font-size: 0.9em; font-weight: bold; color: var(--secondary-color); box-shadow: 0 0 10px rgba(0,229,255,0.2); }
-    .bcv-input { background: var(--bg-color); border: 1px solid var(--primary-color); color: var(--text-color); padding: 4px 8px; border-radius: 10px; width: 90px; text-align: center; font-weight: bold; outline: none; }
+    .search-box {
+      margin-bottom: 25px;
+      display: flex;
+      justify-content: center;
+    }
+    .search-input {
+      background: #0d041a;
+      border: 1px solid var(--border-color);
+      color: #fff;
+      padding: 10px 16px;
+      width: 100%;
+      max-width: 480px;
+      border-radius: var(--radius-sm);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1em;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+    .search-input:focus {
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+    }
 
-    /* --- CONTENEDOR & CARRUSEL DE CATEGORÍAS --- */
-    .container { padding: 30px 20px 100px 20px; max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
-    .search-box { text-align: center; margin-bottom: 20px; }
-    .search-input { background: var(--hero-bg); border: 2px solid var(--secondary-color); color: var(--text-color); padding: 10px 20px; width: 80%; max-width: 400px; border-radius: 25px; font-size: 1em; outline: none; box-shadow: 0 0 10px rgba(0,229,255,0.3); }
-    
-    .categorias-visuales-section { margin: 25px 0 25px 0; position: relative; }
-    .categorias-visuales-header { font-size: 1.3em; font-weight: bold; color: var(--text-color); margin-bottom: 15px; padding-left: 5px; border-left: 4px solid var(--primary-color); line-height: 1; }
+    /* --- CARRUSEL CATEGORÍAS TÁCTIL --- */
+    .categorias-visuales-section { margin-bottom: 25px; }
+    .categorias-visuales-header {
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 1.1em;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+      border-left: 3px solid var(--primary-color);
+      padding-left: 8px;
+    }
     .carrusel-wrapper { position: relative; display: flex; align-items: center; }
-    .carrusel-track { display: flex; gap: 15px; overflow-x: auto; scroll-behavior: smooth; scrollbar-width: none; padding: 10px 5px; }
+    .carrusel-track {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+      padding: 6px 2px;
+    }
     .carrusel-track::-webkit-scrollbar { display: none; }
     
-    .cat-card { flex: 0 0 auto; width: 140px; background: var(--card-bg); border: 2px solid transparent; border-radius: 16px; overflow: hidden; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; }
-    .cat-card:hover, .cat-card.activa { transform: translateY(-6px); border-color: var(--secondary-color); box-shadow: 0 8px 20px rgba(0,229,255,0.4); }
-    .cat-img { width: 100%; height: 140px; object-fit: cover; background-color: #0d041a; border-bottom: 1px solid rgba(255,255,255,0.05); }
-    .cat-info { padding: 12px 8px; text-align: center; background: var(--hero-bg); }
-    .cat-title { font-size: 0.95em; font-weight: bold; color: var(--text-color); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .cat-count { font-size: 0.75em; color: #aaa; }
+    .cat-card {
+      flex: 0 0 auto;
+      width: 130px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .cat-card:hover, .cat-card.activa {
+      transform: translateY(-3px);
+      border-color: var(--secondary-color);
+    }
+    .cat-img {
+      width: 100%; height: 110px;
+      object-fit: cover;
+      background: #000;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .cat-info { padding: 8px 6px; text-align: center; }
+    .cat-title {
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 0.9em;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .cat-count { font-size: 0.75em; color: var(--text-muted); }
     
-    .carrusel-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(17, 5, 44, 0.8); color: var(--secondary-color); border: 1px solid var(--secondary-color); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; backdrop-filter: blur(4px); box-shadow: 0 0 10px rgba(0,229,255,0.3); transition: all 0.2s; }
-    .carrusel-arrow:hover { background: var(--secondary-color); color: #0d041a; transform: translateY(-50%) scale(1.1); }
-    .arrow-prev { left: -15px; } .arrow-next { right: -15px; }
+    .carrusel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(10, 3, 20, 0.85);
+      color: var(--secondary-color);
+      border: 1px solid var(--border-color);
+      width: 32px; height: 32px;
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+    }
+    .carrusel-arrow:hover { background: var(--secondary-color); color: #000; }
+    .arrow-prev { left: -10px; } .arrow-next { right: -10px; }
 
-    /* --- CONTROLES COMPACTOS DESPLEGABLES --- */
-    .controles-superiores { display: flex; justify-content: center; align-items: center; margin-bottom: 25px; width: 100%; }
-    .panel-controles-avanzados { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; width: 100%; max-width: 800px; margin: 0 auto; }
-    .ordenar-select { background: var(--hero-bg); border: 1px solid var(--secondary-color); color: var(--text-color); padding: 9px 15px; border-radius: 20px; font-weight: bold; font-size: 0.88em; cursor: pointer; outline: none; box-shadow: 0 0 10px rgba(0,229,255,0.25); transition: border-color 0.3s, box-shadow 0.3s; }
-    .ordenar-select:focus, .ordenar-select:hover { border-color: var(--primary-color); box-shadow: 0 0 12px rgba(255,0,127,0.4); }
+    /* --- FILTROS COMPACTOS --- */
+    .controles-superiores { margin-bottom: 25px; }
+    .panel-controles-avanzados {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+    }
+    .ordenar-select {
+      background: #0d041a;
+      border: 1px solid var(--border-color);
+      color: #fff;
+      padding: 9px 12px;
+      border-radius: var(--radius-sm);
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      font-size: 0.9em;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+    .ordenar-select:focus { border-color: var(--secondary-color); }
 
-    /* --- PESTAÑAS DEL CARRITO --- */
-    .cart-tabs { display: flex; gap: 8px; margin-bottom: 15px; background: rgba(0, 0, 0, 0.4); padding: 4px; border-radius: 25px; border: 1px solid var(--border-color); }
-    .cart-tab-btn { flex: 1; background: transparent; color: var(--text-color); border: none; padding: 8px 12px; border-radius: 20px; font-size: 0.82em; font-weight: bold; cursor: pointer; transition: all 0.25s ease; }
-    .cart-tab-btn.activo { background: var(--secondary-color); color: #0d041a; box-shadow: 0 0 10px var(--secondary-color); }
-
-    /* --- CATÁLOGO & PRODUCTOS --- */
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-    .card { background: var(--card-bg); border-radius: 15px; padding: 15px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.5); position: relative; border: 1px solid var(--border-color); transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; cursor: pointer; animation: card-pop 0.4s ease-out; overflow: hidden; }
-    @keyframes card-pop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-    .card:hover, .card:active { transform: translateY(-10px) scale(1.02); box-shadow: 0 0 25px var(--primary-color), 0 0 45px var(--secondary-color); border: 1px solid var(--secondary-color); }
-    .card-img-container { position: relative; width: 100%; height: 250px; background-color: rgba(0,0,0,0.3); border-radius: 10px; margin-bottom: 15px; overflow: hidden; }
+    /* --- GRILLA DEL CATÁLOGO --- */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      text-align: left;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+    }
+    .card:hover {
+      background: var(--card-hover-bg);
+      border-color: var(--secondary-color);
+      transform: translateY(-4px);
+    }
+    .card-img-container {
+      position: relative;
+      width: 100%;
+      height: 220px;
+      background: #000;
+      border-radius: var(--radius-sm);
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
     .card-img-container img { width: 100%; height: 100%; object-fit: contain; display: none; }
     .card-img-container img.activa { display: block; }
-    .carrusel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.6); color: var(--secondary-color); border: 1px solid var(--secondary-color); border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.8em; z-index: 4; }
-    .carrusel-btn:hover { background: rgba(0, 229, 255, 0.3); }
-    .carrusel-prev { left: 8px; } .carrusel-next { right: 8px; }
-    .carrusel-dots { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; z-index: 4; }
-    .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255, 255, 255, 0.4); }
-    .dot.activo { background: var(--secondary-color); box-shadow: 0 0 5px var(--secondary-color); }
-    .card-title { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; }
-    .precio-container { display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 3px; }
-    .card-price { color: var(--secondary-color); font-size: 1.2em; font-weight: bold; text-shadow: 0 0 5px rgba(0, 229, 255, 0.5); }
-    .card-bs { color: var(--primary-color); font-size: 0.85em; font-weight: bold; margin-bottom: 8px; }
     
-    .badge-estado { position: absolute; top: 10px; right: 10px; padding: 5px 12px; font-size: 0.75em; font-weight: bold; border-radius: 20px; z-index: 3; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
-    .badge-stock { background-color: #00e5ff; color: #0d041a; box-shadow: 0 0 10px #00e5ff; }
-    .badge-encargo { background-color: #FF007F; color: white; box-shadow: 0 0 10px #FF007F; }
-    .badge-digital { background-color: #25D366; color: #0d041a; box-shadow: 0 0 10px #25D366; }
-    .btn-fav-card { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.6); border: 1px solid var(--secondary-color); color: #ff3366; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1em; z-index: 3; transition: transform 0.2s; }
-    .btn-fav-card:hover { transform: scale(1.15); background: rgba(255,0,127,0.3); }
+    .carrusel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.7);
+      color: var(--secondary-color);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      width: 26px; height: 26px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      font-size: 0.75em;
+      z-index: 4;
+    }
+    .carrusel-btn:hover { background: var(--secondary-color); color: #000; }
+    .carrusel-prev { left: 6px; } .carrusel-next { right: 6px; }
+    .carrusel-dots {
+      position: absolute;
+      bottom: 6px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; gap: 4px;
+      z-index: 4;
+    }
+    .dot {
+      width: 5px; height: 5px;
+      border-radius: 1px;
+      background: rgba(255, 255, 255, 0.3);
+    }
+    .dot.activo { background: var(--secondary-color); }
 
-    /* --- MODALES --- */
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-    .modal-content { background: var(--hero-bg); padding: 20px; border-radius: 20px; text-align: left; max-width: 95%; width: 440px; border: 2px solid var(--primary-color); box-shadow: 0 0 30px rgba(255,0,127,0.5); position: relative; max-height: 92vh; overflow-y: auto; }
-    .cerrar-modal { position: absolute; top: 10px; right: 15px; font-size: 25px; color: var(--text-color); cursor: pointer; background: none; border: none; font-weight: bold; z-index: 10; }
-    .breadcrumbs { font-size: 0.85em; color: #aaa; margin-bottom: 12px; font-weight: bold; }
+    .card-title {
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 1.05em;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .precio-container { display: flex; align-items: baseline; gap: 8px; }
+    .card-price {
+      font-size: 1.3em;
+      font-weight: 700;
+      color: var(--secondary-color);
+    }
+    .card-bs {
+      font-size: 0.85em;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    
+    .badge-estado {
+      position: absolute;
+      top: 8px; right: 8px;
+      padding: 3px 8px;
+      font-size: 0.7em;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      border-radius: var(--radius-sm);
+      text-transform: uppercase;
+      z-index: 3;
+    }
+    .badge-stock { background: #00e5ff; color: #000; }
+    .badge-encargo { background: #ff007f; color: #fff; }
+    .badge-digital { background: #25D366; color: #000; }
+    
+    .btn-fav-card {
+      position: absolute;
+      top: 8px; left: 8px;
+      background: rgba(0,0,0,0.6);
+      border: 1px solid var(--border-color);
+      color: #ff3366;
+      width: 30px; height: 30px;
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      z-index: 3;
+      transition: background 0.2s ease;
+    }
+    .btn-fav-card:hover { background: rgba(255, 0, 127, 0.3); }
+
+    /* --- PESTAÑAS DEL CARRITO --- */
+    .cart-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 15px;
+      background: #090214;
+      padding: 4px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+    }
+    .cart-tab-btn {
+      flex: 1;
+      background: transparent;
+      color: var(--text-muted);
+      border: none;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 0.82em;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .cart-tab-btn.activo {
+      background: var(--secondary-color);
+      color: #000;
+    }
+
+    /* --- MODALES REFINADOS --- */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(4, 1, 10, 0.8);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(4px);
+    }
+    .modal-content {
+      background: #110524;
+      padding: 22px;
+      border-radius: var(--radius-md);
+      text-align: left;
+      max-width: 95%;
+      width: 440px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+      position: relative;
+      max-height: 92vh;
+      overflow-y: auto;
+    }
+    .cerrar-modal {
+      position: absolute;
+      top: 10px; right: 12px;
+      font-size: 22px;
+      color: var(--text-muted);
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-weight: bold;
+    }
+    .cerrar-modal:hover { color: #fff; }
+    
+    .breadcrumbs { font-size: 0.8em; color: var(--text-muted); margin-bottom: 8px; }
     .breadcrumbs span { color: var(--secondary-color); }
-    .modal-img { width: 100%; max-height: 350px; object-fit: contain; background: rgba(0,0,0,0.5); border-radius: 12px; margin-bottom: 10px; }
-    .modal-tag-info { display: inline-block; background: rgba(0,229,255,0.15); border: 1px solid var(--secondary-color); color: var(--secondary-color); padding: 4px 10px; border-radius: 10px; font-size: 0.8em; font-weight: bold; margin-bottom: 10px; }
-    .modal-miniaturas { display: flex; gap: 10px; justify-content: flex-start; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px; }
-    .modal-mini-img { width: 65px; height: 65px; object-fit: cover; border-radius: 10px; cursor: pointer; border: 2px solid var(--secondary-color); opacity: 0.6; transition: all 0.2s; }
-    .modal-mini-img:hover, .modal-mini-img.activo { opacity: 1; transform: scale(1.08); box-shadow: 0 0 10px var(--secondary-color); }
+    .modal-img {
+      width: 100%; max-height: 320px;
+      object-fit: contain;
+      background: #000;
+      border-radius: var(--radius-sm);
+      margin-bottom: 10px;
+      border: 1px solid var(--border-color);
+    }
+    .modal-tag-info {
+      display: inline-block;
+      background: rgba(0, 229, 255, 0.08);
+      border: 1px solid var(--border-color);
+      color: var(--secondary-color);
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 0.75em;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .modal-miniaturas { display: flex; gap: 8px; margin-bottom: 14px; overflow-x: auto; }
+    .modal-mini-img {
+      width: 60px; height: 60px;
+      object-fit: cover;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      border: 1px solid var(--border-color);
+      opacity: 0.5;
+    }
+    .modal-mini-img.activo { opacity: 1; border-color: var(--secondary-color); }
 
-    .tallas-container, .recarga-container { margin: 15px 0; display: none; text-align: left; }
-    .tallas-container label, .recarga-container label { display: block; color: var(--secondary-color); font-size: 0.9em; font-weight: bold; margin-bottom: 5px; }
-    .talla-select, .recarga-input { background: var(--bg-color); border: 1px solid var(--secondary-color); color: var(--text-color); padding: 8px; border-radius: 10px; width: 100%; font-weight: bold; outline: none; box-sizing: border-box; }
-    .recarga-input { text-align: left; }
-    .link-guia-tallas { color: var(--secondary-color); font-size: 0.8em; text-decoration: underline; cursor: pointer; margin-top: 5px; display: inline-block; }
+    .talla-select, .recarga-input, .sugerencia-input {
+      background: #080112;
+      border: 1px solid var(--border-color);
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      width: 100%;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.95em;
+      outline: none;
+    }
+    .talla-select:focus, .recarga-input:focus, .sugerencia-input:focus {
+      border-color: var(--secondary-color);
+    }
 
-    .btn-comprar { background: var(--primary-color); color: white; border: none; padding: 12px 20px; font-size: 1.1em; font-weight: bold; border-radius: 30px; cursor: pointer; margin-top: 15px; box-shadow: 0 0 10px var(--primary-color); width: 100%; }
-    .btn-compartir { background: #25D366; color: white; border: none; padding: 10px 15px; font-size: 0.9em; font-weight: bold; border-radius: 20px; cursor: pointer; margin-top: 8px; box-shadow: 0 0 8px #25D366; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn-comprar {
+      background: var(--primary-color);
+      color: #fff;
+      border: none;
+      padding: 12px;
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 1em;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      width: 100%;
+      margin-top: 12px;
+      letter-spacing: 0.5px;
+      transition: background 0.2s ease;
+    }
+    .btn-comprar:hover { background: #e00070; }
+
+    .btn-compartir {
+      background: transparent;
+      color: #25d366;
+      border: 1px solid rgba(37, 211, 102, 0.4);
+      padding: 10px;
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 0.9em;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      width: 100%;
+      margin-top: 8px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-compartir:hover { background: rgba(37, 211, 102, 0.1); }
 
     .cupon-box { display: flex; gap: 8px; margin-bottom: 12px; }
-    .cupon-input { flex-grow: 1; background: var(--bg-color); border: 1px solid var(--secondary-color); color: var(--text-color); padding: 8px; border-radius: 10px; font-size: 0.9em; outline: none; text-transform: uppercase; }
-    .btn-cupon { background: var(--secondary-color); color: #0d041a; border: none; padding: 0 15px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 0.85em; }
-    .recibo-box { background: var(--bg-color); border: 2px dashed var(--secondary-color); padding: 15px; border-radius: 12px; text-align: left; font-family: monospace; font-size: 0.85em; color: var(--secondary-color); margin-bottom: 15px; }
-    .recibo-line { display: flex; justify-content: space-between; margin-bottom: 5px; }
+    .cupon-input {
+      flex-grow: 1;
+      background: #080112;
+      border: 1px solid var(--border-color);
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      outline: none;
+    }
+    .btn-cupon {
+      background: var(--secondary-color);
+      color: #000;
+      border: none;
+      padding: 0 16px;
+      border-radius: var(--radius-sm);
+      font-family: 'Chakra Petch', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+    }
 
-    .btn-copiar-mini { background: rgba(0,229,255,0.1); color: var(--secondary-color); border: 1px solid var(--secondary-color); border-radius: 8px; padding: 5px 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-    .btn-copiar-mini:hover { background: var(--secondary-color); color: #0d041a; }
+    .recibo-box {
+      background: #07010f;
+      border: 1px dashed var(--border-color);
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      font-family: monospace;
+      font-size: 0.85em;
+      margin-bottom: 14px;
+    }
+    .recibo-line { display: flex; justify-content: space-between; margin-bottom: 4px; }
 
-    .faq-item { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; margin-bottom: 10px; text-align: left; }
-    .faq-question { color: var(--secondary-color); font-weight: bold; font-size: 0.95em; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
-    .faq-answer { color: var(--text-color); font-size: 0.88em; line-height: 1.4; opacity: 0.85; }
+    .cart-item-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #0d041a;
+      padding: 8px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 8px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .cart-item-img { width: 44px; height: 44px; object-fit: cover; border-radius: 3px; margin-right: 10px; }
+    .cart-item-info { flex-grow: 1; font-size: 0.9em; }
+    .cart-item-del {
+      background: transparent;
+      color: #ff3366;
+      border: 1px solid rgba(255, 51, 102, 0.3);
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+    }
+    .cart-item-del:hover { background: rgba(255, 51, 102, 0.15); }
 
-    .cart-item-row { display: flex; align-items: center; justify-content: space-between; background: var(--card-bg); padding: 10px; border-radius: 10px; margin-bottom: 10px; border: 1px solid var(--border-color); }
-    .cart-item-img { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; margin-right: 10px; }
-    .cart-item-info { flex-grow: 1; text-align: left; font-size: 0.9em; }
-    .cart-item-del { background: #ff3366; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.9em; font-weight: bold; z-index: 10; }
+    /* --- NAVEGACIÓN INFERIOR MINIMALISTA --- */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0; left: 0; width: 100%;
+      background: rgba(8, 2, 18, 0.95);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 0;
+      z-index: 1500;
+      backdrop-filter: blur(8px);
+    }
+    .nav-item {
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.75em;
+      font-weight: 700;
+      cursor: pointer;
+      position: relative;
+      width: 25%;
+      transition: color 0.2s ease;
+    }
+    .nav-item i { font-size: 1.4em; margin-bottom: 3px; color: var(--text-muted); }
+    .nav-item:hover, .nav-item.active { color: #fff; }
+    .nav-item:hover i, .nav-item.active i { color: var(--secondary-color); }
+    
+    .nav-badge {
+      position: absolute;
+      top: -3px; right: 26%;
+      background: var(--primary-color);
+      color: #fff;
+      font-size: 0.8em;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 10px;
+    }
 
-    .sugerencia-input { width: 100%; background: var(--bg-color); border: 1px solid var(--secondary-color); color: var(--text-color); padding: 10px; border-radius: 10px; margin-bottom: 12px; box-sizing: border-box; outline: none; }
-    .btn-sugerencia { background: var(--secondary-color); color: #0d041a; border: none; padding: 10px 20px; font-weight: bold; border-radius: 20px; cursor: pointer; width: 100%; box-shadow: 0 0 10px var(--secondary-color); }
+    .menu-opciones-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .btn-menu-opcion {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #0d041a;
+      border: 1px solid var(--border-color);
+      padding: 12px 8px;
+      border-radius: var(--radius-sm);
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.8em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color 0.2s ease;
+    }
+    .btn-menu-opcion i { font-size: 1.5em; margin-bottom: 6px; }
+    .btn-menu-opcion:hover { border-color: var(--secondary-color); }
 
-    /* --- RESEÑAS E INFO --- */
-    .reviews-section, .info-section { background: var(--hero-bg); margin-top: 40px; padding: 30px 20px; border-radius: 15px; border: 1px solid var(--secondary-color); box-shadow: 0 0 15px rgba(0,229,255,0.2); }
-    .info-section { border-color: var(--primary-color); box-shadow: 0 0 15px rgba(255,0,127,0.2); margin-bottom: 20px; }
-    .review-card { background: var(--card-bg); padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid rgba(255,0,127,0.3); position: relative; }
-    .review-author { font-weight: bold; color: var(--secondary-color); margin-bottom: 5px; }
-    .review-stars { color: #ffcc00; margin-bottom: 8px; }
-    .review-text { font-size: 0.95em; line-height: 1.4; }
-
-    .info-title { color: var(--secondary-color); font-size: 1.4em; margin-bottom: 20px; text-align: center; }
-    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; font-size: 0.95em; line-height: 1.5; }
-    .info-card { background: var(--card-bg); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,0,127,0.3); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-    .info-card h4 { color: var(--secondary-color); margin-top: 0; margin-bottom: 12px; font-size: 1.1em; display: flex; align-items: center; gap: 8px; }
-    .badge-envio { display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 0, 127, 0.15); border: 1px solid var(--primary-color); padding: 4px 10px; border-radius: 8px; font-size: 0.85em; font-weight: bold; color: var(--text-color); margin: 3px; }
-
-    /* --- NAVEGACIÓN INFERIOR & FLOTANTES --- */
-    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(17, 5, 44, 0.95); backdrop-filter: blur(10px); border-top: 2px solid var(--primary-color); display: flex; justify-content: space-around; align-items: center; padding: 10px 0; z-index: 1500; box-shadow: 0 -5px 20px rgba(255,0,127,0.3); }
-    .nav-item { color: var(--text-color); display: flex; flex-direction: column; align-items: center; font-size: 0.75em; font-weight: bold; cursor: pointer; position: relative; transition: color 0.3s; width: 25%; }
-    .nav-item i { font-size: 1.6em; margin-bottom: 4px; color: var(--secondary-color); transition: transform 0.3s; pointer-events: none; }
-    .nav-item span { pointer-events: none; }
-    .nav-item:hover i { transform: translateY(-3px) scale(1.1); color: var(--primary-color); }
-    .nav-badge { position: absolute; top: -5px; right: 20%; background: #ff3366; color: white; font-size: 0.85em; font-weight: bold; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 8px #ff3366; pointer-events: none; z-index: 10; }
-
-    .menu-opciones-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 15px; }
-    .btn-menu-opcion { display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--card-bg); border: 1px solid var(--border-color); padding: 15px 10px; border-radius: 15px; color: var(--text-color); text-decoration: none; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.2s; text-align: center; }
-    .btn-menu-opcion i { font-size: 1.8em; margin-bottom: 8px; }
-    .btn-menu-opcion:hover { transform: scale(1.05); border-color: var(--secondary-color); box-shadow: 0 0 15px rgba(0,229,255,0.3); }
-
-    .bg-elements { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
-    .float-item { position: absolute; top: -10%; animation: fall linear infinite; opacity: 0.7; }
-    .sakura { font-size: 22px; filter: drop-shadow(0 0 5px var(--primary-color)); }
-    .gamer { font-size: 28px; filter: drop-shadow(0 0 8px var(--secondary-color)); opacity: 0.5; }
-    @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
-    .i1 { left: 5%; animation-duration: 9s; animation-delay: 0s; } .i2 { left: 15%; animation-duration: 14s; animation-delay: 2s; } .i3 { left: 25%; animation-duration: 10s; animation-delay: 4s; } .i4 { left: 35%; animation-duration: 13s; animation-delay: 1s; } .i5 { left: 45%; animation-duration: 11s; animation-delay: 5s; }
+    .reviews-section, .info-section {
+      background: var(--card-bg);
+      margin-top: 35px;
+      padding: 24px 18px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+    }
+    .review-card {
+      background: #0a0214;
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 10px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .badge-envio {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255, 0, 127, 0.08);
+      border: 1px solid rgba(255, 0, 127, 0.3);
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8em;
+      font-weight: 700;
+      margin-right: 6px;
+    }
   </style>
 </head>
 <body>
@@ -385,33 +906,19 @@
         <div class="ae86-body-vibe">
           <div class="nitro-flame" id="nitroFlame"></div>
           
-          <!-- Sprite en SVG del Toyota AE86 Trueno Panda -->
           <svg class="ae86-svg" viewBox="0 0 60 26">
-            <!-- Chasis Superior Blanco -->
             <polygon points="12,12 20,4 38,4 47,12 56,12 56,15 10,15" fill="#f4f6fa" />
-            
-            <!-- Ventanillas ahumadas con reflejos cian -->
             <polygon points="21,5 36,5 44,12 21,12" fill="#141a29" />
             <polygon points="23,6 30,6 30,11 23,11" fill="#00e5ff" opacity="0.6" />
             <polygon points="32,6 36,6 42,11 32,11" fill="#00e5ff" opacity="0.4" />
-
-            <!-- Chasis Inferior Negro/Panda -->
             <polygon points="4,15 58,15 57,19 3,19" fill="#181528" />
             <rect x="2" y="17" width="57" height="3" fill="#0d041a" />
-
-            <!-- Faros Pop-Up levantados -->
             <rect x="49" y="8" width="5" height="4" fill="#f4f6fa" />
             <rect x="53" y="9" width="1" height="3" fill="#00e5ff" />
-
-            <!-- Luz trasera roja y direccional -->
             <rect x="4" y="14" width="3" height="3" fill="#ff0055" />
             <rect x="55" y="16" width="2" height="2" fill="#ffaa00" />
-
-            <!-- Emblema de Flor de Cerezo en la puerta -->
             <circle cx="28" cy="14" r="1.5" fill="#ff007f" />
             <rect x="31" y="13.5" width="4" height="1" fill="#ffffff" opacity="0.8" />
-
-            <!-- Ruedas Watanabe (8-spokes) -->
             <g transform="translate(14, 19)">
               <circle cx="0" cy="0" r="4.5" fill="#05030a" />
               <circle cx="0" cy="0" r="2.8" fill="#3a3f58" />
@@ -424,16 +931,14 @@
             </g>
           </svg>
 
-          <!-- Haz de luz del faro -->
           <div class="faro-beam"></div>
         </div>
       </div>
     </div>
 
-    <!-- Barra de progreso segmentada -->
     <div class="pixel-meter-box">
       <div class="pixel-meter-info">
-        <span>CARGANDO GAMEVERSE...</span>
+        <span>INICIALIZANDO CATÁLOGO...</span>
         <span id="loadPctTxt">0%</span>
       </div>
       <div class="pixel-meter-outer">
@@ -443,172 +948,169 @@
   </div>
 </div>
 
-<div id="socialProofContainer">
-  <div class="sp-icon"><i class="fas fa-shopping-bag"></i></div>
-  <div><span class="sp-text" id="spTexto">¡Gabriel S. compró una miku Legendaria!</span> <span class="sp-sub" id="spLugar">(Bejuma)</span></div>
+<div class="top-bar-notice">
+  <div><i class="fas fa-check-circle" style="color: var(--secondary-color);"></i> <span id="spTexto">Gabriel S. adquirió Chibi Firefly</span> <span style="color: var(--text-muted); font-size: 0.9em;" id="spLugar">(Bejuma)</span></div>
+  <div style="color: var(--text-muted); font-size: 0.8em;">Sakura Verified</div>
 </div>
 
 <div class="ticker-bar">
   <div class="ticker-content">
-    🔥 Catálogo al mayor disponible por WhatsApp 📱 | Envíos seguros a todo el país por ZOOM y MRW 📦 | 🎮 Cupón activo: OTAKU10 🌸
+    Catálogo mayorista vía WhatsApp | Envíos nacionales ZOOM y MRW | Código activo: OTAKU10 (-10% OFF)
   </div>
 </div>
 
 <!-- MODAL PROMO FLASH -->
 <div id="modalPromoFlash" class="modal" style="display: flex;">
-  <div class="modal-content" style="border: 2px solid var(--secondary-color); text-align: center;">
+  <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarPromoFlash()">×</button>
-    <div style="font-size: 40px; margin-bottom: 10px;">🎁</div>
-    <h2 style="color: var(--secondary-color); margin-top: 0;">¡Bienvenido a Sakura Gameverse!</h2>
-    <p style="font-size: 0.95em; line-height: 1.5; margin-bottom: 15px;">Usa códigos de descuento activos o abre el menú inferior para reclamar tu <strong>Cofre Diario</strong> y girar la ruleta Gacha.</p>
-    <button class="btn-sugerencia" onclick="cerrarPromoFlash()">¡A Explorar el loot! 🎁</button>
+    <div style="font-size: 32px; margin-bottom: 8px; color: var(--secondary-color);"><i class="fas fa-gift"></i></div>
+    <h3 style="color: #fff; margin: 0 0 10px 0;">Sakura Gameverse</h3>
+    <p style="font-size: 0.95em; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">Reclama tu Cofre Diario de XP en el menú inferior y aprovecha nuestros cupones activos.</p>
+    <button class="btn-comprar" onclick="cerrarPromoFlash()">Entrar a la tienda</button>
   </div>
 </div>
 
 <!-- MODAL COFRE DIARIO -->
 <div id="modalCofreDiario" class="modal">
-  <div class="modal-content" style="width: 420px; border: 2px solid #ff9900; text-align: center;">
+  <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarCofreModal()">×</button>
-    <div style="font-size: 45px; margin-bottom: 5px;">📦✨</div>
-    <h2 style="color: #ff9900; margin-top: 0;">Cofre de Recompensa Diaria</h2>
-    <div id="cofreResultado" style="background: var(--bg-color); border: 2px dashed #ff9900; padding: 20px; border-radius: 12px; font-size: 1.1em; font-weight: bold; color: var(--secondary-color); margin-bottom: 15px;">Cofre listo para abrir 🗝️ (Recompensa: 50 XP diarios)</div>
-    <button class="btn-sugerencia" style="background: #ff9900; color: #0d041a;" onclick="abrirCofreDiario()">¡Abrir Cofre Diario! 🔓</button>
+    <h3 style="color: #ffaa00; margin-top: 0;">Recompensa Diaria</h3>
+    <div id="cofreResultado" style="background: #080112; border: 1px dashed #ffaa00; padding: 18px; border-radius: var(--radius-sm); font-weight: 700; color: #fff; margin-bottom: 14px;">Cofre disponible (+50 XP)</div>
+    <button class="btn-comprar" style="background: #ffaa00; color: #000;" onclick="abrirCofreDiario()">Reclamar Recompensa</button>
   </div>
 </div>
 
 <!-- MODAL GACHA -->
 <div id="modalGacha" class="modal">
-  <div class="modal-content" style="width: 420px; border: 2px solid #9900ff; text-align: center;">
+  <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarGachaModal()">×</button>
-    <div style="font-size: 40px; margin-bottom: 5px;">🎰</div>
-    <h2 style="color: #ffcc00; margin-top: 0;">Ruleta Gacha Otaku</h2>
-    <div id="gachaResultado" style="background: var(--bg-color); border: 2px dashed #9900ff; padding: 20px; border-radius: 12px; font-size: 1.1em; font-weight: bold; color: var(--secondary-color); margin-bottom: 15px; min-height: 60px; display: flex; align-items: center; justify-content: center;">Presiona el botón para girar 🎁</div>
-    <button class="btn-sugerencia" style="background: #9900ff; color: white;" onclick="girarRuletaGacha()"><div>¡Girar Ruleta Gacha! ⚡</div></button>
+    <h3 style="color: var(--secondary-color); margin-top: 0;">Ruleta de Beneficios</h3>
+    <div id="gachaResultado" style="background: #080112; border: 1px dashed var(--secondary-color); padding: 18px; border-radius: var(--radius-sm); font-weight: 700; color: #fff; margin-bottom: 14px;">Gira para obtener cupones de compra</div>
+    <button class="btn-comprar" onclick="girarRuletaGacha()">Girar Ruleta</button>
   </div>
 </div>
 
 <!-- MODAL TEMAS -->
 <div id="modalTemas" class="modal">
-  <div class="modal-content" style="width: 400px; border: 2px solid #ffcc00; text-align: center;">
+  <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarTemasModal()">×</button>
-    <h2 style="color: #ffcc00; margin-top: 0;">Selecciona tu Estilo</h2>
-    <div style="display: flex; flex-direction: column; gap: 10px;">
-      <button class="btn-sugerencia" style="background: #FF007F; color: white;" onclick="cambiarTema('theme-rosa')">🌸 Rosa Cyberpunk</button>
-      <button class="btn-sugerencia" style="background: #00bfff; color: #0d041a;" onclick="cambiarTema('theme-azul')">⚡ Azul Neón Matrix</button>
-      <button class="btn-sugerencia" style="background: #b000ff; color: white;" onclick="cambiarTema('theme-purpura')">💜 Púrpura Anime</button>
-      <button class="btn-sugerencia" style="background: #ffaa00; color: #0d041a;" onclick="cambiarTema('theme-overdrive')">🔥 Naranja Overdrive</button>
+    <h3 style="color: #fff; margin-top: 0;">Esquema de Color</h3>
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <button class="btn-comprar" style="background: #ff007f;" onclick="cambiarTema('theme-rosa')">Rosa Cyberpunk</button>
+      <button class="btn-comprar" style="background: #0099ff; color: #000;" onclick="cambiarTema('theme-azul')">Azul Matrix</button>
+      <button class="btn-comprar" style="background: #b000ff;" onclick="cambiarTema('theme-purpura')">Púrpura Arcade</button>
+      <button class="btn-comprar" style="background: #ff5500;" onclick="cambiarTema('theme-overdrive')">Naranja Overdrive</button>
     </div>
   </div>
 </div>
 
 <!-- MODAL GAMER PROFILE -->
 <div id="modalGamerProfile" class="modal">
-  <div class="modal-content" style="width: 420px; border: 2px solid #00ffcc; text-align: center;">
+  <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarGamerProfileModal()">×</button>
-    <h2 style="color: #00ffcc; margin-top: 0;">Perfil Gamer & XP</h2>
-    <input type="text" id="inputGamerTag" class="sugerencia-input" placeholder="Tu GamerTag">
-    <div style="background: var(--bg-color); padding: 12px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #00ffcc; text-align: left; font-size: 0.9em;">
-      <div>🏆 <strong>Rango actual:</strong> <span id="lblRango" style="color: #ffcc00;">Novato Otaku</span></div>
-      <div>⚡ <strong>Puntos XP:</strong> <span id="lblXp" style="color: var(--secondary-color);">150 XP</span></div>
+    <h3 style="color: var(--secondary-color); margin-top: 0;">Perfil de Usuario</h3>
+    <input type="text" id="inputGamerTag" class="sugerencia-input" placeholder="GamerTag / Identificador" style="margin-bottom: 12px;">
+    <div style="background: #080112; padding: 12px; border-radius: var(--radius-sm); margin-bottom: 14px; border: 1px solid var(--border-color); text-align: left; font-size: 0.9em;">
+      <div>Rango Actual: <strong id="lblRango" style="color: #ffaa00;">Genin</strong></div>
+      <div>Experiencia: <strong id="lblXp" style="color: var(--secondary-color);">150 XP</strong></div>
     </div>
-    <button class="btn-sugerencia" style="background: #00ffcc; color: #0d041a;" onclick="guardarGamerTag()">Guardar GamerTag 💾</button>
+    <button class="btn-comprar" onclick="guardarGamerTag()">Guardar Perfil</button>
   </div>
 </div>
 
 <!-- MODAL GUÍA DE TALLAS -->
 <div id="modalGuiaTallas" class="modal">
-  <div class="modal-content" style="width: 450px;">
+  <div class="modal-content">
     <button class="cerrar-modal" onclick="cerrarGuiaTallasModal()">×</button>
-    <h2 style="color: var(--secondary-color); margin-top: 0; text-align: center;">📏 Guía de Tallas</h2>
-    <div style="background: var(--bg-color); border: 1px solid var(--secondary-color); border-radius: 10px; padding: 10px; font-size: 0.85em; text-align: left; margin-bottom: 15px;">
-      <div class="recibo-line"><strong>TALLA S:</strong><span>Ancho: 50cm | Alto: 68cm</span></div>
-      <div class="recibo-line"><strong>TALLA M:</strong><span>Ancho: 53cm | Alto: 70cm</span></div>
-      <div class="recibo-line"><strong>TALLA L:</strong><span>Ancho: 56cm | Alto: 72cm</span></div>
-      <div class="recibo-line"><strong>TALLA XL:</strong><span>Ancho: 59cm | Alto: 74cm</span></div>
+    <h3 style="color: var(--secondary-color); margin-top: 0; text-align: center;">Medidas de Prendas (cm)</h3>
+    <div style="background: #080112; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px; font-size: 0.9em; margin-bottom: 14px;">
+      <div class="recibo-line"><span>Talla S</span><strong>50 cm x 68 cm</strong></div>
+      <div class="recibo-line"><span>Talla M</span><strong>53 cm x 70 cm</strong></div>
+      <div class="recibo-line"><span>Talla L</span><strong>56 cm x 72 cm</strong></div>
+      <div class="recibo-line"><span>Talla XL</span><strong>59 cm x 74 cm</strong></div>
     </div>
-    <button class="btn-sugerencia" onclick="cerrarGuiaTallasModal()">¡Entendido! ✨</button>
+    <button class="btn-comprar" onclick="cerrarGuiaTallasModal()">Entendido</button>
   </div>
-</div>
-
-<div class="bg-elements">
-  <div class="float-item sakura i1">🌸</div><div class="float-item gamer i2">🎮</div><div class="float-item sakura i3">🌸</div><div class="float-item gamer i4">🕹️</div><div class="float-item sakura i5">🌸</div>
 </div>
 
 <div class="hero-banner">
   <img src="logo.webp" alt="Sakura Gameverse" class="hero-logo" onclick="activarEasterEggLogo()" loading="eager" decoding="async">
-  <div class="store-status-badge"><div class="status-dot"></div> Abierto de 10:00AM a 7:00PM 24/7</div>
-  <div class="hero-title">✨ Bienvenidos a Sakura Gameverse ✨<br>Donde tu pasión por el gaming nunca hace game over. 👾🌸</div>
+  <br>
+  <div class="store-status-badge"><div class="status-dot"></div> Horario de Atención: 10:00 AM - 7:00 PM</div>
+  <div class="hero-title">Sakura Gameverse</div>
+  <div style="color: var(--text-muted); font-size: 0.9em; max-width: 500px; margin: 0 auto 14px auto;">Coleccionables, indumentaria, hardware gamer y recargas digitales directas.</div>
+  
   <div id="bannerSliderContainer" class="banner-slider-container"></div>
   <br>
   <div class="bcv-box">
-    <i class="fas fa-coins"></i> Tasa BCV (Bs/$): 
-    <input type="number" id="inputTasaBcv" class="bcv-input" step="0.01" value="860" oninput="cambiarTasaBcvManual()">
+    <i class="fas fa-calculator"></i> Tasa Oficial BCV:
+    <input type="number" id="inputTasaBcv" class="bcv-input" step="0.01" value="860" oninput="cambiarTasaBcvManual()"> Bs / USD
   </div>
 </div>
 
 <div class="container">
   <div class="search-box">
-    <input type="text" id="buscador" class="search-input" placeholder="🔍 Buscar por nombre o universo (Miku, Naruto, etc)..." onkeyup="buscarProductos()">
+    <input type="text" id="buscador" class="search-input" placeholder="Buscar por producto, personaje o franquicia..." onkeyup="buscarProductos()">
   </div>
 
-  <!-- Carrusel Visual Único de Categorías con Optimización Lazy Loading -->
+  <!-- Carrusel Visual Único de Categorías -->
   <div class="categorias-visuales-section">
-    <div class="categorias-visuales-header">Categorías</div>
+    <div class="categorias-visuales-header">Categorías de Catálogo</div>
     <div class="carrusel-wrapper">
       <button class="carrusel-arrow arrow-prev" onclick="scrollCategoriasVisuales(-1)"><i class="fas fa-chevron-left"></i></button>
       
       <div class="carrusel-track" id="categoriasTrack">
         <div class="cat-card activa" onclick="filtrarCategoria('todos')">
           <img src="logo.webp" id="img-cat-todos" class="cat-img" alt="Todos" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-todos">Todo el Loot</div><div class="cat-count" id="count-todos">0 productos</div></div>
+          <div class="cat-info"><div class="cat-title" id="title-cat-todos">Todo el Stock</div><div class="cat-count" id="count-todos">0 items</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('recargas')">
           <img src="logo.webp" id="img-cat-recargas" class="cat-img" alt="Recargas" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-recargas">Recargas</div><div class="cat-count" id="count-recargas">0 productos</div></div>
+          <div class="cat-info"><div class="cat-title" id="title-cat-recargas">Recargas</div><div class="cat-count" id="count-recargas">0 items</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('mangas')">
           <img src="logo.webp" id="img-cat-mangas" class="cat-img" alt="Mangas" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-mangas">Mangas Y Cómics</div><div class="cat-count" id="count-mangas">0 productos</div></div>
+          <div class="cat-info"><div class="cat-title" id="title-cat-mangas">Mangas & Libros</div><div class="cat-count" id="count-mangas">0 items</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('ropa')">
           <img src="logo.webp" id="img-cat-ropa" class="cat-img" alt="Ropa" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-ropa">Clothing</div><div class="cat-count" id="count-ropa">0 productos</div></div>
+          <div class="cat-info"><div class="cat-title" id="title-cat-ropa">Vestimenta</div><div class="cat-count" id="count-ropa">0 items</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('cartas')">
           <img src="logo.webp" id="img-cat-cartas" class="cat-img" alt="TCG" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-cartas">TCG/Cartas</div><div class="cat-count" id="count-cartas">0 productos</div></div>
+          <div class="cat-info"><div class="cat-title" id="title-cat-cartas">TCG & Cartas</div><div class="cat-count" id="count-cartas">0 items</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('figuras')">
           <img src="logo.webp" id="img-cat-figuras" class="cat-img" alt="Figuras" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-figuras">Figuras Anime</div><div class="cat-count" id="count-figuras">0 productos</div></div>
+          <div class="cat-info"><div class="cat-title" id="title-cat-figuras">Figuras</div><div class="cat-count" id="count-figuras">0 items</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('mandos')">
           <img src="logo.webp" id="img-cat-mandos" class="cat-img" alt="Mandos" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-mandos">Videojuegos</div><div class="cat-count" id="count-mandos">0 productos</div></div>
+          <div class="cat-info"><div class="cat-title" id="title-cat-mandos">Mandos & Consolas</div><div class="cat-count" id="count-mandos">0 items</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('audifonos')">
           <img src="logo.webp" id="img-cat-audifonos" class="cat-img" alt="Audífonos" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-audifonos">Electrónica Audio</div><div class="cat-count" id="count-audifonos">0 productos</div></div>
+          <div class="cat-info"><div class="cat-title" id="title-cat-audifonos">Audio Gamer</div><div class="cat-count" id="count-audifonos">0 items</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('teclados')">
           <img src="logo.webp" id="img-cat-teclados" class="cat-img" alt="Teclados" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-teclados">Teclados PC</div><div class="cat-count" id="count-teclados">0 productos</div></div>
+          <div class="cat-info"><div class="cat-title" id="title-cat-teclados">Teclados</div><div class="cat-count" id="count-teclados">0 items</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('peluches')">
           <img src="logo.webp" id="img-cat-peluches" class="cat-img" alt="Peluches" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-peluches">Peluches Kawaii</div><div class="cat-count" id="count-peluches">0 productos</div></div>
+          <div class="cat-info"><div class="cat-title" id="title-cat-peluches">Peluches</div><div class="cat-count" id="count-peluches">0 items</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('katanas')">
           <img src="logo.webp" id="img-cat-katanas" class="cat-img" alt="Katanas" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-katanas">Katanas Replicas</div><div class="cat-count" id="count-katanas">0 productos</div></div>
+          <div class="cat-info"><div class="cat-title" id="title-cat-katanas">Katanas</div><div class="cat-count" id="count-katanas">0 items</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('lamparas')">
           <img src="logo.webp" id="img-cat-lamparas" class="cat-img" alt="Lámparas" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-lamparas">Lámparas Neón</div><div class="cat-count" id="count-lamparas">0 productos</div></div>
+          <div class="cat-info"><div class="cat-title" id="title-cat-lamparas">Lámparas</div><div class="cat-count" id="count-lamparas">0 items</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('accesorios')">
           <img src="logo.webp" id="img-cat-accesorios" class="cat-img" alt="Accesorios" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-accesorios">Accesorios</div><div class="cat-count" id="count-accesorios">0 productos</div></div>
+          <div class="cat-info"><div class="cat-title" id="title-cat-accesorios">Accesorios</div><div class="cat-count" id="count-accesorios">0 items</div></div>
         </div>
       </div>
       
@@ -616,214 +1118,211 @@
     </div>
   </div>
 
-  <!-- Controles Compactos: Colecciones + Estado + Orden -->
+  <!-- Controles Compactos -->
   <div class="controles-superiores">
     <div class="panel-controles-avanzados">
       <select id="selectColeccion" class="ordenar-select" onchange="cambiarColeccionDropdown(this.value)">
-        <option value="todos">🌟 Todo el Universo (Colecciones)</option>
+        <option value="todos">Colección: Todas las Franquicias</option>
       </select>
 
       <select id="selectEstado" class="ordenar-select" onchange="filtrarEstadoDropdown(this.value)">
-        <option value="todos">📦 Todo el inventario</option>
-        <option value="Envío Inmediato 📦">⚡ Solo Stock Inmediato</option>
-        <option value="Por Encargo ⚡">⏳ Bajo Encargo</option>
+        <option value="todos">Disponibilidad: Todo</option>
+        <option value="Envío Inmediato 📦">Solo Stock Inmediato</option>
+        <option value="Por Encargo ⚡">Bajo Encargo</option>
       </select>
 
       <select id="selectOrden" class="ordenar-select" onchange="ordenarProductos()">
-        <option value="defecto">⚡ Ordenar: Destacados</option>
-        <option value="menor">📉 Precio: Menor a Mayor</option>
-        <option value="mayor">📈 Precio: Mayor a Menor</option>
+        <option value="defecto">Ordenar: Predeterminado</option>
+        <option value="menor">Precio: Menor a Mayor</option>
+        <option value="mayor">Precio: Mayor a Menor</option>
       </select>
     </div>
   </div>
 
-  <h2 style="color: var(--primary-color); text-align: center; margin-bottom: 20px;">📦 Catálogo & Recargas</h2>
-  <div class="grid" id="catalogoNube"><p style="text-align: center; color: var(--secondary-color);">Cargando inventario desde Firebase...</p></div>
+  <div class="grid" id="catalogoNube"><p style="text-align: center; color: var(--text-muted); grid-column: 1/-1;">Sincronizando inventario...</p></div>
 
   <!-- RESEÑAS -->
   <div class="reviews-section">
-    <div class="info-title">💬 Reseñas de la Comunidad 🌟</div>
-    <div id="contenedorReviews"><p style="text-align: center; color: var(--secondary-color);">Cargando opiniones...</p></div>
-    <div class="review-form">
-      <h3 style="color: var(--primary-color); font-size: 1.1em; margin: 10px 0 5px 0;">Deja tu opinión:</h3>
-      <input type="text" id="revNombre" class="sugerencia-input" placeholder="Tu Nombre / GamerTag">
-      <select id="revEstrellas" class="sugerencia-input">
-        <option value="⭐⭐⭐⭐⭐">⭐⭐⭐⭐⭐ (5/5 Excelente)</option>
-        <option value="⭐⭐⭐⭐">⭐⭐⭐⭐ (4/5 Muy bueno)</option>
-        <option value="⭐⭐⭐">⭐⭐⭐ (3/5 Normal)</option>
+    <h3 style="color: #fff; margin-top: 0; margin-bottom: 15px;">Opiniones de Clientes</h3>
+    <div id="contenedorReviews"><p style="color: var(--text-muted);">Cargando reseñas verificadas...</p></div>
+    <div style="margin-top: 15px;">
+      <input type="text" id="revNombre" class="sugerencia-input" placeholder="Nombre o GamerTag" style="margin-bottom: 8px;">
+      <select id="revEstrellas" class="sugerencia-input" style="margin-bottom: 8px;">
+        <option value="⭐⭐⭐⭐⭐">5 / 5 - Excelente servicio</option>
+        <option value="⭐⭐⭐⭐">4 / 5 - Muy bueno</option>
+        <option value="⭐⭐⭐">3 / 5 - Conforme</option>
       </select>
-      <textarea id="revTexto" class="sugerencia-input" rows="2" placeholder="¿Qué te pareció el servicio o la mercancía?"></textarea>
-      <button class="btn-sugerencia" onclick="agregarReview()">Publicar Reseña 🚀</button>
+      <textarea id="revTexto" class="sugerencia-input" rows="2" placeholder="Describe tu experiencia de compra..." style="margin-bottom: 8px;"></textarea>
+      <button class="btn-comprar" style="width: auto; padding: 8px 18px;" onclick="agregarReview()">Publicar Opinión</button>
     </div>
   </div>
 
-  <!-- ENVÍOS E INFORMACIÓN -->
+  <!-- INFORMACIÓN DE ENVÍOS -->
   <div class="info-section">
-    <div class="info-title">✨ Información y Envíos 📦</div>
-    <div class="info-grid">
-      <div class="info-card">
-        <h4><i class="fas fa-truck-fast" style="color: var(--primary-color);"></i> Envíos Nacionales</h4>
-        Despachos seguros a todo el país a través de:<br>
-        <div style="margin-top: 10px;"><span class="badge-envio"><i class="fas fa-box"></i> ZOOM</span><span class="badge-envio"><i class="fas fa-shipping-fast"></i> MRW</span></div>
-      </div>
-      <div class="info-card">
-        <h4><i class="fas fa-bolt" style="color: #ffcc00;"></i> Garantía & Encargos</h4>
-        Periféricos con garantía. Artículos bajo encargo con el <strong>100% de inicial</strong>. ¡Escríbenos al WhatsApp!
-      </div>
+    <h3 style="color: #fff; margin-top: 0; margin-bottom: 12px;">Logística & Cobertura</h3>
+    <p style="color: var(--text-muted); font-size: 0.95em; line-height: 1.5; margin-bottom: 12px;">Despachos garantizados a nivel nacional con cobro a destino y entregas personales en Carabobo:</p>
+    <div>
+      <span class="badge-envio"><i class="fas fa-box"></i> ZOOM</span>
+      <span class="badge-envio"><i class="fas fa-truck"></i> MRW</span>
+      <span class="badge-envio"><i class="fas fa-map-pin"></i> Bejuma</span>
+      <span class="badge-envio"><i class="fas fa-map-pin"></i> Miranda</span>
     </div>
   </div>
 </div>
 
 <!-- MODAL PRODUCTO DETALLE -->
 <div id="miModal" class="modal">
-  <div class="modal-content" style="text-align: left;">
+  <div class="modal-content">
     <button class="cerrar-modal" onclick="cerrarModal()">×</button>
     <div class="breadcrumbs" id="modalBreadcrumbs">Inicio / <span>Categoría</span></div>
     <img id="modalImg" src="" alt="Producto" class="modal-img" loading="eager" decoding="async">
     <div id="modalContainerMinis" class="modal-miniaturas"></div>
-    <div id="modalTag" class="modal-tag-info">Envío Inmediato 📦</div>
-    <h2 id="modalTitulo" style="color: var(--secondary-color); margin-bottom: 5px; margin-top: 0;">Título</h2>
-    <h3 id="modalPrecio" style="color: var(--primary-color); margin-top: 0; font-size: 1.5em;">$0.00</h3>
-    <p id="modalDesc" style="font-size: 0.9em; margin-bottom: 10px; opacity: 0.9;">Descripción aquí.</p>
+    <div id="modalTag" class="modal-tag-info">Disponible</div>
+    <h3 id="modalTitulo" style="color: #fff; margin: 4px 0 8px 0;">Título</h3>
+    <div id="modalPrecio" style="color: var(--secondary-color); font-size: 1.4em; font-weight: 700; margin-bottom: 8px;">$0.00</div>
+    <p id="modalDesc" style="font-size: 0.9em; color: var(--text-muted); margin-bottom: 14px; line-height: 1.4;">Detalles del producto.</p>
     
-    <div id="tallasContainer" class="tallas-container">
-      <label for="selectTalla">Selecciona tu Talla:</label>
+    <div id="tallasContainer" style="display: none; margin-bottom: 12px;">
+      <label for="selectTalla" style="display: block; font-size: 0.85em; font-weight: 700; margin-bottom: 4px;">Seleccionar Talla:</label>
       <select id="selectTalla" class="talla-select">
         <option value="S">Talla S</option><option value="M" selected>Talla M</option><option value="L">Talla L</option><option value="XL">Talla XL</option>
       </select>
-      <span class="link-guia-tallas" onclick="abrirGuiaTallasModal()">Ver Guía de Tallas (cm) 📏</span>
+      <div style="color: var(--secondary-color); font-size: 0.8em; margin-top: 4px; cursor: pointer;" onclick="abrirGuiaTallasModal()">Ver tabla de medidas</div>
     </div>
 
-    <div id="recargaContainer" class="recarga-container">
-      <label for="inputPlayerId">🎮 ID del Jugador (Free Fire / Juego):</label>
-      <input type="text" id="inputPlayerId" class="recarga-input" placeholder="Ej: 1234567890">
-      <label for="inputPlayerServer" style="margin-top: 8px;">Servidor / Detalles adicionales:</label>
-      <input type="text" id="inputPlayerServer" class="recarga-input" placeholder="Ej: US / Sudamérica">
+    <div id="recargaContainer" style="display: none; margin-bottom: 12px;">
+      <label for="inputPlayerId" style="display: block; font-size: 0.85em; font-weight: 700; margin-bottom: 4px;">ID de Jugador:</label>
+      <input type="text" id="inputPlayerId" class="recarga-input" placeholder="Ingresa tu ID de cuenta">
+      <label for="inputPlayerServer" style="display: block; font-size: 0.85em; font-weight: 700; margin: 8px 0 4px 0;">Servidor / Región:</label>
+      <input type="text" id="inputPlayerServer" class="recarga-input" placeholder="Ej: Sudamérica / EE.UU.">
     </div>
 
-    <button class="btn-comprar" onclick="agregarAlCarrito()"><i class="fas fa-cart-plus"></i> ¡Añadir al Carrito!</button>
-    <button class="btn-compartir" onclick="compartirProductoWhatsApp()"><i class="fab fa-whatsapp"></i> Preguntar en WhatsApp</button>
+    <button class="btn-comprar" onclick="agregarAlCarrito()"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+    <button class="btn-compartir" onclick="compartirProductoWhatsApp()"><i class="fab fa-whatsapp"></i> Consultar por WhatsApp</button>
   </div>
 </div>
 
 <!-- MODAL MENÚ DE OPCIONES -->
 <div id="modalOpcionesMenu" class="modal">
-  <div class="modal-content" style="border-color: var(--secondary-color); text-align: center;">
+  <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarMenuOpciones()">×</button>
-    <h2 style="color: var(--secondary-color); margin-top: 0;"><i class="fas fa-compass"></i> Explorar Sakura</h2>
+    <h3 style="color: #fff; margin-top: 0;">Panel de Funciones</h3>
     <div class="menu-opciones-grid">
-      <button class="btn-menu-opcion" style="color: #ff9900;" onclick="cerrarMenuOpciones(); abrirCofreModal()"><i class="fas fa-gift"></i> Cofre Diario</button>
-      <button class="btn-menu-opcion" style="color: #9900ff;" onclick="cerrarMenuOpciones(); abrirGachaModal()"><i class="fas fa-dice"></i> Ruleta Gacha</button>
-      <button class="btn-menu-opcion" style="color: #00ffcc;" onclick="cerrarMenuOpciones(); abrirGamerProfileModal()"><i class="fas fa-user-astronaut"></i> Mi Perfil</button>
-      <button class="btn-menu-opcion" style="color: #ffcc00;" onclick="cerrarMenuOpciones(); abrirTemasModal()"><i class="fas fa-palette"></i> Temas</button>
-      <button class="btn-menu-opcion" style="color: #ff0055;" onclick="toggleMusicaLoFi()"><i class="fas fa-music" id="iconoMusica"></i> Música</button>
-      <button class="btn-menu-opcion" style="color: var(--secondary-color);" onclick="cerrarMenuOpciones(); abrirFaqModal()"><i class="fas fa-question"></i> Ayuda (FAQ)</button>
-      <button class="btn-menu-opcion" style="color: var(--primary-color);" onclick="cerrarMenuOpciones(); abrirSugerenciaModal()"><i class="fas fa-lightbulb"></i> Sugerir</button>
-      <a href="admin.html" class="btn-menu-opcion" style="color: #ff3366;"><i class="fas fa-cogs"></i> Panel Admin</a>
-      <a href="https://wa.me/584244970576" target="_blank" class="btn-menu-opcion" style="color: #25D366;"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+      <button class="btn-menu-opcion" style="color: #ffaa00;" onclick="cerrarMenuOpciones(); abrirCofreModal()"><i class="fas fa-gift"></i> Cofre Diario</button>
+      <button class="btn-menu-opcion" style="color: var(--secondary-color);" onclick="cerrarMenuOpciones(); abrirGachaModal()"><i class="fas fa-dice"></i> Ruleta</button>
+      <button class="btn-menu-opcion" style="color: #25d366;" onclick="cerrarMenuOpciones(); abrirGamerProfileModal()"><i class="fas fa-user"></i> Mi Perfil</button>
+      <button class="btn-menu-opcion" style="color: #ff007f;" onclick="cerrarMenuOpciones(); abrirTemasModal()"><i class="fas fa-palette"></i> Temas</button>
+      <button class="btn-menu-opcion" style="color: #e0f4ff;" onclick="toggleMusicaLoFi()"><i class="fas fa-music" id="iconoMusica"></i> Audio Lo-Fi</button>
+      <button class="btn-menu-opcion" style="color: var(--text-muted);" onclick="cerrarMenuOpciones(); abrirFaqModal()"><i class="fas fa-question-circle"></i> Preguntas</button>
+      <button class="btn-menu-opcion" style="color: #fff;" onclick="cerrarMenuOpciones(); abrirSugerenciaModal()"><i class="fas fa-lightbulb"></i> Encargos</button>
+      <a href="admin.html" class="btn-menu-opcion" style="color: #ff3366;"><i class="fas fa-lock"></i> Gestión Admin</a>
+      <a href="https://wa.me/584244970576" target="_blank" class="btn-menu-opcion" style="color: #25D366;"><i class="fab fa-whatsapp"></i> Chat Directo</a>
     </div>
   </div>
 </div>
 
 <!-- MODAL FAVORITOS -->
 <div id="modalFavoritos" class="modal">
-  <div class="modal-content" style="width: 450px;">
+  <div class="modal-content">
     <button class="cerrar-modal" onclick="cerrarFavoritosModal()">×</button>
-    <h2 style="color: #ff3366; margin-top: 0; text-align: center;">💖 Tu Lista de Deseos</h2>
-    <div id="listaFavoritosDetalle" style="max-height: 250px; overflow-y: auto; margin-bottom: 15px; padding-right: 5px;"></div>
-    <button class="btn-sugerencia" onclick="cerrarFavoritosModal()">Seguir Viendo Catálogo ✨</button>
+    <h3 style="color: #fff; margin-top: 0; text-align: center;">Artículos Guardados</h3>
+    <div id="listaFavoritosDetalle" style="max-height: 250px; overflow-y: auto; margin-bottom: 14px;"></div>
+    <button class="btn-comprar" onclick="cerrarFavoritosModal()">Continuar Explorando</button>
   </div>
 </div>
 
 <!-- MODAL FAQ -->
 <div id="modalFaq" class="modal">
-  <div class="modal-content" style="width: 450px;">
+  <div class="modal-content">
     <button class="cerrar-modal" onclick="cerrarFaqModal()">×</button>
-    <h2 style="color: var(--secondary-color); margin-top: 0; text-align: center;">❓ Preguntas Frecuentes</h2>
-    <div class="faq-item"><div class="faq-question"><i class="fas fa-map-marker-alt"></i> ¿Hacen entregas personales?</div><div class="faq-answer">Sí, en <strong>Bejuma y Miranda (Estado Carabobo)</strong>.</div></div>
-    <div class="faq-item"><div class="faq-question"><i class="fas fa-shipping-fast"></i> ¿Por cuáles empresas envían?</div><div class="faq-answer">Envíos nacionales con cobro a destino por <strong>ZOOM</strong> y <strong>MRW</strong>.</div></div>
+    <h3 style="color: #fff; margin-top: 0; text-align: center;">Preguntas Frecuentes</h3>
+    <div style="font-size: 0.9em; line-height: 1.5; color: var(--text-muted);">
+      <p><strong style="color: #fff;">¿Dónde realizan entregas en persona?</strong><br>Puntos acordados previamente en Bejuma y Miranda, Estado Carabobo.</p>
+      <p><strong style="color: #fff;">¿Cómo operan los despachos nacionales?</strong><br>Envíos cobro a destino a través de agencias ZOOM y MRW.</p>
+    </div>
   </div>
 </div>
 
 <!-- MODAL CARRITO CON 2 PESTAÑAS (FÍSICO Y DIGITAL) -->
 <div id="modalCarrito" class="modal">
-  <div class="modal-content" style="width: 450px;">
+  <div class="modal-content">
     <button class="cerrar-modal" onclick="cerrarCarritoModal()">×</button>
-    <h2 style="color: var(--secondary-color); margin-top: 0; text-align: center;">🛒 Tu Carrito</h2>
+    <h3 style="color: #fff; margin-top: 0; text-align: center;">Resumen de Pedido</h3>
     
-    <!-- Pestañas de Navegación del Carrito -->
     <div class="cart-tabs">
       <button class="cart-tab-btn activo" id="tabBtnFisico" onclick="cambiarPestanaCarrito('fisico')">
-        📦 Envíos Físicos (<span id="countCartFisico">0</span>)
+        Artículos Físicos (<span id="countCartFisico">0</span>)
       </button>
       <button class="cart-tab-btn" id="tabBtnDigital" onclick="cambiarPestanaCarrito('digital')">
-        ⚡ Recargas (<span id="countCartDigital">0</span>)
+        Recargas (<span id="countCartDigital">0</span>)
       </button>
     </div>
 
     <div class="cupon-box">
-      <input type="text" id="inputCupon" class="cupon-input" placeholder="Cupón (Ej: OTAKU10)">
+      <input type="text" id="inputCupon" class="cupon-input" placeholder="Código de descuento">
       <button class="btn-cupon" onclick="aplicarCupon()">Aplicar</button>
     </div>
-    <div id="mensajeCupon" style="font-size: 0.8em; margin-bottom: 8px; color: var(--secondary-color);"></div>
+    <div id="mensajeCupon" style="font-size: 0.8em; margin-bottom: 8px;"></div>
 
-    <!-- Lista de Artículos según Pestaña Seleccionada -->
     <div id="listaCarritoDetalle" style="max-height: 150px; overflow-y: auto; margin-bottom: 12px;"></div>
     
     <!-- APARTADO EXCLUSIVO PARA ARTÍCULOS FÍSICOS -->
     <div id="apartadoEnvioFisico">
-      <div style="margin-bottom: 12px; text-align: left;">
-        <label for="selectMetodoEnvio" style="color: var(--secondary-color); font-size: 0.85em; font-weight: bold; display: block; margin-bottom: 5px;">
-          📦 Método de entrega / Envío:
-        </label>
+      <div style="margin-bottom: 10px;">
+        <label for="selectMetodoEnvio" style="display: block; font-size: 0.85em; font-weight: 700; margin-bottom: 4px;">Método de Despacho:</label>
         <select id="selectMetodoEnvio" class="talla-select">
-          <option value="ZOOM (Cobro a destino)">📦 ZOOM (Envío nacional - Cobro a destino)</option>
-          <option value="MRW (Cobro a destino)">🚚 MRW (Envío nacional - Cobro a destino)</option>
-          <option value="Entrega Personal (Bejuma)">🤝 Entrega Personal (Bejuma, Carabobo)</option>
-          <option value="Entrega Personal (Miranda)">🤝 Entrega Personal (Miranda, Carabobo)</option>
+          <option value="ZOOM (Cobro a destino)">ZOOM (Envío nacional - Cobro a destino)</option>
+          <option value="MRW (Cobro a destino)">MRW (Envío nacional - Cobro a destino)</option>
+          <option value="Entrega Personal (Bejuma)">Entrega Personal (Bejuma, Carabobo)</option>
+          <option value="Entrega Personal (Miranda)">Entrega Personal (Miranda, Carabobo)</option>
         </select>
       </div>
 
-      <div style="margin-bottom: 12px; text-align: left;" id="boxDireccionEnvio">
-        <label for="inputDireccionEnvio" style="color: var(--secondary-color); font-size: 0.85em; font-weight: bold; display: block; margin-bottom: 5px;">
-          📍 Dirección de entrega / Agencia (Ciudad, Estado):
-        </label>
-        <input type="text" id="inputDireccionEnvio" class="sugerencia-input" style="margin-bottom: 0;" placeholder="Ej: ZOOM Bejuma / Calle Bolívar casa #12...">
+      <div style="margin-bottom: 12px;" id="boxDireccionEnvio">
+        <label for="inputDireccionEnvio" style="display: block; font-size: 0.85em; font-weight: 700; margin-bottom: 4px;">Dirección de Entrega / Agencia de Retiro:</label>
+        <input type="text" id="inputDireccionEnvio" class="sugerencia-input" placeholder="Ciudad, Estado, Dirección o Agencia específica...">
       </div>
     </div>
 
     <!-- APARTADO EXCLUSIVO PARA RECARGAS DIGITALES -->
-    <div id="apartadoRecargasDigitales" style="display: none; background: rgba(0, 229, 255, 0.05); border: 1px dashed var(--secondary-color); padding: 12px; border-radius: 10px; margin-bottom: 12px; text-align: left; font-size: 0.85em;">
-      <div style="color: var(--secondary-color); font-weight: bold; margin-bottom: 4px;">⚡ Entrega Digital Inmediata:</div>
-      <div style="color: #ccc; line-height: 1.4;">Las recargas se procesan directamente con el ID y Servidor especificados. No requiere datos de envío físico.</div>
+    <div id="apartadoRecargasDigitales" style="display: none; background: #07010f; border: 1px dashed var(--border-color); padding: 10px; border-radius: var(--radius-sm); margin-bottom: 12px; font-size: 0.85em; color: var(--text-muted);">
+      <strong style="color: var(--secondary-color);">Entrega Directa:</strong> Las recargas se ejecutan directamente con el ID y Servidor especificados. No aplican costos de flete ni datos de encomienda.
     </div>
 
-    <div id="reciboDigital" class="recibo-box" style="display: none;"><div style="text-align: center; font-weight: bold; margin-bottom: 8px; color: var(--primary-color);">--- RECIBO DIGITAL ---</div><div id="reciboContenido"></div></div>
-    <div id="paymentMethodsCart" style="display: none; border: 2px solid var(--secondary-color); border-radius: 12px; padding: 15px; margin-bottom: 15px; background: var(--card-bg);">
-      <h3 style="color: var(--primary-color); margin-top: 0; font-size: 1.1em;"><i class="fas fa-credit-card"></i> Métodos de Pago</h3>
-      <div id="cajaDatosPagoInfo" style="font-size: 0.9em; line-height: 1.6;"></div>
+    <div id="reciboDigital" class="recibo-box" style="display: none;">
+      <div style="text-align: center; font-weight: 700; margin-bottom: 6px; color: var(--secondary-color);">RESUMEN DE CUENTA</div>
+      <div id="reciboContenido"></div>
     </div>
-    <h3 id="modalCarritoTotal" style="color: var(--primary-color); margin-bottom: 15px; text-align: center;">Total: $0.00</h3>
-    <div style="display: flex; gap: 10px;"><button style="flex: 1; padding: 10px; background: transparent; border: 1px solid #ff3366; color: #ff3366; border-radius: 20px; font-weight: bold; cursor: pointer;" onclick="vaciarCarrito()">Vaciar</button><button style="flex: 2; padding: 10px; background: #25D366; color: white; border: none; border-radius: 20px; font-weight: bold; cursor: pointer;" onclick="enviarPedidoWhatsApp()">Enviar al WhatsApp 📱</button></div>
+    
+    <div id="paymentMethodsCart" style="display: none; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 12px; background: #090214;">
+      <div style="font-weight: 700; color: #fff; margin-bottom: 8px; font-size: 0.9em;">Cuentas para Pago:</div>
+      <div id="cajaDatosPagoInfo" style="font-size: 0.85em; line-height: 1.5; color: var(--text-muted);"></div>
+    </div>
+
+    <div id="modalCarritoTotal" style="color: var(--secondary-color); font-size: 1.3em; font-weight: 700; margin-bottom: 12px; text-align: center;">Total: $0.00</div>
+    <div style="display: flex; gap: 8px;">
+      <button style="flex: 1; padding: 10px; background: transparent; border: 1px solid rgba(255, 51, 102, 0.4); color: #ff3366; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer;" onclick="vaciarCarrito()">Limpiar</button>
+      <button style="flex: 2; padding: 10px; background: #25D366; color: #000; border: none; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer;" onclick="enviarPedidoWhatsApp()">Enviar Orden por WhatsApp</button>
+    </div>
   </div>
 </div>
 
 <!-- MODAL SUGERENCIAS -->
 <div id="modalSugerencias" class="modal">
-  <div class="modal-content" style="text-align: center;">
+  <div class="modal-content">
     <button class="cerrar-modal" onclick="cerrarSugerenciaModal()">×</button>
-    <h2 style="color: var(--primary-color); margin-top: 0;">💡 Sugerir Mercancía</h2>
-    <input type="text" id="sugNombre" class="sugerencia-input" placeholder="Tu Nombre">
-    <textarea id="sugDeseo" class="sugerencia-input" rows="3" placeholder="¿Qué producto te gustaría que trajéramos?"></textarea>
-    <button class="btn-sugerencia" onclick="enviarSugerenciaWhatsApp()">Enviar Sugerencia 🚀</button>
+    <h3 style="color: #fff; margin-top: 0; text-align: center;">Solicitar Artículo por Encargo</h3>
+    <input type="text" id="sugNombre" class="sugerencia-input" placeholder="Tu Nombre o Contacto" style="margin-bottom: 8px;">
+    <textarea id="sugDeseo" class="sugerencia-input" rows="3" placeholder="¿Qué figura, accesorio o producto específico estás buscando?" style="margin-bottom: 10px;"></textarea>
+    <button class="btn-comprar" onclick="enviarSugerenciaWhatsApp()">Enviar Consulta</button>
   </div>
 </div>
 
 <!-- NAVEGACIÓN INFERIOR -->
 <div class="bottom-nav">
-  <div class="nav-item" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); reproducirSonido();"><i class="fas fa-home"></i><span>Inicio</span></div>
-  <div class="nav-item" onclick="abrirFavoritosModal()"><i class="fas fa-heart"></i><span>Deseos</span><div class="nav-badge" id="favBadge">0</div></div>
-  <div class="nav-item" onclick="abrirCarritoModal()"><i class="fas fa-shopping-cart"></i><span>Carrito</span><div class="nav-badge" id="cartBadge">0</div></div>
+  <div class="nav-item active" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); reproducirSonido();"><i class="fas fa-th-large"></i><span>Catálogo</span></div>
+  <div class="nav-item" onclick="abrirFavoritosModal()"><i class="fas fa-heart"></i><span>Guardados</span><div class="nav-badge" id="favBadge">0</div></div>
+  <div class="nav-item" onclick="abrirCarritoModal()"><i class="fas fa-shopping-bag"></i><span>Carrito</span><div class="nav-badge" id="cartBadge">0</div></div>
   <div class="nav-item" onclick="abrirMenuOpciones()"><i class="fas fa-bars"></i><span>Menú</span></div>
 </div>
 
@@ -849,7 +1348,6 @@
   let tasaBcvActual = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 860;
   document.getElementById('inputTasaBcv').value = tasaBcvActual;
 
-  /* --- CONTROL GLOBAL DE AUDIO SIN SATURACIÓN --- */
   let globalAudioCtx = null;
   window.reproducirSonido = function() {
     try {
@@ -861,19 +1359,17 @@
       }
       const osc = globalAudioCtx.createOscillator();
       const gainNode = globalAudioCtx.createGain();
-      osc.type = 'square';
-      osc.frequency.setValueAtTime(440, globalAudioCtx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(880, globalAudioCtx.currentTime + 0.08);
-      gainNode.gain.setValueAtTime(0.05, globalAudioCtx.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.001, globalAudioCtx.currentTime + 0.08);
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(520, globalAudioCtx.currentTime);
+      gainNode.gain.setValueAtTime(0.04, globalAudioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, globalAudioCtx.currentTime + 0.06);
       osc.connect(gainNode);
       gainNode.connect(globalAudioCtx.destination);
       osc.start();
-      osc.stop(globalAudioCtx.currentTime + 0.08);
+      osc.stop(globalAudioCtx.currentTime + 0.06);
     } catch(e) {}
   };
 
-  /* --- SANITIZACIÓN CONTRA INYECCIÓN XSS --- */
   function sanitizarHTML(str) {
     if (!str) return '';
     return String(str).replace(/[&<>"']/g, function(m) {
@@ -881,7 +1377,6 @@
     });
   }
 
-  /* --- ANIMACIÓN SPLASH SCREEN ARCADE AE86 --- */
   function ejecutarAnimacionSplash() {
     let porcentaje = 0;
     const bar = document.getElementById('pixelMeterBar');
@@ -899,7 +1394,7 @@
         porcentaje = 100;
         clearInterval(intervaloCarga);
         bar.style.width = '100%';
-        txt.innerText = '100% OK!';
+        txt.innerText = '100% OK';
 
         nitro.style.display = 'block';
         reproducirSonido();
@@ -950,16 +1445,16 @@
     if(!caja) return;
     let dp = window.datosPagoGlobal || { banco: "Venezuela (0102)", telefono: "0424-4970576", cedula: "V-24159896", binance: "n3lmary@gmail.com" };
     caja.innerHTML = `
-      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px; margin-bottom:6px;"><span>🏦 ${sanitizarHTML(dp.banco)}</span><button class="btn-copiar-mini" onclick="copiarTexto('${sanitizarHTML(dp.banco)}')"><i class="fas fa-copy"></i></button></div>
-      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px; margin-bottom:6px;"><span>📱 Pago Móvil: ${sanitizarHTML(dp.telefono)}</span><button class="btn-copiar-mini" onclick="copiarTexto('${sanitizarHTML(dp.telefono)}')"><i class="fas fa-copy"></i></button></div>
-      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px; margin-bottom:6px;"><span>🪪 Cédula: ${sanitizarHTML(dp.cedula)}</span><button class="btn-copiar-mini" onclick="copiarTexto('${sanitizarHTML(dp.cedula)}')"><i class="fas fa-copy"></i></button></div>
-      <div style="display:flex; justify-content:space-between; align-items:center;"><span style="word-break: break-all; margin-right: 10px;">🪙 Binance:<br>${sanitizarHTML(dp.binance)}</span><button class="btn-copiar-mini" onclick="copiarTexto('${sanitizarHTML(dp.binance)}')"><i class="fas fa-copy"></i></button></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;"><span>Banco: ${sanitizarHTML(dp.banco)}</span><button class="cart-item-del" onclick="copiarTexto('${sanitizarHTML(dp.banco)}')"><i class="fas fa-copy"></i></button></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;"><span>Pago Móvil: ${sanitizarHTML(dp.telefono)}</span><button class="cart-item-del" onclick="copiarTexto('${sanitizarHTML(dp.telefono)}')"><i class="fas fa-copy"></i></button></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;"><span>Cédula: ${sanitizarHTML(dp.cedula)}</span><button class="cart-item-del" onclick="copiarTexto('${sanitizarHTML(dp.cedula)}')"><i class="fas fa-copy"></i></button></div>
+      <div style="display:flex; justify-content:space-between; align-items:center;"><span>Binance: ${sanitizarHTML(dp.binance)}</span><button class="cart-item-del" onclick="copiarTexto('${sanitizarHTML(dp.binance)}')"><i class="fas fa-copy"></i></button></div>
     `;
   }
 
   window.copiarTexto = function(texto) {
     reproducirSonido();
-    navigator.clipboard.writeText(texto).then(() => alert("📋 ¡Dato copiado!"));
+    navigator.clipboard.writeText(texto).then(() => alert("Copiado al portapapeles."));
   };
 
   async function cargarBannersDeNube() {
@@ -994,7 +1489,7 @@
       container.innerHTML = htmlImgs + flechasHtml + htmlDots;
       iniciarAutoSliderBanners(bannersValidos.length);
     } catch (e) {
-      console.error("Error cargando banners:", e);
+      console.error("Error al cargar banners:", e);
     }
   }
 
@@ -1039,7 +1534,7 @@
       });
       renderizarProductosEnTienda(productosNubeGlobal);
     } catch (error) {
-      document.getElementById('catalogoNube').innerHTML = "<p style='color: #ff3366; text-align: center;'>Error al conectar con la base de datos.</p>";
+      document.getElementById('catalogoNube').innerHTML = "<p style='color: #ff3366; text-align: center; grid-column: 1/-1;'>No fue posible conectar con la base de datos.</p>";
     }
   }
 
@@ -1049,10 +1544,10 @@
     contenedor.innerHTML = "";
     let conteo = { recargas: 0, mangas: 0, ropa: 0, mandos: 0, teclados: 0, audifonos: 0, figuras: 0, peluches: 0, cartas: 0, katanas: 0, lamparas: 0, accesorios: 0 };
     let elTodos = document.getElementById('count-todos');
-    if(elTodos) elTodos.innerText = lista.length + " productos";
+    if(elTodos) elTodos.innerText = lista.length + " items";
 
     if (lista.length === 0) {
-      contenedor.innerHTML = "<p style='color: #aaa; text-align: center;'>El inventario en la nube está vacío.</p>";
+      contenedor.innerHTML = "<p style='color: var(--text-muted); text-align: center; grid-column: 1/-1;'>No se encontraron productos disponibles.</p>";
       return;
     }
 
@@ -1086,9 +1581,9 @@
              data-coleccion="${sanitizarHTML(coleccion).toLowerCase()}" 
              data-estado="${prod.estado || ''}" 
              data-precio="${prod.precio}" 
-             onclick="crearDestello(event); abrirModalPorId('${prod.id}')">
+             onclick="abrirModalPorId('${prod.id}')">
           <button class="btn-fav-card" onclick="toggleFavoritoPorId(event, '${prod.id}')"><i class="fas fa-heart"></i></button>
-          <div class="badge-estado ${badgeClase}">${prod.estado || (esRecarga ? 'Recarga Directa ⚡' : 'Disponible')}</div>
+          <div class="badge-estado ${badgeClase}">${prod.estado || (esRecarga ? 'Recarga Directa' : 'Stock')}</div>
           <div class="card-img-container" id="carrusel-card-${indexProd}">${imgsHtml}${botonesCarrusel}</div>
           <div class="card-title">${sanitizarHTML(prod.nombre)}</div>
           <div class="precio-container"><span class="card-price">$${Number(prod.precio).toFixed(2)}</span></div>
@@ -1099,14 +1594,13 @@
 
     for(let cat in conteo) {
       let elem = document.getElementById('count-' + cat);
-      if(elem) elem.innerText = conteo[cat] + " productos";
+      if(elem) elem.innerText = conteo[cat] + " items";
     }
 
     renderizarSelectColecciones(lista);
     aplicarFiltrosGlobales();
   };
 
-  /* --- SISTEMA UNIFICADO DE FILTROS --- */
   let filtroGlobal = {
     categoria: 'todos',
     coleccion: 'todos',
@@ -1114,7 +1608,6 @@
     busqueda: ''
   };
 
-  /* --- POBLAR LISTA DESPLEGABLE DE COLECCIONES --- */
   function renderizarSelectColecciones(productos) {
     const select = document.getElementById('selectColeccion');
     if (!select) return;
@@ -1127,10 +1620,10 @@
     });
 
     let valorSeleccionado = filtroGlobal.coleccion;
-    let html = `<option value="todos">🌟 Todo el Universo (Colecciones)</option>`;
+    let html = `<option value="todos">Colección: Todas las Franquicias</option>`;
 
     coleccionesUnicas.forEach(col => {
-      html += `<option value="${sanitizarHTML(col)}">🎌 ${sanitizarHTML(col)}</option>`;
+      html += `<option value="${sanitizarHTML(col)}">${sanitizarHTML(col)}</option>`;
     });
 
     select.innerHTML = html;
@@ -1184,7 +1677,6 @@
     });
   }
 
-  /* --- APERTURA SEGURA DE MODAL POR ID --- */
   window.abrirModalPorId = function(prodId) {
     const prod = productosNubeGlobal.find(p => p.id === prodId);
     if (!prod) return;
@@ -1208,8 +1700,8 @@
     document.getElementById('modalImg').src = fotosArray[0];
     document.getElementById('modalTitulo').innerText = prod.nombre;
     document.getElementById('modalPrecio').innerText = "$" + Number(prod.precio).toFixed(2);
-    document.getElementById('modalDesc').innerText = prod.descripcion || 'Producto oficial de Sakura Gameverse.';
-    document.getElementById('modalTag').innerText = prod.estado || (esRecarga ? 'Recarga Directa ⚡' : 'Disponible');
+    document.getElementById('modalDesc').innerText = prod.descripcion || 'Producto oficial Sakura Gameverse.';
+    document.getElementById('modalTag').innerText = prod.estado || (esRecarga ? 'Recarga Directa' : 'Stock');
     
     document.getElementById('tallasContainer').style.display = esRopa ? 'block' : 'none';
     document.getElementById('recargaContainer').style.display = esRecarga ? 'block' : 'none';
@@ -1240,7 +1732,6 @@
     } catch (e) {}
   }
 
-  /* --- VALIDACIÓN DE CUPÓN CON QUERY EFICIENTE --- */
   window.aplicarCupon = async function() {
     reproducirSonido(); 
     let c = document.getElementById('inputCupon').value.trim().toUpperCase(); 
@@ -1253,16 +1744,16 @@
         let cuponData = querySnapshot.docs[0].data();
         descuentoAplicado = (cuponData.porcentaje || 0) / 100;
         msg.style.color = "#25D366"; 
-        msg.innerText = `🎉 ¡Cupón aplicado (-${cuponData.porcentaje}%)!`;
+        msg.innerText = `Cupón aplicado (-${cuponData.porcentaje}%)`;
       } else {
         descuentoAplicado = 0; 
         msg.style.color = "#ff3366"; 
-        msg.innerText = "❌ Cupón inválido o expirado.";
+        msg.innerText = "Cupón inválido o caducado.";
       }
       abrirCarritoModal();
     } catch(e) { 
       msg.style.color = "#ff3366"; 
-      msg.innerText = "❌ Error al validar cupón."; 
+      msg.innerText = "Error al validar cupón."; 
     }
   };
 
@@ -1302,35 +1793,11 @@
     });
   });
 
-  window.crearDestello = function(e) { reproducirSonido(); };
-
   window.scrollCategoriasVisuales = function(direccion) {
     reproducirSonido();
     let track = document.getElementById('categoriasTrack');
-    track.scrollBy({ left: direccion * 155, behavior: 'smooth' });
+    track.scrollBy({ left: direccion * 140, behavior: 'smooth' });
   };
-
-  let intervaloCategorias;
-  function iniciarAutoScrollCategorias() {
-    let track = document.getElementById('categoriasTrack');
-    if(!track) return;
-    intervaloCategorias = setInterval(() => {
-      if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) {
-        track.scrollTo({ left: 0, behavior: 'smooth' });
-      } else {
-        track.scrollBy({ left: 155, behavior: 'smooth' });
-      }
-    }, 3500); 
-  }
-
-  setTimeout(() => {
-    iniciarAutoScrollCategorias();
-    let track = document.getElementById('categoriasTrack');
-    if (track) {
-      track.addEventListener('mouseenter', () => clearInterval(intervaloCategorias));
-      track.addEventListener('mouseleave', iniciarAutoScrollCategorias);
-    }
-  }, 500);
 
   window.cambiarFotoTarjeta = function(event, cardIndex, direccion) {
     event.stopPropagation(); 
@@ -1364,7 +1831,7 @@
   window.cerrarTemasModal = function() { document.getElementById('modalTemas').style.display = 'none'; };
   window.cambiarTema = function(t) { reproducirSonido(); document.body.className = t; localStorage.setItem('sakura_tema', t); cerrarTemasModal(); };
 
-  window.activarEasterEggLogo = function() { reproducirSonido(); document.body.classList.toggle('theme-overdrive'); confetti({ particleCount: 150, spread: 90, origin: { y: 0.4 } }); };
+  window.activarEasterEggLogo = function() { reproducirSonido(); document.body.classList.toggle('theme-overdrive'); };
 
   let reproduciendoMusica = false;
   window.toggleMusicaLoFi = function() {
@@ -1375,20 +1842,18 @@
       audio.play().then(() => { 
         reproduciendoMusica = true; 
         icono.className = "fas fa-pause"; 
-        alert("🎵 ¡Música Lo-Fi activada!"); 
-      }).catch(e => alert("Interactúa con la pantalla primero."));
+      }).catch(e => alert("Interactúa con la pantalla primero para activar el audio."));
     } else { 
       audio.pause(); 
       reproduciendoMusica = false; 
       icono.className = "fas fa-music"; 
-      alert("⏸️ Música pausada."); 
     }
   };
 
   window.abrirMenuOpciones = function() { reproducirSonido(); document.getElementById('modalOpcionesMenu').style.display = 'flex'; };
   window.cerrarMenuOpciones = function() { document.getElementById('modalOpcionesMenu').style.display = 'none'; };
 
-  let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, rango: "Genin 🍃" };
+  let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, rango: "Genin" };
   document.getElementById('inputGamerTag').value = gamerProfile.tag; 
   document.getElementById('lblRango').innerText = gamerProfile.rango; 
   document.getElementById('lblXp').innerText = gamerProfile.xp + " XP";
@@ -1396,10 +1861,10 @@
   function actualizarRangoSegunXP() {
     let xp = gamerProfile.xp;
     let u = umbralesRangosNube;
-    if (xp >= (u.hokage ?? 1000)) { gamerProfile.rango = "Hokage 👑"; }
-    else if (xp >= (u.jonin ?? 600)) { gamerProfile.rango = "Jōnin ⚔️"; }
-    else if (xp >= (u.chunin ?? 300)) { gamerProfile.rango = "Chūnin ⚡"; }
-    else { gamerProfile.rango = "Genin 🍃"; }
+    if (xp >= (u.hokage ?? 1000)) { gamerProfile.rango = "Hokage"; }
+    else if (xp >= (u.jonin ?? 600)) { gamerProfile.rango = "Jōnin"; }
+    else if (xp >= (u.chunin ?? 300)) { gamerProfile.rango = "Chūnin"; }
+    else { gamerProfile.rango = "Genin"; }
 
     localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
     document.getElementById('lblXp').innerText = gamerProfile.xp + " XP"; 
@@ -1421,7 +1886,6 @@
       gamerProfile.tag = t; 
       localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile)); 
       window.guardarJugadorEnNube();
-      alert("💾 ¡GamerTag guardado y sincronizado!"); 
       cerrarGamerProfileModal(); 
     } 
   };
@@ -1441,10 +1905,8 @@
         precio: prod.precio, 
         img: (prod.fotos && prod.fotos[0]) ? prod.fotos[0] : 'logo.webp'
       }); 
-      alert(`💖 ¡Añadido a favoritos!`); 
     } else { 
       favoritos.splice(idx, 1); 
-      alert(`💔 ¡Eliminado de favoritos!`); 
     }
     localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos)); 
     actualizarBadges();
@@ -1453,9 +1915,9 @@
   window.abrirFavoritosModal = function() {
     reproducirSonido(); 
     let cont = document.getElementById('listaFavoritosDetalle');
-    cont.innerHTML = favoritos.length === 0 ? "<p style='color:#aaa;'>Sin favoritos aún.</p>" : "";
+    cont.innerHTML = favoritos.length === 0 ? "<p style='color:var(--text-muted);'>No tienes productos guardados.</p>" : "";
     favoritos.forEach((item, i) => { 
-      cont.innerHTML += `<div class="cart-item-row"><img src="${item.img}" class="cart-item-img" loading="lazy" decoding="async"><div class="cart-item-info"><strong>${sanitizarHTML(item.titulo)}</strong><br><span style="color:var(--secondary-color);">$${Number(item.precio).toFixed(2)}</span></div><button class="cart-item-del" onclick="favoritos.splice(${i},1);localStorage.setItem('sakura_favoritos',JSON.stringify(favoritos));actualizarBadges();abrirFavoritosModal();">❌</button></div>`; 
+      cont.innerHTML += `<div class="cart-item-row"><img src="${item.img}" class="cart-item-img" loading="lazy" decoding="async"><div class="cart-item-info"><strong>${sanitizarHTML(item.titulo)}</strong><br><span style="color:var(--secondary-color);">$${Number(item.precio).toFixed(2)}</span></div><button class="cart-item-del" onclick="favoritos.splice(${i},1);localStorage.setItem('sakura_favoritos',JSON.stringify(favoritos));actualizarBadges();abrirFavoritosModal();"><i class="fas fa-trash"></i></button></div>`; 
     });
     document.getElementById('modalFavoritos').style.display = 'flex';
   };
@@ -1469,13 +1931,13 @@
     let hoy = new Date().toDateString(); 
     let ultimoCofre = localStorage.getItem('sakura_ultimo_cofre');
     if (ultimoCofre === hoy) { 
-      document.getElementById('cofreResultado').innerHTML = "⏳ Ya abriste tu cofre de hoy. ¡Vuelve mañana!"; 
+      document.getElementById('cofreResultado').innerHTML = "Cofre reclamado por hoy. Regresa mañana."; 
       return; 
     }
     localStorage.setItem('sakura_ultimo_cofre', hoy); 
     ganarXP(50); 
-    confetti({ particleCount: 120, spread: 80, origin: { y: 0.5 } });
-    document.getElementById('cofreResultado').innerHTML = "🎉 ¡Ganaste +50 XP diarios! ⚡";
+    confetti({ particleCount: 80, spread: 60, origin: { y: 0.5 } });
+    document.getElementById('cofreResultado').innerHTML = "¡Reclamaste +50 XP diarios!";
   };
 
   window.abrirGachaModal = function() { reproducirSonido(); document.getElementById('modalGacha').style.display = 'flex'; };
@@ -1483,15 +1945,15 @@
   
   window.girarRuletaGacha = function() { 
     reproducirSonido(); 
-    let hoy = new Date().toDateString(); 
+    let hoy = new Date().toDateString();
     let ultimaGacha = localStorage.getItem('sakura_ultima_gacha');
     if (ultimaGacha === hoy) {
-      document.getElementById('gachaResultado').innerHTML = "⏳ Ya giraste la ruleta hoy. ¡Vuelve mañana!";
+      document.getElementById('gachaResultado').innerHTML = "Tirada utilizada hoy. Regresa mañana.";
       return;
     }
     localStorage.setItem('sakura_ultima_gacha', hoy);
-    document.getElementById('gachaResultado').innerHTML = "🎉 ¡Ganaste 10% OFF! (Cupón: <strong>OTAKU10</strong>)"; 
-    confetti({ particleCount: 100, spread: 70, origin: { y: 0.5 } }); 
+    document.getElementById('gachaResultado').innerHTML = "Beneficio obtenido: 10% OFF con código <strong>OTAKU10</strong>"; 
+    confetti({ particleCount: 70, spread: 50, origin: { y: 0.5 } }); 
   };
 
   window.abrirGuiaTallasModal = function() { reproducirSonido(); document.getElementById('modalGuiaTallas').style.display = 'flex'; };
@@ -1534,7 +1996,7 @@
     let itemsMostrados = (pestanaCarritoActual === 'fisico') ? itemsFisicos : itemsDigitales;
 
     if (itemsMostrados.length === 0) {
-      cont.innerHTML = `<p style='color:#aaa; text-align:center;'>No hay ${pestanaCarritoActual === 'fisico' ? 'artículos físicos' : 'recargas'} en esta sección.</p>`;
+      cont.innerHTML = `<p style='color:var(--text-muted); text-align:center;'>Sin ${pestanaCarritoActual === 'fisico' ? 'artículos físicos' : 'recargas'} agregados.</p>`;
     } else {
       itemsMostrados.forEach((item) => {
         let idxOriginal = carrito.indexOf(item);
@@ -1545,7 +2007,7 @@
               <strong>${sanitizarHTML(item.titulo)}</strong><br>
               <span style="color:var(--secondary-color);">$${Number(item.precio).toFixed(2)}</span>
             </div>
-            <button class="cart-item-del" onclick="removerDelCarrito(${idxOriginal})">❌</button>
+            <button class="cart-item-del" onclick="removerDelCarrito(${idxOriginal})"><i class="fas fa-times"></i></button>
           </div>`;
       });
     }
@@ -1566,7 +2028,7 @@
       let tot = sub * (1 - descuentoAplicado);
       let totBs = tot * tasaBcvActual;
 
-      html += `<div style="border-top:1px dashed var(--secondary-color); margin-top:5px; padding-top:5px;" class="recibo-line"><strong>TOTAL USD:</strong> <strong>$${tot.toFixed(2)}</strong></div>`;
+      html += `<div style="border-top:1px dashed var(--border-color); margin-top:6px; padding-top:6px;" class="recibo-line"><strong>TOTAL USD:</strong> <strong>$${tot.toFixed(2)}</strong></div>`;
       html += `<div class="recibo-line"><strong>TOTAL BS:</strong> <strong>Bs. ${totBs.toLocaleString('es-VE', {minimumFractionDigits:2, maximumFractionDigits:2})}</strong></div>`;
 
       reciboContenido.innerHTML = html;
@@ -1600,13 +2062,12 @@
     if(item.esRecarga) {
       let playerId = document.getElementById('inputPlayerId').value.trim();
       let playerServer = document.getElementById('inputPlayerServer').value.trim();
-      if(!playerId) return alert("Por favor ingresa tu ID de jugador para la recarga.");
+      if(!playerId) return alert("Indica el ID de jugador para procesar la recarga.");
       item.titulo += ` [ID: ${playerId}${playerServer ? ' / Servidor: ' + playerServer : ''}]`;
     }
     carrito.push(item); 
     actualizarCarritoUI(); 
     cerrarModal(); 
-    alert("🛒 ¡Añadido al carrito!");
   };
 
   function actualizarCarritoUI() { 
@@ -1667,33 +2128,33 @@
 
     if (tieneFisicos && !direccionEnvio) {
       cambiarPestanaCarrito('fisico');
-      return alert("⚠️ Por favor indica la dirección o agencia para los artículos físicos.");
+      return alert("Por favor indica la dirección o agencia de destino.");
     }
 
     let sub = carrito.reduce((s, i) => s + Number(i.precio), 0); 
     let tot = sub * (1 - descuentoAplicado); 
     let totBs = tot * tasaBcvActual;
     
-    let msg = `¡Hola Sakura Gameverse! 🌸👾 Deseo realizar este pedido:\n\n`;
+    let msg = `Hola Sakura Gameverse, deseo procesar el siguiente pedido:\n\n`;
     
     if (tieneFisicos) {
-      msg += `📦 *PRODUCTOS FÍSICOS:*\n`;
+      msg += `📦 ARTÍCULOS FÍSICOS:\n`;
       carrito.filter(i => !i.esRecarga).forEach((i, idx) => {
         msg += `  ${idx+1}. ${i.titulo} - $${Number(i.precio).toFixed(2)}\n`;
       });
-      msg += `📍 *Envío:* ${metodoEnvio}\n`;
-      msg += `🏢 *Destino:* ${direccionEnvio}\n\n`;
+      msg += `Logística: ${metodoEnvio}\n`;
+      msg += `Destino: ${direccionEnvio}\n\n`;
     }
 
     if (tieneDigitales) {
-      msg += `⚡ *RECARGAS DIGITALES:*\n`;
+      msg += `⚡ RECARGAS DIGITALES:\n`;
       carrito.filter(i => i.esRecarga).forEach((i, idx) => {
         msg += `  ${idx+1}. ${i.titulo} - $${Number(i.precio).toFixed(2)}\n`;
       });
-      msg += `🎮 *Entrega:* Directa a la cuenta\n\n`;
+      msg += `Modalidad: Acreditación Directa\n\n`;
     }
 
-    msg += `*Total: $${tot.toFixed(2)} (Bs. ${totBs.toLocaleString('es-VE', {minimumFractionDigits:2, maximumFractionDigits:2})})*\n¡Espero instrucciones para el pago!`;
+    msg += `Total a Cancelar: $${tot.toFixed(2)} (Bs. ${totBs.toLocaleString('es-VE', {minimumFractionDigits:2, maximumFractionDigits:2})})\nQuedo a la espera de confirmación y datos de pago.`;
     
     window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msg), '_blank'); 
     cerrarCarritoModal();
@@ -1701,7 +2162,7 @@
 
   window.compartirProductoWhatsApp = function() {
     reproducirSonido(); 
-    let msg = `¡Mira esto en Sakura Gameverse! 🌸👾\n\n*${window.productoActual.titulo}*\nPrecio: $${Number(window.productoActual.precio).toFixed(2)}\n\n¿Disponible?`; 
+    let msg = `Hola Sakura Gameverse, deseo consultar disponibilidad de:\n\n*${window.productoActual.titulo}*\nPrecio: $${Number(window.productoActual.precio).toFixed(2)}`; 
     window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msg), '_blank');
   };
 
@@ -1714,12 +2175,11 @@
     reproducirSonido(); 
     let n = document.getElementById('sugNombre').value.trim(); 
     let d = document.getElementById('sugDeseo').value.trim();
-    if(!n || !d) return alert("Completa.");
-    window.open("https://wa.me/584244970576?text=" + encodeURIComponent(`💡 *Sugerencia* 💡\nCliente: ${n}\nDeseo: ${d}`), '_blank'); 
+    if(!n || !d) return alert("Por favor completa los campos.");
+    window.open("https://wa.me/584244970576?text=" + encodeURIComponent(`Consulta de Encargo:\nNombre: ${n}\nArtículo requerido: ${d}`), '_blank'); 
     cerrarSugerenciaModal();
   };
 
-  /* --- CARGA SEGURA DE RESEÑAS (ANTI-XSS) --- */
   async function cargarReviewsNube() {
     try {
       const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"));
@@ -1729,7 +2189,7 @@
       
       c.innerHTML = "";
       if (querySnapshot.empty) {
-        c.innerHTML = "<p style='color:#aaa; text-align:center;'>Aún no hay reseñas. ¡Sé el primero en dejar una! ✨</p>";
+        c.innerHTML = "<p style='color:var(--text-muted);'>Aún no hay reseñas registradas.</p>";
         return;
       }
 
@@ -1737,14 +2197,14 @@
         let r = docSnap.data();
         c.innerHTML += `
           <div class="review-card">
-            <div class="review-author">${sanitizarHTML(r.nombre)}</div>
-            <div class="review-stars">${sanitizarHTML(r.estrellas)}</div>
-            <div class="review-text">${sanitizarHTML(r.texto)}</div>
+            <div style="font-weight:700; color:#fff; margin-bottom:2px;">${sanitizarHTML(r.nombre)}</div>
+            <div style="color:#ffcc00; font-size:0.85em; margin-bottom:4px;">${sanitizarHTML(r.estrellas)}</div>
+            <div style="color:var(--text-muted); font-size:0.9em;">${sanitizarHTML(r.texto)}</div>
           </div>
         `;
       });
     } catch (e) {
-      console.error("Error cargando reseñas:", e);
+      console.error("Error al cargar reseñas:", e);
     }
   }
 
@@ -1753,7 +2213,7 @@
     let n = document.getElementById('revNombre').value.trim(); 
     let e = document.getElementById('revEstrellas').value; 
     let t = document.getElementById('revTexto').value.trim();
-    if(!n || !t) return alert("Por favor completa tu nombre y tu opinión.");
+    if(!n || !t) return alert("Por favor completa tu nombre y comentario.");
     
     try {
       await addDoc(collection(db, "reviews"), {
@@ -1765,21 +2225,20 @@
       document.getElementById('revNombre').value = ""; 
       document.getElementById('revTexto').value = ""; 
       await cargarReviewsNube();
-      alert("🎉 ¡Reseña publicada con éxito!");
+      alert("Opinión registrada correctamente.");
     } catch(err) {
-      alert("❌ Error al publicar la reseña.");
+      alert("Error al guardar la reseña.");
     }
   };
 
   actualizarBadges();
 </script>
 
-<!-- Script para el aviso de Instalación de App (Service Worker) -->
 <script>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js')
-      .then(reg => console.log('PWA lista', reg))
-      .catch(err => console.log('Error PWA', err));
+      .then(reg => console.log('Service Worker activo', reg))
+      .catch(err => console.log('Error SW:', err));
   }
 </script>
 </body>
