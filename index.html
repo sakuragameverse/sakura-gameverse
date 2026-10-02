@@ -530,7 +530,7 @@
 </div>
 
 <div class="hero-banner">
-  <img src="logo.webp" alt="Sakura Gameverse" class="hero-logo" onclick="activarEasterEggLogo()">
+  <img src="logo.webp" alt="Sakura Gameverse" class="hero-logo" onclick="activarEasterEggLogo()" loading="eager" decoding="async">
   <div class="store-status-badge"><div class="status-dot"></div> Abierto de 10:00AM a 7:00PM 24/7</div>
   <div class="hero-title">✨ Bienvenidos a Sakura Gameverse ✨<br>Donde tu pasión por el gaming nunca hace game over. 👾🌸</div>
   <div id="bannerSliderContainer" class="banner-slider-container"></div>
@@ -546,7 +546,7 @@
     <input type="text" id="buscador" class="search-input" placeholder="🔍 Buscar por nombre o universo (Miku, Naruto, etc)..." onkeyup="buscarProductos()">
   </div>
 
-  <!-- Carrusel Visual Único de Categorías -->
+  <!-- Carrusel Visual Único de Categorías con Optimización Lazy Loading -->
   <div class="categorias-visuales-section">
     <div class="categorias-visuales-header">Categorías</div>
     <div class="carrusel-wrapper">
@@ -554,55 +554,55 @@
       
       <div class="carrusel-track" id="categoriasTrack">
         <div class="cat-card activa" onclick="filtrarCategoria('todos')">
-          <img src="logo.webp" id="img-cat-todos" class="cat-img" alt="Todos">
+          <img src="logo.webp" id="img-cat-todos" class="cat-img" alt="Todos" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-todos">Todo el Loot</div><div class="cat-count" id="count-todos">0 productos</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('recargas')">
-          <img src="logo.webp" id="img-cat-recargas" class="cat-img" alt="Recargas">
+          <img src="logo.webp" id="img-cat-recargas" class="cat-img" alt="Recargas" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-recargas">Recargas</div><div class="cat-count" id="count-recargas">0 productos</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('mangas')">
-          <img src="logo.webp" id="img-cat-mangas" class="cat-img" alt="Mangas">
+          <img src="logo.webp" id="img-cat-mangas" class="cat-img" alt="Mangas" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-mangas">Mangas Y Cómics</div><div class="cat-count" id="count-mangas">0 productos</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('ropa')">
-          <img src="logo.webp" id="img-cat-ropa" class="cat-img" alt="Ropa">
+          <img src="logo.webp" id="img-cat-ropa" class="cat-img" alt="Ropa" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-ropa">Clothing</div><div class="cat-count" id="count-ropa">0 productos</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('cartas')">
-          <img src="logo.webp" id="img-cat-cartas" class="cat-img" alt="TCG">
+          <img src="logo.webp" id="img-cat-cartas" class="cat-img" alt="TCG" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-cartas">TCG/Cartas</div><div class="cat-count" id="count-cartas">0 productos</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('figuras')">
-          <img src="logo.webp" id="img-cat-figuras" class="cat-img" alt="Figuras">
+          <img src="logo.webp" id="img-cat-figuras" class="cat-img" alt="Figuras" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-figuras">Figuras Anime</div><div class="cat-count" id="count-figuras">0 productos</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('mandos')">
-          <img src="logo.webp" id="img-cat-mandos" class="cat-img" alt="Mandos">
+          <img src="logo.webp" id="img-cat-mandos" class="cat-img" alt="Mandos" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-mandos">Videojuegos</div><div class="cat-count" id="count-mandos">0 productos</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('audifonos')">
-          <img src="logo.webp" id="img-cat-audifonos" class="cat-img" alt="Audífonos">
+          <img src="logo.webp" id="img-cat-audifonos" class="cat-img" alt="Audífonos" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-audifonos">Electrónica Audio</div><div class="cat-count" id="count-audifonos">0 productos</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('teclados')">
-          <img src="logo.webp" id="img-cat-teclados" class="cat-img" alt="Teclados">
+          <img src="logo.webp" id="img-cat-teclados" class="cat-img" alt="Teclados" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-teclados">Teclados PC</div><div class="cat-count" id="count-teclados">0 productos</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('peluches')">
-          <img src="logo.webp" id="img-cat-peluches" class="cat-img" alt="Peluches">
+          <img src="logo.webp" id="img-cat-peluches" class="cat-img" alt="Peluches" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-peluches">Peluches Kawaii</div><div class="cat-count" id="count-peluches">0 productos</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('katanas')">
-          <img src="logo.webp" id="img-cat-katanas" class="cat-img" alt="Katanas">
+          <img src="logo.webp" id="img-cat-katanas" class="cat-img" alt="Katanas" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-katanas">Katanas Replicas</div><div class="cat-count" id="count-katanas">0 productos</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('lamparas')">
-          <img src="logo.webp" id="img-cat-lamparas" class="cat-img" alt="Lámparas">
+          <img src="logo.webp" id="img-cat-lamparas" class="cat-img" alt="Lámparas" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-lamparas">Lámparas Neón</div><div class="cat-count" id="count-lamparas">0 productos</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('accesorios')">
-          <img src="logo.webp" id="img-cat-accesorios" class="cat-img" alt="Accesorios">
+          <img src="logo.webp" id="img-cat-accesorios" class="cat-img" alt="Accesorios" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-accesorios">Accesorios</div><div class="cat-count" id="count-accesorios">0 productos</div></div>
         </div>
       </div>
@@ -674,7 +674,7 @@
   <div class="modal-content" style="text-align: left;">
     <button class="cerrar-modal" onclick="cerrarModal()">×</button>
     <div class="breadcrumbs" id="modalBreadcrumbs">Inicio / <span>Categoría</span></div>
-    <img id="modalImg" src="" alt="Producto" class="modal-img">
+    <img id="modalImg" src="" alt="Producto" class="modal-img" loading="eager" decoding="async">
     <div id="modalContainerMinis" class="modal-miniaturas"></div>
     <div id="modalTag" class="modal-tag-info">Envío Inmediato 📦</div>
     <h2 id="modalTitulo" style="color: var(--secondary-color); margin-bottom: 5px; margin-top: 0;">Título</h2>
@@ -740,7 +740,7 @@
   </div>
 </div>
 
-<!-- MODAL CARRITO -->
+<!-- MODAL CARRITO CON LOGÍSTICA DE ENVÍO -->
 <div id="modalCarrito" class="modal">
   <div class="modal-content" style="width: 450px;">
     <button class="cerrar-modal" onclick="cerrarCarritoModal()">×</button>
@@ -748,6 +748,21 @@
     <div class="cupon-box"><input type="text" id="inputCupon" class="cupon-input" placeholder="Cupón (Ej: OTAKU10)"><button class="btn-cupon" onclick="aplicarCupon()">Aplicar</button></div>
     <div id="mensajeCupon" style="font-size: 0.8em; margin-bottom: 8px; color: var(--secondary-color);"></div>
     <div id="listaCarritoDetalle" style="max-height: 150px; overflow-y: auto; margin-bottom: 12px;"></div>
+    
+    <!-- Selector Logístico de Envío -->
+    <div style="margin-bottom: 12px; text-align: left;">
+      <label for="selectMetodoEnvio" style="color: var(--secondary-color); font-size: 0.85em; font-weight: bold; display: block; margin-bottom: 5px;">
+        📦 Método de entrega / Envío:
+      </label>
+      <select id="selectMetodoEnvio" class="talla-select">
+        <option value="ZOOM (Cobro a destino)">📦 ZOOM (Envío nacional - Cobro a destino)</option>
+        <option value="MRW (Cobro a destino)">🚚 MRW (Envío nacional - Cobro a destino)</option>
+        <option value="Entrega Personal (Bejuma)">🤝 Entrega Personal (Bejuma, Carabobo)</option>
+        <option value="Entrega Personal (Miranda)">🤝 Entrega Personal (Miranda, Carabobo)</option>
+        <option value="Digital (Para Recargas)">⚡ Entrega Digital / Directa (Solo Recargas)</option>
+      </select>
+    </div>
+
     <div id="reciboDigital" class="recibo-box" style="display: none;"><div style="text-align: center; font-weight: bold; margin-bottom: 8px; color: var(--primary-color);">--- RECIBO DIGITAL ---</div><div id="reciboContenido"></div></div>
     <div id="paymentMethodsCart" style="display: none; border: 2px solid var(--secondary-color); border-radius: 12px; padding: 15px; margin-bottom: 15px; background: var(--card-bg);">
       <h3 style="color: var(--primary-color); margin-top: 0; font-size: 1.1em;"><i class="fas fa-credit-card"></i> Métodos de Pago</h3>
@@ -934,7 +949,7 @@
       let htmlDots = '<div class="banner-dots">'; 
       
       bannersValidos.forEach((url, index) => {
-        htmlImgs += `<img src="${url}" class="banner-slide ${index === 0 ? 'active' : ''}" data-index="${index}">`;
+        htmlImgs += `<img src="${url}" class="banner-slide ${index === 0 ? 'active' : ''}" data-index="${index}" ${index === 0 ? 'loading="eager"' : 'loading="lazy"'} decoding="async">`;
         htmlDots += `<div class="banner-dot ${index === 0 ? 'active' : ''}" onclick="cambiarBannerManual(${index})"></div>`;
       });
       
@@ -1023,7 +1038,7 @@
       let imgsHtml = ''; 
       let dotsHtml = '';
       fotosArray.forEach((foto, fIdx) => {
-        imgsHtml += `<img src="${foto}" class="${fIdx === 0 ? 'activa' : ''}" data-index="${fIdx}">`;
+        imgsHtml += `<img src="${foto}" class="${fIdx === 0 ? 'activa' : ''}" data-index="${fIdx}" loading="lazy" decoding="async">`;
         dotsHtml += `<div class="dot ${fIdx === 0 ? 'activo' : ''}" data-index="${fIdx}"></div>`;
       });
       let botonesCarrusel = fotosArray.length > 1 ? `<div class="carrusel-btn carrusel-prev" onclick="cambiarFotoTarjeta(event, ${indexProd}, -1)"><i class="fas fa-chevron-left"></i></div><div class="carrusel-btn carrusel-next" onclick="cambiarFotoTarjeta(event, ${indexProd}, 1)"><i class="fas fa-chevron-right"></i></div><div class="carrusel-dots">${dotsHtml}</div>` : '';
@@ -1168,7 +1183,7 @@
     contenedorMinis.innerHTML = "";
     if (fotosArray.length > 1) {
       fotosArray.forEach((fotoUrl, idx) => {
-        contenedorMinis.innerHTML += `<img src="${fotoUrl}" class="modal-mini-img ${idx === 0 ? 'activo' : ''}" onclick="cambiarFotoModal('${fotoUrl}', this)">`;
+        contenedorMinis.innerHTML += `<img src="${fotoUrl}" class="modal-mini-img ${idx === 0 ? 'activo' : ''}" onclick="cambiarFotoModal('${fotoUrl}', this)" loading="lazy" decoding="async">`;
       });
     }
     document.getElementById('miModal').style.display = 'flex';
@@ -1405,7 +1420,7 @@
     let cont = document.getElementById('listaFavoritosDetalle');
     cont.innerHTML = favoritos.length === 0 ? "<p style='color:#aaa;'>Sin favoritos aún.</p>" : "";
     favoritos.forEach((item, i) => { 
-      cont.innerHTML += `<div class="cart-item-row"><img src="${item.img}" class="cart-item-img"><div class="cart-item-info"><strong>${sanitizarHTML(item.titulo)}</strong><br><span style="color:var(--secondary-color);">$${Number(item.precio).toFixed(2)}</span></div><button class="cart-item-del" onclick="favoritos.splice(${i},1);localStorage.setItem('sakura_favoritos',JSON.stringify(favoritos));actualizarBadges();abrirFavoritosModal();">❌</button></div>`; 
+      cont.innerHTML += `<div class="cart-item-row"><img src="${item.img}" class="cart-item-img" loading="lazy" decoding="async"><div class="cart-item-info"><strong>${sanitizarHTML(item.titulo)}</strong><br><span style="color:var(--secondary-color);">$${Number(item.precio).toFixed(2)}</span></div><button class="cart-item-del" onclick="favoritos.splice(${i},1);localStorage.setItem('sakura_favoritos',JSON.stringify(favoritos));actualizarBadges();abrirFavoritosModal();">❌</button></div>`; 
     });
     document.getElementById('modalFavoritos').style.display = 'flex';
   };
@@ -1433,7 +1448,7 @@
   
   window.girarRuletaGacha = function() { 
     reproducirSonido(); 
-    let hoy = new Date().toDateString();
+    let hoy = new Date().toDateString(); 
     let ultimaGacha = localStorage.getItem('sakura_ultima_gacha');
     if (ultimaGacha === hoy) {
       document.getElementById('gachaResultado').innerHTML = "⏳ Ya giraste la ruleta hoy. ¡Vuelve mañana!";
@@ -1515,7 +1530,7 @@
       paymentBox.style.display = 'block';
       let html = "";
       carrito.forEach((item, i) => {
-        cont.innerHTML += `<div class="cart-item-row"><img src="${item.img}" class="cart-item-img"><div class="cart-item-info"><strong>${sanitizarHTML(item.titulo)}</strong><br><span style="color:var(--secondary-color);">$${Number(item.precio).toFixed(2)}</span></div><button class="cart-item-del" onclick="removerDelCarrito(${i})">❌</button></div>`;
+        cont.innerHTML += `<div class="cart-item-row"><img src="${item.img}" class="cart-item-img" loading="lazy" decoding="async"><div class="cart-item-info"><strong>${sanitizarHTML(item.titulo)}</strong><br><span style="color:var(--secondary-color);">$${Number(item.precio).toFixed(2)}</span></div><button class="cart-item-del" onclick="removerDelCarrito(${i})">❌</button></div>`;
         html += `<div class="recibo-line"><span>${sanitizarHTML(item.titulo)}</span><span>$${Number(item.precio).toFixed(2)}</span></div>`;
       });
       let sub = carrito.reduce((s, i) => s + Number(i.precio), 0); 
@@ -1548,12 +1563,17 @@
   window.enviarPedidoWhatsApp = function() {
     reproducirSonido(); 
     if(carrito.length === 0) return alert("Vacío.");
+    
+    let metodoEnvio = document.getElementById('selectMetodoEnvio') ? document.getElementById('selectMetodoEnvio').value : "No especificado";
     let sub = carrito.reduce((s, i) => s + Number(i.precio), 0); 
     let tot = sub * (1 - descuentoAplicado); 
     let totBs = tot * tasaBcvActual;
+    
     let msg = `¡Hola Sakura Gameverse! 🌸👾 Deseo realizar este pedido:\n\n`;
     carrito.forEach((i, idx) => { msg += `${idx+1}. ${i.titulo} - $${Number(i.precio).toFixed(2)}\n`; });
-    msg += `\n*Total: $${tot.toFixed(2)} (Bs. ${totBs.toLocaleString('es-VE', {minimumFractionDigits:2, maximumFractionDigits:2})})*\n¡Espero instrucciones para el pago!`;
+    msg += `\n*Método de Entrega / Envío:* ${metodoEnvio}\n`;
+    msg += `*Total: $${tot.toFixed(2)} (Bs. ${totBs.toLocaleString('es-VE', {minimumFractionDigits:2, maximumFractionDigits:2})})*\n¡Espero instrucciones para el pago!`;
+    
     window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msg), '_blank'); 
     cerrarCarritoModal();
   };
