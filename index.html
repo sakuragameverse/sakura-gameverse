@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
-<link rel="manifest" href="manifest.json">
-<link rel="icon" type="image/webp" href="logo.webp">
-<meta name="theme-color" content="#ffffff">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sakura Gameverse</title>
+  
+  <!-- Configuración para App / PWA -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/webp" href="logo.webp">
+  <meta name="theme-color" content="#ffffff">
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
@@ -1219,6 +1221,7 @@
   actualizarBadges();
 </script>
 
+<!-- Script para el aviso de Instalación de App (Service Worker) -->
 <script>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js')
