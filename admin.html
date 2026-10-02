@@ -166,7 +166,6 @@
       gap: 7px;
     }
 
-    /* Botón Desplegable para Formularios en Móvil */
     .btn-toggle-box {
       width: 100%;
       background: rgba(0, 229, 255, 0.08);
@@ -185,7 +184,6 @@
       margin-bottom: 14px;
     }
 
-    /* --- INPUTS CÓMODOS PARA DEDOS (MÍNIMO 42PX) --- */
     .form-group {
       margin-bottom: 12px;
       text-align: left;
@@ -214,6 +212,71 @@
       border-color: var(--secondary-color);
     }
 
+    /* --- CARGADOR DE FOTOS WEBP --- */
+    .btn-file-select {
+      width: 100%;
+      min-height: 46px;
+      background: rgba(0, 229, 255, 0.08);
+      border: 1px dashed var(--secondary-color);
+      color: var(--secondary-color);
+      border-radius: var(--radius-sm);
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 0.9em;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .btn-file-select:active { background: rgba(0, 229, 255, 0.2); }
+
+    .preview-fotos-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .preview-foto-item {
+      position: relative;
+      width: 64px;
+      height: 64px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      background: #000;
+    }
+    .preview-foto-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .btn-del-foto-preview {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      background: rgba(0, 0, 0, 0.8);
+      color: #ff3366;
+      border: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      font-size: 0.7em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .upload-status-text {
+      font-size: 0.85em;
+      color: var(--secondary-color);
+      margin-top: 6px;
+      display: none;
+      font-weight: 700;
+    }
+
     .btn-submit {
       width: 100%;
       min-height: 44px;
@@ -232,8 +295,9 @@
       gap: 8px;
     }
     .btn-submit:active { transform: scale(0.98); }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    /* --- TARJETAS MÓVILES EN LUGAR DE TABLAS --- */
+    /* --- TARJETAS MÓVILES --- */
     .item-card-row {
       display: flex;
       align-items: center;
@@ -372,7 +436,6 @@
 
   <!-- 1. INVENTARIO -->
   <section id="panel-productos" class="admin-panel active">
-    <!-- Botón para plegar/desplegar el formulario en el teléfono -->
     <button class="btn-toggle-box" id="btnToggleFormProd" onclick="toggleFormularioProducto()">
       <i class="fas fa-plus"></i> <span id="lblToggleForm">Crear Nuevo Producto</span>
     </button>
@@ -400,8 +463,8 @@
           <div class="form-group" style="flex: 1;">
             <label class="form-label">Categoría:</label>
             <select id="prodCategoria" class="form-select">
-              <option value="recargas">Recargas ⚡</option>
               <option value="figuras">Figuras Anime</option>
+              <option value="recargas">Recargas ⚡</option>
               <option value="mangas">Mangas</option>
               <option value="ropa">Vestimenta</option>
               <option value="cartas">TCG / Cartas</option>
@@ -430,9 +493,21 @@
           </select>
         </div>
 
+        <!-- CARGADOR INTELIGENTE DE FOTOS WEBP -->
         <div class="form-group">
-          <label class="form-label">Fotos (URLs separadas por coma):</label>
-          <input type="text" id="prodFotos" class="form-input" placeholder="https://i.imgur.com/..." required>
+          <label class="form-label">Fotos del Producto (Hasta 5 imágenes):</label>
+          
+          <input type="file" id="prodFileInput" multiple accept="image/*" style="display: none;" onchange="procesarArchivosGaleria(event)">
+          <button type="button" class="btn-file-select" onclick="document.getElementById('prodFileInput').click()">
+            <i class="fas fa-camera"></i> Seleccionar Fotos desde Galería
+          </button>
+          
+          <div id="txtEstadoSubida" class="upload-status-text">
+            <i class="fas fa-spinner fa-spin"></i> Optimizando fotos a formato WebP...
+          </div>
+
+          <!-- Miniaturas Previsualizadas -->
+          <div id="contenedorPreviewFotos" class="preview-fotos-grid"></div>
         </div>
 
         <div class="form-group">
@@ -521,10 +596,10 @@
       <div class="panel-header"><span class="panel-title"><i class="fas fa-plus"></i> Añadir Banner</span></div>
       <form onsubmit="agregarBanner(event)">
         <div class="form-group">
-          <label class="form-label">URL de Imagen (16:9):</label>
-          <input type="text" id="bannerImgUrl" class="form-input" placeholder="https://i.imgur.com/..." required>
+          <label class="form-label">Foto de Banner (Se convierte a WebP):</label>
+          <input type="file" id="bannerFileInput" accept="image/*" class="form-input" style="padding: 6px;" required>
         </div>
-        <button type="submit" class="btn-submit">Publicar Banner</button>
+        <button type="submit" class="btn-submit" id="btnSubirBanner">Publicar Banner</button>
       </form>
     </div>
     <div class="card-panel">
@@ -560,22 +635,10 @@
     <div class="card-panel">
       <div class="panel-header"><span class="panel-title"><i class="fas fa-wallet"></i> Métodos de Pago</span></div>
       <form onsubmit="guardarDatosPago(event)">
-        <div class="form-group">
-          <label class="form-label">Banco:</label>
-          <input type="text" id="pagoBanco" class="form-input" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Teléfono Pago Móvil:</label>
-          <input type="text" id="pagoTelefono" class="form-input" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Cédula:</label>
-          <input type="text" id="pagoCedula" class="form-input" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Binance Pay:</label>
-          <input type="text" id="pagoBinance" class="form-input" required>
-        </div>
+        <div class="form-group"><label class="form-label">Banco:</label><input type="text" id="pagoBanco" class="form-input" required></div>
+        <div class="form-group"><label class="form-label">Teléfono Pago Móvil:</label><input type="text" id="pagoTelefono" class="form-input" required></div>
+        <div class="form-group"><label class="form-label">Cédula:</label><input type="text" id="pagoCedula" class="form-input" required></div>
+        <div class="form-group"><label class="form-label">Binance Pay:</label><input type="text" id="pagoBinance" class="form-input" required></div>
         <button type="submit" class="btn-submit">Actualizar Cuentas</button>
       </form>
     </div>
@@ -606,6 +669,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
   import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, setDoc, addDoc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+  import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-storage.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDH1DZqaIi5sKRXspXDUWbMUZ4nr5JIy8Q",
@@ -618,8 +682,10 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+  const storage = getStorage(app);
 
   let productosAdminGlobal = [];
+  let fotosBufferProducto = []; // Almacena URLs existentes y nuevos Blobs WebP
   const PIN_MAESTRO = "1234";
 
   window.verificarPinAcceso = function() {
@@ -673,7 +739,101 @@
     });
   }
 
-  // --- RENDERIZAR PRODUCTOS EN TARJETAS TÁCTILES ---
+  /* --- CONVERSOR CLIENT-SIDE A WEBP --- */
+  function comprimirYConvertirAWebP(archivo, maxDim = 1000, calidad = 0.82) {
+    return new Promise((resolve, reject) => {
+      const lector = new FileReader();
+      lector.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          let ancho = img.width;
+          let alto = img.height;
+
+          if (ancho > maxDim || alto > maxDim) {
+            if (ancho > alto) {
+              alto = Math.round((alto * maxDim) / ancho);
+              ancho = maxDim;
+            } else {
+              ancho = Math.round((ancho * maxDim) / alto);
+              alto = maxDim;
+            }
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = ancho;
+          canvas.height = alto;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, ancho, alto);
+
+          canvas.toBlob((blob) => {
+            if (blob) {
+              resolve(blob);
+            } else {
+              reject(new Error("No se pudo comprimir la imagen"));
+            }
+          }, 'image/webp', calidad);
+        };
+        img.onerror = reject;
+        img.src = e.target.result;
+      };
+      lector.onerror = reject;
+      lector.readAsDataURL(archivo);
+    });
+  }
+
+  /* --- SELECCIÓN Y PROCESAMIENTO DE FOTOS --- */
+  window.procesarArchivosGaleria = async function(e) {
+    const archivos = Array.from(e.target.files);
+    if (!archivos.length) return;
+
+    if (fotosBufferProducto.length + archivos.length > 5) {
+      alert("Puedes subir un máximo de 5 fotos por producto.");
+      return;
+    }
+
+    const txtEstado = document.getElementById('txtEstadoSubida');
+    txtEstado.style.display = 'block';
+
+    for (let archivo of archivos) {
+      try {
+        const webpBlob = await comprimirYConvertirAWebP(archivo);
+        const urlTemporal = URL.createObjectURL(webpBlob);
+        fotosBufferProducto.push({
+          tipo: 'nuevo',
+          blob: webpBlob,
+          previewUrl: urlTemporal
+        });
+      } catch (err) {
+        console.error("Error al procesar foto:", err);
+      }
+    }
+
+    txtEstado.style.display = 'none';
+    renderizarMiniaturasFotos();
+    e.target.value = ""; // Limpiar input para permitir reselección
+  };
+
+  function renderizarMiniaturasFotos() {
+    const cont = document.getElementById('contenedorPreviewFotos');
+    cont.innerHTML = "";
+
+    fotosBufferProducto.forEach((item, index) => {
+      const url = item.tipo === 'existente' ? item.url : item.previewUrl;
+      cont.innerHTML += `
+        <div class="preview-foto-item">
+          <img src="${url}">
+          <button type="button" class="btn-del-foto-preview" onclick="removerFotoBuffer(${index})">✕</button>
+        </div>
+      `;
+    });
+  }
+
+  window.removerFotoBuffer = function(index) {
+    fotosBufferProducto.splice(index, 1);
+    renderizarMiniaturasFotos();
+  };
+
+  // --- CRUD PRODUCTOS CON SUBIDA A STORAGE ---
   async function cargarProductosAdmin() {
     try {
       const q = query(collection(db, "productos"), orderBy("timestamp", "desc"));
@@ -732,31 +892,59 @@
     const coleccion = document.getElementById('prodColeccion').value.trim() || 'General';
     const estado = document.getElementById('prodEstado').value;
     const desc = document.getElementById('prodDesc').value.trim();
-    const fotosRaw = document.getElementById('prodFotos').value.split(',').map(s => s.trim()).filter(s => s !== '');
 
-    const data = {
-      nombre,
-      precio,
-      categoria,
-      coleccion,
-      estado,
-      descripcion: desc,
-      fotos: fotosRaw,
-      timestamp: Date.now()
-    };
+    if (fotosBufferProducto.length === 0) {
+      return alert("Por favor selecciona al menos una foto para el producto.");
+    }
+
+    const btn = document.getElementById('btnGuardarProd');
+    btn.disabled = true;
+    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Subiendo a la nube...`;
 
     try {
+      let urlsFinales = [];
+
+      // Subir fotos a Firebase Storage en formato WebP
+      for (let item of fotosBufferProducto) {
+        if (item.tipo === 'existente') {
+          urlsFinales.push(item.url);
+        } else if (item.tipo === 'nuevo') {
+          const nombreArchivo = `prod_${Date.now()}_${Math.random().toString(36).substring(2, 8)}.webp`;
+          const storageRef = ref(storage, `productos/${nombreArchivo}`);
+          
+          await uploadBytes(storageRef, item.blob, { contentType: 'image/webp' });
+          const downloadUrl = await getDownloadURL(storageRef);
+          urlsFinales.push(downloadUrl);
+        }
+      }
+
+      const data = {
+        nombre,
+        precio,
+        categoria,
+        coleccion,
+        estado,
+        descripcion: desc,
+        fotos: urlsFinales,
+        timestamp: Date.now()
+      };
+
       if (id) {
         await updateDoc(doc(db, "productos", id), data);
-        alert("¡Producto actualizado!");
+        alert("¡Producto actualizado exitosamente!");
       } else {
         await addDoc(collection(db, "productos"), data);
-        alert("¡Producto creado!");
+        alert("¡Producto guardado exitosamente en WebP!");
       }
+
       resetFormularioProducto();
       cargarProductosAdmin();
     } catch(err) {
-      alert("Error: " + err.message);
+      console.error(err);
+      alert("Error al guardar: " + err.message);
+    } finally {
+      btn.disabled = false;
+      btn.innerText = "Guardar Producto";
     }
   };
 
@@ -771,7 +959,13 @@
     document.getElementById('prodColeccion').value = p.coleccion || '';
     document.getElementById('prodEstado').value = p.estado || 'Envío Inmediato 📦';
     document.getElementById('prodDesc').value = p.descripcion || '';
-    document.getElementById('prodFotos').value = (p.fotos || []).join(', ');
+
+    // Cargar fotos existentes en el buffer de previsualización
+    fotosBufferProducto = (p.fotos || []).map(url => ({
+      tipo: 'existente',
+      url: url
+    }));
+    renderizarMiniaturasFotos();
 
     document.getElementById('formProdTitulo').innerHTML = `<i class="fas fa-pen"></i> Editando Producto`;
     document.getElementById('btnGuardarProd').innerText = "Guardar Cambios";
@@ -784,6 +978,8 @@
   window.resetFormularioProducto = function() {
     document.getElementById('formProducto').reset();
     document.getElementById('prodEditId').value = "";
+    fotosBufferProducto = [];
+    renderizarMiniaturasFotos();
     document.getElementById('formProdTitulo').innerHTML = `<i class="fas fa-plus-circle"></i> Nuevo Producto`;
     document.getElementById('btnGuardarProd').innerText = "Guardar Producto";
     document.getElementById('cajaFormProducto').style.display = "none";
@@ -791,7 +987,7 @@
   };
 
   window.eliminarProducto = async function(id) {
-    if (!confirm("¿Eliminar este producto?")) return;
+    if (!confirm("¿Deseas eliminar este producto?")) return;
     await deleteDoc(doc(db, "productos", id));
     cargarProductosAdmin();
   };
@@ -874,7 +1070,7 @@
     cargarPedidosAdmin();
   };
 
-  // --- BANNERS ---
+  // --- BANNERS EN WEBP ---
   async function cargarBannersAdmin() {
     const q = query(collection(db, "banners"), orderBy("timestamp", "desc"));
     const snapshot = await getDocs(q);
@@ -895,10 +1091,31 @@
 
   window.agregarBanner = async function(e) {
     e.preventDefault();
-    const url = document.getElementById('bannerImgUrl').value.trim();
-    await addDoc(collection(db, "banners"), { imgUrl: url, timestamp: Date.now() });
-    document.getElementById('bannerImgUrl').value = "";
-    cargarBannersAdmin();
+    const file = document.getElementById('bannerFileInput').files[0];
+    if (!file) return;
+
+    const btn = document.getElementById('btnSubirBanner');
+    btn.disabled = true;
+    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Subiendo WebP...`;
+
+    try {
+      const webpBlob = await comprimirYConvertirAWebP(file, 1280, 0.85);
+      const nombreArchivo = `banner_${Date.now()}.webp`;
+      const storageRef = ref(storage, `banners/${nombreArchivo}`);
+      
+      await uploadBytes(storageRef, webpBlob, { contentType: 'image/webp' });
+      const downloadUrl = await getDownloadURL(storageRef);
+
+      await addDoc(collection(db, "banners"), { imgUrl: downloadUrl, timestamp: Date.now() });
+      document.getElementById('bannerFileInput').value = "";
+      cargarBannersAdmin();
+      alert("¡Banner publicado con éxito!");
+    } catch (err) {
+      alert("Error al subir banner: " + err.message);
+    } finally {
+      btn.disabled = false;
+      btn.innerText = "Publicar Banner";
+    }
   };
 
   window.eliminarBanner = async function(id) {
