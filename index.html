@@ -740,7 +740,7 @@
   </div>
 </div>
 
-<!-- MODAL CARRITO CON LOGÍSTICA DE ENVÍO -->
+<!-- MODAL CARRITO CON LOGÍSTICA DE ENVÍO Y DIRECCIÓN -->
 <div id="modalCarrito" class="modal">
   <div class="modal-content" style="width: 450px;">
     <button class="cerrar-modal" onclick="cerrarCarritoModal()">×</button>
@@ -761,6 +761,14 @@
         <option value="Entrega Personal (Miranda)">🤝 Entrega Personal (Miranda, Carabobo)</option>
         <option value="Digital (Para Recargas)">⚡ Entrega Digital / Directa (Solo Recargas)</option>
       </select>
+    </div>
+
+    <!-- Campo de Dirección o Agencia de Destino -->
+    <div style="margin-bottom: 12px; text-align: left;" id="boxDireccionEnvio">
+      <label for="inputDireccionEnvio" style="color: var(--secondary-color); font-size: 0.85em; font-weight: bold; display: block; margin-bottom: 5px;">
+        📍 Dirección de entrega / Agencia (Ciudad, Estado):
+      </label>
+      <input type="text" id="inputDireccionEnvio" class="sugerencia-input" style="margin-bottom: 0;" placeholder="Ej: ZOOM Bejuma / Av. Bolívar casa #12...">
     </div>
 
     <div id="reciboDigital" class="recibo-box" style="display: none;"><div style="text-align: center; font-weight: bold; margin-bottom: 8px; color: var(--primary-color);">--- RECIBO DIGITAL ---</div><div id="reciboContenido"></div></div>
@@ -1448,7 +1456,7 @@
   
   window.girarRuletaGacha = function() { 
     reproducirSonido(); 
-    let hoy = new Date().toDateString(); 
+    let hoy = new Date().toDateString();
     let ultimaGacha = localStorage.getItem('sakura_ultima_gacha');
     if (ultimaGacha === hoy) {
       document.getElementById('gachaResultado').innerHTML = "⏳ Ya giraste la ruleta hoy. ¡Vuelve mañana!";
@@ -1562,9 +1570,15 @@
 
   window.enviarPedidoWhatsApp = function() {
     reproducirSonido(); 
-    if(carrito.length === 0) return alert("Vacío.");
+    if(carrito.length === 0) return alert("El carrito está vacío.");
     
     let metodoEnvio = document.getElementById('selectMetodoEnvio') ? document.getElementById('selectMetodoEnvio').value : "No especificado";
+    let direccionEnvio = document.getElementById('inputDireccionEnvio') ? document.getElementById('inputDireccionEnvio').value.trim() : "";
+
+    if (!metodoEnvio.includes("Digital") && !direccionEnvio) {
+      return alert("⚠️ Por favor indica la dirección de destino o la agencia donde retirarás el paquete.");
+    }
+
     let sub = carrito.reduce((s, i) => s + Number(i.precio), 0); 
     let tot = sub * (1 - descuentoAplicado); 
     let totBs = tot * tasaBcvActual;
@@ -1572,7 +1586,10 @@
     let msg = `¡Hola Sakura Gameverse! 🌸👾 Deseo realizar este pedido:\n\n`;
     carrito.forEach((i, idx) => { msg += `${idx+1}. ${i.titulo} - $${Number(i.precio).toFixed(2)}\n`; });
     msg += `\n*Método de Entrega / Envío:* ${metodoEnvio}\n`;
-    msg += `*Total: $${tot.toFixed(2)} (Bs. ${totBs.toLocaleString('es-VE', {minimumFractionDigits:2, maximumFractionDigits:2})})*\n¡Espero instrucciones para el pago!`;
+    if (direccionEnvio) {
+      msg += `*Dirección / Agencia:* ${direccionEnvio}\n`;
+    }
+    msg += `*Total: $${tot.toFixed(2)} (Bs. ${totBs.toLocaleString('es-VE', {minimumFractionDigits:2, maximumFractionDigits:2})})*\n\n¡Espero instrucciones para el pago!`;
     
     window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msg), '_blank'); 
     cerrarCarritoModal();
@@ -1663,4 +1680,3 @@
 </script>
 </body>
 </html>
-
