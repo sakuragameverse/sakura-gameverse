@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Admin Dashboard | Sakura Gameverse</title>
   
   <link rel="icon" type="image/webp" href="logo.webp">
@@ -18,16 +18,14 @@
     :root {
       --bg-color: #080212;
       --card-bg: #110524;
-      --card-hover-bg: #190933;
-      --surface-dark: #080114;
+      --surface-dark: #07010f;
       --text-color: #e6e9f0;
       --text-muted: #8b8f9e;
       --primary-color: #ff007f;
       --secondary-color: #00e5ff;
       --border-color: rgba(0, 229, 255, 0.16);
-      --border-hover: rgba(0, 229, 255, 0.5);
-      --radius-sm: 4px;
-      --radius-md: 8px;
+      --radius-sm: 6px;
+      --radius-md: 10px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -37,20 +35,16 @@
       color: var(--text-color);
       font-family: 'Rajdhani', sans-serif;
       font-size: 16px;
-      font-weight: 500;
-      letter-spacing: 0.5px;
       min-height: 100vh;
       overflow-x: hidden;
+      padding-bottom: 40px;
     }
 
     body::before {
       content: "";
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: radial-gradient(circle at 50% 0%, rgba(255, 0, 127, 0.06) 0%, transparent 60%),
-                  linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-                  linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-      background-size: 100% 100%, 35px 35px, 35px 35px;
+      background: radial-gradient(circle at 50% 0%, rgba(255, 0, 127, 0.05) 0%, transparent 60%);
       pointer-events: none;
       z-index: 0;
     }
@@ -58,19 +52,14 @@
     h1, h2, h3, h4, .font-heading {
       font-family: 'Chakra Petch', sans-serif;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
     }
 
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg-color); }
-    ::-webkit-scrollbar-thumb { background: rgba(0, 229, 255, 0.3); border-radius: var(--radius-sm); }
-    ::-webkit-scrollbar-thumb:hover { background: var(--primary-color); }
-
-    /* --- BARRA SUPERIOR DE CONTROL --- */
+    /* --- BARRA SUPERIOR MÓVIL --- */
     .admin-navbar {
-      background: rgba(8, 2, 18, 0.95);
+      background: rgba(8, 2, 18, 0.98);
       border-bottom: 1px solid var(--border-color);
-      padding: 14px 20px;
+      padding: 12px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -82,87 +71,65 @@
     .brand-box {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
     }
-    .brand-logo {
-      width: 32px;
-      height: 32px;
-      object-fit: contain;
-    }
+    .brand-logo { width: 28px; height: 28px; object-fit: contain; }
     .brand-title {
       font-family: 'Chakra Petch', sans-serif;
-      font-size: 1.1em;
+      font-size: 1.05em;
       font-weight: 700;
       color: #fff;
-    }
-    .brand-badge {
-      background: rgba(0, 229, 255, 0.1);
-      border: 1px solid var(--border-color);
-      color: var(--secondary-color);
-      font-size: 0.7em;
-      padding: 2px 6px;
-      border-radius: var(--radius-sm);
-      font-weight: 700;
     }
     .btn-exit {
-      background: transparent;
-      color: var(--text-muted);
-      border: 1px solid var(--border-color);
-      padding: 6px 14px;
+      background: rgba(255, 0, 127, 0.1);
+      color: var(--primary-color);
+      border: 1px solid var(--primary-color);
+      padding: 6px 12px;
       border-radius: var(--radius-sm);
       font-family: 'Chakra Petch', sans-serif;
-      font-weight: 600;
-      font-size: 0.85em;
+      font-weight: 700;
+      font-size: 0.8em;
       text-decoration: none;
-      transition: all 0.2s ease;
       display: flex;
       align-items: center;
-      gap: 6px;
-    }
-    .btn-exit:hover {
-      background: rgba(255, 0, 127, 0.15);
-      color: #fff;
-      border-color: var(--primary-color);
+      gap: 5px;
     }
 
-    /* --- PESTAÑAS DE CONTROL --- */
+    /* --- PESTAÑAS TÁCTILES DESLIZABLES --- */
     .admin-container {
-      max-width: 1200px;
-      margin: 20px auto 60px auto;
-      padding: 0 16px;
+      max-width: 1100px;
+      margin: 14px auto 0 auto;
+      padding: 0 12px;
       position: relative;
       z-index: 1;
     }
 
     .tabs-wrapper {
       display: flex;
-      gap: 6px;
+      gap: 8px;
       overflow-x: auto;
-      padding-bottom: 8px;
-      margin-bottom: 20px;
+      padding: 2px 2px 10px 2px;
+      margin-bottom: 15px;
       scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
     }
     .tabs-wrapper::-webkit-scrollbar { display: none; }
 
     .tab-btn {
+      flex: 0 0 auto;
       background: var(--card-bg);
       border: 1px solid var(--border-color);
       color: var(--text-muted);
-      padding: 10px 16px;
-      border-radius: var(--radius-sm);
+      padding: 9px 14px;
+      border-radius: 20px;
       font-family: 'Chakra Petch', sans-serif;
-      font-size: 0.88em;
+      font-size: 0.82em;
       font-weight: 700;
       cursor: pointer;
-      white-space: nowrap;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       transition: all 0.2s ease;
-    }
-    .tab-btn:hover {
-      color: #fff;
-      border-color: var(--border-hover);
     }
     .tab-btn.active {
       background: var(--secondary-color);
@@ -170,75 +137,78 @@
       border-color: var(--secondary-color);
     }
 
-    /* --- PANELES DE CONTENIDO --- */
-    .admin-panel {
-      display: none;
-      animation: fadeIn 0.25s ease-out;
-    }
+    /* --- PANELES --- */
+    .admin-panel { display: none; }
     .admin-panel.active { display: block; }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 20px;
-    }
-    @media (min-width: 900px) {
-      .dashboard-grid.two-cols { grid-template-columns: 380px 1fr; }
-    }
 
     .card-panel {
       background: var(--card-bg);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-md);
-      padding: 20px;
+      padding: 16px;
+      margin-bottom: 16px;
     }
+
     .panel-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
-      padding-bottom: 10px;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
       border-bottom: 1px solid rgba(255,255,255,0.06);
     }
     .panel-title {
-      font-size: 1.05em;
+      font-size: 1em;
       font-weight: 700;
       color: #fff;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
     }
 
-    /* --- FORMULARIOS --- */
-    .form-group {
+    /* Botón Desplegable para Formularios en Móvil */
+    .btn-toggle-box {
+      width: 100%;
+      background: rgba(0, 229, 255, 0.08);
+      border: 1px dashed var(--secondary-color);
+      color: var(--secondary-color);
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 0.9em;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
       margin-bottom: 14px;
+    }
+
+    /* --- INPUTS CÓMODOS PARA DEDOS (MÍNIMO 42PX) --- */
+    .form-group {
+      margin-bottom: 12px;
       text-align: left;
     }
     .form-label {
       display: block;
-      font-size: 0.85em;
+      font-size: 0.8em;
       font-weight: 700;
       color: var(--text-muted);
-      margin-bottom: 5px;
+      margin-bottom: 4px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
     .form-input, .form-select, .form-textarea {
       width: 100%;
+      min-height: 42px;
       background: var(--surface-dark);
       border: 1px solid var(--border-color);
       color: #fff;
       padding: 9px 12px;
       border-radius: var(--radius-sm);
       font-family: 'Rajdhani', sans-serif;
-      font-size: 0.95em;
-      font-weight: 600;
+      font-size: 16px;
       outline: none;
-      transition: border-color 0.2s ease;
     }
     .form-input:focus, .form-select:focus, .form-textarea:focus {
       border-color: var(--secondary-color);
@@ -246,125 +216,105 @@
 
     .btn-submit {
       width: 100%;
+      min-height: 44px;
       background: var(--primary-color);
       color: #fff;
       border: none;
-      padding: 11px;
+      padding: 10px;
       font-family: 'Chakra Petch', sans-serif;
       font-size: 0.95em;
       font-weight: 700;
       border-radius: var(--radius-sm);
       cursor: pointer;
-      transition: background 0.2s ease;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
     }
-    .btn-submit:hover { background: #e00070; }
+    .btn-submit:active { transform: scale(0.98); }
 
-    .btn-secondary {
-      background: transparent;
-      color: var(--secondary-color);
-      border: 1px solid var(--secondary-color);
-      padding: 8px 14px;
-      font-family: 'Chakra Petch', sans-serif;
-      font-weight: 700;
-      font-size: 0.85em;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .btn-secondary:hover { background: var(--secondary-color); color: #000; }
-
-    /* --- TABLAS DE DATOS --- */
-    .table-responsive {
-      overflow-x: auto;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-sm);
-      background: var(--surface-dark);
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      font-size: 0.9em;
-    }
-    th {
-      background: #0d031c;
-      color: var(--secondary-color);
-      font-family: 'Chakra Petch', sans-serif;
-      font-weight: 700;
-      padding: 10px 12px;
-      font-size: 0.8em;
-      border-bottom: 1px solid var(--border-color);
-      white-space: nowrap;
-    }
-    td {
-      padding: 10px 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      color: var(--text-color);
-      vertical-align: middle;
-    }
-    tr:hover td { background: rgba(255,255,255,0.02); }
-
-    .tag-badge {
-      display: inline-block;
-      padding: 2px 7px;
-      font-size: 0.75em;
-      font-weight: 700;
-      border-radius: var(--radius-sm);
-      text-transform: uppercase;
-    }
-    .tag-stock { background: rgba(0, 229, 255, 0.15); color: var(--secondary-color); border: 1px solid rgba(0, 229, 255, 0.4); }
-    .tag-encargo { background: rgba(255, 0, 127, 0.15); color: var(--primary-color); border: 1px solid rgba(255, 0, 127, 0.4); }
-    .tag-digital { background: rgba(37, 211, 102, 0.15); color: #25d366; border: 1px solid rgba(37, 211, 102, 0.4); }
-
-    .action-btn-del {
-      background: transparent;
-      color: #ff3366;
-      border: 1px solid rgba(255, 51, 102, 0.4);
-      padding: 4px 8px;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      font-size: 0.8em;
-    }
-    .action-btn-del:hover { background: rgba(255, 51, 102, 0.2); }
-
-    .action-btn-edit {
-      background: transparent;
-      color: var(--secondary-color);
-      border: 1px solid var(--border-color);
-      padding: 4px 8px;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      font-size: 0.8em;
-      margin-right: 4px;
-    }
-    .action-btn-edit:hover { background: var(--secondary-color); color: #000; }
-
-    /* Items mini para Banners / Cupones */
-    .item-card-mini {
+    /* --- TARJETAS MÓVILES EN LUGAR DE TABLAS --- */
+    .item-card-row {
       display: flex;
-      justify-content: space-between;
       align-items: center;
       background: var(--surface-dark);
       border: 1px solid var(--border-color);
-      padding: 10px 14px;
       border-radius: var(--radius-sm);
+      padding: 10px;
       margin-bottom: 8px;
+      gap: 10px;
     }
-
-    .banner-preview-img {
-      width: 80px;
-      height: 45px;
+    .item-card-thumb {
+      width: 50px;
+      height: 50px;
       object-fit: cover;
       border-radius: var(--radius-sm);
-      border: 1px solid var(--border-color);
-      margin-right: 12px;
+      background: #000;
+      border: 1px solid rgba(255,255,255,0.08);
+      flex-shrink: 0;
     }
+    .item-card-info {
+      flex-grow: 1;
+      min-width: 0;
+    }
+    .item-card-title {
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 0.95em;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 2px;
+    }
+    .item-card-meta {
+      font-size: 0.8em;
+      color: var(--text-muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+    .item-card-price {
+      font-size: 1em;
+      font-weight: 700;
+      color: var(--secondary-color);
+    }
+    
+    .tag-badge {
+      display: inline-block;
+      padding: 1px 6px;
+      font-size: 0.7em;
+      font-weight: 700;
+      border-radius: 3px;
+      text-transform: uppercase;
+    }
+    .tag-stock { background: rgba(0, 229, 255, 0.15); color: var(--secondary-color); }
+    .tag-encargo { background: rgba(255, 0, 127, 0.15); color: var(--primary-color); }
+    .tag-digital { background: rgba(37, 211, 102, 0.15); color: #25d366; }
 
-    /* Modal de PIN de seguridad */
+    .item-card-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+    .btn-action-touch {
+      width: 34px;
+      height: 34px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: 1px solid transparent;
+      font-size: 0.85em;
+    }
+    .btn-edit { background: rgba(0, 229, 255, 0.1); color: var(--secondary-color); border-color: rgba(0,229,255,0.3); }
+    .btn-del { background: rgba(255, 51, 102, 0.1); color: #ff3366; border-color: rgba(255,51,102,0.3); }
+
+    /* Modal de PIN */
     #lockScreen {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -373,28 +323,29 @@
       justify-content: center;
       align-items: center;
       z-index: 999999;
+      padding: 16px;
     }
     .lock-box {
       background: var(--card-bg);
       border: 1px solid var(--border-color);
-      padding: 30px;
+      padding: 25px 20px;
       border-radius: var(--radius-md);
       text-align: center;
-      width: 90%;
-      max-width: 360px;
+      width: 100%;
+      max-width: 340px;
     }
   </style>
 </head>
 <body>
 
-<!-- PANTALLA DE ACCESO ADMINISTRATIVO -->
+<!-- PANTALLA DE ACCESO -->
 <div id="lockScreen">
   <div class="lock-box">
-    <div style="font-size: 32px; color: var(--secondary-color); margin-bottom: 10px;"><i class="fas fa-shield-alt"></i></div>
-    <h3 style="color: #fff; margin-bottom: 6px;">Sakura Command</h3>
-    <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 16px;">Introduce la clave maestra para gestionar la tienda:</p>
-    <input type="password" id="adminPinInput" class="form-input" placeholder="PIN de Seguridad" style="text-align: center; letter-spacing: 3px; margin-bottom: 12px;" onkeypress="if(event.key === 'Enter') verificarPinAcceso()">
-    <button class="btn-submit" onclick="verificarPinAcceso()">Acceder al Sistema</button>
+    <div style="font-size: 32px; color: var(--secondary-color); margin-bottom: 8px;"><i class="fas fa-shield-alt"></i></div>
+    <h3 style="color: #fff; margin-bottom: 4px;">Sakura Admin</h3>
+    <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 14px;">Ingresa la clave maestra (1234):</p>
+    <input type="password" id="adminPinInput" inputmode="numeric" class="form-input" placeholder="PIN" style="text-align: center; letter-spacing: 4px; margin-bottom: 12px;" onkeypress="if(event.key === 'Enter') verificarPinAcceso()">
+    <button class="btn-submit" onclick="verificarPinAcceso()">Entrar al Panel</button>
   </div>
 </div>
 
@@ -402,330 +353,250 @@
 <header class="admin-navbar">
   <div class="brand-box">
     <img src="logo.webp" class="brand-logo" alt="Logo">
-    <span class="brand-title">Sakura Admin</span>
-    <span class="brand-badge">PRO v2.0</span>
+    <span class="brand-title">Admin Panel</span>
   </div>
-  <a href="index.html" class="btn-exit"><i class="fas fa-store"></i> Ver Tienda</a>
+  <a href="index.html" class="btn-exit"><i class="fas fa-store"></i> Tienda</a>
 </header>
 
 <main class="admin-container">
-  <!-- PESTAÑAS DE CONTROL -->
+  <!-- PESTAÑAS DESLIZABLES CON EL DEDO -->
   <div class="tabs-wrapper">
     <button class="tab-btn active" onclick="cambiarSeccion('productos')"><i class="fas fa-boxes"></i> Inventario</button>
-    <button class="tab-btn" onclick="cambiarSeccion('pedidos')"><i class="fas fa-truck-fast"></i> Pedidos & Envíos</button>
+    <button class="tab-btn" onclick="cambiarSeccion('pedidos')"><i class="fas fa-truck-fast"></i> Pedidos</button>
     <button class="tab-btn" onclick="cambiarSeccion('banners')"><i class="fas fa-images"></i> Banners</button>
     <button class="tab-btn" onclick="cambiarSeccion('cupones')"><i class="fas fa-ticket-alt"></i> Cupones</button>
-    <button class="tab-btn" onclick="cambiarSeccion('pagos')"><i class="fas fa-wallet"></i> Métodos de Pago</button>
-    <button class="tab-btn" onclick="cambiarSeccion('reviews')"><i class="fas fa-comment-dots"></i> Reseñas</button>
-    <button class="tab-btn" onclick="cambiarSeccion('rangos')"><i class="fas fa-user-ninja"></i> Rangos Ninja</button>
+    <button class="tab-btn" onclick="cambiarSeccion('pagos')"><i class="fas fa-wallet"></i> Pagos</button>
+    <button class="tab-btn" onclick="cambiarSeccion('reviews')"><i class="fas fa-star"></i> Reseñas</button>
+    <button class="tab-btn" onclick="cambiarSeccion('rangos')"><i class="fas fa-trophy"></i> Rangos XP</button>
   </div>
 
-  <!-- 1. SECCIÓN INVENTARIO / PRODUCTOS -->
+  <!-- 1. INVENTARIO -->
   <section id="panel-productos" class="admin-panel active">
-    <div class="dashboard-grid two-cols">
-      <!-- Formulario Crear/Editar -->
-      <div class="card-panel">
-        <div class="panel-header">
-          <span class="panel-title" id="formProdTitulo"><i class="fas fa-plus-circle"></i> Nuevo Producto</span>
-          <button class="btn-secondary" id="btnCancelarEdicion" style="display: none;" onclick="resetFormularioProducto()">Cancelar</button>
-        </div>
-        
-        <form id="formProducto" onsubmit="guardarProducto(event)">
-          <input type="hidden" id="prodEditId" value="">
-          
-          <div class="form-group">
-            <label class="form-label">Nombre del Artículo:</label>
-            <input type="text" id="prodNombre" class="form-input" placeholder="Ej: Chibi Firefly" required>
-          </div>
+    <!-- Botón para plegar/desplegar el formulario en el teléfono -->
+    <button class="btn-toggle-box" id="btnToggleFormProd" onclick="toggleFormularioProducto()">
+      <i class="fas fa-plus"></i> <span id="lblToggleForm">Crear Nuevo Producto</span>
+    </button>
 
-          <div class="form-group">
-            <label class="form-label">Precio en USD ($):</label>
+    <!-- Formulario Plegable -->
+    <div class="card-panel" id="cajaFormProducto" style="display: none;">
+      <div class="panel-header">
+        <span class="panel-title" id="formProdTitulo"><i class="fas fa-plus-circle"></i> Nuevo Producto</span>
+        <button style="background: none; border: none; color: #ff3366; font-weight: bold; cursor: pointer;" onclick="resetFormularioProducto()">Cerrar</button>
+      </div>
+      
+      <form id="formProducto" onsubmit="guardarProducto(event)">
+        <input type="hidden" id="prodEditId" value="">
+        
+        <div class="form-group">
+          <label class="form-label">Nombre del Producto:</label>
+          <input type="text" id="prodNombre" class="form-input" placeholder="Ej: Chibi Firefly" required>
+        </div>
+
+        <div style="display: flex; gap: 8px;">
+          <div class="form-group" style="flex: 1;">
+            <label class="form-label">Precio ($):</label>
             <input type="number" id="prodPrecio" class="form-input" step="0.01" placeholder="17.00" required>
           </div>
-
-          <div class="form-group">
+          <div class="form-group" style="flex: 1;">
             <label class="form-label">Categoría:</label>
             <select id="prodCategoria" class="form-select">
-              <option value="recargas">Recargas Digitales ⚡</option>
-              <option value="mangas">Mangas & Libros</option>
-              <option value="ropa">Vestimenta / Ropa</option>
+              <option value="recargas">Recargas ⚡</option>
               <option value="figuras">Figuras Anime</option>
+              <option value="mangas">Mangas</option>
+              <option value="ropa">Vestimenta</option>
               <option value="cartas">TCG / Cartas</option>
-              <option value="mandos">Mandos & Videojuegos</option>
-              <option value="audifonos">Audio Gamer</option>
-              <option value="teclados">Teclados PC</option>
-              <option value="peluches">Peluches Kawaii</option>
-              <option value="katanas">Katanas Réplicas</option>
-              <option value="lamparas">Lámparas Neón</option>
+              <option value="mandos">Mandos</option>
+              <option value="audifonos">Audífonos</option>
+              <option value="teclados">Teclados</option>
+              <option value="peluches">Peluches</option>
+              <option value="katanas">Katanas</option>
+              <option value="lamparas">Lámparas</option>
               <option value="accesorios">Accesorios</option>
             </select>
           </div>
-
-          <div class="form-group">
-            <label class="form-label">Colección / Universo (Franquicia):</label>
-            <input type="text" id="prodColeccion" class="form-input" placeholder="Ej: Naruto, Honkai, Vocaloid, etc.">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Disponibilidad / Estado:</label>
-            <select id="prodEstado" class="form-select">
-              <option value="Envío Inmediato 📦">Envío Inmediato 📦</option>
-              <option value="Por Encargo ⚡">Por Encargo ⚡</option>
-              <option value="Acreditación Inmediata ⚡">Acreditación Inmediata ⚡ (Recargas)</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">URLs de Imágenes (Separadas por comas):</label>
-            <input type="text" id="prodFotos" class="form-input" placeholder="https://i.imgur.com/... , https://..." required>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Descripción breve:</label>
-            <textarea id="prodDesc" class="form-textarea" rows="2" placeholder="Detalles, escala, garantía..."></textarea>
-          </div>
-
-          <button type="submit" class="btn-submit" id="btnGuardarProd">Guardar en Base de Datos</button>
-        </form>
-      </div>
-
-      <!-- Tabla de Productos -->
-      <div class="card-panel">
-        <div class="panel-header">
-          <span class="panel-title"><i class="fas fa-list"></i> Catálogo Activo (<span id="totalProdsLbl">0</span>)</span>
-          <input type="text" id="buscarEnAdmin" class="form-input" style="max-width: 200px; padding: 5px 10px; font-size: 0.85em;" placeholder="Filtrar por nombre..." onkeyup="filtrarTablaAdmin()">
         </div>
-        
-        <div class="table-responsive">
-          <table>
-            <thead>
-              <tr>
-                <th>Foto</th>
-                <th>Producto</th>
-                <th>Categoría / Franquicia</th>
-                <th>Precio</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody id="tablaProductosBody">
-              <tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Cargando inventario...</td></tr>
-            </tbody>
-          </table>
+
+        <div class="form-group">
+          <label class="form-label">Franquicia / Universo:</label>
+          <input type="text" id="prodColeccion" class="form-input" placeholder="Ej: Naruto, Honkai, Vocaloid...">
         </div>
-      </div>
+
+        <div class="form-group">
+          <label class="form-label">Disponibilidad:</label>
+          <select id="prodEstado" class="form-select">
+            <option value="Envío Inmediato 📦">Envío Inmediato 📦</option>
+            <option value="Por Encargo ⚡">Por Encargo ⚡</option>
+            <option value="Acreditación Inmediata ⚡">Acreditación Inmediata ⚡</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Fotos (URLs separadas por coma):</label>
+          <input type="text" id="prodFotos" class="form-input" placeholder="https://i.imgur.com/..." required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Descripción:</label>
+          <textarea id="prodDesc" class="form-textarea" rows="2" placeholder="Detalles breves..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit" id="btnGuardarProd">Guardar Producto</button>
+      </form>
     </div>
-  </section>
 
-  <!-- 2. SECCIÓN PEDIDOS & LOGÍSTICA DE ENVÍO -->
-  <section id="panel-pedidos" class="admin-panel">
-    <div class="dashboard-grid two-cols">
-      <!-- Registro Manual de Orden -->
-      <div class="card-panel">
-        <div class="panel-header">
-          <span class="panel-title"><i class="fas fa-file-invoice-dollar"></i> Registrar Orden Manual</span>
-        </div>
-        <form id="formPedidoManual" onsubmit="guardarPedidoManual(event)">
-          <div class="form-group">
-            <label class="form-label">Nombre del Cliente:</label>
-            <input type="text" id="pedCliente" class="form-input" placeholder="Ej: Gabriel Silva" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Teléfono / WhatsApp:</label>
-            <input type="text" id="pedTelefono" class="form-input" placeholder="0424-0000000" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Tipo de Pedido:</label>
-            <select id="pedTipo" class="form-select" onchange="toggleFormEnvioPedido(this.value)">
-              <option value="fisico">📦 Artículo Físico</option>
-              <option value="digital">⚡ Recarga Digital</option>
-            </select>
-          </div>
-          <div id="boxCamposEnvioAdmin">
-            <div class="form-group">
-              <label class="form-label">Método de Despacho:</label>
-              <select id="pedMetodo" class="form-select">
-                <option value="ZOOM (Cobro a destino)">ZOOM (Cobro a destino)</option>
-                <option value="MRW (Cobro a destino)">MRW (Cobro a destino)</option>
-                <option value="Entrega Personal (Bejuma)">Entrega Personal (Bejuma)</option>
-                <option value="Entrega Personal (Miranda)">Entrega Personal (Miranda)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Dirección o Agencia de Retiro:</label>
-              <input type="text" id="pedDireccion" class="form-input" placeholder="Ej: Agencia ZOOM Bejuma">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Detalle de Productos / Recarga:</label>
-            <textarea id="pedDetalles" class="form-textarea" rows="2" placeholder="1x Chibi Firefly ($17)..." required></textarea>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Monto Total USD ($):</label>
-            <input type="number" id="pedTotalUsd" class="form-input" step="0.01" placeholder="17.00" required>
-          </div>
-          <button type="submit" class="btn-submit">Guardar Pedido</button>
-        </form>
-      </div>
-
-      <!-- Historial de Pedidos -->
-      <div class="card-panel">
-        <div class="panel-header">
-          <span class="panel-title"><i class="fas fa-boxes-packing"></i> Control de Despachos (<span id="totalPedidosLbl">0</span>)</span>
-        </div>
-        <div class="table-responsive">
-          <table>
-            <thead>
-              <tr>
-                <th>Cliente</th>
-                <th>Tipo</th>
-                <th>Método / Destino</th>
-                <th>Artículos</th>
-                <th>Total</th>
-                <th>Estado</th>
-                <th>Acción</th>
-              </tr>
-            </thead>
-            <tbody id="tablaPedidosBody">
-              <tr><td colspan="7" style="text-align: center; color: var(--text-muted);">Sin pedidos registrados.</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 3. SECCIÓN BANNERS SLIDER -->
-  <section id="panel-banners" class="admin-panel">
-    <div class="dashboard-grid two-cols">
-      <div class="card-panel">
-        <div class="panel-header">
-          <span class="panel-title"><i class="fas fa-plus"></i> Añadir Banner</span>
-        </div>
-        <form onsubmit="agregarBanner(event)">
-          <div class="form-group">
-            <label class="form-label">URL de Imagen (Proporción 16:9 recomendada):</label>
-            <input type="text" id="bannerImgUrl" class="form-input" placeholder="https://i.imgur.com/..." required>
-          </div>
-          <button type="submit" class="btn-submit">Publicar en Tienda</button>
-        </form>
-      </div>
-      <div class="card-panel">
-        <div class="panel-header">
-          <span class="panel-title"><i class="fas fa-image"></i> Banners Activos</span>
-        </div>
-        <div id="listaBannersAdmin">
-          <p style="color: var(--text-muted);">Cargando banners...</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 4. SECCIÓN CUPONES -->
-  <section id="panel-cupones" class="admin-panel">
-    <div class="dashboard-grid two-cols">
-      <div class="card-panel">
-        <div class="panel-header">
-          <span class="panel-title"><i class="fas fa-plus"></i> Crear Cupón</span>
-        </div>
-        <form onsubmit="agregarCupon(event)">
-          <div class="form-group">
-            <label class="form-label">Código (En mayúsculas):</label>
-            <input type="text" id="cuponCodigo" class="form-input" placeholder="Ej: VERANO15" style="text-transform: uppercase;" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Porcentaje de Descuento (%):</label>
-            <input type="number" id="cuponPorcentaje" class="form-input" min="1" max="90" placeholder="15" required>
-          </div>
-          <button type="submit" class="btn-submit">Crear Cupón</button>
-        </form>
-      </div>
-      <div class="card-panel">
-        <div class="panel-header">
-          <span class="panel-title"><i class="fas fa-tags"></i> Cupones Activos</span>
-        </div>
-        <div id="listaCuponesAdmin">
-          <p style="color: var(--text-muted);">Cargando cupones...</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 5. SECCIÓN CUENTAS DE PAGO -->
-  <section id="panel-pagos" class="admin-panel">
-    <div class="card-panel" style="max-width: 580px; margin: 0 auto;">
+    <!-- Lista de Productos en Tarjetas Táctiles -->
+    <div class="card-panel">
       <div class="panel-header">
-        <span class="panel-title"><i class="fas fa-university"></i> Datos Bancarios & Pago Móvil</span>
+        <span class="panel-title"><i class="fas fa-boxes"></i> Inventario (<span id="totalProdsLbl">0</span>)</span>
+        <input type="text" id="buscarEnAdmin" class="form-input" style="max-width: 140px; min-height: 32px; padding: 4px 8px; font-size: 0.85em;" placeholder="Buscar..." onkeyup="filtrarTarjetasAdmin()">
       </div>
+      
+      <div id="listaProductosMobile">
+        <p style="color: var(--text-muted); text-align: center; padding: 15px;">Cargando inventario...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. PEDIDOS -->
+  <section id="panel-pedidos" class="admin-panel">
+    <button class="btn-toggle-box" onclick="toggleCajaPedidoManual()">
+      <i class="fas fa-plus"></i> Registrar Pedido Manual
+    </button>
+
+    <div class="card-panel" id="cajaPedidoManual" style="display: none;">
+      <div class="panel-header">
+        <span class="panel-title"><i class="fas fa-receipt"></i> Nueva Orden Manual</span>
+        <button style="background: none; border: none; color: #ff3366; font-weight: bold; cursor: pointer;" onclick="toggleCajaPedidoManual()">Cerrar</button>
+      </div>
+      <form id="formPedidoManual" onsubmit="guardarPedidoManual(event)">
+        <div class="form-group">
+          <label class="form-label">Cliente & WhatsApp:</label>
+          <input type="text" id="pedCliente" class="form-input" placeholder="Nombre completo" required style="margin-bottom: 6px;">
+          <input type="text" id="pedTelefono" class="form-input" placeholder="0424-0000000" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tipo de Pedido:</label>
+          <select id="pedTipo" class="form-select" onchange="toggleFormEnvioPedido(this.value)">
+            <option value="fisico">📦 Artículo Físico</option>
+            <option value="digital">⚡ Recarga Digital</option>
+          </select>
+        </div>
+        <div id="boxCamposEnvioAdmin">
+          <div class="form-group">
+            <label class="form-label">Despacho:</label>
+            <select id="pedMetodo" class="form-select">
+              <option value="ZOOM (Cobro a destino)">ZOOM</option>
+              <option value="MRW (Cobro a destino)">MRW</option>
+              <option value="Entrega Personal (Bejuma)">Entrega Bejuma</option>
+              <option value="Entrega Personal (Miranda)">Entrega Miranda</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Dirección / Agencia:</label>
+            <input type="text" id="pedDireccion" class="form-input" placeholder="Ej: ZOOM Bejuma">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Detalles & Monto USD:</label>
+          <textarea id="pedDetalles" class="form-textarea" rows="2" placeholder="1x Figura..." required style="margin-bottom: 6px;"></textarea>
+          <input type="number" id="pedTotalUsd" class="form-input" step="0.01" placeholder="Total USD ($)" required>
+        </div>
+        <button type="submit" class="btn-submit">Guardar Pedido</button>
+      </form>
+    </div>
+
+    <div class="card-panel">
+      <div class="panel-header">
+        <span class="panel-title"><i class="fas fa-truck"></i> Pedidos Recibidos (<span id="totalPedidosLbl">0</span>)</span>
+      </div>
+      <div id="listaPedidosMobile">
+        <p style="color: var(--text-muted); text-align: center; padding: 15px;">Sin pedidos registrados.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. BANNERS -->
+  <section id="panel-banners" class="admin-panel">
+    <div class="card-panel">
+      <div class="panel-header"><span class="panel-title"><i class="fas fa-plus"></i> Añadir Banner</span></div>
+      <form onsubmit="agregarBanner(event)">
+        <div class="form-group">
+          <label class="form-label">URL de Imagen (16:9):</label>
+          <input type="text" id="bannerImgUrl" class="form-input" placeholder="https://i.imgur.com/..." required>
+        </div>
+        <button type="submit" class="btn-submit">Publicar Banner</button>
+      </form>
+    </div>
+    <div class="card-panel">
+      <div class="panel-header"><span class="panel-title"><i class="fas fa-images"></i> Banners Activos</span></div>
+      <div id="listaBannersAdmin"><p style="color: var(--text-muted);">Cargando banners...</p></div>
+    </div>
+  </section>
+
+  <!-- 4. CUPONES -->
+  <section id="panel-cupones" class="admin-panel">
+    <div class="card-panel">
+      <div class="panel-header"><span class="panel-title"><i class="fas fa-plus"></i> Nuevo Cupón</span></div>
+      <form onsubmit="agregarCupon(event)">
+        <div class="form-group">
+          <label class="form-label">Código:</label>
+          <input type="text" id="cuponCodigo" class="form-input" placeholder="Ej: PROMO10" style="text-transform: uppercase;" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Descuento (%):</label>
+          <input type="number" id="cuponPorcentaje" class="form-input" min="1" max="90" placeholder="10" required>
+        </div>
+        <button type="submit" class="btn-submit">Activar Cupón</button>
+      </form>
+    </div>
+    <div class="card-panel">
+      <div class="panel-header"><span class="panel-title"><i class="fas fa-tags"></i> Cupones Activos</span></div>
+      <div id="listaCuponesAdmin"><p style="color: var(--text-muted);">Cargando cupones...</p></div>
+    </div>
+  </section>
+
+  <!-- 5. PAGOS -->
+  <section id="panel-pagos" class="admin-panel">
+    <div class="card-panel">
+      <div class="panel-header"><span class="panel-title"><i class="fas fa-wallet"></i> Métodos de Pago</span></div>
       <form onsubmit="guardarDatosPago(event)">
         <div class="form-group">
-          <label class="form-label">Banco & Código:</label>
-          <input type="text" id="pagoBanco" class="form-input" placeholder="Banco de Venezuela (0102)" required>
+          <label class="form-label">Banco:</label>
+          <input type="text" id="pagoBanco" class="form-input" required>
         </div>
         <div class="form-group">
           <label class="form-label">Teléfono Pago Móvil:</label>
-          <input type="text" id="pagoTelefono" class="form-input" placeholder="0424-4970576" required>
+          <input type="text" id="pagoTelefono" class="form-input" required>
         </div>
         <div class="form-group">
-          <label class="form-label">Cédula del Titular:</label>
-          <input type="text" id="pagoCedula" class="form-input" placeholder="V-24159896" required>
+          <label class="form-label">Cédula:</label>
+          <input type="text" id="pagoCedula" class="form-input" required>
         </div>
         <div class="form-group">
-          <label class="form-label">Binance Pay (Email o Pay ID):</label>
-          <input type="text" id="pagoBinance" class="form-input" placeholder="usuario@gmail.com" required>
+          <label class="form-label">Binance Pay:</label>
+          <input type="text" id="pagoBinance" class="form-input" required>
         </div>
         <button type="submit" class="btn-submit">Actualizar Cuentas</button>
       </form>
     </div>
   </section>
 
-  <!-- 6. SECCIÓN RESEÑAS -->
+  <!-- 6. RESEÑAS -->
   <section id="panel-reviews" class="admin-panel">
     <div class="card-panel">
-      <div class="panel-header">
-        <span class="panel-title"><i class="fas fa-comments"></i> Moderación de Reseñas</span>
-      </div>
-      <div class="table-responsive">
-        <table>
-          <thead>
-            <tr>
-              <th>Cliente</th>
-              <th>Calificación</th>
-              <th>Comentario</th>
-              <th>Acción</th>
-            </tr>
-          </thead>
-          <tbody id="tablaReviewsAdminBody">
-            <tr><td colspan="4" style="text-align: center; color: var(--text-muted);">Cargando opiniones...</td></tr>
-          </tbody>
-        </table>
-      </div>
+      <div class="panel-header"><span class="panel-title"><i class="fas fa-star"></i> Moderación de Reseñas</span></div>
+      <div id="listaReviewsAdmin"><p style="color: var(--text-muted);">Cargando opiniones...</p></div>
     </div>
   </section>
 
-  <!-- 7. SECCIÓN RANGOS NINJA -->
+  <!-- 7. RANGOS -->
   <section id="panel-rangos" class="admin-panel">
-    <div class="card-panel" style="max-width: 520px; margin: 0 auto;">
-      <div class="panel-header">
-        <span class="panel-title"><i class="fas fa-trophy"></i> Umbrales de XP para Rangos</span>
-      </div>
+    <div class="card-panel">
+      <div class="panel-header"><span class="panel-title"><i class="fas fa-trophy"></i> Umbrales de XP Ninja</span></div>
       <form onsubmit="guardarRangosNinja(event)">
-        <div class="form-group">
-          <label class="form-label">Genin (Inicio):</label>
-          <input type="number" id="xpGenin" class="form-input" value="0" readonly>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Chūnin (XP Requerido):</label>
-          <input type="number" id="xpChunin" class="form-input" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Jōnin (XP Requerido):</label>
-          <input type="number" id="xpJonin" class="form-input" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Hokage (XP Requerido):</label>
-          <input type="number" id="xpHokage" class="form-input" required>
-        </div>
+        <div class="form-group"><label class="form-label">Chūnin (XP):</label><input type="number" id="xpChunin" class="form-input" required></div>
+        <div class="form-group"><label class="form-label">Jōnin (XP):</label><input type="number" id="xpJonin" class="form-input" required></div>
+        <div class="form-group"><label class="form-label">Hokage (XP):</label><input type="number" id="xpHokage" class="form-input" required></div>
         <button type="submit" class="btn-submit">Guardar Umbrales</button>
       </form>
     </div>
@@ -749,8 +620,6 @@
   const db = getFirestore(app);
 
   let productosAdminGlobal = [];
-
-  // PIN de Seguridad por defecto (Cámbialo si lo deseas)
   const PIN_MAESTRO = "1234";
 
   window.verificarPinAcceso = function() {
@@ -776,6 +645,23 @@
     document.getElementById(`panel-${panelId}`).classList.add('active');
   };
 
+  window.toggleFormularioProducto = function() {
+    const formBox = document.getElementById('cajaFormProducto');
+    const lbl = document.getElementById('lblToggleForm');
+    if (formBox.style.display === 'none') {
+      formBox.style.display = 'block';
+      lbl.innerText = "Cerrar Formulario";
+    } else {
+      formBox.style.display = 'none';
+      lbl.innerText = "Crear Nuevo Producto";
+    }
+  };
+
+  window.toggleCajaPedidoManual = function() {
+    const box = document.getElementById('cajaPedidoManual');
+    box.style.display = (box.style.display === 'none') ? 'block' : 'none';
+  };
+
   window.toggleFormEnvioPedido = function(tipo) {
     document.getElementById('boxCamposEnvioAdmin').style.display = (tipo === 'digital') ? 'none' : 'block';
   };
@@ -787,14 +673,14 @@
     });
   }
 
-  // --- CRUD PRODUCTOS ---
+  // --- RENDERIZAR PRODUCTOS EN TARJETAS TÁCTILES ---
   async function cargarProductosAdmin() {
     try {
       const q = query(collection(db, "productos"), orderBy("timestamp", "desc"));
       const snapshot = await getDocs(q);
       productosAdminGlobal = [];
-      const tbody = document.getElementById('tablaProductosBody');
-      tbody.innerHTML = "";
+      const cont = document.getElementById('listaProductosMobile');
+      cont.innerHTML = "";
 
       snapshot.forEach(docSnap => {
         productosAdminGlobal.push({ id: docSnap.id, ...docSnap.data() });
@@ -803,7 +689,7 @@
       document.getElementById('totalProdsLbl').innerText = productosAdminGlobal.length;
 
       if (productosAdminGlobal.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Sin productos en base de datos.</td></tr>`;
+        cont.innerHTML = `<p style="text-align: center; color: var(--text-muted); padding: 15px;">No hay productos registrados.</p>`;
         return;
       }
 
@@ -813,18 +699,23 @@
         if (p.estado && p.estado.includes("Encargo")) badgeClase = 'tag-encargo';
         if (p.categoria === 'recargas') badgeClase = 'tag-digital';
 
-        tbody.innerHTML += `
-          <tr>
-            <td><img src="${foto}" style="width: 36px; height: 36px; object-fit: cover; border-radius: 3px;"></td>
-            <td><strong>${sanitizar(p.nombre)}</strong></td>
-            <td>${sanitizar(p.categoria)} <span style="color:var(--text-muted); font-size:0.85em;">(${sanitizar(p.coleccion || 'General')})</span></td>
-            <td><strong style="color:var(--secondary-color);">$${Number(p.precio).toFixed(2)}</strong></td>
-            <td><span class="tag-badge ${badgeClase}">${p.estado || 'Stock'}</span></td>
-            <td>
-              <button class="action-btn-edit" onclick="prepararEdicion('${p.id}')"><i class="fas fa-pen"></i></button>
-              <button class="action-btn-del" onclick="eliminarProducto('${p.id}')"><i class="fas fa-trash"></i></button>
-            </td>
-          </tr>
+        cont.innerHTML += `
+          <div class="item-card-row card-item-filtro" data-nombre="${sanitizar(p.nombre).toLowerCase()}">
+            <img src="${foto}" class="item-card-thumb">
+            <div class="item-card-info">
+              <div class="item-card-title">${sanitizar(p.nombre)}</div>
+              <div class="item-card-meta">
+                <span>${sanitizar(p.categoria)}</span>
+                <span>•</span>
+                <span class="tag-badge ${badgeClase}">${p.estado || 'Stock'}</span>
+              </div>
+              <div class="item-card-price">$${Number(p.precio).toFixed(2)}</div>
+            </div>
+            <div class="item-card-actions">
+              <button class="btn-action-touch btn-edit" onclick="prepararEdicion('${p.id}')"><i class="fas fa-pen"></i></button>
+              <button class="btn-action-touch btn-del" onclick="eliminarProducto('${p.id}')"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
         `;
       });
     } catch(e) {
@@ -857,15 +748,15 @@
     try {
       if (id) {
         await updateDoc(doc(db, "productos", id), data);
-        alert("Producto actualizado con éxito.");
+        alert("¡Producto actualizado!");
       } else {
         await addDoc(collection(db, "productos"), data);
-        alert("Producto creado con éxito.");
+        alert("¡Producto creado!");
       }
       resetFormularioProducto();
       cargarProductosAdmin();
     } catch(err) {
-      alert("Error al guardar: " + err.message);
+      alert("Error: " + err.message);
     }
   };
 
@@ -876,15 +767,17 @@
     document.getElementById('prodEditId').value = p.id;
     document.getElementById('prodNombre').value = p.nombre || '';
     document.getElementById('prodPrecio').value = p.precio || '';
-    document.getElementById('prodCategoria').value = p.categoria || 'mangas';
+    document.getElementById('prodCategoria').value = p.categoria || 'figuras';
     document.getElementById('prodColeccion').value = p.coleccion || '';
     document.getElementById('prodEstado').value = p.estado || 'Envío Inmediato 📦';
     document.getElementById('prodDesc').value = p.descripcion || '';
     document.getElementById('prodFotos').value = (p.fotos || []).join(', ');
 
-    document.getElementById('formProdTitulo').innerHTML = `<i class="fas fa-pen"></i> Editando: ${sanitizar(p.nombre)}`;
+    document.getElementById('formProdTitulo').innerHTML = `<i class="fas fa-pen"></i> Editando Producto`;
     document.getElementById('btnGuardarProd').innerText = "Guardar Cambios";
-    document.getElementById('btnCancelarEdicion').style.display = "inline-block";
+    
+    document.getElementById('cajaFormProducto').style.display = "block";
+    document.getElementById('lblToggleForm').innerText = "Cerrar Formulario";
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -892,54 +785,59 @@
     document.getElementById('formProducto').reset();
     document.getElementById('prodEditId').value = "";
     document.getElementById('formProdTitulo').innerHTML = `<i class="fas fa-plus-circle"></i> Nuevo Producto`;
-    document.getElementById('btnGuardarProd').innerText = "Guardar en Base de Datos";
-    document.getElementById('btnCancelarEdicion').style.display = "none";
+    document.getElementById('btnGuardarProd').innerText = "Guardar Producto";
+    document.getElementById('cajaFormProducto').style.display = "none";
+    document.getElementById('lblToggleForm').innerText = "Crear Nuevo Producto";
   };
 
   window.eliminarProducto = async function(id) {
-    if (!confirm("¿Deseas eliminar este producto de la tienda?")) return;
-    try {
-      await deleteDoc(doc(db, "productos", id));
-      cargarProductosAdmin();
-    } catch(e) {
-      alert("Error: " + e.message);
-    }
+    if (!confirm("¿Eliminar este producto?")) return;
+    await deleteDoc(doc(db, "productos", id));
+    cargarProductosAdmin();
   };
 
-  window.filtrarTablaAdmin = function() {
+  window.filtrarTarjetasAdmin = function() {
     const val = document.getElementById('buscarEnAdmin').value.toLowerCase();
-    const rows = document.querySelectorAll('#tablaProductosBody tr');
-    rows.forEach(r => {
-      r.style.display = r.innerText.toLowerCase().includes(val) ? '' : 'none';
+    document.querySelectorAll('.card-item-filtro').forEach(c => {
+      const nom = c.getAttribute('data-nombre') || '';
+      c.style.display = nom.includes(val) ? 'flex' : 'none';
     });
   };
 
-  // --- PEDIDOS & LOGÍSTICA ---
+  // --- PEDIDOS CON LOGÍSTICA ---
   async function cargarPedidosAdmin() {
     try {
       const q = query(collection(db, "pedidos"), orderBy("timestamp", "desc"));
       const snapshot = await getDocs(q);
-      const tbody = document.getElementById('tablaPedidosBody');
-      tbody.innerHTML = "";
+      const cont = document.getElementById('listaPedidosMobile');
+      cont.innerHTML = "";
       document.getElementById('totalPedidosLbl').innerText = snapshot.size;
 
       if (snapshot.empty) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted);">Sin pedidos registrados.</td></tr>`;
+        cont.innerHTML = `<p style="text-align: center; color: var(--text-muted); padding: 15px;">Sin órdenes registradas.</p>`;
         return;
       }
 
       snapshot.forEach(docSnap => {
         const ped = docSnap.data();
-        tbody.innerHTML += `
-          <tr>
-            <td><strong>${sanitizar(ped.cliente)}</strong><br><span style="color:var(--text-muted); font-size:0.85em;">${sanitizar(ped.telefono)}</span></td>
-            <td><span class="tag-badge ${ped.tipo === 'digital' ? 'tag-digital' : 'tag-stock'}">${ped.tipo || 'fisico'}</span></td>
-            <td>${sanitizar(ped.metodoEnvio || 'N/A')}<br><small style="color:var(--secondary-color);">${sanitizar(ped.direccionEnvio || '')}</small></td>
-            <td><span style="font-size:0.85em;">${sanitizar(ped.detalles)}</span></td>
-            <td><strong style="color:var(--secondary-color);">$${Number(ped.totalUsd).toFixed(2)}</strong></td>
-            <td><span style="color:#25d366; font-size:0.85em; font-weight:700;">${sanitizar(ped.estado || 'Recibido')}</span></td>
-            <td><button class="action-btn-del" onclick="eliminarPedido('${docSnap.id}')"><i class="fas fa-trash"></i></button></td>
-          </tr>
+        cont.innerHTML += `
+          <div class="item-card-row">
+            <div class="item-card-info">
+              <div style="display:flex; justify-content:space-between; margin-bottom: 2px;">
+                <strong>${sanitizar(ped.cliente)}</strong>
+                <span class="tag-badge ${ped.tipo === 'digital' ? 'tag-digital' : 'tag-stock'}">${ped.tipo || 'Físico'}</span>
+              </div>
+              <div style="font-size:0.85em; color:var(--text-muted); margin-bottom: 4px;">
+                <i class="fab fa-whatsapp" style="color:#25d366;"></i> ${sanitizar(ped.telefono)}
+              </div>
+              ${ped.direccionEnvio ? `<div style="font-size:0.8em; color:var(--secondary-color); margin-bottom:4px;">📍 ${sanitizar(ped.metodoEnvio)}:${sanitizar(ped.direccionEnvio)}</div>` : ''}
+              <div style="font-size:0.85em; margin-bottom: 4px;">${sanitizar(ped.detalles)}</div>
+              <div style="font-size:1.05em; font-weight:700; color:var(--secondary-color);">$${Number(ped.totalUsd).toFixed(2)}</div>
+            </div>
+            <div class="item-card-actions">
+              <button class="btn-action-touch btn-del" onclick="eliminarPedido('${docSnap.id}')"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
         `;
       });
     } catch(e) {}
@@ -957,26 +855,21 @@
 
     try {
       await addDoc(collection(db, "pedidos"), {
-        cliente,
-        telefono,
-        tipo,
-        metodoEnvio,
-        direccionEnvio,
-        detalles,
-        totalUsd,
+        cliente, telefono, tipo, metodoEnvio, direccionEnvio, detalles, totalUsd,
         estado: "Recibido",
         timestamp: Date.now()
       });
       document.getElementById('formPedidoManual').reset();
+      toggleCajaPedidoManual();
       cargarPedidosAdmin();
-      alert("Pedido registrado.");
+      alert("¡Pedido guardado!");
     } catch(err) {
       alert("Error: " + err.message);
     }
   };
 
   window.eliminarPedido = async function(id) {
-    if (!confirm("¿Eliminar este registro de pedido?")) return;
+    if (!confirm("¿Eliminar pedido?")) return;
     await deleteDoc(doc(db, "pedidos", id));
     cargarPedidosAdmin();
   };
@@ -987,16 +880,14 @@
     const snapshot = await getDocs(q);
     const cont = document.getElementById('listaBannersAdmin');
     cont.innerHTML = "";
-    if (snapshot.empty) { cont.innerHTML = "<p style='color:var(--text-muted);'>No hay banners creados.</p>"; return; }
+    if (snapshot.empty) { cont.innerHTML = "<p style='color:var(--text-muted);'>No hay banners.</p>"; return; }
     snapshot.forEach(d => {
       const b = d.data();
       cont.innerHTML += `
-        <div class="item-card-mini">
-          <div style="display:flex; align-items:center;">
-            <img src="${b.imgUrl}" class="banner-preview-img">
-            <span style="font-size:0.85em; color:var(--text-muted); word-break:break-all;">${b.imgUrl}</span>
-          </div>
-          <button class="action-btn-del" onclick="eliminarBanner('${d.id}')"><i class="fas fa-trash"></i></button>
+        <div class="item-card-row">
+          <img src="${b.imgUrl}" style="width: 70px; height: 40px; object-fit: cover; border-radius: 4px;">
+          <div style="flex-grow: 1; font-size: 0.8em; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${b.imgUrl}</div>
+          <button class="btn-action-touch btn-del" onclick="eliminarBanner('${d.id}')"><i class="fas fa-trash"></i></button>
         </div>
       `;
     });
@@ -1021,13 +912,16 @@
     const snapshot = await getDocs(collection(db, "cupones"));
     const cont = document.getElementById('listaCuponesAdmin');
     cont.innerHTML = "";
-    if (snapshot.empty) { cont.innerHTML = "<p style='color:var(--text-muted);'>No hay cupones activos.</p>"; return; }
+    if (snapshot.empty) { cont.innerHTML = "<p style='color:var(--text-muted);'>No hay cupones.</p>"; return; }
     snapshot.forEach(d => {
       const c = d.data();
       cont.innerHTML += `
-        <div class="item-card-mini">
-          <div><strong style="color:var(--secondary-color); font-size:1.1em;">${sanitizar(c.codigo)}</strong> &nbsp; (-${c.porcentaje}%)</div>
-          <button class="action-btn-del" onclick="eliminarCupon('${d.id}')"><i class="fas fa-trash"></i></button>
+        <div class="item-card-row">
+          <div style="flex-grow: 1;">
+            <strong style="color:var(--secondary-color); font-size:1.1em;">${sanitizar(c.codigo)}</strong>
+            <span style="color:var(--text-muted); font-size:0.9em; margin-left: 8px;">(-${c.porcentaje}%)</span>
+          </div>
+          <button class="btn-action-touch btn-del" onclick="eliminarCupon('${d.id}')"><i class="fas fa-trash"></i></button>
         </div>
       `;
     });
@@ -1069,7 +963,7 @@
       cedula: document.getElementById('pagoCedula').value.trim(),
       binance: document.getElementById('pagoBinance').value.trim()
     });
-    alert("Cuentas actualizadas correctamente.");
+    alert("Cuentas bancarias actualizadas.");
   };
 
   async function cargarRangosAdmin() {
@@ -1097,24 +991,25 @@
   async function cargarReviewsAdmin() {
     const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"));
     const snapshot = await getDocs(q);
-    const tbody = document.getElementById('tablaReviewsAdminBody');
-    tbody.innerHTML = "";
-    if (snapshot.empty) { tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--text-muted);">Sin reseñas.</td></tr>`; return; }
+    const cont = document.getElementById('listaReviewsAdmin');
+    cont.innerHTML = "";
+    if (snapshot.empty) { cont.innerHTML = `<p style="color: var(--text-muted); text-align:center;">Sin reseñas.</p>`; return; }
     snapshot.forEach(d => {
       const r = d.data();
-      tbody.innerHTML += `
-        <tr>
-          <td><strong>${sanitizar(r.nombre)}</strong></td>
-          <td><span style="color:#ffcc00;">${sanitizar(r.estrellas)}</span></td>
-          <td><span style="font-size:0.9em; color:var(--text-muted);">${sanitizar(r.texto)}</span></td>
-          <td><button class="action-btn-del" onclick="eliminarReview('${d.id}')"><i class="fas fa-trash"></i></button></td>
-        </tr>
+      cont.innerHTML += `
+        <div class="item-card-row">
+          <div style="flex-grow: 1;">
+            <div style="font-weight:700;">${sanitizar(r.nombre)} <span style="color:#ffcc00; font-size:0.85em;">${sanitizar(r.estrellas)}</span></div>
+            <div style="font-size:0.85em; color:var(--text-muted);">${sanitizar(r.texto)}</div>
+          </div>
+          <button class="btn-action-touch btn-del" onclick="eliminarReview('${d.id}')"><i class="fas fa-trash"></i></button>
+        </div>
       `;
     });
   }
 
   window.eliminarReview = async function(id) {
-    if (!confirm("¿Eliminar esta reseña?")) return;
+    if (!confirm("¿Eliminar reseña?")) return;
     await deleteDoc(doc(db, "reviews", id));
     cargarReviewsAdmin();
   };
