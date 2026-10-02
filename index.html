@@ -53,7 +53,6 @@
       padding-bottom: 70px;
     }
 
-    /* Malla de fondo sutil inspirada en CRT / Synthwave */
     body::before {
       content: "";
       position: fixed;
@@ -936,9 +935,10 @@
       </div>
     </div>
 
+    <!-- Barra de progreso con frase icónica -->
     <div class="pixel-meter-box">
       <div class="pixel-meter-info">
-        <span>INICIALIZANDO CATÁLOGO...</span>
+        <span>CARGANDO GAMEVERSE...</span>
         <span id="loadPctTxt">0%</span>
       </div>
       <div class="pixel-meter-outer">
@@ -1945,7 +1945,7 @@
   
   window.girarRuletaGacha = function() { 
     reproducirSonido(); 
-    let hoy = new Date().toDateString();
+    let hoy = new Date().toDateString(); 
     let ultimaGacha = localStorage.getItem('sakura_ultima_gacha');
     if (ultimaGacha === hoy) {
       document.getElementById('gachaResultado').innerHTML = "Tirada utilizada hoy. Regresa mañana.";
