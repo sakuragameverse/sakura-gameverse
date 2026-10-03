@@ -390,7 +390,7 @@
       box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
     }
 
-    /* --- CARRUSEL CATEGORÍAS TÁCTIL --- */
+    /* --- CARRUSEL CATEGORÍAS TÁCTIL (CON PERIFÉRICOS) --- */
     .categorias-visuales-section { margin-bottom: 25px; }
     .categorias-visuales-header {
       font-family: 'Chakra Petch', sans-serif;
@@ -1038,7 +1038,7 @@
   <br>
   <div class="store-status-badge"><div class="status-dot"></div> Horario de Atención: 10:00 AM - 7:00 PM</div>
   <div class="hero-title">Sakura Gameverse</div>
-  <div style="color: var(--text-muted); font-size: 0.9em; max-width: 500px; margin: 0 auto 14px auto;">Coleccionables, indumentaria, hardware gamer y recargas digitales directas.</div>
+  <div style="color: var(--text-muted); font-size: 0.9em; max-width: 500px; margin: 0 auto 14px auto;">Coleccionables, ropa, productos gamer y recargas digitales para ti.</div>
   
   <div id="bannerSliderContainer" class="banner-slider-container"></div>
   <br>
@@ -1053,7 +1053,7 @@
     <input type="text" id="buscador" class="search-input" placeholder="Buscar por producto, personaje o franquicia..." onkeyup="buscarProductos()">
   </div>
 
-  <!-- Carrusel Visual de Categorías (con Periféricos Unificado) -->
+  <!-- Carrusel Visual de Categorías -->
   <div class="categorias-visuales-section">
     <div class="categorias-visuales-header">Categorías de Catálogo</div>
     <div class="carrusel-wrapper">
@@ -1089,7 +1089,7 @@
           <div class="cat-info"><div class="cat-title" id="title-cat-mandos">Mandos & Consolas</div><div class="cat-count" id="count-mandos">0 items</div></div>
         </div>
         
-        <!-- Categoría Matriz: Periféricos (agrupa audífonos, teclados, mouse, etc.) -->
+        <!-- Categoría Matriz: Periféricos Gamer -->
         <div class="cat-card" onclick="filtrarCategoria('perifericos')">
           <img src="logo.webp" id="img-cat-perifericos" class="cat-img" alt="Periféricos" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-perifericos">Periféricos Gamer</div><div class="cat-count" id="count-perifericos">0 items</div></div>
@@ -1117,7 +1117,7 @@
     </div>
   </div>
 
-  <!-- Controles Compactos y Nuevas Opciones de Ordenamiento -->
+  <!-- Controles Compactos -->
   <div class="controles-superiores">
     <div class="panel-controles-avanzados">
       <select id="selectColeccion" class="ordenar-select" onchange="cambiarColeccionDropdown(this.value)">
@@ -1544,7 +1544,7 @@
     if (!contenedor) return;
     contenedor.innerHTML = "";
     
-    // Conteo optimizado incluyendo 'perifericos' (y agrupando retroactivamente audífonos y teclados)
+    // Conteo optimizado con categoría matriz 'perifericos'
     let conteo = { 
       recargas: 0, mangas: 0, ropa: 0, mandos: 0, perifericos: 0, 
       figuras: 0, peluches: 0, cartas: 0, katanas: 0, lamparas: 0, accesorios: 0 
@@ -1571,7 +1571,7 @@
 
       let esRecarga = categoria === 'recargas';
 
-      // Agrupación automática de periféricos
+      // Agrupación automática retroactiva para audífonos y teclados
       if (categoria === 'teclados' || categoria === 'audifonos' || categoria === 'perifericos') {
         conteo.perifericos++;
       } else if (conteo[categoria] !== undefined) {
@@ -1678,7 +1678,6 @@
       let col = card.getAttribute('data-coleccion') || '';
       let nom = card.getAttribute('data-nombre') || '';
 
-      // Comprobación de categoría inteligente (Periféricos cubre 'perifericos', 'teclados' y 'audifonos')
       let cumpleCat = false;
       if (filtroGlobal.categoria === 'todos') {
         cumpleCat = true;
@@ -2063,7 +2062,7 @@
     }
   }
 
-  // Motor de ordenamiento completo (Novedades, Histórico, Precio)
+  // Motor de ordenamiento
   window.ordenarProductos = function() {
     reproducirSonido(); 
     let modo = document.getElementById('selectOrden').value; 
@@ -2079,7 +2078,6 @@
     } else if (modo === 'antiguo') {
       cards.sort((a, b) => parseFloat(a.getAttribute('data-timestamp') || 0) - parseFloat(b.getAttribute('data-timestamp') || 0));
     } else { 
-      // Por defecto vuelve al orden cronológico de Firestore (más reciente primero)
       cards.sort((a, b) => parseFloat(b.getAttribute('data-timestamp') || 0) - parseFloat(a.getAttribute('data-timestamp') || 0));
     }
     cards.forEach(card => contenedor.appendChild(card));
