@@ -10,7 +10,7 @@
   <link rel="icon" type="image/webp" href="logo.webp">
   <meta name="theme-color" content="#090314">
   
-  <!-- Fuentes Profesionales Gamer / UI -->
+  <!-- Fuentes Gamer / UI -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -624,7 +624,7 @@
       color: #000;
     }
 
-    /* --- MODALES REFINADOS --- */
+    /* --- MODALES --- */
     .modal {
       display: none;
       position: fixed;
@@ -935,7 +935,7 @@
       </div>
     </div>
 
-    <!-- Barra de progreso con frase icónica -->
+    <!-- Barra de progreso -->
     <div class="pixel-meter-box">
       <div class="pixel-meter-info">
         <span>CARGANDO GAMEVERSE...</span>
@@ -1053,7 +1053,7 @@
     <input type="text" id="buscador" class="search-input" placeholder="Buscar por producto, personaje o franquicia..." onkeyup="buscarProductos()">
   </div>
 
-  <!-- Carrusel Visual Único de Categorías -->
+  <!-- Carrusel Visual de Categorías (con Periféricos Unificado) -->
   <div class="categorias-visuales-section">
     <div class="categorias-visuales-header">Categorías de Catálogo</div>
     <div class="carrusel-wrapper">
@@ -1088,14 +1088,13 @@
           <img src="logo.webp" id="img-cat-mandos" class="cat-img" alt="Mandos" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-mandos">Mandos & Consolas</div><div class="cat-count" id="count-mandos">0 items</div></div>
         </div>
-        <div class="cat-card" onclick="filtrarCategoria('audifonos')">
-          <img src="logo.webp" id="img-cat-audifonos" class="cat-img" alt="Audífonos" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-audifonos">Audio Gamer</div><div class="cat-count" id="count-audifonos">0 items</div></div>
+        
+        <!-- Categoría Matriz: Periféricos (agrupa audífonos, teclados, mouse, etc.) -->
+        <div class="cat-card" onclick="filtrarCategoria('perifericos')">
+          <img src="logo.webp" id="img-cat-perifericos" class="cat-img" alt="Periféricos" loading="lazy" decoding="async">
+          <div class="cat-info"><div class="cat-title" id="title-cat-perifericos">Periféricos Gamer</div><div class="cat-count" id="count-perifericos">0 items</div></div>
         </div>
-        <div class="cat-card" onclick="filtrarCategoria('teclados')">
-          <img src="logo.webp" id="img-cat-teclados" class="cat-img" alt="Teclados" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-teclados">Teclados</div><div class="cat-count" id="count-teclados">0 items</div></div>
-        </div>
+
         <div class="cat-card" onclick="filtrarCategoria('peluches')">
           <img src="logo.webp" id="img-cat-peluches" class="cat-img" alt="Peluches" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-peluches">Peluches</div><div class="cat-count" id="count-peluches">0 items</div></div>
@@ -1118,7 +1117,7 @@
     </div>
   </div>
 
-  <!-- Controles Compactos -->
+  <!-- Controles Compactos y Nuevas Opciones de Ordenamiento -->
   <div class="controles-superiores">
     <div class="panel-controles-avanzados">
       <select id="selectColeccion" class="ordenar-select" onchange="cambiarColeccionDropdown(this.value)">
@@ -1133,6 +1132,8 @@
 
       <select id="selectOrden" class="ordenar-select" onchange="ordenarProductos()">
         <option value="defecto">Ordenar: Predeterminado</option>
+        <option value="reciente">Novedades: Más recientes</option>
+        <option value="antiguo">Histórico: Más antiguos</option>
         <option value="menor">Precio: Menor a Mayor</option>
         <option value="mayor">Precio: Mayor a Menor</option>
       </select>
@@ -1542,7 +1543,13 @@
     let contenedor = document.getElementById('catalogoNube');
     if (!contenedor) return;
     contenedor.innerHTML = "";
-    let conteo = { recargas: 0, mangas: 0, ropa: 0, mandos: 0, teclados: 0, audifonos: 0, figuras: 0, peluches: 0, cartas: 0, katanas: 0, lamparas: 0, accesorios: 0 };
+    
+    // Conteo optimizado incluyendo 'perifericos' (y agrupando retroactivamente audífonos y teclados)
+    let conteo = { 
+      recargas: 0, mangas: 0, ropa: 0, mandos: 0, perifericos: 0, 
+      figuras: 0, peluches: 0, cartas: 0, katanas: 0, lamparas: 0, accesorios: 0 
+    };
+    
     let elTodos = document.getElementById('count-todos');
     if(elTodos) elTodos.innerText = lista.length + " items";
 
@@ -1554,16 +1561,22 @@
     lista.forEach((prod, indexProd) => {
       let precioBs = (prod.precio || 0) * tasaBcvActual;
       let fotosArray = (prod.fotos && prod.fotos.length > 0) ? prod.fotos : ['logo.webp'];
-      let categoria = prod.categoria || 'mangas';
+      let categoria = (prod.categoria || 'mangas').toLowerCase();
       let coleccion = prod.coleccion || 'General';
+      let timestamp = prod.timestamp || 0;
       
       let badgeClase = 'badge-stock';
       if(prod.estado && prod.estado.includes("Encargo")) badgeClase = 'badge-encargo';
-      if(categoria.toLowerCase() === 'recargas') badgeClase = 'badge-digital';
+      if(categoria === 'recargas') badgeClase = 'badge-digital';
 
-      let esRecarga = categoria.toLowerCase() === 'recargas';
+      let esRecarga = categoria === 'recargas';
 
-      if(conteo[categoria] !== undefined) conteo[categoria]++;
+      // Agrupación automática de periféricos
+      if (categoria === 'teclados' || categoria === 'audifonos' || categoria === 'perifericos') {
+        conteo.perifericos++;
+      } else if (conteo[categoria] !== undefined) {
+        conteo[categoria]++;
+      }
 
       let imgsHtml = ''; 
       let dotsHtml = '';
@@ -1580,7 +1593,8 @@
              data-categoria="${categoria}" 
              data-coleccion="${sanitizarHTML(coleccion).toLowerCase()}" 
              data-estado="${prod.estado || ''}" 
-             data-precio="${prod.precio}" 
+             data-precio="${prod.precio}"
+             data-timestamp="${timestamp}"
              onclick="abrirModalPorId('${prod.id}')">
           <button class="btn-fav-card" onclick="toggleFavoritoPorId(event, '${prod.id}')"><i class="fas fa-heart"></i></button>
           <div class="badge-estado ${badgeClase}">${prod.estado || (esRecarga ? 'Recarga Directa' : 'Stock')}</div>
@@ -1659,12 +1673,21 @@
   function aplicarFiltrosGlobales() {
     let productos = document.querySelectorAll('#catalogoNube .item-producto');
     productos.forEach(card => {
-      let cat = card.getAttribute('data-categoria') || '';
+      let cat = (card.getAttribute('data-categoria') || '').toLowerCase();
       let est = card.getAttribute('data-estado') || '';
       let col = card.getAttribute('data-coleccion') || '';
       let nom = card.getAttribute('data-nombre') || '';
 
-      let cumpleCat = (filtroGlobal.categoria === 'todos' || cat === filtroGlobal.categoria);
+      // Comprobación de categoría inteligente (Periféricos cubre 'perifericos', 'teclados' y 'audifonos')
+      let cumpleCat = false;
+      if (filtroGlobal.categoria === 'todos') {
+        cumpleCat = true;
+      } else if (filtroGlobal.categoria === 'perifericos') {
+        cumpleCat = (cat === 'perifericos' || cat === 'teclados' || cat === 'audifonos');
+      } else {
+        cumpleCat = (cat === filtroGlobal.categoria);
+      }
+
       let cumpleCol = (filtroGlobal.coleccion === 'todos' || col === filtroGlobal.coleccion.toLowerCase());
       let cumpleEst = (filtroGlobal.estado === 'todos' || est.includes(filtroGlobal.estado));
       let cumpleBusqueda = (!filtroGlobal.busqueda || nom.includes(filtroGlobal.busqueda) || col.includes(filtroGlobal.busqueda));
@@ -1682,9 +1705,9 @@
     if (!prod) return;
 
     const fotosArray = (prod.fotos && prod.fotos.length > 0) ? prod.fotos : ['logo.webp'];
-    const categoria = prod.categoria || 'mangas';
-    const esRopa = categoria.toLowerCase().includes('ropa') || categoria.toLowerCase().includes('hoodie');
-    const esRecarga = categoria.toLowerCase() === 'recargas';
+    const categoria = (prod.categoria || 'mangas').toLowerCase();
+    const esRopa = categoria.includes('ropa') || categoria.includes('hoodie');
+    const esRecarga = categoria === 'recargas';
 
     window.productoActual = { 
       id: prod.id,
@@ -1696,6 +1719,10 @@
     };
 
     let catBonita = categoria.charAt(0).toUpperCase() + categoria.slice(1);
+    if (categoria === 'teclados' || categoria === 'audifonos' || categoria === 'perifericos') {
+      catBonita = "Periféricos";
+    }
+
     document.getElementById('modalBreadcrumbs').innerHTML = `Inicio / <span>${sanitizarHTML(catBonita)}</span>`;
     document.getElementById('modalImg').src = fotosArray[0];
     document.getElementById('modalTitulo').innerText = prod.nombre;
@@ -2036,17 +2063,24 @@
     }
   }
 
+  // Motor de ordenamiento completo (Novedades, Histórico, Precio)
   window.ordenarProductos = function() {
     reproducirSonido(); 
     let modo = document.getElementById('selectOrden').value; 
     let contenedor = document.getElementById('catalogoNube');
     let cards = Array.from(contenedor.querySelectorAll('.item-producto'));
+    
     if (modo === 'menor') { 
-      cards.sort((a, b) => parseFloat(a.getAttribute('data-precio')) - parseFloat(b.getAttribute('data-precio')));
+      cards.sort((a, b) => parseFloat(a.getAttribute('data-precio') || 0) - parseFloat(b.getAttribute('data-precio') || 0));
     } else if (modo === 'mayor') { 
-      cards.sort((a, b) => parseFloat(b.getAttribute('data-precio')) - parseFloat(a.getAttribute('data-precio')));
+      cards.sort((a, b) => parseFloat(b.getAttribute('data-precio') || 0) - parseFloat(a.getAttribute('data-precio') || 0));
+    } else if (modo === 'reciente') {
+      cards.sort((a, b) => parseFloat(b.getAttribute('data-timestamp') || 0) - parseFloat(a.getAttribute('data-timestamp') || 0));
+    } else if (modo === 'antiguo') {
+      cards.sort((a, b) => parseFloat(a.getAttribute('data-timestamp') || 0) - parseFloat(b.getAttribute('data-timestamp') || 0));
     } else { 
-      return; 
+      // Por defecto vuelve al orden cronológico de Firestore (más reciente primero)
+      cards.sort((a, b) => parseFloat(b.getAttribute('data-timestamp') || 0) - parseFloat(a.getAttribute('data-timestamp') || 0));
     }
     cards.forEach(card => contenedor.appendChild(card));
   };
