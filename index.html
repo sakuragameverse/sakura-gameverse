@@ -243,14 +243,31 @@
       position: relative;
       z-index: 2;
     }
+
+    /* --- HERO BANNER LOGO --- */
     .hero-logo {
-      max-width: 230px;
-      margin-bottom: 10px;
+      width: 100%;
+      max-width: 250px;
+      height: auto;
+      margin-bottom: 15px;
       cursor: pointer;
-      transition: transform 0.25s ease;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
       filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6));
+      animation: logo-float 4s infinite ease-in-out;
     }
-    .hero-logo:hover { transform: scale(1.03); }
+
+    .hero-logo:hover {
+      transform: scale(1.08) translateY(-5px);
+      filter: drop-shadow(0 0 15px var(--primary-color)) drop-shadow(0 0 30px var(--secondary-color)); 
+      animation: none;
+    }
+
+    @keyframes logo-float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-4px); }
+      100% { transform: translateY(0px); }
+    }
+
     .hero-title {
       font-size: 1.15em;
       color: #fff;
