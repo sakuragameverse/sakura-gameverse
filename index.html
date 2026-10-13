@@ -76,7 +76,7 @@
     ::-webkit-scrollbar-thumb { background: rgba(0, 229, 255, 0.3); border-radius: var(--radius-sm); }
     ::-webkit-scrollbar-thumb:hover { background: var(--primary-color); }
 
-    /* --- PANTALLA DE CARGA RETRO ARCADE AE86 --- */
+    /* --- NUEVA PANTALLA DE CARGA PIXEL FOX ARCADE --- */
     #splash-screen {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -91,119 +91,94 @@
       font-family: 'Press Start 2P', monospace;
     }
 
+    .sakura-rain {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    
+    .pixel-petal {
+      position: absolute;
+      width: 6px; height: 6px;
+      background: var(--primary-color);
+      top: -10px;
+      opacity: 0.8;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0.2; }
+    }
+
     .arcade-stage {
       display: flex;
       flex-direction: column;
       align-items: center;
       width: 90%;
       max-width: 460px;
+      z-index: 2;
     }
 
     .arcade-logo-text {
-      font-size: 0.85em;
-      color: var(--secondary-color);
-      letter-spacing: 2px;
-      margin-bottom: 25px;
-      text-align: center;
-      text-shadow: 0 0 10px rgba(0,229,255,0.5);
-    }
-
-    .road-arena {
-      position: relative;
-      width: 100%;
-      height: 85px;
-      margin-bottom: 25px;
-      overflow: hidden;
-      border-bottom: 2px solid var(--primary-color);
-    }
-
-    .road-track-lines {
-      position: absolute;
-      bottom: 0; left: 0;
-      width: 200%; height: 3px;
-      background: repeating-linear-gradient(90deg, var(--secondary-color) 0px, var(--secondary-color) 20px, transparent 20px, transparent 40px);
-      animation: road-run 0.35s linear infinite;
-    }
-    @keyframes road-run {
-      from { transform: translateX(0); }
-      to { transform: translateX(-40px); }
-    }
-
-    .ae86-runner {
-      position: absolute;
-      bottom: 4px;
-      left: 30%;
-      width: 110px;
-      height: 48px;
-    }
-
-    .ae86-body-vibe {
-      width: 100%; height: 100%;
-      animation: engine-rumble 0.12s infinite alternate;
-    }
-    @keyframes engine-rumble {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(-1.5px); }
-    }
-
-    .ae86-svg { width: 100%; height: 100%; shape-rendering: crispEdges; }
-
-    .faro-beam {
-      position: absolute;
-      right: -55px; top: 15px;
-      width: 60px; height: 25px;
-      background: linear-gradient(90deg, rgba(0, 229, 255, 0.6) 0%, transparent 100%);
-      clip-path: polygon(0 30%, 100% 0, 100% 100%, 0 70%);
-      pointer-events: none;
-    }
-
-    .nitro-flame {
-      display: none;
-      position: absolute;
-      left: -28px; bottom: 8px;
-      width: 30px; height: 12px;
-      background: linear-gradient(270deg, #ff007f, #00e5ff, transparent);
-      clip-path: polygon(100% 30%, 0 50%, 100% 70%, 70% 50%);
-    }
-
-    .launch-turbo {
-      animation: turbo-out 0.65s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
-    }
-    @keyframes turbo-out {
-      0% { transform: translateX(0); }
-      25% { transform: translateX(-20px); }
-      100% { transform: translateX(130vw); }
-    }
-
-    .pixel-meter-box {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .pixel-meter-info {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.55em;
+      font-size: 1.2em;
       color: #fff;
-      letter-spacing: 1px;
+      letter-spacing: 2px;
+      margin-bottom: 30px;
+      text-align: center;
+      text-shadow: 2px 2px 0px var(--primary-color), -2px -2px 0px var(--secondary-color);
     }
 
-    .pixel-meter-outer {
-      width: 100%;
-      height: 14px;
-      background: #000;
-      border: 1px solid var(--secondary-color);
-      padding: 2px;
+    .pixel-fox-container {
+      margin-bottom: 25px;
+      animation: fox-breathe 1.5s infinite alternate steps(3);
+    }
+    
+    @keyframes fox-breathe {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-6px); }
     }
 
-    .pixel-meter-bar {
-      width: 0%;
-      height: 100%;
-      background: repeating-linear-gradient(90deg, var(--primary-color) 0px, var(--primary-color) 6px, #000 6px, #000 8px);
-      transition: width 0.15s steps(15);
+    .jump-fox {
+      animation: fox-jump 0.5s ease-out forwards !important;
     }
+    @keyframes fox-jump {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-30px) scale(1.1); filter: drop-shadow(0 0 15px var(--secondary-color)); }
+      100% { transform: translateY(100vh) scale(0.5); }
+    }
+
+    .high-score-box {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .hi-score-label {
+      color: var(--secondary-color);
+      font-size: 0.7em;
+      margin-bottom: 8px;
+    }
+
+    .score-numbers {
+      color: #fff;
+      font-size: 1.5em;
+      letter-spacing: 4px;
+    }
+
+    .blink-text {
+      color: var(--primary-color);
+      font-size: 0.8em;
+      animation: slow-blink 1s infinite;
+    }
+    
+    .fast-blink {
+      color: #25d366 !important;
+      animation: fast-blink 0.2s infinite !important;
+    }
+
+    @keyframes slow-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+    @keyframes fast-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
 
     /* --- NOTIFICACIÓN & TICKER SOBRIO --- */
     .top-bar-notice {
@@ -381,7 +356,7 @@
       box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
     }
 
-    /* --- CARRUSEL CATEGORÍAS TÁCTIL (CON PERIFÉRICOS) --- */
+    /* --- CARRUSEL CATEGORÍAS TÁCTIL --- */
     .categorias-visuales-section { margin-bottom: 25px; }
     .categorias-visuales-header {
       font-family: 'Chakra Petch', sans-serif;
@@ -879,58 +854,57 @@
 </head>
 <body>
 
-<!-- PANTALLA DE CARGA RETRO ARCADE -->
+<!-- PANTALLA DE CARGA RETRO ARCADE PIXEL FOX -->
 <div id="splash-screen">
+  <div class="sakura-rain" id="sakuraRain"></div>
+  
   <div class="arcade-stage">
-    <div class="arcade-logo-text">SAKURA GAMEVERSE</div>
+    <div class="arcade-logo-text">SAKURA<br>GAMEVERSE</div>
 
-    <div class="road-arena">
-      <div class="road-track-lines"></div>
+    <div class="pixel-fox-container" id="pixelFox">
+      <!-- Zorrita Pixel Art dibujada en SVG con código puro (8-bits) -->
+      <svg viewBox="0 0 16 16" width="130" height="130" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+        <!-- Colas -->
+        <rect x="11" y="8" width="4" height="6" fill="#ff007f"/>
+        <rect x="12" y="7" width="2" height="1" fill="#ff007f"/>
+        <rect x="13" y="13" width="2" height="2" fill="#ffccaa"/>
 
-      <div class="ae86-runner" id="ae86Runner">
-        <div class="ae86-body-vibe">
-          <div class="nitro-flame" id="nitroFlame"></div>
-          
-          <svg class="ae86-svg" viewBox="0 0 60 26">
-            <polygon points="12,12 20,4 38,4 47,12 56,12 56,15 10,15" fill="#f4f6fa" />
-            <polygon points="21,5 36,5 44,12 21,12" fill="#141a29" />
-            <polygon points="23,6 30,6 30,11 23,11" fill="#00e5ff" opacity="0.6" />
-            <polygon points="32,6 36,6 42,11 32,11" fill="#00e5ff" opacity="0.4" />
-            <polygon points="4,15 58,15 57,19 3,19" fill="#181528" />
-            <rect x="2" y="17" width="57" height="3" fill="#0d041a" />
-            <rect x="49" y="8" width="5" height="4" fill="#f4f6fa" />
-            <rect x="53" y="9" width="1" height="3" fill="#00e5ff" />
-            <rect x="4" y="14" width="3" height="3" fill="#ff0055" />
-            <rect x="55" y="16" width="2" height="2" fill="#ffaa00" />
-            <circle cx="28" cy="14" r="1.5" fill="#ff007f" />
-            <rect x="31" y="13.5" width="4" height="1" fill="#ffffff" opacity="0.8" />
-            <g transform="translate(14, 19)">
-              <circle cx="0" cy="0" r="4.5" fill="#05030a" />
-              <circle cx="0" cy="0" r="2.8" fill="#3a3f58" />
-              <circle cx="0" cy="0" r="1" fill="#00e5ff" />
-            </g>
-            <g transform="translate(45, 19)">
-              <circle cx="0" cy="0" r="4.5" fill="#05030a" />
-              <circle cx="0" cy="0" r="2.8" fill="#3a3f58" />
-              <circle cx="0" cy="0" r="1" fill="#00e5ff" />
-            </g>
-          </svg>
+        <!-- Cabeza -->
+        <rect x="3" y="4" width="10" height="7" fill="#ffaa55"/>
+        <rect x="4" y="3" width="2" height="1" fill="#ffaa55"/>
+        <rect x="10" y="3" width="2" height="1" fill="#ffaa55"/>
+        
+        <!-- Hocico y Mejillas -->
+        <rect x="3" y="8" width="10" height="3" fill="#ffccaa"/>
+        <rect x="7" y="9" width="2" height="1" fill="#000000"/> <!-- Nariz -->
+        
+        <!-- Ojos -->
+        <rect x="5" y="6" width="2" height="2" fill="#000000"/>
+        <rect x="9" y="6" width="2" height="2" fill="#000000"/>
 
-          <div class="faro-beam"></div>
-        </div>
-      </div>
+        <!-- Cuerpo y ropita -->
+        <rect x="5" y="11" width="6" height="5" fill="#00e5ff"/>
+        <rect x="6" y="12" width="4" height="4" fill="#ffccaa"/> <!-- Barriga -->
+
+        <!-- Audífonos Neón -->
+        <!-- Diadema -->
+        <rect x="2" y="3" width="12" height="1" fill="#00e5ff"/>
+        <rect x="2" y="4" width="1" height="3" fill="#00e5ff"/>
+        <rect x="13" y="4" width="1" height="3" fill="#00e5ff"/>
+        <!-- Orejeras -->
+        <rect x="1" y="5" width="2" height="4" fill="#ff007f"/>
+        <rect x="13" y="5" width="2" height="4" fill="#ff007f"/>
+      </svg>
     </div>
 
-    <!-- Barra de progreso -->
-    <div class="pixel-meter-box">
-      <div class="pixel-meter-info">
-        <span>CARGANDO GAMEVERSE...</span>
-        <span id="loadPctTxt">0%</span>
-      </div>
-      <div class="pixel-meter-outer">
-        <div class="pixel-meter-bar" id="pixelMeterBar"></div>
-      </div>
+    <!-- Contador High Score -->
+    <div class="high-score-box">
+      <div class="hi-score-label">HI-SCORE</div>
+      <div class="score-numbers" id="loadScore">00000</div>
     </div>
+    
+    <!-- Texto Parpadeante -->
+    <div class="blink-text" id="blinkStart">INSERT COIN...</div>
   </div>
 </div>
 
@@ -1071,7 +1045,6 @@
           <div class="cat-info"><div class="cat-title" id="title-cat-mandos">Mandos & Consolas</div><div class="cat-count" id="count-mandos">0 items</div></div>
         </div>
         
-        <!-- Categoría Matriz: Periféricos Gamer -->
         <div class="cat-card" onclick="filtrarCategoria('perifericos')">
           <img src="logo.webp?v=2" id="img-cat-perifericos" class="cat-img" alt="Periféricos" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-perifericos">Periféricos Gamer</div><div class="cat-count" id="count-perifericos">0 items</div></div>
@@ -1358,41 +1331,51 @@
     });
   }
 
+  /* --- NUEVA LÓGICA DE PANTALLA ARCADE PIXEL FOX --- */
+  function generarLluviaSakura() {
+    const contenedor = document.getElementById('sakuraRain');
+    if(!contenedor) return;
+    for(let i=0; i<15; i++) {
+      let petalo = document.createElement('div');
+      petalo.className = 'pixel-petal';
+      petalo.style.left = Math.random() * 100 + '%';
+      petalo.style.animationDelay = (Math.random() * 2) + 's';
+      petalo.style.animationDuration = (Math.random() * 1.5 + 2) + 's';
+      contenedor.appendChild(petalo);
+    }
+  }
+
   function ejecutarAnimacionSplash() {
-    let porcentaje = 0;
-    const bar = document.getElementById('pixelMeterBar');
-    const txt = document.getElementById('loadPctTxt');
-    const car = document.getElementById('ae86Runner');
-    const nitro = document.getElementById('nitroFlame');
+    generarLluviaSakura();
+    let score = 0;
+    const txtScore = document.getElementById('loadScore');
+    const blink = document.getElementById('blinkStart');
+    const fox = document.getElementById('pixelFox');
     const splash = document.getElementById('splash-screen');
 
-    if (!bar || !txt || !splash) return;
+    if (!txtScore || !splash) return;
 
     const intervaloCarga = setInterval(() => {
-      porcentaje += Math.floor(Math.random() * 5) + 3;
+      score += Math.floor(Math.random() * 800) + 150;
 
-      if (porcentaje >= 100) {
-        porcentaje = 100;
+      if (score >= 9999) {
+        score = 9999;
         clearInterval(intervaloCarga);
-        bar.style.width = '100%';
-        txt.innerText = '100% OK';
-
-        nitro.style.display = 'block';
+        txtScore.innerText = "99999";
+        
+        blink.innerText = "- PRESS START -";
+        blink.classList.add('fast-blink');
+        fox.classList.add('jump-fox');
         reproducirSonido();
-
-        setTimeout(() => {
-          car.classList.add('launch-turbo');
-        }, 150);
 
         setTimeout(() => {
           splash.style.opacity = '0';
           setTimeout(() => {
             splash.style.display = 'none';
           }, 500);
-        }, 600);
+        }, 850);
       } else {
-        bar.style.width = porcentaje + '%';
-        txt.innerText = porcentaje + '%';
+        txtScore.innerText = score.toString().padStart(5, '0');
       }
     }, 70);
   }
@@ -1515,7 +1498,6 @@
     if (!contenedor) return;
     contenedor.innerHTML = "";
     
-    // Conteo optimizado con categoría matriz 'perifericos'
     let conteo = { 
       recargas: 0, mangas: 0, ropa: 0, mandos: 0, perifericos: 0, 
       figuras: 0, peluches: 0, cartas: 0, katanas: 0, lamparas: 0, accesorios: 0 
@@ -1541,7 +1523,6 @@
 
       let esRecarga = categoria === 'recargas';
 
-      // Agrupación automática retroactiva para audífonos y teclados
       if (categoria === 'teclados' || categoria === 'audifonos' || categoria === 'perifericos') {
         conteo.perifericos++;
       } else if (conteo[categoria] !== undefined) {
