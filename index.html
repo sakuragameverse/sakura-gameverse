@@ -48,7 +48,7 @@
       font-weight: 500;
       letter-spacing: 0.5px;
       overflow-x: hidden;
-      padding-bottom: 70px;
+      padding-bottom: 80px; /* Espacio extra para que el contenido no quede tapado por la barra inferior */
       transform: translateZ(0); 
     }
 
@@ -605,7 +605,6 @@
     }
     .btn-comprar:hover { background: #e00070; }
     
-    /* --- BOTÓN INSTALAR ANIMADO --- */
     .btn-instalar {
       background: linear-gradient(90deg, #25D366, #00e5ff);
       color: #000;
@@ -691,17 +690,20 @@
     }
     .cart-item-del:hover { background: rgba(255, 51, 102, 0.15); }
 
+    /* --- NAVEGACIÓN INFERIOR BLINDADA --- */
     .bottom-nav {
       position: fixed;
-      bottom: 0; left: 0; width: 100%;
-      background: rgba(8, 2, 18, 0.95);
+      bottom: 0; 
+      left: 0; 
+      width: 100%;
+      background: rgba(8, 2, 18, 0.98);
       border-top: 1px solid var(--border-color);
       display: flex;
       justify-content: space-around;
       align-items: center;
-      padding: 8px 0;
-      z-index: 1500;
-      backdrop-filter: blur(8px);
+      padding: 10px 0;
+      z-index: 2500; /* Siempre por encima de cualquier elemento */
+      backdrop-filter: blur(10px);
     }
     .nav-item {
       color: var(--text-muted);
@@ -782,7 +784,6 @@
       margin-right: 6px;
     }
     
-    /* --- BARRA DE XP RPG --- */
     .xp-bar-container {
       background: #000;
       border-radius: var(--radius-sm);
@@ -802,7 +803,7 @@
 </head>
 <body>
 
-<!-- PANTALLA DE CARGA RETRO ARCADE PIXEL FOX (Estilo 16-bits) -->
+<!-- PANTALLA DE CARGA PIXEL FOX (Estilo 16-bits) -->
 <div id="splash-screen">
   <div class="sakura-rain" id="sakuraRain"></div>
   
@@ -894,7 +895,7 @@
   </div>
 </div>
 
-<!-- CAJA AÑADIDA: MODAL GAMER PROFILE COMPLETA CON BARRA XP -->
+<!-- MODAL GAMER PROFILE -->
 <div id="modalGamerProfile" class="modal">
   <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarGamerProfileModal()">×</button>
@@ -906,8 +907,6 @@
         <span>Rango: <strong id="lblRango" style="color: #ffaa00; font-size: 1.1em;">Genin</strong></span>
         <span><strong id="lblXp" style="color: var(--secondary-color);">150</strong> XP</span>
       </div>
-      
-      <!-- BARRA DE XP RPG -->
       <div class="xp-bar-container">
         <div class="xp-bar-fill" id="barXp"></div>
       </div>
@@ -1061,7 +1060,7 @@
   </div>
 </div>
 
-<!-- CAJA AÑADIDA: MODAL PRODUCTO DETALLE CON PRODUCTOS RELACIONADOS -->
+<!-- MODAL PRODUCTO DETALLE -->
 <div id="miModal" class="modal">
   <div class="modal-content">
     <button class="cerrar-modal" onclick="cerrarModal()">×</button>
@@ -1099,13 +1098,12 @@
   </div>
 </div>
 
-<!-- CAJA AÑADIDA: MODAL MENÚ DE OPCIONES CON BOTÓN DE INSTALAR PWA -->
+<!-- MODAL MENÚ DE OPCIONES -->
 <div id="modalOpcionesMenu" class="modal">
   <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarMenuOpciones()">×</button>
     <h3 style="color: #fff; margin-top: 0;">Panel de Funciones</h3>
     
-    <!-- BOTÓN DE INSTALAR PWA -->
     <button id="btnInstalarPWA" class="btn-comprar btn-instalar" style="display: none; margin-bottom: 15px;" onclick="instalarPWA()">
       <i class="fas fa-download"></i> Instalar App Sakura
     </button>
@@ -1221,7 +1219,7 @@
   </div>
 </div>
 
-<!-- NAVEGACIÓN INFERIOR -->
+<!-- NAVEGACIÓN INFERIOR BLINDADA -->
 <div class="bottom-nav">
   <div class="nav-item active" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); reproducirSonido();"><i class="fas fa-th-large"></i><span>Catálogo</span></div>
   <div class="nav-item" onclick="abrirFavoritosModal()"><i class="fas fa-heart"></i><span>Guardados</span><div class="nav-badge" id="favBadge">0</div></div>
@@ -1250,7 +1248,6 @@
   let productosNubeGlobal = [];
   let globalAudioCtx = null;
   
-  // --- LÓGICA DE INSTALACIÓN PWA ---
   let eventoInstalacion = null;
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
@@ -1439,7 +1436,6 @@
     
     let conteo = { recargas: 0, mangas: 0, ropa: 0, mandos: 0, perifericos: 0, figuras: 0, peluches: 0, cartas: 0, katanas: 0, lamparas: 0, accesorios: 0 };
     
-    // Contar sólo los que no están ocultos
     let prodsVisibles = lista.filter(p => !p.oculto);
     let elTodos = document.getElementById('count-todos');
     if(elTodos) elTodos.innerText = prodsVisibles.length + " items";
@@ -1450,7 +1446,6 @@
     }
 
     lista.forEach((prod, indexProd) => {
-      // 🥷 LA MAGIA NINJA: Ignorar productos pausados desde el admin
       if(prod.oculto) return; 
 
       let fotosArray = (prod.fotos && prod.fotos.length > 0) ? prod.fotos : ['logo.webp?v=2'];
@@ -1580,7 +1575,6 @@
       });
     }
 
-    // --- CARGAR PRODUCTOS RELACIONADOS A PRUEBA DE FALLOS ---
     let contRel = document.getElementById('contenedorRelacionados');
     let listaRel = document.getElementById('listaRelacionados');
     
@@ -1657,6 +1651,7 @@
   };
 
   window.addEventListener('DOMContentLoaded', () => {
+    window.scrollTo(0, 0); // Forzar centrado inicial al cargar
     ejecutarAnimacionSplash(); 
     cargarBannersDeNube(); 
     cargarProductosDeNube(); 
@@ -1718,7 +1713,6 @@
   let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, rango: "Genin" };
   document.getElementById('inputGamerTag').value = gamerProfile.tag; 
 
-  // --- LÓGICA DE BARRA DE XP ---
   function actualizarRangoSegunXP() {
     let xp = gamerProfile.xp;
     let u = umbralesRangosNube;
@@ -1774,6 +1768,7 @@
   
   window.abrirFavoritosModal = function() {
     reproducirSonido(); 
+    window.scrollTo(0, 0);
     let cont = document.getElementById('listaFavoritosDetalle');
     cont.innerHTML = favoritos.length === 0 ? "<p style='color:var(--text-muted);'>No tienes productos guardados.</p>" : "";
     favoritos.forEach((item, i) => { 
@@ -1909,6 +1904,7 @@
 
   window.abrirCarritoModal = function() {
     reproducirSonido();
+    window.scrollTo(0, 0);
     let tieneFisicos = carrito.some(i => !i.esRecarga); let tieneDigitales = carrito.some(i => i.esRecarga);
     pestanaCarritoActual = (tieneDigitales && !tieneFisicos) ? 'digital' : 'fisico';
     document.getElementById('tabBtnFisico').classList.toggle('activo', pestanaCarritoActual === 'fisico');
