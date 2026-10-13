@@ -51,6 +51,8 @@
       letter-spacing: 0.5px;
       overflow-x: hidden;
       padding-bottom: 70px;
+      /* Optimización de hardware para el fondo */
+      transform: translateZ(0);
     }
 
     body::before {
@@ -63,6 +65,7 @@
       background-size: 100% 100%, 40px 40px, 40px 40px;
       pointer-events: none;
       z-index: 0;
+      will-change: transform;
     }
 
     h1, h2, h3, h4, .font-heading {
@@ -76,7 +79,7 @@
     ::-webkit-scrollbar-thumb { background: rgba(0, 229, 255, 0.3); border-radius: var(--radius-sm); }
     ::-webkit-scrollbar-thumb:hover { background: var(--primary-color); }
 
-    /* --- NUEVA PANTALLA DE CARGA PIXEL FOX ARCADE --- */
+    /* --- NUEVA PANTALLA DE CARGA PIXEL FOX 16-BITS --- */
     #splash-screen {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -86,9 +89,10 @@
       justify-content: center;
       align-items: center;
       z-index: 99999;
-      transition: opacity 0.5s ease-out;
+      transition: opacity 0.4s ease-out;
       overflow: hidden;
       font-family: 'Press Start 2P', monospace;
+      will-change: opacity;
     }
 
     .sakura-rain {
@@ -96,6 +100,7 @@
       top: 0; left: 0; width: 100%; height: 100%;
       pointer-events: none;
       z-index: 1;
+      will-change: transform;
     }
     
     .pixel-petal {
@@ -105,6 +110,7 @@
       top: -10px;
       opacity: 0.8;
       animation: fall linear infinite;
+      will-change: transform;
     }
 
     @keyframes fall {
@@ -125,33 +131,35 @@
       font-size: 1.2em;
       color: #fff;
       letter-spacing: 2px;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
       text-align: center;
       text-shadow: 2px 2px 0px var(--primary-color), -2px -2px 0px var(--secondary-color);
+      will-change: transform;
     }
 
     .pixel-fox-container {
-      margin-bottom: 25px;
+      margin-bottom: 20px;
       animation: fox-breathe 1.5s infinite alternate steps(3);
+      will-change: transform;
     }
     
     @keyframes fox-breathe {
       0% { transform: translateY(0); }
-      100% { transform: translateY(-6px); }
+      100% { transform: translateY(-4px); }
     }
 
     .jump-fox {
-      animation: fox-jump 0.5s ease-out forwards !important;
+      animation: fox-jump 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
     }
     @keyframes fox-jump {
       0% { transform: translateY(0); }
-      50% { transform: translateY(-30px) scale(1.1); filter: drop-shadow(0 0 15px var(--secondary-color)); }
+      50% { transform: translateY(-25px) scale(1.05); filter: drop-shadow(0 0 20px var(--secondary-color)); }
       100% { transform: translateY(100vh) scale(0.5); }
     }
 
     .high-score-box {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
     }
     
     .hi-score-label {
@@ -170,6 +178,7 @@
       color: var(--primary-color);
       font-size: 0.8em;
       animation: slow-blink 1s infinite;
+      will-change: opacity;
     }
     
     .fast-blink {
@@ -205,8 +214,9 @@
       white-space: nowrap;
       position: relative;
       z-index: 9;
+      transform: translateZ(0); /* Optimización gráfica */
     }
-    .ticker-content { display: inline-block; animation: ticker-slide 22s linear infinite; }
+    .ticker-content { display: inline-block; animation: ticker-slide 22s linear infinite; will-change: transform; }
     @keyframes ticker-slide { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
     /* --- HERO BANNER --- */
@@ -219,16 +229,17 @@
       z-index: 2;
     }
 
-    /* --- HERO BANNER LOGO --- */
+    /* --- HERO BANNER LOGO OPTIMIZADO --- */
     .hero-logo {
       width: 100%;
       max-width: 250px;
       height: auto;
       margin-bottom: 15px;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), filter 0.3s ease;
       filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6));
       animation: logo-float 4s infinite ease-in-out;
+      will-change: transform, filter; /* Optimización gráfica */
     }
 
     .hero-logo:hover {
@@ -289,6 +300,7 @@
       opacity: 0;
       transition: opacity 0.5s ease-in-out;
       cursor: pointer;
+      will-change: opacity;
     }
     .banner-slide.active { opacity: 1; z-index: 2; }
     .banner-control-btn {
@@ -356,7 +368,7 @@
       box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
     }
 
-    /* --- CARRUSEL CATEGORÍAS TÁCTIL --- */
+    /* --- CARRUSEL CATEGORÍAS OPTIMIZADO --- */
     .categorias-visuales-section { margin-bottom: 25px; }
     .categorias-visuales-header {
       font-family: 'Chakra Petch', sans-serif;
@@ -375,6 +387,7 @@
       scroll-behavior: smooth;
       scrollbar-width: none;
       padding: 6px 2px;
+      -webkit-overflow-scrolling: touch; /* Suavidad en móviles */
     }
     .carrusel-track::-webkit-scrollbar { display: none; }
     
@@ -387,16 +400,19 @@
       overflow: hidden;
       cursor: pointer;
       transition: transform 0.2s ease, border-color 0.2s ease;
+      will-change: transform;
     }
     .cat-card:hover, .cat-card.activa {
       transform: translateY(-3px);
       border-color: var(--secondary-color);
     }
+    /* FONDO OPTIMIZADO PARA IMÁGENES TRANSPARENTES */
     .cat-img {
       width: 100%; height: 110px;
-      object-fit: cover;
-      background: #000;
+      object-fit: contain; /* Para que el logo transparente no se corte */
+      background: rgba(0, 229, 255, 0.05); /* Fondo sutil neón en vez de negro sólido */
       border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding: 10px; /* Para darle aire a la imagen */
     }
     .cat-info { padding: 8px 6px; text-align: center; }
     .cat-title {
@@ -462,6 +478,7 @@
       position: relative;
       cursor: pointer;
       transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+      will-change: transform;
     }
     .card:hover {
       background: var(--card-hover-bg);
@@ -854,7 +871,7 @@
 </head>
 <body>
 
-<!-- PANTALLA DE CARGA RETRO ARCADE PIXEL FOX -->
+<!-- PANTALLA DE CARGA RETRO ARCADE PIXEL FOX (Estilo 16-bits) -->
 <div id="splash-screen">
   <div class="sakura-rain" id="sakuraRain"></div>
   
@@ -862,38 +879,45 @@
     <div class="arcade-logo-text">SAKURA<br>GAMEVERSE</div>
 
     <div class="pixel-fox-container" id="pixelFox">
-      <!-- Zorrita Pixel Art dibujada en SVG con código puro (8-bits) -->
-      <svg viewBox="0 0 16 16" width="130" height="130" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
-        <!-- Colas -->
-        <rect x="11" y="8" width="4" height="6" fill="#ff007f"/>
-        <rect x="12" y="7" width="2" height="1" fill="#ff007f"/>
-        <rect x="13" y="13" width="2" height="2" fill="#ffccaa"/>
+      <!-- Zorrita Pixel Art 16-Bits dibujada en SVG -->
+      <svg viewBox="0 0 24 24" width="150" height="150" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+        <!-- Colas de fondo (Más volumen y detalle) -->
+        <rect x="1" y="12" width="4" height="6" fill="#ff007f"/>
+        <rect x="3" y="9" width="3" height="5" fill="#ff007f"/>
+        <rect x="19" y="12" width="4" height="6" fill="#ff007f"/>
+        <rect x="18" y="9" width="3" height="5" fill="#ff007f"/>
+        <rect x="5" y="14" width="14" height="6" fill="#ffccaa"/>
 
-        <!-- Cabeza -->
-        <rect x="3" y="4" width="10" height="7" fill="#ffaa55"/>
-        <rect x="4" y="3" width="2" height="1" fill="#ffaa55"/>
-        <rect x="10" y="3" width="2" height="1" fill="#ffaa55"/>
+        <!-- Cabeza y Orejitas -->
+        <rect x="6" y="6" width="12" height="7" fill="#ffaa55"/>
+        <rect x="7" y="4" width="2" height="2" fill="#ffaa55"/>
+        <rect x="15" y="4" width="2" height="2" fill="#ffaa55"/>
         
-        <!-- Hocico y Mejillas -->
-        <rect x="3" y="8" width="10" height="3" fill="#ffccaa"/>
-        <rect x="7" y="9" width="2" height="1" fill="#000000"/> <!-- Nariz -->
-        
-        <!-- Ojos -->
-        <rect x="5" y="6" width="2" height="2" fill="#000000"/>
-        <rect x="9" y="6" width="2" height="2" fill="#000000"/>
+        <!-- Hocico y Rostro inferior -->
+        <rect x="6" y="10" width="12" height="4" fill="#ffccaa"/>
+        <rect x="8" y="9" width="2" height="2" fill="#000000"/> <!-- Ojo Izquierdo -->
+        <rect x="14" y="9" width="2" height="2" fill="#000000"/> <!-- Ojo Derecho -->
+        <rect x="11" y="11" width="2" height="1" fill="#000000"/> <!-- Nariz -->
+        <rect x="6" y="11" width="1" height="1" fill="#ff007f"/> <!-- Sonrojo Izq -->
+        <rect x="17" y="11" width="1" height="1" fill="#ff007f"/> <!-- Sonrojo Der -->
 
-        <!-- Cuerpo y ropita -->
-        <rect x="5" y="11" width="6" height="5" fill="#00e5ff"/>
-        <rect x="6" y="12" width="4" height="4" fill="#ffccaa"/> <!-- Barriga -->
+        <!-- Cuerpo / Chaqueta Gamer -->
+        <rect x="8" y="14" width="8" height="5" fill="#00e5ff"/>
+        <rect x="10" y="15" width="4" height="4" fill="#ffccaa"/> <!-- Barriga -->
+
+        <!-- Control de Consola en las manos -->
+        <rect x="9" y="16" width="6" height="2" fill="#333333"/>
+        <rect x="9" y="15" width="1" height="1" fill="#ff007f"/> <!-- Botón D-pad -->
+        <rect x="14" y="15" width="1" height="1" fill="#00e5ff"/> <!-- Botón Acción -->
 
         <!-- Audífonos Neón -->
-        <!-- Diadema -->
-        <rect x="2" y="3" width="12" height="1" fill="#00e5ff"/>
-        <rect x="2" y="4" width="1" height="3" fill="#00e5ff"/>
-        <rect x="13" y="4" width="1" height="3" fill="#00e5ff"/>
-        <!-- Orejeras -->
-        <rect x="1" y="5" width="2" height="4" fill="#ff007f"/>
-        <rect x="13" y="5" width="2" height="4" fill="#ff007f"/>
+        <rect x="5" y="4" width="14" height="1" fill="#00e5ff"/> <!-- Diadema -->
+        <rect x="4" y="5" width="1" height="3" fill="#00e5ff"/>
+        <rect x="19" y="5" width="1" height="3" fill="#00e5ff"/>
+        <rect x="3" y="7" width="3" height="5" fill="#ff007f"/> <!-- Copa Izquierda -->
+        <rect x="18" y="7" width="3" height="5" fill="#ff007f"/> <!-- Copa Derecha -->
+        <rect x="2" y="8" width="1" height="3" fill="#00e5ff"/> <!-- Detalle Copa -->
+        <rect x="21" y="8" width="1" height="3" fill="#00e5ff"/> <!-- Detalle Copa -->
       </svg>
     </div>
 
