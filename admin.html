@@ -277,6 +277,7 @@
     .btn-edit:active { background: rgba(0, 229, 255, 0.2); }
     .btn-del { background: rgba(255, 51, 102, 0.1); color: #ff3366; border-color: rgba(255,51,102,0.3); }
     .btn-del:active { background: rgba(255, 51, 102, 0.2); }
+    .btn-print { background: rgba(255, 255, 255, 0.1); color: #fff; border-color: rgba(255, 255, 255, 0.3); }
 
     /* Pantalla de Inicio de Sesión Oficial (Auth) */
     #lockScreen {
@@ -286,6 +287,27 @@
       background: var(--card-bg); border: 1px solid var(--border-color); padding: 28px 22px; border-radius: var(--radius-md); text-align: center; width: 100%; max-width: 360px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8); animation: lock-drop 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
     }
     @keyframes lock-drop { 0% { transform: translateY(-30px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+
+    /* --- CLASES ESPECIALES PARA IMPRIMIR --- */
+    @media screen {
+      .print-area { display: none; }
+    }
+    @media print {
+      body > :not(.print-area) { display: none !important; }
+      .print-area { 
+        display: block; 
+        background: #fff; 
+        color: #000; 
+        width: 100%; 
+        max-width: 350px; /* Tamaño tipo ticket térmico */
+        margin: 0 auto;
+        font-family: monospace; 
+        padding: 15px; 
+      }
+      .print-area h2 { font-family: monospace; margin: 0; padding: 0; text-align: center; font-size: 1.5em; font-weight: bold; }
+      .print-area p { margin: 4px 0; font-size: 14px; }
+      .print-area .divider { border-top: 1px dashed #000; margin: 10px 0; }
+    }
   </style>
 </head>
 <body>
@@ -343,6 +365,7 @@
   <div class="tabs-wrapper">
     <button class="tab-btn active" onclick="cambiarSeccion('productos')"><i class="fas fa-boxes"></i> Inventario</button>
     <button class="tab-btn" onclick="cambiarSeccion('pedidos')"><i class="fas fa-truck-fast"></i> Pedidos</button>
+    <button class="tab-btn" onclick="cambiarSeccion('facturas')"><i class="fas fa-file-invoice-dollar"></i> Facturas</button>
     <button class="tab-btn" onclick="cambiarSeccion('banners')"><i class="fas fa-images"></i> Banners</button>
     <button class="tab-btn" onclick="cambiarSeccion('cupones')"><i class="fas fa-ticket-alt"></i> Cupones</button>
     <button class="tab-btn" onclick="cambiarSeccion('pagos')"><i class="fas fa-wallet"></i> Pagos</button>
@@ -504,6 +527,58 @@
     </div>
   </section>
 
+  <!-- NUEVO: 2.1 FACTURAS -->
+  <section id="panel-facturas" class="admin-panel">
+    <button class="btn-toggle-box" onclick="toggleCajaFactura()">
+      <i class="fas fa-file-invoice-dollar"></i> Emitir Nueva Factura / Recibo
+    </button>
+
+    <div class="card-panel" id="cajaFacturaManual" style="display: none;">
+      <div class="panel-header">
+        <span class="panel-title"><i class="fas fa-plus"></i> Generar Comprobante</span>
+        <button style="background: none; border: none; color: #ff3366; font-weight: bold; cursor: pointer;" onclick="toggleCajaFactura()">Cerrar</button>
+      </div>
+      <form id="formFactura" onsubmit="guardarFactura(event)">
+        <div class="form-group">
+          <label class="form-label">Datos del Cliente:</label>
+          <input type="text" id="facCliente" class="form-input" placeholder="Nombre completo" required style="margin-bottom: 6px;">
+          <input type="text" id="facCedula" class="form-input" placeholder="Cédula / Documento (Opcional)">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Vía de Pago:</label>
+          <select id="facMetodo" class="form-select">
+            <option value="Pago Móvil">Pago Móvil / Transferencia</option>
+            <option value="Binance / USDT">Binance / Cripto</option>
+            <option value="Efectivo USD">Efectivo USD</option>
+            <option value="Efectivo Bs">Efectivo Bs</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Productos Vendidos:</label>
+          <textarea id="facDetalles" class="form-textarea" rows="3" placeholder="Ej:&#10;1x Chibi Firefly - $17.00&#10;1x Manga Vol. 1 - $5.00" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Monto Total USD:</label>
+          <input type="number" id="facTotal" class="form-input" step="0.01" placeholder="Ej: 22.00" required>
+        </div>
+
+        <button type="submit" class="btn-submit">Guardar Factura</button>
+      </form>
+    </div>
+
+    <div class="card-panel">
+      <div class="panel-header">
+        <span class="panel-title"><i class="fas fa-file-invoice"></i> Historial de Facturas (<span id="totalFacturasLbl">0</span>)</span>
+      </div>
+      <div id="listaFacturasMobile">
+        <p style="color: var(--text-muted); text-align: center; padding: 15px;"><i class="fas fa-spinner fa-spin"></i> Cargando recibos...</p>
+      </div>
+    </div>
+  </section>
+
   <!-- 3. BANNERS -->
   <section id="panel-banners" class="admin-panel">
     <div class="card-panel">
@@ -580,6 +655,23 @@
   </section>
 </main>
 
+<!-- ZONA OCULTA PARA IMPRESIÓN DEL RECIBO -->
+<div class="print-area" id="reciboPrint">
+  <h2>SAKURA GAMEVERSE</h2>
+  <p style="text-align:center;">Comprobante de Venta</p>
+  <div class="divider"></div>
+  <p><strong>Fecha:</strong> <span id="printFecha"></span></p>
+  <p><strong>Cliente:</strong> <span id="printCliente"></span></p>
+  <p><strong>C.I / ID:</strong> <span id="printCedula"></span></p>
+  <p><strong>Pago vía:</strong> <span id="printMetodo"></span></p>
+  <div class="divider"></div>
+  <p><strong>Detalle de Compra:</strong></p>
+  <pre id="printDetalles" style="font-family:inherit; white-space: pre-wrap; margin: 5px 0; font-size: 14px;"></pre>
+  <div class="divider"></div>
+  <p style="text-align:right; font-size: 1.2em;"><strong>TOTAL USD: $<span id="printTotal"></span></strong></p>
+  <p style="text-align:center; margin-top:20px; font-size: 0.9em;">¡Gracias por tu compra, Ninja!</p>
+</div>
+
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
   import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, setDoc, addDoc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
@@ -599,6 +691,7 @@
   const auth = getAuth(app);
 
   let productosAdminGlobal = [];
+  let facturasAdminGlobal = []; // Arreglo para la lógica de facturas
   let fotosBufferProducto = [];
 
   // --- ESCUCHA ACTIVA DE SESIÓN CON FIREBASE AUTH ---
@@ -797,7 +890,6 @@
         let nombreCat = p.categoria || 'Sin categoría';
         if (nombreCat === 'perifericos') nombreCat = 'Periféricos';
 
-        // Lógica de "Oculto"
         let isOculto = p.oculto === true;
         let cardClass = isOculto ? "item-card-row card-item-filtro is-paused" : "item-card-row card-item-filtro";
         let iconOculto = isOculto ? 'fa-eye-slash' : 'fa-eye';
@@ -831,11 +923,10 @@
     }
   }
 
-  // --- NUEVA FUNCIÓN PARA PAUSAR PRODUCTOS ---
   window.toggleOcultarProducto = async function(id, estadoActualOculto) {
     try {
       await updateDoc(doc(db, "productos", id), { oculto: !estadoActualOculto });
-      cargarProductosAdmin(); // Refrescar la lista automáticamente
+      cargarProductosAdmin(); 
     } catch(e) {
       alert("Error al pausar producto.");
     }
@@ -869,7 +960,7 @@
         await updateDoc(doc(db, "productos", id), data);
         alert("¡Producto actualizado exitosamente!");
       } else {
-        data.oculto = false; // Por defecto activos al crearlos
+        data.oculto = false;
         await addDoc(collection(db, "productos"), data);
         alert("¡Producto guardado exitosamente en WebP!");
       }
@@ -960,12 +1051,10 @@
       snapshot.forEach(docSnap => {
         const ped = docSnap.data();
         
-        // Calcular estadísticas
         let est = ped.estadoPedido || 'Pendiente';
         if(est === 'Completado') totalUsdGanado += Number(ped.totalUsd || 0);
         if(est !== 'Completado') pedidosPendientes++;
 
-        // Visual del estado
         let colorEstado = est === 'Completado' ? '#25d366' : (est === 'Pagado' ? '#00e5ff' : '#ffaa00');
 
         htmlBloque += `
@@ -983,7 +1072,6 @@
               <div style="font-size:1.05em; font-weight:700; color:var(--secondary-color);">$${Number(ped.totalUsd).toFixed(2)}</div>
             </div>
             <div class="item-card-actions">
-              <!-- Botón Cambiar Estado -->
               <button class="btn-action-touch" style="color: ${colorEstado}; background: ${colorEstado}15; border: 1px solid ${colorEstado}40;" onclick="cambiarEstadoPedido('${docSnap.id}', '${est}')"><i class="fas fa-sync-alt"></i></button>
               <button class="btn-action-touch btn-del" onclick="eliminarPedido('${docSnap.id}')"><i class="fas fa-trash"></i></button>
             </div>
@@ -992,13 +1080,11 @@
       });
       cont.innerHTML = htmlBloque;
       
-      // Actualizar el Dashboard Holográfico
       document.getElementById('dashIngresos').innerText = "$" + totalUsdGanado.toFixed(2);
       document.getElementById('dashOrdenes').innerText = pedidosPendientes;
     } catch(e) {}
   }
 
-  // --- NUEVA FUNCIÓN: CAMBIAR ESTADO DEL PEDIDO ---
   window.cambiarEstadoPedido = async function(id, estadoActual) {
     let nuevoEstado = 'Pendiente';
     if(estadoActual === 'Pendiente') nuevoEstado = 'Pagado';
@@ -1041,7 +1127,108 @@
     cargarPedidosAdmin();
   };
 
-  // --- BANNERS OPTIMIZADO ---
+
+  // --- 2.1 NUEVO SISTEMA DE FACTURACIÓN ---
+  window.toggleCajaFactura = function() {
+    const box = document.getElementById('cajaFacturaManual');
+    box.style.display = (box.style.display === 'none') ? 'block' : 'none';
+  };
+
+  async function cargarFacturasAdmin() {
+    try {
+      const q = query(collection(db, "facturas"), orderBy("timestamp", "desc"));
+      const snapshot = await getDocs(q);
+      facturasAdminGlobal = [];
+      const cont = document.getElementById('listaFacturasMobile');
+      
+      document.getElementById('totalFacturasLbl').innerText = snapshot.size;
+
+      if (snapshot.empty) {
+        cont.innerHTML = `<p style="text-align: center; color: var(--text-muted); padding: 15px;">No has emitido facturas aún.</p>`;
+        return;
+      }
+
+      let htmlBloque = "";
+      snapshot.forEach(docSnap => {
+        const fac = { id: docSnap.id, ...docSnap.data() };
+        facturasAdminGlobal.push(fac);
+        
+        let fechaFormat = new Date(fac.timestamp).toLocaleDateString();
+
+        htmlBloque += `
+          <div class="item-card-row">
+            <div class="item-card-info">
+              <div style="display:flex; justify-content:space-between; margin-bottom: 2px;">
+                <strong>${sanitizar(fac.cliente)}</strong>
+                <span style="font-size: 0.8em; color: var(--text-muted);">${fechaFormat}</span>
+              </div>
+              <div style="font-size:0.85em; color:var(--text-muted); margin-bottom: 4px;">
+                Vía: <span style="color:var(--secondary-color);">${sanitizar(fac.metodo)}</span>
+              </div>
+              <div style="font-size:1.05em; font-weight:700; color:var(--secondary-color);">$${Number(fac.totalUsd).toFixed(2)}</div>
+            </div>
+            <div class="item-card-actions">
+              <!-- Botón Imprimir/Ver Ticket -->
+              <button class="btn-action-touch btn-print" onclick="imprimirFactura('${fac.id}')"><i class="fas fa-print"></i></button>
+              <button class="btn-action-touch btn-del" onclick="eliminarFactura('${fac.id}')"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
+        `;
+      });
+      cont.innerHTML = htmlBloque;
+    } catch(e) {
+      console.error(e);
+    }
+  }
+
+  window.guardarFactura = async function(e) {
+    e.preventDefault();
+    const cliente = document.getElementById('facCliente').value.trim();
+    const cedula = document.getElementById('facCedula').value.trim();
+    const metodo = document.getElementById('facMetodo').value;
+    const detalles = document.getElementById('facDetalles').value.trim();
+    const totalUsd = parseFloat(document.getElementById('facTotal').value);
+
+    try {
+      await addDoc(collection(db, "facturas"), {
+        cliente, cedula, metodo, detalles, totalUsd,
+        timestamp: Date.now()
+      });
+      document.getElementById('formFactura').reset();
+      toggleCajaFactura();
+      cargarFacturasAdmin();
+      alert("¡Factura generada y guardada exitosamente!");
+    } catch(err) {
+      alert("Error: " + err.message);
+    }
+  };
+
+  window.eliminarFactura = async function(id) {
+    if (!confirm("¿Seguro que deseas eliminar este recibo del historial?")) return;
+    await deleteDoc(doc(db, "facturas", id));
+    cargarFacturasAdmin();
+  };
+
+  // Función mágica que llena el Ticket Oculto y llama a imprimir
+  window.imprimirFactura = function(id) {
+    const fac = facturasAdminGlobal.find(f => f.id === id);
+    if(!fac) return;
+
+    let fechaFormateada = new Date(fac.timestamp).toLocaleString();
+
+    document.getElementById('printFecha').innerText = fechaFormateada;
+    document.getElementById('printCliente').innerText = fac.cliente;
+    document.getElementById('printCedula').innerText = fac.cedula || 'N/A';
+    document.getElementById('printMetodo').innerText = fac.metodo;
+    document.getElementById('printDetalles').innerText = fac.detalles;
+    document.getElementById('printTotal').innerText = Number(fac.totalUsd).toFixed(2);
+
+    // Esto oculta el panel de admin por CSS e imprime solo el Ticket.
+    window.print();
+  };
+
+
+  // --- 3. BANNERS OPTIMIZADO ---
   async function cargarBannersAdmin() {
     const q = query(collection(db, "banners"), orderBy("timestamp", "desc"));
     const snapshot = await getDocs(q);
@@ -1092,7 +1279,7 @@
     cargarBannersAdmin();
   };
 
-  // --- CUPONES OPTIMIZADO ---
+  // --- 4. CUPONES OPTIMIZADO ---
   async function cargarCuponesAdmin() {
     const snapshot = await getDocs(collection(db, "cupones"));
     const cont = document.getElementById('listaCuponesAdmin');
@@ -1131,7 +1318,7 @@
     cargarCuponesAdmin();
   };
 
-  // --- PAGOS & RANGOS ---
+  // --- 5. PAGOS & RANGOS ---
   async function cargarDatosPagoAdmin() {
     const snap = await getDoc(doc(db, "configuracion", "datos_pago"));
     if (snap.exists()) {
@@ -1175,7 +1362,7 @@
     alert("Umbrales de XP guardados correctamente.");
   };
 
-  // --- RESEÑAS OPTIMIZADO ---
+  // --- 6. RESEÑAS OPTIMIZADO ---
   async function cargarReviewsAdmin() {
     const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"));
     const snapshot = await getDocs(q);
@@ -1205,9 +1392,11 @@
     cargarReviewsAdmin();
   };
 
+  // Función Maestro de Inicialización
   function cargarTodo() {
     cargarProductosAdmin();
     cargarPedidosAdmin();
+    cargarFacturasAdmin(); // <-- Inicializa las facturas al entrar
     cargarBannersAdmin();
     cargarCuponesAdmin();
     cargarDatosPagoAdmin();
