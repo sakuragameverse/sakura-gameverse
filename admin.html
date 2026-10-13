@@ -2,53 +2,42 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sakura Gameverse</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Admin Dashboard | Sakura Gameverse</title>
   
-  <!-- Configuración App / PWA -->
-  <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/webp" href="logo.webp?v=2">
-  <meta name="theme-color" content="#090314">
-  
-  <!-- Fuentes Gamer / UI -->
+  <meta name="theme-color" content="#080212">
+
+  <!-- Fuentes e Iconos -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
   <style>
     :root {
       --bg-color: #080212;
-      --card-bg: #120624;
-      --card-hover-bg: #190933;
+      --card-bg: #110524;
+      --surface-dark: #07010f;
       --text-color: #e6e9f0;
       --text-muted: #8b8f9e;
       --primary-color: #ff007f;
       --secondary-color: #00e5ff;
       --border-color: rgba(0, 229, 255, 0.16);
-      --hero-bg: #0f0421;
-      --radius-sm: 4px;
-      --radius-md: 8px;
+      --radius-sm: 6px;
+      --radius-md: 10px;
     }
 
-    body.theme-rosa { --bg-color: #080212; --card-bg: #120624; --text-color: #e6e9f0; --primary-color: #ff007f; --secondary-color: #00e5ff; --hero-bg: #0f0421; }
-    body.theme-azul { --bg-color: #020712; --card-bg: #06152b; --text-color: #e0f4ff; --primary-color: #0099ff; --secondary-color: #00ffcc; --hero-bg: #040e1f; }
-    body.theme-purpura { --bg-color: #0c0214; --card-bg: #1b072c; --text-color: #f7e6ff; --primary-color: #b000ff; --secondary-color: #ff00c8; --hero-bg: #140421; }
-    body.theme-overdrive { --bg-color: #140301; --card-bg: #290a03; --text-color: #fff2ed; --primary-color: #ff5500; --secondary-color: #ffaa00; --hero-bg: #210701; }
-
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      margin: 0;
       background-color: var(--bg-color);
       color: var(--text-color);
       font-family: 'Rajdhani', sans-serif;
       font-size: 16px;
-      font-weight: 500;
-      letter-spacing: 0.5px;
+      min-height: 100vh;
       overflow-x: hidden;
-      padding-bottom: 70px;
+      padding-bottom: 40px;
       transform: translateZ(0); 
     }
 
@@ -56,1116 +45,545 @@
       content: "";
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: radial-gradient(circle at 50% 10%, rgba(255, 0, 127, 0.08) 0%, transparent 60%),
-                  linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-                  linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-      background-size: 100% 100%, 40px 40px, 40px 40px;
+      background: radial-gradient(circle at 50% 0%, rgba(255, 0, 127, 0.05) 0%, transparent 60%);
       pointer-events: none;
       z-index: 0;
       will-change: transform;
     }
 
-    h1, h2, h3, h4 {
+    h1, h2, h3, h4, .font-heading {
       font-family: 'Chakra Petch', sans-serif;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
     }
 
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg-color); }
-    ::-webkit-scrollbar-thumb { background: rgba(0, 229, 255, 0.3); border-radius: var(--radius-sm); }
-    ::-webkit-scrollbar-thumb:hover { background: var(--primary-color); }
-
-    .top-bar-notice {
-      background: #0b0318;
+    /* --- BARRA SUPERIOR --- */
+    .admin-navbar {
+      background: rgba(8, 2, 18, 0.98);
       border-bottom: 1px solid var(--border-color);
-      padding: 7px 14px;
-      font-size: 0.85em;
+      padding: 12px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      position: relative;
-      z-index: 10;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(8px);
+      transform: translateZ(0);
     }
-
-    .ticker-bar {
-      background: #0e0520;
-      border-bottom: 1px solid rgba(255, 0, 127, 0.2);
-      color: var(--secondary-color);
-      font-size: 0.8em;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      padding: 6px 0;
-      overflow: hidden;
-      white-space: nowrap;
-      position: relative;
-      z-index: 9;
-      transform: translateZ(0); 
-    }
-    .ticker-content { display: inline-block; animation: ticker-slide 22s linear infinite; will-change: transform; }
-    @keyframes ticker-slide { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-
-    .hero-banner {
-      background: radial-gradient(ellipse at top, #1a0833 0%, var(--hero-bg) 70%);
-      text-align: center;
-      padding: 25px 20px;
-      border-bottom: 1px solid var(--border-color);
-      position: relative;
-      z-index: 2;
-    }
-
-    .hero-logo {
-      width: 100%;
-      max-width: 250px;
-      height: auto;
-      margin-bottom: 15px;
-      cursor: pointer;
-      transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), filter 0.3s ease;
-      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6));
-      animation: logo-float 4s infinite ease-in-out;
-      will-change: transform, filter; 
-    }
-
-    .hero-logo:hover {
-      transform: scale(1.08) translateY(-5px);
-      filter: drop-shadow(0 0 15px var(--primary-color)) drop-shadow(0 0 30px var(--secondary-color)); 
-      animation: none;
-    }
-
-    @keyframes logo-float {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-4px); }
-      100% { transform: translateY(0px); }
-    }
-
-    .hero-title {
-      font-size: 1.15em;
-      color: #fff;
-      margin-bottom: 12px;
-      font-weight: 600;
-    }
-
-    .store-status-badge {
-      display: inline-flex;
+    .brand-box {
+      display: flex;
       align-items: center;
-      gap: 7px;
-      background: rgba(37, 211, 102, 0.1);
-      border: 1px solid rgba(37, 211, 102, 0.4);
-      padding: 4px 10px;
-      border-radius: var(--radius-sm);
-      font-size: 0.8em;
-      font-weight: 600;
-      color: #25d366;
-      margin-bottom: 12px;
+      gap: 8px;
     }
-    .status-dot {
-      width: 7px; height: 7px;
-      background-color: #25D366;
-      border-radius: 50%;
-    }
-
-    .banner-slider-container {
-      position: relative;
-      width: 100%;
-      max-width: 800px;
-      margin: 18px auto 0 auto;
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      aspect-ratio: 16/9;
-      background: #000;
-      border: 1px solid var(--border-color);
-      display: none;
-    }
-    .banner-slide {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      transition: opacity 0.5s ease-in-out;
-      cursor: pointer;
-      will-change: opacity;
-    }
-    .banner-slide.active { opacity: 1; z-index: 2; }
-    .banner-control-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(0, 0, 0, 0.65);
-      color: var(--secondary-color);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-sm);
-      width: 32px; height: 32px;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer;
-      z-index: 10;
-      transition: all 0.2s ease;
-    }
-    .banner-control-btn:hover { background: var(--secondary-color); color: #000; }
-    .banner-prev { left: 10px; } .banner-next { right: 10px; }
-    .banner-dots {
-      position: absolute;
-      bottom: 10px; right: 15px;
-      display: flex; gap: 5px;
-      z-index: 10;
-      background: rgba(0, 0, 0, 0.6);
-      padding: 4px 8px;
-      border-radius: var(--radius-sm);
-    }
-    .banner-dot {
-      width: 6px; height: 6px;
-      background: rgba(255, 255, 255, 0.3);
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-    }
-    .banner-dot.active { background: var(--secondary-color); width: 14px; }
-
-    .container {
-      padding: 25px 18px 80px 18px;
-      max-width: 1180px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 2;
-    }
-
-    .search-box {
-      margin-bottom: 25px;
-      display: flex;
-      justify-content: center;
-    }
-    .search-input {
-      background: #0d041a;
-      border: 1px solid var(--border-color);
-      color: #fff;
-      padding: 10px 16px;
-      width: 100%;
-      max-width: 480px;
-      border-radius: var(--radius-sm);
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 1em;
-      outline: none;
-      transition: border-color 0.2s ease;
-    }
-    .search-input:focus {
-      border-color: var(--secondary-color);
-      box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
-    }
-
-    .categorias-visuales-section { margin-bottom: 25px; }
-    .categorias-visuales-header {
-      font-family: 'Chakra Petch', sans-serif;
-      font-size: 1.1em;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 12px;
-      border-left: 3px solid var(--primary-color);
-      padding-left: 8px;
-    }
-    .carrusel-wrapper { position: relative; display: flex; align-items: center; }
-    .carrusel-track {
-      display: flex;
-      gap: 12px;
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      scrollbar-width: none;
-      padding: 6px 2px;
-      -webkit-overflow-scrolling: touch; 
-    }
-    .carrusel-track::-webkit-scrollbar { display: none; }
-    
-    .cat-card {
-      flex: 0 0 auto;
-      width: 130px;
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-sm);
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform 0.2s ease, border-color 0.2s ease;
-      will-change: transform;
-    }
-    .cat-card:hover, .cat-card.activa {
-      transform: translateY(-3px);
-      border-color: var(--secondary-color);
-    }
-    .cat-img {
-      width: 100%; height: 110px;
-      object-fit: contain; 
-      background: rgba(0, 229, 255, 0.05); 
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      padding: 10px; 
-    }
-    .cat-info { padding: 8px 6px; text-align: center; }
-    .cat-title {
-      font-family: 'Chakra Petch', sans-serif;
-      font-size: 0.9em;
-      font-weight: 600;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .cat-count { font-size: 0.75em; color: var(--text-muted); }
-    
-    .carrusel-arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(10, 3, 20, 0.85);
-      color: var(--secondary-color);
-      border: 1px solid var(--border-color);
-      width: 32px; height: 32px;
-      border-radius: var(--radius-sm);
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer;
-      z-index: 10;
-    }
-    .carrusel-arrow:hover { background: var(--secondary-color); color: #000; }
-    .arrow-prev { left: -10px; } .arrow-next { right: -10px; }
-
-    .controles-superiores { margin-bottom: 25px; }
-    .panel-controles-avanzados {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 10px;
-    }
-    .ordenar-select {
-      background: #0d041a;
-      border: 1px solid var(--border-color);
-      color: #fff;
-      padding: 9px 12px;
-      border-radius: var(--radius-sm);
-      font-family: 'Rajdhani', sans-serif;
-      font-weight: 600;
-      font-size: 0.9em;
-      cursor: pointer;
-      outline: none;
-      transition: border-color 0.2s ease;
-    }
-    .ordenar-select:focus { border-color: var(--secondary-color); }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-      gap: 16px;
-    }
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-sm);
-      padding: 12px;
-      text-align: left;
-      position: relative;
-      cursor: pointer;
-      transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
-      will-change: transform;
-    }
-    .card:hover {
-      background: var(--card-hover-bg);
-      border-color: var(--secondary-color);
-      transform: translateY(-4px);
-    }
-    .card-img-container {
-      position: relative;
-      width: 100%;
-      height: 220px;
-      background: #000;
-      border-radius: var(--radius-sm);
-      margin-bottom: 10px;
-      overflow: hidden;
-    }
-    .card-img-container img { width: 100%; height: 100%; object-fit: contain; display: none; }
-    .card-img-container img.activa { display: block; }
-    
-    .carrusel-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(0, 0, 0, 0.7);
-      color: var(--secondary-color);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-sm);
-      width: 26px; height: 26px;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer;
-      font-size: 0.75em;
-      z-index: 4;
-    }
-    .carrusel-btn:hover { background: var(--secondary-color); color: #000; }
-    .carrusel-prev { left: 6px; } .carrusel-next { right: 6px; }
-    .carrusel-dots {
-      position: absolute;
-      bottom: 6px; left: 50%;
-      transform: translateX(-50%);
-      display: flex; gap: 4px;
-      z-index: 4;
-    }
-    .dot {
-      width: 5px; height: 5px;
-      border-radius: 1px;
-      background: rgba(255, 255, 255, 0.3);
-    }
-    .dot.activo { background: var(--secondary-color); }
-
-    .card-title {
+    .brand-logo { width: 28px; height: 28px; object-fit: contain; }
+    .brand-title {
       font-family: 'Chakra Petch', sans-serif;
       font-size: 1.05em;
-      font-weight: 600;
-      color: #fff;
-      margin-bottom: 6px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .precio-container { display: flex; align-items: baseline; gap: 8px; }
-    .card-price {
-      font-size: 1.3em;
       font-weight: 700;
-      color: var(--secondary-color);
+      color: #fff;
     }
-    
-    .badge-estado {
-      position: absolute;
-      top: 8px; right: 8px;
-      padding: 3px 8px;
-      font-size: 0.7em;
+    .nav-actions { display: flex; align-items: center; gap: 8px; }
+    .btn-nav {
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-family: 'Chakra Petch', sans-serif;
+      font-weight: 700;
+      font-size: 0.8em;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+    }
+    .btn-tienda { background: rgba(0, 229, 255, 0.1); color: var(--secondary-color); border: 1px solid var(--secondary-color); }
+    .btn-exit { background: rgba(255, 0, 127, 0.1); color: var(--primary-color); border: 1px solid var(--primary-color); }
+
+    /* --- CONTENEDOR PRINCIPAL --- */
+    .admin-container {
+      max-width: 1100px;
+      margin: 14px auto 0 auto;
+      padding: 0 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* --- MINI DASHBOARD HOLOGRÁFICO --- */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    .dash-card {
+      background: rgba(0, 229, 255, 0.03);
+      border: 1px solid var(--border-color);
+      padding: 12px 8px;
+      border-radius: var(--radius-md);
+      text-align: center;
+      box-shadow: inset 0 0 15px rgba(0,229,255,0.02);
+    }
+    .dash-title {
+      font-size: 0.65em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 4px;
       font-weight: 700;
       letter-spacing: 0.5px;
-      border-radius: var(--radius-sm);
-      text-transform: uppercase;
-      z-index: 3;
     }
-    .badge-stock { background: #00e5ff; color: #000; }
-    .badge-encargo { background: #ff007f; color: #fff; }
-    .badge-digital { background: #25D366; color: #000; }
-    
-    .btn-fav-card {
-      position: absolute;
-      top: 8px; left: 8px;
-      background: rgba(0,0,0,0.6);
-      border: 1px solid var(--border-color);
-      color: #ff3366;
-      width: 30px; height: 30px;
-      border-radius: var(--radius-sm);
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer;
-      z-index: 3;
-      transition: background 0.2s ease;
+    .dash-val {
+      font-size: 1.25em;
+      color: var(--secondary-color);
+      font-weight: 700;
+      font-family: 'Chakra Petch', sans-serif;
     }
-    .btn-fav-card:hover { background: rgba(255, 0, 127, 0.3); }
+    .dash-val.ganancias { color: #25d366; text-shadow: 0 0 10px rgba(37,211,102,0.3); }
+    .dash-val.pendientes { color: #ffaa00; }
 
-    .cart-tabs {
+    /* --- PESTAÑAS DESLIZABLES --- */
+    .tabs-wrapper {
       display: flex;
-      gap: 6px;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 2px 2px 10px 2px;
       margin-bottom: 15px;
-      background: #090214;
-      padding: 4px;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-sm);
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
     }
-    .cart-tab-btn {
-      flex: 1;
-      background: transparent;
+    .tabs-wrapper::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+      flex: 0 0 auto;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
       color: var(--text-muted);
-      border: none;
-      padding: 8px 10px;
-      border-radius: var(--radius-sm);
+      padding: 9px 14px;
+      border-radius: 20px;
       font-family: 'Chakra Petch', sans-serif;
       font-size: 0.82em;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .cart-tab-btn.activo {
-      background: var(--secondary-color);
-      color: #000;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(4, 1, 10, 0.85);
-      z-index: 2000;
-      justify-content: center;
+      display: flex;
       align-items: center;
-      backdrop-filter: blur(4px);
+      gap: 6px;
+      transition: all 0.2s ease;
+      will-change: transform, background-color;
     }
-    .modal-content {
-      background: #110524;
-      padding: 22px;
-      border-radius: var(--radius-md);
-      text-align: left;
-      max-width: 95%;
-      width: 440px;
-      border: 1px solid var(--border-color);
-      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-      position: relative;
-      max-height: 92vh;
-      overflow-y: auto;
-    }
-    .cerrar-modal {
-      position: absolute;
-      top: 10px; right: 12px;
-      font-size: 22px;
-      color: var(--text-muted);
-      cursor: pointer;
-      background: none;
-      border: none;
-      font-weight: bold;
-    }
-    .cerrar-modal:hover { color: #fff; }
+    .tab-btn.active { background: var(--secondary-color); color: #000; border-color: var(--secondary-color); }
+
+    /* --- PANELES --- */
+    .admin-panel { display: none; }
+    .admin-panel.active { display: block; animation: fade-in 0.3s ease-out; }
     
-    .breadcrumbs { font-size: 0.8em; color: var(--text-muted); margin-bottom: 8px; }
-    .breadcrumbs span { color: var(--secondary-color); }
-    .modal-img {
-      width: 100%; max-height: 320px;
-      object-fit: contain;
-      background: #000;
-      border-radius: var(--radius-sm);
-      margin-bottom: 10px;
-      border: 1px solid var(--border-color);
-    }
-    .modal-tag-info {
-      display: inline-block;
-      background: rgba(0, 229, 255, 0.08);
-      border: 1px solid var(--border-color);
-      color: var(--secondary-color);
-      padding: 3px 8px;
-      border-radius: var(--radius-sm);
-      font-size: 0.75em;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-    .modal-miniaturas { display: flex; gap: 8px; margin-bottom: 14px; overflow-x: auto; }
-    .modal-mini-img {
-      width: 60px; height: 60px;
-      object-fit: cover;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      border: 1px solid var(--border-color);
-      opacity: 0.5;
-    }
-    .modal-mini-img.activo { opacity: 1; border-color: var(--secondary-color); }
-
-    .talla-select, .recarga-input, .sugerencia-input {
-      background: #080112;
-      border: 1px solid var(--border-color);
-      color: #fff;
-      padding: 8px 12px;
-      border-radius: var(--radius-sm);
-      width: 100%;
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 0.95em;
-      outline: none;
-    }
-    .talla-select:focus, .recarga-input:focus, .sugerencia-input:focus {
-      border-color: var(--secondary-color);
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .btn-comprar {
-      background: var(--primary-color);
-      color: #fff;
-      border: none;
-      padding: 12px;
-      font-family: 'Chakra Petch', sans-serif;
+    .card-panel {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .panel-title {
       font-size: 1em;
       font-weight: 700;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      width: 100%;
-      margin-top: 12px;
-      letter-spacing: 0.5px;
-      transition: background 0.2s ease;
-    }
-    .btn-comprar:hover { background: #e00070; }
-    
-    .btn-instalar {
-      background: linear-gradient(90deg, #25D366, #00e5ff);
-      color: #000;
-      box-shadow: 0 0 15px rgba(37, 211, 102, 0.4);
-      animation: pulse-neon 2s infinite;
-    }
-    @keyframes pulse-neon {
-      0% { box-shadow: 0 0 5px rgba(37, 211, 102, 0.4); }
-      50% { box-shadow: 0 0 20px rgba(0, 229, 255, 0.8); }
-      100% { box-shadow: 0 0 5px rgba(37, 211, 102, 0.4); }
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 7px;
     }
 
-    .btn-compartir {
-      background: transparent;
-      color: #25d366;
-      border: 1px solid rgba(37, 211, 102, 0.4);
-      padding: 10px;
+    .btn-toggle-box {
+      width: 100%;
+      background: rgba(0, 229, 255, 0.08);
+      border: 1px dashed var(--secondary-color);
+      color: var(--secondary-color);
+      padding: 12px;
+      border-radius: var(--radius-sm);
       font-family: 'Chakra Petch', sans-serif;
       font-size: 0.9em;
-      font-weight: 600;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      width: 100%;
-      margin-top: 8px;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-    }
-    .btn-compartir:hover { background: rgba(37, 211, 102, 0.1); }
-
-    .cupon-box { display: flex; gap: 8px; margin-bottom: 12px; }
-    .cupon-input {
-      flex-grow: 1;
-      background: #080112;
-      border: 1px solid var(--border-color);
-      color: #fff;
-      padding: 8px 12px;
-      border-radius: var(--radius-sm);
-      font-family: 'Rajdhani', sans-serif;
-      font-weight: 700;
-      text-transform: uppercase;
-      outline: none;
-    }
-    .btn-cupon {
-      background: var(--secondary-color);
-      color: #000;
-      border: none;
-      padding: 0 16px;
-      border-radius: var(--radius-sm);
-      font-family: 'Chakra Petch', sans-serif;
       font-weight: 700;
       cursor: pointer;
-    }
-
-    .recibo-box {
-      background: #07010f;
-      border: 1px dashed var(--border-color);
-      padding: 12px;
-      border-radius: var(--radius-sm);
-      font-family: monospace;
-      font-size: 0.85em;
-      margin-bottom: 14px;
-    }
-    .recibo-line { display: flex; justify-content: space-between; margin-bottom: 4px; }
-
-    .cart-item-row {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #0d041a;
-      padding: 8px;
-      border-radius: var(--radius-sm);
-      margin-bottom: 8px;
-      border: 1px solid rgba(255,255,255,0.05);
-    }
-    .cart-item-img { width: 44px; height: 44px; object-fit: cover; border-radius: 3px; margin-right: 10px; }
-    .cart-item-info { flex-grow: 1; font-size: 0.9em; }
-    .cart-item-del {
-      background: transparent;
-      color: #ff3366;
-      border: 1px solid rgba(255, 51, 102, 0.3);
-      padding: 4px 8px;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-    }
-    .cart-item-del:hover { background: rgba(255, 51, 102, 0.15); }
-
-    .bottom-nav {
-      position: fixed;
-      bottom: 0; left: 0; width: 100%;
-      background: rgba(8, 2, 18, 0.95);
-      border-top: 1px solid var(--border-color);
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      padding: 8px 0;
-      z-index: 1500;
-      backdrop-filter: blur(8px);
-    }
-    .nav-item {
-      color: var(--text-muted);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-size: 0.75em;
-      font-weight: 700;
-      cursor: pointer;
-      position: relative;
-      width: 25%;
-      transition: color 0.2s ease;
-    }
-    .nav-item i { font-size: 1.4em; margin-bottom: 3px; color: var(--text-muted); }
-    .nav-item:hover, .nav-item.active { color: #fff; }
-    .nav-item:hover i, .nav-item.active i { color: var(--secondary-color); }
-    
-    .nav-badge {
-      position: absolute;
-      top: -3px; right: 26%;
-      background: var(--primary-color);
-      color: #fff;
-      font-size: 0.8em;
-      font-weight: 700;
-      padding: 1px 5px;
-      border-radius: 10px;
-    }
-
-    .menu-opciones-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 14px;
-    }
-    .btn-menu-opcion {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
-      background: #0d041a;
-      border: 1px solid var(--border-color);
-      padding: 12px 8px;
-      border-radius: var(--radius-sm);
-      color: #fff;
-      text-decoration: none;
-      font-size: 0.8em;
-      font-weight: 600;
-      cursor: pointer;
-      transition: border-color 0.2s ease;
-    }
-    .btn-menu-opcion i { font-size: 1.5em; margin-bottom: 6px; }
-    .btn-menu-opcion:hover { border-color: var(--secondary-color); }
-
-    .reviews-section, .info-section {
-      background: var(--card-bg);
-      margin-top: 35px;
-      padding: 24px 18px;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-color);
-    }
-    .review-card {
-      background: #0a0214;
-      padding: 12px;
-      border-radius: var(--radius-sm);
-      margin-bottom: 10px;
-      border: 1px solid rgba(255,255,255,0.05);
-    }
-    .badge-envio {
-      display: inline-flex;
       align-items: center;
-      gap: 5px;
-      background: rgba(255, 0, 127, 0.08);
-      border: 1px solid rgba(255, 0, 127, 0.3);
-      padding: 3px 8px;
-      border-radius: var(--radius-sm);
-      font-size: 0.8em;
-      font-weight: 700;
-      margin-right: 6px;
+      gap: 8px;
+      margin-bottom: 14px;
+      transition: background 0.2s ease;
     }
+    .btn-toggle-box:active { background: rgba(0, 229, 255, 0.15); }
+
+    .form-group { margin-bottom: 12px; text-align: left; }
+    .form-label { display: block; font-size: 0.8em; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; }
+    .form-input, .form-select, .form-textarea {
+      width: 100%; min-height: 42px; background: var(--surface-dark); border: 1px solid var(--border-color); color: #fff;
+      padding: 9px 12px; border-radius: var(--radius-sm); font-family: 'Rajdhani', sans-serif; font-size: 16px; outline: none; transition: border-color 0.2s ease;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--secondary-color); }
+
+    .btn-file-select {
+      width: 100%; min-height: 46px; background: rgba(0, 229, 255, 0.08); border: 1px dashed var(--secondary-color); color: var(--secondary-color);
+      border-radius: var(--radius-sm); font-family: 'Chakra Petch', sans-serif; font-size: 0.9em; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s ease;
+    }
+    .btn-file-select:active { background: rgba(0, 229, 255, 0.2); }
+
+    .preview-fotos-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .preview-foto-item { position: relative; width: 64px; height: 64px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); overflow: hidden; background: rgba(0, 229, 255, 0.05); }
+    .preview-foto-item img { width: 100%; height: 100%; object-fit: cover; }
+    .btn-del-foto-preview { position: absolute; top: 2px; right: 2px; background: rgba(0, 0, 0, 0.85); color: #ff3366; border: none; width: 20px; height: 20px; border-radius: 50%; font-size: 0.7em; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .upload-status-text { font-size: 0.85em; color: var(--secondary-color); margin-top: 6px; display: none; font-weight: 700; }
+
+    .btn-submit {
+      width: 100%; min-height: 44px; background: var(--primary-color); color: #fff; border: none; padding: 10px; font-family: 'Chakra Petch', sans-serif;
+      font-size: 0.95em; font-weight: 700; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: transform 0.1s ease; will-change: transform;
+    }
+    .btn-submit:active { transform: scale(0.98); }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* --- TARJETAS MÓVILES OPTIMIZADAS --- */
+    .item-card-row {
+      display: flex; align-items: center; background: var(--surface-dark); border: 1px solid var(--border-color); border-radius: var(--radius-sm);
+      padding: 10px; margin-bottom: 8px; gap: 10px; transition: transform 0.2s ease, border-color 0.2s ease, opacity 0.3s; will-change: transform, border-color;
+    }
+    .item-card-row.is-paused { opacity: 0.4; border-style: dashed; filter: grayscale(80%); }
+    .item-card-row:hover { transform: translateY(-2px); border-color: var(--secondary-color); }
     
-    /* --- BARRA DE XP RPG --- */
-    .xp-bar-container {
-      background: #000;
-      border-radius: var(--radius-sm);
-      height: 12px;
-      margin-top: 10px;
-      overflow: hidden;
-      border: 1px solid var(--border-color);
-      position: relative;
+    .item-card-thumb { width: 50px; height: 50px; object-fit: contain; border-radius: var(--radius-sm); background: rgba(0, 229, 255, 0.05); border: 1px solid rgba(255,255,255,0.08); flex-shrink: 0; padding: 3px; }
+    .item-card-info { flex-grow: 1; min-width: 0; }
+    .item-card-title { font-family: 'Chakra Petch', sans-serif; font-size: 0.95em; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
+    .item-card-meta { font-size: 0.8em; color: var(--text-muted); display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 4px; }
+    .item-card-price { font-size: 1em; font-weight: 700; color: var(--secondary-color); }
+    
+    .tag-badge { display: inline-block; padding: 1px 6px; font-size: 0.7em; font-weight: 700; border-radius: 3px; text-transform: uppercase; }
+    .tag-stock { background: rgba(0, 229, 255, 0.15); color: var(--secondary-color); }
+    .tag-encargo { background: rgba(255, 0, 127, 0.15); color: var(--primary-color); }
+    .tag-digital { background: rgba(37, 211, 102, 0.15); color: #25d366; }
+
+    .item-card-actions { display: flex; flex-direction: column; gap: 5px; flex-shrink: 0; }
+    .btn-action-touch { width: 34px; height: 34px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid transparent; font-size: 0.85em; transition: background 0.2s ease; }
+    .btn-edit { background: rgba(0, 229, 255, 0.1); color: var(--secondary-color); border-color: rgba(0,229,255,0.3); }
+    .btn-edit:active { background: rgba(0, 229, 255, 0.2); }
+    .btn-del { background: rgba(255, 51, 102, 0.1); color: #ff3366; border-color: rgba(255,51,102,0.3); }
+    .btn-del:active { background: rgba(255, 51, 102, 0.2); }
+
+    /* Pantalla de Inicio de Sesión Oficial (Auth) */
+    #lockScreen {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #06010d; display: flex; justify-content: center; align-items: center; z-index: 999999; padding: 16px;
     }
-    .xp-bar-fill {
-      width: 0%;
-      height: 100%;
-      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-      transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    .lock-box {
+      background: var(--card-bg); border: 1px solid var(--border-color); padding: 28px 22px; border-radius: var(--radius-md); text-align: center; width: 100%; max-width: 360px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8); animation: lock-drop 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
     }
+    @keyframes lock-drop { 0% { transform: translateY(-30px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
   </style>
 </head>
 <body>
 
-<div class="top-bar-notice">
-  <div><i class="fas fa-check-circle" style="color: var(--secondary-color);"></i> <span id="spTexto">Gabriel S. adquirió Chibi Firefly</span> <span style="color: var(--text-muted); font-size: 0.9em;" id="spLugar">(Bejuma)</span></div>
-  <div style="color: var(--text-muted); font-size: 0.8em;">Sakura Verified</div>
-</div>
-
-<div class="ticker-bar">
-  <div class="ticker-content">
-    Catálogo mayorista vía WhatsApp | Envíos nacionales ZOOM y MRW | Código activo: OTAKU10 (-10% OFF)
-  </div>
-</div>
-
-<!-- MODAL COFRE DIARIO -->
-<div id="modalCofreDiario" class="modal">
-  <div class="modal-content" style="text-align: center;">
-    <button class="cerrar-modal" onclick="cerrarCofreModal()">×</button>
-    <h3 style="color: #ffaa00; margin-top: 0;">Recompensa Diaria</h3>
-    <div id="cofreResultado" style="background: #080112; border: 1px dashed #ffaa00; padding: 18px; border-radius: var(--radius-sm); font-weight: 700; color: #fff; margin-bottom: 14px;">Cofre disponible (+50 XP)</div>
-    <button class="btn-comprar" style="background: #ffaa00; color: #000;" onclick="abrirCofreDiario()">Reclamar Recompensa</button>
-  </div>
-</div>
-
-<!-- MODAL GACHA -->
-<div id="modalGacha" class="modal">
-  <div class="modal-content" style="text-align: center;">
-    <button class="cerrar-modal" onclick="cerrarGachaModal()">×</button>
-    <h3 style="color: var(--secondary-color); margin-top: 0;">Ruleta de Beneficios</h3>
-    <div id="gachaResultado" style="background: #080112; border: 1px dashed var(--secondary-color); padding: 18px; border-radius: var(--radius-sm); font-weight: 700; color: #fff; margin-bottom: 14px;">Gira para obtener cupones de compra</div>
-    <button class="btn-comprar" onclick="girarRuletaGacha()">Girar Ruleta</button>
-  </div>
-</div>
-
-<!-- MODAL TEMAS -->
-<div id="modalTemas" class="modal">
-  <div class="modal-content" style="text-align: center;">
-    <button class="cerrar-modal" onclick="cerrarTemasModal()">×</button>
-    <h3 style="color: #fff; margin-top: 0;">Esquema de Color</h3>
-    <div style="display: flex; flex-direction: column; gap: 8px;">
-      <button class="btn-comprar" style="background: #ff007f;" onclick="cambiarTema('theme-rosa')">Rosa Cyberpunk</button>
-      <button class="btn-comprar" style="background: #0099ff; color: #000;" onclick="cambiarTema('theme-azul')">Azul Matrix</button>
-      <button class="btn-comprar" style="background: #b000ff;" onclick="cambiarTema('theme-purpura')">Púrpura Arcade</button>
-      <button class="btn-comprar" style="background: #ff5500;" onclick="cambiarTema('theme-overdrive')">Naranja Overdrive</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL GAMER PROFILE -->
-<div id="modalGamerProfile" class="modal">
-  <div class="modal-content" style="text-align: center;">
-    <button class="cerrar-modal" onclick="cerrarGamerProfileModal()">×</button>
-    <h3 style="color: var(--secondary-color); margin-top: 0;">Perfil de Usuario</h3>
-    <input type="text" id="inputGamerTag" class="sugerencia-input" placeholder="GamerTag / Identificador" style="margin-bottom: 12px;">
+<!-- PANTALLA DE ACCESO PROFESIONAL (FIREBASE AUTH) -->
+<div id="lockScreen">
+  <div class="lock-box">
+    <div style="font-size: 36px; color: var(--secondary-color); margin-bottom: 8px;"><i class="fas fa-shield-halved"></i></div>
+    <h3 style="color: #fff; margin-bottom: 4px;">Acceso Administrador</h3>
+    <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 16px;">Inicia sesión con tus credenciales seguras</p>
     
-    <div style="background: #080112; padding: 14px; border-radius: var(--radius-sm); margin-bottom: 14px; border: 1px solid var(--border-color); text-align: left; font-size: 0.9em;">
-      <div style="display: flex; justify-content: space-between;">
-        <span>Rango: <strong id="lblRango" style="color: #ffaa00; font-size: 1.1em;">Genin</strong></span>
-        <span><strong id="lblXp" style="color: var(--secondary-color);">150</strong> XP</span>
-      </div>
-      
-      <!-- BARRA DE XP RPG AÑADIDA -->
-      <div class="xp-bar-container">
-        <div class="xp-bar-fill" id="barXp"></div>
-      </div>
-      <div style="font-size: 0.8em; color: var(--text-muted); text-align: right; margin-top: 6px;" id="lblXpNext">Calculando siguiente rango...</div>
+    <div class="form-group">
+      <input type="email" id="adminEmailInput" class="form-input" placeholder="Correo electrónico" style="margin-bottom: 8px;" autocomplete="email">
+      <input type="password" id="adminPassInput" class="form-input" placeholder="Contraseña" autocomplete="current-password" onkeypress="if(event.key === 'Enter') iniciarSesionAdmin()">
     </div>
     
-    <button class="btn-comprar" onclick="guardarGamerTag()">Guardar Perfil</button>
+    <div id="loginErrorMsg" style="color: #ff3366; font-size: 0.85em; margin-bottom: 12px; display: none; font-weight: 700;"></div>
+    
+    <button class="btn-submit" id="btnLoginSubmit" onclick="iniciarSesionAdmin()">Iniciar Sesión</button>
+    <a href="index.html" style="display: inline-block; margin-top: 14px; font-size: 0.85em; color: var(--text-muted); text-decoration: none;">Volver al Catálogo</a>
   </div>
 </div>
 
-<!-- MODAL GUÍA DE TALLAS -->
-<div id="modalGuiaTallas" class="modal">
-  <div class="modal-content">
-    <button class="cerrar-modal" onclick="cerrarGuiaTallasModal()">×</button>
-    <h3 style="color: var(--secondary-color); margin-top: 0; text-align: center;">Medidas de Prendas (cm)</h3>
-    <div style="background: #080112; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px; font-size: 0.9em; margin-bottom: 14px;">
-      <div class="recibo-line"><span>Talla S</span><strong>50 cm x 68 cm</strong></div>
-      <div class="recibo-line"><span>Talla M</span><strong>53 cm x 70 cm</strong></div>
-      <div class="recibo-line"><span>Talla L</span><strong>56 cm x 72 cm</strong></div>
-      <div class="recibo-line"><span>Talla XL</span><strong>59 cm x 74 cm</strong></div>
-    </div>
-    <button class="btn-comprar" onclick="cerrarGuiaTallasModal()">Entendido</button>
+<!-- NAVEGACIÓN SUPERIOR -->
+<header class="admin-navbar">
+  <div class="brand-box">
+    <img src="logo.webp?v=2" class="brand-logo" alt="Logo">
+    <span class="brand-title">Admin Panel</span>
   </div>
-</div>
+  <div class="nav-actions">
+    <a href="index.html" class="btn-nav btn-tienda"><i class="fas fa-store"></i> Tienda</a>
+    <button class="btn-nav btn-exit" onclick="cerrarSesionAdmin()"><i class="fas fa-sign-out-alt"></i> Salir</button>
+  </div>
+</header>
 
-<div class="hero-banner">
-  <img src="logo.webp?v=2" alt="Sakura Gameverse" class="hero-logo" onclick="activarEasterEggLogo()" loading="eager" decoding="async">
-  <br>
-  <div class="store-status-badge"><div class="status-dot"></div> Horario de Atención: 10:00 AM - 7:00 PM</div>
-  <div class="hero-title">Sakura Gameverse</div>
-  <div style="color: var(--text-muted); font-size: 0.9em; max-width: 500px; margin: 0 auto 14px auto;">Coleccionables, ropa, productos gamer y recargas digitales para ti.</div>
+<main class="admin-container" id="adminMainContent" style="display: none;">
   
-  <div id="bannerSliderContainer" class="banner-slider-container"></div>
-  <br>
-</div>
-
-<div class="container">
-  <div class="search-box">
-    <input type="text" id="buscador" class="search-input" placeholder="Buscar por producto, personaje o franquicia..." onkeyup="buscarProductos()">
-  </div>
-
-  <!-- Carrusel Visual de Categorías -->
-  <div class="categorias-visuales-section">
-    <div class="categorias-visuales-header">Categorías de Catálogo</div>
-    <div class="carrusel-wrapper">
-      <button class="carrusel-arrow arrow-prev" onclick="scrollCategoriasVisuales(-1)"><i class="fas fa-chevron-left"></i></button>
-      
-      <div class="carrusel-track" id="categoriasTrack">
-        <div class="cat-card activa" onclick="filtrarCategoria('todos')">
-          <img src="logo.webp?v=2" id="img-cat-todos" class="cat-img" alt="Todos" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-todos">Todo el Stock</div><div class="cat-count" id="count-todos">0 items</div></div>
-        </div>
-        <div class="cat-card" onclick="filtrarCategoria('recargas')">
-          <img src="logo.webp?v=2" id="img-cat-recargas" class="cat-img" alt="Recargas" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-recargas">Recargas</div><div class="cat-count" id="count-recargas">0 items</div></div>
-        </div>
-        <div class="cat-card" onclick="filtrarCategoria('mangas')">
-          <img src="logo.webp?v=2" id="img-cat-mangas" class="cat-img" alt="Mangas" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-mangas">Mangas & Libros</div><div class="cat-count" id="count-mangas">0 items</div></div>
-        </div>
-        <div class="cat-card" onclick="filtrarCategoria('ropa')">
-          <img src="logo.webp?v=2" id="img-cat-ropa" class="cat-img" alt="Ropa" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-ropa">Vestimenta</div><div class="cat-count" id="count-ropa">0 items</div></div>
-        </div>
-        <div class="cat-card" onclick="filtrarCategoria('cartas')">
-          <img src="logo.webp?v=2" id="img-cat-cartas" class="cat-img" alt="TCG" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-cartas">TCG & Cartas</div><div class="cat-count" id="count-cartas">0 items</div></div>
-        </div>
-        <div class="cat-card" onclick="filtrarCategoria('figuras')">
-          <img src="logo.webp?v=2" id="img-cat-figuras" class="cat-img" alt="Figuras" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-figuras">Figuras</div><div class="cat-count" id="count-figuras">0 items</div></div>
-        </div>
-        <div class="cat-card" onclick="filtrarCategoria('mandos')">
-          <img src="logo.webp?v=2" id="img-cat-mandos" class="cat-img" alt="Mandos" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-mandos">Mandos & Consolas</div><div class="cat-count" id="count-mandos">0 items</div></div>
-        </div>
-        
-        <div class="cat-card" onclick="filtrarCategoria('perifericos')">
-          <img src="logo.webp?v=2" id="img-cat-perifericos" class="cat-img" alt="Periféricos" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-perifericos">Periféricos Gamer</div><div class="cat-count" id="count-perifericos">0 items</div></div>
-        </div>
-
-        <div class="cat-card" onclick="filtrarCategoria('peluches')">
-          <img src="logo.webp?v=2" id="img-cat-peluches" class="cat-img" alt="Peluches" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-peluches">Peluches</div><div class="cat-count" id="count-peluches">0 items</div></div>
-        </div>
-        <div class="cat-card" onclick="filtrarCategoria('katanas')">
-          <img src="logo.webp?v=2" id="img-cat-katanas" class="cat-img" alt="Katanas" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-katanas">Katanas</div><div class="cat-count" id="count-katanas">0 items</div></div>
-        </div>
-        <div class="cat-card" onclick="filtrarCategoria('lamparas')">
-          <img src="logo.webp?v=2" id="img-cat-lamparas" class="cat-img" alt="Lámparas" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-lamparas">Lámparas</div><div class="cat-count" id="count-lamparas">0 items</div></div>
-        </div>
-        <div class="cat-card" onclick="filtrarCategoria('accesorios')">
-          <img src="logo.webp?v=2" id="img-cat-accesorios" class="cat-img" alt="Accesorios" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-accesorios">Accesorios</div><div class="cat-count" id="count-accesorios">0 items</div></div>
-        </div>
-      </div>
-      
-      <button class="carrusel-arrow arrow-next" onclick="scrollCategoriasVisuales(1)"><i class="fas fa-chevron-right"></i></button>
+  <!-- MINI DASHBOARD DE ESTADÍSTICAS -->
+  <div class="dashboard-grid">
+    <div class="dash-card">
+      <div class="dash-title">Ingresos USD</div>
+      <div class="dash-val ganancias" id="dashIngresos">$0.00</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-title">Pendientes</div>
+      <div class="dash-val pendientes" id="dashOrdenes">0</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-title">Catálogo</div>
+      <div class="dash-val" id="dashProds">0</div>
     </div>
   </div>
 
-  <!-- Controles Compactos -->
-  <div class="controles-superiores">
-    <div class="panel-controles-avanzados">
-      <select id="selectColeccion" class="ordenar-select" onchange="cambiarColeccionDropdown(this.value)">
-        <option value="todos">Colección: Todas las Franquicias</option>
-      </select>
-
-      <select id="selectEstado" class="ordenar-select" onchange="filtrarEstadoDropdown(this.value)">
-        <option value="todos">Disponibilidad: Todo</option>
-        <option value="Envío Inmediato 📦">Solo Stock Inmediato</option>
-        <option value="Por Encargo ⚡">Bajo Encargo</option>
-      </select>
-
-      <select id="selectOrden" class="ordenar-select" onchange="ordenarProductos()">
-        <option value="defecto">Ordenar: Predeterminado</option>
-        <option value="reciente">Novedades: Más recientes</option>
-        <option value="antiguo">Histórico: Más antiguos</option>
-        <option value="menor">Precio: Menor a Mayor</option>
-        <option value="mayor">Precio: Mayor a Menor</option>
-      </select>
-    </div>
+  <!-- PESTAÑAS DESLIZABLES CON EL DEDO -->
+  <div class="tabs-wrapper">
+    <button class="tab-btn active" onclick="cambiarSeccion('productos')"><i class="fas fa-boxes"></i> Inventario</button>
+    <button class="tab-btn" onclick="cambiarSeccion('pedidos')"><i class="fas fa-truck-fast"></i> Pedidos</button>
+    <button class="tab-btn" onclick="cambiarSeccion('banners')"><i class="fas fa-images"></i> Banners</button>
+    <button class="tab-btn" onclick="cambiarSeccion('cupones')"><i class="fas fa-ticket-alt"></i> Cupones</button>
+    <button class="tab-btn" onclick="cambiarSeccion('pagos')"><i class="fas fa-wallet"></i> Pagos</button>
+    <button class="tab-btn" onclick="cambiarSeccion('reviews')"><i class="fas fa-star"></i> Reseñas</button>
+    <button class="tab-btn" onclick="cambiarSeccion('rangos')"><i class="fas fa-trophy"></i> Rangos XP</button>
   </div>
 
-  <div class="grid" id="catalogoNube"><p style="text-align: center; color: var(--text-muted); grid-column: 1/-1;">Sincronizando inventario...</p></div>
-
-  <!-- RESEÑAS -->
-  <div class="reviews-section">
-    <h3 style="color: #fff; margin-top: 0; margin-bottom: 15px;">Opiniones de Clientes</h3>
-    <div id="contenedorReviews"><p style="color: var(--text-muted);">Cargando reseñas verificadas...</p></div>
-    <div style="margin-top: 15px;">
-      <input type="text" id="revNombre" class="sugerencia-input" placeholder="Nombre o GamerTag" style="margin-bottom: 8px;">
-      <select id="revEstrellas" class="sugerencia-input" style="margin-bottom: 8px;">
-        <option value="⭐⭐⭐⭐⭐">5 / 5 - Excelente servicio</option>
-        <option value="⭐⭐⭐⭐">4 / 5 - Muy bueno</option>
-        <option value="⭐⭐⭐">3 / 5 - Conforme</option>
-      </select>
-      <textarea id="revTexto" class="sugerencia-input" rows="2" placeholder="Describe tu experiencia de compra..." style="margin-bottom: 8px;"></textarea>
-      <button class="btn-comprar" style="width: auto; padding: 8px 18px;" onclick="agregarReview()">Publicar Opinión</button>
-    </div>
-  </div>
-
-  <!-- INFORMACIÓN DE ENVÍOS -->
-  <div class="info-section">
-    <h3 style="color: #fff; margin-top: 0; margin-bottom: 12px;">Logística & Cobertura</h3>
-    <p style="color: var(--text-muted); font-size: 0.95em; line-height: 1.5; margin-bottom: 12px;">Despachos garantizados a nivel nacional con cobro a destino y entregas personales en Carabobo:</p>
-    <div>
-      <span class="badge-envio"><i class="fas fa-box"></i> ZOOM</span>
-      <span class="badge-envio"><i class="fas fa-truck"></i> MRW</span>
-      <span class="badge-envio"><i class="fas fa-map-pin"></i> Bejuma</span>
-      <span class="badge-envio"><i class="fas fa-map-pin"></i> Miranda</span>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL PRODUCTO DETALLE -->
-<div id="miModal" class="modal">
-  <div class="modal-content">
-    <button class="cerrar-modal" onclick="cerrarModal()">×</button>
-    <div class="breadcrumbs" id="modalBreadcrumbs">Inicio / <span>Categoría</span></div>
-    <img id="modalImg" src="" alt="Producto" class="modal-img" loading="eager" decoding="async">
-    <div id="modalContainerMinis" class="modal-miniaturas"></div>
-    <div id="modalTag" class="modal-tag-info">Disponible</div>
-    <h3 id="modalTitulo" style="color: #fff; margin: 4px 0 8px 0;">Título</h3>
-    <div id="modalPrecio" style="color: var(--secondary-color); font-size: 1.4em; font-weight: 700; margin-bottom: 8px;">$0.00</div>
-    <p id="modalDesc" style="font-size: 0.9em; color: var(--text-muted); margin-bottom: 14px; line-height: 1.4;">Detalles del producto.</p>
-    
-    <div id="tallasContainer" style="display: none; margin-bottom: 12px;">
-      <label for="selectTalla" style="display: block; font-size: 0.85em; font-weight: 700; margin-bottom: 4px;">Seleccionar Talla:</label>
-      <select id="selectTalla" class="talla-select">
-        <option value="S">Talla S</option><option value="M" selected>Talla M</option><option value="L">Talla L</option><option value="XL">Talla XL</option>
-      </select>
-      <div style="color: var(--secondary-color); font-size: 0.8em; margin-top: 4px; cursor: pointer;" onclick="abrirGuiaTallasModal()">Ver tabla de medidas</div>
-    </div>
-
-    <div id="recargaContainer" style="display: none; margin-bottom: 12px;">
-      <label for="inputPlayerId" style="display: block; font-size: 0.85em; font-weight: 700; margin-bottom: 4px;">ID de Jugador:</label>
-      <input type="text" id="inputPlayerId" class="recarga-input" placeholder="Ingresa tu ID de cuenta">
-      <label for="inputPlayerServer" style="display: block; font-size: 0.85em; font-weight: 700; margin: 8px 0 4px 0;">Servidor / Región:</label>
-      <input type="text" id="inputPlayerServer" class="recarga-input" placeholder="Ej: Sudamérica / EE.UU.">
-    </div>
-
-    <button class="btn-comprar" onclick="agregarAlCarrito()"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
-    <button class="btn-compartir" onclick="compartirProductoWhatsApp()"><i class="fab fa-whatsapp"></i> Consultar por WhatsApp</button>
-
-    <!-- PESTAÑA AÑADIDA: PRODUCTOS RELACIONADOS -->
-    <div id="contenedorRelacionados" style="margin-top: 18px; border-top: 1px dashed var(--border-color); padding-top: 12px; display: none;">
-      <h4 style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 10px;">También te podría interesar:</h4>
-      <div style="display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;" id="listaRelacionados"></div>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL MENÚ DE OPCIONES -->
-<div id="modalOpcionesMenu" class="modal">
-  <div class="modal-content" style="text-align: center;">
-    <button class="cerrar-modal" onclick="cerrarMenuOpciones()">×</button>
-    <h3 style="color: #fff; margin-top: 0;">Panel de Funciones</h3>
-    
-    <!-- BOTÓN DE INSTALAR PWA AÑADIDO -->
-    <button id="btnInstalarPWA" class="btn-comprar btn-instalar" style="display: none; margin-bottom: 15px;" onclick="instalarPWA()">
-      <i class="fas fa-download"></i> Instalar App Sakura
+  <!-- 1. INVENTARIO -->
+  <section id="panel-productos" class="admin-panel active">
+    <button class="btn-toggle-box" id="btnToggleFormProd" onclick="toggleFormularioProducto()">
+      <i class="fas fa-plus"></i> <span id="lblToggleForm">Crear Nuevo Producto</span>
     </button>
 
-    <div class="menu-opciones-grid">
-      <button class="btn-menu-opcion" style="color: #ffaa00;" onclick="cerrarMenuOpciones(); abrirCofreModal()"><i class="fas fa-gift"></i> Cofre Diario</button>
-      <button class="btn-menu-opcion" style="color: var(--secondary-color);" onclick="cerrarMenuOpciones(); abrirGachaModal()"><i class="fas fa-dice"></i> Ruleta</button>
-      <button class="btn-menu-opcion" style="color: #25d366;" onclick="cerrarMenuOpciones(); abrirGamerProfileModal()"><i class="fas fa-user"></i> Mi Perfil</button>
-      <button class="btn-menu-opcion" style="color: #ff007f;" onclick="cerrarMenuOpciones(); abrirTemasModal()"><i class="fas fa-palette"></i> Temas</button>
-      <button class="btn-menu-opcion" style="color: #e0f4ff;" onclick="toggleMusicaLoFi()"><i class="fas fa-music" id="iconoMusica"></i> Audio Lo-Fi</button>
-      <button class="btn-menu-opcion" style="color: var(--text-muted);" onclick="cerrarMenuOpciones(); abrirFaqModal()"><i class="fas fa-question-circle"></i> Preguntas</button>
-      <button class="btn-menu-opcion" style="color: #fff;" onclick="cerrarMenuOpciones(); abrirSugerenciaModal()"><i class="fas fa-lightbulb"></i> Encargos</button>
-      <a href="admin.html" class="btn-menu-opcion" style="color: #ff3366;"><i class="fas fa-lock"></i> Gestión Admin</a>
-      <a href="https://wa.me/584244970576" target="_blank" class="btn-menu-opcion" style="color: #25D366;"><i class="fab fa-whatsapp"></i> Chat Directo</a>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL FAVORITOS -->
-<div id="modalFavoritos" class="modal">
-  <div class="modal-content">
-    <button class="cerrar-modal" onclick="cerrarFavoritosModal()">×</button>
-    <h3 style="color: #fff; margin-top: 0; text-align: center;">Artículos Guardados</h3>
-    <div id="listaFavoritosDetalle" style="max-height: 250px; overflow-y: auto; margin-bottom: 14px;"></div>
-    <button class="btn-comprar" onclick="cerrarFavoritosModal()">Continuar Explorando</button>
-  </div>
-</div>
-
-<!-- MODAL FAQ -->
-<div id="modalFaq" class="modal">
-  <div class="modal-content">
-    <button class="cerrar-modal" onclick="cerrarFaqModal()">×</button>
-    <h3 style="color: #fff; margin-top: 0; text-align: center;">Preguntas Frecuentes</h3>
-    <div style="font-size: 0.9em; line-height: 1.5; color: var(--text-muted);">
-      <p><strong style="color: #fff;">¿Dónde realizan entregas en persona?</strong><br>Puntos acordados previamente en Bejuma y Miranda, Estado Carabobo.</p>
-      <p><strong style="color: #fff;">¿Cómo operan los despachos nacionales?</strong><br>Envíos cobro a destino a través de agencias ZOOM y MRW.</p>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL CARRITO -->
-<div id="modalCarrito" class="modal">
-  <div class="modal-content">
-    <button class="cerrar-modal" onclick="cerrarCarritoModal()">×</button>
-    <h3 style="color: #fff; margin-top: 0; text-align: center;">Resumen de Pedido</h3>
-    
-    <div class="cart-tabs">
-      <button class="cart-tab-btn activo" id="tabBtnFisico" onclick="cambiarPestanaCarrito('fisico')">
-        Artículos Físicos (<span id="countCartFisico">0</span>)
-      </button>
-      <button class="cart-tab-btn" id="tabBtnDigital" onclick="cambiarPestanaCarrito('digital')">
-        Recargas (<span id="countCartDigital">0</span>)
-      </button>
-    </div>
-
-    <div class="cupon-box">
-      <input type="text" id="inputCupon" class="cupon-input" placeholder="Código de descuento">
-      <button class="btn-cupon" onclick="aplicarCupon()">Aplicar</button>
-    </div>
-    <div id="mensajeCupon" style="font-size: 0.8em; margin-bottom: 8px;"></div>
-
-    <div id="listaCarritoDetalle" style="max-height: 150px; overflow-y: auto; margin-bottom: 12px;"></div>
-    
-    <!-- APARTADO EXCLUSIVO PARA ARTÍCULOS FÍSICOS -->
-    <div id="apartadoEnvioFisico">
-      <div style="margin-bottom: 10px;">
-        <label for="selectMetodoEnvio" style="display: block; font-size: 0.85em; font-weight: 700; margin-bottom: 4px;">Método de Despacho:</label>
-        <select id="selectMetodoEnvio" class="talla-select">
-          <option value="ZOOM (Cobro a destino)">ZOOM (Envío nacional - Cobro a destino)</option>
-          <option value="MRW (Cobro a destino)">MRW (Envío nacional - Cobro a destino)</option>
-          <option value="Entrega Personal (Bejuma)">Entrega Personal (Bejuma, Carabobo)</option>
-          <option value="Entrega Personal (Miranda)">Entrega Personal (Miranda, Carabobo)</option>
-        </select>
+    <!-- Formulario Plegable -->
+    <div class="card-panel" id="cajaFormProducto" style="display: none;">
+      <div class="panel-header">
+        <span class="panel-title" id="formProdTitulo"><i class="fas fa-plus-circle"></i> Nuevo Producto</span>
+        <button style="background: none; border: none; color: #ff3366; font-weight: bold; cursor: pointer;" onclick="resetFormularioProducto()">Cerrar</button>
       </div>
+      
+      <form id="formProducto" onsubmit="guardarProducto(event)">
+        <input type="hidden" id="prodEditId" value="">
+        
+        <div class="form-group">
+          <label class="form-label">Nombre del Producto:</label>
+          <input type="text" id="prodNombre" class="form-input" placeholder="Ej: Chibi Firefly" required>
+        </div>
 
-      <div style="margin-bottom: 12px;" id="boxDireccionEnvio">
-        <label for="inputDireccionEnvio" style="display: block; font-size: 0.85em; font-weight: 700; margin-bottom: 4px;">Dirección de Entrega / Agencia de Retiro:</label>
-        <input type="text" id="inputDireccionEnvio" class="sugerencia-input" placeholder="Ciudad, Estado, Dirección o Agencia específica...">
+        <div style="display: flex; gap: 8px;">
+          <div class="form-group" style="flex: 1;">
+            <label class="form-label">Precio ($):</label>
+            <input type="number" id="prodPrecio" class="form-input" step="0.01" placeholder="17.00" required>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label class="form-label">Categoría:</label>
+            <select id="prodCategoria" class="form-select">
+              <option value="figuras">Figuras Anime</option>
+              <option value="perifericos">Periféricos Gamer</option>
+              <option value="recargas">Recargas ⚡</option>
+              <option value="mangas">Mangas</option>
+              <option value="ropa">Vestimenta</option>
+              <option value="cartas">TCG / Cartas</option>
+              <option value="mandos">Mandos</option>
+              <option value="peluches">Peluches</option>
+              <option value="katanas">Katanas</option>
+              <option value="lamparas">Lámparas</option>
+              <option value="accesorios">Accesorios</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Franquicia / Universo:</label>
+          <input type="text" id="prodColeccion" class="form-input" placeholder="Ej: Naruto, Honkai, Vocaloid...">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Disponibilidad:</label>
+          <select id="prodEstado" class="form-select">
+            <option value="Envío Inmediato 📦">Envío Inmediato 📦</option>
+            <option value="Por Encargo ⚡">Por Encargo ⚡</option>
+            <option value="Acreditación Inmediata ⚡">Acreditación Inmediata ⚡</option>
+          </select>
+        </div>
+
+        <!-- CARGADOR WEBP -->
+        <div class="form-group">
+          <label class="form-label">Fotos del Producto (Hasta 5 imágenes):</label>
+          
+          <input type="file" id="prodFileInput" multiple accept="image/*" style="display: none;" onchange="procesarArchivosGaleria(event)">
+          <button type="button" class="btn-file-select" onclick="document.getElementById('prodFileInput').click()">
+            <i class="fas fa-camera"></i> Seleccionar Fotos desde Galería
+          </button>
+          
+          <div id="txtEstadoSubida" class="upload-status-text">
+            <i class="fas fa-spinner fa-spin"></i> Optimizando fotos a formato WebP ultraliviano...
+          </div>
+
+          <div id="contenedorPreviewFotos" class="preview-fotos-grid"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Descripción:</label>
+          <textarea id="prodDesc" class="form-textarea" rows="2" placeholder="Detalles breves..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit" id="btnGuardarProd">Guardar Producto</button>
+      </form>
+    </div>
+
+    <!-- Lista de Productos en Tarjetas Táctiles -->
+    <div class="card-panel">
+      <div class="panel-header">
+        <span class="panel-title"><i class="fas fa-boxes"></i> Inventario (<span id="totalProdsLbl">0</span>)</span>
+        <input type="text" id="buscarEnAdmin" class="form-input" style="max-width: 140px; min-height: 32px; padding: 4px 8px; font-size: 0.85em;" placeholder="Buscar..." onkeyup="filtrarTarjetasAdmin()">
+      </div>
+      
+      <div id="listaProductosMobile">
+        <p style="color: var(--text-muted); text-align: center; padding: 15px;"><i class="fas fa-spinner fa-spin"></i> Cargando inventario...</p>
       </div>
     </div>
+  </section>
 
-    <!-- APARTADO EXCLUSIVO PARA RECARGAS DIGITALES -->
-    <div id="apartadoRecargasDigitales" style="display: none; background: #07010f; border: 1px dashed var(--border-color); padding: 10px; border-radius: var(--radius-sm); margin-bottom: 12px; font-size: 0.85em; color: var(--text-muted);">
-      <strong style="color: var(--secondary-color);">Entrega Directa:</strong> Las recargas se ejecutan directamente con el ID y Servidor especificados. No aplican costos de flete ni datos de encomienda.
+  <!-- 2. PEDIDOS -->
+  <section id="panel-pedidos" class="admin-panel">
+    <button class="btn-toggle-box" onclick="toggleCajaPedidoManual()">
+      <i class="fas fa-plus"></i> Registrar Pedido Manual
+    </button>
+
+    <div class="card-panel" id="cajaPedidoManual" style="display: none;">
+      <div class="panel-header">
+        <span class="panel-title"><i class="fas fa-receipt"></i> Nueva Orden Manual</span>
+        <button style="background: none; border: none; color: #ff3366; font-weight: bold; cursor: pointer;" onclick="toggleCajaPedidoManual()">Cerrar</button>
+      </div>
+      <form id="formPedidoManual" onsubmit="guardarPedidoManual(event)">
+        <div class="form-group">
+          <label class="form-label">Cliente & WhatsApp:</label>
+          <input type="text" id="pedCliente" class="form-input" placeholder="Nombre completo" required style="margin-bottom: 6px;">
+          <input type="text" id="pedTelefono" class="form-input" placeholder="0424-0000000" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tipo de Pedido:</label>
+          <select id="pedTipo" class="form-select" onchange="toggleFormEnvioPedido(this.value)">
+            <option value="fisico">📦 Artículo Físico</option>
+            <option value="digital">⚡ Recarga Digital</option>
+          </select>
+        </div>
+        <div id="boxCamposEnvioAdmin">
+          <div class="form-group">
+            <label class="form-label">Despacho:</label>
+            <select id="pedMetodo" class="form-select">
+              <option value="ZOOM (Cobro a destino)">ZOOM</option>
+              <option value="MRW (Cobro a destino)">MRW</option>
+              <option value="Entrega Personal (Bejuma)">Entrega Bejuma</option>
+              <option value="Entrega Personal (Miranda)">Entrega Miranda</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Dirección / Agencia:</label>
+            <input type="text" id="pedDireccion" class="form-input" placeholder="Ej: ZOOM Bejuma">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Detalles & Monto USD:</label>
+          <textarea id="pedDetalles" class="form-textarea" rows="2" placeholder="1x Figura..." required style="margin-bottom: 6px;"></textarea>
+          <input type="number" id="pedTotalUsd" class="form-input" step="0.01" placeholder="Total USD ($)" required>
+        </div>
+        <button type="submit" class="btn-submit">Guardar Pedido</button>
+      </form>
     </div>
 
-    <div id="reciboDigital" class="recibo-box" style="display: none;">
-      <div style="text-align: center; font-weight: 700; margin-bottom: 6px; color: var(--secondary-color);">RESUMEN DE CUENTA</div>
-      <div id="reciboContenido"></div>
+    <div class="card-panel">
+      <div class="panel-header">
+        <span class="panel-title"><i class="fas fa-truck"></i> Historial de Órdenes (<span id="totalPedidosLbl">0</span>)</span>
+      </div>
+      <div id="listaPedidosMobile">
+        <p style="color: var(--text-muted); text-align: center; padding: 15px;"><i class="fas fa-spinner fa-spin"></i> Cargando pedidos...</p>
+      </div>
     </div>
-    
-    <div id="paymentMethodsCart" style="display: none; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 12px; background: #090214;">
-      <div style="font-weight: 700; color: #fff; margin-bottom: 8px; font-size: 0.9em;">Cuentas para Pago:</div>
-      <div id="cajaDatosPagoInfo" style="font-size: 0.85em; line-height: 1.5; color: var(--text-muted);"></div>
+  </section>
+
+  <!-- 3. BANNERS -->
+  <section id="panel-banners" class="admin-panel">
+    <div class="card-panel">
+      <div class="panel-header"><span class="panel-title"><i class="fas fa-plus"></i> Añadir Banner</span></div>
+      <form onsubmit="agregarBanner(event)">
+        <div class="form-group">
+          <label class="form-label">Foto de Banner (Se convierte a WebP):</label>
+          <input type="file" id="bannerFileInput" accept="image/*" class="form-input" style="padding: 6px;" required>
+        </div>
+        <button type="submit" class="btn-submit" id="btnSubirBanner">Publicar Banner</button>
+      </form>
     </div>
-
-    <div id="modalCarritoTotal" style="color: var(--secondary-color); font-size: 1.3em; font-weight: 700; margin-bottom: 12px; text-align: center;">Total: $0.00</div>
-    <div style="display: flex; gap: 8px;">
-      <button style="flex: 1; padding: 10px; background: transparent; border: 1px solid rgba(255, 51, 102, 0.4); color: #ff3366; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer;" onclick="vaciarCarrito()">Limpiar</button>
-      <button style="flex: 2; padding: 10px; background: #25D366; color: #000; border: none; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer;" onclick="enviarPedidoWhatsApp()">Enviar Orden por WhatsApp</button>
+    <div class="card-panel">
+      <div class="panel-header"><span class="panel-title"><i class="fas fa-images"></i> Banners Activos</span></div>
+      <div id="listaBannersAdmin"><p style="color: var(--text-muted);"><i class="fas fa-spinner fa-spin"></i> Cargando banners...</p></div>
     </div>
-  </div>
-</div>
+  </section>
 
-<!-- MODAL SUGERENCIAS -->
-<div id="modalSugerencias" class="modal">
-  <div class="modal-content">
-    <button class="cerrar-modal" onclick="cerrarSugerenciaModal()">×</button>
-    <h3 style="color: #fff; margin-top: 0; text-align: center;">Solicitar Artículo por Encargo</h3>
-    <input type="text" id="sugNombre" class="sugerencia-input" placeholder="Tu Nombre o Contacto" style="margin-bottom: 8px;">
-    <textarea id="sugDeseo" class="sugerencia-input" rows="3" placeholder="¿Qué figura, accesorio o producto específico estás buscando?" style="margin-bottom: 10px;"></textarea>
-    <button class="btn-comprar" onclick="enviarSugerenciaWhatsApp()">Enviar Consulta</button>
-  </div>
-</div>
+  <!-- 4. CUPONES -->
+  <section id="panel-cupones" class="admin-panel">
+    <div class="card-panel">
+      <div class="panel-header"><span class="panel-title"><i class="fas fa-plus"></i> Nuevo Cupón</span></div>
+      <form onsubmit="agregarCupon(event)">
+        <div class="form-group">
+          <label class="form-label">Código:</label>
+          <input type="text" id="cuponCodigo" class="form-input" placeholder="Ej: PROMO10" style="text-transform: uppercase;" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Descuento (%):</label>
+          <input type="number" id="cuponPorcentaje" class="form-input" min="1" max="90" placeholder="10" required>
+        </div>
+        <button type="submit" class="btn-submit">Activar Cupón</button>
+      </form>
+    </div>
+    <div class="card-panel">
+      <div class="panel-header"><span class="panel-title"><i class="fas fa-tags"></i> Cupones Activos</span></div>
+      <div id="listaCuponesAdmin"><p style="color: var(--text-muted);"><i class="fas fa-spinner fa-spin"></i> Cargando cupones...</p></div>
+    </div>
+  </section>
 
-<!-- NAVEGACIÓN INFERIOR -->
-<div class="bottom-nav">
-  <div class="nav-item active" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); reproducirSonido();"><i class="fas fa-th-large"></i><span>Catálogo</span></div>
-  <div class="nav-item" onclick="abrirFavoritosModal()"><i class="fas fa-heart"></i><span>Guardados</span><div class="nav-badge" id="favBadge">0</div></div>
-  <div class="nav-item" onclick="abrirCarritoModal()"><i class="fas fa-shopping-bag"></i><span>Carrito</span><div class="nav-badge" id="cartBadge">0</div></div>
-  <div class="nav-item" onclick="abrirMenuOpciones()"><i class="fas fa-bars"></i><span>Menú</span></div>
-</div>
+  <!-- 5. PAGOS -->
+  <section id="panel-pagos" class="admin-panel">
+    <div class="card-panel">
+      <div class="panel-header"><span class="panel-title"><i class="fas fa-wallet"></i> Métodos de Pago</span></div>
+      <form onsubmit="guardarDatosPago(event)">
+        <div class="form-group"><label class="form-label">Banco:</label><input type="text" id="pagoBanco" class="form-input" required></div>
+        <div class="form-group"><label class="form-label">Teléfono Pago Móvil:</label><input type="text" id="pagoTelefono" class="form-input" required></div>
+        <div class="form-group"><label class="form-label">Cédula:</label><input type="text" id="pagoCedula" class="form-input" required></div>
+        <div class="form-group"><label class="form-label">Binance Pay:</label><input type="text" id="pagoBinance" class="form-input" required></div>
+        <button type="submit" class="btn-submit">Actualizar Cuentas</button>
+      </form>
+    </div>
+  </section>
 
-<audio id="audioLoFi" loop src="https://stream.zeno.fm/f3wvbbqmdg8uv"></audio>
+  <!-- 6. RESEÑAS -->
+  <section id="panel-reviews" class="admin-panel">
+    <div class="card-panel">
+      <div class="panel-header"><span class="panel-title"><i class="fas fa-star"></i> Moderación de Reseñas</span></div>
+      <div id="listaReviewsAdmin"><p style="color: var(--text-muted);"><i class="fas fa-spinner fa-spin"></i> Cargando opiniones...</p></div>
+    </div>
+  </section>
+
+  <!-- 7. RANGOS -->
+  <section id="panel-rangos" class="admin-panel">
+    <div class="card-panel">
+      <div class="panel-header"><span class="panel-title"><i class="fas fa-trophy"></i> Umbrales de XP Ninja</span></div>
+      <form onsubmit="guardarRangosNinja(event)">
+        <div class="form-group"><label class="form-label">Chūnin (XP):</label><input type="number" id="xpChunin" class="form-input" required></div>
+        <div class="form-group"><label class="form-label">Jōnin (XP):</label><input type="number" id="xpJonin" class="form-input" required></div>
+        <div class="form-group"><label class="form-label">Hokage (XP):</label><input type="number" id="xpHokage" class="form-input" required></div>
+        <button type="submit" class="btn-submit">Guardar Umbrales</button>
+      </form>
+    </div>
+  </section>
+</main>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-  import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, setDoc, addDoc, where } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+  import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, setDoc, addDoc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDH1DZqaIi5sKRXspXDUWbMUZ4nr5JIy8Q",
@@ -1178,697 +596,623 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+  const auth = getAuth(app);
 
-  let productosNubeGlobal = [];
-  let globalAudioCtx = null;
-  
-  // --- LÓGICA DE INSTALACIÓN PWA ---
-  let eventoInstalacion = null;
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    eventoInstalacion = e;
-    const btn = document.getElementById('btnInstalarPWA');
-    if(btn) btn.style.display = 'block'; // Muestra el botón solo si el celular permite instalarla
+  let productosAdminGlobal = [];
+  let fotosBufferProducto = [];
+
+  // --- ESCUCHA ACTIVA DE SESIÓN CON FIREBASE AUTH ---
+  onAuthStateChanged(auth, (user) => {
+    const lockScreen = document.getElementById('lockScreen');
+    const mainContent = document.getElementById('adminMainContent');
+
+    if (user) {
+      lockScreen.style.display = 'none';
+      mainContent.style.display = 'block';
+      cargarTodo();
+    } else {
+      lockScreen.style.display = 'flex';
+      mainContent.style.display = 'none';
+    }
   });
 
-  window.instalarPWA = async function() {
-    reproducirSonido();
-    if (!eventoInstalacion) return;
-    eventoInstalacion.prompt();
-    const { outcome } = await eventoInstalacion.userChoice;
-    if (outcome === 'accepted') {
-      document.getElementById('btnInstalarPWA').style.display = 'none';
+  window.iniciarSesionAdmin = async function() {
+    const email = document.getElementById('adminEmailInput').value.trim();
+    const pass = document.getElementById('adminPassInput').value;
+    const errorBox = document.getElementById('loginErrorMsg');
+    const btn = document.getElementById('btnLoginSubmit');
+
+    if (!email || !pass) {
+      errorBox.innerText = "Ingresa tu correo y contraseña.";
+      errorBox.style.display = 'block';
+      return;
     }
-    eventoInstalacion = null;
-  };
 
-  window.reproducirSonido = function() {
+    btn.disabled = true;
+    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Verificando...`;
+    errorBox.style.display = 'none';
+
     try {
-      if (!globalAudioCtx) globalAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      if (globalAudioCtx.state === 'suspended') globalAudioCtx.resume();
-      const osc = globalAudioCtx.createOscillator();
-      const gainNode = globalAudioCtx.createGain();
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(520, globalAudioCtx.currentTime);
-      gainNode.gain.setValueAtTime(0.04, globalAudioCtx.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.001, globalAudioCtx.currentTime + 0.06);
-      osc.connect(gainNode);
-      gainNode.connect(globalAudioCtx.destination);
-      osc.start();
-      osc.stop(globalAudioCtx.currentTime + 0.06);
-    } catch(e) {}
+      await signInWithEmailAndPassword(auth, email, pass);
+      document.getElementById('adminPassInput').value = "";
+    } catch (err) {
+      errorBox.innerText = "Credenciales inválidas o acceso denegado.";
+      errorBox.style.display = 'block';
+    } finally {
+      btn.disabled = false;
+      btn.innerText = "Iniciar Sesión";
+    }
   };
 
-  function sanitizarHTML(str) {
+  window.cerrarSesionAdmin = async function() {
+    if (confirm("¿Deseas cerrar la sesión de administrador?")) {
+      await signOut(auth);
+    }
+  };
+
+  window.cambiarSeccion = function(panelId) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+    
+    event.currentTarget.classList.add('active');
+    document.getElementById(`panel-${panelId}`).classList.add('active');
+  };
+
+  window.toggleFormularioProducto = function() {
+    const formBox = document.getElementById('cajaFormProducto');
+    const lbl = document.getElementById('lblToggleForm');
+    if (formBox.style.display === 'none') {
+      formBox.style.display = 'block';
+      lbl.innerText = "Cerrar Formulario";
+    } else {
+      formBox.style.display = 'none';
+      lbl.innerText = "Crear Nuevo Producto";
+    }
+  };
+
+  window.toggleCajaPedidoManual = function() {
+    const box = document.getElementById('cajaPedidoManual');
+    box.style.display = (box.style.display === 'none') ? 'block' : 'none';
+  };
+
+  window.toggleFormEnvioPedido = function(tipo) {
+    document.getElementById('boxCamposEnvioAdmin').style.display = (tipo === 'digital') ? 'none' : 'block';
+  };
+
+  function sanitizar(str) {
     if (!str) return '';
     return String(str).replace(/[&<>"']/g, function(m) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
     });
   }
 
-  async function cargarDatosPagoNube() {
-    try {
-      const docSnap = await getDoc(doc(db, "configuracion", "datos_pago"));
-      if (docSnap.exists()) window.datosPagoGlobal = docSnap.data();
-      else window.datosPagoGlobal = { banco: "Venezuela (0102)", telefono: "0424-4970576", cedula: "V-24159896", binance: "n3lmary@gmail.com" };
-      renderizarDatosPago();
-    } catch(e) {
-      window.datosPagoGlobal = { banco: "Venezuela (0102)", telefono: "0424-4970576", cedula: "V-24159896", binance: "n3lmary@gmail.com" };
-      renderizarDatosPago();
-    }
+  function comprimirYConvertirAWebP(archivo, maxDim = 600, calidad = 0.72) {
+    return new Promise((resolve, reject) => {
+      const lector = new FileReader();
+      lector.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          let ancho = img.width;
+          let alto = img.height;
+
+          if (ancho > maxDim || alto > maxDim) {
+            if (ancho > alto) {
+              alto = Math.round((alto * maxDim) / ancho);
+              ancho = maxDim;
+            } else {
+              ancho = Math.round((ancho * maxDim) / alto);
+              alto = maxDim;
+            }
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = ancho;
+          canvas.height = alto;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, ancho, alto);
+
+          const dataUrl = canvas.toDataURL('image/webp', calidad);
+          resolve(dataUrl);
+        };
+        img.onerror = reject;
+        img.src = e.target.result;
+      };
+      lector.onerror = reject;
+      lector.readAsDataURL(archivo);
+    });
   }
 
-  function renderizarDatosPago() {
-    let caja = document.getElementById('cajaDatosPagoInfo');
-    if(!caja) return;
-    let dp = window.datosPagoGlobal;
-    caja.innerHTML = `
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;"><span>Banco: ${sanitizarHTML(dp.banco)}</span><button class="cart-item-del" onclick="copiarTexto('${sanitizarHTML(dp.banco)}')"><i class="fas fa-copy"></i></button></div>
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;"><span>Pago Móvil: ${sanitizarHTML(dp.telefono)}</span><button class="cart-item-del" onclick="copiarTexto('${sanitizarHTML(dp.telefono)}')"><i class="fas fa-copy"></i></button></div>
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;"><span>Cédula: ${sanitizarHTML(dp.cedula)}</span><button class="cart-item-del" onclick="copiarTexto('${sanitizarHTML(dp.cedula)}')"><i class="fas fa-copy"></i></button></div>
-      <div style="display:flex; justify-content:space-between; align-items:center;"><span>Binance: ${sanitizarHTML(dp.binance)}</span><button class="cart-item-del" onclick="copiarTexto('${sanitizarHTML(dp.binance)}')"><i class="fas fa-copy"></i></button></div>
-    `;
-  }
+  window.procesarArchivosGaleria = async function(e) {
+    const archivos = Array.from(e.target.files);
+    if (!archivos.length) return;
 
-  window.copiarTexto = function(texto) {
-    reproducirSonido();
-    navigator.clipboard.writeText(texto).then(() => alert("Copiado al portapapeles."));
-  };
-
-  async function cargarBannersDeNube() {
-    try {
-      const q = query(collection(db, "banners"), orderBy("timestamp", "desc"));
-      const querySnapshot = await getDocs(q);
-      const container = document.getElementById('bannerSliderContainer');
-      let bannersValidos = [];
-      querySnapshot.forEach((docSnap) => {
-        let b = docSnap.data();
-        if (b.imgUrl) bannersValidos.push(b.imgUrl);
-      });
-
-      if (bannersValidos.length === 0) { container.style.display = 'none'; return; }
-      
-      container.style.display = 'block';
-      let htmlImgs = ''; let htmlDots = '<div class="banner-dots">'; 
-      
-      bannersValidos.forEach((url, index) => {
-        htmlImgs += `<img src="${url}" class="banner-slide ${index === 0 ? 'active' : ''}" data-index="${index}" ${index === 0 ? 'loading="eager"' : 'loading="lazy"'} decoding="async">`;
-        htmlDots += `<div class="banner-dot ${index === 0 ? 'active' : ''}" onclick="cambiarBannerManual(${index})"></div>`;
-      });
-      htmlDots += '</div>';
-      let flechasHtml = bannersValidos.length > 1 ? `<div class="banner-control-btn banner-prev" onclick="rotarBanner(-1)"><i class="fas fa-chevron-left"></i></div><div class="banner-control-btn banner-next" onclick="rotarBanner(1)"><i class="fas fa-chevron-right"></i></div>` : '';
-      
-      container.innerHTML = htmlImgs + flechasHtml + htmlDots;
-      iniciarAutoSliderBanners(bannersValidos.length);
-    } catch (e) {}
-  }
-
-  let bannerInterval; let totalBanners = 0;
-  function iniciarAutoSliderBanners(total) {
-    totalBanners = total; 
-    if(total <= 1) return;
-    bannerInterval = setInterval(() => rotarBanner(1), 5000); 
-  }
-  window.rotarBanner = function(direccion) {
-    if(totalBanners <= 1) return;
-    let slides = document.querySelectorAll('.banner-slide'); 
-    let dots = document.querySelectorAll('.banner-dot');
-    let currentIdx = Array.from(slides).findIndex(s => s.classList.contains('active'));
-    slides[currentIdx].classList.remove('active'); dots[currentIdx].classList.remove('active');
-    let nextIdx = currentIdx + direccion;
-    if(nextIdx >= totalBanners) nextIdx = 0; 
-    if(nextIdx < 0) nextIdx = totalBanners - 1;
-    slides[nextIdx].classList.add('active'); dots[nextIdx].classList.add('active');
-  };
-  window.cambiarBannerManual = function(index) {
-    clearInterval(bannerInterval);
-    let slides = document.querySelectorAll('.banner-slide'); 
-    let dots = document.querySelectorAll('.banner-dot');
-    slides.forEach(s => s.classList.remove('active')); dots.forEach(d => d.classList.remove('active'));
-    slides[index].classList.add('active'); dots[index].classList.add('active');
-    bannerInterval = setInterval(() => rotarBanner(1), 5000);
-  };
-
-  async function cargarProductosDeNube() {
-    try {
-      const q = query(collection(db, "productos"), orderBy("timestamp", "desc"));
-      const querySnapshot = await getDocs(q);
-      productosNubeGlobal = [];
-      querySnapshot.forEach((docSnap) => { productosNubeGlobal.push({ id: docSnap.id, ...docSnap.data() }); });
-      renderizarProductosEnTienda(productosNubeGlobal);
-    } catch (error) {
-      document.getElementById('catalogoNube').innerHTML = "<p style='color: #ff3366; text-align: center; grid-column: 1/-1;'>No fue posible conectar con la base de datos.</p>";
-    }
-  }
-
-  window.renderizarProductosEnTienda = function(lista) {
-    let contenedor = document.getElementById('catalogoNube');
-    if (!contenedor) return;
-    contenedor.innerHTML = "";
-    
-    let conteo = { recargas: 0, mangas: 0, ropa: 0, mandos: 0, perifericos: 0, figuras: 0, peluches: 0, cartas: 0, katanas: 0, lamparas: 0, accesorios: 0 };
-    
-    let elTodos = document.getElementById('count-todos');
-    if(elTodos) elTodos.innerText = lista.length + " items";
-
-    if (lista.length === 0) {
-      contenedor.innerHTML = "<p style='color: var(--text-muted); text-align: center; grid-column: 1/-1;'>No se encontraron productos disponibles.</p>";
+    if (fotosBufferProducto.length + archivos.length > 5) {
+      alert("Puedes añadir un máximo de 5 fotos por producto.");
       return;
     }
 
-    lista.forEach((prod, indexProd) => {
-      let fotosArray = (prod.fotos && prod.fotos.length > 0) ? prod.fotos : ['logo.webp?v=2'];
-      let categoria = (prod.categoria || 'mangas').toLowerCase();
-      let coleccion = prod.coleccion || 'General';
-      let timestamp = prod.timestamp || 0;
-      
-      let badgeClase = 'badge-stock';
-      if(prod.estado && prod.estado.includes("Encargo")) badgeClase = 'badge-encargo';
-      if(categoria === 'recargas') badgeClase = 'badge-digital';
+    const txtEstado = document.getElementById('txtEstadoSubida');
+    txtEstado.style.display = 'block';
 
-      let esRecarga = categoria === 'recargas';
+    for (let archivo of archivos) {
+      try {
+        const webpDataUrl = await comprimirYConvertirAWebP(archivo, 600, 0.72);
+        fotosBufferProducto.push(webpDataUrl);
+      } catch (err) {
+        console.error("Error al procesar foto:", err);
+      }
+    }
 
-      if (categoria === 'teclados' || categoria === 'audifonos' || categoria === 'perifericos') { conteo.perifericos++; } 
-      else if (conteo[categoria] !== undefined) { conteo[categoria]++; }
+    txtEstado.style.display = 'none';
+    renderizarMiniaturasFotos();
+    e.target.value = "";
+  };
 
-      let imgsHtml = ''; let dotsHtml = '';
-      fotosArray.forEach((foto, fIdx) => {
-        imgsHtml += `<img src="${foto}" class="${fIdx === 0 ? 'activa' : ''}" data-index="${fIdx}" loading="lazy" decoding="async">`;
-        dotsHtml += `<div class="dot ${fIdx === 0 ? 'activo' : ''}" data-index="${fIdx}"></div>`;
-      });
-      let botonesCarrusel = fotosArray.length > 1 ? `<div class="carrusel-btn carrusel-prev" onclick="cambiarFotoTarjeta(event, ${indexProd}, -1)"><i class="fas fa-chevron-left"></i></div><div class="carrusel-btn carrusel-next" onclick="cambiarFotoTarjeta(event, ${indexProd}, 1)"><i class="fas fa-chevron-right"></i></div><div class="carrusel-dots">${dotsHtml}</div>` : '';
+  function renderizarMiniaturasFotos() {
+    const cont = document.getElementById('contenedorPreviewFotos');
+    cont.innerHTML = "";
 
-      contenedor.innerHTML += `
-        <div class="card item-producto" 
-             data-id="${prod.id}" 
-             data-nombre="${sanitizarHTML(prod.nombre).toLowerCase()}" 
-             data-categoria="${categoria}" 
-             data-coleccion="${sanitizarHTML(coleccion).toLowerCase()}" 
-             data-estado="${prod.estado || ''}" 
-             data-precio="${prod.precio}"
-             data-timestamp="${timestamp}"
-             onclick="abrirModalPorId('${prod.id}')">
-          <button class="btn-fav-card" onclick="toggleFavoritoPorId(event, '${prod.id}')"><i class="fas fa-heart"></i></button>
-          <div class="badge-estado ${badgeClase}">${prod.estado || (esRecarga ? 'Recarga Directa' : 'Stock')}</div>
-          <div class="card-img-container" id="carrusel-card-${indexProd}">${imgsHtml}${botonesCarrusel}</div>
-          <div class="card-title">${sanitizarHTML(prod.nombre)}</div>
-          <div class="precio-container"><span class="card-price">$${Number(prod.precio).toFixed(2)}</span></div>
+    fotosBufferProducto.forEach((url, index) => {
+      cont.innerHTML += `
+        <div class="preview-foto-item">
+          <img src="${url}">
+          <button type="button" class="btn-del-foto-preview" onclick="removerFotoBuffer(${index})">✕</button>
         </div>
       `;
     });
-
-    for(let cat in conteo) {
-      let elem = document.getElementById('count-' + cat);
-      if(elem) elem.innerText = conteo[cat] + " items";
-    }
-
-    renderizarSelectColecciones(lista);
-    aplicarFiltrosGlobales();
-  };
-
-  let filtroGlobal = { categoria: 'todos', coleccion: 'todos', estado: 'todos', busqueda: '' };
-
-  function renderizarSelectColecciones(productos) {
-    const select = document.getElementById('selectColeccion');
-    if (!select) return;
-    const coleccionesUnicas = new Set();
-    productos.forEach(p => { if (p.coleccion && p.coleccion.trim() !== '' && p.coleccion.toLowerCase() !== 'general') coleccionesUnicas.add(p.coleccion.trim()); });
-
-    let valorSeleccionado = filtroGlobal.coleccion;
-    let html = `<option value="todos">Colección: Todas las Franquicias</option>`;
-    coleccionesUnicas.forEach(col => { html += `<option value="${sanitizarHTML(col)}">${sanitizarHTML(col)}</option>`; });
-    select.innerHTML = html; select.value = valorSeleccionado;
   }
 
-  window.cambiarColeccionDropdown = function(col) { reproducirSonido(); filtroGlobal.coleccion = col; aplicarFiltrosGlobales(); };
-  window.filtrarCategoria = function(cat) {
-    reproducirSonido();
-    document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('activa'));
-    let cardVisual = document.querySelector(`.cat-card[onclick*="'${cat}'"]`);
-    if(cardVisual) cardVisual.classList.add('activa');
-    filtroGlobal.categoria = cat; aplicarFiltrosGlobales();
-  };
-  window.filtrarEstadoDropdown = function(est) { reproducirSonido(); filtroGlobal.estado = est; aplicarFiltrosGlobales(); };
-  window.buscarProductos = function() { filtroGlobal.busqueda = document.getElementById('buscador').value.trim().toLowerCase(); aplicarFiltrosGlobales(); };
-
-  function aplicarFiltrosGlobales() {
-    let productos = document.querySelectorAll('#catalogoNube .item-producto');
-    productos.forEach(card => {
-      let cat = (card.getAttribute('data-categoria') || '').toLowerCase();
-      let est = card.getAttribute('data-estado') || '';
-      let col = card.getAttribute('data-coleccion') || '';
-      let nom = card.getAttribute('data-nombre') || '';
-
-      let cumpleCat = (filtroGlobal.categoria === 'todos') ? true : (filtroGlobal.categoria === 'perifericos' ? (cat === 'perifericos' || cat === 'teclados' || cat === 'audifonos') : cat === filtroGlobal.categoria);
-      let cumpleCol = (filtroGlobal.coleccion === 'todos' || col === filtroGlobal.coleccion.toLowerCase());
-      let cumpleEst = (filtroGlobal.estado === 'todos' || est.includes(filtroGlobal.estado));
-      let cumpleBusqueda = (!filtroGlobal.busqueda || nom.includes(filtroGlobal.busqueda) || col.includes(filtroGlobal.busqueda));
-
-      card.style.display = (cumpleCat && cumpleCol && cumpleEst && cumpleBusqueda) ? 'block' : 'none';
-    });
-  }
-
-  window.abrirModalPorId = function(prodId) {
-    reproducirSonido();
-    const prod = productosNubeGlobal.find(p => p.id === prodId);
-    if (!prod) return;
-
-    const fotosArray = (prod.fotos && prod.fotos.length > 0) ? prod.fotos : ['logo.webp?v=2'];
-    const categoria = (prod.categoria || 'mangas').toLowerCase();
-    const esRopa = categoria.includes('ropa') || categoria.includes('hoodie');
-    const esRecarga = categoria === 'recargas';
-
-    window.productoActual = { id: prod.id, img: fotosArray[0], titulo: prod.nombre, precio: prod.precio, esRopa, esRecarga };
-
-    let catBonita = categoria.charAt(0).toUpperCase() + categoria.slice(1);
-    if (categoria === 'teclados' || categoria === 'audifonos' || categoria === 'perifericos') catBonita = "Periféricos";
-
-    document.getElementById('modalBreadcrumbs').innerHTML = `Inicio / <span>${sanitizarHTML(catBonita)}</span>`;
-    document.getElementById('modalImg').src = fotosArray[0];
-    document.getElementById('modalTitulo').innerText = prod.nombre;
-    document.getElementById('modalPrecio').innerText = "$" + Number(prod.precio).toFixed(2);
-    document.getElementById('modalDesc').innerText = prod.descripcion || 'Producto oficial Sakura Gameverse.';
-    document.getElementById('modalTag').innerText = prod.estado || (esRecarga ? 'Recarga Directa' : 'Stock');
-    
-    document.getElementById('tallasContainer').style.display = esRopa ? 'block' : 'none';
-    document.getElementById('recargaContainer').style.display = esRecarga ? 'block' : 'none';
-
-    let contenedorMinis = document.getElementById('modalContainerMinis');
-    contenedorMinis.innerHTML = "";
-    if (fotosArray.length > 1) {
-      fotosArray.forEach((fotoUrl, idx) => {
-        contenedorMinis.innerHTML += `<img src="${fotoUrl}" class="modal-mini-img ${idx === 0 ? 'activo' : ''}" onclick="cambiarFotoModal('${fotoUrl}', this)" loading="lazy" decoding="async">`;
-      });
-    }
-
-    // --- CARGAR PRODUCTOS RELACIONADOS ---
-    let relacionados = productosNubeGlobal.filter(p => (p.coleccion === prod.coleccion || p.categoria === prod.categoria) && p.id !== prod.id).slice(0, 5);
-    let contRel = document.getElementById('contenedorRelacionados');
-    let listaRel = document.getElementById('listaRelacionados');
-    
-    if(relacionados.length > 0 && prod.coleccion !== 'General') {
-        contRel.style.display = 'block';
-        listaRel.innerHTML = relacionados.map(r => `
-           <div style="min-width: 90px; cursor: pointer; text-align: center; background: #000; padding: 6px; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.05);" onclick="abrirModalPorId('${r.id}')">
-             <img src="${r.fotos && r.fotos.length > 0 ? r.fotos[0] : 'logo.webp?v=2'}" style="width: 100%; height: 75px; object-fit: contain; margin-bottom: 4px;">
-             <div style="font-size: 0.7em; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: 'Chakra Petch', sans-serif;">${sanitizarHTML(r.nombre)}</div>
-             <div style="font-size: 0.8em; color: var(--secondary-color); font-weight: bold;">$${r.precio}</div>
-           </div>
-        `).join('');
-    } else {
-        contRel.style.display = 'none';
-    }
-
-    document.getElementById('miModal').style.display = 'flex';
+  window.removerFotoBuffer = function(index) {
+    fotosBufferProducto.splice(index, 1);
+    renderizarMiniaturasFotos();
   };
 
-  async function cargarConfigCategoriasPublico() {
+  // --- 1. INVENTARIO CON BOTÓN PAUSAR (OCULTO) ---
+  async function cargarProductosAdmin() {
     try {
-      const q = query(collection(db, "configuracion"), orderBy("timestamp", "desc"));
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((docSnap) => {
-        let conf = docSnap.data();
-        if(conf.tipo === 'categoria_foto') {
-          let catImgEl = document.getElementById(`img-cat-${conf.categoriaId}`);
-          if(catImgEl && conf.imgUrl) catImgEl.src = conf.imgUrl;
-          let catTitleEl = document.getElementById(`title-cat-${conf.categoriaId}`);
-          if(catTitleEl && conf.nombrePersonalizado) catTitleEl.innerText = conf.nombrePersonalizado;
-        }
-      });
-    } catch (e) {}
-  }
-
-  window.aplicarCupon = async function() {
-    reproducirSonido(); 
-    let c = document.getElementById('inputCupon').value.trim().toUpperCase(); 
-    let msg = document.getElementById('mensajeCupon');
-    if(!c) return;
-    try {
-      const q = query(collection(db, "cupones"), where("codigo", "==", c));
-      const querySnapshot = await getDocs(q);
-      if(!querySnapshot.empty) {
-        let cuponData = querySnapshot.docs[0].data();
-        descuentoAplicado = (cuponData.porcentaje || 0) / 100;
-        msg.style.color = "#25D366"; msg.innerText = `Cupón aplicado (-${cuponData.porcentaje}%)`;
-      } else {
-        descuentoAplicado = 0; msg.style.color = "#ff3366"; msg.innerText = "Cupón inválido o caducado.";
-      }
-      abrirCarritoModal();
-    } catch(e) { msg.style.color = "#ff3366"; msg.innerText = "Error al validar cupón."; }
-  };
-
-  let umbralesRangosNube = { genin: 0, chunin: 300, jonin: 600, hokage: 1000 };
-
-  async function cargarUmbralesRangosNube() {
-    try {
-      const docRef = doc(db, "configuracion", "rangos_ninja");
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) umbralesRangosNube = docSnap.data();
-    } catch(e) {}
-  }
-
-  window.guardarJugadorEnNube = async function() {
-    try {
-      let idUnico = gamerProfile.tag.replace(/\s+/g, '_').toLowerCase();
-      await setDoc(doc(db, "jugadores", idUnico), { tag: gamerProfile.tag, xp: gamerProfile.xp, rango: gamerProfile.rango, timestamp: Date.now() });
-    } catch(e) {}
-  };
-
-  window.addEventListener('DOMContentLoaded', () => { 
-    cargarBannersDeNube(); 
-    cargarProductosDeNube(); 
-    cargarConfigCategoriasPublico(); 
-    cargarDatosPagoNube();
-    cargarReviewsNube();
-    cargarUmbralesRangosNube().then(() => { actualizarRangoSegunXP(); });
-  });
-
-  window.scrollCategoriasVisuales = function(direccion) {
-    reproducirSonido();
-    document.getElementById('categoriasTrack').scrollBy({ left: direccion * 140, behavior: 'smooth' });
-  };
-
-  window.cambiarFotoTarjeta = function(event, cardIndex, direccion) {
-    event.stopPropagation(); reproducirSonido();
-    let contenedor = document.getElementById(`carrusel-card-${cardIndex}`);
-    if (!contenedor) return;
-    let imgs = contenedor.querySelectorAll('img'); let dots = contenedor.querySelectorAll('.dot');
-    if (imgs.length <= 1) return;
-    let currentIndex = Array.from(imgs).findIndex(img => img.classList.contains('activa'));
-    let newIndex = currentIndex + direccion;
-    if (newIndex >= imgs.length) newIndex = 0; if (newIndex < 0) newIndex = imgs.length - 1;
-    imgs.forEach(img => img.classList.remove('activa')); dots.forEach(d => d.classList.remove('activa'));
-    imgs[newIndex].classList.add('activa'); dots[newIndex].classList.add('activa');
-  };
-
-  window.cambiarFotoModal = function(urlFoto, elementoMini) {
-    reproducirSonido(); 
-    document.getElementById('modalImg').src = urlFoto; 
-    window.productoActual.img = urlFoto;
-    document.querySelectorAll('.modal-mini-img').forEach(m => m.classList.remove('activo'));
-    elementoMini.classList.add('activo');
-  };
-
-  let temaActual = localStorage.getItem('sakura_tema') || 'theme-rosa';
-  document.body.className = temaActual;
-  window.abrirTemasModal = function() { reproducirSonido(); document.getElementById('modalTemas').style.display = 'flex'; };
-  window.cerrarTemasModal = function() { document.getElementById('modalTemas').style.display = 'none'; };
-  window.cambiarTema = function(t) { reproducirSonido(); document.body.className = t; localStorage.setItem('sakura_tema', t); cerrarTemasModal(); };
-
-  window.activarEasterEggLogo = function() { reproducirSonido(); document.body.classList.toggle('theme-overdrive'); };
-
-  let reproduciendoMusica = false;
-  window.toggleMusicaLoFi = function() {
-    reproducirSonido(); 
-    let audio = document.getElementById('audioLoFi'); 
-    let icono = document.getElementById('iconoMusica');
-    if (!reproduciendoMusica) { 
-      audio.play().then(() => { reproduciendoMusica = true; icono.className = "fas fa-pause"; }).catch(e => alert("Interactúa con la pantalla primero."));
-    } else { 
-      audio.pause(); reproduciendoMusica = false; icono.className = "fas fa-music"; 
-    }
-  };
-
-  window.abrirMenuOpciones = function() { reproducirSonido(); document.getElementById('modalOpcionesMenu').style.display = 'flex'; };
-  window.cerrarMenuOpciones = function() { document.getElementById('modalOpcionesMenu').style.display = 'none'; };
-
-  let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, rango: "Genin" };
-  document.getElementById('inputGamerTag').value = gamerProfile.tag; 
-
-  // --- LÓGICA DE BARRA DE XP ---
-  function actualizarRangoSegunXP() {
-    let xp = gamerProfile.xp;
-    let u = umbralesRangosNube;
-    let max = 0; let min = 0; let nextRango = "";
-
-    if (xp >= (u.hokage ?? 1000)) { gamerProfile.rango = "Hokage"; max = xp; min = u.hokage ?? 1000; nextRango = "MAX"; }
-    else if (xp >= (u.jonin ?? 600)) { gamerProfile.rango = "Jōnin"; max = u.hokage ?? 1000; min = u.jonin ?? 600; nextRango = "Hokage"; }
-    else if (xp >= (u.chunin ?? 300)) { gamerProfile.rango = "Chūnin"; max = u.jonin ?? 600; min = u.chunin ?? 300; nextRango = "Jōnin"; }
-    else { gamerProfile.rango = "Genin"; max = u.chunin ?? 300; min = 0; nextRango = "Chūnin"; }
-
-    let pct = 100;
-    if(nextRango !== "MAX") {
-        pct = ((xp - min) / (max - min)) * 100;
-        document.getElementById('lblXpNext').innerHTML = `Faltan <strong style="color:var(--secondary-color);">${max - xp} XP</strong> para ${nextRango}`;
-    } else {
-        document.getElementById('lblXpNext').innerText = `¡Rango Máximo Alcanzado!`;
-    }
-    
-    // Animación fluida de la barra
-    setTimeout(() => { document.getElementById('barXp').style.width = pct + "%"; }, 200);
-
-    localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
-    document.getElementById('lblXp').innerText = gamerProfile.xp; 
-    document.getElementById('lblRango').innerText = gamerProfile.rango;
-    window.guardarJugadorEnNube();
-  }
-
-  function ganarXP(cantidad) {
-    gamerProfile.xp += cantidad;
-    actualizarRangoSegunXP();
-  }
-
-  window.abrirGamerProfileModal = function() { reproducirSonido(); document.getElementById('modalGamerProfile').style.display = 'flex'; };
-  window.cerrarGamerProfileModal = function() { document.getElementById('modalGamerProfile').style.display = 'none'; };
-  window.guardarGamerTag = function() { 
-    reproducirSonido(); 
-    let t = document.getElementById('inputGamerTag').value.trim(); 
-    if(t) { gamerProfile.tag = t; localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile)); window.guardarJugadorEnNube(); cerrarGamerProfileModal(); } 
-  };
-
-  let favoritos = JSON.parse(localStorage.getItem('sakura_favoritos')) || [];
-  window.toggleFavoritoPorId = function(event, prodId) {
-    event.stopPropagation(); reproducirSonido();
-    const prod = productosNubeGlobal.find(p => p.id === prodId);
-    if (!prod) return;
-
-    let idx = favoritos.findIndex(i => i.id === prodId || i.titulo === prod.nombre);
-    if(idx === -1) { 
-      favoritos.push({ id: prod.id, titulo: prod.nombre, precio: prod.precio, img: (prod.fotos && prod.fotos[0]) ? prod.fotos[0] : 'logo.webp?v=2' }); 
-    } else { favoritos.splice(idx, 1); }
-    localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos)); actualizarBadges();
-  };
-  
-  window.abrirFavoritosModal = function() {
-    reproducirSonido(); 
-    let cont = document.getElementById('listaFavoritosDetalle');
-    cont.innerHTML = favoritos.length === 0 ? "<p style='color:var(--text-muted);'>No tienes productos guardados.</p>" : "";
-    favoritos.forEach((item, i) => { 
-      cont.innerHTML += `<div class="cart-item-row"><img src="${item.img}" class="cart-item-img" loading="lazy" decoding="async"><div class="cart-item-info"><strong>${sanitizarHTML(item.titulo)}</strong><br><span style="color:var(--secondary-color);">$${Number(item.precio).toFixed(2)}</span></div><button class="cart-item-del" onclick="favoritos.splice(${i},1);localStorage.setItem('sakura_favoritos',JSON.stringify(favoritos));actualizarBadges();abrirFavoritosModal();"><i class="fas fa-trash"></i></button></div>`; 
-    });
-    document.getElementById('modalFavoritos').style.display = 'flex';
-  };
-  window.cerrarFavoritosModal = function() { document.getElementById('modalFavoritos').style.display = 'none'; };
-
-  window.abrirCofreModal = function() { reproducirSonido(); document.getElementById('modalCofreDiario').style.display = 'flex'; };
-  window.cerrarCofreModal = function() { document.getElementById('modalCofreDiario').style.display = 'none'; };
-  
-  window.abrirCofreDiario = function() {
-    reproducirSonido(); 
-    let hoy = new Date().toDateString(); 
-    let ultimoCofre = localStorage.getItem('sakura_ultimo_cofre');
-    if (ultimoCofre === hoy) { document.getElementById('cofreResultado').innerHTML = "Cofre reclamado por hoy. Regresa mañana."; return; }
-    localStorage.setItem('sakura_ultimo_cofre', hoy); 
-    ganarXP(50); 
-    confetti({ particleCount: 80, spread: 60, origin: { y: 0.5 } });
-    document.getElementById('cofreResultado').innerHTML = "¡Reclamaste +50 XP diarios!";
-  };
-
-  window.abrirGachaModal = function() { reproducirSonido(); document.getElementById('modalGacha').style.display = 'flex'; };
-  window.cerrarGachaModal = function() { document.getElementById('modalGacha').style.display = 'none'; };
-  
-  window.girarRuletaGacha = function() { 
-    reproducirSonido(); 
-    let hoy = new Date().toDateString(); 
-    let ultimaGacha = localStorage.getItem('sakura_ultima_gacha');
-    if (ultimaGacha === hoy) { document.getElementById('gachaResultado').innerHTML = "Tirada utilizada hoy. Regresa mañana."; return; }
-    localStorage.setItem('sakura_ultima_gacha', hoy);
-    document.getElementById('gachaResultado').innerHTML = "Beneficio obtenido: 10% OFF con código <strong>OTAKU10</strong>"; 
-    confetti({ particleCount: 70, spread: 50, origin: { y: 0.5 } }); 
-  };
-
-  window.abrirGuiaTallasModal = function() { reproducirSonido(); document.getElementById('modalGuiaTallas').style.display = 'flex'; };
-  window.cerrarGuiaTallasModal = function() { document.getElementById('modalGuiaTallas').style.display = 'none'; };
-  window.cerrarPromoFlash = function() { document.getElementById('modalPromoFlash').style.display = 'none'; };
-
-  let carrito = JSON.parse(localStorage.getItem('sakura_carrito')) || [];
-  window.productoActual = null; let descuentoAplicado = 0; let pestanaCarritoActual = 'fisico';
-
-  window.cambiarPestanaCarrito = function(tipo) {
-    reproducirSonido(); pestanaCarritoActual = tipo;
-    document.getElementById('tabBtnFisico').classList.toggle('activo', tipo === 'fisico');
-    document.getElementById('tabBtnDigital').classList.toggle('activo', tipo === 'digital');
-    document.getElementById('apartadoEnvioFisico').style.display = (tipo === 'fisico') ? 'block' : 'none';
-    document.getElementById('apartadoRecargasDigitales').style.display = (tipo === 'digital') ? 'block' : 'none';
-    renderizarListaCarrito();
-  };
-
-  function renderizarListaCarrito() {
-    let cont = document.getElementById('listaCarritoDetalle');
-    let reciboBox = document.getElementById('reciboDigital');
-    let reciboContenido = document.getElementById('reciboContenido');
-    let paymentBox = document.getElementById('paymentMethodsCart');
-    
-    cont.innerHTML = ""; reciboContenido.innerHTML = "";
-    let itemsFisicos = carrito.filter(i => !i.esRecarga); let itemsDigitales = carrito.filter(i => i.esRecarga);
-    document.getElementById('countCartFisico').innerText = itemsFisicos.length; document.getElementById('countCartDigital').innerText = itemsDigitales.length;
-    let itemsMostrados = (pestanaCarritoActual === 'fisico') ? itemsFisicos : itemsDigitales;
-
-    if (itemsMostrados.length === 0) {
-      cont.innerHTML = `<p style='color:var(--text-muted); text-align:center;'>Sin ${pestanaCarritoActual === 'fisico' ? 'artículos físicos' : 'recargas'} agregados.</p>`;
-    } else {
-      itemsMostrados.forEach((item) => {
-        let idxOriginal = carrito.indexOf(item);
-        cont.innerHTML += `
-          <div class="cart-item-row">
-            <img src="${item.img}" class="cart-item-img" loading="lazy">
-            <div class="cart-item-info"><strong>${sanitizarHTML(item.titulo)}</strong><br><span style="color:var(--secondary-color);">$${Number(item.precio).toFixed(2)}</span></div>
-            <button class="cart-item-del" onclick="removerDelCarrito(${idxOriginal})"><i class="fas fa-times"></i></button>
-          </div>`;
-      });
-    }
-
-    if (carrito.length === 0) {
-      reciboBox.style.display = 'none'; paymentBox.style.display = 'none'; document.getElementById('modalCarritoTotal').innerText = "Total: $0.00";
-    } else {
-      reciboBox.style.display = 'block'; paymentBox.style.display = 'block';
-      let html = "";
-      carrito.forEach(item => { html += `<div class="recibo-line"><span>${sanitizarHTML(item.titulo)}</span><span>$${Number(item.precio).toFixed(2)}</span></div>`; });
-      let sub = carrito.reduce((s, i) => s + Number(i.precio), 0); let tot = sub * (1 - descuentoAplicado);
-      html += `<div style="border-top:1px dashed var(--border-color); margin-top:6px; padding-top:6px;" class="recibo-line"><strong>TOTAL USD:</strong> <strong>$${tot.toFixed(2)}</strong></div>`;
-      reciboContenido.innerHTML = html; document.getElementById('modalCarritoTotal').innerText = `Total: $${tot.toFixed(2)}`;
-    }
-  }
-
-  window.ordenarProductos = function() {
-    reproducirSonido(); 
-    let modo = document.getElementById('selectOrden').value; 
-    let contenedor = document.getElementById('catalogoNube');
-    let cards = Array.from(contenedor.querySelectorAll('.item-producto'));
-    
-    if (modo === 'menor') { cards.sort((a, b) => parseFloat(a.getAttribute('data-precio') || 0) - parseFloat(b.getAttribute('data-precio') || 0)); } 
-    else if (modo === 'mayor') { cards.sort((a, b) => parseFloat(b.getAttribute('data-precio') || 0) - parseFloat(a.getAttribute('data-precio') || 0)); } 
-    else if (modo === 'reciente') { cards.sort((a, b) => parseFloat(b.getAttribute('data-timestamp') || 0) - parseFloat(a.getAttribute('data-timestamp') || 0)); } 
-    else if (modo === 'antiguo') { cards.sort((a, b) => parseFloat(a.getAttribute('data-timestamp') || 0) - parseFloat(b.getAttribute('data-timestamp') || 0)); } 
-    else { cards.sort((a, b) => parseFloat(b.getAttribute('data-timestamp') || 0) - parseFloat(a.getAttribute('data-timestamp') || 0)); }
-    cards.forEach(card => contenedor.appendChild(card));
-  };
-
-  window.cerrarModal = function() { document.getElementById('miModal').style.display = 'none'; };
-
-  window.agregarAlCarrito = function() {
-    reproducirSonido(); 
-    let item = { ...window.productoActual };
-    if(item.esRopa) { item.titulo += ` (Talla: ${document.getElementById('selectTalla').value})`; }
-    if(item.esRecarga) {
-      let playerId = document.getElementById('inputPlayerId').value.trim();
-      let playerServer = document.getElementById('inputPlayerServer').value.trim();
-      if(!playerId) return alert("Indica el ID de jugador para procesar la recarga.");
-      item.titulo += ` [ID: ${playerId}${playerServer ? ' / Servidor: ' + playerServer : ''}]`;
-    }
-    carrito.push(item); actualizarCarritoUI(); cerrarModal(); 
-  };
-
-  function actualizarCarritoUI() { localStorage.setItem('sakura_carrito', JSON.stringify(carrito)); actualizarBadges(); }
-  function actualizarBadges() { document.getElementById('cartBadge').innerText = carrito.length; document.getElementById('favBadge').innerText = favoritos.length; }
-
-  window.abrirCarritoModal = function() {
-    reproducirSonido();
-    let tieneFisicos = carrito.some(i => !i.esRecarga); let tieneDigitales = carrito.some(i => i.esRecarga);
-    pestanaCarritoActual = (tieneDigitales && !tieneFisicos) ? 'digital' : 'fisico';
-    document.getElementById('tabBtnFisico').classList.toggle('activo', pestanaCarritoActual === 'fisico');
-    document.getElementById('tabBtnDigital').classList.toggle('activo', pestanaCarritoActual === 'digital');
-    document.getElementById('apartadoEnvioFisico').style.display = (pestanaCarritoActual === 'fisico') ? 'block' : 'none';
-    document.getElementById('apartadoRecargasDigitales').style.display = (pestanaCarritoActual === 'digital') ? 'block' : 'none';
-    renderizarListaCarrito(); document.getElementById('modalCarrito').style.display = 'flex';
-  };
-
-  window.removerDelCarrito = function(index) { reproducirSonido(); carrito.splice(index, 1); actualizarCarritoUI(); renderizarListaCarrito(); };
-  window.cerrarCarritoModal = function() { document.getElementById('modalCarrito').style.display = 'none'; };
-  window.vaciarCarrito = function() { reproducirSonido(); carrito = []; descuentoAplicado = 0; actualizarCarritoUI(); renderizarListaCarrito(); };
-
-  window.enviarPedidoWhatsApp = function() {
-    reproducirSonido(); 
-    if(carrito.length === 0) return alert("El carrito está vacío.");
-    
-    let tieneFisicos = carrito.some(i => !i.esRecarga); let tieneDigitales = carrito.some(i => i.esRecarga);
-    let metodoEnvio = document.getElementById('selectMetodoEnvio') ? document.getElementById('selectMetodoEnvio').value : "No especificado";
-    let direccionEnvio = document.getElementById('inputDireccionEnvio') ? document.getElementById('inputDireccionEnvio').value.trim() : "";
-
-    if (tieneFisicos && !direccionEnvio) { cambiarPestanaCarrito('fisico'); return alert("Por favor indica la dirección o agencia de destino."); }
-
-    let sub = carrito.reduce((s, i) => s + Number(i.precio), 0); let tot = sub * (1 - descuentoAplicado); 
-    let msg = `Hola Sakura Gameverse, deseo procesar el siguiente pedido:\n\n`;
-    
-    if (tieneFisicos) {
-      msg += `📦 ARTÍCULOS FÍSICOS:\n`;
-      carrito.filter(i => !i.esRecarga).forEach((i, idx) => { msg += `  ${idx+1}. ${i.titulo} - $${Number(i.precio).toFixed(2)}\n`; });
-      msg += `Logística: ${metodoEnvio}\nDestino: ${direccionEnvio}\n\n`;
-    }
-
-    if (tieneDigitales) {
-      msg += `⚡ RECARGAS DIGITALES:\n`;
-      carrito.filter(i => i.esRecarga).forEach((i, idx) => { msg += `  ${idx+1}. ${i.titulo} - $${Number(i.precio).toFixed(2)}\n`; });
-      msg += `Modalidad: Acreditación Directa\n\n`;
-    }
-
-    msg += `Total a Cancelar: $${tot.toFixed(2)}\nQuedo a la espera de confirmación y datos de pago.`;
-    window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msg), '_blank'); cerrarCarritoModal();
-  };
-
-  window.compartirProductoWhatsApp = function() {
-    reproducirSonido(); 
-    let msg = `Hola Sakura Gameverse, deseo consultar disponibilidad de:\n\n*${window.productoActual.titulo}*\nPrecio: $${Number(window.productoActual.precio).toFixed(2)}`; 
-    window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msg), '_blank');
-  };
-
-  window.abrirFaqModal = function() { reproducirSonido(); document.getElementById('modalFaq').style.display = 'flex'; };
-  window.cerrarFaqModal = function() { document.getElementById('modalFaq').style.display = 'none'; };
-  window.abrirSugerenciaModal = function() { reproducirSonido(); document.getElementById('modalSugerencias').style.display = 'flex'; };
-  window.cerrarSugerenciaModal = function() { document.getElementById('modalSugerencias').style.display = 'none'; };
-
-  window.enviarSugerenciaWhatsApp = function() {
-    reproducirSonido(); 
-    let n = document.getElementById('sugNombre').value.trim(); let d = document.getElementById('sugDeseo').value.trim();
-    if(!n || !d) return alert("Por favor completa los campos.");
-    window.open("https://wa.me/584244970576?text=" + encodeURIComponent(`Consulta de Encargo:\nNombre: ${n}\nArtículo requerido: ${d}`), '_blank'); cerrarSugerenciaModal();
-  };
-
-  async function cargarReviewsNube() {
-    try {
-      const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"));
-      const querySnapshot = await getDocs(q);
-      let c = document.getElementById('contenedorReviews'); 
-      if(!c) return;
+      const q = query(collection(db, "productos"), orderBy("timestamp", "desc"));
+      const snapshot = await getDocs(q);
+      productosAdminGlobal = [];
+      const cont = document.getElementById('listaProductosMobile');
       
-      c.innerHTML = "";
-      if (querySnapshot.empty) { c.innerHTML = "<p style='color:var(--text-muted);'>Aún no hay reseñas registradas.</p>"; return; }
-      querySnapshot.forEach((docSnap) => {
-        let r = docSnap.data();
-        c.innerHTML += `<div class="review-card"><div style="font-weight:700; color:#fff; margin-bottom:2px;">${sanitizarHTML(r.nombre)}</div><div style="color:#ffcc00; font-size:0.85em; margin-bottom:4px;">${sanitizarHTML(r.estrellas)}</div><div style="color:var(--text-muted); font-size:0.9em;">${sanitizarHTML(r.texto)}</div></div>`;
+      document.getElementById('totalProdsLbl').innerText = snapshot.size;
+      document.getElementById('dashProds').innerText = snapshot.size; // Actualiza Dashboard
+
+      if (snapshot.empty) {
+        cont.innerHTML = `<p style="text-align: center; color: var(--text-muted); padding: 15px;">No hay productos registrados.</p>`;
+        return;
+      }
+
+      let htmlBloque = ""; 
+
+      snapshot.forEach(docSnap => {
+        const p = { id: docSnap.id, ...docSnap.data() };
+        productosAdminGlobal.push(p);
+
+        const foto = (p.fotos && p.fotos.length > 0) ? p.fotos[0] : 'logo.webp?v=2';
+        let badgeClase = 'tag-stock';
+        if (p.estado && p.estado.includes("Encargo")) badgeClase = 'tag-encargo';
+        if (p.categoria === 'recargas') badgeClase = 'tag-digital';
+
+        let nombreCat = p.categoria || 'Sin categoría';
+        if (nombreCat === 'perifericos') nombreCat = 'Periféricos';
+
+        // Lógica de "Oculto"
+        let isOculto = p.oculto === true;
+        let cardClass = isOculto ? "item-card-row card-item-filtro is-paused" : "item-card-row card-item-filtro";
+        let iconOculto = isOculto ? 'fa-eye-slash' : 'fa-eye';
+        let colorOculto = isOculto ? '#ffaa00' : 'var(--secondary-color)';
+        let titleSuffix = isOculto ? ' <span style="color:#ffaa00; font-size:0.8em;">(Pausado)</span>' : '';
+
+        htmlBloque += `
+          <div class="${cardClass}" data-nombre="${sanitizar(p.nombre).toLowerCase()}">
+            <img src="${foto}" class="item-card-thumb" loading="lazy">
+            <div class="item-card-info">
+              <div class="item-card-title">${sanitizar(p.nombre)}${titleSuffix}</div>
+              <div class="item-card-meta">
+                <span>${sanitizar(nombreCat)}</span>
+                <span>•</span>
+                <span class="tag-badge ${badgeClase}">${p.estado || 'Stock'}</span>
+              </div>
+              <div class="item-card-price">$${Number(p.precio).toFixed(2)}</div>
+            </div>
+            <div class="item-card-actions">
+              <button class="btn-action-touch" style="color: ${colorOculto}; background: rgba(0,0,0,0.3); border: 1px solid ${colorOculto}40;" onclick="toggleOcultarProducto('${p.id}', ${isOculto})"><i class="fas ${iconOculto}"></i></button>
+              <button class="btn-action-touch btn-edit" onclick="prepararEdicion('${p.id}')"><i class="fas fa-pen"></i></button>
+              <button class="btn-action-touch btn-del" onclick="eliminarProducto('${p.id}')"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
+        `;
       });
-    } catch (e) {}
+
+      cont.innerHTML = htmlBloque; 
+    } catch(e) {
+      console.error(e);
+    }
   }
 
-  window.agregarReview = async function() {
-    reproducirSonido(); 
-    let n = document.getElementById('revNombre').value.trim(); let e = document.getElementById('revEstrellas').value; let t = document.getElementById('revTexto').value.trim();
-    if(!n || !t) return alert("Por favor completa tu nombre y comentario.");
+  // --- NUEVA FUNCIÓN PARA PAUSAR PRODUCTOS ---
+  window.toggleOcultarProducto = async function(id, estadoActualOculto) {
     try {
-      await addDoc(collection(db, "reviews"), { nombre: n, estrellas: e, texto: t, timestamp: Date.now() });
-      document.getElementById('revNombre').value = ""; document.getElementById('revTexto').value = ""; 
-      await cargarReviewsNube(); alert("Opinión registrada correctamente.");
-    } catch(err) { alert("Error al guardar la reseña."); }
+      await updateDoc(doc(db, "productos", id), { oculto: !estadoActualOculto });
+      cargarProductosAdmin(); // Refrescar la lista automáticamente
+    } catch(e) {
+      alert("Error al pausar producto.");
+    }
   };
 
-  actualizarBadges();
-</script>
+  window.guardarProducto = async function(e) {
+    e.preventDefault();
+    const id = document.getElementById('prodEditId').value;
+    const nombre = document.getElementById('prodNombre').value.trim();
+    const precio = parseFloat(document.getElementById('prodPrecio').value);
+    const categoria = document.getElementById('prodCategoria').value;
+    const coleccion = document.getElementById('prodColeccion').value.trim() || 'General';
+    const estado = document.getElementById('prodEstado').value;
+    const desc = document.getElementById('prodDesc').value.trim();
 
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js')
-      .then(reg => console.log('Service Worker activo', reg))
-      .catch(err => console.log('Error SW:', err));
+    if (fotosBufferProducto.length === 0) {
+      return alert("Por favor selecciona al menos una foto para el producto.");
+    }
+
+    const btn = document.getElementById('btnGuardarProd');
+    btn.disabled = true;
+    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Guardando...`;
+
+    try {
+      const data = {
+        nombre, precio, categoria, coleccion, estado, descripcion: desc,
+        fotos: fotosBufferProducto, timestamp: Date.now()
+      };
+
+      if (id) {
+        await updateDoc(doc(db, "productos", id), data);
+        alert("¡Producto actualizado exitosamente!");
+      } else {
+        data.oculto = false; // Por defecto activos al crearlos
+        await addDoc(collection(db, "productos"), data);
+        alert("¡Producto guardado exitosamente en WebP!");
+      }
+
+      resetFormularioProducto();
+      cargarProductosAdmin();
+    } catch(err) {
+      alert("Error al guardar: " + err.message);
+    } finally {
+      btn.disabled = false;
+      btn.innerText = "Guardar Producto";
+    }
+  };
+
+  window.prepararEdicion = function(id) {
+    const p = productosAdminGlobal.find(item => item.id === id);
+    if (!p) return;
+
+    document.getElementById('prodEditId').value = p.id;
+    document.getElementById('prodNombre').value = p.nombre || '';
+    document.getElementById('prodPrecio').value = p.precio || '';
+    
+    let catVal = p.categoria || 'figuras';
+    if (catVal === 'audifonos' || catVal === 'teclados') {
+      catVal = 'perifericos';
+    }
+    document.getElementById('prodCategoria').value = catVal;
+
+    document.getElementById('prodColeccion').value = p.coleccion || '';
+    document.getElementById('prodEstado').value = p.estado || 'Envío Inmediato 📦';
+    document.getElementById('prodDesc').value = p.descripcion || '';
+
+    fotosBufferProducto = p.fotos ? [...p.fotos] : [];
+    renderizarMiniaturasFotos();
+
+    document.getElementById('formProdTitulo').innerHTML = `<i class="fas fa-pen"></i> Editando Producto`;
+    document.getElementById('btnGuardarProd').innerText = "Guardar Cambios";
+    
+    document.getElementById('cajaFormProducto').style.display = "block";
+    document.getElementById('lblToggleForm').innerText = "Cerrar Formulario";
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  window.resetFormularioProducto = function() {
+    document.getElementById('formProducto').reset();
+    document.getElementById('prodEditId').value = "";
+    fotosBufferProducto = [];
+    renderizarMiniaturasFotos();
+    document.getElementById('formProdTitulo').innerHTML = `<i class="fas fa-plus-circle"></i> Nuevo Producto`;
+    document.getElementById('btnGuardarProd').innerText = "Guardar Producto";
+    document.getElementById('cajaFormProducto').style.display = "none";
+    document.getElementById('lblToggleForm').innerText = "Crear Nuevo Producto";
+  };
+
+  window.eliminarProducto = async function(id) {
+    if (!confirm("¿Seguro que deseas eliminar este producto permanentemente?")) return;
+    await deleteDoc(doc(db, "productos", id));
+    cargarProductosAdmin();
+  };
+
+  window.filtrarTarjetasAdmin = function() {
+    const val = document.getElementById('buscarEnAdmin').value.toLowerCase();
+    document.querySelectorAll('.card-item-filtro').forEach(c => {
+      const nom = c.getAttribute('data-nombre') || '';
+      c.style.display = nom.includes(val) ? 'flex' : 'none';
+    });
+  };
+
+  // --- 2. PEDIDOS CON SISTEMA DE ESTADOS ---
+  async function cargarPedidosAdmin() {
+    try {
+      const q = query(collection(db, "pedidos"), orderBy("timestamp", "desc"));
+      const snapshot = await getDocs(q);
+      const cont = document.getElementById('listaPedidosMobile');
+      document.getElementById('totalPedidosLbl').innerText = snapshot.size;
+
+      if (snapshot.empty) {
+        cont.innerHTML = `<p style="text-align: center; color: var(--text-muted); padding: 15px;">Sin órdenes registradas.</p>`;
+        document.getElementById('dashIngresos').innerText = "$0.00";
+        document.getElementById('dashOrdenes').innerText = "0";
+        return;
+      }
+
+      let htmlBloque = "";
+      let totalUsdGanado = 0;
+      let pedidosPendientes = 0;
+
+      snapshot.forEach(docSnap => {
+        const ped = docSnap.data();
+        
+        // Calcular estadísticas
+        let est = ped.estadoPedido || 'Pendiente';
+        if(est === 'Completado') totalUsdGanado += Number(ped.totalUsd || 0);
+        if(est !== 'Completado') pedidosPendientes++;
+
+        // Visual del estado
+        let colorEstado = est === 'Completado' ? '#25d366' : (est === 'Pagado' ? '#00e5ff' : '#ffaa00');
+
+        htmlBloque += `
+          <div class="item-card-row">
+            <div class="item-card-info">
+              <div style="display:flex; justify-content:space-between; margin-bottom: 2px;">
+                <strong>${sanitizar(ped.cliente)}</strong>
+                <span class="tag-badge" style="background: ${colorEstado}20; color: ${colorEstado}; border: 1px solid ${colorEstado}40;">${est}</span>
+              </div>
+              <div style="font-size:0.85em; color:var(--text-muted); margin-bottom: 4px;">
+                <i class="fab fa-whatsapp" style="color:#25d366;"></i> ${sanitizar(ped.telefono)}
+              </div>
+              ${ped.direccionEnvio ? `<div style="font-size:0.8em; color:var(--secondary-color); margin-bottom:4px;">📍 ${sanitizar(ped.metodoEnvio)}:${sanitizar(ped.direccionEnvio)}</div>` : ''}
+              <div style="font-size:0.85em; margin-bottom: 4px;">${sanitizar(ped.detalles)}</div>
+              <div style="font-size:1.05em; font-weight:700; color:var(--secondary-color);">$${Number(ped.totalUsd).toFixed(2)}</div>
+            </div>
+            <div class="item-card-actions">
+              <!-- Botón Cambiar Estado -->
+              <button class="btn-action-touch" style="color: ${colorEstado}; background: ${colorEstado}15; border: 1px solid ${colorEstado}40;" onclick="cambiarEstadoPedido('${docSnap.id}', '${est}')"><i class="fas fa-sync-alt"></i></button>
+              <button class="btn-action-touch btn-del" onclick="eliminarPedido('${docSnap.id}')"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
+        `;
+      });
+      cont.innerHTML = htmlBloque;
+      
+      // Actualizar el Dashboard Holográfico
+      document.getElementById('dashIngresos').innerText = "$" + totalUsdGanado.toFixed(2);
+      document.getElementById('dashOrdenes').innerText = pedidosPendientes;
+    } catch(e) {}
+  }
+
+  // --- NUEVA FUNCIÓN: CAMBIAR ESTADO DEL PEDIDO ---
+  window.cambiarEstadoPedido = async function(id, estadoActual) {
+    let nuevoEstado = 'Pendiente';
+    if(estadoActual === 'Pendiente') nuevoEstado = 'Pagado';
+    else if(estadoActual === 'Pagado') nuevoEstado = 'Completado';
+    
+    try {
+      await updateDoc(doc(db, "pedidos", id), { estadoPedido: nuevoEstado });
+      cargarPedidosAdmin();
+    } catch(e) { alert("Error al actualizar pedido"); }
+  };
+
+  window.guardarPedidoManual = async function(e) {
+    e.preventDefault();
+    const cliente = document.getElementById('pedCliente').value.trim();
+    const telefono = document.getElementById('pedTelefono').value.trim();
+    const tipo = document.getElementById('pedTipo').value;
+    const metodoEnvio = (tipo === 'digital') ? 'Entrega Digital Directa' : document.getElementById('pedMetodo').value;
+    const direccionEnvio = (tipo === 'digital') ? '' : document.getElementById('pedDireccion').value.trim();
+    const detalles = document.getElementById('pedDetalles').value.trim();
+    const totalUsd = parseFloat(document.getElementById('pedTotalUsd').value);
+
+    try {
+      await addDoc(collection(db, "pedidos"), {
+        cliente, telefono, tipo, metodoEnvio, direccionEnvio, detalles, totalUsd,
+        estadoPedido: "Pendiente",
+        timestamp: Date.now()
+      });
+      document.getElementById('formPedidoManual').reset();
+      toggleCajaPedidoManual();
+      cargarPedidosAdmin();
+      alert("¡Pedido guardado!");
+    } catch(err) {
+      alert("Error: " + err.message);
+    }
+  };
+
+  window.eliminarPedido = async function(id) {
+    if (!confirm("¿Seguro que deseas eliminar/archivar este pedido de la lista?")) return;
+    await deleteDoc(doc(db, "pedidos", id));
+    cargarPedidosAdmin();
+  };
+
+  // --- BANNERS OPTIMIZADO ---
+  async function cargarBannersAdmin() {
+    const q = query(collection(db, "banners"), orderBy("timestamp", "desc"));
+    const snapshot = await getDocs(q);
+    const cont = document.getElementById('listaBannersAdmin');
+    
+    if (snapshot.empty) { cont.innerHTML = "<p style='color:var(--text-muted);'>No hay banners.</p>"; return; }
+    
+    let htmlBloque = "";
+    snapshot.forEach(d => {
+      const b = d.data();
+      htmlBloque += `
+        <div class="item-card-row">
+          <img src="${b.imgUrl}" style="width: 70px; height: 40px; object-fit: cover; border-radius: 4px;">
+          <div style="flex-grow: 1; font-size: 0.8em; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Banner WebP</div>
+          <button class="btn-action-touch btn-del" onclick="eliminarBanner('${d.id}')"><i class="fas fa-trash"></i></button>
+        </div>
+      `;
+    });
+    cont.innerHTML = htmlBloque;
+  }
+
+  window.agregarBanner = async function(e) {
+    e.preventDefault();
+    const file = document.getElementById('bannerFileInput').files[0];
+    if (!file) return;
+
+    const btn = document.getElementById('btnSubirBanner');
+    btn.disabled = true;
+    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Optimizando...`;
+
+    try {
+      const webpDataUrl = await comprimirYConvertirAWebP(file, 900, 0.75);
+      await addDoc(collection(db, "banners"), { imgUrl: webpDataUrl, timestamp: Date.now() });
+      document.getElementById('bannerFileInput').value = "";
+      cargarBannersAdmin();
+      alert("¡Banner publicado con éxito!");
+    } catch (err) {
+      alert("Error al guardar banner: " + err.message);
+    } finally {
+      btn.disabled = false;
+      btn.innerText = "Publicar Banner";
+    }
+  };
+
+  window.eliminarBanner = async function(id) {
+    if (!confirm("¿Eliminar este banner?")) return;
+    await deleteDoc(doc(db, "banners", id));
+    cargarBannersAdmin();
+  };
+
+  // --- CUPONES OPTIMIZADO ---
+  async function cargarCuponesAdmin() {
+    const snapshot = await getDocs(collection(db, "cupones"));
+    const cont = document.getElementById('listaCuponesAdmin');
+    
+    if (snapshot.empty) { cont.innerHTML = "<p style='color:var(--text-muted);'>No hay cupones.</p>"; return; }
+    
+    let htmlBloque = "";
+    snapshot.forEach(d => {
+      const c = d.data();
+      htmlBloque += `
+        <div class="item-card-row">
+          <div style="flex-grow: 1;">
+            <strong style="color:var(--secondary-color); font-size:1.1em;">${sanitizar(c.codigo)}</strong>
+            <span style="color:var(--text-muted); font-size:0.9em; margin-left: 8px;">(-${c.porcentaje}%)</span>
+          </div>
+          <button class="btn-action-touch btn-del" onclick="eliminarCupon('${d.id}')"><i class="fas fa-trash"></i></button>
+        </div>
+      `;
+    });
+    cont.innerHTML = htmlBloque;
+  }
+
+  window.agregarCupon = async function(e) {
+    e.preventDefault();
+    const codigo = document.getElementById('cuponCodigo').value.trim().toUpperCase();
+    const porcentaje = parseInt(document.getElementById('cuponPorcentaje').value);
+    await addDoc(collection(db, "cupones"), { codigo, porcentaje, timestamp: Date.now() });
+    document.getElementById('cuponCodigo').value = "";
+    document.getElementById('cuponPorcentaje').value = "";
+    cargarCuponesAdmin();
+  };
+
+  window.eliminarCupon = async function(id) {
+    if (!confirm("¿Eliminar este cupón de descuento?")) return;
+    await deleteDoc(doc(db, "cupones", id));
+    cargarCuponesAdmin();
+  };
+
+  // --- PAGOS & RANGOS ---
+  async function cargarDatosPagoAdmin() {
+    const snap = await getDoc(doc(db, "configuracion", "datos_pago"));
+    if (snap.exists()) {
+      const d = snap.data();
+      document.getElementById('pagoBanco').value = d.banco || '';
+      document.getElementById('pagoTelefono').value = d.telefono || '';
+      document.getElementById('pagoCedula').value = d.cedula || '';
+      document.getElementById('pagoBinance').value = d.binance || '';
+    }
+  }
+
+  window.guardarDatosPago = async function(e) {
+    e.preventDefault();
+    await setDoc(doc(db, "configuracion", "datos_pago"), {
+      banco: document.getElementById('pagoBanco').value.trim(),
+      telefono: document.getElementById('pagoTelefono').value.trim(),
+      cedula: document.getElementById('pagoCedula').value.trim(),
+      binance: document.getElementById('pagoBinance').value.trim()
+    });
+    alert("Cuentas bancarias actualizadas correctamente.");
+  };
+
+  async function cargarRangosAdmin() {
+    const snap = await getDoc(doc(db, "configuracion", "rangos_ninja"));
+    if (snap.exists()) {
+      const d = snap.data();
+      document.getElementById('xpChunin').value = d.chunin ?? 300;
+      document.getElementById('xpJonin').value = d.jonin ?? 600;
+      document.getElementById('xpHokage').value = d.hokage ?? 1000;
+    }
+  }
+
+  window.guardarRangosNinja = async function(e) {
+    e.preventDefault();
+    await setDoc(doc(db, "configuracion", "rangos_ninja"), {
+      genin: 0,
+      chunin: parseInt(document.getElementById('xpChunin').value),
+      jonin: parseInt(document.getElementById('xpJonin').value),
+      hokage: parseInt(document.getElementById('xpHokage').value)
+    });
+    alert("Umbrales de XP guardados correctamente.");
+  };
+
+  // --- RESEÑAS OPTIMIZADO ---
+  async function cargarReviewsAdmin() {
+    const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"));
+    const snapshot = await getDocs(q);
+    const cont = document.getElementById('listaReviewsAdmin');
+    
+    if (snapshot.empty) { cont.innerHTML = `<p style="color: var(--text-muted); text-align:center;">Sin reseñas.</p>`; return; }
+    
+    let htmlBloque = "";
+    snapshot.forEach(d => {
+      const r = d.data();
+      htmlBloque += `
+        <div class="item-card-row">
+          <div style="flex-grow: 1;">
+            <div style="font-weight:700;">${sanitizar(r.nombre)} <span style="color:#ffcc00; font-size:0.85em;">${sanitizar(r.estrellas)}</span></div>
+            <div style="font-size:0.85em; color:var(--text-muted);">${sanitizar(r.texto)}</div>
+          </div>
+          <button class="btn-action-touch btn-del" onclick="eliminarReview('${d.id}')"><i class="fas fa-trash"></i></button>
+        </div>
+      `;
+    });
+    cont.innerHTML = htmlBloque;
+  }
+
+  window.eliminarReview = async function(id) {
+    if (!confirm("¿Eliminar esta reseña?")) return;
+    await deleteDoc(doc(db, "reviews", id));
+    cargarReviewsAdmin();
+  };
+
+  function cargarTodo() {
+    cargarProductosAdmin();
+    cargarPedidosAdmin();
+    cargarBannersAdmin();
+    cargarCuponesAdmin();
+    cargarDatosPagoAdmin();
+    cargarRangosAdmin();
+    cargarReviewsAdmin();
   }
 </script>
 </body>
