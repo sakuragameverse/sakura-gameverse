@@ -6,7 +6,7 @@
   <title>Admin Dashboard | Sakura Gameverse</title>
   
   <link rel="icon" type="image/webp" href="logo.webp?v=2">
-  <meta name="theme-color" content="#080212">
+  <meta name="theme-color" content="#05010a">
 
   <!-- Fuentes e Iconos -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -16,16 +16,24 @@
 
   <style>
     :root {
-      --bg-color: #080212;
-      --card-bg: #110524;
-      --surface-dark: #07010f;
+      /* Paleta Base Glassmorphism */
+      --bg-color: #05010a; 
+      
+      --glass-bg: rgba(17, 5, 36, 0.45); 
+      --glass-border: rgba(255, 255, 255, 0.08); 
+      --glass-highlight: rgba(0, 229, 255, 0.2); 
+      
       --text-color: #e6e9f0;
       --text-muted: #8b8f9e;
       --primary-color: #ff007f;
+      --primary-glow: rgba(255, 0, 127, 0.4);
       --secondary-color: #00e5ff;
+      --secondary-glow: rgba(0, 229, 255, 0.4);
       --border-color: rgba(0, 229, 255, 0.16);
-      --radius-sm: 6px;
-      --radius-md: 10px;
+      
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-pill: 50px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -38,14 +46,18 @@
       min-height: 100vh;
       overflow-x: hidden;
       padding-bottom: 40px;
-      transform: translateZ(0); 
     }
 
+    /* Fondo animado inmersivo */
     body::before {
       content: "";
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: radial-gradient(circle at 50% 0%, rgba(255, 0, 127, 0.05) 0%, transparent 60%);
+      background: radial-gradient(circle at 50% 0%, rgba(255, 0, 127, 0.08) 0%, transparent 60%),
+                  radial-gradient(circle at 80% 80%, rgba(0, 229, 255, 0.05) 0%, transparent 50%),
+                  linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+                  linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
       pointer-events: none;
       z-index: 0;
       will-change: transform;
@@ -57,10 +69,12 @@
       letter-spacing: 0.5px;
     }
 
-    /* --- BARRA SUPERIOR --- */
+    /* --- BARRA SUPERIOR CRISTAL --- */
     .admin-navbar {
-      background: rgba(8, 2, 18, 0.98);
-      border-bottom: 1px solid var(--border-color);
+      background: rgba(5, 1, 10, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--glass-border);
       padding: 12px 16px;
       display: flex;
       justify-content: space-between;
@@ -68,25 +82,16 @@
       position: sticky;
       top: 0;
       z-index: 1000;
-      backdrop-filter: blur(8px);
-      transform: translateZ(0);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
     }
-    .brand-box {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .brand-logo { width: 28px; height: 28px; object-fit: contain; }
-    .brand-title {
-      font-family: 'Chakra Petch', sans-serif;
-      font-size: 1.05em;
-      font-weight: 700;
-      color: #fff;
-    }
+    .brand-box { display: flex; align-items: center; gap: 8px; }
+    .brand-logo { width: 28px; height: 28px; object-fit: contain; filter: drop-shadow(0 0 5px var(--primary-color)); }
+    .brand-title { font-family: 'Chakra Petch', sans-serif; font-size: 1.05em; font-weight: 700; color: #fff; text-shadow: 0 0 10px rgba(0,0,0,0.8); }
+    
     .nav-actions { display: flex; align-items: center; gap: 8px; }
     .btn-nav {
-      padding: 6px 12px;
-      border-radius: var(--radius-sm);
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
       font-family: 'Chakra Petch', sans-serif;
       font-weight: 700;
       font-size: 0.8em;
@@ -95,14 +100,17 @@
       align-items: center;
       gap: 5px;
       cursor: pointer;
+      transition: all 0.3s ease;
     }
-    .btn-tienda { background: rgba(0, 229, 255, 0.1); color: var(--secondary-color); border: 1px solid var(--secondary-color); }
-    .btn-exit { background: rgba(255, 0, 127, 0.1); color: var(--primary-color); border: 1px solid var(--primary-color); }
+    .btn-tienda { background: rgba(0, 229, 255, 0.1); color: var(--secondary-color); border: 1px solid rgba(0,229,255,0.3); }
+    .btn-tienda:hover { background: rgba(0, 229, 255, 0.2); box-shadow: 0 0 10px var(--secondary-glow); }
+    .btn-exit { background: rgba(255, 0, 127, 0.1); color: var(--primary-color); border: 1px solid rgba(255,0,127,0.3); }
+    .btn-exit:hover { background: rgba(255, 0, 127, 0.2); box-shadow: 0 0 10px var(--primary-glow); }
 
     /* --- CONTENEDOR PRINCIPAL --- */
     .admin-container {
       max-width: 1100px;
-      margin: 14px auto 0 auto;
+      margin: 18px auto 0 auto;
       padding: 0 12px;
       position: relative;
       z-index: 1;
@@ -113,15 +121,16 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 10px;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
     .dash-card {
-      background: rgba(0, 229, 255, 0.03);
-      border: 1px solid var(--border-color);
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--glass-border);
       padding: 12px 8px;
       border-radius: var(--radius-md);
       text-align: center;
-      box-shadow: inset 0 0 15px rgba(0,229,255,0.02);
+      box-shadow: inset 0 0 15px rgba(255,255,255,0.02), 0 4px 10px rgba(0,0,0,0.2);
     }
     .dash-title {
       font-size: 0.65em;
@@ -136,17 +145,18 @@
       color: var(--secondary-color);
       font-weight: 700;
       font-family: 'Chakra Petch', sans-serif;
+      text-shadow: 0 0 10px var(--secondary-glow);
     }
-    .dash-val.ganancias { color: #25d366; text-shadow: 0 0 10px rgba(37,211,102,0.3); }
-    .dash-val.pendientes { color: #ffaa00; }
+    .dash-val.ganancias { color: #25d366; text-shadow: 0 0 10px rgba(37,211,102,0.4); }
+    .dash-val.pendientes { color: #ffaa00; text-shadow: 0 0 10px rgba(255,170,0,0.4); }
 
-    /* --- PESTAÑAS DESLIZABLES --- */
+    /* --- PESTAÑAS TIPO PÍLDORA (NEÓN) --- */
     .tabs-wrapper {
       display: flex;
       gap: 8px;
       overflow-x: auto;
-      padding: 2px 2px 10px 2px;
-      margin-bottom: 15px;
+      padding: 4px 4px 14px 4px;
+      margin-bottom: 10px;
       scrollbar-width: none;
       -webkit-overflow-scrolling: touch;
     }
@@ -154,11 +164,12 @@
 
     .tab-btn {
       flex: 0 0 auto;
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(4px);
+      border: 1px solid var(--glass-border);
       color: var(--text-muted);
-      padding: 9px 14px;
-      border-radius: 20px;
+      padding: 10px 16px;
+      border-radius: var(--radius-pill);
       font-family: 'Chakra Petch', sans-serif;
       font-size: 0.82em;
       font-weight: 700;
@@ -166,51 +177,61 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.2s ease;
-      will-change: transform, background-color;
+      transition: all 0.3s ease;
     }
-    .tab-btn.active { background: var(--secondary-color); color: #000; border-color: var(--secondary-color); }
+    .tab-btn:hover { background: rgba(255,255,255,0.05); color: #fff; }
+    .tab-btn.active { 
+      background: var(--secondary-color); 
+      color: #000; 
+      border-color: var(--secondary-color); 
+      box-shadow: 0 0 12px var(--secondary-glow); 
+    }
 
-    /* --- PANELES --- */
+    /* --- PANELES CRISTAL --- */
     .admin-panel { display: none; }
-    .admin-panel.active { display: block; animation: fade-in 0.3s ease-out; }
+    .admin-panel.active { display: block; animation: fade-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
     
     @keyframes fade-in {
-      from { opacity: 0; transform: translateY(5px); }
+      from { opacity: 0; transform: translateY(15px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
     .card-panel {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
       border-radius: var(--radius-md);
-      padding: 16px;
-      margin-bottom: 16px;
+      padding: 18px;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     }
 
     .panel-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 14px;
-      padding-bottom: 8px;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
       border-bottom: 1px solid rgba(255,255,255,0.06);
     }
     .panel-title {
-      font-size: 1em;
+      font-size: 1.05em;
       font-weight: 700;
       color: #fff;
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 8px;
+      text-shadow: 0 0 8px rgba(0,0,0,0.5);
     }
 
     .btn-toggle-box {
       width: 100%;
       background: rgba(0, 229, 255, 0.08);
-      border: 1px dashed var(--secondary-color);
+      backdrop-filter: blur(4px);
+      border: 1px dashed rgba(0, 229, 255, 0.4);
       color: var(--secondary-color);
-      padding: 12px;
+      padding: 14px;
       border-radius: var(--radius-sm);
       font-family: 'Chakra Petch', sans-serif;
       font-size: 0.9em;
@@ -220,73 +241,110 @@
       justify-content: center;
       align-items: center;
       gap: 8px;
-      margin-bottom: 14px;
-      transition: background 0.2s ease;
+      margin-bottom: 16px;
+      transition: all 0.3s ease;
     }
-    .btn-toggle-box:active { background: rgba(0, 229, 255, 0.15); }
+    .btn-toggle-box:hover { background: rgba(0, 229, 255, 0.15); box-shadow: 0 0 10px rgba(0,229,255,0.2); transform: translateY(-2px); }
+    .btn-toggle-box:active { transform: translateY(0); }
 
-    .form-group { margin-bottom: 12px; text-align: left; }
-    .form-label { display: block; font-size: 0.8em; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; }
+    /* Inputs Glassmorphism */
+    .form-group { margin-bottom: 14px; text-align: left; }
+    .form-label { display: block; font-size: 0.8em; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
     .form-input, .form-select, .form-textarea {
-      width: 100%; min-height: 42px; background: var(--surface-dark); border: 1px solid var(--border-color); color: #fff;
-      padding: 9px 12px; border-radius: var(--radius-sm); font-family: 'Rajdhani', sans-serif; font-size: 16px; outline: none; transition: border-color 0.2s ease;
+      width: 100%; min-height: 44px; 
+      background: rgba(0,0,0,0.3); 
+      border: 1px solid var(--glass-border); 
+      color: #fff;
+      padding: 10px 14px; 
+      border-radius: var(--radius-sm); 
+      font-family: 'Rajdhani', sans-serif; 
+      font-size: 16px; 
+      outline: none; 
+      transition: all 0.3s ease;
     }
-    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--secondary-color); }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { 
+      border-color: var(--secondary-color); 
+      background: rgba(17, 5, 36, 0.6);
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.15);
+    }
 
     .btn-file-select {
       width: 100%; min-height: 46px; background: rgba(0, 229, 255, 0.08); border: 1px dashed var(--secondary-color); color: var(--secondary-color);
       border-radius: var(--radius-sm); font-family: 'Chakra Petch', sans-serif; font-size: 0.9em; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s ease;
     }
-    .btn-file-select:active { background: rgba(0, 229, 255, 0.2); }
+    .btn-file-select:hover { background: rgba(0, 229, 255, 0.15); }
 
     .preview-fotos-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-    .preview-foto-item { position: relative; width: 64px; height: 64px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); overflow: hidden; background: rgba(0, 229, 255, 0.05); }
+    .preview-foto-item { position: relative; width: 64px; height: 64px; border-radius: var(--radius-sm); border: 1px solid var(--glass-border); overflow: hidden; background: rgba(0,0,0,0.5); }
     .preview-foto-item img { width: 100%; height: 100%; object-fit: cover; }
     .btn-del-foto-preview { position: absolute; top: 2px; right: 2px; background: rgba(0, 0, 0, 0.85); color: #ff3366; border: none; width: 20px; height: 20px; border-radius: 50%; font-size: 0.7em; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-    .upload-status-text { font-size: 0.85em; color: var(--secondary-color); margin-top: 6px; display: none; font-weight: 700; }
+    .upload-status-text { font-size: 0.85em; color: var(--secondary-color); margin-top: 6px; display: none; font-weight: 700; text-shadow: 0 0 5px rgba(0,229,255,0.4); }
 
+    /* Botón Guardar Principal */
     .btn-submit {
-      width: 100%; min-height: 44px; background: var(--primary-color); color: #fff; border: none; padding: 10px; font-family: 'Chakra Petch', sans-serif;
-      font-size: 0.95em; font-weight: 700; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: transform 0.1s ease; will-change: transform;
+      width: 100%; min-height: 46px; 
+      background: linear-gradient(135deg, var(--primary-color), #cc0066); 
+      color: #fff; border: none; padding: 10px; font-family: 'Chakra Petch', sans-serif;
+      font-size: 1em; font-weight: 700; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s ease;
+      box-shadow: 0 4px 15px var(--primary-glow);
     }
-    .btn-submit:active { transform: scale(0.98); }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--primary-glow), 0 0 10px var(--primary-color); }
+    .btn-submit:active { transform: translateY(0); }
     .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    /* --- TARJETAS MÓVILES OPTIMIZADAS --- */
+    /* --- TARJETAS MÓVILES (LISTAS) --- */
     .item-card-row {
-      display: flex; align-items: center; background: var(--surface-dark); border: 1px solid var(--border-color); border-radius: var(--radius-sm);
-      padding: 10px; margin-bottom: 8px; gap: 10px; transition: transform 0.2s ease, border-color 0.2s ease, opacity 0.3s; will-change: transform, border-color;
+      display: flex; align-items: center; 
+      background: rgba(0,0,0,0.3); 
+      border: 1px solid var(--glass-border); 
+      border-radius: var(--radius-sm);
+      padding: 12px; margin-bottom: 10px; gap: 12px; 
+      transition: all 0.3s ease; 
+      will-change: transform, border-color;
     }
     .item-card-row.is-paused { opacity: 0.4; border-style: dashed; filter: grayscale(80%); }
-    .item-card-row:hover { transform: translateY(-2px); border-color: var(--secondary-color); }
+    .item-card-row:hover { transform: translateY(-3px); border-color: var(--secondary-color); background: rgba(25, 9, 51, 0.55); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
     
-    .item-card-thumb { width: 50px; height: 50px; object-fit: contain; border-radius: var(--radius-sm); background: rgba(0, 229, 255, 0.05); border: 1px solid rgba(255,255,255,0.08); flex-shrink: 0; padding: 3px; }
+    .item-card-thumb { width: 54px; height: 54px; object-fit: contain; border-radius: var(--radius-sm); background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); flex-shrink: 0; padding: 3px; }
     .item-card-info { flex-grow: 1; min-width: 0; }
-    .item-card-title { font-family: 'Chakra Petch', sans-serif; font-size: 0.95em; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
+    .item-card-title { font-family: 'Chakra Petch', sans-serif; font-size: 0.95em; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
     .item-card-meta { font-size: 0.8em; color: var(--text-muted); display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 4px; }
-    .item-card-price { font-size: 1em; font-weight: 700; color: var(--secondary-color); }
+    .item-card-price { font-size: 1.05em; font-weight: 700; color: var(--secondary-color); text-shadow: 0 0 5px rgba(0,229,255,0.2); }
     
-    .tag-badge { display: inline-block; padding: 1px 6px; font-size: 0.7em; font-weight: 700; border-radius: 3px; text-transform: uppercase; }
-    .tag-stock { background: rgba(0, 229, 255, 0.15); color: var(--secondary-color); }
-    .tag-encargo { background: rgba(255, 0, 127, 0.15); color: var(--primary-color); }
-    .tag-digital { background: rgba(37, 211, 102, 0.15); color: #25d366; }
+    .tag-badge { display: inline-block; padding: 2px 8px; font-size: 0.7em; font-weight: 700; border-radius: var(--radius-pill); text-transform: uppercase; }
+    .tag-stock { background: rgba(0, 229, 255, 0.15); color: var(--secondary-color); border: 1px solid rgba(0,229,255,0.3); }
+    .tag-encargo { background: rgba(255, 0, 127, 0.15); color: var(--primary-color); border: 1px solid rgba(255,0,127,0.3); }
+    .tag-digital { background: rgba(37, 211, 102, 0.15); color: #25d366; border: 1px solid rgba(37,211,102,0.3); }
 
-    .item-card-actions { display: flex; flex-direction: column; gap: 5px; flex-shrink: 0; }
-    .btn-action-touch { width: 34px; height: 34px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid transparent; font-size: 0.85em; transition: background 0.2s ease; }
+    .item-card-actions { display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; }
+    .btn-action-touch { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid transparent; font-size: 0.85em; transition: all 0.2s ease; }
+    
     .btn-edit { background: rgba(0, 229, 255, 0.1); color: var(--secondary-color); border-color: rgba(0,229,255,0.3); }
-    .btn-edit:active { background: rgba(0, 229, 255, 0.2); }
+    .btn-edit:hover { background: rgba(0, 229, 255, 0.2); box-shadow: 0 0 10px rgba(0,229,255,0.3); }
+    
     .btn-del { background: rgba(255, 51, 102, 0.1); color: #ff3366; border-color: rgba(255,51,102,0.3); }
-    .btn-del:active { background: rgba(255, 51, 102, 0.2); }
+    .btn-del:hover { background: #ff3366; color: #fff; box-shadow: 0 0 10px rgba(255,51,102,0.5); }
+    
     .btn-print { background: rgba(255, 255, 255, 0.1); color: #fff; border-color: rgba(255, 255, 255, 0.3); }
+    .btn-print:hover { background: rgba(255,255,255,0.2); box-shadow: 0 0 10px rgba(255,255,255,0.3); }
 
     /* Pantalla de Inicio de Sesión Oficial (Auth) */
     #lockScreen {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #06010d; display: flex; justify-content: center; align-items: center; z-index: 999999; padding: 16px;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+      background: rgba(2, 0, 6, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      display: flex; justify-content: center; align-items: center; z-index: 999999; padding: 16px;
     }
     .lock-box {
-      background: var(--card-bg); border: 1px solid var(--border-color); padding: 28px 22px; border-radius: var(--radius-md); text-align: center; width: 100%; max-width: 360px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8); animation: lock-drop 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+      background: rgba(14, 4, 31, 0.85); 
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border); 
+      padding: 32px 24px; 
+      border-radius: var(--radius-md); 
+      text-align: center; width: 100%; max-width: 360px; 
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0,229,255,0.05); 
+      animation: lock-drop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
-    @keyframes lock-drop { 0% { transform: translateY(-30px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+    @keyframes lock-drop { 0% { transform: translateY(-40px) scale(0.9); opacity: 0; } 100% { transform: translateY(0) scale(1); opacity: 1; } }
 
     /* --- CLASES ESPECIALES PARA IMPRIMIR --- */
     @media screen {
@@ -299,7 +357,7 @@
         background: #fff; 
         color: #000; 
         width: 100%; 
-        max-width: 350px; /* Tamaño tipo ticket térmico */
+        max-width: 350px; 
         margin: 0 auto;
         font-family: monospace; 
         padding: 15px; 
@@ -315,19 +373,19 @@
 <!-- PANTALLA DE ACCESO PROFESIONAL (FIREBASE AUTH) -->
 <div id="lockScreen">
   <div class="lock-box">
-    <div style="font-size: 36px; color: var(--secondary-color); margin-bottom: 8px;"><i class="fas fa-shield-halved"></i></div>
-    <h3 style="color: #fff; margin-bottom: 4px;">Acceso Administrador</h3>
-    <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 16px;">Inicia sesión con tus credenciales seguras</p>
+    <div style="font-size: 42px; color: var(--secondary-color); margin-bottom: 12px; filter: drop-shadow(0 0 10px var(--secondary-glow));"><i class="fas fa-shield-halved"></i></div>
+    <h3 style="color: #fff; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px;">Acceso Administrador</h3>
+    <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 20px;">Inicia sesión con tus credenciales seguras</p>
     
     <div class="form-group">
-      <input type="email" id="adminEmailInput" class="form-input" placeholder="Correo electrónico" style="margin-bottom: 8px;" autocomplete="email">
-      <input type="password" id="adminPassInput" class="form-input" placeholder="Contraseña" autocomplete="current-password" onkeypress="if(event.key === 'Enter') iniciarSesionAdmin()">
+      <input type="email" id="adminEmailInput" class="form-input" placeholder="Correo electrónico" style="margin-bottom: 10px; border-radius: var(--radius-pill);" autocomplete="email">
+      <input type="password" id="adminPassInput" class="form-input" placeholder="Contraseña" autocomplete="current-password" style="border-radius: var(--radius-pill);" onkeypress="if(event.key === 'Enter') iniciarSesionAdmin()">
     </div>
     
-    <div id="loginErrorMsg" style="color: #ff3366; font-size: 0.85em; margin-bottom: 12px; display: none; font-weight: 700;"></div>
+    <div id="loginErrorMsg" style="color: #ff3366; font-size: 0.85em; margin-bottom: 14px; display: none; font-weight: 700; text-shadow: 0 0 5px rgba(255,51,102,0.4);"></div>
     
-    <button class="btn-submit" id="btnLoginSubmit" onclick="iniciarSesionAdmin()">Iniciar Sesión</button>
-    <a href="index.html" style="display: inline-block; margin-top: 14px; font-size: 0.85em; color: var(--text-muted); text-decoration: none;">Volver al Catálogo</a>
+    <button class="btn-submit" id="btnLoginSubmit" onclick="iniciarSesionAdmin()" style="border-radius: var(--radius-pill);">Iniciar Sesión</button>
+    <a href="index.html" style="display: inline-block; margin-top: 18px; font-size: 0.85em; color: var(--text-muted); text-decoration: none; transition: color 0.2s;">Volver al Catálogo</a>
   </div>
 </div>
 
@@ -437,11 +495,11 @@
           
           <input type="file" id="prodFileInput" multiple accept="image/*" style="display: none;" onchange="procesarArchivosGaleria(event)">
           <button type="button" class="btn-file-select" onclick="document.getElementById('prodFileInput').click()">
-            <i class="fas fa-camera"></i> Seleccionar Fotos desde Galería
+            <i class="fas fa-camera"></i> Seleccionar Fotos
           </button>
           
           <div id="txtEstadoSubida" class="upload-status-text">
-            <i class="fas fa-spinner fa-spin"></i> Optimizando fotos a formato WebP ultraliviano...
+            <i class="fas fa-spinner fa-spin"></i> Optimizando a formato WebP...
           </div>
 
           <div id="contenedorPreviewFotos" class="preview-fotos-grid"></div>
@@ -460,7 +518,7 @@
     <div class="card-panel">
       <div class="panel-header">
         <span class="panel-title"><i class="fas fa-boxes"></i> Inventario (<span id="totalProdsLbl">0</span>)</span>
-        <input type="text" id="buscarEnAdmin" class="form-input" style="max-width: 140px; min-height: 32px; padding: 4px 8px; font-size: 0.85em;" placeholder="Buscar..." onkeyup="filtrarTarjetasAdmin()">
+        <input type="text" id="buscarEnAdmin" class="form-input" style="max-width: 140px; min-height: 34px; padding: 6px 10px; font-size: 0.85em; border-radius: var(--radius-pill);" placeholder="Buscar..." onkeyup="filtrarTarjetasAdmin()">
       </div>
       
       <div id="listaProductosMobile">
@@ -527,7 +585,7 @@
     </div>
   </section>
 
-  <!-- NUEVO: 2.1 FACTURAS -->
+  <!-- 2.1 FACTURAS -->
   <section id="panel-facturas" class="admin-panel">
     <button class="btn-toggle-box" onclick="toggleCajaFactura()">
       <i class="fas fa-file-invoice-dollar"></i> Emitir Nueva Factura / Recibo
@@ -586,7 +644,7 @@
       <form onsubmit="agregarBanner(event)">
         <div class="form-group">
           <label class="form-label">Foto de Banner (Se convierte a WebP):</label>
-          <input type="file" id="bannerFileInput" accept="image/*" class="form-input" style="padding: 6px;" required>
+          <input type="file" id="bannerFileInput" accept="image/*" class="form-input" style="padding: 10px;" required>
         </div>
         <button type="submit" class="btn-submit" id="btnSubirBanner">Publicar Banner</button>
       </form>
@@ -691,7 +749,7 @@
   const auth = getAuth(app);
 
   let productosAdminGlobal = [];
-  let facturasAdminGlobal = []; // Arreglo para la lógica de facturas
+  let facturasAdminGlobal = []; 
   let fotosBufferProducto = [];
 
   // --- ESCUCHA ACTIVA DE SESIÓN CON FIREBASE AUTH ---
@@ -869,7 +927,7 @@
       const cont = document.getElementById('listaProductosMobile');
       
       document.getElementById('totalProdsLbl').innerText = snapshot.size;
-      document.getElementById('dashProds').innerText = snapshot.size; // Actualiza Dashboard
+      document.getElementById('dashProds').innerText = snapshot.size;
 
       if (snapshot.empty) {
         cont.innerHTML = `<p style="text-align: center; color: var(--text-muted); padding: 15px;">No hay productos registrados.</p>`;
@@ -909,7 +967,7 @@
               <div class="item-card-price">$${Number(p.precio).toFixed(2)}</div>
             </div>
             <div class="item-card-actions">
-              <button class="btn-action-touch" style="color: ${colorOculto}; background: rgba(0,0,0,0.3); border: 1px solid ${colorOculto}40;" onclick="toggleOcultarProducto('${p.id}', ${isOculto})"><i class="fas ${iconOculto}"></i></button>
+              <button class="btn-action-touch" style="color: ${colorOculto}; background: rgba(0,0,0,0.4); border: 1px solid ${colorOculto}40;" onclick="toggleOcultarProducto('${p.id}', ${isOculto})"><i class="fas ${iconOculto}"></i></button>
               <button class="btn-action-touch btn-edit" onclick="prepararEdicion('${p.id}')"><i class="fas fa-pen"></i></button>
               <button class="btn-action-touch btn-del" onclick="eliminarProducto('${p.id}')"><i class="fas fa-trash"></i></button>
             </div>
@@ -1072,7 +1130,7 @@
               <div style="font-size:1.05em; font-weight:700; color:var(--secondary-color);">$${Number(ped.totalUsd).toFixed(2)}</div>
             </div>
             <div class="item-card-actions">
-              <button class="btn-action-touch" style="color: ${colorEstado}; background: ${colorEstado}15; border: 1px solid ${colorEstado}40;" onclick="cambiarEstadoPedido('${docSnap.id}', '${est}')"><i class="fas fa-sync-alt"></i></button>
+              <button class="btn-action-touch" style="color: ${colorEstado}; background: rgba(0,0,0,0.4); border: 1px solid ${colorEstado}40;" onclick="cambiarEstadoPedido('${docSnap.id}', '${est}')"><i class="fas fa-sync-alt"></i></button>
               <button class="btn-action-touch btn-del" onclick="eliminarPedido('${docSnap.id}')"><i class="fas fa-trash"></i></button>
             </div>
           </div>
@@ -1127,8 +1185,7 @@
     cargarPedidosAdmin();
   };
 
-
-  // --- 2.1 NUEVO SISTEMA DE FACTURACIÓN ---
+  // --- 2.1 FACTURAS ---
   window.toggleCajaFactura = function() {
     const box = document.getElementById('cajaFacturaManual');
     box.style.display = (box.style.display === 'none') ? 'block' : 'none';
@@ -1168,7 +1225,6 @@
               <div style="font-size:1.05em; font-weight:700; color:var(--secondary-color);">$${Number(fac.totalUsd).toFixed(2)}</div>
             </div>
             <div class="item-card-actions">
-              <!-- Botón Imprimir/Ver Ticket -->
               <button class="btn-action-touch btn-print" onclick="imprimirFactura('${fac.id}')"><i class="fas fa-print"></i></button>
               <button class="btn-action-touch btn-del" onclick="eliminarFactura('${fac.id}')"><i class="fas fa-trash"></i></button>
             </div>
@@ -1209,7 +1265,6 @@
     cargarFacturasAdmin();
   };
 
-  // Función mágica que llena el Ticket Oculto y llama a imprimir
   window.imprimirFactura = function(id) {
     const fac = facturasAdminGlobal.find(f => f.id === id);
     if(!fac) return;
@@ -1223,25 +1278,23 @@
     document.getElementById('printDetalles').innerText = fac.detalles;
     document.getElementById('printTotal').innerText = Number(fac.totalUsd).toFixed(2);
 
-    // Esto oculta el panel de admin por CSS e imprime solo el Ticket.
     window.print();
   };
 
-
-  // --- 3. BANNERS OPTIMIZADO ---
+  // --- 3. BANNERS ---
   async function cargarBannersAdmin() {
     const q = query(collection(db, "banners"), orderBy("timestamp", "desc"));
     const snapshot = await getDocs(q);
     const cont = document.getElementById('listaBannersAdmin');
     
-    if (snapshot.empty) { cont.innerHTML = "<p style='color:var(--text-muted);'>No hay banners.</p>"; return; }
+    if (snapshot.empty) { cont.innerHTML = "<p style='color:var(--text-muted); text-align:center;'>No hay banners.</p>"; return; }
     
     let htmlBloque = "";
     snapshot.forEach(d => {
       const b = d.data();
       htmlBloque += `
         <div class="item-card-row">
-          <img src="${b.imgUrl}" style="width: 70px; height: 40px; object-fit: cover; border-radius: 4px;">
+          <img src="${b.imgUrl}" style="width: 70px; height: 40px; object-fit: cover; border-radius: 4px; border: 1px solid var(--glass-border);">
           <div style="flex-grow: 1; font-size: 0.8em; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Banner WebP</div>
           <button class="btn-action-touch btn-del" onclick="eliminarBanner('${d.id}')"><i class="fas fa-trash"></i></button>
         </div>
@@ -1279,12 +1332,12 @@
     cargarBannersAdmin();
   };
 
-  // --- 4. CUPONES OPTIMIZADO ---
+  // --- 4. CUPONES ---
   async function cargarCuponesAdmin() {
     const snapshot = await getDocs(collection(db, "cupones"));
     const cont = document.getElementById('listaCuponesAdmin');
     
-    if (snapshot.empty) { cont.innerHTML = "<p style='color:var(--text-muted);'>No hay cupones.</p>"; return; }
+    if (snapshot.empty) { cont.innerHTML = "<p style='color:var(--text-muted); text-align:center;'>No hay cupones.</p>"; return; }
     
     let htmlBloque = "";
     snapshot.forEach(d => {
@@ -1292,7 +1345,7 @@
       htmlBloque += `
         <div class="item-card-row">
           <div style="flex-grow: 1;">
-            <strong style="color:var(--secondary-color); font-size:1.1em;">${sanitizar(c.codigo)}</strong>
+            <strong style="color:var(--secondary-color); font-size:1.1em; text-shadow: 0 0 5px var(--secondary-glow);">${sanitizar(c.codigo)}</strong>
             <span style="color:var(--text-muted); font-size:0.9em; margin-left: 8px;">(-${c.porcentaje}%)</span>
           </div>
           <button class="btn-action-touch btn-del" onclick="eliminarCupon('${d.id}')"><i class="fas fa-trash"></i></button>
@@ -1362,7 +1415,7 @@
     alert("Umbrales de XP guardados correctamente.");
   };
 
-  // --- 6. RESEÑAS OPTIMIZADO ---
+  // --- 6. RESEÑAS ---
   async function cargarReviewsAdmin() {
     const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"));
     const snapshot = await getDocs(q);
@@ -1392,11 +1445,10 @@
     cargarReviewsAdmin();
   };
 
-  // Función Maestro de Inicialización
   function cargarTodo() {
     cargarProductosAdmin();
     cargarPedidosAdmin();
-    cargarFacturasAdmin(); // <-- Inicializa las facturas al entrar
+    cargarFacturasAdmin(); 
     cargarBannersAdmin();
     cargarCuponesAdmin();
     cargarDatosPagoAdmin();
