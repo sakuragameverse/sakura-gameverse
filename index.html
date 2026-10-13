@@ -214,7 +214,6 @@
     .cart-item-del { background: rgba(255, 51, 102, 0.1); color: #ff3366; border: 1px solid rgba(255, 51, 102, 0.3); padding: 6px 10px; border-radius: var(--radius-sm); cursor: pointer; transition: all 0.2s ease; }
     .cart-item-del:hover { background: #ff3366; color: #fff; box-shadow: 0 0 10px rgba(255, 51, 102, 0.4); }
 
-    /* Estilos del Upselling (Sugerencias) */
     .upsell-card { flex: 0 0 auto; width: 115px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 8px; text-align: center; position: relative; transition: all 0.2s ease; }
     .upsell-card:hover { background: rgba(0, 229, 255, 0.05); border-color: var(--secondary-color); }
     .upsell-img { width: 100%; height: 60px; object-fit: contain; margin-bottom: 6px; }
@@ -423,6 +422,13 @@
 
   <div class="grid" id="catalogoNube"><p style="text-align: center; color: var(--text-muted); grid-column: 1/-1;">Sincronizando inventario...</p></div>
 
+  <!-- BOTÓN CARGAR MÁS PRODUCTOS (PAGINACIÓN) -->
+  <div id="contenedorCargarMas" style="text-align: center; margin-top: 25px;">
+    <button id="btnCargarMas" style="display: none; width: auto; padding: 12px 30px; margin: 0 auto; border-radius: var(--radius-pill); background: rgba(0, 229, 255, 0.1); border: 1px solid var(--secondary-color); color: var(--secondary-color); font-family: 'Chakra Petch', sans-serif; font-weight: 700; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 0 10px rgba(0,229,255,0.2);" onclick="cargarMasProductos()" onmouseover="this.style.background='rgba(0, 229, 255, 0.2)'" onmouseout="this.style.background='rgba(0, 229, 255, 0.1)'">
+      Mostrar más productos <i class="fas fa-chevron-down" style="margin-left: 5px;"></i>
+    </button>
+  </div>
+
   <!-- RESEÑAS -->
   <div class="reviews-section">
     <h3 style="color: #fff; margin-top: 0; margin-bottom: 15px;">Opiniones de Clientes</h3>
@@ -514,7 +520,7 @@
   </div>
 </div>
 
-<!-- MODAL FAVORITOS (CORREGIDO) -->
+<!-- MODAL FAVORITOS -->
 <div id="modalFavoritos" class="modal">
   <div class="modal-content">
     <button class="cerrar-modal" onclick="cerrarFavoritosModal()">×</button>
@@ -658,7 +664,11 @@
 
   let productosNubeGlobal = [];
   let globalAudioCtx = null;
-  const META_ENVIO_GRATIS = 40.00; // Puedes ajustar el monto meta para el envío aquí
+  const META_ENVIO_GRATIS = 40.00;
+  
+  // VARIABLE GLOBAL PARA LA PAGINACIÓN
+  let filtroGlobal = { categoria: 'todos', coleccion: 'todos', estado: 'todos', busqueda: '' };
+  let limiteActual = 12;
   
   let eventoInstalacion = null;
   window.addEventListener('beforeinstallprompt', (e) => {
@@ -863,10 +873,11 @@
     }
 
     renderizarSelectColecciones(lista);
+    
+    // Reiniciar paginación antes de aplicar
+    limiteActual = 12;
     aplicarFiltrosGlobales();
   };
-
-  let filtroGlobal = { categoria: 'todos', coleccion: 'todos', estado: 'todos', busqueda: '' };
 
   function renderizarSelectColecciones(productos) {
     const select = document.getElementById('selectColeccion');
@@ -883,19 +894,24 @@
     select.innerHTML = html; select.value = valorSeleccionado;
   }
 
-  window.cambiarColeccionDropdown = function(col) { reproducirSonido(); filtroGlobal.coleccion = col; aplicarFiltrosGlobales(); };
+  // --- FILTROS QUE REINICIAN LA PAGINACIÓN ---
+  window.cambiarColeccionDropdown = function(col) { reproducirSonido(); filtroGlobal.coleccion = col; limiteActual = 12; aplicarFiltrosGlobales(); };
   window.filtrarCategoria = function(cat) {
     reproducirSonido();
     document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('activa'));
     let cardVisual = document.querySelector(`.cat-card[onclick*="'${cat}'"]`);
     if(cardVisual) cardVisual.classList.add('activa');
-    filtroGlobal.categoria = cat; aplicarFiltrosGlobales();
+    filtroGlobal.categoria = cat; limiteActual = 12; aplicarFiltrosGlobales();
   };
-  window.filtrarEstadoDropdown = function(est) { reproducirSonido(); filtroGlobal.estado = est; aplicarFiltrosGlobales(); };
-  window.buscarProductos = function() { filtroGlobal.busqueda = document.getElementById('buscador').value.trim().toLowerCase(); aplicarFiltrosGlobales(); };
+  window.filtrarEstadoDropdown = function(est) { reproducirSonido(); filtroGlobal.estado = est; limiteActual = 12; aplicarFiltrosGlobales(); };
+  window.buscarProductos = function() { filtroGlobal.busqueda = document.getElementById('buscador').value.trim().toLowerCase(); limiteActual = 12; aplicarFiltrosGlobales(); };
 
+  // --- LÓGICA DE MOSTRAR PRODUCTOS + PAGINACIÓN ---
   function aplicarFiltrosGlobales() {
     let productos = document.querySelectorAll('#catalogoNube .item-producto');
+    let mostrados = 0;
+    let coincidencias = 0;
+
     productos.forEach(card => {
       let cat = (card.getAttribute('data-categoria') || '').toLowerCase();
       let est = card.getAttribute('data-estado') || '';
@@ -907,9 +923,53 @@
       let cumpleEst = (filtroGlobal.estado === 'todos' || est.includes(filtroGlobal.estado));
       let cumpleBusqueda = (!filtroGlobal.busqueda || nom.includes(filtroGlobal.busqueda) || col.includes(filtroGlobal.busqueda));
 
-      card.style.display = (cumpleCat && cumpleCol && cumpleEst && cumpleBusqueda) ? 'block' : 'none';
+      let cumpleFiltros = (cumpleCat && cumpleCol && cumpleEst && cumpleBusqueda);
+
+      if (cumpleFiltros) {
+        coincidencias++;
+        if (mostrados < limiteActual) {
+          card.style.display = 'block';
+          mostrados++;
+        } else {
+          card.style.display = 'none'; // Se oculta temporalmente por paginación
+        }
+      } else {
+        card.style.display = 'none'; // Se oculta porque no cumple el filtro
+      }
     });
+
+    // Controlar visibilidad del botón "Cargar más"
+    let btnCargarMas = document.getElementById('btnCargarMas');
+    if (btnCargarMas) {
+      btnCargarMas.style.display = (coincidencias > limiteActual) ? 'block' : 'none';
+    }
   }
+
+  // --- FUNCIÓN DEL BOTÓN CARGAR MÁS ---
+  window.cargarMasProductos = function() {
+    reproducirSonido();
+    limiteActual += 12; // Aumentar límite en 12
+    aplicarFiltrosGlobales(); // Re-evaluar qué mostrar
+  };
+
+  // --- ORDENAR TAMBIÉN REINICIA LA PAGINACIÓN ---
+  window.ordenarProductos = function() {
+    reproducirSonido(); 
+    let modo = document.getElementById('selectOrden').value; 
+    let contenedor = document.getElementById('catalogoNube');
+    let cards = Array.from(contenedor.querySelectorAll('.item-producto'));
+    
+    if (modo === 'menor') { cards.sort((a, b) => parseFloat(a.getAttribute('data-precio') || 0) - parseFloat(b.getAttribute('data-precio') || 0)); } 
+    else if (modo === 'mayor') { cards.sort((a, b) => parseFloat(b.getAttribute('data-precio') || 0) - parseFloat(a.getAttribute('data-precio') || 0)); } 
+    else if (modo === 'reciente') { cards.sort((a, b) => parseFloat(b.getAttribute('data-timestamp') || 0) - parseFloat(a.getAttribute('data-timestamp') || 0)); } 
+    else if (modo === 'antiguo') { cards.sort((a, b) => parseFloat(a.getAttribute('data-timestamp') || 0) - parseFloat(b.getAttribute('data-timestamp') || 0)); } 
+    else { cards.sort((a, b) => parseFloat(b.getAttribute('data-timestamp') || 0) - parseFloat(a.getAttribute('data-timestamp') || 0)); }
+    
+    cards.forEach(card => contenedor.appendChild(card));
+    
+    limiteActual = 12; // Volver a mostrar solo 12
+    aplicarFiltrosGlobales();
+  };
 
   window.abrirModalPorId = function(prodId) {
     reproducirSonido();
@@ -1140,7 +1200,6 @@
     localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos)); actualizarBadges();
   };
   
-  // FUNCION CORREGIDA Y LIMPIA PARA BORRAR FAVORITOS
   window.removerDeFavoritos = function(index) {
     reproducirSonido();
     favoritos.splice(index, 1);
@@ -1217,7 +1276,6 @@
     renderizarListaCarrito();
   };
 
-  // --- LÓGICA DE BARRA DE ENVÍO GRATIS ---
   function actualizarBarraEnvio(subtotalFisico) {
     let box = document.getElementById('boxEnvioGratis');
     let txt = document.getElementById('txtEnvioGratis');
@@ -1244,7 +1302,6 @@
     }
   }
 
-  // --- LÓGICA DE AÑADIR DESDE UPSELL ---
   window.agregarUpsell = function(id) {
     reproducirSonido();
     let prod = productosNubeGlobal.find(p => p.id === id);
@@ -1295,12 +1352,10 @@
       });
     }
 
-    // --- Lógica del Upselling ---
     if (carrito.length > 0) {
-      // Buscar productos de menos de $15 que no estén ya en el carrito
       let candidatos = productosNubeGlobal.filter(p => !p.oculto && Number(p.precio) <= 15 && !carrito.some(c => c.id === p.id));
-      candidatos.sort(() => 0.5 - Math.random()); // Mezclar
-      let sugerencias = candidatos.slice(0, 4); // Agarrar 4
+      candidatos.sort(() => 0.5 - Math.random()); 
+      let sugerencias = candidatos.slice(0, 4); 
       
       if(sugerencias.length > 0) {
         boxUpsell.style.display = 'block';
@@ -1378,7 +1433,6 @@
   window.cerrarCarritoModal = function() { document.getElementById('modalCarrito').style.display = 'none'; };
   window.vaciarCarrito = function() { reproducirSonido(); carrito = []; descuentoAplicado = 0; actualizarCarritoUI(); renderizarListaCarrito(); };
 
-  // --- LÓGICA DE COMPARTIR WISHLIST ---
   window.compartirCarrito = function() {
     reproducirSonido();
     if(carrito.length === 0) return alert("Tu lista está vacía. Añade productos primero.");
