@@ -514,7 +514,7 @@
   </div>
 </div>
 
-<!-- MODAL FAVORITOS -->
+<!-- MODAL FAVORITOS (CORREGIDO) -->
 <div id="modalFavoritos" class="modal">
   <div class="modal-content">
     <button class="cerrar-modal" onclick="cerrarFavoritosModal()">×</button>
@@ -1140,15 +1140,34 @@
     localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos)); actualizarBadges();
   };
   
+  // FUNCION CORREGIDA Y LIMPIA PARA BORRAR FAVORITOS
+  window.removerDeFavoritos = function(index) {
+    reproducirSonido();
+    favoritos.splice(index, 1);
+    localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos));
+    actualizarBadges();
+    abrirFavoritosModal();
+  };
+
   window.abrirFavoritosModal = function() {
     reproducirSonido(); 
     let cont = document.getElementById('listaFavoritosDetalle');
-    cont.innerHTML = favoritos.length === 0 ? "<p style='color:var(--text-muted);'>No tienes productos guardados.</p>" : "";
+    cont.innerHTML = favoritos.length === 0 ? "<p style='color:var(--text-muted); text-align:center;'>No tienes productos guardados.</p>" : "";
+    
     favoritos.forEach((item, i) => { 
-      cont.innerHTML += `<div class="cart-item-row"><img src="${item.img}" class="cart-item-img" loading="lazy" decoding="async"><div class="cart-item-info"><strong>${sanitizarHTML(item.titulo)}</strong><br><span style="color:var(--secondary-color);">$${Number(item.precio).toFixed(2)}</span></div><button class="cart-item-del" onclick="favoritos.splice(${i},1);localStorage.setItem('sakura_favoritos',JSON.stringify(favoritos));actualizarBadges();abrirFavoritosModal();"><i class="fas fa-trash"></i></button></div>`; 
+      cont.innerHTML += `
+        <div class="cart-item-row">
+          <img src="${item.img}" class="cart-item-img" loading="lazy" decoding="async" style="cursor:pointer;" onclick="cerrarFavoritosModal(); abrirModalPorId('${item.id}')">
+          <div class="cart-item-info" style="cursor:pointer;" onclick="cerrarFavoritosModal(); abrirModalPorId('${item.id}')">
+            <strong>${sanitizarHTML(item.titulo)}</strong><br>
+            <span style="color:var(--secondary-color);">$${Number(item.precio).toFixed(2)}</span>
+          </div>
+          <button class="cart-item-del" onclick="removerDeFavoritos(${i})"><i class="fas fa-trash"></i></button>
+        </div>`; 
     });
     document.getElementById('modalFavoritos').style.display = 'flex';
   };
+  
   window.cerrarFavoritosModal = function() { document.getElementById('modalFavoritos').style.display = 'none'; };
 
   window.abrirCofreModal = function() { reproducirSonido(); document.getElementById('modalCofreDiario').style.display = 'flex'; };
