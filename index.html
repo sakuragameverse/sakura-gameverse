@@ -7,7 +7,7 @@
   
   <!-- Configuración App / PWA -->
   <link rel="manifest" href="manifest.json">
-  <link rel="icon" type="image/webp" href="logo.webp">
+  <link rel="icon" type="image/webp" href="logo.webp?v=2">
   <meta name="theme-color" content="#090314">
   
   <!-- Fuentes Gamer / UI -->
@@ -294,32 +294,6 @@
       border-radius: 50%;
     }
 
-    .bcv-box {
-      background: rgba(0, 229, 255, 0.05);
-      border: 1px solid var(--border-color);
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 5px 14px;
-      border-radius: var(--radius-sm);
-      font-size: 0.85em;
-      color: var(--secondary-color);
-    }
-    .bcv-input {
-      background: #07010f;
-      border: 1px solid var(--border-color);
-      color: #fff;
-      padding: 4px 8px;
-      border-radius: var(--radius-sm);
-      width: 85px;
-      text-align: center;
-      font-family: 'Rajdhani', sans-serif;
-      font-weight: 700;
-      font-size: 1em;
-      outline: none;
-    }
-    .bcv-input:focus { border-color: var(--secondary-color); }
-
     .banner-slider-container {
       position: relative;
       width: 100%;
@@ -576,11 +550,6 @@
       font-size: 1.3em;
       font-weight: 700;
       color: var(--secondary-color);
-    }
-    .card-bs {
-      font-size: 0.85em;
-      color: var(--text-muted);
-      margin-top: 2px;
     }
     
     .badge-estado {
@@ -1051,7 +1020,7 @@
 </div>
 
 <div class="hero-banner">
-  <img src="logo.webp" alt="Sakura Gameverse" class="hero-logo" onclick="activarEasterEggLogo()" loading="eager" decoding="async">
+  <img src="logo.webp?v=2" alt="Sakura Gameverse" class="hero-logo" onclick="activarEasterEggLogo()" loading="eager" decoding="async">
   <br>
   <div class="store-status-badge"><div class="status-dot"></div> Horario de Atención: 10:00 AM - 7:00 PM</div>
   <div class="hero-title">Sakura Gameverse</div>
@@ -1059,10 +1028,6 @@
   
   <div id="bannerSliderContainer" class="banner-slider-container"></div>
   <br>
-  <div class="bcv-box">
-    <i class="fas fa-calculator"></i> Tasa Oficial BCV:
-    <input type="number" id="inputTasaBcv" class="bcv-input" step="0.01" value="860" oninput="cambiarTasaBcvManual()"> Bs / USD
-  </div>
 </div>
 
 <div class="container">
@@ -1078,54 +1043,54 @@
       
       <div class="carrusel-track" id="categoriasTrack">
         <div class="cat-card activa" onclick="filtrarCategoria('todos')">
-          <img src="logo.webp" id="img-cat-todos" class="cat-img" alt="Todos" loading="lazy" decoding="async">
+          <img src="logo.webp?v=2" id="img-cat-todos" class="cat-img" alt="Todos" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-todos">Todo el Stock</div><div class="cat-count" id="count-todos">0 items</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('recargas')">
-          <img src="logo.webp" id="img-cat-recargas" class="cat-img" alt="Recargas" loading="lazy" decoding="async">
+          <img src="logo.webp?v=2" id="img-cat-recargas" class="cat-img" alt="Recargas" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-recargas">Recargas</div><div class="cat-count" id="count-recargas">0 items</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('mangas')">
-          <img src="logo.webp" id="img-cat-mangas" class="cat-img" alt="Mangas" loading="lazy" decoding="async">
+          <img src="logo.webp?v=2" id="img-cat-mangas" class="cat-img" alt="Mangas" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-mangas">Mangas & Libros</div><div class="cat-count" id="count-mangas">0 items</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('ropa')">
-          <img src="logo.webp" id="img-cat-ropa" class="cat-img" alt="Ropa" loading="lazy" decoding="async">
+          <img src="logo.webp?v=2" id="img-cat-ropa" class="cat-img" alt="Ropa" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-ropa">Vestimenta</div><div class="cat-count" id="count-ropa">0 items</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('cartas')">
-          <img src="logo.webp" id="img-cat-cartas" class="cat-img" alt="TCG" loading="lazy" decoding="async">
+          <img src="logo.webp?v=2" id="img-cat-cartas" class="cat-img" alt="TCG" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-cartas">TCG & Cartas</div><div class="cat-count" id="count-cartas">0 items</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('figuras')">
-          <img src="logo.webp" id="img-cat-figuras" class="cat-img" alt="Figuras" loading="lazy" decoding="async">
+          <img src="logo.webp?v=2" id="img-cat-figuras" class="cat-img" alt="Figuras" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-figuras">Figuras</div><div class="cat-count" id="count-figuras">0 items</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('mandos')">
-          <img src="logo.webp" id="img-cat-mandos" class="cat-img" alt="Mandos" loading="lazy" decoding="async">
+          <img src="logo.webp?v=2" id="img-cat-mandos" class="cat-img" alt="Mandos" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-mandos">Mandos & Consolas</div><div class="cat-count" id="count-mandos">0 items</div></div>
         </div>
         
         <!-- Categoría Matriz: Periféricos Gamer -->
         <div class="cat-card" onclick="filtrarCategoria('perifericos')">
-          <img src="logo.webp" id="img-cat-perifericos" class="cat-img" alt="Periféricos" loading="lazy" decoding="async">
+          <img src="logo.webp?v=2" id="img-cat-perifericos" class="cat-img" alt="Periféricos" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-perifericos">Periféricos Gamer</div><div class="cat-count" id="count-perifericos">0 items</div></div>
         </div>
 
         <div class="cat-card" onclick="filtrarCategoria('peluches')">
-          <img src="logo.webp" id="img-cat-peluches" class="cat-img" alt="Peluches" loading="lazy" decoding="async">
+          <img src="logo.webp?v=2" id="img-cat-peluches" class="cat-img" alt="Peluches" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-peluches">Peluches</div><div class="cat-count" id="count-peluches">0 items</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('katanas')">
-          <img src="logo.webp" id="img-cat-katanas" class="cat-img" alt="Katanas" loading="lazy" decoding="async">
+          <img src="logo.webp?v=2" id="img-cat-katanas" class="cat-img" alt="Katanas" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-katanas">Katanas</div><div class="cat-count" id="count-katanas">0 items</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('lamparas')">
-          <img src="logo.webp" id="img-cat-lamparas" class="cat-img" alt="Lámparas" loading="lazy" decoding="async">
+          <img src="logo.webp?v=2" id="img-cat-lamparas" class="cat-img" alt="Lámparas" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-lamparas">Lámparas</div><div class="cat-count" id="count-lamparas">0 items</div></div>
         </div>
         <div class="cat-card" onclick="filtrarCategoria('accesorios')">
-          <img src="logo.webp" id="img-cat-accesorios" class="cat-img" alt="Accesorios" loading="lazy" decoding="async">
+          <img src="logo.webp?v=2" id="img-cat-accesorios" class="cat-img" alt="Accesorios" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-accesorios">Accesorios</div><div class="cat-count" id="count-accesorios">0 items</div></div>
         </div>
       </div>
@@ -1363,8 +1328,6 @@
   const db = getFirestore(app);
 
   let productosNubeGlobal = [];
-  let tasaBcvActual = parseFloat(localStorage.getItem('sakura_tasa_bcv')) || 860;
-  document.getElementById('inputTasaBcv').value = tasaBcvActual;
 
   let globalAudioCtx = null;
   window.reproducirSonido = function() {
@@ -1433,15 +1396,6 @@
       }
     }, 70);
   }
-
-  window.cambiarTasaBcvManual = function() {
-    let val = parseFloat(document.getElementById('inputTasaBcv').value);
-    if (!isNaN(val) && val > 0) {
-      tasaBcvActual = val;
-      localStorage.setItem('sakura_tasa_bcv', tasaBcvActual);
-      renderizarProductosEnTienda(productosNubeGlobal);
-    }
-  };
 
   async function cargarDatosPagoNube() {
     try {
@@ -1576,8 +1530,7 @@
     }
 
     lista.forEach((prod, indexProd) => {
-      let precioBs = (prod.precio || 0) * tasaBcvActual;
-      let fotosArray = (prod.fotos && prod.fotos.length > 0) ? prod.fotos : ['logo.webp'];
+      let fotosArray = (prod.fotos && prod.fotos.length > 0) ? prod.fotos : ['logo.webp?v=2'];
       let categoria = (prod.categoria || 'mangas').toLowerCase();
       let coleccion = prod.coleccion || 'General';
       let timestamp = prod.timestamp || 0;
@@ -1618,7 +1571,6 @@
           <div class="card-img-container" id="carrusel-card-${indexProd}">${imgsHtml}${botonesCarrusel}</div>
           <div class="card-title">${sanitizarHTML(prod.nombre)}</div>
           <div class="precio-container"><span class="card-price">$${Number(prod.precio).toFixed(2)}</span></div>
-          <div class="card-bs">≈ Bs. ${precioBs.toLocaleString('es-VE', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
         </div>
       `;
     });
@@ -1720,7 +1672,7 @@
     const prod = productosNubeGlobal.find(p => p.id === prodId);
     if (!prod) return;
 
-    const fotosArray = (prod.fotos && prod.fotos.length > 0) ? prod.fotos : ['logo.webp'];
+    const fotosArray = (prod.fotos && prod.fotos.length > 0) ? prod.fotos : ['logo.webp?v=2'];
     const categoria = (prod.categoria || 'mangas').toLowerCase();
     const esRopa = categoria.includes('ropa') || categoria.includes('hoodie');
     const esRecarga = categoria === 'recargas';
@@ -1946,7 +1898,7 @@
         id: prod.id,
         titulo: prod.nombre, 
         precio: prod.precio, 
-        img: (prod.fotos && prod.fotos[0]) ? prod.fotos[0] : 'logo.webp'
+        img: (prod.fotos && prod.fotos[0]) ? prod.fotos[0] : 'logo.webp?v=2'
       }); 
     } else { 
       favoritos.splice(idx, 1); 
@@ -2069,10 +2021,8 @@
 
       let sub = carrito.reduce((s, i) => s + Number(i.precio), 0);
       let tot = sub * (1 - descuentoAplicado);
-      let totBs = tot * tasaBcvActual;
 
       html += `<div style="border-top:1px dashed var(--border-color); margin-top:6px; padding-top:6px;" class="recibo-line"><strong>TOTAL USD:</strong> <strong>$${tot.toFixed(2)}</strong></div>`;
-      html += `<div class="recibo-line"><strong>TOTAL BS:</strong> <strong>Bs. ${totBs.toLocaleString('es-VE', {minimumFractionDigits:2, maximumFractionDigits:2})}</strong></div>`;
 
       reciboContenido.innerHTML = html;
       document.getElementById('modalCarritoTotal').innerText = `Total: $${tot.toFixed(2)}`;
@@ -2182,7 +2132,6 @@
 
     let sub = carrito.reduce((s, i) => s + Number(i.precio), 0); 
     let tot = sub * (1 - descuentoAplicado); 
-    let totBs = tot * tasaBcvActual;
     
     let msg = `Hola Sakura Gameverse, deseo procesar el siguiente pedido:\n\n`;
     
@@ -2203,7 +2152,7 @@
       msg += `Modalidad: Acreditación Directa\n\n`;
     }
 
-    msg += `Total a Cancelar: $${tot.toFixed(2)} (Bs. ${totBs.toLocaleString('es-VE', {minimumFractionDigits:2, maximumFractionDigits:2})})\nQuedo a la espera de confirmación y datos de pago.`;
+    msg += `Total a Cancelar: $${tot.toFixed(2)}\nQuedo a la espera de confirmación y datos de pago.`;
     
     window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msg), '_blank'); 
     cerrarCarritoModal();
