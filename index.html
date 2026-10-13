@@ -19,23 +19,32 @@
 
   <style>
     :root {
-      --bg-color: #080212;
-      --card-bg: #120624;
-      --card-hover-bg: #190933;
+      /* Paleta Base - Tonos más profundos para contrastar con el cristal */
+      --bg-color: #05010a; 
+      --card-bg-solid: #110524;
+      
+      /* Colores Glassmorphism (Cristal) */
+      --glass-bg: rgba(17, 5, 36, 0.45); /* Fondo semi-transparente */
+      --glass-border: rgba(255, 255, 255, 0.08); /* Borde sutil blanquecino */
+      --glass-highlight: rgba(0, 229, 255, 0.2); /* Brillo al interactuar */
+      
       --text-color: #e6e9f0;
       --text-muted: #8b8f9e;
       --primary-color: #ff007f;
+      --primary-glow: rgba(255, 0, 127, 0.4);
       --secondary-color: #00e5ff;
+      --secondary-glow: rgba(0, 229, 255, 0.4);
       --border-color: rgba(0, 229, 255, 0.16);
-      --hero-bg: #0f0421;
-      --radius-sm: 4px;
-      --radius-md: 8px;
+      --hero-bg: #0a0216;
+      --radius-sm: 8px; /* Bordes un poco más suaves */
+      --radius-md: 16px;
+      --radius-pill: 50px;
     }
 
-    body.theme-rosa { --bg-color: #080212; --card-bg: #120624; --text-color: #e6e9f0; --primary-color: #ff007f; --secondary-color: #00e5ff; --hero-bg: #0f0421; }
-    body.theme-azul { --bg-color: #020712; --card-bg: #06152b; --text-color: #e0f4ff; --primary-color: #0099ff; --secondary-color: #00ffcc; --hero-bg: #040e1f; }
-    body.theme-purpura { --bg-color: #0c0214; --card-bg: #1b072c; --text-color: #f7e6ff; --primary-color: #b000ff; --secondary-color: #ff00c8; --hero-bg: #140421; }
-    body.theme-overdrive { --bg-color: #140301; --card-bg: #290a03; --text-color: #fff2ed; --primary-color: #ff5500; --secondary-color: #ffaa00; --hero-bg: #210701; }
+    body.theme-rosa { --bg-color: #05010a; --glass-bg: rgba(17, 5, 36, 0.45); --primary-color: #ff007f; --secondary-color: #00e5ff; }
+    body.theme-azul { --bg-color: #01040a; --glass-bg: rgba(6, 21, 43, 0.45); --primary-color: #0099ff; --secondary-color: #00ffcc; }
+    body.theme-purpura { --bg-color: #08010f; --glass-bg: rgba(27, 7, 44, 0.45); --primary-color: #b000ff; --secondary-color: #ff00c8; }
+    body.theme-overdrive { --bg-color: #0a0100; --glass-bg: rgba(41, 10, 3, 0.45); --primary-color: #ff5500; --secondary-color: #ffaa00; }
 
     * { box-sizing: border-box; }
 
@@ -48,19 +57,21 @@
       font-weight: 500;
       letter-spacing: 0.5px;
       overflow-x: hidden;
-      padding-bottom: 80px; 
+      padding-bottom: 90px; /* Más espacio para la nav flotante */
     }
 
+    /* Fondo animado más profundo e inmersivo */
     body::before {
       content: "";
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: radial-gradient(circle at 50% 10%, rgba(255, 0, 127, 0.08) 0%, transparent 60%),
+      background: radial-gradient(circle at 50% 0%, rgba(255, 0, 127, 0.08) 0%, transparent 60%),
+                  radial-gradient(circle at 80% 80%, rgba(0, 229, 255, 0.05) 0%, transparent 50%),
                   linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
                   linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-      background-size: 100% 100%, 40px 40px, 40px 40px;
+      background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
       pointer-events: none;
-      z-index: 0;
+      z-index: -1; /* Para que quede detrás de todo */
       will-change: transform;
     }
 
@@ -78,7 +89,8 @@
     }
 
     .top-bar-notice {
-      background: #0b0318;
+      background: rgba(5, 1, 10, 0.8);
+      backdrop-filter: blur(5px);
       border-bottom: 1px solid var(--border-color);
       padding: 7px 14px;
       font-size: 0.85em;
@@ -90,7 +102,8 @@
     }
 
     .ticker-bar {
-      background: #0e0520;
+      background: rgba(14, 5, 32, 0.8);
+      backdrop-filter: blur(5px);
       border-bottom: 1px solid rgba(255, 0, 127, 0.2);
       color: var(--secondary-color);
       font-size: 0.8em;
@@ -107,7 +120,7 @@
     @keyframes ticker-slide { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
     .hero-banner {
-      background: radial-gradient(ellipse at top, #1a0833 0%, var(--hero-bg) 70%);
+      background: radial-gradient(ellipse at top, rgba(26, 8, 51, 0.5) 0%, transparent 70%);
       text-align: center;
       padding: 25px 20px;
       border-bottom: 1px solid var(--border-color);
@@ -144,16 +157,19 @@
       color: #fff;
       margin-bottom: 12px;
       font-weight: 600;
+      text-shadow: 0 0 10px rgba(0,0,0,0.8);
     }
 
     .store-status-badge {
       display: inline-flex;
       align-items: center;
       gap: 7px;
-      background: rgba(37, 211, 102, 0.1);
+      /* Estilo Glass para el badge */
+      background: rgba(37, 211, 102, 0.15);
+      backdrop-filter: blur(4px);
       border: 1px solid rgba(37, 211, 102, 0.4);
-      padding: 4px 10px;
-      border-radius: var(--radius-sm);
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
       font-size: 0.8em;
       font-weight: 600;
       color: #25d366;
@@ -163,6 +179,7 @@
       width: 7px; height: 7px;
       background-color: #25D366;
       border-radius: 50%;
+      box-shadow: 0 0 8px #25D366;
     }
 
     .banner-slider-container {
@@ -174,7 +191,8 @@
       overflow: hidden;
       aspect-ratio: 16/9;
       background: #000;
-      border: 1px solid var(--border-color);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
       display: none;
     }
     .banner-slide {
@@ -188,38 +206,44 @@
       will-change: opacity;
     }
     .banner-slide.active { opacity: 1; z-index: 2; }
+    
+    /* Botones Slider Glassmorphism */
     .banner-control-btn {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(0, 0, 0, 0.65);
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(8px);
       color: var(--secondary-color);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-sm);
-      width: 32px; height: 32px;
+      border: 1px solid var(--glass-border);
+      border-radius: 50%;
+      width: 36px; height: 36px;
       display: flex; align-items: center; justify-content: center;
       cursor: pointer;
       z-index: 10;
       transition: all 0.2s ease;
     }
-    .banner-control-btn:hover { background: var(--secondary-color); color: #000; }
+    .banner-control-btn:hover { background: rgba(0, 229, 255, 0.2); color: #fff; box-shadow: 0 0 15px var(--secondary-color); }
     .banner-prev { left: 10px; } .banner-next { right: 10px; }
+    
     .banner-dots {
       position: absolute;
       bottom: 10px; right: 15px;
       display: flex; gap: 5px;
       z-index: 10;
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
       padding: 4px 8px;
-      border-radius: var(--radius-sm);
+      border-radius: var(--radius-pill);
     }
     .banner-dot {
       width: 6px; height: 6px;
       background: rgba(255, 255, 255, 0.3);
-      border-radius: var(--radius-sm);
+      border-radius: var(--radius-pill);
       cursor: pointer;
+      transition: all 0.3s ease;
     }
-    .banner-dot.active { background: var(--secondary-color); width: 14px; }
+    .banner-dot.active { background: var(--secondary-color); width: 14px; box-shadow: 0 0 8px var(--secondary-color); }
 
     .container {
       padding: 25px 18px 80px 18px;
@@ -229,30 +253,34 @@
       z-index: 2;
     }
 
+    /* Buscador Glassmorphism */
     .search-box {
       margin-bottom: 25px;
       display: flex;
       justify-content: center;
     }
     .search-input {
-      background: #0d041a;
-      border: 1px solid var(--border-color);
+      background: var(--glass-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
       color: #fff;
-      padding: 10px 16px;
+      padding: 12px 20px;
       width: 100%;
       max-width: 480px;
-      border-radius: var(--radius-sm);
+      border-radius: var(--radius-pill);
       font-family: 'Rajdhani', sans-serif;
       font-size: 1em;
       outline: none;
-      transition: border-color 0.2s ease;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
     .search-input:focus {
       border-color: var(--secondary-color);
-      box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
+      background: rgba(17, 5, 36, 0.7);
     }
 
-    .categorias-visuales-section { margin-bottom: 25px; }
+    .categorias-visuales-section { margin-bottom: 30px; }
     .categorias-visuales-header {
       font-family: 'Chakra Petch', sans-serif;
       font-size: 1.1em;
@@ -261,6 +289,7 @@
       margin-bottom: 12px;
       border-left: 3px solid var(--primary-color);
       padding-left: 8px;
+      text-shadow: 0 0 10px rgba(255,0,127,0.3);
     }
     .carrusel-wrapper { position: relative; display: flex; align-items: center; }
     .carrusel-track {
@@ -269,31 +298,35 @@
       overflow-x: auto;
       scroll-behavior: smooth;
       scrollbar-width: none;
-      padding: 6px 2px;
+      padding: 8px 2px;
       -webkit-overflow-scrolling: touch; 
     }
     .carrusel-track::-webkit-scrollbar { display: none; }
     
+    /* Categorías Glassmorphism */
     .cat-card {
       flex: 0 0 auto;
       width: 130px;
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-sm);
+      background: var(--glass-bg);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
       overflow: hidden;
       cursor: pointer;
-      transition: transform 0.2s ease, border-color 0.2s ease;
+      transition: all 0.3s ease;
       will-change: transform;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
     .cat-card:hover, .cat-card.activa {
-      transform: translateY(-3px);
+      transform: translateY(-5px);
       border-color: var(--secondary-color);
+      box-shadow: 0 8px 20px rgba(0, 229, 255, 0.15);
     }
     .cat-img {
       width: 100%; height: 110px;
       object-fit: contain; 
-      background: rgba(0, 229, 255, 0.05); 
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      background: rgba(0, 0, 0, 0.2); 
+      border-bottom: 1px solid var(--glass-border);
       padding: 10px; 
     }
     .cat-info { padding: 8px 6px; text-align: center; }
@@ -311,16 +344,18 @@
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(10, 3, 20, 0.85);
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
       color: var(--secondary-color);
-      border: 1px solid var(--border-color);
+      border: 1px solid var(--glass-border);
       width: 32px; height: 32px;
-      border-radius: var(--radius-sm);
+      border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       cursor: pointer;
       z-index: 10;
+      transition: all 0.2s ease;
     }
-    .carrusel-arrow:hover { background: var(--secondary-color); color: #000; }
+    .carrusel-arrow:hover { background: var(--secondary-color); color: #000; box-shadow: 0 0 10px var(--secondary-color); }
     .arrow-prev { left: -10px; } .arrow-next { right: -10px; }
 
     .controles-superiores { margin-bottom: 25px; }
@@ -329,83 +364,107 @@
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 10px;
     }
+    /* Selects Glassmorphism */
     .ordenar-select {
-      background: #0d041a;
-      border: 1px solid var(--border-color);
+      background: var(--glass-bg);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--glass-border);
       color: #fff;
-      padding: 9px 12px;
+      padding: 10px 14px;
       border-radius: var(--radius-sm);
       font-family: 'Rajdhani', sans-serif;
       font-weight: 600;
       font-size: 0.9em;
       cursor: pointer;
       outline: none;
-      transition: border-color 0.2s ease;
+      transition: all 0.3s ease;
+      /* Custom arrow */
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2300e5ff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px top 50%;
+      background-size: 10px auto;
     }
-    .ordenar-select:focus { border-color: var(--secondary-color); }
+    .ordenar-select:focus { border-color: var(--secondary-color); background: rgba(17, 5, 36, 0.8); }
 
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-      gap: 16px;
+      gap: 18px;
     }
+    
+    /* TARJETAS DE PRODUCTO GLASSMORPHISM */
     .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-sm);
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
       padding: 12px;
       text-align: left;
       position: relative;
       cursor: pointer;
-      transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
       will-change: transform;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     }
     .card:hover {
-      background: var(--card-hover-bg);
+      background: rgba(25, 9, 51, 0.55);
       border-color: var(--secondary-color);
-      transform: translateY(-4px);
+      transform: translateY(-6px);
+      box-shadow: 0 12px 40px rgba(0, 229, 255, 0.15);
     }
+    
     .card-img-container {
       position: relative;
       width: 100%;
       height: 220px;
-      background: #000;
+      background: rgba(0, 0, 0, 0.4);
       border-radius: var(--radius-sm);
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.03);
     }
     .card-img-container img { width: 100%; height: 100%; object-fit: contain; display: none; }
-    .card-img-container img.activa { display: block; }
+    .card-img-container img.activa { display: block; animation: fadeImg 0.3s ease; }
+    @keyframes fadeImg { from { opacity: 0.5; } to { opacity: 1; } }
     
     .carrusel-btn {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
       color: var(--secondary-color);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-sm);
-      width: 26px; height: 26px;
+      border: 1px solid var(--glass-border);
+      border-radius: 50%;
+      width: 28px; height: 28px;
       display: flex; align-items: center; justify-content: center;
       cursor: pointer;
       font-size: 0.75em;
       z-index: 4;
+      transition: all 0.2s ease;
     }
     .carrusel-btn:hover { background: var(--secondary-color); color: #000; }
     .carrusel-prev { left: 6px; } .carrusel-next { right: 6px; }
+    
     .carrusel-dots {
       position: absolute;
-      bottom: 6px; left: 50%;
+      bottom: 8px; left: 50%;
       transform: translateX(-50%);
-      display: flex; gap: 4px;
+      display: flex; gap: 5px;
       z-index: 4;
+      background: rgba(0,0,0,0.4);
+      padding: 3px 6px;
+      border-radius: var(--radius-pill);
     }
     .dot {
-      width: 5px; height: 5px;
-      border-radius: 1px;
-      background: rgba(255, 255, 255, 0.3);
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      transition: all 0.2s ease;
     }
-    .dot.activo { background: var(--secondary-color); }
+    .dot.activo { background: var(--secondary-color); transform: scale(1.2); }
 
     .card-title {
       font-family: 'Chakra Petch', sans-serif;
@@ -416,364 +475,416 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
     .precio-container { display: flex; align-items: baseline; gap: 8px; }
     .card-price {
       font-size: 1.3em;
       font-weight: 700;
       color: var(--secondary-color);
+      text-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
     }
     
     .badge-estado {
       position: absolute;
-      top: 8px; right: 8px;
-      padding: 3px 8px;
+      top: 10px; right: 10px;
+      padding: 4px 10px;
       font-size: 0.7em;
       font-weight: 700;
       letter-spacing: 0.5px;
-      border-radius: var(--radius-sm);
+      border-radius: var(--radius-pill);
       text-transform: uppercase;
       z-index: 3;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
     }
-    .badge-stock { background: #00e5ff; color: #000; }
-    .badge-encargo { background: #ff007f; color: #fff; }
-    .badge-digital { background: #25D366; color: #000; }
+    .badge-stock { background: rgba(0, 229, 255, 0.85); color: #000; }
+    .badge-encargo { background: rgba(255, 0, 127, 0.85); color: #fff; }
+    .badge-digital { background: rgba(37, 211, 102, 0.85); color: #000; }
     
     .btn-fav-card {
       position: absolute;
-      top: 8px; left: 8px;
-      background: rgba(0,0,0,0.6);
-      border: 1px solid var(--border-color);
-      color: #ff3366;
-      width: 30px; height: 30px;
-      border-radius: var(--radius-sm);
+      top: 10px; left: 10px;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      border: 1px solid var(--glass-border);
+      color: var(--text-muted);
+      width: 32px; height: 32px;
+      border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       cursor: pointer;
       z-index: 3;
-      transition: background 0.2s ease;
+      transition: all 0.3s ease;
     }
-    .btn-fav-card:hover { background: rgba(255, 0, 127, 0.3); }
+    /* Animación de latido sutil para el favorito */
+    .btn-fav-card:hover { color: #ff3366; border-color: rgba(255, 51, 102, 0.5); transform: scale(1.1); }
+    .btn-fav-card.favorito { color: #ff3366; background: rgba(255, 51, 102, 0.15); border-color: #ff3366; }
 
+    /* Pestañas (Tabs) Carrito - Glassmorphism */
     .cart-tabs {
       display: flex;
       gap: 6px;
       margin-bottom: 15px;
-      background: #090214;
-      padding: 4px;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-sm);
+      background: rgba(0,0,0,0.3);
+      padding: 5px;
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-pill);
     }
     .cart-tab-btn {
       flex: 1;
       background: transparent;
       color: var(--text-muted);
       border: none;
-      padding: 8px 10px;
-      border-radius: var(--radius-sm);
+      padding: 10px 10px;
+      border-radius: var(--radius-pill);
       font-family: 'Chakra Petch', sans-serif;
       font-size: 0.82em;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
     }
     .cart-tab-btn.activo {
       background: var(--secondary-color);
       color: #000;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
     }
 
+    /* MODALES ESTILO CRISTAL */
     .modal {
       display: none;
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(4, 1, 10, 0.85);
+      background: rgba(2, 0, 6, 0.75);
       z-index: 2000;
       justify-content: center;
       align-items: center;
-      backdrop-filter: blur(4px);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
     }
     .modal-content {
-      background: #110524;
-      padding: 22px;
+      background: rgba(14, 4, 31, 0.85); /* Un poco más opaco que las cards para legibilidad */
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 24px;
       border-radius: var(--radius-md);
       text-align: left;
       max-width: 95%;
       width: 440px;
-      border: 1px solid var(--border-color);
-      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 15px 50px rgba(0,0,0,0.6), inset 0 0 20px rgba(255,255,255,0.02);
       position: relative;
-      max-height: calc(100vh - 90px);
+      max-height: calc(100vh - 100px);
       overflow-y: auto;
+      animation: modalSlideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
+    @keyframes modalSlideUp {
+      from { transform: translateY(40px) scale(0.95); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    
     .cerrar-modal {
       position: absolute;
-      top: 10px; right: 12px;
-      font-size: 22px;
+      top: 12px; right: 14px;
+      font-size: 24px;
       color: var(--text-muted);
       cursor: pointer;
-      background: none;
-      border: none;
-      font-weight: bold;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid transparent;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s ease;
     }
-    .cerrar-modal:hover { color: #fff; }
+    .cerrar-modal:hover { color: #fff; background: rgba(255, 51, 102, 0.2); border-color: #ff3366; }
     
-    .breadcrumbs { font-size: 0.8em; color: var(--text-muted); margin-bottom: 8px; }
-    .breadcrumbs span { color: var(--secondary-color); }
+    .breadcrumbs { font-size: 0.8em; color: var(--text-muted); margin-bottom: 10px; }
+    .breadcrumbs span { color: var(--secondary-color); text-shadow: 0 0 5px rgba(0,229,255,0.3); }
+    
     .modal-img {
       width: 100%; max-height: 320px;
       object-fit: contain;
-      background: #000;
+      background: rgba(0,0,0,0.4);
       border-radius: var(--radius-sm);
-      margin-bottom: 10px;
-      border: 1px solid var(--border-color);
+      margin-bottom: 12px;
+      border: 1px solid var(--glass-border);
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
     }
     .modal-tag-info {
       display: inline-block;
-      background: rgba(0, 229, 255, 0.08);
-      border: 1px solid var(--border-color);
+      background: rgba(0, 229, 255, 0.1);
+      border: 1px solid rgba(0, 229, 255, 0.3);
       color: var(--secondary-color);
-      padding: 3px 8px;
-      border-radius: var(--radius-sm);
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
       font-size: 0.75em;
       font-weight: 700;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.1);
     }
-    .modal-miniaturas { display: flex; gap: 8px; margin-bottom: 14px; overflow-x: auto; }
+    .modal-miniaturas { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 4px; }
     .modal-mini-img {
-      width: 60px; height: 60px;
+      width: 65px; height: 65px;
       object-fit: cover;
       border-radius: var(--radius-sm);
       cursor: pointer;
-      border: 1px solid var(--border-color);
+      border: 2px solid transparent;
       opacity: 0.5;
+      transition: all 0.2s ease;
     }
-    .modal-mini-img.activo { opacity: 1; border-color: var(--secondary-color); }
+    .modal-mini-img.activo { opacity: 1; border-color: var(--secondary-color); transform: scale(1.05); }
 
-    .talla-select, .recarga-input, .sugerencia-input {
-      background: #080112;
-      border: 1px solid var(--border-color);
+    /* Inputs y Selects dentro de Modales */
+    .talla-select, .recarga-input, .sugerencia-input, .cupon-input {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--glass-border);
       color: #fff;
-      padding: 8px 12px;
+      padding: 10px 14px;
       border-radius: var(--radius-sm);
       width: 100%;
       font-family: 'Rajdhani', sans-serif;
       font-size: 0.95em;
       outline: none;
+      transition: all 0.3s ease;
     }
-    .talla-select:focus, .recarga-input:focus, .sugerencia-input:focus {
+    .talla-select:focus, .recarga-input:focus, .sugerencia-input:focus, .cupon-input:focus {
       border-color: var(--secondary-color);
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.15);
+      background: rgba(17, 5, 36, 0.6);
     }
 
+    /* Botones Principales Neón */
     .btn-comprar {
-      background: var(--primary-color);
+      background: linear-gradient(135deg, var(--primary-color), #cc0066);
       color: #fff;
       border: none;
-      padding: 12px;
+      padding: 14px;
       font-family: 'Chakra Petch', sans-serif;
-      font-size: 1em;
+      font-size: 1.05em;
       font-weight: 700;
       border-radius: var(--radius-sm);
       cursor: pointer;
       width: 100%;
-      margin-top: 12px;
+      margin-top: 14px;
       letter-spacing: 0.5px;
-      transition: background 0.2s ease;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 15px var(--primary-glow);
     }
-    .btn-comprar:hover { background: #e00070; }
+    .btn-comprar:hover { 
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px var(--primary-glow), 0 0 10px var(--primary-color); 
+    }
+    /* Efecto de resplandor interno */
+    .btn-comprar::after {
+      content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+      background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
+      transform: skewX(-20deg); transition: 0.5s;
+    }
+    .btn-comprar:hover::after { left: 150%; }
     
     .btn-instalar {
-      background: linear-gradient(90deg, #25D366, #00e5ff);
+      background: linear-gradient(135deg, #25D366, #00e5ff);
       color: #000;
-      box-shadow: 0 0 15px rgba(37, 211, 102, 0.4);
-      animation: pulse-neon 2s infinite;
-    }
-    @keyframes pulse-neon {
-      0% { box-shadow: 0 0 5px rgba(37, 211, 102, 0.4); }
-      50% { box-shadow: 0 0 20px rgba(0, 229, 255, 0.8); }
-      100% { box-shadow: 0 0 5px rgba(37, 211, 102, 0.4); }
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
     }
 
     .btn-compartir {
-      background: transparent;
+      background: rgba(37, 211, 102, 0.05);
+      backdrop-filter: blur(4px);
       color: #25d366;
       border: 1px solid rgba(37, 211, 102, 0.4);
-      padding: 10px;
+      padding: 12px;
       font-family: 'Chakra Petch', sans-serif;
-      font-size: 0.9em;
+      font-size: 0.95em;
       font-weight: 600;
       border-radius: var(--radius-sm);
       cursor: pointer;
       width: 100%;
-      margin-top: 8px;
+      margin-top: 10px;
       display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: all 0.3s ease;
     }
-    .btn-compartir:hover { background: rgba(37, 211, 102, 0.1); }
+    .btn-compartir:hover { background: rgba(37, 211, 102, 0.15); box-shadow: 0 0 15px rgba(37, 211, 102, 0.2); }
 
     .cupon-box { display: flex; gap: 8px; margin-bottom: 12px; }
-    .cupon-input {
-      flex-grow: 1;
-      background: #080112;
-      border: 1px solid var(--border-color);
-      color: #fff;
-      padding: 8px 12px;
-      border-radius: var(--radius-sm);
-      font-family: 'Rajdhani', sans-serif;
-      font-weight: 700;
-      text-transform: uppercase;
-      outline: none;
-    }
+    
     .btn-cupon {
       background: var(--secondary-color);
       color: #000;
       border: none;
-      padding: 0 16px;
+      padding: 0 18px;
       border-radius: var(--radius-sm);
       font-family: 'Chakra Petch', sans-serif;
       font-weight: 700;
       cursor: pointer;
+      box-shadow: 0 0 10px var(--secondary-glow);
+      transition: all 0.2s ease;
     }
+    .btn-cupon:hover { transform: scale(1.05); }
 
     .recibo-box {
-      background: #07010f;
-      border: 1px dashed var(--border-color);
-      padding: 12px;
+      background: rgba(0,0,0,0.4);
+      border: 1px dashed var(--glass-border);
+      padding: 14px;
       border-radius: var(--radius-sm);
       font-family: monospace;
       font-size: 0.85em;
       margin-bottom: 14px;
     }
-    .recibo-line { display: flex; justify-content: space-between; margin-bottom: 4px; }
+    .recibo-line { display: flex; justify-content: space-between; margin-bottom: 6px; }
 
+    /* Items del carrito - Glassmorphism */
     .cart-item-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: #0d041a;
-      padding: 8px;
+      background: rgba(0,0,0,0.3);
+      padding: 10px;
       border-radius: var(--radius-sm);
       margin-bottom: 8px;
-      border: 1px solid rgba(255,255,255,0.05);
+      border: 1px solid var(--glass-border);
+      transition: all 0.2s ease;
     }
-    .cart-item-img { width: 44px; height: 44px; object-fit: cover; border-radius: 3px; margin-right: 10px; }
+    .cart-item-row:hover { background: rgba(255,255,255,0.03); border-color: rgba(255,255,255,0.1); }
+    .cart-item-img { width: 48px; height: 48px; object-fit: cover; border-radius: 4px; margin-right: 12px; background: rgba(0,0,0,0.5); }
     .cart-item-info { flex-grow: 1; font-size: 0.9em; }
     .cart-item-del {
-      background: transparent;
+      background: rgba(255, 51, 102, 0.1);
       color: #ff3366;
       border: 1px solid rgba(255, 51, 102, 0.3);
-      padding: 4px 8px;
+      padding: 6px 10px;
       border-radius: var(--radius-sm);
       cursor: pointer;
+      transition: all 0.2s ease;
     }
-    .cart-item-del:hover { background: rgba(255, 51, 102, 0.15); }
+    .cart-item-del:hover { background: #ff3366; color: #fff; box-shadow: 0 0 10px rgba(255, 51, 102, 0.4); }
 
-    /* --- NAVEGACIÓN INFERIOR BLINDADA --- */
+    /* --- NAVEGACIÓN INFERIOR TIPO PÍLDORA FLOTANTE (GLASSMORPHISM) --- */
     .bottom-nav {
       position: fixed;
-      bottom: 0; 
-      left: 0; 
-      width: 100%;
-      background: rgba(8, 2, 18, 0.98);
-      border-top: 1px solid var(--border-color);
+      bottom: 15px; /* Separada del fondo */
+      left: 50%;
+      transform: translateX(-50%);
+      width: 92%;
+      max-width: 500px;
+      background: rgba(10, 2, 22, 0.75);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-pill); /* Bordes muy redondeados */
       display: flex;
       justify-content: space-around;
       align-items: center;
-      padding: 10px 0;
+      padding: 12px 10px;
       z-index: 2500; 
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(0, 229, 255, 0.05);
     }
     .nav-item {
       color: var(--text-muted);
       display: flex;
       flex-direction: column;
       align-items: center;
-      font-size: 0.75em;
+      font-size: 0.7em;
       font-weight: 700;
       cursor: pointer;
       position: relative;
       width: 25%;
-      transition: color 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    .nav-item i { font-size: 1.4em; margin-bottom: 3px; color: var(--text-muted); }
-    .nav-item:hover, .nav-item.active { color: #fff; }
-    .nav-item:hover i, .nav-item.active i { color: var(--secondary-color); }
+    .nav-item i { font-size: 1.5em; margin-bottom: 4px; color: var(--text-muted); transition: all 0.3s ease; }
+    .nav-item:hover, .nav-item.active { color: #fff; transform: translateY(-3px); }
+    .nav-item:hover i, .nav-item.active i { color: var(--secondary-color); text-shadow: 0 0 10px var(--secondary-glow); }
     
     .nav-badge {
       position: absolute;
-      top: -3px; right: 26%;
+      top: -5px; right: 15%;
       background: var(--primary-color);
       color: #fff;
       font-size: 0.8em;
       font-weight: 700;
-      padding: 1px 5px;
-      border-radius: 10px;
+      padding: 2px 6px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px var(--primary-glow);
+      border: 1px solid rgba(255,255,255,0.2);
     }
 
+    /* Cuadrícula Menú Opciones - Cristal */
     .menu-opciones-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 14px;
+      gap: 12px;
+      margin-top: 18px;
     }
     .btn-menu-opcion {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: #0d041a;
-      border: 1px solid var(--border-color);
-      padding: 12px 8px;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--glass-border);
+      padding: 14px 8px;
       border-radius: var(--radius-sm);
       color: #fff;
       text-decoration: none;
-      font-size: 0.8em;
+      font-size: 0.75em;
       font-weight: 600;
       cursor: pointer;
-      transition: border-color 0.2s ease;
+      transition: all 0.2s ease;
     }
-    .btn-menu-opcion i { font-size: 1.5em; margin-bottom: 6px; }
-    .btn-menu-opcion:hover { border-color: var(--secondary-color); }
+    .btn-menu-opcion i { font-size: 1.8em; margin-bottom: 8px; }
+    .btn-menu-opcion:hover { border-color: var(--secondary-color); background: rgba(0, 229, 255, 0.05); transform: translateY(-2px); }
 
+    /* Secciones Adicionales Index */
     .reviews-section, .info-section {
-      background: var(--card-bg);
+      background: var(--glass-bg);
+      backdrop-filter: blur(10px);
       margin-top: 35px;
       padding: 24px 18px;
       border-radius: var(--radius-md);
-      border: 1px solid var(--border-color);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.15);
     }
     .review-card {
-      background: #0a0214;
-      padding: 12px;
+      background: rgba(0,0,0,0.3);
+      padding: 14px;
       border-radius: var(--radius-sm);
-      margin-bottom: 10px;
-      border: 1px solid rgba(255,255,255,0.05);
+      margin-bottom: 12px;
+      border: 1px solid var(--glass-border);
     }
     .badge-envio {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      background: rgba(255, 0, 127, 0.08);
+      gap: 6px;
+      background: rgba(255, 0, 127, 0.1);
       border: 1px solid rgba(255, 0, 127, 0.3);
-      padding: 3px 8px;
-      border-radius: var(--radius-sm);
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
       font-size: 0.8em;
       font-weight: 700;
       margin-right: 6px;
+      margin-bottom: 6px;
     }
     
+    /* Barra XP Estilo Neón */
     .xp-bar-container {
-      background: #000;
-      border-radius: var(--radius-sm);
-      height: 12px;
-      margin-top: 10px;
+      background: rgba(0,0,0,0.6);
+      border-radius: var(--radius-pill);
+      height: 14px;
+      margin-top: 12px;
       overflow: hidden;
-      border: 1px solid var(--border-color);
+      border: 1px solid var(--glass-border);
       position: relative;
+      box-shadow: inset 0 0 5px rgba(0,0,0,0.8);
     }
     .xp-bar-fill {
       width: 0%;
       height: 100%;
       background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-      transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+      border-radius: var(--radius-pill);
+      transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 0 10px var(--secondary-glow);
     }
   </style>
 </head>
@@ -831,7 +942,7 @@
     <h3 style="color: var(--secondary-color); margin-top: 0;">Perfil de Usuario</h3>
     <input type="text" id="inputGamerTag" class="sugerencia-input" placeholder="GamerTag / Identificador" style="margin-bottom: 12px;">
     
-    <div style="background: #080112; padding: 14px; border-radius: var(--radius-sm); margin-bottom: 14px; border: 1px solid var(--border-color); text-align: left; font-size: 0.9em;">
+    <div style="background: rgba(0,0,0,0.3); padding: 16px; border-radius: var(--radius-md); margin-bottom: 14px; border: 1px solid var(--glass-border); text-align: left; font-size: 0.9em;">
       <div style="display: flex; justify-content: space-between;">
         <span>Rango: <strong id="lblRango" style="color: #ffaa00; font-size: 1.1em;">Genin</strong></span>
         <span><strong id="lblXp" style="color: var(--secondary-color);">150</strong> XP</span>
@@ -1115,7 +1226,7 @@
     </div>
 
     <!-- APARTADO EXCLUSIVO PARA RECARGAS DIGITALES -->
-    <div id="apartadoRecargasDigitales" style="display: none; background: #07010f; border: 1px dashed var(--border-color); padding: 10px; border-radius: var(--radius-sm); margin-bottom: 12px; font-size: 0.85em; color: var(--text-muted);">
+    <div id="apartadoRecargasDigitales" style="display: none; background: rgba(0,0,0,0.3); border: 1px dashed var(--glass-border); padding: 10px; border-radius: var(--radius-sm); margin-bottom: 12px; font-size: 0.85em; color: var(--text-muted);">
       <strong style="color: var(--secondary-color);">Entrega Directa:</strong> Las recargas se ejecutan directamente con el ID y Servidor especificados. No aplican costos de flete ni datos de encomienda.
     </div>
 
@@ -1124,15 +1235,15 @@
       <div id="reciboContenido"></div>
     </div>
     
-    <div id="paymentMethodsCart" style="display: none; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 12px; background: #090214;">
+    <div id="paymentMethodsCart" style="display: none; border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 12px; background: rgba(0,0,0,0.4);">
       <div style="font-weight: 700; color: #fff; margin-bottom: 8px; font-size: 0.9em;">Cuentas para Pago:</div>
       <div id="cajaDatosPagoInfo" style="font-size: 0.85em; line-height: 1.5; color: var(--text-muted);"></div>
     </div>
 
-    <div id="modalCarritoTotal" style="color: var(--secondary-color); font-size: 1.3em; font-weight: 700; margin-bottom: 12px; text-align: center;">Total: $0.00</div>
+    <div id="modalCarritoTotal" style="color: var(--secondary-color); font-size: 1.3em; font-weight: 700; margin-bottom: 12px; text-align: center; text-shadow: 0 0 10px rgba(0,229,255,0.3);">Total: $0.00</div>
     <div style="display: flex; gap: 8px;">
-      <button style="flex: 1; padding: 10px; background: transparent; border: 1px solid rgba(255, 51, 102, 0.4); color: #ff3366; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer;" onclick="vaciarCarrito()">Limpiar</button>
-      <button style="flex: 2; padding: 10px; background: #25D366; color: #000; border: none; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer;" onclick="enviarPedidoWhatsApp()">Enviar Orden por WhatsApp</button>
+      <button style="flex: 1; padding: 10px; background: rgba(255,51,102,0.1); border: 1px solid rgba(255, 51, 102, 0.4); color: #ff3366; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; transition: all 0.2s ease;" onclick="vaciarCarrito()">Limpiar</button>
+      <button style="flex: 2; padding: 10px; background: linear-gradient(135deg, #25D366, #1da851); color: #000; border: none; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(37,211,102,0.3);" onclick="enviarPedidoWhatsApp()">Enviar Orden</button>
     </div>
   </div>
 </div>
@@ -1148,7 +1259,7 @@
   </div>
 </div>
 
-<!-- NAVEGACIÓN INFERIOR BLINDADA -->
+<!-- NAVEGACIÓN INFERIOR BLINDADA TIPO PÍLDORA -->
 <div class="bottom-nav">
   <div class="nav-item active" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); reproducirSonido();"><i class="fas fa-th-large"></i><span>Catálogo</span></div>
   <div class="nav-item" onclick="abrirFavoritosModal()"><i class="fas fa-heart"></i><span>Guardados</span><div class="nav-badge" id="favBadge">0</div></div>
@@ -1470,7 +1581,7 @@
       if(relacionados.length > 0 && prod.coleccion !== 'General') {
           contRel.style.display = 'block';
           listaRel.innerHTML = relacionados.map(r => `
-             <div style="min-width: 90px; cursor: pointer; text-align: center; background: #000; padding: 6px; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.05);" onclick="abrirModalPorId('${r.id}')">
+             <div style="min-width: 90px; cursor: pointer; text-align: center; background: rgba(0,0,0,0.5); padding: 6px; border-radius: var(--radius-sm); border: 1px solid var(--glass-border);" onclick="abrirModalPorId('${r.id}')">
                <img src="${r.fotos && r.fotos.length > 0 ? r.fotos[0] : 'logo.webp?v=2'}" style="width: 100%; height: 75px; object-fit: contain; margin-bottom: 4px;">
                <div style="font-size: 0.7em; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: 'Chakra Petch', sans-serif;">${sanitizarHTML(r.nombre)}</div>
                <div style="font-size: 0.8em; color: var(--secondary-color); font-weight: bold;">$${r.precio}</div>
@@ -1638,15 +1749,25 @@
   };
 
   let favoritos = JSON.parse(localStorage.getItem('sakura_favoritos')) || [];
+  
+  // Función modificada para añadir clase 'favorito'
   window.toggleFavoritoPorId = function(event, prodId) {
     event.stopPropagation(); reproducirSonido();
     const prod = productosNubeGlobal.find(p => p.id === prodId);
     if (!prod) return;
 
     let idx = favoritos.findIndex(i => i.id === prodId || i.titulo === prod.nombre);
+    
+    // Animar el botón
+    let btn = event.currentTarget;
+
     if(idx === -1) { 
       favoritos.push({ id: prod.id, titulo: prod.nombre, precio: prod.precio, img: (prod.fotos && prod.fotos[0]) ? prod.fotos[0] : 'logo.webp?v=2' }); 
-    } else { favoritos.splice(idx, 1); }
+      btn.classList.add('favorito');
+    } else { 
+      favoritos.splice(idx, 1); 
+      btn.classList.remove('favorito');
+    }
     localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos)); actualizarBadges();
   };
   
@@ -1748,7 +1869,7 @@
       let html = "";
       carrito.forEach(item => { html += `<div class="recibo-line"><span>${sanitizarHTML(item.titulo)}</span><span>$${Number(item.precio).toFixed(2)}</span></div>`; });
       let sub = carrito.reduce((s, i) => s + Number(i.precio), 0); let tot = sub * (1 - descuentoAplicado);
-      html += `<div style="border-top:1px dashed var(--border-color); margin-top:6px; padding-top:6px;" class="recibo-line"><strong>TOTAL USD:</strong> <strong>$${tot.toFixed(2)}</strong></div>`;
+      html += `<div style="border-top:1px dashed var(--glass-border); margin-top:6px; padding-top:6px;" class="recibo-line"><strong>TOTAL USD:</strong> <strong>$${tot.toFixed(2)}</strong></div>`;
       reciboContenido.innerHTML = html; document.getElementById('modalCarritoTotal').innerText = `Total: $${tot.toFixed(2)}`;
     }
   }
@@ -1783,7 +1904,22 @@
   };
 
   function actualizarCarritoUI() { localStorage.setItem('sakura_carrito', JSON.stringify(carrito)); actualizarBadges(); }
-  function actualizarBadges() { document.getElementById('cartBadge').innerText = carrito.length; document.getElementById('favBadge').innerText = favoritos.length; }
+  
+  function actualizarBadges() { 
+    document.getElementById('cartBadge').innerText = carrito.length; 
+    document.getElementById('favBadge').innerText = favoritos.length; 
+    
+    // Mantener los corazones encendidos si el producto sigue siendo favorito
+    document.querySelectorAll('.item-producto').forEach(card => {
+        let prodId = card.getAttribute('data-id');
+        let btnFav = card.querySelector('.btn-fav-card');
+        if (favoritos.some(f => f.id === prodId)) {
+            btnFav.classList.add('favorito');
+        } else {
+            btnFav.classList.remove('favorito');
+        }
+    });
+  }
 
   window.abrirCarritoModal = function() {
     reproducirSonido();
