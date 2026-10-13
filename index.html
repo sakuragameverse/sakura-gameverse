@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Press+Start+2P&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
   <style>
@@ -27,9 +27,7 @@
       --primary-color: #ff007f;
       --secondary-color: #00e5ff;
       --border-color: rgba(0, 229, 255, 0.16);
-      --border-hover: rgba(0, 229, 255, 0.6);
       --hero-bg: #0f0421;
-      --surface-dark: rgba(6, 1, 14, 0.85);
       --radius-sm: 4px;
       --radius-md: 8px;
     }
@@ -51,8 +49,7 @@
       letter-spacing: 0.5px;
       overflow-x: hidden;
       padding-bottom: 70px;
-      /* Optimización de hardware para el fondo */
-      transform: translateZ(0);
+      transform: translateZ(0); /* Optimización gráfica */
     }
 
     body::before {
@@ -68,7 +65,7 @@
       will-change: transform;
     }
 
-    h1, h2, h3, h4, .font-heading {
+    h1, h2, h3, h4 {
       font-family: 'Chakra Petch', sans-serif;
       text-transform: uppercase;
       letter-spacing: 1px;
@@ -78,116 +75,6 @@
     ::-webkit-scrollbar-track { background: var(--bg-color); }
     ::-webkit-scrollbar-thumb { background: rgba(0, 229, 255, 0.3); border-radius: var(--radius-sm); }
     ::-webkit-scrollbar-thumb:hover { background: var(--primary-color); }
-
-    /* --- NUEVA PANTALLA DE CARGA PIXEL FOX 16-BITS --- */
-    #splash-screen {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: #06010d;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 99999;
-      transition: opacity 0.4s ease-out;
-      overflow: hidden;
-      font-family: 'Press Start 2P', monospace;
-      will-change: opacity;
-    }
-
-    .sakura-rain {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      pointer-events: none;
-      z-index: 1;
-      will-change: transform;
-    }
-    
-    .pixel-petal {
-      position: absolute;
-      width: 6px; height: 6px;
-      background: var(--primary-color);
-      top: -10px;
-      opacity: 0.8;
-      animation: fall linear infinite;
-      will-change: transform;
-    }
-
-    @keyframes fall {
-      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(110vh) rotate(360deg); opacity: 0.2; }
-    }
-
-    .arcade-stage {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 90%;
-      max-width: 460px;
-      z-index: 2;
-    }
-
-    .arcade-logo-text {
-      font-size: 1.2em;
-      color: #fff;
-      letter-spacing: 2px;
-      margin-bottom: 20px;
-      text-align: center;
-      text-shadow: 2px 2px 0px var(--primary-color), -2px -2px 0px var(--secondary-color);
-      will-change: transform;
-    }
-
-    .pixel-fox-container {
-      margin-bottom: 20px;
-      animation: fox-breathe 1.5s infinite alternate steps(3);
-      will-change: transform;
-    }
-    
-    @keyframes fox-breathe {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(-4px); }
-    }
-
-    .jump-fox {
-      animation: fox-jump 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
-    }
-    @keyframes fox-jump {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(-25px) scale(1.05); filter: drop-shadow(0 0 20px var(--secondary-color)); }
-      100% { transform: translateY(100vh) scale(0.5); }
-    }
-
-    .high-score-box {
-      text-align: center;
-      margin-bottom: 25px;
-    }
-    
-    .hi-score-label {
-      color: var(--secondary-color);
-      font-size: 0.7em;
-      margin-bottom: 8px;
-    }
-
-    .score-numbers {
-      color: #fff;
-      font-size: 1.5em;
-      letter-spacing: 4px;
-    }
-
-    .blink-text {
-      color: var(--primary-color);
-      font-size: 0.8em;
-      animation: slow-blink 1s infinite;
-      will-change: opacity;
-    }
-    
-    .fast-blink {
-      color: #25d366 !important;
-      animation: fast-blink 0.2s infinite !important;
-    }
-
-    @keyframes slow-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
-    @keyframes fast-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
 
     /* --- NOTIFICACIÓN & TICKER SOBRIO --- */
     .top-bar-notice {
@@ -214,7 +101,7 @@
       white-space: nowrap;
       position: relative;
       z-index: 9;
-      transform: translateZ(0); /* Optimización gráfica */
+      transform: translateZ(0); 
     }
     .ticker-content { display: inline-block; animation: ticker-slide 22s linear infinite; will-change: transform; }
     @keyframes ticker-slide { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
@@ -239,7 +126,7 @@
       transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), filter 0.3s ease;
       filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6));
       animation: logo-float 4s infinite ease-in-out;
-      will-change: transform, filter; /* Optimización gráfica */
+      will-change: transform, filter; 
     }
 
     .hero-logo:hover {
@@ -387,7 +274,7 @@
       scroll-behavior: smooth;
       scrollbar-width: none;
       padding: 6px 2px;
-      -webkit-overflow-scrolling: touch; /* Suavidad en móviles */
+      -webkit-overflow-scrolling: touch; 
     }
     .carrusel-track::-webkit-scrollbar { display: none; }
     
@@ -406,13 +293,12 @@
       transform: translateY(-3px);
       border-color: var(--secondary-color);
     }
-    /* FONDO OPTIMIZADO PARA IMÁGENES TRANSPARENTES */
     .cat-img {
       width: 100%; height: 110px;
-      object-fit: contain; /* Para que el logo transparente no se corte */
-      background: rgba(0, 229, 255, 0.05); /* Fondo sutil neón en vez de negro sólido */
+      object-fit: contain; 
+      background: rgba(0, 229, 255, 0.05); 
       border-bottom: 1px solid rgba(255,255,255,0.05);
-      padding: 10px; /* Para darle aire a la imagen */
+      padding: 10px; 
     }
     .cat-info { padding: 8px 6px; text-align: center; }
     .cat-title {
@@ -871,67 +757,6 @@
 </head>
 <body>
 
-<!-- PANTALLA DE CARGA RETRO ARCADE PIXEL FOX (Estilo 16-bits) -->
-<div id="splash-screen">
-  <div class="sakura-rain" id="sakuraRain"></div>
-  
-  <div class="arcade-stage">
-    <div class="arcade-logo-text">SAKURA<br>GAMEVERSE</div>
-
-    <div class="pixel-fox-container" id="pixelFox">
-      <!-- Zorrita Pixel Art 16-Bits dibujada en SVG -->
-      <svg viewBox="0 0 24 24" width="150" height="150" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
-        <!-- Colas de fondo (Más volumen y detalle) -->
-        <rect x="1" y="12" width="4" height="6" fill="#ff007f"/>
-        <rect x="3" y="9" width="3" height="5" fill="#ff007f"/>
-        <rect x="19" y="12" width="4" height="6" fill="#ff007f"/>
-        <rect x="18" y="9" width="3" height="5" fill="#ff007f"/>
-        <rect x="5" y="14" width="14" height="6" fill="#ffccaa"/>
-
-        <!-- Cabeza y Orejitas -->
-        <rect x="6" y="6" width="12" height="7" fill="#ffaa55"/>
-        <rect x="7" y="4" width="2" height="2" fill="#ffaa55"/>
-        <rect x="15" y="4" width="2" height="2" fill="#ffaa55"/>
-        
-        <!-- Hocico y Rostro inferior -->
-        <rect x="6" y="10" width="12" height="4" fill="#ffccaa"/>
-        <rect x="8" y="9" width="2" height="2" fill="#000000"/> <!-- Ojo Izquierdo -->
-        <rect x="14" y="9" width="2" height="2" fill="#000000"/> <!-- Ojo Derecho -->
-        <rect x="11" y="11" width="2" height="1" fill="#000000"/> <!-- Nariz -->
-        <rect x="6" y="11" width="1" height="1" fill="#ff007f"/> <!-- Sonrojo Izq -->
-        <rect x="17" y="11" width="1" height="1" fill="#ff007f"/> <!-- Sonrojo Der -->
-
-        <!-- Cuerpo / Chaqueta Gamer -->
-        <rect x="8" y="14" width="8" height="5" fill="#00e5ff"/>
-        <rect x="10" y="15" width="4" height="4" fill="#ffccaa"/> <!-- Barriga -->
-
-        <!-- Control de Consola en las manos -->
-        <rect x="9" y="16" width="6" height="2" fill="#333333"/>
-        <rect x="9" y="15" width="1" height="1" fill="#ff007f"/> <!-- Botón D-pad -->
-        <rect x="14" y="15" width="1" height="1" fill="#00e5ff"/> <!-- Botón Acción -->
-
-        <!-- Audífonos Neón -->
-        <rect x="5" y="4" width="14" height="1" fill="#00e5ff"/> <!-- Diadema -->
-        <rect x="4" y="5" width="1" height="3" fill="#00e5ff"/>
-        <rect x="19" y="5" width="1" height="3" fill="#00e5ff"/>
-        <rect x="3" y="7" width="3" height="5" fill="#ff007f"/> <!-- Copa Izquierda -->
-        <rect x="18" y="7" width="3" height="5" fill="#ff007f"/> <!-- Copa Derecha -->
-        <rect x="2" y="8" width="1" height="3" fill="#00e5ff"/> <!-- Detalle Copa -->
-        <rect x="21" y="8" width="1" height="3" fill="#00e5ff"/> <!-- Detalle Copa -->
-      </svg>
-    </div>
-
-    <!-- Contador High Score -->
-    <div class="high-score-box">
-      <div class="hi-score-label">HI-SCORE</div>
-      <div class="score-numbers" id="loadScore">00000</div>
-    </div>
-    
-    <!-- Texto Parpadeante -->
-    <div class="blink-text" id="blinkStart">INSERT COIN...</div>
-  </div>
-</div>
-
 <div class="top-bar-notice">
   <div><i class="fas fa-check-circle" style="color: var(--secondary-color);"></i> <span id="spTexto">Gabriel S. adquirió Chibi Firefly</span> <span style="color: var(--text-muted); font-size: 0.9em;" id="spLugar">(Bejuma)</span></div>
   <div style="color: var(--text-muted); font-size: 0.8em;">Sakura Verified</div>
@@ -940,17 +765,6 @@
 <div class="ticker-bar">
   <div class="ticker-content">
     Catálogo mayorista vía WhatsApp | Envíos nacionales ZOOM y MRW | Código activo: OTAKU10 (-10% OFF)
-  </div>
-</div>
-
-<!-- MODAL PROMO FLASH -->
-<div id="modalPromoFlash" class="modal" style="display: flex;">
-  <div class="modal-content" style="text-align: center;">
-    <button class="cerrar-modal" onclick="cerrarPromoFlash()">×</button>
-    <div style="font-size: 32px; margin-bottom: 8px; color: var(--secondary-color);"><i class="fas fa-gift"></i></div>
-    <h3 style="color: #fff; margin: 0 0 10px 0;">Sakura Gameverse</h3>
-    <p style="font-size: 0.95em; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">Reclama tu Cofre Diario de XP en el menú inferior y aprovecha nuestros cupones activos.</p>
-    <button class="btn-comprar" onclick="cerrarPromoFlash()">Entrar a la tienda</button>
   </div>
 </div>
 
@@ -1355,55 +1169,6 @@
     });
   }
 
-  /* --- NUEVA LÓGICA DE PANTALLA ARCADE PIXEL FOX --- */
-  function generarLluviaSakura() {
-    const contenedor = document.getElementById('sakuraRain');
-    if(!contenedor) return;
-    for(let i=0; i<15; i++) {
-      let petalo = document.createElement('div');
-      petalo.className = 'pixel-petal';
-      petalo.style.left = Math.random() * 100 + '%';
-      petalo.style.animationDelay = (Math.random() * 2) + 's';
-      petalo.style.animationDuration = (Math.random() * 1.5 + 2) + 's';
-      contenedor.appendChild(petalo);
-    }
-  }
-
-  function ejecutarAnimacionSplash() {
-    generarLluviaSakura();
-    let score = 0;
-    const txtScore = document.getElementById('loadScore');
-    const blink = document.getElementById('blinkStart');
-    const fox = document.getElementById('pixelFox');
-    const splash = document.getElementById('splash-screen');
-
-    if (!txtScore || !splash) return;
-
-    const intervaloCarga = setInterval(() => {
-      score += Math.floor(Math.random() * 800) + 150;
-
-      if (score >= 9999) {
-        score = 9999;
-        clearInterval(intervaloCarga);
-        txtScore.innerText = "99999";
-        
-        blink.innerText = "- PRESS START -";
-        blink.classList.add('fast-blink');
-        fox.classList.add('jump-fox');
-        reproducirSonido();
-
-        setTimeout(() => {
-          splash.style.opacity = '0';
-          setTimeout(() => {
-            splash.style.display = 'none';
-          }, 500);
-        }, 850);
-      } else {
-        txtScore.innerText = score.toString().padStart(5, '0');
-      }
-    }, 70);
-  }
-
   async function cargarDatosPagoNube() {
     try {
       const docSnap = await getDoc(doc(db, "configuracion", "datos_pago"));
@@ -1782,7 +1547,6 @@
   };
 
   window.addEventListener('DOMContentLoaded', () => { 
-    ejecutarAnimacionSplash();
     cargarBannersDeNube(); 
     cargarProductosDeNube(); 
     cargarConfigCategoriasPublico(); 
