@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Press+Start+2P&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
   <style>
@@ -48,7 +48,7 @@
       font-weight: 500;
       letter-spacing: 0.5px;
       overflow-x: hidden;
-      padding-bottom: 80px; /* Espacio extra para que el contenido no quede tapado por la barra inferior */
+      padding-bottom: 80px; 
       transform: translateZ(0); 
     }
 
@@ -75,31 +75,6 @@
     ::-webkit-scrollbar-track { background: var(--bg-color); }
     ::-webkit-scrollbar-thumb { background: rgba(0, 229, 255, 0.3); border-radius: var(--radius-sm); }
     ::-webkit-scrollbar-thumb:hover { background: var(--primary-color); }
-
-    /* --- PANTALLA DE CARGA PIXEL FOX 16-BITS --- */
-    #splash-screen {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: #06010d; display: flex; flex-direction: column; justify-content: center; align-items: center;
-      z-index: 99999; transition: opacity 0.4s ease-out; overflow: hidden; font-family: 'Press Start 2P', monospace; will-change: opacity;
-    }
-    .sakura-rain { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; will-change: transform; }
-    .pixel-petal { position: absolute; width: 6px; height: 6px; background: var(--primary-color); top: -10px; opacity: 0.8; animation: fall linear infinite; will-change: transform; }
-    @keyframes fall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.2; } }
-
-    .arcade-stage { display: flex; flex-direction: column; align-items: center; width: 90%; max-width: 460px; z-index: 2; }
-    .arcade-logo-text { font-size: 1.2em; color: #fff; letter-spacing: 2px; margin-bottom: 20px; text-align: center; text-shadow: 2px 2px 0px var(--primary-color), -2px -2px 0px var(--secondary-color); will-change: transform; }
-    .pixel-fox-container { margin-bottom: 20px; animation: fox-breathe 1.5s infinite alternate steps(3); will-change: transform; }
-    @keyframes fox-breathe { 0% { transform: translateY(0); } 100% { transform: translateY(-4px); } }
-    .jump-fox { animation: fox-jump 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards !important; }
-    @keyframes fox-jump { 0% { transform: translateY(0); } 50% { transform: translateY(-25px) scale(1.05); filter: drop-shadow(0 0 20px var(--secondary-color)); } 100% { transform: translateY(100vh) scale(0.5); } }
-
-    .high-score-box { text-align: center; margin-bottom: 25px; }
-    .hi-score-label { color: var(--secondary-color); font-size: 0.7em; margin-bottom: 8px; }
-    .score-numbers { color: #fff; font-size: 1.5em; letter-spacing: 4px; }
-    .blink-text { color: var(--primary-color); font-size: 0.8em; animation: slow-blink 1s infinite; will-change: opacity; }
-    .fast-blink { color: #25d366 !important; animation: fast-blink 0.2s infinite !important; }
-    @keyframes slow-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
-    @keyframes fast-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
 
     .top-bar-notice {
       background: #0b0318;
@@ -702,7 +677,7 @@
       justify-content: space-around;
       align-items: center;
       padding: 10px 0;
-      z-index: 2500; /* Siempre por encima de cualquier elemento */
+      z-index: 2500; 
       backdrop-filter: blur(10px);
     }
     .nav-item {
@@ -802,53 +777,6 @@
   </style>
 </head>
 <body>
-
-<!-- PANTALLA DE CARGA PIXEL FOX (Estilo 16-bits) -->
-<div id="splash-screen">
-  <div class="sakura-rain" id="sakuraRain"></div>
-  
-  <div class="arcade-stage">
-    <div class="arcade-logo-text">SAKURA<br>GAMEVERSE</div>
-
-    <div class="pixel-fox-container" id="pixelFox">
-      <svg viewBox="0 0 24 24" width="150" height="150" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
-        <rect x="1" y="12" width="4" height="6" fill="#ff007f"/>
-        <rect x="3" y="9" width="3" height="5" fill="#ff007f"/>
-        <rect x="19" y="12" width="4" height="6" fill="#ff007f"/>
-        <rect x="18" y="9" width="3" height="5" fill="#ff007f"/>
-        <rect x="5" y="14" width="14" height="6" fill="#ffccaa"/>
-        <rect x="6" y="6" width="12" height="7" fill="#ffaa55"/>
-        <rect x="7" y="4" width="2" height="2" fill="#ffaa55"/>
-        <rect x="15" y="4" width="2" height="2" fill="#ffaa55"/>
-        <rect x="6" y="10" width="12" height="4" fill="#ffccaa"/>
-        <rect x="8" y="9" width="2" height="2" fill="#000000"/> 
-        <rect x="14" y="9" width="2" height="2" fill="#000000"/> 
-        <rect x="11" y="11" width="2" height="1" fill="#000000"/> 
-        <rect x="6" y="11" width="1" height="1" fill="#ff007f"/> 
-        <rect x="17" y="11" width="1" height="1" fill="#ff007f"/> 
-        <rect x="8" y="14" width="8" height="5" fill="#00e5ff"/>
-        <rect x="10" y="15" width="4" height="4" fill="#ffccaa"/> 
-        <rect x="9" y="16" width="6" height="2" fill="#333333"/>
-        <rect x="9" y="15" width="1" height="1" fill="#ff007f"/> 
-        <rect x="14" y="15" width="1" height="1" fill="#00e5ff"/> 
-        <rect x="5" y="4" width="14" height="1" fill="#00e5ff"/> 
-        <rect x="4" y="5" width="1" height="3" fill="#00e5ff"/>
-        <rect x="19" y="5" width="1" height="3" fill="#00e5ff"/>
-        <rect x="3" y="7" width="3" height="5" fill="#ff007f"/> 
-        <rect x="18" y="7" width="3" height="5" fill="#ff007f"/> 
-        <rect x="2" y="8" width="1" height="3" fill="#00e5ff"/> 
-        <rect x="21" y="8" width="1" height="3" fill="#00e5ff"/> 
-      </svg>
-    </div>
-
-    <div class="high-score-box">
-      <div class="hi-score-label">HI-SCORE</div>
-      <div class="score-numbers" id="loadScore">00000</div>
-    </div>
-    
-    <div class="blink-text" id="blinkStart">INSERT COIN...</div>
-  </div>
-</div>
 
 <div class="top-bar-notice">
   <div><i class="fas fa-check-circle" style="color: var(--secondary-color);"></i> <span id="spTexto">Gabriel S. adquirió Chibi Firefly</span> <span style="color: var(--text-muted); font-size: 0.9em;" id="spLugar">(Bejuma)</span></div>
@@ -1291,49 +1219,6 @@
     });
   }
 
-  function generarLluviaSakura() {
-    const contenedor = document.getElementById('sakuraRain');
-    if(!contenedor) return;
-    for(let i=0; i<15; i++) {
-      let petalo = document.createElement('div');
-      petalo.className = 'pixel-petal';
-      petalo.style.left = Math.random() * 100 + '%';
-      petalo.style.animationDelay = (Math.random() * 2) + 's';
-      petalo.style.animationDuration = (Math.random() * 1.5 + 2) + 's';
-      contenedor.appendChild(petalo);
-    }
-  }
-
-  function ejecutarAnimacionSplash() {
-    generarLluviaSakura();
-    let score = 0;
-    const txtScore = document.getElementById('loadScore');
-    const blink = document.getElementById('blinkStart');
-    const fox = document.getElementById('pixelFox');
-    const splash = document.getElementById('splash-screen');
-
-    if (!txtScore || !splash) return;
-
-    const intervaloCarga = setInterval(() => {
-      score += Math.floor(Math.random() * 800) + 150;
-      if (score >= 9999) {
-        score = 9999;
-        clearInterval(intervaloCarga);
-        txtScore.innerText = "99999";
-        blink.innerText = "- PRESS START -";
-        blink.classList.add('fast-blink');
-        fox.classList.add('jump-fox');
-        reproducirSonido();
-        setTimeout(() => {
-          splash.style.opacity = '0';
-          setTimeout(() => { splash.style.display = 'none'; }, 500);
-        }, 850);
-      } else {
-        txtScore.innerText = score.toString().padStart(5, '0');
-      }
-    }, 70);
-  }
-
   async function cargarDatosPagoNube() {
     try {
       const docSnap = await getDoc(doc(db, "configuracion", "datos_pago"));
@@ -1584,7 +1469,7 @@
       if(relacionados.length > 0 && prod.coleccion !== 'General') {
           contRel.style.display = 'block';
           listaRel.innerHTML = relacionados.map(r => `
-             <div style="min-width: 90px; cursor: pointer; text-align: center; background: #000; padding: 6px; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.05);" onclick="cerrarModal(); abrirModalPorId('${r.id}')">
+             <div style="min-width: 90px; cursor: pointer; text-align: center; background: #000; padding: 6px; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.05);" onclick="abrirModalPorId('${r.id}')">
                <img src="${r.fotos && r.fotos.length > 0 ? r.fotos[0] : 'logo.webp?v=2'}" style="width: 100%; height: 75px; object-fit: contain; margin-bottom: 4px;">
                <div style="font-size: 0.7em; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: 'Chakra Petch', sans-serif;">${sanitizarHTML(r.nombre)}</div>
                <div style="font-size: 0.8em; color: var(--secondary-color); font-weight: bold;">$${r.precio}</div>
@@ -1651,8 +1536,6 @@
   };
 
   window.addEventListener('DOMContentLoaded', () => {
-    window.scrollTo(0, 0); // Forzar centrado inicial al cargar
-    ejecutarAnimacionSplash(); 
     cargarBannersDeNube(); 
     cargarProductosDeNube(); 
     cargarConfigCategoriasPublico(); 
@@ -1768,7 +1651,6 @@
   
   window.abrirFavoritosModal = function() {
     reproducirSonido(); 
-    window.scrollTo(0, 0);
     let cont = document.getElementById('listaFavoritosDetalle');
     cont.innerHTML = favoritos.length === 0 ? "<p style='color:var(--text-muted);'>No tienes productos guardados.</p>" : "";
     favoritos.forEach((item, i) => { 
@@ -1904,7 +1786,6 @@
 
   window.abrirCarritoModal = function() {
     reproducirSonido();
-    window.scrollTo(0, 0);
     let tieneFisicos = carrito.some(i => !i.esRecarga); let tieneDigitales = carrito.some(i => i.esRecarga);
     pestanaCarritoActual = (tieneDigitales && !tieneFisicos) ? 'digital' : 'fisico';
     document.getElementById('tabBtnFisico').classList.toggle('activo', pestanaCarritoActual === 'fisico');
