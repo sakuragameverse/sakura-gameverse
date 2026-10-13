@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Press+Start+2P&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
   <style>
@@ -75,6 +75,31 @@
     ::-webkit-scrollbar-track { background: var(--bg-color); }
     ::-webkit-scrollbar-thumb { background: rgba(0, 229, 255, 0.3); border-radius: var(--radius-sm); }
     ::-webkit-scrollbar-thumb:hover { background: var(--primary-color); }
+
+    /* --- PANTALLA DE CARGA PIXEL FOX 16-BITS --- */
+    #splash-screen {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: #06010d; display: flex; flex-direction: column; justify-content: center; align-items: center;
+      z-index: 99999; transition: opacity 0.4s ease-out; overflow: hidden; font-family: 'Press Start 2P', monospace; will-change: opacity;
+    }
+    .sakura-rain { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; will-change: transform; }
+    .pixel-petal { position: absolute; width: 6px; height: 6px; background: var(--primary-color); top: -10px; opacity: 0.8; animation: fall linear infinite; will-change: transform; }
+    @keyframes fall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.2; } }
+
+    .arcade-stage { display: flex; flex-direction: column; align-items: center; width: 90%; max-width: 460px; z-index: 2; }
+    .arcade-logo-text { font-size: 1.2em; color: #fff; letter-spacing: 2px; margin-bottom: 20px; text-align: center; text-shadow: 2px 2px 0px var(--primary-color), -2px -2px 0px var(--secondary-color); will-change: transform; }
+    .pixel-fox-container { margin-bottom: 20px; animation: fox-breathe 1.5s infinite alternate steps(3); will-change: transform; }
+    @keyframes fox-breathe { 0% { transform: translateY(0); } 100% { transform: translateY(-4px); } }
+    .jump-fox { animation: fox-jump 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards !important; }
+    @keyframes fox-jump { 0% { transform: translateY(0); } 50% { transform: translateY(-25px) scale(1.05); filter: drop-shadow(0 0 20px var(--secondary-color)); } 100% { transform: translateY(100vh) scale(0.5); } }
+
+    .high-score-box { text-align: center; margin-bottom: 25px; }
+    .hi-score-label { color: var(--secondary-color); font-size: 0.7em; margin-bottom: 8px; }
+    .score-numbers { color: #fff; font-size: 1.5em; letter-spacing: 4px; }
+    .blink-text { color: var(--primary-color); font-size: 0.8em; animation: slow-blink 1s infinite; will-change: opacity; }
+    .fast-blink { color: #25d366 !important; animation: fast-blink 0.2s infinite !important; }
+    @keyframes slow-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+    @keyframes fast-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
 
     .top-bar-notice {
       background: #0b0318;
@@ -580,6 +605,7 @@
     }
     .btn-comprar:hover { background: #e00070; }
     
+    /* --- BOTÓN INSTALAR ANIMADO --- */
     .btn-instalar {
       background: linear-gradient(90deg, #25D366, #00e5ff);
       color: #000;
@@ -776,6 +802,53 @@
 </head>
 <body>
 
+<!-- PANTALLA DE CARGA RETRO ARCADE PIXEL FOX (Estilo 16-bits) -->
+<div id="splash-screen">
+  <div class="sakura-rain" id="sakuraRain"></div>
+  
+  <div class="arcade-stage">
+    <div class="arcade-logo-text">SAKURA<br>GAMEVERSE</div>
+
+    <div class="pixel-fox-container" id="pixelFox">
+      <svg viewBox="0 0 24 24" width="150" height="150" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+        <rect x="1" y="12" width="4" height="6" fill="#ff007f"/>
+        <rect x="3" y="9" width="3" height="5" fill="#ff007f"/>
+        <rect x="19" y="12" width="4" height="6" fill="#ff007f"/>
+        <rect x="18" y="9" width="3" height="5" fill="#ff007f"/>
+        <rect x="5" y="14" width="14" height="6" fill="#ffccaa"/>
+        <rect x="6" y="6" width="12" height="7" fill="#ffaa55"/>
+        <rect x="7" y="4" width="2" height="2" fill="#ffaa55"/>
+        <rect x="15" y="4" width="2" height="2" fill="#ffaa55"/>
+        <rect x="6" y="10" width="12" height="4" fill="#ffccaa"/>
+        <rect x="8" y="9" width="2" height="2" fill="#000000"/> 
+        <rect x="14" y="9" width="2" height="2" fill="#000000"/> 
+        <rect x="11" y="11" width="2" height="1" fill="#000000"/> 
+        <rect x="6" y="11" width="1" height="1" fill="#ff007f"/> 
+        <rect x="17" y="11" width="1" height="1" fill="#ff007f"/> 
+        <rect x="8" y="14" width="8" height="5" fill="#00e5ff"/>
+        <rect x="10" y="15" width="4" height="4" fill="#ffccaa"/> 
+        <rect x="9" y="16" width="6" height="2" fill="#333333"/>
+        <rect x="9" y="15" width="1" height="1" fill="#ff007f"/> 
+        <rect x="14" y="15" width="1" height="1" fill="#00e5ff"/> 
+        <rect x="5" y="4" width="14" height="1" fill="#00e5ff"/> 
+        <rect x="4" y="5" width="1" height="3" fill="#00e5ff"/>
+        <rect x="19" y="5" width="1" height="3" fill="#00e5ff"/>
+        <rect x="3" y="7" width="3" height="5" fill="#ff007f"/> 
+        <rect x="18" y="7" width="3" height="5" fill="#ff007f"/> 
+        <rect x="2" y="8" width="1" height="3" fill="#00e5ff"/> 
+        <rect x="21" y="8" width="1" height="3" fill="#00e5ff"/> 
+      </svg>
+    </div>
+
+    <div class="high-score-box">
+      <div class="hi-score-label">HI-SCORE</div>
+      <div class="score-numbers" id="loadScore">00000</div>
+    </div>
+    
+    <div class="blink-text" id="blinkStart">INSERT COIN...</div>
+  </div>
+</div>
+
 <div class="top-bar-notice">
   <div><i class="fas fa-check-circle" style="color: var(--secondary-color);"></i> <span id="spTexto">Gabriel S. adquirió Chibi Firefly</span> <span style="color: var(--text-muted); font-size: 0.9em;" id="spLugar">(Bejuma)</span></div>
   <div style="color: var(--text-muted); font-size: 0.8em;">Sakura Verified</div>
@@ -821,7 +894,7 @@
   </div>
 </div>
 
-<!-- MODAL GAMER PROFILE -->
+<!-- CAJA AÑADIDA: MODAL GAMER PROFILE COMPLETA CON BARRA XP -->
 <div id="modalGamerProfile" class="modal">
   <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarGamerProfileModal()">×</button>
@@ -834,7 +907,7 @@
         <span><strong id="lblXp" style="color: var(--secondary-color);">150</strong> XP</span>
       </div>
       
-      <!-- BARRA DE XP RPG AÑADIDA -->
+      <!-- BARRA DE XP RPG -->
       <div class="xp-bar-container">
         <div class="xp-bar-fill" id="barXp"></div>
       </div>
@@ -911,12 +984,10 @@
           <img src="logo.webp?v=2" id="img-cat-mandos" class="cat-img" alt="Mandos" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-mandos">Mandos & Consolas</div><div class="cat-count" id="count-mandos">0 items</div></div>
         </div>
-        
         <div class="cat-card" onclick="filtrarCategoria('perifericos')">
           <img src="logo.webp?v=2" id="img-cat-perifericos" class="cat-img" alt="Periféricos" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-perifericos">Periféricos Gamer</div><div class="cat-count" id="count-perifericos">0 items</div></div>
         </div>
-
         <div class="cat-card" onclick="filtrarCategoria('peluches')">
           <img src="logo.webp?v=2" id="img-cat-peluches" class="cat-img" alt="Peluches" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-peluches">Peluches</div><div class="cat-count" id="count-peluches">0 items</div></div>
@@ -939,19 +1010,16 @@
     </div>
   </div>
 
-  <!-- Controles Compactos -->
   <div class="controles-superiores">
     <div class="panel-controles-avanzados">
       <select id="selectColeccion" class="ordenar-select" onchange="cambiarColeccionDropdown(this.value)">
         <option value="todos">Colección: Todas las Franquicias</option>
       </select>
-
       <select id="selectEstado" class="ordenar-select" onchange="filtrarEstadoDropdown(this.value)">
         <option value="todos">Disponibilidad: Todo</option>
         <option value="Envío Inmediato 📦">Solo Stock Inmediato</option>
         <option value="Por Encargo ⚡">Bajo Encargo</option>
       </select>
-
       <select id="selectOrden" class="ordenar-select" onchange="ordenarProductos()">
         <option value="defecto">Ordenar: Predeterminado</option>
         <option value="reciente">Novedades: Más recientes</option>
@@ -993,7 +1061,7 @@
   </div>
 </div>
 
-<!-- MODAL PRODUCTO DETALLE -->
+<!-- CAJA AÑADIDA: MODAL PRODUCTO DETALLE CON PRODUCTOS RELACIONADOS -->
 <div id="miModal" class="modal">
   <div class="modal-content">
     <button class="cerrar-modal" onclick="cerrarModal()">×</button>
@@ -1023,7 +1091,7 @@
     <button class="btn-comprar" onclick="agregarAlCarrito()"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
     <button class="btn-compartir" onclick="compartirProductoWhatsApp()"><i class="fab fa-whatsapp"></i> Consultar por WhatsApp</button>
 
-    <!-- PESTAÑA AÑADIDA: PRODUCTOS RELACIONADOS -->
+    <!-- PRODUCTOS RELACIONADOS -->
     <div id="contenedorRelacionados" style="margin-top: 18px; border-top: 1px dashed var(--border-color); padding-top: 12px; display: none;">
       <h4 style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 10px;">También te podría interesar:</h4>
       <div style="display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;" id="listaRelacionados"></div>
@@ -1031,13 +1099,13 @@
   </div>
 </div>
 
-<!-- MODAL MENÚ DE OPCIONES -->
+<!-- CAJA AÑADIDA: MODAL MENÚ DE OPCIONES CON BOTÓN DE INSTALAR PWA -->
 <div id="modalOpcionesMenu" class="modal">
   <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarMenuOpciones()">×</button>
     <h3 style="color: #fff; margin-top: 0;">Panel de Funciones</h3>
     
-    <!-- BOTÓN DE INSTALAR PWA AÑADIDO -->
+    <!-- BOTÓN DE INSTALAR PWA -->
     <button id="btnInstalarPWA" class="btn-comprar btn-instalar" style="display: none; margin-bottom: 15px;" onclick="instalarPWA()">
       <i class="fas fa-download"></i> Instalar App Sakura
     </button>
@@ -1188,7 +1256,7 @@
     e.preventDefault();
     eventoInstalacion = e;
     const btn = document.getElementById('btnInstalarPWA');
-    if(btn) btn.style.display = 'block'; // Muestra el botón solo si el celular permite instalarla
+    if(btn) btn.style.display = 'block'; 
   });
 
   window.instalarPWA = async function() {
@@ -1224,6 +1292,49 @@
     return String(str).replace(/[&<>"']/g, function(m) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
     });
+  }
+
+  function generarLluviaSakura() {
+    const contenedor = document.getElementById('sakuraRain');
+    if(!contenedor) return;
+    for(let i=0; i<15; i++) {
+      let petalo = document.createElement('div');
+      petalo.className = 'pixel-petal';
+      petalo.style.left = Math.random() * 100 + '%';
+      petalo.style.animationDelay = (Math.random() * 2) + 's';
+      petalo.style.animationDuration = (Math.random() * 1.5 + 2) + 's';
+      contenedor.appendChild(petalo);
+    }
+  }
+
+  function ejecutarAnimacionSplash() {
+    generarLluviaSakura();
+    let score = 0;
+    const txtScore = document.getElementById('loadScore');
+    const blink = document.getElementById('blinkStart');
+    const fox = document.getElementById('pixelFox');
+    const splash = document.getElementById('splash-screen');
+
+    if (!txtScore || !splash) return;
+
+    const intervaloCarga = setInterval(() => {
+      score += Math.floor(Math.random() * 800) + 150;
+      if (score >= 9999) {
+        score = 9999;
+        clearInterval(intervaloCarga);
+        txtScore.innerText = "99999";
+        blink.innerText = "- PRESS START -";
+        blink.classList.add('fast-blink');
+        fox.classList.add('jump-fox');
+        reproducirSonido();
+        setTimeout(() => {
+          splash.style.opacity = '0';
+          setTimeout(() => { splash.style.display = 'none'; }, 500);
+        }, 850);
+      } else {
+        txtScore.innerText = score.toString().padStart(5, '0');
+      }
+    }, 70);
   }
 
   async function cargarDatosPagoNube() {
@@ -1328,15 +1439,20 @@
     
     let conteo = { recargas: 0, mangas: 0, ropa: 0, mandos: 0, perifericos: 0, figuras: 0, peluches: 0, cartas: 0, katanas: 0, lamparas: 0, accesorios: 0 };
     
+    // Contar sólo los que no están ocultos
+    let prodsVisibles = lista.filter(p => !p.oculto);
     let elTodos = document.getElementById('count-todos');
-    if(elTodos) elTodos.innerText = lista.length + " items";
+    if(elTodos) elTodos.innerText = prodsVisibles.length + " items";
 
-    if (lista.length === 0) {
+    if (prodsVisibles.length === 0) {
       contenedor.innerHTML = "<p style='color: var(--text-muted); text-align: center; grid-column: 1/-1;'>No se encontraron productos disponibles.</p>";
       return;
     }
 
     lista.forEach((prod, indexProd) => {
+      // 🥷 LA MAGIA NINJA: Ignorar productos pausados desde el admin
+      if(prod.oculto) return; 
+
       let fotosArray = (prod.fotos && prod.fotos.length > 0) ? prod.fotos : ['logo.webp?v=2'];
       let categoria = (prod.categoria || 'mangas').toLowerCase();
       let coleccion = prod.coleccion || 'General';
@@ -1392,7 +1508,10 @@
     const select = document.getElementById('selectColeccion');
     if (!select) return;
     const coleccionesUnicas = new Set();
-    productos.forEach(p => { if (p.coleccion && p.coleccion.trim() !== '' && p.coleccion.toLowerCase() !== 'general') coleccionesUnicas.add(p.coleccion.trim()); });
+    productos.forEach(p => { 
+      if (!p.oculto && p.coleccion && p.coleccion.trim() !== '' && p.coleccion.toLowerCase() !== 'general') 
+        coleccionesUnicas.add(p.coleccion.trim()); 
+    });
 
     let valorSeleccionado = filtroGlobal.coleccion;
     let html = `<option value="todos">Colección: Todas las Franquicias</option>`;
@@ -1461,22 +1580,25 @@
       });
     }
 
-    // --- CARGAR PRODUCTOS RELACIONADOS ---
-    let relacionados = productosNubeGlobal.filter(p => (p.coleccion === prod.coleccion || p.categoria === prod.categoria) && p.id !== prod.id).slice(0, 5);
+    // --- CARGAR PRODUCTOS RELACIONADOS A PRUEBA DE FALLOS ---
     let contRel = document.getElementById('contenedorRelacionados');
     let listaRel = document.getElementById('listaRelacionados');
     
-    if(relacionados.length > 0 && prod.coleccion !== 'General') {
-        contRel.style.display = 'block';
-        listaRel.innerHTML = relacionados.map(r => `
-           <div style="min-width: 90px; cursor: pointer; text-align: center; background: #000; padding: 6px; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.05);" onclick="abrirModalPorId('${r.id}')">
-             <img src="${r.fotos && r.fotos.length > 0 ? r.fotos[0] : 'logo.webp?v=2'}" style="width: 100%; height: 75px; object-fit: contain; margin-bottom: 4px;">
-             <div style="font-size: 0.7em; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: 'Chakra Petch', sans-serif;">${sanitizarHTML(r.nombre)}</div>
-             <div style="font-size: 0.8em; color: var(--secondary-color); font-weight: bold;">$${r.precio}</div>
-           </div>
-        `).join('');
-    } else {
-        contRel.style.display = 'none';
+    if (contRel && listaRel) {
+      let relacionados = productosNubeGlobal.filter(p => !p.oculto && (p.coleccion === prod.coleccion || p.categoria === prod.categoria) && p.id !== prod.id).slice(0, 5);
+      
+      if(relacionados.length > 0 && prod.coleccion !== 'General') {
+          contRel.style.display = 'block';
+          listaRel.innerHTML = relacionados.map(r => `
+             <div style="min-width: 90px; cursor: pointer; text-align: center; background: #000; padding: 6px; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.05);" onclick="cerrarModal(); abrirModalPorId('${r.id}')">
+               <img src="${r.fotos && r.fotos.length > 0 ? r.fotos[0] : 'logo.webp?v=2'}" style="width: 100%; height: 75px; object-fit: contain; margin-bottom: 4px;">
+               <div style="font-size: 0.7em; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: 'Chakra Petch', sans-serif;">${sanitizarHTML(r.nombre)}</div>
+               <div style="font-size: 0.8em; color: var(--secondary-color); font-weight: bold;">$${r.precio}</div>
+             </div>
+          `).join('');
+      } else {
+          contRel.style.display = 'none';
+      }
     }
 
     document.getElementById('miModal').style.display = 'flex';
@@ -1534,7 +1656,8 @@
     } catch(e) {}
   };
 
-  window.addEventListener('DOMContentLoaded', () => { 
+  window.addEventListener('DOMContentLoaded', () => {
+    ejecutarAnimacionSplash(); 
     cargarBannersDeNube(); 
     cargarProductosDeNube(); 
     cargarConfigCategoriasPublico(); 
@@ -1614,8 +1737,8 @@
         document.getElementById('lblXpNext').innerText = `¡Rango Máximo Alcanzado!`;
     }
     
-    // Animación fluida de la barra
-    setTimeout(() => { document.getElementById('barXp').style.width = pct + "%"; }, 200);
+    let barra = document.getElementById('barXp');
+    if(barra) setTimeout(() => { barra.style.width = pct + "%"; }, 200);
 
     localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
     document.getElementById('lblXp').innerText = gamerProfile.xp; 
@@ -1695,11 +1818,15 @@
   window.productoActual = null; let descuentoAplicado = 0; let pestanaCarritoActual = 'fisico';
 
   window.cambiarPestanaCarrito = function(tipo) {
-    reproducirSonido(); pestanaCarritoActual = tipo;
+    reproducirSonido();
+    pestanaCarritoActual = tipo;
+
     document.getElementById('tabBtnFisico').classList.toggle('activo', tipo === 'fisico');
     document.getElementById('tabBtnDigital').classList.toggle('activo', tipo === 'digital');
+
     document.getElementById('apartadoEnvioFisico').style.display = (tipo === 'fisico') ? 'block' : 'none';
     document.getElementById('apartadoRecargasDigitales').style.display = (tipo === 'digital') ? 'block' : 'none';
+
     renderizarListaCarrito();
   };
 
@@ -1710,8 +1837,13 @@
     let paymentBox = document.getElementById('paymentMethodsCart');
     
     cont.innerHTML = ""; reciboContenido.innerHTML = "";
-    let itemsFisicos = carrito.filter(i => !i.esRecarga); let itemsDigitales = carrito.filter(i => i.esRecarga);
-    document.getElementById('countCartFisico').innerText = itemsFisicos.length; document.getElementById('countCartDigital').innerText = itemsDigitales.length;
+
+    let itemsFisicos = carrito.filter(i => !i.esRecarga);
+    let itemsDigitales = carrito.filter(i => i.esRecarga);
+
+    document.getElementById('countCartFisico').innerText = itemsFisicos.length;
+    document.getElementById('countCartDigital').innerText = itemsDigitales.length;
+
     let itemsMostrados = (pestanaCarritoActual === 'fisico') ? itemsFisicos : itemsDigitales;
 
     if (itemsMostrados.length === 0) {
@@ -1722,7 +1854,10 @@
         cont.innerHTML += `
           <div class="cart-item-row">
             <img src="${item.img}" class="cart-item-img" loading="lazy">
-            <div class="cart-item-info"><strong>${sanitizarHTML(item.titulo)}</strong><br><span style="color:var(--secondary-color);">$${Number(item.precio).toFixed(2)}</span></div>
+            <div class="cart-item-info">
+              <strong>${sanitizarHTML(item.titulo)}</strong><br>
+              <span style="color:var(--secondary-color);">$${Number(item.precio).toFixed(2)}</span>
+            </div>
             <button class="cart-item-del" onclick="removerDelCarrito(${idxOriginal})"><i class="fas fa-times"></i></button>
           </div>`;
       });
