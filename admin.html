@@ -426,6 +426,7 @@
   <div class="tabs-wrapper">
     <button class="tab-btn active" onclick="cambiarSeccion('productos')"><i class="fas fa-boxes"></i> Inventario</button>
     <button class="tab-btn" onclick="cambiarSeccion('pedidos')"><i class="fas fa-truck-fast"></i> Pedidos</button>
+    <button class="tab-btn" onclick="cambiarSeccion('jugadores')"><i class="fas fa-users"></i> Jugadores</button>
     <button class="tab-btn" onclick="cambiarSeccion('facturas')"><i class="fas fa-file-invoice-dollar"></i> Facturas</button>
     <button class="tab-btn" onclick="cambiarSeccion('banners')"><i class="fas fa-images"></i> Banners</button>
     <button class="tab-btn" onclick="cambiarSeccion('cupones')"><i class="fas fa-ticket-alt"></i> Cupones</button>
@@ -497,11 +498,19 @@
           </select>
         </div>
 
+        <!-- CARGADOR WEBP -->
         <div class="form-group">
           <label class="form-label">Fotos del Producto (Hasta 5 imágenes):</label>
+          
           <input type="file" id="prodFileInput" multiple accept="image/*" style="display: none;" onchange="procesarArchivosGaleria(event)">
-          <button type="button" class="btn-file-select" onclick="document.getElementById('prodFileInput').click()"><i class="fas fa-camera"></i> Seleccionar Fotos</button>
-          <div id="txtEstadoSubida" class="upload-status-text"><i class="fas fa-spinner fa-spin"></i> Optimizando a formato WebP...</div>
+          <button type="button" class="btn-file-select" onclick="document.getElementById('prodFileInput').click()">
+            <i class="fas fa-camera"></i> Seleccionar Fotos
+          </button>
+          
+          <div id="txtEstadoSubida" class="upload-status-text">
+            <i class="fas fa-spinner fa-spin"></i> Optimizando a formato WebP...
+          </div>
+
           <div id="contenedorPreviewFotos" class="preview-fotos-grid"></div>
         </div>
 
@@ -509,6 +518,7 @@
           <label class="form-label">Descripción:</label>
           <textarea id="prodDesc" class="form-textarea" rows="2" placeholder="Detalles breves..."></textarea>
         </div>
+
         <button type="submit" class="btn-submit" id="btnGuardarProd">Guardar Producto</button>
       </form>
     </div>
@@ -519,6 +529,7 @@
         <span class="panel-title"><i class="fas fa-boxes"></i> Inventario (<span id="totalProdsLbl">0</span>)</span>
         <input type="text" id="buscarEnAdmin" class="form-input" style="max-width: 140px; min-height: 34px; padding: 6px 10px; font-size: 0.85em; border-radius: var(--radius-pill);" placeholder="Buscar..." onkeyup="filtrarTarjetasAdmin()">
       </div>
+      
       <div id="listaProductosMobile">
         <p style="color: var(--text-muted); text-align: center; padding: 15px;"><i class="fas fa-spinner fa-spin"></i> Cargando inventario...</p>
       </div>
@@ -590,6 +601,19 @@
       </div>
       <div id="listaPedidosMobile">
         <p style="color: var(--text-muted); text-align: center; padding: 15px;"><i class="fas fa-spinner fa-spin"></i> Cargando pedidos...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- NUEVO: PANEL DE JUGADORES (XP MANUAL) -->
+  <section id="panel-jugadores" class="admin-panel">
+    <div class="card-panel">
+      <div class="panel-header">
+        <span class="panel-title"><i class="fas fa-users"></i> Base de Jugadores</span>
+      </div>
+      <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 15px;">Aquí puedes premiar a tus clientes sumándoles XP manualmente por sus compras o eventos especiales.</p>
+      <div id="listaJugadoresAdmin">
+        <p style="color: var(--text-muted); text-align: center;"><i class="fas fa-spinner fa-spin"></i> Cargando jugadores...</p>
       </div>
     </div>
   </section>
@@ -802,9 +826,7 @@
 
   function sanitizar(str) {
     if (!str) return '';
-    return String(str).replace(/[&<>"']/g, function(m) {
-      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
-    });
+    return String(str).replace(/[&<>"']/g, function(m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]; });
   }
 
   function comprimirYConvertirAWebP(archivo, maxDim = 600, calidad = 0.72) {
@@ -997,7 +1019,7 @@
     });
   };
 
-  // --- 2. PEDIDOS Y ANALÍTICAS VISUALES (FASE 2) ---
+  // --- 2. PEDIDOS Y ANALÍTICAS VISUALES ---
   async function cargarPedidosAdmin() {
     try {
       const q = query(collection(db, "pedidos"), orderBy("timestamp", "desc"));
@@ -1016,7 +1038,6 @@
       let totalUsdGanado = 0;
       let pedidosPendientes = 0;
 
-      // Variables para la Gráfica de 7 Días
       let ventas7Dias = [0, 0, 0, 0, 0, 0, 0];
       let labels7Dias = [];
       let hoy = new Date();
@@ -1026,7 +1047,6 @@
       limite7Dias.setDate(limite7Dias.getDate() - 6);
       limite7Dias.setHours(0, 0, 0, 0);
 
-      // Generar Etiquetas (Ej: "Lun 14", "Mar 15")
       for(let i=6; i>=0; i--) {
           let d = new Date();
           d.setDate(d.getDate() - i);
@@ -1040,18 +1060,16 @@
         if(est === 'Completado') totalUsdGanado += Number(ped.totalUsd || 0);
         if(est !== 'Completado') pedidosPendientes++;
 
-        // Alimentar datos de la gráfica si la venta fue completada en los últimos 7 días
         let ts = ped.timestamp || 0;
         if (est === 'Completado' && ts >= limite7Dias.getTime() && ts <= hoy.getTime()) {
             let dVenta = new Date(ts);
             let diffTime = hoy.getTime() - dVenta.getTime();
-            let diffDays = Math.floor(diffTime / (1000 * 3600 * 24)); // 0 es hoy, 1 es ayer...
+            let diffDays = Math.floor(diffTime / (1000 * 3600 * 24)); 
             if(diffDays >= 0 && diffDays <= 6) {
                ventas7Dias[6 - diffDays] += Number(ped.totalUsd);
             }
         }
 
-        // Colores de la tarjeta
         let colorEstado = '#ffaa00'; 
         if(est === 'Pagado') colorEstado = '#00e5ff';
         else if(est === 'Enviado') colorEstado = '#b000ff';
@@ -1084,69 +1102,40 @@
       document.getElementById('dashIngresos').innerText = "$" + totalUsdGanado.toFixed(2);
       document.getElementById('dashOrdenes').innerText = pedidosPendientes;
 
-      // DIBUJAR LA GRÁFICA FASE 2
       dibujarGraficaVentas(labels7Dias, ventas7Dias);
 
     } catch(e) {}
   }
 
-  // --- FUNCIÓN PARA RENDERIZAR CHART.JS ---
   window.graficoVentasAdmin = null;
   function dibujarGraficaVentas(etiquetas, datos) {
-      if (window.graficoVentasAdmin) {
-          window.graficoVentasAdmin.destroy();
-      }
+      if (window.graficoVentasAdmin) { window.graficoVentasAdmin.destroy(); }
       const ctx = document.getElementById('graficoVentas').getContext('2d');
       window.graficoVentasAdmin = new Chart(ctx, {
           type: 'line',
           data: {
               labels: etiquetas,
               datasets: [{
-                  label: 'Ventas Completadas (USD)',
-                  data: datos,
-                  borderColor: '#00e5ff', /* Color Neon Secondary */
-                  backgroundColor: 'rgba(0, 229, 255, 0.2)', /* Relleno semitransparente */
-                  borderWidth: 2,
-                  pointBackgroundColor: '#ff007f', /* Puntos Primary */
-                  pointBorderColor: '#fff',
-                  pointHoverBackgroundColor: '#fff',
-                  pointHoverBorderColor: '#ff007f',
-                  pointRadius: 4,
-                  pointHoverRadius: 6,
-                  fill: true,
-                  tension: 0.4 /* Hace la curva suave */
+                  label: 'Ventas Completadas (USD)', data: datos,
+                  borderColor: '#00e5ff', backgroundColor: 'rgba(0, 229, 255, 0.2)',
+                  borderWidth: 2, pointBackgroundColor: '#ff007f', pointBorderColor: '#fff',
+                  pointHoverBackgroundColor: '#fff', pointHoverBorderColor: '#ff007f',
+                  pointRadius: 4, pointHoverRadius: 6, fill: true, tension: 0.4
               }]
           },
           options: {
-              responsive: true,
-              maintainAspectRatio: false,
+              responsive: true, maintainAspectRatio: false,
               plugins: { 
                   legend: { display: false },
                   tooltip: {
-                      backgroundColor: 'rgba(14, 4, 31, 0.9)',
-                      titleColor: '#00e5ff',
-                      bodyColor: '#fff',
-                      borderColor: 'rgba(0, 229, 255, 0.4)',
-                      borderWidth: 1,
-                      padding: 10,
-                      displayColors: false,
-                      callbacks: {
-                          label: function(context) {
-                              return '$' + context.parsed.y.toFixed(2);
-                          }
-                      }
+                      backgroundColor: 'rgba(14, 4, 31, 0.9)', titleColor: '#00e5ff', bodyColor: '#fff',
+                      borderColor: 'rgba(0, 229, 255, 0.4)', borderWidth: 1, padding: 10, displayColors: false,
+                      callbacks: { label: function(context) { return '$' + context.parsed.y.toFixed(2); } }
                   }
               },
               scales: {
-                  y: { 
-                      beginAtZero: true, 
-                      grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false }, 
-                      ticks: { color: '#8b8f9e', callback: function(value) { return '$' + value; } } 
-                  },
-                  x: { 
-                      grid: { display: false, drawBorder: false }, 
-                      ticks: { color: '#8b8f9e' } 
-                  }
+                  y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false }, ticks: { color: '#8b8f9e', callback: function(value) { return '$' + value; } } },
+                  x: { grid: { display: false, drawBorder: false }, ticks: { color: '#8b8f9e' } }
               }
           }
       });
@@ -1201,7 +1190,85 @@
     cargarPedidosAdmin();
   };
 
-  // --- RESTO DE FUNCIONES (Facturas, Banners, Cupones, etc) MANTENIDAS EXACTAMENTE IGUAL ---
+  // --- NUEVA FUNCIÓN: GESTIÓN DE JUGADORES Y XP MANUAL ---
+  
+  function calcularRangoXP(xp) {
+    let chunin = parseInt(document.getElementById('xpChunin').value) || 300;
+    let jonin = parseInt(document.getElementById('xpJonin').value) || 600;
+    let hokage = parseInt(document.getElementById('xpHokage').value) || 1000;
+    
+    if (xp >= hokage) return "Hokage";
+    if (xp >= jonin) return "Jōnin";
+    if (xp >= chunin) return "Chūnin";
+    return "Genin";
+  }
+
+  async function cargarJugadoresAdmin() {
+    try {
+      const q = query(collection(db, "jugadores_cloud"), orderBy("updatedAt", "desc"));
+      const snapshot = await getDocs(q);
+      const cont = document.getElementById('listaJugadoresAdmin');
+      
+      if (snapshot.empty) { cont.innerHTML = "<p style='color:var(--text-muted); text-align:center;'>No hay jugadores sincronizados en la nube.</p>"; return; }
+      
+      let htmlBloque = "";
+      snapshot.forEach(d => {
+        const data = d.data();
+        const profile = data.profile || {};
+        const tag = profile.tag || 'Sin Nombre';
+        const xp = profile.xp || 0;
+        const rango = profile.rango || 'Genin';
+        
+        let colorRango = '#ffaa00'; 
+        if(rango === 'Chūnin') colorRango = '#00e5ff';
+        if(rango === 'Jōnin') colorRango = '#b000ff';
+        if(rango === 'Hokage') colorRango = '#25d366';
+
+        htmlBloque += `
+          <div class="item-card-row">
+            <div style="flex-grow: 1;">
+              <div style="font-weight:700; color:#fff; font-size:1.05em; margin-bottom: 2px;">${sanitizar(tag)}</div>
+              <div style="font-size:0.85em; color:var(--text-muted);">
+                Rango: <strong style="color:${colorRango}; text-shadow: 0 0 5px ${colorRango}40;">${rango}</strong> | <strong style="color:var(--secondary-color);">${xp} XP</strong>
+              </div>
+            </div>
+            <div class="item-card-actions">
+              <button class="btn-action-touch" style="color: #ff007f; background: rgba(255,0,127,0.1); border: 1px solid rgba(255,0,127,0.3);" title="Asignar XP" onclick="asignarXpManualmente('${d.id}', ${xp}, '${sanitizar(tag)}')"><i class="fas fa-star"></i></button>
+            </div>
+          </div>`;
+      });
+      cont.innerHTML = htmlBloque;
+    } catch(e) {
+      console.error("Error al cargar jugadores:", e);
+    }
+  }
+
+  window.asignarXpManualmente = async function(uid, currentXp, tag) {
+    let cantidadStr = prompt(`⭐ ASIGNAR XP A: ${tag}\n\nIngresa la cantidad de Experiencia (Ej: 2700).\nPuedes usar números negativos para restar XP.`);
+    if (!cantidadStr) return;
+    
+    let cantidad = parseInt(cantidadStr);
+    if (isNaN(cantidad)) return alert("Por favor, ingresa un número válido.");
+    
+    let newXp = currentXp + cantidad;
+    if (newXp < 0) newXp = 0;
+    
+    let newRank = calcularRangoXP(newXp);
+    
+    try {
+      await updateDoc(doc(db, "jugadores_cloud", uid), {
+        "profile.xp": newXp,
+        "profile.rango": newRank,
+        "updatedAt": Date.now()
+      });
+      alert(`✅ ¡Éxito! ${tag} ahora tiene ${newXp} XP y es rango ${newRank}.`);
+      cargarJugadoresAdmin(); 
+    } catch(e) {
+      alert("Error actualizando la experiencia: " + e.message);
+    }
+  };
+
+  // --- FACTURAS ---
   
   window.toggleCajaFactura = function() {
     const box = document.getElementById('cajaFacturaManual');
@@ -1412,6 +1479,7 @@
   function cargarTodo() {
     cargarProductosAdmin();
     cargarPedidosAdmin();
+    cargarJugadoresAdmin(); /* FASE 3: CARGAR JUGADORES */
     cargarFacturasAdmin(); 
     cargarBannersAdmin();
     cargarCuponesAdmin();
