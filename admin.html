@@ -13,6 +13,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- LIBRERÍA DE GRÁFICOS (FASE 2) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
     :root {
@@ -452,7 +455,6 @@
           <input type="text" id="prodNombre" class="form-input" placeholder="Ej: Chibi Firefly" required>
         </div>
 
-        <!-- CAMBIOS DE FASE 1: Se añadió el campo Stock -->
         <div style="display: flex; gap: 8px;">
           <div class="form-group" style="flex: 1;">
             <label class="form-label">Precio ($):</label>
@@ -495,19 +497,11 @@
           </select>
         </div>
 
-        <!-- CARGADOR WEBP -->
         <div class="form-group">
           <label class="form-label">Fotos del Producto (Hasta 5 imágenes):</label>
-          
           <input type="file" id="prodFileInput" multiple accept="image/*" style="display: none;" onchange="procesarArchivosGaleria(event)">
-          <button type="button" class="btn-file-select" onclick="document.getElementById('prodFileInput').click()">
-            <i class="fas fa-camera"></i> Seleccionar Fotos
-          </button>
-          
-          <div id="txtEstadoSubida" class="upload-status-text">
-            <i class="fas fa-spinner fa-spin"></i> Optimizando a formato WebP...
-          </div>
-
+          <button type="button" class="btn-file-select" onclick="document.getElementById('prodFileInput').click()"><i class="fas fa-camera"></i> Seleccionar Fotos</button>
+          <div id="txtEstadoSubida" class="upload-status-text"><i class="fas fa-spinner fa-spin"></i> Optimizando a formato WebP...</div>
           <div id="contenedorPreviewFotos" class="preview-fotos-grid"></div>
         </div>
 
@@ -515,7 +509,6 @@
           <label class="form-label">Descripción:</label>
           <textarea id="prodDesc" class="form-textarea" rows="2" placeholder="Detalles breves..."></textarea>
         </div>
-
         <button type="submit" class="btn-submit" id="btnGuardarProd">Guardar Producto</button>
       </form>
     </div>
@@ -526,15 +519,25 @@
         <span class="panel-title"><i class="fas fa-boxes"></i> Inventario (<span id="totalProdsLbl">0</span>)</span>
         <input type="text" id="buscarEnAdmin" class="form-input" style="max-width: 140px; min-height: 34px; padding: 6px 10px; font-size: 0.85em; border-radius: var(--radius-pill);" placeholder="Buscar..." onkeyup="filtrarTarjetasAdmin()">
       </div>
-      
       <div id="listaProductosMobile">
         <p style="color: var(--text-muted); text-align: center; padding: 15px;"><i class="fas fa-spinner fa-spin"></i> Cargando inventario...</p>
       </div>
     </div>
   </section>
 
-  <!-- 2. PEDIDOS -->
+  <!-- 2. PEDIDOS Y ANALÍTICAS -->
   <section id="panel-pedidos" class="admin-panel">
+    
+    <!-- FASE 2: GRÁFICO DE INGRESOS (NUEVO) -->
+    <div class="card-panel">
+      <div class="panel-header" style="margin-bottom: 8px;">
+        <span class="panel-title"><i class="fas fa-chart-line"></i> Ingresos (Últimos 7 días)</span>
+      </div>
+      <div style="position: relative; height: 180px; width: 100%;">
+        <canvas id="graficoVentas"></canvas>
+      </div>
+    </div>
+
     <button class="btn-toggle-box" onclick="toggleCajaPedidoManual()">
       <i class="fas fa-plus"></i> Registrar Pedido Manual
     </button>
@@ -596,19 +599,13 @@
     <button class="btn-toggle-box" onclick="toggleCajaFactura()">
       <i class="fas fa-file-invoice-dollar"></i> Emitir Nueva Factura / Recibo
     </button>
-
     <div class="card-panel" id="cajaFacturaManual" style="display: none;">
       <div class="panel-header">
         <span class="panel-title"><i class="fas fa-plus"></i> Generar Comprobante</span>
         <button style="background: none; border: none; color: #ff3366; font-weight: bold; cursor: pointer;" onclick="toggleCajaFactura()">Cerrar</button>
       </div>
       <form id="formFactura" onsubmit="guardarFactura(event)">
-        <div class="form-group">
-          <label class="form-label">Datos del Cliente:</label>
-          <input type="text" id="facCliente" class="form-input" placeholder="Nombre completo" required style="margin-bottom: 6px;">
-          <input type="text" id="facCedula" class="form-input" placeholder="Cédula / Documento (Opcional)">
-        </div>
-        
+        <div class="form-group"><label class="form-label">Datos del Cliente:</label><input type="text" id="facCliente" class="form-input" placeholder="Nombre completo" required style="margin-bottom: 6px;"><input type="text" id="facCedula" class="form-input" placeholder="Cédula / Documento (Opcional)"></div>
         <div class="form-group">
           <label class="form-label">Vía de Pago:</label>
           <select id="facMetodo" class="form-select">
@@ -618,28 +615,14 @@
             <option value="Efectivo Bs">Efectivo Bs</option>
           </select>
         </div>
-
-        <div class="form-group">
-          <label class="form-label">Productos Vendidos:</label>
-          <textarea id="facDetalles" class="form-textarea" rows="3" placeholder="Ej:&#10;1x Chibi Firefly - $17.00&#10;1x Manga Vol. 1 - $5.00" required></textarea>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Monto Total USD:</label>
-          <input type="number" id="facTotal" class="form-input" step="0.01" placeholder="Ej: 22.00" required>
-        </div>
-
+        <div class="form-group"><label class="form-label">Productos Vendidos:</label><textarea id="facDetalles" class="form-textarea" rows="3" placeholder="Ej:&#10;1x Chibi Firefly - $17.00&#10;1x Manga Vol. 1 - $5.00" required></textarea></div>
+        <div class="form-group"><label class="form-label">Monto Total USD:</label><input type="number" id="facTotal" class="form-input" step="0.01" placeholder="Ej: 22.00" required></div>
         <button type="submit" class="btn-submit">Guardar Factura</button>
       </form>
     </div>
-
     <div class="card-panel">
-      <div class="panel-header">
-        <span class="panel-title"><i class="fas fa-file-invoice"></i> Historial de Facturas (<span id="totalFacturasLbl">0</span>)</span>
-      </div>
-      <div id="listaFacturasMobile">
-        <p style="color: var(--text-muted); text-align: center; padding: 15px;"><i class="fas fa-spinner fa-spin"></i> Cargando recibos...</p>
-      </div>
+      <div class="panel-header"><span class="panel-title"><i class="fas fa-file-invoice"></i> Historial de Facturas (<span id="totalFacturasLbl">0</span>)</span></div>
+      <div id="listaFacturasMobile"><p style="color: var(--text-muted); text-align: center; padding: 15px;"><i class="fas fa-spinner fa-spin"></i> Cargando recibos...</p></div>
     </div>
   </section>
 
@@ -648,10 +631,7 @@
     <div class="card-panel">
       <div class="panel-header"><span class="panel-title"><i class="fas fa-plus"></i> Añadir Banner</span></div>
       <form onsubmit="agregarBanner(event)">
-        <div class="form-group">
-          <label class="form-label">Foto de Banner (Se convierte a WebP):</label>
-          <input type="file" id="bannerFileInput" accept="image/*" class="form-input" style="padding: 10px;" required>
-        </div>
+        <div class="form-group"><label class="form-label">Foto de Banner (Se convierte a WebP):</label><input type="file" id="bannerFileInput" accept="image/*" class="form-input" style="padding: 10px;" required></div>
         <button type="submit" class="btn-submit" id="btnSubirBanner">Publicar Banner</button>
       </form>
     </div>
@@ -666,14 +646,8 @@
     <div class="card-panel">
       <div class="panel-header"><span class="panel-title"><i class="fas fa-plus"></i> Nuevo Cupón</span></div>
       <form onsubmit="agregarCupon(event)">
-        <div class="form-group">
-          <label class="form-label">Código:</label>
-          <input type="text" id="cuponCodigo" class="form-input" placeholder="Ej: PROMO10" style="text-transform: uppercase;" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Descuento (%):</label>
-          <input type="number" id="cuponPorcentaje" class="form-input" min="1" max="90" placeholder="10" required>
-        </div>
+        <div class="form-group"><label class="form-label">Código:</label><input type="text" id="cuponCodigo" class="form-input" placeholder="Ej: PROMO10" style="text-transform: uppercase;" required></div>
+        <div class="form-group"><label class="form-label">Descuento (%):</label><input type="number" id="cuponPorcentaje" class="form-input" min="1" max="90" placeholder="10" required></div>
         <button type="submit" class="btn-submit">Activar Cupón</button>
       </form>
     </div>
@@ -758,7 +732,6 @@
   let facturasAdminGlobal = []; 
   let fotosBufferProducto = [];
 
-  // --- ESCUCHA ACTIVA DE SESIÓN CON FIREBASE AUTH ---
   onAuthStateChanged(auth, (user) => {
     const lockScreen = document.getElementById('lockScreen');
     const mainContent = document.getElementById('adminMainContent');
@@ -779,11 +752,7 @@
     const errorBox = document.getElementById('loginErrorMsg');
     const btn = document.getElementById('btnLoginSubmit');
 
-    if (!email || !pass) {
-      errorBox.innerText = "Ingresa tu correo y contraseña.";
-      errorBox.style.display = 'block';
-      return;
-    }
+    if (!email || !pass) { errorBox.innerText = "Ingresa tu correo y contraseña."; errorBox.style.display = 'block'; return; }
 
     btn.disabled = true;
     btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Verificando...`;
@@ -796,15 +765,12 @@
       errorBox.innerText = "Credenciales inválidas o acceso denegado.";
       errorBox.style.display = 'block';
     } finally {
-      btn.disabled = false;
-      btn.innerText = "Iniciar Sesión";
+      btn.disabled = false; btn.innerText = "Iniciar Sesión";
     }
   };
 
   window.cerrarSesionAdmin = async function() {
-    if (confirm("¿Deseas cerrar la sesión de administrador?")) {
-      await signOut(auth);
-    }
+    if (confirm("¿Deseas cerrar la sesión de administrador?")) await signOut(auth);
   };
 
   window.cambiarSeccion = function(panelId) {
@@ -819,11 +785,9 @@
     const formBox = document.getElementById('cajaFormProducto');
     const lbl = document.getElementById('lblToggleForm');
     if (formBox.style.display === 'none') {
-      formBox.style.display = 'block';
-      lbl.innerText = "Cerrar Formulario";
+      formBox.style.display = 'block'; lbl.innerText = "Cerrar Formulario";
     } else {
-      formBox.style.display = 'none';
-      lbl.innerText = "Crear Nuevo Producto";
+      formBox.style.display = 'none'; lbl.innerText = "Crear Nuevo Producto";
     }
   };
 
@@ -849,44 +813,27 @@
       lector.onload = (e) => {
         const img = new Image();
         img.onload = () => {
-          let ancho = img.width;
-          let alto = img.height;
-
+          let ancho = img.width; let alto = img.height;
           if (ancho > maxDim || alto > maxDim) {
-            if (ancho > alto) {
-              alto = Math.round((alto * maxDim) / ancho);
-              ancho = maxDim;
-            } else {
-              ancho = Math.round((ancho * maxDim) / alto);
-              alto = maxDim;
-            }
+            if (ancho > alto) { alto = Math.round((alto * maxDim) / ancho); ancho = maxDim; } 
+            else { ancho = Math.round((ancho * maxDim) / alto); alto = maxDim; }
           }
-
           const canvas = document.createElement('canvas');
-          canvas.width = ancho;
-          canvas.height = alto;
+          canvas.width = ancho; canvas.height = alto;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, ancho, alto);
-
-          const dataUrl = canvas.toDataURL('image/webp', calidad);
-          resolve(dataUrl);
+          resolve(canvas.toDataURL('image/webp', calidad));
         };
-        img.onerror = reject;
-        img.src = e.target.result;
+        img.onerror = reject; img.src = e.target.result;
       };
-      lector.onerror = reject;
-      lector.readAsDataURL(archivo);
+      lector.onerror = reject; lector.readAsDataURL(archivo);
     });
   }
 
   window.procesarArchivosGaleria = async function(e) {
     const archivos = Array.from(e.target.files);
     if (!archivos.length) return;
-
-    if (fotosBufferProducto.length + archivos.length > 5) {
-      alert("Puedes añadir un máximo de 5 fotos por producto.");
-      return;
-    }
+    if (fotosBufferProducto.length + archivos.length > 5) return alert("Puedes añadir un máximo de 5 fotos por producto.");
 
     const txtEstado = document.getElementById('txtEstadoSubida');
     txtEstado.style.display = 'block';
@@ -895,36 +842,21 @@
       try {
         const webpDataUrl = await comprimirYConvertirAWebP(archivo, 600, 0.72);
         fotosBufferProducto.push(webpDataUrl);
-      } catch (err) {
-        console.error("Error al procesar foto:", err);
-      }
+      } catch (err) { console.error("Error al procesar foto:", err); }
     }
-
-    txtEstado.style.display = 'none';
-    renderizarMiniaturasFotos();
-    e.target.value = "";
+    txtEstado.style.display = 'none'; renderizarMiniaturasFotos(); e.target.value = "";
   };
 
   function renderizarMiniaturasFotos() {
     const cont = document.getElementById('contenedorPreviewFotos');
     cont.innerHTML = "";
-
     fotosBufferProducto.forEach((url, index) => {
-      cont.innerHTML += `
-        <div class="preview-foto-item">
-          <img src="${url}">
-          <button type="button" class="btn-del-foto-preview" onclick="removerFotoBuffer(${index})">✕</button>
-        </div>
-      `;
+      cont.innerHTML += `<div class="preview-foto-item"><img src="${url}"><button type="button" class="btn-del-foto-preview" onclick="removerFotoBuffer(${index})">✕</button></div>`;
     });
   }
 
-  window.removerFotoBuffer = function(index) {
-    fotosBufferProducto.splice(index, 1);
-    renderizarMiniaturasFotos();
-  };
+  window.removerFotoBuffer = function(index) { fotosBufferProducto.splice(index, 1); renderizarMiniaturasFotos(); };
 
-  // --- 1. INVENTARIO CON BOTÓN PAUSAR Y STOCK ---
   async function cargarProductosAdmin() {
     try {
       const q = query(collection(db, "productos"), orderBy("timestamp", "desc"));
@@ -935,13 +867,9 @@
       document.getElementById('totalProdsLbl').innerText = snapshot.size;
       document.getElementById('dashProds').innerText = snapshot.size;
 
-      if (snapshot.empty) {
-        cont.innerHTML = `<p style="text-align: center; color: var(--text-muted); padding: 15px;">No hay productos registrados.</p>`;
-        return;
-      }
+      if (snapshot.empty) { cont.innerHTML = `<p style="text-align: center; color: var(--text-muted); padding: 15px;">No hay productos registrados.</p>`; return; }
 
       let htmlBloque = ""; 
-
       snapshot.forEach(docSnap => {
         const p = { id: docSnap.id, ...docSnap.data() };
         productosAdminGlobal.push(p);
@@ -960,7 +888,6 @@
         let colorOculto = isOculto ? '#ffaa00' : 'var(--secondary-color)';
         let titleSuffix = isOculto ? ' <span style="color:#ffaa00; font-size:0.8em;">(Pausado)</span>' : '';
 
-        // Lógica visual del Stock
         let stockValor = p.stock !== undefined ? p.stock : 'N/A';
         let stockColor = p.stock === 0 ? '#ff3366' : 'var(--secondary-color)';
         let stockLabel = p.stock === 0 ? 'AGOTADO' : `${stockValor} uds.`;
@@ -971,10 +898,8 @@
             <div class="item-card-info">
               <div class="item-card-title">${sanitizar(p.nombre)}${titleSuffix}</div>
               <div class="item-card-meta">
-                <span>${sanitizar(nombreCat)}</span>
-                <span>•</span>
-                <span class="tag-badge ${badgeClase}">${p.estado || 'Stock'}</span>
-                <span>•</span>
+                <span>${sanitizar(nombreCat)}</span> <span>•</span>
+                <span class="tag-badge ${badgeClase}">${p.estado || 'Stock'}</span> <span>•</span>
                 <span style="color: ${stockColor}; font-weight: bold;"><i class="fas fa-box-open"></i> ${stockLabel}</span>
               </div>
               <div class="item-card-price">$${Number(p.precio).toFixed(2)}</div>
@@ -987,20 +912,13 @@
           </div>
         `;
       });
-
       cont.innerHTML = htmlBloque; 
-    } catch(e) {
-      console.error(e);
-    }
+    } catch(e) { console.error(e); }
   }
 
   window.toggleOcultarProducto = async function(id, estadoActualOculto) {
-    try {
-      await updateDoc(doc(db, "productos", id), { oculto: !estadoActualOculto });
-      cargarProductosAdmin(); 
-    } catch(e) {
-      alert("Error al pausar producto.");
-    }
+    try { await updateDoc(doc(db, "productos", id), { oculto: !estadoActualOculto }); cargarProductosAdmin(); } 
+    catch(e) { alert("Error al pausar producto."); }
   };
 
   window.guardarProducto = async function(e) {
@@ -1008,70 +926,46 @@
     const id = document.getElementById('prodEditId').value;
     const nombre = document.getElementById('prodNombre').value.trim();
     const precio = parseFloat(document.getElementById('prodPrecio').value);
-    const stock = parseInt(document.getElementById('prodStock').value) || 0; // Capturamos el stock
+    const stock = parseInt(document.getElementById('prodStock').value) || 0;
     const categoria = document.getElementById('prodCategoria').value;
     const coleccion = document.getElementById('prodColeccion').value.trim() || 'General';
     const estado = document.getElementById('prodEstado').value;
     const desc = document.getElementById('prodDesc').value.trim();
 
-    if (fotosBufferProducto.length === 0) {
-      return alert("Por favor selecciona al menos una foto para el producto.");
-    }
+    if (fotosBufferProducto.length === 0) return alert("Por favor selecciona al menos una foto para el producto.");
 
     const btn = document.getElementById('btnGuardarProd');
-    btn.disabled = true;
-    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Guardando...`;
+    btn.disabled = true; btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Guardando...`;
 
     try {
-      const data = {
-        nombre, precio, stock, categoria, coleccion, estado, descripcion: desc,
-        fotos: fotosBufferProducto, timestamp: Date.now()
-      };
-
-      if (id) {
-        await updateDoc(doc(db, "productos", id), data);
-        alert("¡Producto actualizado exitosamente!");
-      } else {
-        data.oculto = false;
-        await addDoc(collection(db, "productos"), data);
-        alert("¡Producto guardado exitosamente en WebP!");
-      }
-
-      resetFormularioProducto();
-      cargarProductosAdmin();
-    } catch(err) {
-      alert("Error al guardar: " + err.message);
-    } finally {
-      btn.disabled = false;
-      btn.innerText = "Guardar Producto";
-    }
+      const data = { nombre, precio, stock, categoria, coleccion, estado, descripcion: desc, fotos: fotosBufferProducto, timestamp: Date.now() };
+      if (id) { await updateDoc(doc(db, "productos", id), data); alert("¡Producto actualizado exitosamente!"); } 
+      else { data.oculto = false; await addDoc(collection(db, "productos"), data); alert("¡Producto guardado exitosamente!"); }
+      resetFormularioProducto(); cargarProductosAdmin();
+    } catch(err) { alert("Error al guardar: " + err.message); } 
+    finally { btn.disabled = false; btn.innerText = "Guardar Producto"; }
   };
 
   window.prepararEdicion = function(id) {
     const p = productosAdminGlobal.find(item => item.id === id);
     if (!p) return;
-
     document.getElementById('prodEditId').value = p.id;
     document.getElementById('prodNombre').value = p.nombre || '';
     document.getElementById('prodPrecio').value = p.precio || '';
-    document.getElementById('prodStock').value = p.stock !== undefined ? p.stock : 10; // Cargar stock
+    document.getElementById('prodStock').value = p.stock !== undefined ? p.stock : 10;
     
     let catVal = p.categoria || 'figuras';
-    if (catVal === 'audifonos' || catVal === 'teclados') {
-      catVal = 'perifericos';
-    }
+    if (catVal === 'audifonos' || catVal === 'teclados') catVal = 'perifericos';
+    
     document.getElementById('prodCategoria').value = catVal;
-
     document.getElementById('prodColeccion').value = p.coleccion || '';
     document.getElementById('prodEstado').value = p.estado || 'Envío Inmediato 📦';
     document.getElementById('prodDesc').value = p.descripcion || '';
 
     fotosBufferProducto = p.fotos ? [...p.fotos] : [];
     renderizarMiniaturasFotos();
-
     document.getElementById('formProdTitulo').innerHTML = `<i class="fas fa-pen"></i> Editando Producto`;
     document.getElementById('btnGuardarProd').innerText = "Guardar Cambios";
-    
     document.getElementById('cajaFormProducto').style.display = "block";
     document.getElementById('lblToggleForm').innerText = "Cerrar Formulario";
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1103,7 +997,7 @@
     });
   };
 
-  // --- 2. PEDIDOS CON RASTREO (GUÍA DE ENVÍO) ---
+  // --- 2. PEDIDOS Y ANALÍTICAS VISUALES (FASE 2) ---
   async function cargarPedidosAdmin() {
     try {
       const q = query(collection(db, "pedidos"), orderBy("timestamp", "desc"));
@@ -1122,15 +1016,43 @@
       let totalUsdGanado = 0;
       let pedidosPendientes = 0;
 
+      // Variables para la Gráfica de 7 Días
+      let ventas7Dias = [0, 0, 0, 0, 0, 0, 0];
+      let labels7Dias = [];
+      let hoy = new Date();
+      hoy.setHours(23, 59, 59, 999);
+      
+      let limite7Dias = new Date(hoy);
+      limite7Dias.setDate(limite7Dias.getDate() - 6);
+      limite7Dias.setHours(0, 0, 0, 0);
+
+      // Generar Etiquetas (Ej: "Lun 14", "Mar 15")
+      for(let i=6; i>=0; i--) {
+          let d = new Date();
+          d.setDate(d.getDate() - i);
+          labels7Dias.push(d.toLocaleDateString('es-ES', {weekday: 'short', day: 'numeric'}));
+      }
+
       snapshot.forEach(docSnap => {
         const ped = docSnap.data();
-        
         let est = ped.estadoPedido || 'Pendiente';
+        
         if(est === 'Completado') totalUsdGanado += Number(ped.totalUsd || 0);
         if(est !== 'Completado') pedidosPendientes++;
 
-        // Colores y flujos de Rastreo
-        let colorEstado = '#ffaa00'; // Pendiente
+        // Alimentar datos de la gráfica si la venta fue completada en los últimos 7 días
+        let ts = ped.timestamp || 0;
+        if (est === 'Completado' && ts >= limite7Dias.getTime() && ts <= hoy.getTime()) {
+            let dVenta = new Date(ts);
+            let diffTime = hoy.getTime() - dVenta.getTime();
+            let diffDays = Math.floor(diffTime / (1000 * 3600 * 24)); // 0 es hoy, 1 es ayer...
+            if(diffDays >= 0 && diffDays <= 6) {
+               ventas7Dias[6 - diffDays] += Number(ped.totalUsd);
+            }
+        }
+
+        // Colores de la tarjeta
+        let colorEstado = '#ffaa00'; 
         if(est === 'Pagado') colorEstado = '#00e5ff';
         else if(est === 'Enviado') colorEstado = '#b000ff';
         else if(est === 'Completado') colorEstado = '#25d366';
@@ -1146,10 +1068,7 @@
                 <i class="fab fa-whatsapp" style="color:#25d366;"></i> ${sanitizar(ped.telefono)}
               </div>
               ${ped.direccionEnvio ? `<div style="font-size:0.8em; color:var(--secondary-color); margin-bottom:4px;">📍 ${sanitizar(ped.metodoEnvio)}:${sanitizar(ped.direccionEnvio)}</div>` : ''}
-              
-              <!-- Mostrar Guía de Rastreo si existe -->
               ${ped.guiaEnvio ? `<div style="font-size:0.8em; color:#b000ff; margin-bottom:4px; font-weight: bold;"><i class="fas fa-barcode"></i> Guía: ${sanitizar(ped.guiaEnvio)}</div>` : ''}
-              
               <div style="font-size:0.85em; margin-bottom: 4px;">${sanitizar(ped.detalles)}</div>
               <div style="font-size:1.05em; font-weight:700; color:var(--secondary-color);">$${Number(ped.totalUsd).toFixed(2)}</div>
             </div>
@@ -1164,31 +1083,91 @@
       
       document.getElementById('dashIngresos').innerText = "$" + totalUsdGanado.toFixed(2);
       document.getElementById('dashOrdenes').innerText = pedidosPendientes;
+
+      // DIBUJAR LA GRÁFICA FASE 2
+      dibujarGraficaVentas(labels7Dias, ventas7Dias);
+
     } catch(e) {}
+  }
+
+  // --- FUNCIÓN PARA RENDERIZAR CHART.JS ---
+  window.graficoVentasAdmin = null;
+  function dibujarGraficaVentas(etiquetas, datos) {
+      if (window.graficoVentasAdmin) {
+          window.graficoVentasAdmin.destroy();
+      }
+      const ctx = document.getElementById('graficoVentas').getContext('2d');
+      window.graficoVentasAdmin = new Chart(ctx, {
+          type: 'line',
+          data: {
+              labels: etiquetas,
+              datasets: [{
+                  label: 'Ventas Completadas (USD)',
+                  data: datos,
+                  borderColor: '#00e5ff', /* Color Neon Secondary */
+                  backgroundColor: 'rgba(0, 229, 255, 0.2)', /* Relleno semitransparente */
+                  borderWidth: 2,
+                  pointBackgroundColor: '#ff007f', /* Puntos Primary */
+                  pointBorderColor: '#fff',
+                  pointHoverBackgroundColor: '#fff',
+                  pointHoverBorderColor: '#ff007f',
+                  pointRadius: 4,
+                  pointHoverRadius: 6,
+                  fill: true,
+                  tension: 0.4 /* Hace la curva suave */
+              }]
+          },
+          options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { 
+                  legend: { display: false },
+                  tooltip: {
+                      backgroundColor: 'rgba(14, 4, 31, 0.9)',
+                      titleColor: '#00e5ff',
+                      bodyColor: '#fff',
+                      borderColor: 'rgba(0, 229, 255, 0.4)',
+                      borderWidth: 1,
+                      padding: 10,
+                      displayColors: false,
+                      callbacks: {
+                          label: function(context) {
+                              return '$' + context.parsed.y.toFixed(2);
+                          }
+                      }
+                  }
+              },
+              scales: {
+                  y: { 
+                      beginAtZero: true, 
+                      grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false }, 
+                      ticks: { color: '#8b8f9e', callback: function(value) { return '$' + value; } } 
+                  },
+                  x: { 
+                      grid: { display: false, drawBorder: false }, 
+                      ticks: { color: '#8b8f9e' } 
+                  }
+              }
+          }
+      });
   }
 
   window.cambiarEstadoPedido = async function(id, estadoActual) {
     let nuevoEstado = 'Pendiente';
     let numGuia = '';
 
-    // Ciclo del pedido
-    if(estadoActual === 'Pendiente') {
-      nuevoEstado = 'Pagado';
-    } else if(estadoActual === 'Pagado') {
+    if(estadoActual === 'Pendiente') { nuevoEstado = 'Pagado'; } 
+    else if(estadoActual === 'Pagado') {
       nuevoEstado = 'Enviado';
-      // Preguntar por el número de guía para el rastreo del cliente
-      numGuia = prompt("📦 Vas a marcar el pedido como ENVIADO.\n\nEscribe el número de Guía o Tracking (Opcional, déjalo en blanco si no aplica):");
-      if (numGuia === null) return; // Si le dio a "Cancelar" en el prompt, abortamos
-    } else if(estadoActual === 'Enviado') {
-      nuevoEstado = 'Completado';
-    } else if(estadoActual === 'Completado') {
-      nuevoEstado = 'Pendiente'; // Reiniciar ciclo en caso de error
-    }
+      numGuia = prompt("📦 Vas a marcar el pedido como ENVIADO.\n\nEscribe el número de Guía o Tracking (Opcional):");
+      if (numGuia === null) return; 
+    } 
+    else if(estadoActual === 'Enviado') { nuevoEstado = 'Completado'; } 
+    else if(estadoActual === 'Completado') { nuevoEstado = 'Pendiente'; }
     
     try {
       let actualizacion = { estadoPedido: nuevoEstado };
       if (numGuia) { actualizacion.guiaEnvio = numGuia.trim(); }
-
       await updateDoc(doc(db, "pedidos", id), actualizacion);
       cargarPedidosAdmin();
     } catch(e) { alert("Error al actualizar estado del pedido"); }
@@ -1207,17 +1186,13 @@
     try {
       await addDoc(collection(db, "pedidos"), {
         cliente, telefono, tipo, metodoEnvio, direccionEnvio, detalles, totalUsd,
-        estadoPedido: "Pendiente",
-        guiaEnvio: "",
-        timestamp: Date.now()
+        estadoPedido: "Pendiente", guiaEnvio: "", timestamp: Date.now()
       });
       document.getElementById('formPedidoManual').reset();
       toggleCajaPedidoManual();
       cargarPedidosAdmin();
       alert("¡Pedido guardado!");
-    } catch(err) {
-      alert("Error: " + err.message);
-    }
+    } catch(err) { alert("Error: " + err.message); }
   };
 
   window.eliminarPedido = async function(id) {
@@ -1226,7 +1201,8 @@
     cargarPedidosAdmin();
   };
 
-  // --- 2.1 FACTURAS ---
+  // --- RESTO DE FUNCIONES (Facturas, Banners, Cupones, etc) MANTENIDAS EXACTAMENTE IGUAL ---
+  
   window.toggleCajaFactura = function() {
     const box = document.getElementById('cajaFacturaManual');
     box.style.display = (box.style.display === 'none') ? 'block' : 'none';
@@ -1241,28 +1217,20 @@
       
       document.getElementById('totalFacturasLbl').innerText = snapshot.size;
 
-      if (snapshot.empty) {
-        cont.innerHTML = `<p style="text-align: center; color: var(--text-muted); padding: 15px;">No has emitido facturas aún.</p>`;
-        return;
-      }
+      if (snapshot.empty) { cont.innerHTML = `<p style="text-align: center; color: var(--text-muted); padding: 15px;">No has emitido facturas aún.</p>`; return; }
 
       let htmlBloque = "";
       snapshot.forEach(docSnap => {
         const fac = { id: docSnap.id, ...docSnap.data() };
         facturasAdminGlobal.push(fac);
-        
         let fechaFormat = new Date(fac.timestamp).toLocaleDateString();
-
         htmlBloque += `
           <div class="item-card-row">
             <div class="item-card-info">
               <div style="display:flex; justify-content:space-between; margin-bottom: 2px;">
-                <strong>${sanitizar(fac.cliente)}</strong>
-                <span style="font-size: 0.8em; color: var(--text-muted);">${fechaFormat}</span>
+                <strong>${sanitizar(fac.cliente)}</strong><span style="font-size: 0.8em; color: var(--text-muted);">${fechaFormat}</span>
               </div>
-              <div style="font-size:0.85em; color:var(--text-muted); margin-bottom: 4px;">
-                Vía: <span style="color:var(--secondary-color);">${sanitizar(fac.metodo)}</span>
-              </div>
+              <div style="font-size:0.85em; color:var(--text-muted); margin-bottom: 4px;">Vía: <span style="color:var(--secondary-color);">${sanitizar(fac.metodo)}</span></div>
               <div style="font-size:1.05em; font-weight:700; color:var(--secondary-color);">$${Number(fac.totalUsd).toFixed(2)}</div>
             </div>
             <div class="item-card-actions">
@@ -1273,9 +1241,7 @@
         `;
       });
       cont.innerHTML = htmlBloque;
-    } catch(e) {
-      console.error(e);
-    }
+    } catch(e) { console.error(e); }
   }
 
   window.guardarFactura = async function(e) {
@@ -1287,49 +1253,35 @@
     const totalUsd = parseFloat(document.getElementById('facTotal').value);
 
     try {
-      await addDoc(collection(db, "facturas"), {
-        cliente, cedula, metodo, detalles, totalUsd,
-        timestamp: Date.now()
-      });
-      document.getElementById('formFactura').reset();
-      toggleCajaFactura();
-      cargarFacturasAdmin();
+      await addDoc(collection(db, "facturas"), { cliente, cedula, metodo, detalles, totalUsd, timestamp: Date.now() });
+      document.getElementById('formFactura').reset(); toggleCajaFactura(); cargarFacturasAdmin();
       alert("¡Factura generada y guardada exitosamente!");
-    } catch(err) {
-      alert("Error: " + err.message);
-    }
+    } catch(err) { alert("Error: " + err.message); }
   };
 
   window.eliminarFactura = async function(id) {
     if (!confirm("¿Seguro que deseas eliminar este recibo del historial?")) return;
-    await deleteDoc(doc(db, "facturas", id));
-    cargarFacturasAdmin();
+    await deleteDoc(doc(db, "facturas", id)); cargarFacturasAdmin();
   };
 
   window.imprimirFactura = function(id) {
     const fac = facturasAdminGlobal.find(f => f.id === id);
     if(!fac) return;
-
     let fechaFormateada = new Date(fac.timestamp).toLocaleString();
-
     document.getElementById('printFecha').innerText = fechaFormateada;
     document.getElementById('printCliente').innerText = fac.cliente;
     document.getElementById('printCedula').innerText = fac.cedula || 'N/A';
     document.getElementById('printMetodo').innerText = fac.metodo;
     document.getElementById('printDetalles').innerText = fac.detalles;
     document.getElementById('printTotal').innerText = Number(fac.totalUsd).toFixed(2);
-
     window.print();
   };
 
-  // --- 3. BANNERS ---
   async function cargarBannersAdmin() {
     const q = query(collection(db, "banners"), orderBy("timestamp", "desc"));
     const snapshot = await getDocs(q);
     const cont = document.getElementById('listaBannersAdmin');
-    
     if (snapshot.empty) { cont.innerHTML = "<p style='color:var(--text-muted); text-align:center;'>No hay banners.</p>"; return; }
-    
     let htmlBloque = "";
     snapshot.forEach(d => {
       const b = d.data();
@@ -1338,8 +1290,7 @@
           <img src="${b.imgUrl}" style="width: 70px; height: 40px; object-fit: cover; border-radius: 4px; border: 1px solid var(--glass-border);">
           <div style="flex-grow: 1; font-size: 0.8em; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Banner WebP</div>
           <button class="btn-action-touch btn-del" onclick="eliminarBanner('${d.id}')"><i class="fas fa-trash"></i></button>
-        </div>
-      `;
+        </div>`;
     });
     cont.innerHTML = htmlBloque;
   }
@@ -1348,38 +1299,26 @@
     e.preventDefault();
     const file = document.getElementById('bannerFileInput').files[0];
     if (!file) return;
-
     const btn = document.getElementById('btnSubirBanner');
-    btn.disabled = true;
-    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Optimizando...`;
-
+    btn.disabled = true; btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Optimizando...`;
     try {
       const webpDataUrl = await comprimirYConvertirAWebP(file, 900, 0.75);
       await addDoc(collection(db, "banners"), { imgUrl: webpDataUrl, timestamp: Date.now() });
-      document.getElementById('bannerFileInput').value = "";
-      cargarBannersAdmin();
+      document.getElementById('bannerFileInput').value = ""; cargarBannersAdmin();
       alert("¡Banner publicado con éxito!");
-    } catch (err) {
-      alert("Error al guardar banner: " + err.message);
-    } finally {
-      btn.disabled = false;
-      btn.innerText = "Publicar Banner";
-    }
+    } catch (err) { alert("Error al guardar banner: " + err.message); } 
+    finally { btn.disabled = false; btn.innerText = "Publicar Banner"; }
   };
 
   window.eliminarBanner = async function(id) {
     if (!confirm("¿Eliminar este banner?")) return;
-    await deleteDoc(doc(db, "banners", id));
-    cargarBannersAdmin();
+    await deleteDoc(doc(db, "banners", id)); cargarBannersAdmin();
   };
 
-  // --- 4. CUPONES ---
   async function cargarCuponesAdmin() {
     const snapshot = await getDocs(collection(db, "cupones"));
     const cont = document.getElementById('listaCuponesAdmin');
-    
     if (snapshot.empty) { cont.innerHTML = "<p style='color:var(--text-muted); text-align:center;'>No hay cupones.</p>"; return; }
-    
     let htmlBloque = "";
     snapshot.forEach(d => {
       const c = d.data();
@@ -1390,8 +1329,7 @@
             <span style="color:var(--text-muted); font-size:0.9em; margin-left: 8px;">(-${c.porcentaje}%)</span>
           </div>
           <button class="btn-action-touch btn-del" onclick="eliminarCupon('${d.id}')"><i class="fas fa-trash"></i></button>
-        </div>
-      `;
+        </div>`;
     });
     cont.innerHTML = htmlBloque;
   }
@@ -1401,36 +1339,29 @@
     const codigo = document.getElementById('cuponCodigo').value.trim().toUpperCase();
     const porcentaje = parseInt(document.getElementById('cuponPorcentaje').value);
     await addDoc(collection(db, "cupones"), { codigo, porcentaje, timestamp: Date.now() });
-    document.getElementById('cuponCodigo').value = "";
-    document.getElementById('cuponPorcentaje').value = "";
+    document.getElementById('cuponCodigo').value = ""; document.getElementById('cuponPorcentaje').value = "";
     cargarCuponesAdmin();
   };
 
   window.eliminarCupon = async function(id) {
     if (!confirm("¿Eliminar este cupón de descuento?")) return;
-    await deleteDoc(doc(db, "cupones", id));
-    cargarCuponesAdmin();
+    await deleteDoc(doc(db, "cupones", id)); cargarCuponesAdmin();
   };
 
-  // --- 5. PAGOS & RANGOS ---
   async function cargarDatosPagoAdmin() {
     const snap = await getDoc(doc(db, "configuracion", "datos_pago"));
     if (snap.exists()) {
       const d = snap.data();
-      document.getElementById('pagoBanco').value = d.banco || '';
-      document.getElementById('pagoTelefono').value = d.telefono || '';
-      document.getElementById('pagoCedula').value = d.cedula || '';
-      document.getElementById('pagoBinance').value = d.binance || '';
+      document.getElementById('pagoBanco').value = d.banco || ''; document.getElementById('pagoTelefono').value = d.telefono || '';
+      document.getElementById('pagoCedula').value = d.cedula || ''; document.getElementById('pagoBinance').value = d.binance || '';
     }
   }
 
   window.guardarDatosPago = async function(e) {
     e.preventDefault();
     await setDoc(doc(db, "configuracion", "datos_pago"), {
-      banco: document.getElementById('pagoBanco').value.trim(),
-      telefono: document.getElementById('pagoTelefono').value.trim(),
-      cedula: document.getElementById('pagoCedula').value.trim(),
-      binance: document.getElementById('pagoBinance').value.trim()
+      banco: document.getElementById('pagoBanco').value.trim(), telefono: document.getElementById('pagoTelefono').value.trim(),
+      cedula: document.getElementById('pagoCedula').value.trim(), binance: document.getElementById('pagoBinance').value.trim()
     });
     alert("Cuentas bancarias actualizadas correctamente.");
   };
@@ -1439,8 +1370,7 @@
     const snap = await getDoc(doc(db, "configuracion", "rangos_ninja"));
     if (snap.exists()) {
       const d = snap.data();
-      document.getElementById('xpChunin').value = d.chunin ?? 300;
-      document.getElementById('xpJonin').value = d.jonin ?? 600;
+      document.getElementById('xpChunin').value = d.chunin ?? 300; document.getElementById('xpJonin').value = d.jonin ?? 600;
       document.getElementById('xpHokage').value = d.hokage ?? 1000;
     }
   }
@@ -1448,22 +1378,17 @@
   window.guardarRangosNinja = async function(e) {
     e.preventDefault();
     await setDoc(doc(db, "configuracion", "rangos_ninja"), {
-      genin: 0,
-      chunin: parseInt(document.getElementById('xpChunin').value),
-      jonin: parseInt(document.getElementById('xpJonin').value),
-      hokage: parseInt(document.getElementById('xpHokage').value)
+      genin: 0, chunin: parseInt(document.getElementById('xpChunin').value),
+      jonin: parseInt(document.getElementById('xpJonin').value), hokage: parseInt(document.getElementById('xpHokage').value)
     });
     alert("Umbrales de XP guardados correctamente.");
   };
 
-  // --- 6. RESEÑAS ---
   async function cargarReviewsAdmin() {
     const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"));
     const snapshot = await getDocs(q);
     const cont = document.getElementById('listaReviewsAdmin');
-    
     if (snapshot.empty) { cont.innerHTML = `<p style="color: var(--text-muted); text-align:center;">Sin reseñas.</p>`; return; }
-    
     let htmlBloque = "";
     snapshot.forEach(d => {
       const r = d.data();
@@ -1474,16 +1399,14 @@
             <div style="font-size:0.85em; color:var(--text-muted);">${sanitizar(r.texto)}</div>
           </div>
           <button class="btn-action-touch btn-del" onclick="eliminarReview('${d.id}')"><i class="fas fa-trash"></i></button>
-        </div>
-      `;
+        </div>`;
     });
     cont.innerHTML = htmlBloque;
   }
 
   window.eliminarReview = async function(id) {
     if (!confirm("¿Eliminar esta reseña?")) return;
-    await deleteDoc(doc(db, "reviews", id));
-    cargarReviewsAdmin();
+    await deleteDoc(doc(db, "reviews", id)); cargarReviewsAdmin();
   };
 
   function cargarTodo() {
