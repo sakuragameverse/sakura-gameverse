@@ -140,6 +140,9 @@
     
     .card { background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 12px; text-align: left; position: relative; cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); will-change: transform; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); }
     .card:hover { background: rgba(25, 9, 51, 0.55); border-color: var(--secondary-color); transform: translateY(-6px); box-shadow: 0 12px 40px rgba(0, 229, 255, 0.15); }
+    /* Estilo para Agotado */
+    .card.agotado { filter: grayscale(100%); opacity: 0.75; border-color: rgba(255, 51, 102, 0.4); }
+    .card.agotado:hover { filter: grayscale(80%); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255, 51, 102, 0.15); }
     
     .card-img-container { position: relative; width: 100%; height: 220px; background: rgba(0, 0, 0, 0.4); border-radius: var(--radius-sm); margin-bottom: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.03); }
     .card-img-container img { width: 100%; height: 100%; object-fit: contain; display: none; }
@@ -162,6 +165,7 @@
     .badge-stock { background: rgba(0, 229, 255, 0.85); color: #000; }
     .badge-encargo { background: rgba(255, 0, 127, 0.85); color: #fff; }
     .badge-digital { background: rgba(37, 211, 102, 0.85); color: #000; }
+    .badge-agotado { background: rgba(255, 51, 102, 0.95); color: #fff; border: 1px solid #ff3366; }
     
     .btn-fav-card { position: absolute; top: 10px; left: 10px; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); border: 1px solid var(--glass-border); color: var(--text-muted); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 3; transition: all 0.3s ease; }
     .btn-fav-card:hover { color: #ff3366; border-color: rgba(255, 51, 102, 0.5); transform: scale(1.1); }
@@ -191,9 +195,10 @@
     .talla-select:focus, .recarga-input:focus, .sugerencia-input:focus, .cupon-input:focus { border-color: var(--secondary-color); box-shadow: 0 0 12px rgba(0, 229, 255, 0.15); background: rgba(17, 5, 36, 0.6); }
 
     .btn-comprar { background: linear-gradient(135deg, var(--primary-color), #cc0066); color: #fff; border: none; padding: 14px; font-family: 'Chakra Petch', sans-serif; font-size: 1.05em; font-weight: 700; border-radius: var(--radius-sm); cursor: pointer; width: 100%; margin-top: 14px; letter-spacing: 0.5px; transition: all 0.3s ease; position: relative; overflow: hidden; box-shadow: 0 4px 15px var(--primary-glow); }
-    .btn-comprar:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--primary-glow), 0 0 10px var(--primary-color); }
+    .btn-comprar:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px var(--primary-glow), 0 0 10px var(--primary-color); }
     .btn-comprar::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent); transform: skewX(-20deg); transition: 0.5s; }
     .btn-comprar:hover::after { left: 150%; }
+    .btn-comprar:disabled { filter: grayscale(100%); cursor: not-allowed; box-shadow: none; }
     
     .btn-instalar { background: linear-gradient(135deg, #25D366, #00e5ff); color: #000; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); }
 
@@ -240,6 +245,12 @@
     
     .xp-bar-container { background: rgba(0,0,0,0.6); border-radius: var(--radius-pill); height: 14px; margin-top: 12px; overflow: hidden; border: 1px solid var(--glass-border); position: relative; box-shadow: inset 0 0 5px rgba(0,0,0,0.8); }
     .xp-bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); border-radius: var(--radius-pill); transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 0 10px var(--secondary-glow); }
+
+    /* Estilos del Timeline de Rastreo */
+    .timeline { border-left: 2px solid var(--glass-border); margin-left: 15px; padding-left: 20px; position: relative; margin-top: 15px;}
+    .timeline-item { margin-bottom: 18px; position: relative; font-size: 0.9em; }
+    .timeline-item::before { content: ''; position: absolute; left: -26px; top: 2px; width: 10px; height: 10px; border-radius: 50%; background: var(--glass-border); transition: all 0.3s ease; }
+    .timeline-item.active::before { background: var(--secondary-color); box-shadow: 0 0 10px var(--secondary-glow); }
   </style>
 </head>
 <body>
@@ -255,7 +266,7 @@
   </div>
 </div>
 
-<!-- MODAL COFRE DIARIO -->
+<!-- MODALES GAMIFICACIÓN Y TEMAS -->
 <div id="modalCofreDiario" class="modal">
   <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarCofreModal()">×</button>
@@ -265,7 +276,6 @@
   </div>
 </div>
 
-<!-- MODAL GACHA -->
 <div id="modalGacha" class="modal">
   <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarGachaModal()">×</button>
@@ -275,7 +285,6 @@
   </div>
 </div>
 
-<!-- MODAL TEMAS -->
 <div id="modalTemas" class="modal">
   <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarTemasModal()">×</button>
@@ -311,18 +320,21 @@
   </div>
 </div>
 
-<!-- MODAL GUÍA DE TALLAS -->
-<div id="modalGuiaTallas" class="modal">
+<!-- MODAL RASTREO DE PEDIDO (NUEVO) -->
+<div id="modalRastreo" class="modal">
   <div class="modal-content">
-    <button class="cerrar-modal" onclick="cerrarGuiaTallasModal()">×</button>
-    <h3 style="color: var(--secondary-color); margin-top: 0; text-align: center;">Medidas de Prendas (cm)</h3>
-    <div style="background: #080112; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px; font-size: 0.9em; margin-bottom: 14px;">
-      <div class="recibo-line"><span>Talla S</span><strong>50 cm x 68 cm</strong></div>
-      <div class="recibo-line"><span>Talla M</span><strong>53 cm x 70 cm</strong></div>
-      <div class="recibo-line"><span>Talla L</span><strong>56 cm x 72 cm</strong></div>
-      <div class="recibo-line"><span>Talla XL</span><strong>59 cm x 74 cm</strong></div>
+    <button class="cerrar-modal" onclick="cerrarRastreoModal()">×</button>
+    <h3 style="color: var(--secondary-color); margin-top: 0; text-align: center;"><i class="fas fa-radar"></i> Rastrear Paquete</h3>
+    <p style="font-size: 0.85em; color: var(--text-muted); text-align: center; margin-bottom: 12px;">Ingresa el número de WhatsApp con el que realizaste tu compra.</p>
+    
+    <div style="display: flex; gap: 8px; margin-bottom: 14px;">
+      <input type="text" id="inputRastreoTlf" class="sugerencia-input" placeholder="Ej: 04241234567">
+      <button class="btn-cupon" onclick="buscarPedido()"><i class="fas fa-search"></i></button>
     </div>
-    <button class="btn-comprar" onclick="cerrarGuiaTallasModal()">Entendido</button>
+    
+    <div id="resultadoRastreo" style="background: rgba(0,0,0,0.3); padding: 14px; border-radius: var(--radius-sm); border: 1px dashed var(--glass-border); min-height: 80px; display: flex; flex-direction: column; justify-content: center;">
+      <p style="color: var(--text-muted); text-align: center; margin: 0; font-size: 0.85em;">Tu estado de cuenta aparecerá aquí.</p>
+    </div>
   </div>
 </div>
 
@@ -332,7 +344,6 @@
   <div class="store-status-badge"><div class="status-dot"></div> Horario de Atención: 10:00 AM - 7:00 PM</div>
   <div class="hero-title">Sakura Gameverse</div>
   <div style="color: var(--text-muted); font-size: 0.9em; max-width: 500px; margin: 0 auto 14px auto;">Coleccionables, ropa, productos gamer y recargas digitales para ti.</div>
-  
   <div id="bannerSliderContainer" class="banner-slider-container"></div>
   <br>
 </div>
@@ -379,22 +390,6 @@
           <img src="logo.webp?v=2" id="img-cat-perifericos" class="cat-img" alt="Periféricos" loading="lazy" decoding="async">
           <div class="cat-info"><div class="cat-title" id="title-cat-perifericos">Periféricos Gamer</div><div class="cat-count" id="count-perifericos">0 items</div></div>
         </div>
-        <div class="cat-card" onclick="filtrarCategoria('peluches')">
-          <img src="logo.webp?v=2" id="img-cat-peluches" class="cat-img" alt="Peluches" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-peluches">Peluches</div><div class="cat-count" id="count-peluches">0 items</div></div>
-        </div>
-        <div class="cat-card" onclick="filtrarCategoria('katanas')">
-          <img src="logo.webp?v=2" id="img-cat-katanas" class="cat-img" alt="Katanas" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-katanas">Katanas</div><div class="cat-count" id="count-katanas">0 items</div></div>
-        </div>
-        <div class="cat-card" onclick="filtrarCategoria('lamparas')">
-          <img src="logo.webp?v=2" id="img-cat-lamparas" class="cat-img" alt="Lámparas" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-lamparas">Lámparas</div><div class="cat-count" id="count-lamparas">0 items</div></div>
-        </div>
-        <div class="cat-card" onclick="filtrarCategoria('accesorios')">
-          <img src="logo.webp?v=2" id="img-cat-accesorios" class="cat-img" alt="Accesorios" loading="lazy" decoding="async">
-          <div class="cat-info"><div class="cat-title" id="title-cat-accesorios">Accesorios</div><div class="cat-count" id="count-accesorios">0 items</div></div>
-        </div>
       </div>
       <button class="carrusel-arrow arrow-next" onclick="scrollCategoriasVisuales(1)"><i class="fas fa-chevron-right"></i></button>
     </div>
@@ -413,7 +408,6 @@
       <select id="selectOrden" class="ordenar-select" onchange="ordenarProductos()">
         <option value="defecto">Ordenar: Predeterminado</option>
         <option value="reciente">Novedades: Más recientes</option>
-        <option value="antiguo">Histórico: Más antiguos</option>
         <option value="menor">Precio: Menor a Mayor</option>
         <option value="mayor">Precio: Mayor a Menor</option>
       </select>
@@ -424,38 +418,11 @@
 
   <!-- BOTÓN CARGAR MÁS PRODUCTOS (PAGINACIÓN) -->
   <div id="contenedorCargarMas" style="text-align: center; margin-top: 25px;">
-    <button id="btnCargarMas" style="display: none; width: auto; padding: 12px 30px; margin: 0 auto; border-radius: var(--radius-pill); background: rgba(0, 229, 255, 0.1); border: 1px solid var(--secondary-color); color: var(--secondary-color); font-family: 'Chakra Petch', sans-serif; font-weight: 700; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 0 10px rgba(0,229,255,0.2);" onclick="cargarMasProductos()" onmouseover="this.style.background='rgba(0, 229, 255, 0.2)'" onmouseout="this.style.background='rgba(0, 229, 255, 0.1)'">
+    <button id="btnCargarMas" style="display: none; width: auto; padding: 12px 30px; margin: 0 auto; border-radius: var(--radius-pill); background: rgba(0, 229, 255, 0.1); border: 1px solid var(--secondary-color); color: var(--secondary-color); font-family: 'Chakra Petch', sans-serif; font-weight: 700; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 0 10px rgba(0,229,255,0.2);" onclick="cargarMasProductos()">
       Mostrar más productos <i class="fas fa-chevron-down" style="margin-left: 5px;"></i>
     </button>
   </div>
 
-  <!-- RESEÑAS -->
-  <div class="reviews-section">
-    <h3 style="color: #fff; margin-top: 0; margin-bottom: 15px;">Opiniones de Clientes</h3>
-    <div id="contenedorReviews"><p style="color: var(--text-muted);">Cargando reseñas verificadas...</p></div>
-    <div style="margin-top: 15px;">
-      <input type="text" id="revNombre" class="sugerencia-input" placeholder="Nombre o GamerTag" style="margin-bottom: 8px;">
-      <select id="revEstrellas" class="sugerencia-input" style="margin-bottom: 8px;">
-        <option value="⭐⭐⭐⭐⭐">5 / 5 - Excelente servicio</option>
-        <option value="⭐⭐⭐⭐">4 / 5 - Muy bueno</option>
-        <option value="⭐⭐⭐">3 / 5 - Conforme</option>
-      </select>
-      <textarea id="revTexto" class="sugerencia-input" rows="2" placeholder="Describe tu experiencia de compra..." style="margin-bottom: 8px;"></textarea>
-      <button class="btn-comprar" style="width: auto; padding: 8px 18px;" onclick="agregarReview()">Publicar Opinión</button>
-    </div>
-  </div>
-
-  <!-- INFORMACIÓN DE ENVÍOS -->
-  <div class="info-section">
-    <h3 style="color: #fff; margin-top: 0; margin-bottom: 12px;">Logística & Cobertura</h3>
-    <p style="color: var(--text-muted); font-size: 0.95em; line-height: 1.5; margin-bottom: 12px;">Despachos garantizados a nivel nacional con cobro a destino y entregas personales en Carabobo:</p>
-    <div>
-      <span class="badge-envio"><i class="fas fa-box"></i> ZOOM</span>
-      <span class="badge-envio"><i class="fas fa-truck"></i> MRW</span>
-      <span class="badge-envio"><i class="fas fa-map-pin"></i> Bejuma</span>
-      <span class="badge-envio"><i class="fas fa-map-pin"></i> Miranda</span>
-    </div>
-  </div>
 </div>
 
 <!-- MODAL PRODUCTO DETALLE -->
@@ -475,7 +442,6 @@
       <select id="selectTalla" class="talla-select">
         <option value="S">Talla S</option><option value="M" selected>Talla M</option><option value="L">Talla L</option><option value="XL">Talla XL</option>
       </select>
-      <div style="color: var(--secondary-color); font-size: 0.8em; margin-top: 4px; cursor: pointer;" onclick="abrirGuiaTallasModal()">Ver tabla de medidas</div>
     </div>
 
     <div id="recargaContainer" style="display: none; margin-bottom: 12px;">
@@ -485,14 +451,8 @@
       <input type="text" id="inputPlayerServer" class="recarga-input" placeholder="Ej: Sudamérica / EE.UU.">
     </div>
 
-    <button class="btn-comprar" onclick="agregarAlCarrito()"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+    <button id="btnComprarModal" class="btn-comprar" onclick="agregarAlCarrito()"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
     <button class="btn-compartir" onclick="compartirProductoWhatsApp()"><i class="fab fa-whatsapp"></i> Consultar por WhatsApp</button>
-
-    <!-- PRODUCTOS RELACIONADOS -->
-    <div id="contenedorRelacionados" style="margin-top: 18px; border-top: 1px dashed var(--glass-border); padding-top: 12px; display: none;">
-      <h4 style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 10px;">También te podría interesar:</h4>
-      <div style="display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;" id="listaRelacionados"></div>
-    </div>
   </div>
 </div>
 
@@ -501,18 +461,17 @@
   <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarMenuOpciones()">×</button>
     <h3 style="color: #fff; margin-top: 0;">Panel de Funciones</h3>
-    
-    <button id="btnInstalarPWA" class="btn-comprar btn-instalar" style="display: none; margin-bottom: 15px;" onclick="instalarPWA()">
-      <i class="fas fa-download"></i> Instalar App Sakura
-    </button>
+    <button id="btnInstalarPWA" class="btn-comprar btn-instalar" style="display: none; margin-bottom: 15px;" onclick="instalarPWA()"><i class="fas fa-download"></i> Instalar App Sakura</button>
 
     <div class="menu-opciones-grid">
+      <!-- NUEVO BOTÓN DE RASTREO -->
+      <button class="btn-menu-opcion" style="color: #b000ff;" onclick="cerrarMenuOpciones(); abrirRastreoModal()"><i class="fas fa-radar"></i> Rastrear</button>
+      
       <button class="btn-menu-opcion" style="color: #ffaa00;" onclick="cerrarMenuOpciones(); abrirCofreModal()"><i class="fas fa-gift"></i> Cofre Diario</button>
       <button class="btn-menu-opcion" style="color: var(--secondary-color);" onclick="cerrarMenuOpciones(); abrirGachaModal()"><i class="fas fa-dice"></i> Ruleta</button>
       <button class="btn-menu-opcion" style="color: #25d366;" onclick="cerrarMenuOpciones(); abrirGamerProfileModal()"><i class="fas fa-user"></i> Mi Perfil</button>
       <button class="btn-menu-opcion" style="color: #ff007f;" onclick="cerrarMenuOpciones(); abrirTemasModal()"><i class="fas fa-palette"></i> Temas</button>
       <button class="btn-menu-opcion" style="color: #e0f4ff;" onclick="toggleMusicaLoFi()"><i class="fas fa-music" id="iconoMusica"></i> Audio Lo-Fi</button>
-      <button class="btn-menu-opcion" style="color: var(--text-muted);" onclick="cerrarMenuOpciones(); abrirFaqModal()"><i class="fas fa-question-circle"></i> Preguntas</button>
       <button class="btn-menu-opcion" style="color: #fff;" onclick="cerrarMenuOpciones(); abrirSugerenciaModal()"><i class="fas fa-lightbulb"></i> Encargos</button>
       <a href="admin.html" class="btn-menu-opcion" style="color: #ff3366;"><i class="fas fa-lock"></i> Gestión Admin</a>
       <a href="https://wa.me/584244970576" target="_blank" class="btn-menu-opcion" style="color: #25D366;"><i class="fab fa-whatsapp"></i> Chat Directo</a>
@@ -526,19 +485,6 @@
     <button class="cerrar-modal" onclick="cerrarFavoritosModal()">×</button>
     <h3 style="color: #fff; margin-top: 0; text-align: center;">Artículos Guardados</h3>
     <div id="listaFavoritosDetalle" style="max-height: 250px; overflow-y: auto; margin-bottom: 14px;"></div>
-    <button class="btn-comprar" onclick="cerrarFavoritosModal()">Continuar Explorando</button>
-  </div>
-</div>
-
-<!-- MODAL FAQ -->
-<div id="modalFaq" class="modal">
-  <div class="modal-content">
-    <button class="cerrar-modal" onclick="cerrarFaqModal()">×</button>
-    <h3 style="color: #fff; margin-top: 0; text-align: center;">Preguntas Frecuentes</h3>
-    <div style="font-size: 0.9em; line-height: 1.5; color: var(--text-muted);">
-      <p><strong style="color: #fff;">¿Dónde realizan entregas en persona?</strong><br>Puntos acordados previamente en Bejuma y Miranda, Estado Carabobo.</p>
-      <p><strong style="color: #fff;">¿Cómo operan los despachos nacionales?</strong><br>Envíos cobro a destino a través de agencias ZOOM y MRW.</p>
-    </div>
   </div>
 </div>
 
@@ -549,19 +495,15 @@
     <h3 style="color: #fff; margin-top: 0; text-align: center;">Resumen de Pedido</h3>
     
     <div class="cart-tabs">
-      <button class="cart-tab-btn activo" id="tabBtnFisico" onclick="cambiarPestanaCarrito('fisico')">
-        Físicos (<span id="countCartFisico">0</span>)
-      </button>
-      <button class="cart-tab-btn" id="tabBtnDigital" onclick="cambiarPestanaCarrito('digital')">
-        Recargas (<span id="countCartDigital">0</span>)
-      </button>
+      <button class="cart-tab-btn activo" id="tabBtnFisico" onclick="cambiarPestanaCarrito('fisico')">Físicos (<span id="countCartFisico">0</span>)</button>
+      <button class="cart-tab-btn" id="tabBtnDigital" onclick="cambiarPestanaCarrito('digital')">Recargas (<span id="countCartDigital">0</span>)</button>
     </div>
 
     <!-- Barra de Envío Gratis -->
     <div id="boxEnvioGratis" style="margin-bottom: 15px; display: none;">
       <div style="font-size: 0.85em; margin-bottom: 6px; color: var(--text-color); text-align: center; font-family: 'Rajdhani', sans-serif;" id="txtEnvioGratis">Calculando envío...</div>
       <div class="xp-bar-container" style="height: 6px; margin-top: 0; box-shadow: none;">
-        <div class="xp-bar-fill" id="barEnvioGratis" style="width: 0%; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); box-shadow: 0 0 10px var(--secondary-glow);"></div>
+        <div class="xp-bar-fill" id="barEnvioGratis" style="width: 0%; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));"></div>
       </div>
     </div>
 
@@ -573,16 +515,22 @@
 
     <div id="listaCarritoDetalle" style="max-height: 150px; overflow-y: auto; margin-bottom: 12px;"></div>
     
-    <!-- Upselling (Completa tu pedido) -->
+    <!-- Upselling -->
     <div id="boxUpsell" style="margin-bottom: 15px; display: none; padding-top: 10px; border-top: 1px dashed var(--glass-border);">
       <div style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 8px; font-weight: 700;">✨ Completa tu pedido con esto:</div>
       <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none;" id="listaUpsell"></div>
     </div>
 
-    <!-- APARTADO EXCLUSIVO PARA ARTÍCULOS FÍSICOS -->
+    <!-- SECCIÓN DE DATOS DEL CLIENTE PARA CONEXIÓN A BD -->
+    <div class="form-group" style="margin-bottom: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); padding: 10px; border-radius: var(--radius-sm);">
+      <label style="display: block; font-size: 0.85em; font-weight: 700; margin-bottom: 4px; color: var(--secondary-color);"><i class="fas fa-user-ninja"></i> Tus Datos (Para registrar orden):</label>
+      <input type="text" id="cartClienteNombre" class="sugerencia-input" placeholder="Tu Nombre y Apellido" style="margin-bottom: 6px;">
+      <input type="number" id="cartClienteTelefono" class="sugerencia-input" placeholder="Tu WhatsApp (Ej: 04241234567)">
+    </div>
+
     <div id="apartadoEnvioFisico">
       <div style="margin-bottom: 10px;">
-        <label for="selectMetodoEnvio" style="display: block; font-size: 0.85em; font-weight: 700; margin-bottom: 4px;">Método de Despacho:</label>
+        <label style="display: block; font-size: 0.85em; font-weight: 700; margin-bottom: 4px;">Método de Despacho:</label>
         <select id="selectMetodoEnvio" class="talla-select">
           <option value="ZOOM (Cobro a destino)">ZOOM (Envío nacional - Cobro a destino)</option>
           <option value="MRW (Cobro a destino)">MRW (Envío nacional - Cobro a destino)</option>
@@ -590,14 +538,12 @@
           <option value="Entrega Personal (Miranda)">Entrega Personal (Miranda, Carabobo)</option>
         </select>
       </div>
-
       <div style="margin-bottom: 12px;" id="boxDireccionEnvio">
-        <label for="inputDireccionEnvio" style="display: block; font-size: 0.85em; font-weight: 700; margin-bottom: 4px;">Dirección de Entrega / Agencia de Retiro:</label>
+        <label style="display: block; font-size: 0.85em; font-weight: 700; margin-bottom: 4px;">Dirección de Entrega / Agencia:</label>
         <input type="text" id="inputDireccionEnvio" class="sugerencia-input" placeholder="Ciudad, Estado, Dirección o Agencia específica...">
       </div>
     </div>
 
-    <!-- APARTADO EXCLUSIVO PARA RECARGAS DIGITALES -->
     <div id="apartadoRecargasDigitales" style="display: none; background: rgba(0,0,0,0.3); border: 1px dashed var(--glass-border); padding: 10px; border-radius: var(--radius-sm); margin-bottom: 12px; font-size: 0.85em; color: var(--text-muted);">
       <strong style="color: var(--secondary-color);">Entrega Directa:</strong> Las recargas se ejecutan directamente con el ID y Servidor especificados. No aplican costos de flete ni datos de encomienda.
     </div>
@@ -619,24 +565,13 @@
       
       <div style="display: flex; gap: 8px;">
         <button style="flex: 1; padding: 10px; background: rgba(255,51,102,0.1); border: 1px solid rgba(255, 51, 102, 0.4); color: #ff3366; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; transition: all 0.2s ease;" onclick="vaciarCarrito()">Limpiar</button>
-        <button style="flex: 2; padding: 10px; background: linear-gradient(135deg, #25D366, #1da851); color: #000; border: none; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(37,211,102,0.3);" onclick="enviarPedidoWhatsApp()">Enviar Orden</button>
+        <button style="flex: 2; padding: 10px; background: linear-gradient(135deg, #25D366, #1da851); color: #000; border: none; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(37,211,102,0.3);" id="btnFinalizarPedido" onclick="enviarPedidoWhatsApp()">Enviar Orden</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- MODAL SUGERENCIAS -->
-<div id="modalSugerencias" class="modal">
-  <div class="modal-content">
-    <button class="cerrar-modal" onclick="cerrarSugerenciaModal()">×</button>
-    <h3 style="color: #fff; margin-top: 0; text-align: center;">Solicitar Artículo por Encargo</h3>
-    <input type="text" id="sugNombre" class="sugerencia-input" placeholder="Tu Nombre o Contacto" style="margin-bottom: 8px;">
-    <textarea id="sugDeseo" class="sugerencia-input" rows="3" placeholder="¿Qué figura, accesorio o producto específico estás buscando?" style="margin-bottom: 10px;"></textarea>
-    <button class="btn-comprar" onclick="enviarSugerenciaWhatsApp()">Enviar Consulta</button>
-  </div>
-</div>
-
-<!-- NAVEGACIÓN INFERIOR BLINDADA TIPO PÍLDORA -->
+<!-- NAVEGACIÓN INFERIOR -->
 <div class="bottom-nav">
   <div class="nav-item active" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); reproducirSonido();"><i class="fas fa-th-large"></i><span>Catálogo</span></div>
   <div class="nav-item" onclick="abrirFavoritosModal()"><i class="fas fa-heart"></i><span>Guardados</span><div class="nav-badge" id="favBadge">0</div></div>
@@ -664,30 +599,9 @@
 
   let productosNubeGlobal = [];
   let globalAudioCtx = null;
-  const META_ENVIO_GRATIS = 40.00;
-  
-  // VARIABLE GLOBAL PARA LA PAGINACIÓN
+  const META_ENVIO_GRATIS = 40.00; 
   let filtroGlobal = { categoria: 'todos', coleccion: 'todos', estado: 'todos', busqueda: '' };
   let limiteActual = 12;
-  
-  let eventoInstalacion = null;
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    eventoInstalacion = e;
-    const btn = document.getElementById('btnInstalarPWA');
-    if(btn) btn.style.display = 'block'; 
-  });
-
-  window.instalarPWA = async function() {
-    reproducirSonido();
-    if (!eventoInstalacion) return;
-    eventoInstalacion.prompt();
-    const { outcome } = await eventoInstalacion.userChoice;
-    if (outcome === 'accepted') {
-      document.getElementById('btnInstalarPWA').style.display = 'none';
-    }
-    eventoInstalacion = null;
-  };
 
   window.reproducirSonido = function() {
     try {
@@ -730,17 +644,12 @@
     if(!caja) return;
     let dp = window.datosPagoGlobal;
     caja.innerHTML = `
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;"><span>Banco: ${sanitizarHTML(dp.banco)}</span><button class="cart-item-del" onclick="copiarTexto('${sanitizarHTML(dp.banco)}')"><i class="fas fa-copy"></i></button></div>
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;"><span>Pago Móvil: ${sanitizarHTML(dp.telefono)}</span><button class="cart-item-del" onclick="copiarTexto('${sanitizarHTML(dp.telefono)}')"><i class="fas fa-copy"></i></button></div>
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;"><span>Cédula: ${sanitizarHTML(dp.cedula)}</span><button class="cart-item-del" onclick="copiarTexto('${sanitizarHTML(dp.cedula)}')"><i class="fas fa-copy"></i></button></div>
-      <div style="display:flex; justify-content:space-between; align-items:center;"><span>Binance: ${sanitizarHTML(dp.binance)}</span><button class="cart-item-del" onclick="copiarTexto('${sanitizarHTML(dp.binance)}')"><i class="fas fa-copy"></i></button></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;"><span>Banco: ${sanitizarHTML(dp.banco)}</span></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;"><span>Pago Móvil: ${sanitizarHTML(dp.telefono)}</span></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;"><span>Cédula: ${sanitizarHTML(dp.cedula)}</span></div>
+      <div style="display:flex; justify-content:space-between; align-items:center;"><span>Binance: ${sanitizarHTML(dp.binance)}</span></div>
     `;
   }
-
-  window.copiarTexto = function(texto) {
-    reproducirSonido();
-    navigator.clipboard.writeText(texto).then(() => alert("Copiado al portapapeles."));
-  };
 
   async function cargarBannersDeNube() {
     try {
@@ -752,24 +661,18 @@
         let b = docSnap.data();
         if (b.imgUrl) bannersValidos.push(b.imgUrl);
       });
-
       if (bannersValidos.length === 0) { container.style.display = 'none'; return; }
-      
       container.style.display = 'block';
       let htmlImgs = ''; let htmlDots = '<div class="banner-dots">'; 
-      
       bannersValidos.forEach((url, index) => {
-        htmlImgs += `<img src="${url}" class="banner-slide ${index === 0 ? 'active' : ''}" data-index="${index}" ${index === 0 ? 'loading="eager"' : 'loading="lazy"'} decoding="async">`;
+        htmlImgs += `<img src="${url}" class="banner-slide ${index === 0 ? 'active' : ''}" data-index="${index}" loading="lazy">`;
         htmlDots += `<div class="banner-dot ${index === 0 ? 'active' : ''}" onclick="cambiarBannerManual(${index})"></div>`;
       });
       htmlDots += '</div>';
-      let flechasHtml = bannersValidos.length > 1 ? `<div class="banner-control-btn banner-prev" onclick="rotarBanner(-1)"><i class="fas fa-chevron-left"></i></div><div class="banner-control-btn banner-next" onclick="rotarBanner(1)"><i class="fas fa-chevron-right"></i></div>` : '';
-      
-      container.innerHTML = htmlImgs + flechasHtml + htmlDots;
+      container.innerHTML = htmlImgs + htmlDots;
       iniciarAutoSliderBanners(bannersValidos.length);
     } catch (e) {}
   }
-
   let bannerInterval; let totalBanners = 0;
   function iniciarAutoSliderBanners(total) {
     totalBanners = total; 
@@ -786,14 +689,6 @@
     if(nextIdx >= totalBanners) nextIdx = 0; 
     if(nextIdx < 0) nextIdx = totalBanners - 1;
     slides[nextIdx].classList.add('active'); dots[nextIdx].classList.add('active');
-  };
-  window.cambiarBannerManual = function(index) {
-    clearInterval(bannerInterval);
-    let slides = document.querySelectorAll('.banner-slide'); 
-    let dots = document.querySelectorAll('.banner-dot');
-    slides.forEach(s => s.classList.remove('active')); dots.forEach(d => d.classList.remove('active'));
-    slides[index].classList.add('active'); dots[index].classList.add('active');
-    bannerInterval = setInterval(() => rotarBanner(1), 5000);
   };
 
   async function cargarProductosDeNube() {
@@ -813,8 +708,6 @@
     if (!contenedor) return;
     contenedor.innerHTML = "";
     
-    let conteo = { recargas: 0, mangas: 0, ropa: 0, mandos: 0, perifericos: 0, figuras: 0, peluches: 0, cartas: 0, katanas: 0, lamparas: 0, accesorios: 0 };
-    
     let prodsVisibles = lista.filter(p => !p.oculto);
     let elTodos = document.getElementById('count-todos');
     if(elTodos) elTodos.innerText = prodsVisibles.length + " items";
@@ -829,52 +722,36 @@
 
       let fotosArray = (prod.fotos && prod.fotos.length > 0) ? prod.fotos : ['logo.webp?v=2'];
       let categoria = (prod.categoria || 'mangas').toLowerCase();
-      let coleccion = prod.coleccion || 'General';
-      let timestamp = prod.timestamp || 0;
-      
-      let badgeClase = 'badge-stock';
-      if(prod.estado && prod.estado.includes("Encargo")) badgeClase = 'badge-encargo';
-      if(categoria === 'recargas') badgeClase = 'badge-digital';
-
       let esRecarga = categoria === 'recargas';
+      
+      // LOGICA DE STOCK FASE 1
+      let isAgotado = (prod.stock !== undefined && prod.stock <= 0) && !esRecarga;
+      let badgeClase = isAgotado ? 'badge-agotado' : (prod.estado && prod.estado.includes("Encargo") ? 'badge-encargo' : (esRecarga ? 'badge-digital' : 'badge-stock'));
+      let textoBadge = isAgotado ? 'AGOTADO' : (prod.estado || (esRecarga ? 'Recarga Directa' : 'Stock'));
+      let cardClassAddition = isAgotado ? ' agotado' : '';
 
-      if (categoria === 'teclados' || categoria === 'audifonos' || categoria === 'perifericos') { conteo.perifericos++; } 
-      else if (conteo[categoria] !== undefined) { conteo[categoria]++; }
-
-      let imgsHtml = ''; let dotsHtml = '';
+      let imgsHtml = ''; 
       fotosArray.forEach((foto, fIdx) => {
-        imgsHtml += `<img src="${foto}" class="${fIdx === 0 ? 'activa' : ''}" data-index="${fIdx}" loading="lazy" decoding="async">`;
-        dotsHtml += `<div class="dot ${fIdx === 0 ? 'activo' : ''}" data-index="${fIdx}"></div>`;
+        imgsHtml += `<img src="${foto}" class="${fIdx === 0 ? 'activa' : ''}" loading="lazy">`;
       });
-      let botonesCarrusel = fotosArray.length > 1 ? `<div class="carrusel-btn carrusel-prev" onclick="cambiarFotoTarjeta(event, ${indexProd}, -1)"><i class="fas fa-chevron-left"></i></div><div class="carrusel-btn carrusel-next" onclick="cambiarFotoTarjeta(event, ${indexProd}, 1)"><i class="fas fa-chevron-right"></i></div><div class="carrusel-dots">${dotsHtml}</div>` : '';
 
       contenedor.innerHTML += `
-        <div class="card item-producto" 
+        <div class="card item-producto${cardClassAddition}" 
              data-id="${prod.id}" 
              data-nombre="${sanitizarHTML(prod.nombre).toLowerCase()}" 
              data-categoria="${categoria}" 
-             data-coleccion="${sanitizarHTML(coleccion).toLowerCase()}" 
-             data-estado="${prod.estado || ''}" 
              data-precio="${prod.precio}"
-             data-timestamp="${timestamp}"
              onclick="abrirModalPorId('${prod.id}')">
           <button class="btn-fav-card" onclick="toggleFavoritoPorId(event, '${prod.id}')"><i class="fas fa-heart"></i></button>
-          <div class="badge-estado ${badgeClase}">${prod.estado || (esRecarga ? 'Recarga Directa' : 'Stock')}</div>
-          <div class="card-img-container" id="carrusel-card-${indexProd}">${imgsHtml}${botonesCarrusel}</div>
+          <div class="badge-estado ${badgeClase}">${textoBadge}</div>
+          <div class="card-img-container" id="carrusel-card-${indexProd}">${imgsHtml}</div>
           <div class="card-title">${sanitizarHTML(prod.nombre)}</div>
           <div class="precio-container"><span class="card-price">$${Number(prod.precio).toFixed(2)}</span></div>
         </div>
       `;
     });
 
-    for(let cat in conteo) {
-      let elem = document.getElementById('count-' + cat);
-      if(elem) elem.innerText = conteo[cat] + " items";
-    }
-
     renderizarSelectColecciones(lista);
-    
-    // Reiniciar paginación antes de aplicar
     limiteActual = 12;
     aplicarFiltrosGlobales();
   };
@@ -883,18 +760,12 @@
     const select = document.getElementById('selectColeccion');
     if (!select) return;
     const coleccionesUnicas = new Set();
-    productos.forEach(p => { 
-      if (!p.oculto && p.coleccion && p.coleccion.trim() !== '' && p.coleccion.toLowerCase() !== 'general') 
-        coleccionesUnicas.add(p.coleccion.trim()); 
-    });
-
-    let valorSeleccionado = filtroGlobal.coleccion;
-    let html = `<option value="todos">Colección: Todas las Franquicias</option>`;
+    productos.forEach(p => { if (!p.oculto && p.coleccion && p.coleccion.trim() !== '') coleccionesUnicas.add(p.coleccion.trim()); });
+    let html = `<option value="todos">Colección: Todas</option>`;
     coleccionesUnicas.forEach(col => { html += `<option value="${sanitizarHTML(col)}">${sanitizarHTML(col)}</option>`; });
-    select.innerHTML = html; select.value = valorSeleccionado;
+    select.innerHTML = html;
   }
 
-  // --- FILTROS QUE REINICIAN LA PAGINACIÓN ---
   window.cambiarColeccionDropdown = function(col) { reproducirSonido(); filtroGlobal.coleccion = col; limiteActual = 12; aplicarFiltrosGlobales(); };
   window.filtrarCategoria = function(cat) {
     reproducirSonido();
@@ -906,70 +777,31 @@
   window.filtrarEstadoDropdown = function(est) { reproducirSonido(); filtroGlobal.estado = est; limiteActual = 12; aplicarFiltrosGlobales(); };
   window.buscarProductos = function() { filtroGlobal.busqueda = document.getElementById('buscador').value.trim().toLowerCase(); limiteActual = 12; aplicarFiltrosGlobales(); };
 
-  // --- LÓGICA DE MOSTRAR PRODUCTOS + PAGINACIÓN ---
   function aplicarFiltrosGlobales() {
     let productos = document.querySelectorAll('#catalogoNube .item-producto');
-    let mostrados = 0;
-    let coincidencias = 0;
+    let mostrados = 0; let coincidencias = 0;
 
     productos.forEach(card => {
       let cat = (card.getAttribute('data-categoria') || '').toLowerCase();
-      let est = card.getAttribute('data-estado') || '';
-      let col = card.getAttribute('data-coleccion') || '';
       let nom = card.getAttribute('data-nombre') || '';
 
       let cumpleCat = (filtroGlobal.categoria === 'todos') ? true : (filtroGlobal.categoria === 'perifericos' ? (cat === 'perifericos' || cat === 'teclados' || cat === 'audifonos') : cat === filtroGlobal.categoria);
-      let cumpleCol = (filtroGlobal.coleccion === 'todos' || col === filtroGlobal.coleccion.toLowerCase());
-      let cumpleEst = (filtroGlobal.estado === 'todos' || est.includes(filtroGlobal.estado));
-      let cumpleBusqueda = (!filtroGlobal.busqueda || nom.includes(filtroGlobal.busqueda) || col.includes(filtroGlobal.busqueda));
+      let cumpleBusqueda = (!filtroGlobal.busqueda || nom.includes(filtroGlobal.busqueda));
 
-      let cumpleFiltros = (cumpleCat && cumpleCol && cumpleEst && cumpleBusqueda);
-
-      if (cumpleFiltros) {
+      if (cumpleCat && cumpleBusqueda) {
         coincidencias++;
-        if (mostrados < limiteActual) {
-          card.style.display = 'block';
-          mostrados++;
-        } else {
-          card.style.display = 'none'; // Se oculta temporalmente por paginación
-        }
+        if (mostrados < limiteActual) { card.style.display = 'block'; mostrados++; } 
+        else { card.style.display = 'none'; }
       } else {
-        card.style.display = 'none'; // Se oculta porque no cumple el filtro
+        card.style.display = 'none';
       }
     });
 
-    // Controlar visibilidad del botón "Cargar más"
     let btnCargarMas = document.getElementById('btnCargarMas');
-    if (btnCargarMas) {
-      btnCargarMas.style.display = (coincidencias > limiteActual) ? 'block' : 'none';
-    }
+    if (btnCargarMas) btnCargarMas.style.display = (coincidencias > limiteActual) ? 'block' : 'none';
   }
 
-  // --- FUNCIÓN DEL BOTÓN CARGAR MÁS ---
-  window.cargarMasProductos = function() {
-    reproducirSonido();
-    limiteActual += 12; // Aumentar límite en 12
-    aplicarFiltrosGlobales(); // Re-evaluar qué mostrar
-  };
-
-  // --- ORDENAR TAMBIÉN REINICIA LA PAGINACIÓN ---
-  window.ordenarProductos = function() {
-    reproducirSonido(); 
-    let modo = document.getElementById('selectOrden').value; 
-    let contenedor = document.getElementById('catalogoNube');
-    let cards = Array.from(contenedor.querySelectorAll('.item-producto'));
-    
-    if (modo === 'menor') { cards.sort((a, b) => parseFloat(a.getAttribute('data-precio') || 0) - parseFloat(b.getAttribute('data-precio') || 0)); } 
-    else if (modo === 'mayor') { cards.sort((a, b) => parseFloat(b.getAttribute('data-precio') || 0) - parseFloat(a.getAttribute('data-precio') || 0)); } 
-    else if (modo === 'reciente') { cards.sort((a, b) => parseFloat(b.getAttribute('data-timestamp') || 0) - parseFloat(a.getAttribute('data-timestamp') || 0)); } 
-    else if (modo === 'antiguo') { cards.sort((a, b) => parseFloat(a.getAttribute('data-timestamp') || 0) - parseFloat(b.getAttribute('data-timestamp') || 0)); } 
-    else { cards.sort((a, b) => parseFloat(b.getAttribute('data-timestamp') || 0) - parseFloat(a.getAttribute('data-timestamp') || 0)); }
-    
-    cards.forEach(card => contenedor.appendChild(card));
-    
-    limiteActual = 12; // Volver a mostrar solo 12
-    aplicarFiltrosGlobales();
-  };
+  window.cargarMasProductos = function() { reproducirSonido(); limiteActual += 12; aplicarFiltrosGlobales(); };
 
   window.abrirModalPorId = function(prodId) {
     reproducirSonido();
@@ -977,71 +809,92 @@
     if (!prod) return;
 
     const fotosArray = (prod.fotos && prod.fotos.length > 0) ? prod.fotos : ['logo.webp?v=2'];
-    const categoria = (prod.categoria || 'mangas').toLowerCase();
-    const esRopa = categoria.includes('ropa') || categoria.includes('hoodie');
-    const esRecarga = categoria === 'recargas';
+    const esRecarga = prod.categoria === 'recargas';
+    const esAgotado = (prod.stock !== undefined && prod.stock <= 0) && !esRecarga;
 
-    window.productoActual = { id: prod.id, img: fotosArray[0], titulo: prod.nombre, precio: prod.precio, esRopa, esRecarga };
+    window.productoActual = { id: prod.id, img: fotosArray[0], titulo: prod.nombre, precio: prod.precio, esRopa: prod.categoria.includes('ropa'), esRecarga };
 
-    let catBonita = categoria.charAt(0).toUpperCase() + categoria.slice(1);
-    if (categoria === 'teclados' || categoria === 'audifonos' || categoria === 'perifericos') catBonita = "Periféricos";
-
-    document.getElementById('modalBreadcrumbs').innerHTML = `Inicio / <span>${sanitizarHTML(catBonita)}</span>`;
     document.getElementById('modalImg').src = fotosArray[0];
     document.getElementById('modalTitulo').innerText = prod.nombre;
     document.getElementById('modalPrecio').innerText = "$" + Number(prod.precio).toFixed(2);
     document.getElementById('modalDesc').innerText = prod.descripcion || 'Producto oficial Sakura Gameverse.';
-    document.getElementById('modalTag').innerText = prod.estado || (esRecarga ? 'Recarga Directa' : 'Stock');
+    document.getElementById('modalTag').innerText = esAgotado ? 'AGOTADO' : (prod.estado || 'Stock');
     
-    document.getElementById('tallasContainer').style.display = esRopa ? 'block' : 'none';
+    document.getElementById('tallasContainer').style.display = window.productoActual.esRopa ? 'block' : 'none';
     document.getElementById('recargaContainer').style.display = esRecarga ? 'block' : 'none';
 
-    let contenedorMinis = document.getElementById('modalContainerMinis');
-    contenedorMinis.innerHTML = "";
-    if (fotosArray.length > 1) {
-      fotosArray.forEach((fotoUrl, idx) => {
-        contenedorMinis.innerHTML += `<img src="${fotoUrl}" class="modal-mini-img ${idx === 0 ? 'activo' : ''}" onclick="cambiarFotoModal('${fotoUrl}', this)" loading="lazy" decoding="async">`;
-      });
-    }
-
-    let contRel = document.getElementById('contenedorRelacionados');
-    let listaRel = document.getElementById('listaRelacionados');
-    
-    if (contRel && listaRel) {
-      let relacionados = productosNubeGlobal.filter(p => !p.oculto && (p.coleccion === prod.coleccion || p.categoria === prod.categoria) && p.id !== prod.id).slice(0, 5);
-      
-      if(relacionados.length > 0 && prod.coleccion !== 'General') {
-          contRel.style.display = 'block';
-          listaRel.innerHTML = relacionados.map(r => `
-             <div style="min-width: 90px; cursor: pointer; text-align: center; background: rgba(0,0,0,0.5); padding: 6px; border-radius: var(--radius-sm); border: 1px solid var(--glass-border);" onclick="abrirModalPorId('${r.id}')">
-               <img src="${r.fotos && r.fotos.length > 0 ? r.fotos[0] : 'logo.webp?v=2'}" style="width: 100%; height: 75px; object-fit: contain; margin-bottom: 4px;">
-               <div style="font-size: 0.7em; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: 'Chakra Petch', sans-serif;">${sanitizarHTML(r.nombre)}</div>
-               <div style="font-size: 0.8em; color: var(--secondary-color); font-weight: bold;">$${r.precio}</div>
-             </div>
-          `).join('');
-      } else {
-          contRel.style.display = 'none';
-      }
+    let btnAdd = document.getElementById('btnComprarModal');
+    if(esAgotado) {
+        btnAdd.disabled = true;
+        btnAdd.innerHTML = '<i class="fas fa-ban"></i> Sin Stock Temporalmente';
+    } else {
+        btnAdd.disabled = false;
+        btnAdd.innerHTML = '<i class="fas fa-cart-plus"></i> Añadir al Carrito';
     }
 
     document.getElementById('miModal').style.display = 'flex';
   };
 
-  async function cargarConfigCategoriasPublico() {
-    try {
-      const q = query(collection(db, "configuracion"), orderBy("timestamp", "desc"));
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((docSnap) => {
-        let conf = docSnap.data();
-        if(conf.tipo === 'categoria_foto') {
-          let catImgEl = document.getElementById(`img-cat-${conf.categoriaId}`);
-          if(catImgEl && conf.imgUrl) catImgEl.src = conf.imgUrl;
-          let catTitleEl = document.getElementById(`title-cat-${conf.categoriaId}`);
-          if(catTitleEl && conf.nombrePersonalizado) catTitleEl.innerText = conf.nombrePersonalizado;
-        }
-      });
-    } catch (e) {}
-  }
+  // --- RASTREO DE PEDIDO (MAGIA FASE 1) ---
+  window.abrirRastreoModal = function() {
+      reproducirSonido();
+      document.getElementById('modalRastreo').style.display = 'flex';
+      document.getElementById('resultadoRastreo').innerHTML = "<p style='color: var(--text-muted); text-align: center; margin: 0; font-size: 0.85em;'>Tu estado de cuenta aparecerá aquí.</p>";
+      document.getElementById('inputRastreoTlf').value = "";
+  };
+  window.cerrarRastreoModal = function() { document.getElementById('modalRastreo').style.display = 'none'; };
+  
+  window.buscarPedido = async function() {
+      reproducirSonido();
+      let tlf = document.getElementById('inputRastreoTlf').value.trim();
+      if(!tlf) return alert("Por favor ingresa un número de teléfono válido.");
+      
+      let cont = document.getElementById('resultadoRastreo');
+      cont.innerHTML = "<p style='text-align:center; color: var(--secondary-color);'><i class='fas fa-spinner fa-spin'></i> Conectando con la base de datos...</p>";
+      
+      try {
+          const q = query(collection(db, "pedidos"), where("telefono", "==", tlf));
+          const snap = await getDocs(q);
+          
+          if(snap.empty) {
+              cont.innerHTML = "<p style='color: #ff3366; text-align:center; font-weight: bold;'><i class='fas fa-exclamation-circle'></i> No se encontraron pedidos recientes con este número.</p>";
+              return;
+          }
+          
+          let pedidos = [];
+          snap.forEach(d => pedidos.push({id: d.id, ...d.data()}));
+          pedidos.sort((a,b) => b.timestamp - a.timestamp); // El más reciente primero
+          let p = pedidos[0]; 
+          
+          let estados = ["Pendiente", "Pagado", "Enviado", "Completado"];
+          let idxEstado = estados.indexOf(p.estadoPedido);
+          if(idxEstado === -1) idxEstado = 0; // Por si acaso
+          
+          let html = `<div style="font-size: 0.9em; margin-bottom: 15px; color: #fff;">Última orden de: <strong>${sanitizarHTML(p.cliente)}</strong></div>`;
+          html += `<div class="timeline">`;
+          
+          estados.forEach((e, i) => {
+              let activeClass = i <= idxEstado ? 'active' : '';
+              let colorInfo = i <= idxEstado ? 'color: #fff;' : 'color: var(--text-muted);';
+              let icono = "";
+              if(e === "Pendiente") icono = "<i class='fas fa-clock'></i> ";
+              if(e === "Pagado") icono = "<i class='fas fa-check-double'></i> ";
+              if(e === "Enviado") icono = "<i class='fas fa-truck-fast'></i> ";
+              if(e === "Completado") icono = "<i class='fas fa-box-open'></i> ";
+              
+              let guiaInfo = (e === 'Enviado' && p.guiaEnvio && i <= idxEstado) ? `<div style="color: #b000ff; font-size: 0.85em; margin-top: 6px; font-weight:bold; background: rgba(176,0,255,0.1); padding: 4px; border-radius:4px;"><i class="fas fa-barcode"></i> Número de Guía: ${sanitizarHTML(p.guiaEnvio)}</div>` : '';
+              
+              html += `<div class="timeline-item ${activeClass}" style="${colorInfo}"><strong>${icono} ${e}</strong>${guiaInfo}</div>`;
+          });
+          html += `</div>`;
+          html += `<div style="margin-top: 10px; font-size: 0.8em; color: var(--secondary-color); text-align:right;">Monto Orden: $${Number(p.totalUsd).toFixed(2)}</div>`;
+          
+          cont.innerHTML = html;
+
+      } catch(error) {
+          cont.innerHTML = "<p style='color: #ff3366; text-align:center;'>Hubo un error de conexión.</p>";
+      }
+  };
 
   window.aplicarCupon = async function() {
     reproducirSonido(); 
@@ -1062,265 +915,47 @@
     } catch(e) { msg.style.color = "#ff3366"; msg.innerText = "Error al validar cupón."; }
   };
 
-  let umbralesRangosNube = { genin: 0, chunin: 300, jonin: 600, hokage: 1000 };
-
-  async function cargarUmbralesRangosNube() {
-    try {
-      const docRef = doc(db, "configuracion", "rangos_ninja");
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) umbralesRangosNube = docSnap.data();
-    } catch(e) {}
-  }
-
-  window.guardarJugadorEnNube = async function() {
-    try {
-      let idUnico = gamerProfile.tag.replace(/\s+/g, '_').toLowerCase();
-      await setDoc(doc(db, "jugadores", idUnico), { tag: gamerProfile.tag, xp: gamerProfile.xp, rango: gamerProfile.rango, timestamp: Date.now() });
-    } catch(e) {}
-  };
-
   window.addEventListener('DOMContentLoaded', () => {
     cargarBannersDeNube(); 
     cargarProductosDeNube(); 
-    cargarConfigCategoriasPublico(); 
     cargarDatosPagoNube();
-    cargarReviewsNube();
-    cargarUmbralesRangosNube().then(() => { actualizarRangoSegunXP(); });
   });
 
-  window.scrollCategoriasVisuales = function(direccion) {
-    reproducirSonido();
-    document.getElementById('categoriasTrack').scrollBy({ left: direccion * 140, behavior: 'smooth' });
-  };
-
-  window.cambiarFotoTarjeta = function(event, cardIndex, direccion) {
-    event.stopPropagation(); reproducirSonido();
-    let contenedor = document.getElementById(`carrusel-card-${cardIndex}`);
-    if (!contenedor) return;
-    let imgs = contenedor.querySelectorAll('img'); let dots = contenedor.querySelectorAll('.dot');
-    if (imgs.length <= 1) return;
-    let currentIndex = Array.from(imgs).findIndex(img => img.classList.contains('activa'));
-    let newIndex = currentIndex + direccion;
-    if (newIndex >= imgs.length) newIndex = 0; if (newIndex < 0) newIndex = imgs.length - 1;
-    imgs.forEach(img => img.classList.remove('activa')); dots.forEach(d => d.classList.remove('activa'));
-    imgs[newIndex].classList.add('activa'); dots[newIndex].classList.add('activa');
-  };
-
-  window.cambiarFotoModal = function(urlFoto, elementoMini) {
-    reproducirSonido(); 
-    document.getElementById('modalImg').src = urlFoto; 
-    window.productoActual.img = urlFoto;
-    document.querySelectorAll('.modal-mini-img').forEach(m => m.classList.remove('activo'));
-    elementoMini.classList.add('activo');
-  };
-
-  let temaActual = localStorage.getItem('sakura_tema') || 'theme-rosa';
-  document.body.className = temaActual;
-  window.abrirTemasModal = function() { reproducirSonido(); document.getElementById('modalTemas').style.display = 'flex'; };
-  window.cerrarTemasModal = function() { document.getElementById('modalTemas').style.display = 'none'; };
-  window.cambiarTema = function(t) { reproducirSonido(); document.body.className = t; localStorage.setItem('sakura_tema', t); cerrarTemasModal(); };
-
-  window.activarEasterEggLogo = function() { reproducirSonido(); document.body.classList.toggle('theme-overdrive'); };
-
-  let reproduciendoMusica = false;
-  window.toggleMusicaLoFi = function() {
-    reproducirSonido(); 
-    let audio = document.getElementById('audioLoFi'); 
-    let icono = document.getElementById('iconoMusica');
-    if (!reproduciendoMusica) { 
-      audio.play().then(() => { reproduciendoMusica = true; icono.className = "fas fa-pause"; }).catch(e => alert("Interactúa con la pantalla primero."));
-    } else { 
-      audio.pause(); reproduciendoMusica = false; icono.className = "fas fa-music"; 
-    }
-  };
-
-  window.abrirMenuOpciones = function() { reproducirSonido(); document.getElementById('modalOpcionesMenu').style.display = 'flex'; };
-  window.cerrarMenuOpciones = function() { document.getElementById('modalOpcionesMenu').style.display = 'none'; };
-
-  let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, rango: "Genin" };
-  document.getElementById('inputGamerTag').value = gamerProfile.tag; 
-
-  function actualizarRangoSegunXP() {
-    let xp = gamerProfile.xp;
-    let u = umbralesRangosNube;
-    let max = 0; let min = 0; let nextRango = "";
-
-    if (xp >= (u.hokage ?? 1000)) { gamerProfile.rango = "Hokage"; max = xp; min = u.hokage ?? 1000; nextRango = "MAX"; }
-    else if (xp >= (u.jonin ?? 600)) { gamerProfile.rango = "Jōnin"; max = u.hokage ?? 1000; min = u.jonin ?? 600; nextRango = "Hokage"; }
-    else if (xp >= (u.chunin ?? 300)) { gamerProfile.rango = "Chūnin"; max = u.jonin ?? 600; min = u.chunin ?? 300; nextRango = "Jōnin"; }
-    else { gamerProfile.rango = "Genin"; max = u.chunin ?? 300; min = 0; nextRango = "Chūnin"; }
-
-    let pct = 100;
-    if(nextRango !== "MAX") {
-        pct = ((xp - min) / (max - min)) * 100;
-        document.getElementById('lblXpNext').innerHTML = `Faltan <strong style="color:var(--secondary-color);">${max - xp} XP</strong> para ${nextRango}`;
-    } else {
-        document.getElementById('lblXpNext').innerText = `¡Rango Máximo Alcanzado!`;
-    }
-    
-    let barra = document.getElementById('barXp');
-    if(barra) setTimeout(() => { barra.style.width = pct + "%"; }, 200);
-
-    localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
-    document.getElementById('lblXp').innerText = gamerProfile.xp; 
-    document.getElementById('lblRango').innerText = gamerProfile.rango;
-    window.guardarJugadorEnNube();
-  }
-
-  function ganarXP(cantidad) {
-    gamerProfile.xp += cantidad;
-    actualizarRangoSegunXP();
-  }
-
-  window.abrirGamerProfileModal = function() { reproducirSonido(); document.getElementById('modalGamerProfile').style.display = 'flex'; };
-  window.cerrarGamerProfileModal = function() { document.getElementById('modalGamerProfile').style.display = 'none'; };
-  window.guardarGamerTag = function() { 
-    reproducirSonido(); 
-    let t = document.getElementById('inputGamerTag').value.trim(); 
-    if(t) { gamerProfile.tag = t; localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile)); window.guardarJugadorEnNube(); cerrarGamerProfileModal(); } 
-  };
-
-  let favoritos = JSON.parse(localStorage.getItem('sakura_favoritos')) || [];
-  
-  window.toggleFavoritoPorId = function(event, prodId) {
-    event.stopPropagation(); reproducirSonido();
-    const prod = productosNubeGlobal.find(p => p.id === prodId);
-    if (!prod) return;
-
-    let idx = favoritos.findIndex(i => i.id === prodId || i.titulo === prod.nombre);
-    let btn = event.currentTarget;
-
-    if(idx === -1) { 
-      favoritos.push({ id: prod.id, titulo: prod.nombre, precio: prod.precio, img: (prod.fotos && prod.fotos[0]) ? prod.fotos[0] : 'logo.webp?v=2' }); 
-      btn.classList.add('favorito');
-    } else { 
-      favoritos.splice(idx, 1); 
-      btn.classList.remove('favorito');
-    }
-    localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos)); actualizarBadges();
-  };
-  
-  window.removerDeFavoritos = function(index) {
-    reproducirSonido();
-    favoritos.splice(index, 1);
-    localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos));
-    actualizarBadges();
-    abrirFavoritosModal();
-  };
-
-  window.abrirFavoritosModal = function() {
-    reproducirSonido(); 
-    let cont = document.getElementById('listaFavoritosDetalle');
-    cont.innerHTML = favoritos.length === 0 ? "<p style='color:var(--text-muted); text-align:center;'>No tienes productos guardados.</p>" : "";
-    
-    favoritos.forEach((item, i) => { 
-      cont.innerHTML += `
-        <div class="cart-item-row">
-          <img src="${item.img}" class="cart-item-img" loading="lazy" decoding="async" style="cursor:pointer;" onclick="cerrarFavoritosModal(); abrirModalPorId('${item.id}')">
-          <div class="cart-item-info" style="cursor:pointer;" onclick="cerrarFavoritosModal(); abrirModalPorId('${item.id}')">
-            <strong>${sanitizarHTML(item.titulo)}</strong><br>
-            <span style="color:var(--secondary-color);">$${Number(item.precio).toFixed(2)}</span>
-          </div>
-          <button class="cart-item-del" onclick="removerDeFavoritos(${i})"><i class="fas fa-trash"></i></button>
-        </div>`; 
-    });
-    document.getElementById('modalFavoritos').style.display = 'flex';
-  };
-  
-  window.cerrarFavoritosModal = function() { document.getElementById('modalFavoritos').style.display = 'none'; };
-
-  window.abrirCofreModal = function() { reproducirSonido(); document.getElementById('modalCofreDiario').style.display = 'flex'; };
-  window.cerrarCofreModal = function() { document.getElementById('modalCofreDiario').style.display = 'none'; };
-  
-  window.abrirCofreDiario = function() {
-    reproducirSonido(); 
-    let hoy = new Date().toDateString(); 
-    let ultimoCofre = localStorage.getItem('sakura_ultimo_cofre');
-    if (ultimoCofre === hoy) { document.getElementById('cofreResultado').innerHTML = "Cofre reclamado por hoy. Regresa mañana."; return; }
-    localStorage.setItem('sakura_ultimo_cofre', hoy); 
-    ganarXP(50); 
-    confetti({ particleCount: 80, spread: 60, origin: { y: 0.5 } });
-    document.getElementById('cofreResultado').innerHTML = "¡Reclamaste +50 XP diarios!";
-  };
-
-  window.abrirGachaModal = function() { reproducirSonido(); document.getElementById('modalGacha').style.display = 'flex'; };
-  window.cerrarGachaModal = function() { document.getElementById('modalGacha').style.display = 'none'; };
-  
-  window.girarRuletaGacha = function() { 
-    reproducirSonido(); 
-    let hoy = new Date().toDateString(); 
-    let ultimaGacha = localStorage.getItem('sakura_ultima_gacha');
-    if (ultimaGacha === hoy) { document.getElementById('gachaResultado').innerHTML = "Tirada utilizada hoy. Regresa mañana."; return; }
-    localStorage.setItem('sakura_ultima_gacha', hoy);
-    document.getElementById('gachaResultado').innerHTML = "Beneficio obtenido: 10% OFF con código <strong>OTAKU10</strong>"; 
-    confetti({ particleCount: 70, spread: 50, origin: { y: 0.5 } }); 
-  };
-
-  window.abrirGuiaTallasModal = function() { reproducirSonido(); document.getElementById('modalGuiaTallas').style.display = 'flex'; };
-  window.cerrarGuiaTallasModal = function() { document.getElementById('modalGuiaTallas').style.display = 'none'; };
-  window.cerrarPromoFlash = function() { document.getElementById('modalPromoFlash').style.display = 'none'; };
+  window.cerrarModal = function() { document.getElementById('miModal').style.display = 'none'; };
 
   let carrito = JSON.parse(localStorage.getItem('sakura_carrito')) || [];
   window.productoActual = null; let descuentoAplicado = 0; let pestanaCarritoActual = 'fisico';
 
-  window.cambiarPestanaCarrito = function(tipo) {
-    reproducirSonido();
-    pestanaCarritoActual = tipo;
-
-    document.getElementById('tabBtnFisico').classList.toggle('activo', tipo === 'fisico');
-    document.getElementById('tabBtnDigital').classList.toggle('activo', tipo === 'digital');
-
-    document.getElementById('apartadoEnvioFisico').style.display = (tipo === 'fisico') ? 'block' : 'none';
-    document.getElementById('apartadoRecargasDigitales').style.display = (tipo === 'digital') ? 'block' : 'none';
-
-    renderizarListaCarrito();
+  window.agregarAlCarrito = function() {
+    reproducirSonido(); 
+    let item = { ...window.productoActual };
+    if(item.esRopa) { item.titulo += ` (Talla: ${document.getElementById('selectTalla').value})`; }
+    if(item.esRecarga) {
+      let playerId = document.getElementById('inputPlayerId').value.trim();
+      let playerServer = document.getElementById('inputPlayerServer').value.trim();
+      if(!playerId) return alert("Indica el ID de jugador para procesar la recarga.");
+      item.titulo += ` [ID: ${playerId}${playerServer ? ' / Servidor: ' + playerServer : ''}]`;
+    }
+    carrito.push(item); actualizarCarritoUI(); cerrarModal(); 
   };
 
-  function actualizarBarraEnvio(subtotalFisico) {
-    let box = document.getElementById('boxEnvioGratis');
-    let txt = document.getElementById('txtEnvioGratis');
-    let bar = document.getElementById('barEnvioGratis');
-    
-    if(subtotalFisico === 0 || pestanaCarritoActual === 'digital') {
-      box.style.display = 'none';
-      return;
-    }
-    
-    box.style.display = 'block';
-    if (subtotalFisico >= META_ENVIO_GRATIS) {
-      txt.innerHTML = `¡Lo lograste! Tienes <strong style="color: #25D366; text-shadow: 0 0 5px rgba(37,211,102,0.4);">Envío Nacional Gratis</strong> 🎉`;
-      bar.style.width = '100%';
-      bar.style.background = 'linear-gradient(90deg, #25D366, #1da851)';
-      bar.style.boxShadow = '0 0 10px rgba(37,211,102,0.6)';
-    } else {
-      let faltante = (META_ENVIO_GRATIS - subtotalFisico).toFixed(2);
-      let porcentaje = (subtotalFisico / META_ENVIO_GRATIS) * 100;
-      txt.innerHTML = `Te faltan <strong style="color: var(--secondary-color);">$${faltante}</strong> para <strong style="color: #25D366;">Envío Gratis</strong> 📦`;
-      bar.style.width = `${porcentaje}%`;
-      bar.style.background = 'linear-gradient(90deg, var(--primary-color), var(--secondary-color))';
-      bar.style.boxShadow = '0 0 10px var(--secondary-glow)';
-    }
-  }
+  function actualizarCarritoUI() { localStorage.setItem('sakura_carrito', JSON.stringify(carrito)); actualizarBadges(); }
+  function actualizarBadges() { document.getElementById('cartBadge').innerText = carrito.length; }
 
-  window.agregarUpsell = function(id) {
+  window.abrirCarritoModal = function() {
     reproducirSonido();
-    let prod = productosNubeGlobal.find(p => p.id === id);
-    if(prod) {
-      let item = { id: prod.id, img: (prod.fotos && prod.fotos.length > 0) ? prod.fotos[0] : 'logo.webp?v=2', titulo: prod.nombre, precio: prod.precio, esRopa: false, esRecarga: false };
-      if(prod.categoria === 'recargas') item.esRecarga = true;
-      carrito.push(item);
-      actualizarCarritoUI();
-      renderizarListaCarrito();
-    }
+    let tieneFisicos = carrito.some(i => !i.esRecarga); let tieneDigitales = carrito.some(i => i.esRecarga);
+    pestanaCarritoActual = (tieneDigitales && !tieneFisicos) ? 'digital' : 'fisico';
+    document.getElementById('tabBtnFisico').classList.toggle('activo', pestanaCarritoActual === 'fisico');
+    document.getElementById('tabBtnDigital').classList.toggle('activo', pestanaCarritoActual === 'digital');
+    document.getElementById('apartadoEnvioFisico').style.display = (pestanaCarritoActual === 'fisico') ? 'block' : 'none';
+    document.getElementById('apartadoRecargasDigitales').style.display = (pestanaCarritoActual === 'digital') ? 'block' : 'none';
+    renderizarListaCarrito(); document.getElementById('modalCarrito').style.display = 'flex';
   };
 
   function renderizarListaCarrito() {
     let cont = document.getElementById('listaCarritoDetalle');
-    let reciboBox = document.getElementById('reciboDigital');
     let reciboContenido = document.getElementById('reciboContenido');
-    let paymentBox = document.getElementById('paymentMethodsCart');
-    let boxUpsell = document.getElementById('boxUpsell');
-    let contUpsell = document.getElementById('listaUpsell');
     
     cont.innerHTML = ""; reciboContenido.innerHTML = "";
 
@@ -1336,7 +971,7 @@
     let itemsMostrados = (pestanaCarritoActual === 'fisico') ? itemsFisicos : itemsDigitales;
 
     if (itemsMostrados.length === 0) {
-      cont.innerHTML = `<p style='color:var(--text-muted); text-align:center;'>Sin ${pestanaCarritoActual === 'fisico' ? 'artículos físicos' : 'recargas'} agregados.</p>`;
+      cont.innerHTML = `<p style='color:var(--text-muted); text-align:center;'>Sin artículos.</p>`;
     } else {
       itemsMostrados.forEach((item) => {
         let idxOriginal = carrito.indexOf(item);
@@ -1353,107 +988,45 @@
     }
 
     if (carrito.length > 0) {
-      let candidatos = productosNubeGlobal.filter(p => !p.oculto && Number(p.precio) <= 15 && !carrito.some(c => c.id === p.id));
-      candidatos.sort(() => 0.5 - Math.random()); 
-      let sugerencias = candidatos.slice(0, 4); 
-      
-      if(sugerencias.length > 0) {
-        boxUpsell.style.display = 'block';
-        contUpsell.innerHTML = sugerencias.map(s => `
-          <div class="upsell-card">
-            <img src="${s.fotos && s.fotos.length > 0 ? s.fotos[0] : 'logo.webp?v=2'}" class="upsell-img">
-            <div class="upsell-title">${sanitizarHTML(s.nombre)}</div>
-            <div class="upsell-price">$${Number(s.precio).toFixed(2)}</div>
-            <button class="upsell-btn" onclick="agregarUpsell('${s.id}')"><i class="fas fa-plus"></i> Añadir</button>
-          </div>
-        `).join('');
-      } else {
-        boxUpsell.style.display = 'none';
-      }
-    } else {
-      boxUpsell.style.display = 'none';
-    }
-
-    if (carrito.length === 0) {
-      reciboBox.style.display = 'none'; paymentBox.style.display = 'none'; document.getElementById('modalCarritoTotal').innerText = "Total: $0.00";
-    } else {
-      reciboBox.style.display = 'block'; paymentBox.style.display = 'block';
-      let html = "";
-      carrito.forEach(item => { html += `<div class="recibo-line"><span>${sanitizarHTML(item.titulo)}</span><span>$${Number(item.precio).toFixed(2)}</span></div>`; });
       let sub = carrito.reduce((s, i) => s + Number(i.precio), 0); let tot = sub * (1 - descuentoAplicado);
-      html += `<div style="border-top:1px dashed var(--glass-border); margin-top:6px; padding-top:6px;" class="recibo-line"><strong>TOTAL USD:</strong> <strong>$${tot.toFixed(2)}</strong></div>`;
-      reciboContenido.innerHTML = html; document.getElementById('modalCarritoTotal').innerText = `Total: $${tot.toFixed(2)}`;
+      document.getElementById('modalCarritoTotal').innerText = `Total: $${tot.toFixed(2)}`;
+    } else {
+      document.getElementById('modalCarritoTotal').innerText = "Total: $0.00";
     }
   }
 
-  window.cerrarModal = function() { document.getElementById('miModal').style.display = 'none'; };
-
-  window.agregarAlCarrito = function() {
-    reproducirSonido(); 
-    let item = { ...window.productoActual };
-    if(item.esRopa) { item.titulo += ` (Talla: ${document.getElementById('selectTalla').value})`; }
-    if(item.esRecarga) {
-      let playerId = document.getElementById('inputPlayerId').value.trim();
-      let playerServer = document.getElementById('inputPlayerServer').value.trim();
-      if(!playerId) return alert("Indica el ID de jugador para procesar la recarga.");
-      item.titulo += ` [ID: ${playerId}${playerServer ? ' / Servidor: ' + playerServer : ''}]`;
+  function actualizarBarraEnvio(subtotalFisico) {
+    let box = document.getElementById('boxEnvioGratis');
+    let txt = document.getElementById('txtEnvioGratis');
+    let bar = document.getElementById('barEnvioGratis');
+    if(subtotalFisico === 0 || pestanaCarritoActual === 'digital') { box.style.display = 'none'; return; }
+    box.style.display = 'block';
+    if (subtotalFisico >= META_ENVIO_GRATIS) {
+      txt.innerHTML = `¡Lo lograste! Tienes <strong style="color: #25D366;">Envío Nacional Gratis</strong> 🎉`;
+      bar.style.width = '100%'; bar.style.background = 'linear-gradient(90deg, #25D366, #1da851)';
+    } else {
+      let faltante = (META_ENVIO_GRATIS - subtotalFisico).toFixed(2);
+      let porcentaje = (subtotalFisico / META_ENVIO_GRATIS) * 100;
+      txt.innerHTML = `Faltan <strong style="color: var(--secondary-color);">$${faltante}</strong> para <strong style="color: #25D366;">Envío Gratis</strong>`;
+      bar.style.width = `${porcentaje}%`; bar.style.background = 'linear-gradient(90deg, var(--primary-color), var(--secondary-color))';
     }
-    carrito.push(item); actualizarCarritoUI(); cerrarModal(); 
-  };
-
-  function actualizarCarritoUI() { localStorage.setItem('sakura_carrito', JSON.stringify(carrito)); actualizarBadges(); }
-  
-  function actualizarBadges() { 
-    document.getElementById('cartBadge').innerText = carrito.length; 
-    document.getElementById('favBadge').innerText = favoritos.length; 
-    
-    document.querySelectorAll('.item-producto').forEach(card => {
-        let prodId = card.getAttribute('data-id');
-        let btnFav = card.querySelector('.btn-fav-card');
-        if (favoritos.some(f => f.id === prodId)) {
-            btnFav.classList.add('favorito');
-        } else {
-            btnFav.classList.remove('favorito');
-        }
-    });
   }
-
-  window.abrirCarritoModal = function() {
-    reproducirSonido();
-    let tieneFisicos = carrito.some(i => !i.esRecarga); let tieneDigitales = carrito.some(i => i.esRecarga);
-    pestanaCarritoActual = (tieneDigitales && !tieneFisicos) ? 'digital' : 'fisico';
-    document.getElementById('tabBtnFisico').classList.toggle('activo', pestanaCarritoActual === 'fisico');
-    document.getElementById('tabBtnDigital').classList.toggle('activo', pestanaCarritoActual === 'digital');
-    document.getElementById('apartadoEnvioFisico').style.display = (pestanaCarritoActual === 'fisico') ? 'block' : 'none';
-    document.getElementById('apartadoRecargasDigitales').style.display = (pestanaCarritoActual === 'digital') ? 'block' : 'none';
-    renderizarListaCarrito(); document.getElementById('modalCarrito').style.display = 'flex';
-  };
 
   window.removerDelCarrito = function(index) { reproducirSonido(); carrito.splice(index, 1); actualizarCarritoUI(); renderizarListaCarrito(); };
   window.cerrarCarritoModal = function() { document.getElementById('modalCarrito').style.display = 'none'; };
   window.vaciarCarrito = function() { reproducirSonido(); carrito = []; descuentoAplicado = 0; actualizarCarritoUI(); renderizarListaCarrito(); };
 
-  window.compartirCarrito = function() {
-    reproducirSonido();
-    if(carrito.length === 0) return alert("Tu lista está vacía. Añade productos primero.");
-    
-    let msg = `✨ ¡Hola! Esta es mi lista de deseos (Wishlist) de *Sakura Gameverse*:\n\n`;
-    carrito.forEach((i, idx) => {
-        msg += `🎁 ${i.titulo} - $${Number(i.precio).toFixed(2)}\n`;
-    });
-    let tot = carrito.reduce((s, i) => s + Number(i.precio), 0);
-    msg += `\n*Total aprox:* $${tot.toFixed(2)}\n\n¡Ojalá me regalen algo de aquí! 🥺💖`;
-    
-    if (navigator.share) {
-        navigator.share({ title: 'Mi Wishlist Sakura Gameverse', text: msg }).catch(console.error);
-    } else {
-        window.open("https://wa.me/?text=" + encodeURIComponent(msg), '_blank');
-    }
-  };
-
-  window.enviarPedidoWhatsApp = function() {
+  // --- EL CORAZÓN DE LA FASE 1: ENVÍO Y GUARDADO EN FIREBASE ---
+  window.enviarPedidoWhatsApp = async function() {
     reproducirSonido(); 
     if(carrito.length === 0) return alert("El carrito está vacío.");
+
+    let nombreCli = document.getElementById('cartClienteNombre').value.trim();
+    let tlfCli = document.getElementById('cartClienteTelefono').value.trim();
+
+    if(!nombreCli || !tlfCli) {
+        return alert("⚠️ Por favor, llena la casilla 'Tus Datos' (Nombre y WhatsApp) para registrar la orden en el sistema antes de enviarla.");
+    }
     
     let tieneFisicos = carrito.some(i => !i.esRecarga); let tieneDigitales = carrito.some(i => i.esRecarga);
     let metodoEnvio = document.getElementById('selectMetodoEnvio') ? document.getElementById('selectMetodoEnvio').value : "No especificado";
@@ -1462,78 +1035,78 @@
     if (tieneFisicos && !direccionEnvio) { cambiarPestanaCarrito('fisico'); return alert("Por favor indica la dirección o agencia de destino."); }
 
     let sub = carrito.reduce((s, i) => s + Number(i.precio), 0); let tot = sub * (1 - descuentoAplicado); 
-    let msg = `Hola Sakura Gameverse, deseo procesar el siguiente pedido:\n\n`;
+    
+    let msgParaWhatsApp = `Hola Sakura Gameverse, deseo procesar el siguiente pedido:\n\n*Cliente:* ${nombreCli}\n*Contacto:* ${tlfCli}\n\n`;
+    let detallesBD = ""; // Texto plano para guardar en BD
     
     if (tieneFisicos) {
-      msg += `📦 ARTÍCULOS FÍSICOS:\n`;
-      carrito.filter(i => !i.esRecarga).forEach((i, idx) => { msg += `  ${idx+1}. ${i.titulo} - $${Number(i.precio).toFixed(2)}\n`; });
-      msg += `Logística: ${metodoEnvio}\nDestino: ${direccionEnvio}\n\n`;
+      msgParaWhatsApp += `📦 ARTÍCULOS FÍSICOS:\n`;
+      carrito.filter(i => !i.esRecarga).forEach((i, idx) => { 
+          msgParaWhatsApp += `  ${idx+1}. ${i.titulo} - $${Number(i.precio).toFixed(2)}\n`; 
+          detallesBD += `1x ${i.titulo} ($${Number(i.precio).toFixed(2)})\n`;
+      });
+      msgParaWhatsApp += `Logística: ${metodoEnvio}\nDestino: ${direccionEnvio}\n\n`;
     }
 
     if (tieneDigitales) {
-      msg += `⚡ RECARGAS DIGITALES:\n`;
-      carrito.filter(i => i.esRecarga).forEach((i, idx) => { msg += `  ${idx+1}. ${i.titulo} - $${Number(i.precio).toFixed(2)}\n`; });
-      msg += `Modalidad: Acreditación Directa\n\n`;
+      msgParaWhatsApp += `⚡ RECARGAS DIGITALES:\n`;
+      carrito.filter(i => i.esRecarga).forEach((i, idx) => { 
+          msgParaWhatsApp += `  ${idx+1}. ${i.titulo} - $${Number(i.precio).toFixed(2)}\n`; 
+          detallesBD += `1x ${i.titulo} ($${Number(i.precio).toFixed(2)})\n`;
+      });
+      msgParaWhatsApp += `Modalidad: Acreditación Directa\n\n`;
     }
 
-    msg += `Total a Cancelar: $${tot.toFixed(2)}\nQuedo a la espera de confirmación y datos de pago.`;
-    window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msg), '_blank'); cerrarCarritoModal();
-  };
+    msgParaWhatsApp += `Total a Cancelar: $${tot.toFixed(2)}\nQuedo a la espera de confirmación y datos de pago.`;
 
-  window.compartirProductoWhatsApp = function() {
-    reproducirSonido(); 
-    let msg = `Hola Sakura Gameverse, deseo consultar disponibilidad de:\n\n*${window.productoActual.titulo}*\nPrecio: $${Number(window.productoActual.precio).toFixed(2)}`; 
-    window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msg), '_blank');
-  };
+    // 1. Guardar primero en la base de datos para que aparezca en el ADMIN
+    let btnSubmit = document.getElementById('btnFinalizarPedido');
+    btnSubmit.disabled = true;
+    btnSubmit.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Registrando...";
 
-  window.abrirFaqModal = function() { reproducirSonido(); document.getElementById('modalFaq').style.display = 'flex'; };
-  window.cerrarFaqModal = function() { document.getElementById('modalFaq').style.display = 'none'; };
-  window.abrirSugerenciaModal = function() { reproducirSonido(); document.getElementById('modalSugerencias').style.display = 'flex'; };
-  window.cerrarSugerenciaModal = function() { document.getElementById('modalSugerencias').style.display = 'none'; };
-
-  window.enviarSugerenciaWhatsApp = function() {
-    reproducirSonido(); 
-    let n = document.getElementById('sugNombre').value.trim(); let d = document.getElementById('sugDeseo').value.trim();
-    if(!n || !d) return alert("Por favor completa los campos.");
-    window.open("https://wa.me/584244970576?text=" + encodeURIComponent(`Consulta de Encargo:\nNombre: ${n}\nArtículo requerido: ${d}`), '_blank'); cerrarSugerenciaModal();
-  };
-
-  async function cargarReviewsNube() {
     try {
-      const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"));
-      const querySnapshot = await getDocs(q);
-      let c = document.getElementById('contenedorReviews'); 
-      if(!c) return;
-      
-      c.innerHTML = "";
-      if (querySnapshot.empty) { c.innerHTML = "<p style='color:var(--text-muted);'>Aún no hay reseñas registradas.</p>"; return; }
-      querySnapshot.forEach((docSnap) => {
-        let r = docSnap.data();
-        c.innerHTML += `<div class="review-card"><div style="font-weight:700; color:#fff; margin-bottom:2px;">${sanitizarHTML(r.nombre)}</div><div style="color:#ffcc00; font-size:0.85em; margin-bottom:4px;">${sanitizarHTML(r.estrellas)}</div><div style="color:var(--text-muted); font-size:0.9em;">${sanitizarHTML(r.texto)}</div></div>`;
-      });
-    } catch (e) {}
-  }
-
-  window.agregarReview = async function() {
-    reproducirSonido(); 
-    let n = document.getElementById('revNombre').value.trim(); let e = document.getElementById('revEstrellas').value; let t = document.getElementById('revTexto').value.trim();
-    if(!n || !t) return alert("Por favor completa tu nombre y comentario.");
-    try {
-      await addDoc(collection(db, "reviews"), { nombre: n, estrellas: e, texto: t, timestamp: Date.now() });
-      document.getElementById('revNombre').value = ""; document.getElementById('revTexto').value = ""; 
-      await cargarReviewsNube(); alert("Opinión registrada correctamente.");
-    } catch(err) { alert("Error al guardar la reseña."); }
+        await addDoc(collection(db, "pedidos"), {
+            cliente: nombreCli,
+            telefono: tlfCli,
+            tipo: (tieneFisicos && tieneDigitales) ? 'Mixto' : (tieneFisicos ? 'fisico' : 'digital'),
+            metodoEnvio: tieneFisicos ? metodoEnvio : 'Entrega Digital Directa',
+            direccionEnvio: direccionEnvio,
+            detalles: detallesBD.trim(),
+            totalUsd: tot,
+            estadoPedido: "Pendiente",
+            guiaEnvio: "",
+            timestamp: Date.now()
+        });
+        
+        // 2. Si guardó bien, abrimos WhatsApp
+        window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msgParaWhatsApp), '_blank'); 
+        
+        // 3. Limpiamos carrito
+        vaciarCarrito();
+        cerrarCarritoModal();
+        
+    } catch(err) {
+        alert("Hubo un error de conexión registrando tu pedido. Por favor intenta de nuevo.");
+    } finally {
+        btnSubmit.disabled = false;
+        btnSubmit.innerHTML = "Enviar Orden";
+    }
   };
 
-  actualizarBadges();
-</script>
+  // Funciones menores del menú
+  window.abrirMenuOpciones = function() { reproducirSonido(); document.getElementById('modalOpcionesMenu').style.display = 'flex'; };
+  window.cerrarMenuOpciones = function() { document.getElementById('modalOpcionesMenu').style.display = 'none'; };
+  window.abrirGamerProfileModal = function() { reproducirSonido(); document.getElementById('modalGamerProfile').style.display = 'flex'; };
+  window.cerrarGamerProfileModal = function() { document.getElementById('modalGamerProfile').style.display = 'none'; };
+  window.abrirFavoritosModal = function() { document.getElementById('modalFavoritos').style.display = 'flex'; }
+  window.cerrarFavoritosModal = function() { document.getElementById('modalFavoritos').style.display = 'none'; }
+  window.abrirCofreModal = function() { document.getElementById('modalCofreDiario').style.display = 'flex'; }
+  window.cerrarCofreModal = function() { document.getElementById('modalCofreDiario').style.display = 'none'; }
+  window.abrirGachaModal = function() { document.getElementById('modalGacha').style.display = 'flex'; }
+  window.cerrarGachaModal = function() { document.getElementById('modalGacha').style.display = 'none'; }
+  window.abrirTemasModal = function() { document.getElementById('modalTemas').style.display = 'flex'; }
+  window.cerrarTemasModal = function() { document.getElementById('modalTemas').style.display = 'none'; }
 
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js')
-      .then(reg => console.log('Service Worker activo', reg))
-      .catch(err => console.log('Error SW:', err));
-  }
 </script>
 </body>
 </html>
