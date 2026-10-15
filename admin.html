@@ -452,27 +452,33 @@
           <input type="text" id="prodNombre" class="form-input" placeholder="Ej: Chibi Firefly" required>
         </div>
 
+        <!-- CAMBIOS DE FASE 1: Se añadió el campo Stock -->
         <div style="display: flex; gap: 8px;">
           <div class="form-group" style="flex: 1;">
             <label class="form-label">Precio ($):</label>
             <input type="number" id="prodPrecio" class="form-input" step="0.01" placeholder="17.00" required>
           </div>
           <div class="form-group" style="flex: 1;">
-            <label class="form-label">Categoría:</label>
-            <select id="prodCategoria" class="form-select">
-              <option value="figuras">Figuras Anime</option>
-              <option value="perifericos">Periféricos Gamer</option>
-              <option value="recargas">Recargas ⚡</option>
-              <option value="mangas">Mangas</option>
-              <option value="ropa">Vestimenta</option>
-              <option value="cartas">TCG / Cartas</option>
-              <option value="mandos">Mandos</option>
-              <option value="peluches">Peluches</option>
-              <option value="katanas">Katanas</option>
-              <option value="lamparas">Lámparas</option>
-              <option value="accesorios">Accesorios</option>
-            </select>
+            <label class="form-label">Stock (Unidades):</label>
+            <input type="number" id="prodStock" class="form-input" min="0" value="10" placeholder="Ej: 10" required>
           </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Categoría:</label>
+          <select id="prodCategoria" class="form-select">
+            <option value="figuras">Figuras Anime</option>
+            <option value="perifericos">Periféricos Gamer</option>
+            <option value="recargas">Recargas ⚡</option>
+            <option value="mangas">Mangas</option>
+            <option value="ropa">Vestimenta</option>
+            <option value="cartas">TCG / Cartas</option>
+            <option value="mandos">Mandos</option>
+            <option value="peluches">Peluches</option>
+            <option value="katanas">Katanas</option>
+            <option value="lamparas">Lámparas</option>
+            <option value="accesorios">Accesorios</option>
+          </select>
         </div>
 
         <div class="form-group">
@@ -918,7 +924,7 @@
     renderizarMiniaturasFotos();
   };
 
-  // --- 1. INVENTARIO CON BOTÓN PAUSAR (OCULTO) ---
+  // --- 1. INVENTARIO CON BOTÓN PAUSAR Y STOCK ---
   async function cargarProductosAdmin() {
     try {
       const q = query(collection(db, "productos"), orderBy("timestamp", "desc"));
@@ -954,6 +960,11 @@
         let colorOculto = isOculto ? '#ffaa00' : 'var(--secondary-color)';
         let titleSuffix = isOculto ? ' <span style="color:#ffaa00; font-size:0.8em;">(Pausado)</span>' : '';
 
+        // Lógica visual del Stock
+        let stockValor = p.stock !== undefined ? p.stock : 'N/A';
+        let stockColor = p.stock === 0 ? '#ff3366' : 'var(--secondary-color)';
+        let stockLabel = p.stock === 0 ? 'AGOTADO' : `${stockValor} uds.`;
+
         htmlBloque += `
           <div class="${cardClass}" data-nombre="${sanitizar(p.nombre).toLowerCase()}">
             <img src="${foto}" class="item-card-thumb" loading="lazy">
@@ -963,6 +974,8 @@
                 <span>${sanitizar(nombreCat)}</span>
                 <span>•</span>
                 <span class="tag-badge ${badgeClase}">${p.estado || 'Stock'}</span>
+                <span>•</span>
+                <span style="color: ${stockColor}; font-weight: bold;"><i class="fas fa-box-open"></i> ${stockLabel}</span>
               </div>
               <div class="item-card-price">$${Number(p.precio).toFixed(2)}</div>
             </div>
@@ -995,6 +1008,7 @@
     const id = document.getElementById('prodEditId').value;
     const nombre = document.getElementById('prodNombre').value.trim();
     const precio = parseFloat(document.getElementById('prodPrecio').value);
+    const stock = parseInt(document.getElementById('prodStock').value) || 0; // Capturamos el stock
     const categoria = document.getElementById('prodCategoria').value;
     const coleccion = document.getElementById('prodColeccion').value.trim() || 'General';
     const estado = document.getElementById('prodEstado').value;
@@ -1010,7 +1024,7 @@
 
     try {
       const data = {
-        nombre, precio, categoria, coleccion, estado, descripcion: desc,
+        nombre, precio, stock, categoria, coleccion, estado, descripcion: desc,
         fotos: fotosBufferProducto, timestamp: Date.now()
       };
 
@@ -1040,6 +1054,7 @@
     document.getElementById('prodEditId').value = p.id;
     document.getElementById('prodNombre').value = p.nombre || '';
     document.getElementById('prodPrecio').value = p.precio || '';
+    document.getElementById('prodStock').value = p.stock !== undefined ? p.stock : 10; // Cargar stock
     
     let catVal = p.categoria || 'figuras';
     if (catVal === 'audifonos' || catVal === 'teclados') {
@@ -1065,6 +1080,7 @@
   window.resetFormularioProducto = function() {
     document.getElementById('formProducto').reset();
     document.getElementById('prodEditId').value = "";
+    document.getElementById('prodStock').value = "10";
     fotosBufferProducto = [];
     renderizarMiniaturasFotos();
     document.getElementById('formProdTitulo').innerHTML = `<i class="fas fa-plus-circle"></i> Nuevo Producto`;
@@ -1087,7 +1103,7 @@
     });
   };
 
-  // --- 2. PEDIDOS CON SISTEMA DE ESTADOS ---
+  // --- 2. PEDIDOS CON RASTREO (GUÍA DE ENVÍO) ---
   async function cargarPedidosAdmin() {
     try {
       const q = query(collection(db, "pedidos"), orderBy("timestamp", "desc"));
@@ -1113,7 +1129,11 @@
         if(est === 'Completado') totalUsdGanado += Number(ped.totalUsd || 0);
         if(est !== 'Completado') pedidosPendientes++;
 
-        let colorEstado = est === 'Completado' ? '#25d366' : (est === 'Pagado' ? '#00e5ff' : '#ffaa00');
+        // Colores y flujos de Rastreo
+        let colorEstado = '#ffaa00'; // Pendiente
+        if(est === 'Pagado') colorEstado = '#00e5ff';
+        else if(est === 'Enviado') colorEstado = '#b000ff';
+        else if(est === 'Completado') colorEstado = '#25d366';
 
         htmlBloque += `
           <div class="item-card-row">
@@ -1126,6 +1146,10 @@
                 <i class="fab fa-whatsapp" style="color:#25d366;"></i> ${sanitizar(ped.telefono)}
               </div>
               ${ped.direccionEnvio ? `<div style="font-size:0.8em; color:var(--secondary-color); margin-bottom:4px;">📍 ${sanitizar(ped.metodoEnvio)}:${sanitizar(ped.direccionEnvio)}</div>` : ''}
+              
+              <!-- Mostrar Guía de Rastreo si existe -->
+              ${ped.guiaEnvio ? `<div style="font-size:0.8em; color:#b000ff; margin-bottom:4px; font-weight: bold;"><i class="fas fa-barcode"></i> Guía: ${sanitizar(ped.guiaEnvio)}</div>` : ''}
+              
               <div style="font-size:0.85em; margin-bottom: 4px;">${sanitizar(ped.detalles)}</div>
               <div style="font-size:1.05em; font-weight:700; color:var(--secondary-color);">$${Number(ped.totalUsd).toFixed(2)}</div>
             </div>
@@ -1145,13 +1169,29 @@
 
   window.cambiarEstadoPedido = async function(id, estadoActual) {
     let nuevoEstado = 'Pendiente';
-    if(estadoActual === 'Pendiente') nuevoEstado = 'Pagado';
-    else if(estadoActual === 'Pagado') nuevoEstado = 'Completado';
+    let numGuia = '';
+
+    // Ciclo del pedido
+    if(estadoActual === 'Pendiente') {
+      nuevoEstado = 'Pagado';
+    } else if(estadoActual === 'Pagado') {
+      nuevoEstado = 'Enviado';
+      // Preguntar por el número de guía para el rastreo del cliente
+      numGuia = prompt("📦 Vas a marcar el pedido como ENVIADO.\n\nEscribe el número de Guía o Tracking (Opcional, déjalo en blanco si no aplica):");
+      if (numGuia === null) return; // Si le dio a "Cancelar" en el prompt, abortamos
+    } else if(estadoActual === 'Enviado') {
+      nuevoEstado = 'Completado';
+    } else if(estadoActual === 'Completado') {
+      nuevoEstado = 'Pendiente'; // Reiniciar ciclo en caso de error
+    }
     
     try {
-      await updateDoc(doc(db, "pedidos", id), { estadoPedido: nuevoEstado });
+      let actualizacion = { estadoPedido: nuevoEstado };
+      if (numGuia) { actualizacion.guiaEnvio = numGuia.trim(); }
+
+      await updateDoc(doc(db, "pedidos", id), actualizacion);
       cargarPedidosAdmin();
-    } catch(e) { alert("Error al actualizar pedido"); }
+    } catch(e) { alert("Error al actualizar estado del pedido"); }
   };
 
   window.guardarPedidoManual = async function(e) {
@@ -1168,6 +1208,7 @@
       await addDoc(collection(db, "pedidos"), {
         cliente, telefono, tipo, metodoEnvio, direccionEnvio, detalles, totalUsd,
         estadoPedido: "Pendiente",
+        guiaEnvio: "",
         timestamp: Date.now()
       });
       document.getElementById('formPedidoManual').reset();
