@@ -318,7 +318,7 @@
   </div>
 </div>
 
-<!-- FASE 3: MODAL CLOUD SAVE (LOGIN) -->
+<!-- MODAL CLOUD SAVE (LOGIN) -->
 <div id="modalCloudSave" class="modal">
   <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarCloudSaveModal()">×</button>
@@ -505,9 +505,7 @@
     <button id="btnInstalarPWA" class="btn-comprar btn-instalar" style="display: none; margin-bottom: 15px;" onclick="instalarPWA()"><i class="fas fa-download"></i> Instalar App Sakura</button>
 
     <div class="menu-opciones-grid">
-      <!-- BOTÓN FASE 3: CLOUD SAVE -->
       <button class="btn-menu-opcion" style="color: #00e5ff;" id="btnMenuCloud" onclick="cerrarMenuOpciones(); abrirCloudSaveModal()"><i class="fas fa-cloud"></i> Vincular Nube</button>
-      
       <button class="btn-menu-opcion" style="color: #b000ff;" onclick="cerrarMenuOpciones(); abrirRastreoModal()"><i class="fas fa-radar"></i> Rastrear</button>
       <button class="btn-menu-opcion" style="color: #ffaa00;" onclick="cerrarMenuOpciones(); abrirCofreModal()"><i class="fas fa-gift"></i> Cofre Diario</button>
       <button class="btn-menu-opcion" style="color: var(--secondary-color);" onclick="cerrarMenuOpciones(); abrirGachaModal()"><i class="fas fa-dice"></i> Ruleta</button>
@@ -667,7 +665,6 @@
       lblEstado.innerHTML = `<i class="fas fa-cloud-arrow-down" style="color:#25d366;"></i> Nube Conectada`;
       if(btnMenu) btnMenu.innerHTML = `<i class="fas fa-user-check"></i> Cuenta Vinculada`;
       
-      // Intentar descargar progreso de la nube
       await descargarProgresoNube(user.uid);
       
       document.getElementById('formCloudSave').style.display = 'none';
@@ -699,7 +696,6 @@
     try {
       msg.style.display="none";
       await createUserWithEmailAndPassword(auth, e, p);
-      // Al crear cuenta, subimos lo que tiene local a la nube
       await guardarProgresoNube(); 
       cerrarCloudSaveModal();
     } catch(err) {
@@ -726,7 +722,6 @@
   window.cerrarSesionCloud = async function() {
     reproducirSonido();
     await signOut(auth);
-    // Borrar datos locales por privacidad al cerrar sesión
     localStorage.removeItem('sakura_gamer_profile');
     localStorage.removeItem('sakura_carrito');
     localStorage.removeItem('sakura_favoritos');
@@ -751,7 +746,6 @@
               if(d.ultimoCofre) localStorage.setItem('sakura_ultimo_cofre', d.ultimoCofre);
               if(d.ultimaGacha) localStorage.setItem('sakura_ultima_gacha', d.ultimaGacha);
 
-              // Guardar en local para cache
               localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
               localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos));
               localStorage.setItem('sakura_carrito', JSON.stringify(carrito));
@@ -760,14 +754,13 @@
               actualizarBadges();
               actualizarRangoSegunXP();
           } else {
-              // Es nuevo pero ya se logueó, subimos su local a la nube
               guardarProgresoNube();
           }
       } catch(e) { console.error("Error cloud sync:", e); }
   }
 
   async function guardarProgresoNube() {
-      if(!currentUserUid) return; // Solo si está logueado
+      if(!currentUserUid) return;
       try {
           await setDoc(doc(db, "jugadores_cloud", currentUserUid), {
               profile: gamerProfile,
@@ -779,7 +772,6 @@
           }, { merge: true });
       } catch(e) { console.error("Error guardando en nube:", e); }
   }
-
 
   // --- RESTO DE FUNCIONES GENERALES ---
   
@@ -814,6 +806,52 @@
     if (!str) return '';
     return String(str).replace(/[&<>"']/g, function(m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]; });
   }
+
+  // FUNCION RESTAURADA: CARGAR IMAGENES DE CATEGORIA
+  async function cargarConfigCategoriasPublico() {
+    try {
+      const q = query(collection(db, "configuracion"), orderBy("timestamp", "desc"));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((docSnap) => {
+        let conf = docSnap.data();
+        if(conf.tipo === 'categoria_foto') {
+          let catImgEl = document.getElementById(`img-cat-${conf.categoriaId}`);
+          if(catImgEl && conf.imgUrl) catImgEl.src = conf.imgUrl;
+          let catTitleEl = document.getElementById(`title-cat-${conf.categoriaId}`);
+          if(catTitleEl && conf.nombrePersonalizado) catTitleEl.innerText = conf.nombrePersonalizado;
+        }
+      });
+    } catch (e) {}
+  }
+
+  async function cargarDatosPagoNube() {
+    try {
+      const docSnap = await getDoc(doc(db, "configuracion", "datos_pago"));
+      if (docSnap.exists()) window.datosPagoGlobal = docSnap.data();
+      else window.datosPagoGlobal = { banco: "Venezuela (0102)", telefono: "0424-4970576", cedula: "V-24159896", binance: "n3lmary@gmail.com" };
+      renderizarDatosPago();
+    } catch(e) {
+      window.datosPagoGlobal = { banco: "Venezuela (0102)", telefono: "0424-4970576", cedula: "V-24159896", binance: "n3lmary@gmail.com" };
+      renderizarDatosPago();
+    }
+  }
+
+  function renderizarDatosPago() {
+    let caja = document.getElementById('cajaDatosPagoInfo');
+    if(!caja) return;
+    let dp = window.datosPagoGlobal;
+    caja.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;"><span>Banco: ${sanitizarHTML(dp.banco)}</span></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;"><span>Pago Móvil: ${sanitizarHTML(dp.telefono)}</span></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;"><span>Cédula: ${sanitizarHTML(dp.cedula)}</span></div>
+      <div style="display:flex; justify-content:space-between; align-items:center;"><span>Binance: ${sanitizarHTML(dp.binance)}</span></div>
+    `;
+  }
+
+  window.copiarTexto = function(texto) {
+    reproducirSonido();
+    navigator.clipboard.writeText(texto).then(() => alert("Copiado al portapapeles."));
+  };
 
   async function cargarBannersDeNube() {
     try {
@@ -861,6 +899,9 @@
     if (!contenedor) return;
     contenedor.innerHTML = "";
     
+    // FUNCION RESTAURADA: OBJETO DE CONTEO
+    let conteo = { recargas: 0, mangas: 0, ropa: 0, mandos: 0, perifericos: 0, figuras: 0, peluches: 0, cartas: 0, katanas: 0, lamparas: 0, accesorios: 0 };
+    
     let prodsVisibles = lista.filter(p => !p.oculto);
     let elTodos = document.getElementById('count-todos');
     if(elTodos) elTodos.innerText = prodsVisibles.length + " items";
@@ -874,6 +915,10 @@
       let categoria = (prod.categoria || 'mangas').toLowerCase();
       let esRecarga = categoria === 'recargas';
       
+      // FUNCION RESTAURADA: LÓGICA DE CONTEO POR CATEGORIA
+      if (categoria === 'teclados' || categoria === 'audifonos' || categoria === 'perifericos') { conteo.perifericos++; } 
+      else if (conteo[categoria] !== undefined) { conteo[categoria]++; }
+
       let isAgotado = (prod.stock !== undefined && prod.stock <= 0) && !esRecarga;
       let badgeClase = isAgotado ? 'badge-agotado' : (prod.estado && prod.estado.includes("Encargo") ? 'badge-encargo' : (esRecarga ? 'badge-digital' : 'badge-stock'));
       let textoBadge = isAgotado ? 'AGOTADO' : (prod.estado || (esRecarga ? 'Recarga Directa' : 'Stock'));
@@ -892,6 +937,12 @@
         </div>
       `;
     });
+
+    // FUNCION RESTAURADA: PINTAR LOS CONTEOS EN EL HTML
+    for(let cat in conteo) {
+      let elem = document.getElementById('count-' + cat);
+      if(elem) elem.innerText = conteo[cat] + " items";
+    }
 
     renderizarSelectColecciones(lista);
     limiteActual = 12;
@@ -970,7 +1021,6 @@
     document.getElementById('miModal').style.display = 'flex';
   };
 
-  // --- RASTREO ---
   window.abrirRastreoModal = function() {
       reproducirSonido(); document.getElementById('modalRastreo').style.display = 'flex';
       document.getElementById('resultadoRastreo').innerHTML = "<p style='color: var(--text-muted); text-align: center; margin: 0; font-size: 0.85em;'>Tu estado de cuenta aparecerá aquí.</p>";
@@ -1043,9 +1093,40 @@
     } catch(e) {}
   }
 
+  async function cargarReviewsNube() {
+    try {
+      const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"));
+      const querySnapshot = await getDocs(q);
+      let c = document.getElementById('contenedorReviews'); 
+      if(!c) return;
+      c.innerHTML = "";
+      if (querySnapshot.empty) { c.innerHTML = "<p style='color:var(--text-muted);'>Aún no hay reseñas registradas.</p>"; return; }
+      querySnapshot.forEach((docSnap) => {
+        let r = docSnap.data();
+        c.innerHTML += `<div class="review-card"><div style="font-weight:700; color:#fff; margin-bottom:2px;">${sanitizarHTML(r.nombre)}</div><div style="color:#ffcc00; font-size:0.85em; margin-bottom:4px;">${sanitizarHTML(r.estrellas)}</div><div style="color:var(--text-muted); font-size:0.9em;">${sanitizarHTML(r.texto)}</div></div>`;
+      });
+    } catch (e) {}
+  }
+
+  window.agregarReview = async function() {
+    reproducirSonido(); 
+    let n = document.getElementById('revNombre').value.trim(); let e = document.getElementById('revEstrellas').value; let t = document.getElementById('revTexto').value.trim();
+    if(!n || !t) return alert("Por favor completa tu nombre y comentario.");
+    try {
+      await addDoc(collection(db, "reviews"), { nombre: n, estrellas: e, texto: t, timestamp: Date.now() });
+      document.getElementById('revNombre').value = ""; document.getElementById('revTexto').value = ""; 
+      await cargarReviewsNube(); alert("Opinión registrada correctamente.");
+    } catch(err) { alert("Error al guardar la reseña."); }
+  };
+
+  // --- CARGA INICIAL DE LA PÁGINA (AQUÍ ESTABAN FALTANDO FUNCIONES) ---
   window.addEventListener('DOMContentLoaded', () => {
     cargarBannersDeNube(); 
     cargarProductosDeNube(); 
+    cargarConfigCategoriasPublico(); // ESTA ERA LA QUE FALTABA
+    cargarDatosPagoNube();           // ESTA TAMBIÉN
+    cargarReviewsNube();             // Y ESTA PARA LOS REVIEWS
+    
     cargarUmbralesRangosNube().then(() => { actualizarRangoSegunXP(); });
     document.getElementById('inputGamerTag').value = gamerProfile.tag; 
     actualizarBadges();
@@ -1071,7 +1152,7 @@
   function actualizarCarritoUI() { 
       localStorage.setItem('sakura_carrito', JSON.stringify(carrito)); 
       actualizarBadges(); 
-      guardarProgresoNube(); // Sincroniza en background
+      guardarProgresoNube(); 
   }
 
   function actualizarBadges() { 
@@ -1259,6 +1340,24 @@
     finally { btnSubmit.disabled = false; btnSubmit.innerHTML = "Enviar Orden"; }
   };
 
+  window.compartirProductoWhatsApp = function() {
+    reproducirSonido(); 
+    let msg = `Hola Sakura Gameverse, deseo consultar disponibilidad de:\n\n*${window.productoActual.titulo}*\nPrecio: $${Number(window.productoActual.precio).toFixed(2)}`; 
+    window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msg), '_blank');
+  };
+
+  window.abrirFaqModal = function() { reproducirSonido(); document.getElementById('modalFaq').style.display = 'flex'; };
+  window.cerrarFaqModal = function() { document.getElementById('modalFaq').style.display = 'none'; };
+  window.abrirSugerenciaModal = function() { reproducirSonido(); document.getElementById('modalSugerencias').style.display = 'flex'; };
+  window.cerrarSugerenciaModal = function() { document.getElementById('modalSugerencias').style.display = 'none'; };
+
+  window.enviarSugerenciaWhatsApp = function() {
+    reproducirSonido(); 
+    let n = document.getElementById('sugNombre').value.trim(); let d = document.getElementById('sugDeseo').value.trim();
+    if(!n || !d) return alert("Por favor completa los campos.");
+    window.open("https://wa.me/584244970576?text=" + encodeURIComponent(`Consulta de Encargo:\nNombre: ${n}\nArtículo requerido: ${d}`), '_blank'); cerrarSugerenciaModal();
+  };
+
   // Gamificación y Menús
   window.abrirMenuOpciones = function() { reproducirSonido(); document.getElementById('modalOpcionesMenu').style.display = 'flex'; };
   window.cerrarMenuOpciones = function() { document.getElementById('modalOpcionesMenu').style.display = 'none'; };
@@ -1305,78 +1404,6 @@
     guardarProgresoNube();
   }
 
-  window.toggleFavoritoPorId = function(event, prodId) {
-    event.stopPropagation(); reproducirSonido();
-    const prod = productosNubeGlobal.find(p => p.id === prodId);
-    if (!prod) return;
-
-    let idx = favoritos.findIndex(i => i.id === prodId || i.titulo === prod.nombre);
-    let btn = event.currentTarget;
-
-    if(idx === -1) { 
-      favoritos.push({ id: prod.id, titulo: prod.nombre, precio: prod.precio, img: (prod.fotos && prod.fotos[0]) ? prod.fotos[0] : 'logo.webp?v=2' }); 
-      btn.classList.add('favorito');
-    } else { 
-      favoritos.splice(idx, 1); 
-      btn.classList.remove('favorito');
-    }
-    localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos)); 
-    actualizarBadges();
-    guardarProgresoNube();
-  };
-  
-  window.removerDeFavoritos = function(index) {
-    reproducirSonido(); favoritos.splice(index, 1);
-    localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos));
-    actualizarBadges(); abrirFavoritosModal(); guardarProgresoNube();
-  };
-
-  window.abrirFavoritosModal = function() {
-    reproducirSonido(); let cont = document.getElementById('listaFavoritosDetalle');
-    cont.innerHTML = favoritos.length === 0 ? "<p style='color:var(--text-muted); text-align:center;'>No tienes productos guardados.</p>" : "";
-    favoritos.forEach((item, i) => { 
-      cont.innerHTML += `
-        <div class="cart-item-row">
-          <img src="${item.img}" class="cart-item-img" loading="lazy" decoding="async" style="cursor:pointer;" onclick="cerrarFavoritosModal(); abrirModalPorId('${item.id}')">
-          <div class="cart-item-info" style="cursor:pointer;" onclick="cerrarFavoritosModal(); abrirModalPorId('${item.id}')">
-            <strong>${sanitizarHTML(item.titulo)}</strong><br>
-            <span style="color:var(--secondary-color);">$${Number(item.precio).toFixed(2)}</span>
-          </div>
-          <button class="cart-item-del" onclick="removerDeFavoritos(${i})"><i class="fas fa-trash"></i></button>
-        </div>`; 
-    });
-    document.getElementById('modalFavoritos').style.display = 'flex';
-  };
-  
-  window.cerrarFavoritosModal = function() { document.getElementById('modalFavoritos').style.display = 'none'; };
-  window.abrirCofreModal = function() { document.getElementById('modalCofreDiario').style.display = 'flex'; }
-  window.cerrarCofreModal = function() { document.getElementById('modalCofreDiario').style.display = 'none'; }
-  window.abrirGachaModal = function() { document.getElementById('modalGacha').style.display = 'flex'; }
-  window.cerrarGachaModal = function() { document.getElementById('modalGacha').style.display = 'none'; }
-  window.abrirTemasModal = function() { document.getElementById('modalTemas').style.display = 'flex'; }
-  window.cerrarTemasModal = function() { document.getElementById('modalTemas').style.display = 'none'; }
-
-  window.abrirCofreDiario = function() {
-    reproducirSonido(); 
-    let hoy = new Date().toDateString(); 
-    let ultimoCofre = localStorage.getItem('sakura_ultimo_cofre');
-    if (ultimoCofre === hoy) { document.getElementById('cofreResultado').innerHTML = "Cofre reclamado por hoy. Regresa mañana."; return; }
-    localStorage.setItem('sakura_ultimo_cofre', hoy); 
-    ganarXP(50); 
-    confetti({ particleCount: 80, spread: 60, origin: { y: 0.5 } });
-    document.getElementById('cofreResultado').innerHTML = "¡Reclamaste +50 XP diarios!";
-  };
-
-  window.girarRuletaGacha = function() { 
-    reproducirSonido(); 
-    let hoy = new Date().toDateString(); 
-    let ultimaGacha = localStorage.getItem('sakura_ultima_gacha');
-    if (ultimaGacha === hoy) { document.getElementById('gachaResultado').innerHTML = "Tirada utilizada hoy. Regresa mañana."; return; }
-    localStorage.setItem('sakura_ultima_gacha', hoy);
-    guardarProgresoNube();
-    document.getElementById('gachaResultado').innerHTML = "Beneficio obtenido: 10% OFF con código <strong>OTAKU10</strong>"; 
-    confetti({ particleCount: 70, spread: 50, origin: { y: 0.5 } }); 
-  };
 </script>
 </body>
 </html>
