@@ -140,7 +140,6 @@
     
     .card { background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 12px; text-align: left; position: relative; cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); will-change: transform; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); }
     .card:hover { background: rgba(25, 9, 51, 0.55); border-color: var(--secondary-color); transform: translateY(-6px); box-shadow: 0 12px 40px rgba(0, 229, 255, 0.15); }
-    /* Estilo para Agotado */
     .card.agotado { filter: grayscale(100%); opacity: 0.75; border-color: rgba(255, 51, 102, 0.4); }
     .card.agotado:hover { filter: grayscale(80%); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255, 51, 102, 0.15); }
     
@@ -246,7 +245,6 @@
     .xp-bar-container { background: rgba(0,0,0,0.6); border-radius: var(--radius-pill); height: 14px; margin-top: 12px; overflow: hidden; border: 1px solid var(--glass-border); position: relative; box-shadow: inset 0 0 5px rgba(0,0,0,0.8); }
     .xp-bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); border-radius: var(--radius-pill); transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 0 10px var(--secondary-glow); }
 
-    /* Estilos del Timeline de Rastreo */
     .timeline { border-left: 2px solid var(--glass-border); margin-left: 15px; padding-left: 20px; position: relative; margin-top: 15px;}
     .timeline-item { margin-bottom: 18px; position: relative; font-size: 0.9em; }
     .timeline-item::before { content: ''; position: absolute; left: -26px; top: 2px; width: 10px; height: 10px; border-radius: 50%; background: var(--glass-border); transition: all 0.3s ease; }
@@ -257,7 +255,7 @@
 
 <div class="top-bar-notice">
   <div><i class="fas fa-check-circle" style="color: var(--secondary-color);"></i> <span id="spTexto">Gabriel S. adquirió Chibi Firefly</span> <span style="color: var(--text-muted); font-size: 0.9em;" id="spLugar">(Bejuma)</span></div>
-  <div style="color: var(--text-muted); font-size: 0.8em;">Sakura Verified</div>
+  <div style="color: var(--text-muted); font-size: 0.8em;" id="estadoSincronizacion"><i class="fas fa-wifi"></i> Online</div>
 </div>
 
 <div class="ticker-bar">
@@ -271,8 +269,8 @@
   <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarCofreModal()">×</button>
     <h3 style="color: #ffaa00; margin-top: 0;">Recompensa Diaria</h3>
-    <div id="cofreResultado" style="background: #080112; border: 1px dashed #ffaa00; padding: 18px; border-radius: var(--radius-sm); font-weight: 700; color: #fff; margin-bottom: 14px;">Cofre disponible (+50 XP)</div>
-    <button class="btn-comprar" style="background: #ffaa00; color: #000;" onclick="abrirCofreDiario()">Reclamar Recompensa</button>
+    <div id="cofreResultado" style="background: rgba(0,0,0,0.4); border: 1px dashed #ffaa00; padding: 18px; border-radius: var(--radius-sm); font-weight: 700; color: #fff; margin-bottom: 14px;">Cofre disponible (+50 XP)</div>
+    <button class="btn-comprar" style="background: #ffaa00; color: #000; box-shadow: 0 0 15px rgba(255,170,0,0.4);" onclick="abrirCofreDiario()">Reclamar Recompensa</button>
   </div>
 </div>
 
@@ -280,7 +278,7 @@
   <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarGachaModal()">×</button>
     <h3 style="color: var(--secondary-color); margin-top: 0;">Ruleta de Beneficios</h3>
-    <div id="gachaResultado" style="background: #080112; border: 1px dashed var(--secondary-color); padding: 18px; border-radius: var(--radius-sm); font-weight: 700; color: #fff; margin-bottom: 14px;">Gira para obtener cupones de compra</div>
+    <div id="gachaResultado" style="background: rgba(0,0,0,0.4); border: 1px dashed var(--secondary-color); padding: 18px; border-radius: var(--radius-sm); font-weight: 700; color: #fff; margin-bottom: 14px;">Gira para obtener cupones de compra</div>
     <button class="btn-comprar" onclick="girarRuletaGacha()">Girar Ruleta</button>
   </div>
 </div>
@@ -303,7 +301,7 @@
   <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarGamerProfileModal()">×</button>
     <h3 style="color: var(--secondary-color); margin-top: 0;">Perfil de Usuario</h3>
-    <input type="text" id="inputGamerTag" class="sugerencia-input" placeholder="GamerTag / Identificador" style="margin-bottom: 12px;">
+    <input type="text" id="inputGamerTag" class="sugerencia-input" placeholder="GamerTag / Identificador" style="margin-bottom: 12px; text-align: center; font-weight: bold; font-size: 1.1em;">
     
     <div style="background: rgba(0,0,0,0.3); padding: 16px; border-radius: var(--radius-md); margin-bottom: 14px; border: 1px solid var(--glass-border); text-align: left; font-size: 0.9em;">
       <div style="display: flex; justify-content: space-between;">
@@ -316,11 +314,38 @@
       <div style="font-size: 0.8em; color: var(--text-muted); text-align: right; margin-top: 6px;" id="lblXpNext">Calculando siguiente rango...</div>
     </div>
     
-    <button class="btn-comprar" onclick="guardarGamerTag()">Guardar Perfil</button>
+    <button class="btn-comprar" onclick="guardarGamerTag()"><i class="fas fa-save"></i> Guardar Perfil Local</button>
   </div>
 </div>
 
-<!-- MODAL RASTREO DE PEDIDO (NUEVO) -->
+<!-- FASE 3: MODAL CLOUD SAVE (LOGIN) -->
+<div id="modalCloudSave" class="modal">
+  <div class="modal-content" style="text-align: center;">
+    <button class="cerrar-modal" onclick="cerrarCloudSaveModal()">×</button>
+    <h3 style="color: var(--secondary-color); margin-top: 0;"><i class="fas fa-cloud"></i> Sincronización</h3>
+    <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 15px;">Guarda tu XP, Favoritos y Carrito en la nube para no perderlos nunca.</p>
+
+    <div id="formCloudSave">
+      <input type="email" id="authEmail" class="sugerencia-input" placeholder="Tu Correo Electrónico" style="margin-bottom: 8px;">
+      <input type="password" id="authPass" class="sugerencia-input" placeholder="Contraseña Segura" style="margin-bottom: 12px;">
+
+      <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+        <button class="btn-comprar" style="margin-top: 0; background: rgba(0, 229, 255, 0.1); color: var(--secondary-color); border: 1px solid var(--secondary-color); box-shadow: none;" onclick="registrarCloud()">Crear Cuenta</button>
+        <button class="btn-comprar" style="margin-top: 0;" onclick="entrarCloud()">Entrar</button>
+      </div>
+      <p id="authErrorMsg" style="color: #ff3366; font-size: 0.8em; margin: 0; display: none; font-weight: bold;"></p>
+    </div>
+    
+    <div id="perfilCloudSave" style="display: none;">
+      <div style="font-size: 40px; color: #25d366; margin-bottom: 10px;"><i class="fas fa-check-circle"></i></div>
+      <p style="font-size: 1.1em; font-weight: bold; color: #fff;">¡Partida Guardada!</p>
+      <p style="font-size: 0.85em; color: var(--text-muted);">Tu progreso está sincronizado con la nube.</p>
+      <button class="btn-comprar" style="background: rgba(255, 51, 102, 0.1); color: #ff3366; border: 1px solid rgba(255, 51, 102, 0.3); box-shadow: none; margin-top: 15px;" onclick="cerrarSesionCloud()">Cerrar Sesión (Borrar Local)</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL RASTREO DE PEDIDO -->
 <div id="modalRastreo" class="modal">
   <div class="modal-content">
     <button class="cerrar-modal" onclick="cerrarRastreoModal()">×</button>
@@ -423,6 +448,22 @@
     </button>
   </div>
 
+  <!-- RESEÑAS -->
+  <div class="reviews-section">
+    <h3 style="color: #fff; margin-top: 0; margin-bottom: 15px;">Opiniones de Clientes</h3>
+    <div id="contenedorReviews"><p style="color: var(--text-muted);">Cargando reseñas verificadas...</p></div>
+    <div style="margin-top: 15px;">
+      <input type="text" id="revNombre" class="sugerencia-input" placeholder="Nombre o GamerTag" style="margin-bottom: 8px;">
+      <select id="revEstrellas" class="sugerencia-input" style="margin-bottom: 8px;">
+        <option value="⭐⭐⭐⭐⭐">5 / 5 - Excelente servicio</option>
+        <option value="⭐⭐⭐⭐">4 / 5 - Muy bueno</option>
+        <option value="⭐⭐⭐">3 / 5 - Conforme</option>
+      </select>
+      <textarea id="revTexto" class="sugerencia-input" rows="2" placeholder="Describe tu experiencia de compra..." style="margin-bottom: 8px;"></textarea>
+      <button class="btn-comprar" style="width: auto; padding: 8px 18px;" onclick="agregarReview()">Publicar Opinión</button>
+    </div>
+  </div>
+
 </div>
 
 <!-- MODAL PRODUCTO DETALLE -->
@@ -464,14 +505,16 @@
     <button id="btnInstalarPWA" class="btn-comprar btn-instalar" style="display: none; margin-bottom: 15px;" onclick="instalarPWA()"><i class="fas fa-download"></i> Instalar App Sakura</button>
 
     <div class="menu-opciones-grid">
-      <!-- NUEVO BOTÓN DE RASTREO -->
-      <button class="btn-menu-opcion" style="color: #b000ff;" onclick="cerrarMenuOpciones(); abrirRastreoModal()"><i class="fas fa-radar"></i> Rastrear</button>
+      <!-- BOTÓN FASE 3: CLOUD SAVE -->
+      <button class="btn-menu-opcion" style="color: #00e5ff;" id="btnMenuCloud" onclick="cerrarMenuOpciones(); abrirCloudSaveModal()"><i class="fas fa-cloud"></i> Vincular Nube</button>
       
+      <button class="btn-menu-opcion" style="color: #b000ff;" onclick="cerrarMenuOpciones(); abrirRastreoModal()"><i class="fas fa-radar"></i> Rastrear</button>
       <button class="btn-menu-opcion" style="color: #ffaa00;" onclick="cerrarMenuOpciones(); abrirCofreModal()"><i class="fas fa-gift"></i> Cofre Diario</button>
       <button class="btn-menu-opcion" style="color: var(--secondary-color);" onclick="cerrarMenuOpciones(); abrirGachaModal()"><i class="fas fa-dice"></i> Ruleta</button>
       <button class="btn-menu-opcion" style="color: #25d366;" onclick="cerrarMenuOpciones(); abrirGamerProfileModal()"><i class="fas fa-user"></i> Mi Perfil</button>
       <button class="btn-menu-opcion" style="color: #ff007f;" onclick="cerrarMenuOpciones(); abrirTemasModal()"><i class="fas fa-palette"></i> Temas</button>
       <button class="btn-menu-opcion" style="color: #e0f4ff;" onclick="toggleMusicaLoFi()"><i class="fas fa-music" id="iconoMusica"></i> Audio Lo-Fi</button>
+      <button class="btn-menu-opcion" style="color: var(--text-muted);" onclick="cerrarMenuOpciones(); abrirFaqModal()"><i class="fas fa-question-circle"></i> Preguntas</button>
       <button class="btn-menu-opcion" style="color: #fff;" onclick="cerrarMenuOpciones(); abrirSugerenciaModal()"><i class="fas fa-lightbulb"></i> Encargos</button>
       <a href="admin.html" class="btn-menu-opcion" style="color: #ff3366;"><i class="fas fa-lock"></i> Gestión Admin</a>
       <a href="https://wa.me/584244970576" target="_blank" class="btn-menu-opcion" style="color: #25D366;"><i class="fab fa-whatsapp"></i> Chat Directo</a>
@@ -499,7 +542,6 @@
       <button class="cart-tab-btn" id="tabBtnDigital" onclick="cambiarPestanaCarrito('digital')">Recargas (<span id="countCartDigital">0</span>)</button>
     </div>
 
-    <!-- Barra de Envío Gratis -->
     <div id="boxEnvioGratis" style="margin-bottom: 15px; display: none;">
       <div style="font-size: 0.85em; margin-bottom: 6px; color: var(--text-color); text-align: center; font-family: 'Rajdhani', sans-serif;" id="txtEnvioGratis">Calculando envío...</div>
       <div class="xp-bar-container" style="height: 6px; margin-top: 0; box-shadow: none;">
@@ -515,13 +557,11 @@
 
     <div id="listaCarritoDetalle" style="max-height: 150px; overflow-y: auto; margin-bottom: 12px;"></div>
     
-    <!-- Upselling -->
     <div id="boxUpsell" style="margin-bottom: 15px; display: none; padding-top: 10px; border-top: 1px dashed var(--glass-border);">
       <div style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 8px; font-weight: 700;">✨ Completa tu pedido con esto:</div>
       <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none;" id="listaUpsell"></div>
     </div>
 
-    <!-- SECCIÓN DE DATOS DEL CLIENTE PARA CONEXIÓN A BD -->
     <div class="form-group" style="margin-bottom: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); padding: 10px; border-radius: var(--radius-sm);">
       <label style="display: block; font-size: 0.85em; font-weight: 700; margin-bottom: 4px; color: var(--secondary-color);"><i class="fas fa-user-ninja"></i> Tus Datos (Para registrar orden):</label>
       <input type="text" id="cartClienteNombre" class="sugerencia-input" placeholder="Tu Nombre y Apellido" style="margin-bottom: 6px;">
@@ -552,11 +592,6 @@
       <div style="text-align: center; font-weight: 700; margin-bottom: 6px; color: var(--secondary-color);">RESUMEN DE CUENTA</div>
       <div id="reciboContenido"></div>
     </div>
-    
-    <div id="paymentMethodsCart" style="display: none; border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 12px; background: rgba(0,0,0,0.4);">
-      <div style="font-weight: 700; color: #fff; margin-bottom: 8px; font-size: 0.9em;">Cuentas para Pago:</div>
-      <div id="cajaDatosPagoInfo" style="font-size: 0.85em; line-height: 1.5; color: var(--text-muted);"></div>
-    </div>
 
     <div id="modalCarritoTotal" style="color: var(--secondary-color); font-size: 1.3em; font-weight: 700; margin-bottom: 12px; text-align: center; text-shadow: 0 0 10px rgba(0,229,255,0.3);">Total: $0.00</div>
     
@@ -567,6 +602,18 @@
         <button style="flex: 1; padding: 10px; background: rgba(255,51,102,0.1); border: 1px solid rgba(255, 51, 102, 0.4); color: #ff3366; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; transition: all 0.2s ease;" onclick="vaciarCarrito()">Limpiar</button>
         <button style="flex: 2; padding: 10px; background: linear-gradient(135deg, #25D366, #1da851); color: #000; border: none; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(37,211,102,0.3);" id="btnFinalizarPedido" onclick="enviarPedidoWhatsApp()">Enviar Orden</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL FAQ -->
+<div id="modalFaq" class="modal">
+  <div class="modal-content">
+    <button class="cerrar-modal" onclick="cerrarFaqModal()">×</button>
+    <h3 style="color: #fff; margin-top: 0; text-align: center;">Preguntas Frecuentes</h3>
+    <div style="font-size: 0.9em; line-height: 1.5; color: var(--text-muted);">
+      <p><strong style="color: #fff;">¿Dónde realizan entregas en persona?</strong><br>Puntos acordados previamente en Bejuma y Miranda, Estado Carabobo.</p>
+      <p><strong style="color: #fff;">¿Cómo operan los despachos nacionales?</strong><br>Envíos cobro a destino a través de agencias ZOOM y MRW.</p>
     </div>
   </div>
 </div>
@@ -584,6 +631,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
   import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, setDoc, addDoc, where } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+  import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDH1DZqaIi5sKRXspXDUWbMUZ4nr5JIy8Q",
@@ -596,12 +644,158 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+  const auth = getAuth(app);
 
   let productosNubeGlobal = [];
   let globalAudioCtx = null;
   const META_ENVIO_GRATIS = 40.00; 
   let filtroGlobal = { categoria: 'todos', coleccion: 'todos', estado: 'todos', busqueda: '' };
   let limiteActual = 12;
+  
+  // VARIABLES DE SESION Y LOCALES
+  let currentUserUid = null;
+  let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, rango: "Genin" };
+  let carrito = JSON.parse(localStorage.getItem('sakura_carrito')) || [];
+  let favoritos = JSON.parse(localStorage.getItem('sakura_favoritos')) || [];
+
+  // FASE 3: LÓGICA DE AUTH Y CLOUD SAVE
+  onAuthStateChanged(auth, async (user) => {
+    let btnMenu = document.getElementById('btnMenuCloud');
+    let lblEstado = document.getElementById('estadoSincronizacion');
+    if (user) {
+      currentUserUid = user.uid;
+      lblEstado.innerHTML = `<i class="fas fa-cloud-arrow-down" style="color:#25d366;"></i> Nube Conectada`;
+      if(btnMenu) btnMenu.innerHTML = `<i class="fas fa-user-check"></i> Cuenta Vinculada`;
+      
+      // Intentar descargar progreso de la nube
+      await descargarProgresoNube(user.uid);
+      
+      document.getElementById('formCloudSave').style.display = 'none';
+      document.getElementById('perfilCloudSave').style.display = 'block';
+    } else {
+      currentUserUid = null;
+      lblEstado.innerHTML = `<i class="fas fa-gamepad" style="color:var(--text-muted);"></i> Jugador Local`;
+      if(btnMenu) btnMenu.innerHTML = `<i class="fas fa-cloud"></i> Vincular Nube`;
+      
+      document.getElementById('formCloudSave').style.display = 'block';
+      document.getElementById('perfilCloudSave').style.display = 'none';
+    }
+  });
+
+  window.abrirCloudSaveModal = function() {
+    reproducirSonido();
+    document.getElementById('authErrorMsg').style.display = 'none';
+    document.getElementById('modalCloudSave').style.display = 'flex';
+  };
+  window.cerrarCloudSaveModal = function() { document.getElementById('modalCloudSave').style.display = 'none'; };
+
+  window.registrarCloud = async function() {
+    reproducirSonido();
+    let e = document.getElementById('authEmail').value.trim();
+    let p = document.getElementById('authPass').value.trim();
+    let msg = document.getElementById('authErrorMsg');
+    if(!e || !p) { msg.innerText = "Llenar campos."; msg.style.display="block"; return; }
+    
+    try {
+      msg.style.display="none";
+      await createUserWithEmailAndPassword(auth, e, p);
+      // Al crear cuenta, subimos lo que tiene local a la nube
+      await guardarProgresoNube(); 
+      cerrarCloudSaveModal();
+    } catch(err) {
+      msg.innerText = "Error: El correo ya existe o la clave es muy corta."; msg.style.display="block";
+    }
+  };
+
+  window.entrarCloud = async function() {
+    reproducirSonido();
+    let e = document.getElementById('authEmail').value.trim();
+    let p = document.getElementById('authPass').value.trim();
+    let msg = document.getElementById('authErrorMsg');
+    if(!e || !p) { msg.innerText = "Llenar campos."; msg.style.display="block"; return; }
+    
+    try {
+      msg.style.display="none";
+      await signInWithEmailAndPassword(auth, e, p);
+      cerrarCloudSaveModal();
+    } catch(err) {
+      msg.innerText = "Usuario no encontrado o clave incorrecta."; msg.style.display="block";
+    }
+  };
+
+  window.cerrarSesionCloud = async function() {
+    reproducirSonido();
+    await signOut(auth);
+    // Borrar datos locales por privacidad al cerrar sesión
+    localStorage.removeItem('sakura_gamer_profile');
+    localStorage.removeItem('sakura_carrito');
+    localStorage.removeItem('sakura_favoritos');
+    gamerProfile = { tag: "Gamer_Guest", xp: 0, rango: "Genin" };
+    carrito = [];
+    favoritos = [];
+    actualizarBadges();
+    actualizarRangoSegunXP();
+    cerrarCloudSaveModal();
+    alert("Sesión cerrada. Tu partida está a salvo en la nube.");
+  };
+
+  async function descargarProgresoNube(uid) {
+      try {
+          const docRef = doc(db, "jugadores_cloud", uid);
+          const snap = await getDoc(docRef);
+          if(snap.exists()) {
+              const d = snap.data();
+              if(d.profile) gamerProfile = d.profile;
+              if(d.favoritos) favoritos = d.favoritos;
+              if(d.carrito) carrito = d.carrito;
+              if(d.ultimoCofre) localStorage.setItem('sakura_ultimo_cofre', d.ultimoCofre);
+              if(d.ultimaGacha) localStorage.setItem('sakura_ultima_gacha', d.ultimaGacha);
+
+              // Guardar en local para cache
+              localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
+              localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos));
+              localStorage.setItem('sakura_carrito', JSON.stringify(carrito));
+              
+              document.getElementById('inputGamerTag').value = gamerProfile.tag;
+              actualizarBadges();
+              actualizarRangoSegunXP();
+          } else {
+              // Es nuevo pero ya se logueó, subimos su local a la nube
+              guardarProgresoNube();
+          }
+      } catch(e) { console.error("Error cloud sync:", e); }
+  }
+
+  async function guardarProgresoNube() {
+      if(!currentUserUid) return; // Solo si está logueado
+      try {
+          await setDoc(doc(db, "jugadores_cloud", currentUserUid), {
+              profile: gamerProfile,
+              favoritos: favoritos,
+              carrito: carrito,
+              ultimoCofre: localStorage.getItem('sakura_ultimo_cofre') || '',
+              ultimaGacha: localStorage.getItem('sakura_ultima_gacha') || '',
+              updatedAt: Date.now()
+          }, { merge: true });
+      } catch(e) { console.error("Error guardando en nube:", e); }
+  }
+
+
+  // --- RESTO DE FUNCIONES GENERALES ---
+  
+  let eventoInstalacion = null;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault(); eventoInstalacion = e;
+    const btn = document.getElementById('btnInstalarPWA');
+    if(btn) btn.style.display = 'block'; 
+  });
+  window.instalarPWA = async function() {
+    reproducirSonido(); if (!eventoInstalacion) return;
+    eventoInstalacion.prompt();
+    const { outcome } = await eventoInstalacion.userChoice;
+    if (outcome === 'accepted') document.getElementById('btnInstalarPWA').style.display = 'none';
+    eventoInstalacion = null;
+  };
 
   window.reproducirSonido = function() {
     try {
@@ -609,46 +803,16 @@
       if (globalAudioCtx.state === 'suspended') globalAudioCtx.resume();
       const osc = globalAudioCtx.createOscillator();
       const gainNode = globalAudioCtx.createGain();
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(520, globalAudioCtx.currentTime);
+      osc.type = 'triangle'; osc.frequency.setValueAtTime(520, globalAudioCtx.currentTime);
       gainNode.gain.setValueAtTime(0.04, globalAudioCtx.currentTime);
       gainNode.gain.exponentialRampToValueAtTime(0.001, globalAudioCtx.currentTime + 0.06);
-      osc.connect(gainNode);
-      gainNode.connect(globalAudioCtx.destination);
-      osc.start();
-      osc.stop(globalAudioCtx.currentTime + 0.06);
+      osc.connect(gainNode); gainNode.connect(globalAudioCtx.destination); osc.start(); osc.stop(globalAudioCtx.currentTime + 0.06);
     } catch(e) {}
   };
 
   function sanitizarHTML(str) {
     if (!str) return '';
-    return String(str).replace(/[&<>"']/g, function(m) {
-      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
-    });
-  }
-
-  async function cargarDatosPagoNube() {
-    try {
-      const docSnap = await getDoc(doc(db, "configuracion", "datos_pago"));
-      if (docSnap.exists()) window.datosPagoGlobal = docSnap.data();
-      else window.datosPagoGlobal = { banco: "Venezuela (0102)", telefono: "0424-4970576", cedula: "V-24159896", binance: "n3lmary@gmail.com" };
-      renderizarDatosPago();
-    } catch(e) {
-      window.datosPagoGlobal = { banco: "Venezuela (0102)", telefono: "0424-4970576", cedula: "V-24159896", binance: "n3lmary@gmail.com" };
-      renderizarDatosPago();
-    }
-  }
-
-  function renderizarDatosPago() {
-    let caja = document.getElementById('cajaDatosPagoInfo');
-    if(!caja) return;
-    let dp = window.datosPagoGlobal;
-    caja.innerHTML = `
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;"><span>Banco: ${sanitizarHTML(dp.banco)}</span></div>
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;"><span>Pago Móvil: ${sanitizarHTML(dp.telefono)}</span></div>
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;"><span>Cédula: ${sanitizarHTML(dp.cedula)}</span></div>
-      <div style="display:flex; justify-content:space-between; align-items:center;"><span>Binance: ${sanitizarHTML(dp.binance)}</span></div>
-    `;
+    return String(str).replace(/[&<>"']/g, function(m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]; });
   }
 
   async function cargarBannersDeNube() {
@@ -657,10 +821,7 @@
       const querySnapshot = await getDocs(q);
       const container = document.getElementById('bannerSliderContainer');
       let bannersValidos = [];
-      querySnapshot.forEach((docSnap) => {
-        let b = docSnap.data();
-        if (b.imgUrl) bannersValidos.push(b.imgUrl);
-      });
+      querySnapshot.forEach((docSnap) => { let b = docSnap.data(); if (b.imgUrl) bannersValidos.push(b.imgUrl); });
       if (bannersValidos.length === 0) { container.style.display = 'none'; return; }
       container.style.display = 'block';
       let htmlImgs = ''; let htmlDots = '<div class="banner-dots">'; 
@@ -674,20 +835,14 @@
     } catch (e) {}
   }
   let bannerInterval; let totalBanners = 0;
-  function iniciarAutoSliderBanners(total) {
-    totalBanners = total; 
-    if(total <= 1) return;
-    bannerInterval = setInterval(() => rotarBanner(1), 5000); 
-  }
+  function iniciarAutoSliderBanners(total) { totalBanners = total; if(total <= 1) return; bannerInterval = setInterval(() => rotarBanner(1), 5000); }
   window.rotarBanner = function(direccion) {
     if(totalBanners <= 1) return;
-    let slides = document.querySelectorAll('.banner-slide'); 
-    let dots = document.querySelectorAll('.banner-dot');
+    let slides = document.querySelectorAll('.banner-slide'); let dots = document.querySelectorAll('.banner-dot');
     let currentIdx = Array.from(slides).findIndex(s => s.classList.contains('active'));
     slides[currentIdx].classList.remove('active'); dots[currentIdx].classList.remove('active');
     let nextIdx = currentIdx + direccion;
-    if(nextIdx >= totalBanners) nextIdx = 0; 
-    if(nextIdx < 0) nextIdx = totalBanners - 1;
+    if(nextIdx >= totalBanners) nextIdx = 0; if(nextIdx < 0) nextIdx = totalBanners - 1;
     slides[nextIdx].classList.add('active'); dots[nextIdx].classList.add('active');
   };
 
@@ -698,9 +853,7 @@
       productosNubeGlobal = [];
       querySnapshot.forEach((docSnap) => { productosNubeGlobal.push({ id: docSnap.id, ...docSnap.data() }); });
       renderizarProductosEnTienda(productosNubeGlobal);
-    } catch (error) {
-      document.getElementById('catalogoNube').innerHTML = "<p style='color: #ff3366; text-align: center; grid-column: 1/-1;'>No fue posible conectar con la base de datos.</p>";
-    }
+    } catch (error) { document.getElementById('catalogoNube').innerHTML = "<p style='color: #ff3366; text-align: center; grid-column: 1/-1;'>No fue posible conectar con la base de datos.</p>"; }
   }
 
   window.renderizarProductosEnTienda = function(lista) {
@@ -712,10 +865,7 @@
     let elTodos = document.getElementById('count-todos');
     if(elTodos) elTodos.innerText = prodsVisibles.length + " items";
 
-    if (prodsVisibles.length === 0) {
-      contenedor.innerHTML = "<p style='color: var(--text-muted); text-align: center; grid-column: 1/-1;'>No se encontraron productos disponibles.</p>";
-      return;
-    }
+    if (prodsVisibles.length === 0) { contenedor.innerHTML = "<p style='color: var(--text-muted); text-align: center; grid-column: 1/-1;'>No se encontraron productos disponibles.</p>"; return; }
 
     lista.forEach((prod, indexProd) => {
       if(prod.oculto) return; 
@@ -724,24 +874,16 @@
       let categoria = (prod.categoria || 'mangas').toLowerCase();
       let esRecarga = categoria === 'recargas';
       
-      // LOGICA DE STOCK FASE 1
       let isAgotado = (prod.stock !== undefined && prod.stock <= 0) && !esRecarga;
       let badgeClase = isAgotado ? 'badge-agotado' : (prod.estado && prod.estado.includes("Encargo") ? 'badge-encargo' : (esRecarga ? 'badge-digital' : 'badge-stock'));
       let textoBadge = isAgotado ? 'AGOTADO' : (prod.estado || (esRecarga ? 'Recarga Directa' : 'Stock'));
       let cardClassAddition = isAgotado ? ' agotado' : '';
 
       let imgsHtml = ''; 
-      fotosArray.forEach((foto, fIdx) => {
-        imgsHtml += `<img src="${foto}" class="${fIdx === 0 ? 'activa' : ''}" loading="lazy">`;
-      });
+      fotosArray.forEach((foto, fIdx) => { imgsHtml += `<img src="${foto}" class="${fIdx === 0 ? 'activa' : ''}" loading="lazy">`; });
 
       contenedor.innerHTML += `
-        <div class="card item-producto${cardClassAddition}" 
-             data-id="${prod.id}" 
-             data-nombre="${sanitizarHTML(prod.nombre).toLowerCase()}" 
-             data-categoria="${categoria}" 
-             data-precio="${prod.precio}"
-             onclick="abrirModalPorId('${prod.id}')">
+        <div class="card item-producto${cardClassAddition}" data-id="${prod.id}" data-nombre="${sanitizarHTML(prod.nombre).toLowerCase()}" data-categoria="${categoria}" data-precio="${prod.precio}" onclick="abrirModalPorId('${prod.id}')">
           <button class="btn-fav-card" onclick="toggleFavoritoPorId(event, '${prod.id}')"><i class="fas fa-heart"></i></button>
           <div class="badge-estado ${badgeClase}">${textoBadge}</div>
           <div class="card-img-container" id="carrusel-card-${indexProd}">${imgsHtml}</div>
@@ -792,9 +934,7 @@
         coincidencias++;
         if (mostrados < limiteActual) { card.style.display = 'block'; mostrados++; } 
         else { card.style.display = 'none'; }
-      } else {
-        card.style.display = 'none';
-      }
+      } else { card.style.display = 'none'; }
     });
 
     let btnCargarMas = document.getElementById('btnCargarMas');
@@ -824,21 +964,15 @@
     document.getElementById('recargaContainer').style.display = esRecarga ? 'block' : 'none';
 
     let btnAdd = document.getElementById('btnComprarModal');
-    if(esAgotado) {
-        btnAdd.disabled = true;
-        btnAdd.innerHTML = '<i class="fas fa-ban"></i> Sin Stock Temporalmente';
-    } else {
-        btnAdd.disabled = false;
-        btnAdd.innerHTML = '<i class="fas fa-cart-plus"></i> Añadir al Carrito';
-    }
+    if(esAgotado) { btnAdd.disabled = true; btnAdd.innerHTML = '<i class="fas fa-ban"></i> Sin Stock Temporalmente'; } 
+    else { btnAdd.disabled = false; btnAdd.innerHTML = '<i class="fas fa-cart-plus"></i> Añadir al Carrito'; }
 
     document.getElementById('miModal').style.display = 'flex';
   };
 
-  // --- RASTREO DE PEDIDO (MAGIA FASE 1) ---
+  // --- RASTREO ---
   window.abrirRastreoModal = function() {
-      reproducirSonido();
-      document.getElementById('modalRastreo').style.display = 'flex';
+      reproducirSonido(); document.getElementById('modalRastreo').style.display = 'flex';
       document.getElementById('resultadoRastreo').innerHTML = "<p style='color: var(--text-muted); text-align: center; margin: 0; font-size: 0.85em;'>Tu estado de cuenta aparecerá aquí.</p>";
       document.getElementById('inputRastreoTlf').value = "";
   };
@@ -848,31 +982,23 @@
       reproducirSonido();
       let tlf = document.getElementById('inputRastreoTlf').value.trim();
       if(!tlf) return alert("Por favor ingresa un número de teléfono válido.");
-      
       let cont = document.getElementById('resultadoRastreo');
       cont.innerHTML = "<p style='text-align:center; color: var(--secondary-color);'><i class='fas fa-spinner fa-spin'></i> Conectando con la base de datos...</p>";
       
       try {
           const q = query(collection(db, "pedidos"), where("telefono", "==", tlf));
           const snap = await getDocs(q);
+          if(snap.empty) { cont.innerHTML = "<p style='color: #ff3366; text-align:center; font-weight: bold;'><i class='fas fa-exclamation-circle'></i> No se encontraron pedidos recientes con este número.</p>"; return; }
           
-          if(snap.empty) {
-              cont.innerHTML = "<p style='color: #ff3366; text-align:center; font-weight: bold;'><i class='fas fa-exclamation-circle'></i> No se encontraron pedidos recientes con este número.</p>";
-              return;
-          }
-          
-          let pedidos = [];
-          snap.forEach(d => pedidos.push({id: d.id, ...d.data()}));
-          pedidos.sort((a,b) => b.timestamp - a.timestamp); // El más reciente primero
+          let pedidos = []; snap.forEach(d => pedidos.push({id: d.id, ...d.data()}));
+          pedidos.sort((a,b) => b.timestamp - a.timestamp); 
           let p = pedidos[0]; 
           
           let estados = ["Pendiente", "Pagado", "Enviado", "Completado"];
           let idxEstado = estados.indexOf(p.estadoPedido);
-          if(idxEstado === -1) idxEstado = 0; // Por si acaso
+          if(idxEstado === -1) idxEstado = 0; 
           
-          let html = `<div style="font-size: 0.9em; margin-bottom: 15px; color: #fff;">Última orden de: <strong>${sanitizarHTML(p.cliente)}</strong></div>`;
-          html += `<div class="timeline">`;
-          
+          let html = `<div style="font-size: 0.9em; margin-bottom: 15px; color: #fff;">Última orden de: <strong>${sanitizarHTML(p.cliente)}</strong></div><div class="timeline">`;
           estados.forEach((e, i) => {
               let activeClass = i <= idxEstado ? 'active' : '';
               let colorInfo = i <= idxEstado ? 'color: #fff;' : 'color: var(--text-muted);';
@@ -881,19 +1007,12 @@
               if(e === "Pagado") icono = "<i class='fas fa-check-double'></i> ";
               if(e === "Enviado") icono = "<i class='fas fa-truck-fast'></i> ";
               if(e === "Completado") icono = "<i class='fas fa-box-open'></i> ";
-              
               let guiaInfo = (e === 'Enviado' && p.guiaEnvio && i <= idxEstado) ? `<div style="color: #b000ff; font-size: 0.85em; margin-top: 6px; font-weight:bold; background: rgba(176,0,255,0.1); padding: 4px; border-radius:4px;"><i class="fas fa-barcode"></i> Número de Guía: ${sanitizarHTML(p.guiaEnvio)}</div>` : '';
-              
               html += `<div class="timeline-item ${activeClass}" style="${colorInfo}"><strong>${icono} ${e}</strong>${guiaInfo}</div>`;
           });
-          html += `</div>`;
-          html += `<div style="margin-top: 10px; font-size: 0.8em; color: var(--secondary-color); text-align:right;">Monto Orden: $${Number(p.totalUsd).toFixed(2)}</div>`;
-          
+          html += `</div><div style="margin-top: 10px; font-size: 0.8em; color: var(--secondary-color); text-align:right;">Monto Orden: $${Number(p.totalUsd).toFixed(2)}</div>`;
           cont.innerHTML = html;
-
-      } catch(error) {
-          cont.innerHTML = "<p style='color: #ff3366; text-align:center;'>Hubo un error de conexión.</p>";
-      }
+      } catch(error) { cont.innerHTML = "<p style='color: #ff3366; text-align:center;'>Hubo un error de conexión.</p>"; }
   };
 
   window.aplicarCupon = async function() {
@@ -915,15 +1034,25 @@
     } catch(e) { msg.style.color = "#ff3366"; msg.innerText = "Error al validar cupón."; }
   };
 
+  let umbralesRangosNube = { genin: 0, chunin: 300, jonin: 600, hokage: 1000 };
+  async function cargarUmbralesRangosNube() {
+    try {
+      const docRef = doc(db, "configuracion", "rangos_ninja");
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) umbralesRangosNube = docSnap.data();
+    } catch(e) {}
+  }
+
   window.addEventListener('DOMContentLoaded', () => {
     cargarBannersDeNube(); 
     cargarProductosDeNube(); 
-    cargarDatosPagoNube();
+    cargarUmbralesRangosNube().then(() => { actualizarRangoSegunXP(); });
+    document.getElementById('inputGamerTag').value = gamerProfile.tag; 
+    actualizarBadges();
   });
 
   window.cerrarModal = function() { document.getElementById('miModal').style.display = 'none'; };
 
-  let carrito = JSON.parse(localStorage.getItem('sakura_carrito')) || [];
   window.productoActual = null; let descuentoAplicado = 0; let pestanaCarritoActual = 'fisico';
 
   window.agregarAlCarrito = function() {
@@ -939,8 +1068,22 @@
     carrito.push(item); actualizarCarritoUI(); cerrarModal(); 
   };
 
-  function actualizarCarritoUI() { localStorage.setItem('sakura_carrito', JSON.stringify(carrito)); actualizarBadges(); }
-  function actualizarBadges() { document.getElementById('cartBadge').innerText = carrito.length; }
+  function actualizarCarritoUI() { 
+      localStorage.setItem('sakura_carrito', JSON.stringify(carrito)); 
+      actualizarBadges(); 
+      guardarProgresoNube(); // Sincroniza en background
+  }
+
+  function actualizarBadges() { 
+    document.getElementById('cartBadge').innerText = carrito.length; 
+    document.getElementById('favBadge').innerText = favoritos.length; 
+    document.querySelectorAll('.item-producto').forEach(card => {
+        let prodId = card.getAttribute('data-id');
+        let btnFav = card.querySelector('.btn-fav-card');
+        if (favoritos.some(f => f.id === prodId)) { btnFav.classList.add('favorito'); } 
+        else { btnFav.classList.remove('favorito'); }
+    });
+  }
 
   window.abrirCarritoModal = function() {
     reproducirSonido();
@@ -956,6 +1099,8 @@
   function renderizarListaCarrito() {
     let cont = document.getElementById('listaCarritoDetalle');
     let reciboContenido = document.getElementById('reciboContenido');
+    let boxUpsell = document.getElementById('boxUpsell');
+    let contUpsell = document.getElementById('listaUpsell');
     
     cont.innerHTML = ""; reciboContenido.innerHTML = "";
 
@@ -971,7 +1116,7 @@
     let itemsMostrados = (pestanaCarritoActual === 'fisico') ? itemsFisicos : itemsDigitales;
 
     if (itemsMostrados.length === 0) {
-      cont.innerHTML = `<p style='color:var(--text-muted); text-align:center;'>Sin artículos.</p>`;
+      cont.innerHTML = `<p style='color:var(--text-muted); text-align:center;'>Sin artículos agregados.</p>`;
     } else {
       itemsMostrados.forEach((item) => {
         let idxOriginal = carrito.indexOf(item);
@@ -988,11 +1133,25 @@
     }
 
     if (carrito.length > 0) {
+      let candidatos = productosNubeGlobal.filter(p => !p.oculto && Number(p.precio) <= 15 && !carrito.some(c => c.id === p.id));
+      candidatos.sort(() => 0.5 - Math.random()); 
+      let sugerencias = candidatos.slice(0, 4); 
+      if(sugerencias.length > 0) {
+        boxUpsell.style.display = 'block';
+        contUpsell.innerHTML = sugerencias.map(s => `
+          <div class="upsell-card">
+            <img src="${s.fotos && s.fotos.length > 0 ? s.fotos[0] : 'logo.webp?v=2'}" class="upsell-img">
+            <div class="upsell-title">${sanitizarHTML(s.nombre)}</div>
+            <div class="upsell-price">$${Number(s.precio).toFixed(2)}</div>
+            <button class="upsell-btn" onclick="agregarUpsell('${s.id}')"><i class="fas fa-plus"></i> Añadir</button>
+          </div>`).join('');
+      } else { boxUpsell.style.display = 'none'; }
+    } else { boxUpsell.style.display = 'none'; }
+
+    if (carrito.length > 0) {
       let sub = carrito.reduce((s, i) => s + Number(i.precio), 0); let tot = sub * (1 - descuentoAplicado);
       document.getElementById('modalCarritoTotal').innerText = `Total: $${tot.toFixed(2)}`;
-    } else {
-      document.getElementById('modalCarritoTotal').innerText = "Total: $0.00";
-    }
+    } else { document.getElementById('modalCarritoTotal').innerText = "Total: $0.00"; }
   }
 
   function actualizarBarraEnvio(subtotalFisico) {
@@ -1012,11 +1171,31 @@
     }
   }
 
+  window.agregarUpsell = function(id) {
+    reproducirSonido();
+    let prod = productosNubeGlobal.find(p => p.id === id);
+    if(prod) {
+      let item = { id: prod.id, img: (prod.fotos && prod.fotos.length > 0) ? prod.fotos[0] : 'logo.webp?v=2', titulo: prod.nombre, precio: prod.precio, esRopa: false, esRecarga: false };
+      if(prod.categoria === 'recargas') item.esRecarga = true;
+      carrito.push(item); actualizarCarritoUI(); renderizarListaCarrito();
+    }
+  };
+
   window.removerDelCarrito = function(index) { reproducirSonido(); carrito.splice(index, 1); actualizarCarritoUI(); renderizarListaCarrito(); };
   window.cerrarCarritoModal = function() { document.getElementById('modalCarrito').style.display = 'none'; };
   window.vaciarCarrito = function() { reproducirSonido(); carrito = []; descuentoAplicado = 0; actualizarCarritoUI(); renderizarListaCarrito(); };
 
-  // --- EL CORAZÓN DE LA FASE 1: ENVÍO Y GUARDADO EN FIREBASE ---
+  window.compartirCarrito = function() {
+    reproducirSonido();
+    if(carrito.length === 0) return alert("Tu lista está vacía. Añade productos primero.");
+    let msg = `✨ ¡Hola! Esta es mi lista de deseos (Wishlist) de *Sakura Gameverse*:\n\n`;
+    carrito.forEach((i, idx) => { msg += `🎁 ${i.titulo} - $${Number(i.precio).toFixed(2)}\n`; });
+    let tot = carrito.reduce((s, i) => s + Number(i.precio), 0);
+    msg += `\n*Total aprox:* $${tot.toFixed(2)}\n\n¡Ojalá me regalen algo de aquí! 🥺💖`;
+    if (navigator.share) { navigator.share({ title: 'Mi Wishlist Sakura Gameverse', text: msg }).catch(console.error); } 
+    else { window.open("https://wa.me/?text=" + encodeURIComponent(msg), '_blank'); }
+  };
+
   window.enviarPedidoWhatsApp = async function() {
     reproducirSonido(); 
     if(carrito.length === 0) return alert("El carrito está vacío.");
@@ -1037,7 +1216,7 @@
     let sub = carrito.reduce((s, i) => s + Number(i.precio), 0); let tot = sub * (1 - descuentoAplicado); 
     
     let msgParaWhatsApp = `Hola Sakura Gameverse, deseo procesar el siguiente pedido:\n\n*Cliente:* ${nombreCli}\n*Contacto:* ${tlfCli}\n\n`;
-    let detallesBD = ""; // Texto plano para guardar en BD
+    let detallesBD = ""; 
     
     if (tieneFisicos) {
       msgParaWhatsApp += `📦 ARTÍCULOS FÍSICOS:\n`;
@@ -1059,47 +1238,117 @@
 
     msgParaWhatsApp += `Total a Cancelar: $${tot.toFixed(2)}\nQuedo a la espera de confirmación y datos de pago.`;
 
-    // 1. Guardar primero en la base de datos para que aparezca en el ADMIN
     let btnSubmit = document.getElementById('btnFinalizarPedido');
     btnSubmit.disabled = true;
     btnSubmit.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Registrando...";
 
     try {
         await addDoc(collection(db, "pedidos"), {
-            cliente: nombreCli,
-            telefono: tlfCli,
+            cliente: nombreCli, telefono: tlfCli,
             tipo: (tieneFisicos && tieneDigitales) ? 'Mixto' : (tieneFisicos ? 'fisico' : 'digital'),
             metodoEnvio: tieneFisicos ? metodoEnvio : 'Entrega Digital Directa',
             direccionEnvio: direccionEnvio,
             detalles: detallesBD.trim(),
-            totalUsd: tot,
-            estadoPedido: "Pendiente",
-            guiaEnvio: "",
+            totalUsd: tot, estadoPedido: "Pendiente", guiaEnvio: "",
             timestamp: Date.now()
         });
         
-        // 2. Si guardó bien, abrimos WhatsApp
         window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msgParaWhatsApp), '_blank'); 
-        
-        // 3. Limpiamos carrito
-        vaciarCarrito();
-        cerrarCarritoModal();
-        
-    } catch(err) {
-        alert("Hubo un error de conexión registrando tu pedido. Por favor intenta de nuevo.");
-    } finally {
-        btnSubmit.disabled = false;
-        btnSubmit.innerHTML = "Enviar Orden";
-    }
+        vaciarCarrito(); cerrarCarritoModal();
+    } catch(err) { alert("Hubo un error de conexión registrando tu pedido. Por favor intenta de nuevo."); } 
+    finally { btnSubmit.disabled = false; btnSubmit.innerHTML = "Enviar Orden"; }
   };
 
-  // Funciones menores del menú
+  // Gamificación y Menús
   window.abrirMenuOpciones = function() { reproducirSonido(); document.getElementById('modalOpcionesMenu').style.display = 'flex'; };
   window.cerrarMenuOpciones = function() { document.getElementById('modalOpcionesMenu').style.display = 'none'; };
   window.abrirGamerProfileModal = function() { reproducirSonido(); document.getElementById('modalGamerProfile').style.display = 'flex'; };
   window.cerrarGamerProfileModal = function() { document.getElementById('modalGamerProfile').style.display = 'none'; };
-  window.abrirFavoritosModal = function() { document.getElementById('modalFavoritos').style.display = 'flex'; }
-  window.cerrarFavoritosModal = function() { document.getElementById('modalFavoritos').style.display = 'none'; }
+  
+  window.guardarGamerTag = function() { 
+    reproducirSonido(); 
+    let t = document.getElementById('inputGamerTag').value.trim(); 
+    if(t) { 
+        gamerProfile.tag = t; 
+        localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile)); 
+        guardarProgresoNube();
+        cerrarGamerProfileModal(); 
+    } 
+  };
+
+  function actualizarRangoSegunXP() {
+    let xp = gamerProfile.xp; let u = umbralesRangosNube;
+    let max = 0; let min = 0; let nextRango = "";
+
+    if (xp >= (u.hokage ?? 1000)) { gamerProfile.rango = "Hokage"; max = xp; min = u.hokage ?? 1000; nextRango = "MAX"; }
+    else if (xp >= (u.jonin ?? 600)) { gamerProfile.rango = "Jōnin"; max = u.hokage ?? 1000; min = u.jonin ?? 600; nextRango = "Hokage"; }
+    else if (xp >= (u.chunin ?? 300)) { gamerProfile.rango = "Chūnin"; max = u.jonin ?? 600; min = u.chunin ?? 300; nextRango = "Jōnin"; }
+    else { gamerProfile.rango = "Genin"; max = u.chunin ?? 300; min = 0; nextRango = "Chūnin"; }
+
+    let pct = 100;
+    if(nextRango !== "MAX") {
+        pct = ((xp - min) / (max - min)) * 100;
+        document.getElementById('lblXpNext').innerHTML = `Faltan <strong style="color:var(--secondary-color);">${max - xp} XP</strong> para ${nextRango}`;
+    } else { document.getElementById('lblXpNext').innerText = `¡Rango Máximo Alcanzado!`; }
+    
+    let barra = document.getElementById('barXp');
+    if(barra) setTimeout(() => { barra.style.width = pct + "%"; }, 200);
+
+    localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
+    document.getElementById('lblXp').innerText = gamerProfile.xp; 
+    document.getElementById('lblRango').innerText = gamerProfile.rango;
+  }
+
+  function ganarXP(cantidad) {
+    gamerProfile.xp += cantidad;
+    actualizarRangoSegunXP();
+    guardarProgresoNube();
+  }
+
+  window.toggleFavoritoPorId = function(event, prodId) {
+    event.stopPropagation(); reproducirSonido();
+    const prod = productosNubeGlobal.find(p => p.id === prodId);
+    if (!prod) return;
+
+    let idx = favoritos.findIndex(i => i.id === prodId || i.titulo === prod.nombre);
+    let btn = event.currentTarget;
+
+    if(idx === -1) { 
+      favoritos.push({ id: prod.id, titulo: prod.nombre, precio: prod.precio, img: (prod.fotos && prod.fotos[0]) ? prod.fotos[0] : 'logo.webp?v=2' }); 
+      btn.classList.add('favorito');
+    } else { 
+      favoritos.splice(idx, 1); 
+      btn.classList.remove('favorito');
+    }
+    localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos)); 
+    actualizarBadges();
+    guardarProgresoNube();
+  };
+  
+  window.removerDeFavoritos = function(index) {
+    reproducirSonido(); favoritos.splice(index, 1);
+    localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos));
+    actualizarBadges(); abrirFavoritosModal(); guardarProgresoNube();
+  };
+
+  window.abrirFavoritosModal = function() {
+    reproducirSonido(); let cont = document.getElementById('listaFavoritosDetalle');
+    cont.innerHTML = favoritos.length === 0 ? "<p style='color:var(--text-muted); text-align:center;'>No tienes productos guardados.</p>" : "";
+    favoritos.forEach((item, i) => { 
+      cont.innerHTML += `
+        <div class="cart-item-row">
+          <img src="${item.img}" class="cart-item-img" loading="lazy" decoding="async" style="cursor:pointer;" onclick="cerrarFavoritosModal(); abrirModalPorId('${item.id}')">
+          <div class="cart-item-info" style="cursor:pointer;" onclick="cerrarFavoritosModal(); abrirModalPorId('${item.id}')">
+            <strong>${sanitizarHTML(item.titulo)}</strong><br>
+            <span style="color:var(--secondary-color);">$${Number(item.precio).toFixed(2)}</span>
+          </div>
+          <button class="cart-item-del" onclick="removerDeFavoritos(${i})"><i class="fas fa-trash"></i></button>
+        </div>`; 
+    });
+    document.getElementById('modalFavoritos').style.display = 'flex';
+  };
+  
+  window.cerrarFavoritosModal = function() { document.getElementById('modalFavoritos').style.display = 'none'; };
   window.abrirCofreModal = function() { document.getElementById('modalCofreDiario').style.display = 'flex'; }
   window.cerrarCofreModal = function() { document.getElementById('modalCofreDiario').style.display = 'none'; }
   window.abrirGachaModal = function() { document.getElementById('modalGacha').style.display = 'flex'; }
@@ -1107,6 +1356,27 @@
   window.abrirTemasModal = function() { document.getElementById('modalTemas').style.display = 'flex'; }
   window.cerrarTemasModal = function() { document.getElementById('modalTemas').style.display = 'none'; }
 
+  window.abrirCofreDiario = function() {
+    reproducirSonido(); 
+    let hoy = new Date().toDateString(); 
+    let ultimoCofre = localStorage.getItem('sakura_ultimo_cofre');
+    if (ultimoCofre === hoy) { document.getElementById('cofreResultado').innerHTML = "Cofre reclamado por hoy. Regresa mañana."; return; }
+    localStorage.setItem('sakura_ultimo_cofre', hoy); 
+    ganarXP(50); 
+    confetti({ particleCount: 80, spread: 60, origin: { y: 0.5 } });
+    document.getElementById('cofreResultado').innerHTML = "¡Reclamaste +50 XP diarios!";
+  };
+
+  window.girarRuletaGacha = function() { 
+    reproducirSonido(); 
+    let hoy = new Date().toDateString(); 
+    let ultimaGacha = localStorage.getItem('sakura_ultima_gacha');
+    if (ultimaGacha === hoy) { document.getElementById('gachaResultado').innerHTML = "Tirada utilizada hoy. Regresa mañana."; return; }
+    localStorage.setItem('sakura_ultima_gacha', hoy);
+    guardarProgresoNube();
+    document.getElementById('gachaResultado').innerHTML = "Beneficio obtenido: 10% OFF con código <strong>OTAKU10</strong>"; 
+    confetti({ particleCount: 70, spread: 50, origin: { y: 0.5 } }); 
+  };
 </script>
 </body>
 </html>
