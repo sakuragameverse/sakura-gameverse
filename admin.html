@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
   
-  <!-- LIBRERÍA DE GRÁFICOS (FASE 2) -->
+  <!-- LIBRERÍA DE GRÁFICOS -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
@@ -277,7 +277,14 @@
     }
     .btn-file-select:hover { background: rgba(0, 229, 255, 0.15); }
 
-    .preview-fotos-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    /* Caja de preview modificada para soportar scroll de muchas fotos */
+    .preview-fotos-grid { 
+      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; 
+      max-height: 200px; overflow-y: auto; padding-right: 4px;
+      align-items: flex-start; align-content: flex-start;
+    }
+    .preview-fotos-grid::-webkit-scrollbar { width: 4px; }
+    .preview-fotos-grid::-webkit-scrollbar-thumb { background: rgba(0, 229, 255, 0.5); border-radius: 4px; }
     .preview-foto-item { position: relative; width: 64px; height: 64px; border-radius: var(--radius-sm); border: 1px solid var(--glass-border); overflow: hidden; background: rgba(0,0,0,0.5); }
     .preview-foto-item img { width: 100%; height: 100%; object-fit: cover; }
     .btn-del-foto-preview { position: absolute; top: 2px; right: 2px; background: rgba(0, 0, 0, 0.85); color: #ff3366; border: none; width: 20px; height: 20px; border-radius: 50%; font-size: 0.7em; cursor: pointer; display: flex; align-items: center; justify-content: center; }
@@ -498,9 +505,9 @@
           </select>
         </div>
 
-        <!-- CARGADOR WEBP -->
+        <!-- CARGADOR WEBP SIN LÍMITE -->
         <div class="form-group">
-          <label class="form-label">Fotos del Producto (Hasta 5 imágenes):</label>
+          <label class="form-label">Fotos del Producto (Sin límite):</label>
           
           <input type="file" id="prodFileInput" multiple accept="image/*" style="display: none;" onchange="procesarArchivosGaleria(event)">
           <button type="button" class="btn-file-select" onclick="document.getElementById('prodFileInput').click()">
@@ -855,7 +862,8 @@
   window.procesarArchivosGaleria = async function(e) {
     const archivos = Array.from(e.target.files);
     if (!archivos.length) return;
-    if (fotosBufferProducto.length + archivos.length > 5) return alert("Puedes añadir un máximo de 5 fotos por producto.");
+    
+    // ELIMINADO EL LÍMITE DE 5 FOTOS
 
     const txtEstado = document.getElementById('txtEstadoSubida');
     txtEstado.style.display = 'block';
@@ -1479,7 +1487,7 @@
   function cargarTodo() {
     cargarProductosAdmin();
     cargarPedidosAdmin();
-    cargarJugadoresAdmin(); /* FASE 3: CARGAR JUGADORES */
+    cargarJugadoresAdmin(); 
     cargarFacturasAdmin(); 
     cargarBannersAdmin();
     cargarCuponesAdmin();
