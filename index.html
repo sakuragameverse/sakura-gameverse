@@ -8,7 +8,7 @@
   <!-- Etiquetas para vista previa en Redes Sociales y WhatsApp -->
   <meta property="og:title" content="Sakura Gameverse">
   <meta property="og:description" content="Coleccionables, ropa, productos gamer y recargas digitales para ti.">
-  <meta property="og:image" content="https://sakuragameverse.com/logo.webp">
+  <meta property="og:image" content="https://sakuragameverse.com/icono.png">
   <meta property="og:url" content="https://sakuragameverse.com/">
   <meta property="og:type" content="website">
 
@@ -16,7 +16,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Sakura Gameverse">
   <meta name="twitter:description" content="Coleccionables, ropa, productos gamer y recargas digitales para ti.">
-  <meta name="twitter:image" content="https://sakuragameverse.com/logo.webp">
+  <meta name="twitter:image" content="https://sakuragameverse.com/icono.png">
   
   <!-- Configuración App / PWA -->
   <link rel="manifest" href="manifest.json">
@@ -34,11 +34,9 @@
     :root {
       --bg-color: #05010a; 
       --card-bg-solid: #110524;
-      
       --glass-bg: rgba(17, 5, 36, 0.45); 
       --glass-border: rgba(255, 255, 255, 0.08); 
       --glass-highlight: rgba(0, 229, 255, 0.2); 
-      
       --text-color: #e6e9f0;
       --text-muted: #8b8f9e;
       --primary-color: #ff007f;
@@ -60,29 +58,18 @@
     * { box-sizing: border-box; }
 
     body {
-      margin: 0;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 16px;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      overflow-x: hidden;
-      padding-bottom: 90px; 
+      margin: 0; background-color: var(--bg-color); color: var(--text-color);
+      font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 500; letter-spacing: 0.5px;
+      overflow-x: hidden; padding-bottom: 90px; 
     }
 
     body::before {
-      content: "";
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
+      content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: radial-gradient(circle at 50% 0%, rgba(255, 0, 127, 0.08) 0%, transparent 60%),
                   radial-gradient(circle at 80% 80%, rgba(0, 229, 255, 0.05) 0%, transparent 50%),
                   linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
                   linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-      background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
-      pointer-events: none;
-      z-index: -1; 
-      will-change: transform;
+      background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px; pointer-events: none; z-index: -1; will-change: transform;
     }
 
     h1, h2, h3, h4 { font-family: 'Chakra Petch', sans-serif; text-transform: uppercase; letter-spacing: 1px; }
@@ -262,18 +249,26 @@
     .timeline-item { margin-bottom: 18px; position: relative; font-size: 0.9em; }
     .timeline-item::before { content: ''; position: absolute; left: -26px; top: 2px; width: 10px; height: 10px; border-radius: 50%; background: var(--glass-border); transition: all 0.3s ease; }
     .timeline-item.active::before { background: var(--secondary-color); box-shadow: 0 0 10px var(--secondary-glow); }
+
+    /* Estilos Gacha Waifus */
+    .tag-r { background: rgba(0, 229, 255, 0.15); color: #00e5ff; border: 1px solid #00e5ff; padding: 2px 8px; border-radius: var(--radius-pill); font-size: 0.7em; font-weight: 700; }
+    .tag-sr { background: rgba(176, 0, 255, 0.15); color: #b000ff; border: 1px solid #b000ff; padding: 2px 8px; border-radius: var(--radius-pill); font-size: 0.7em; font-weight: 700; }
+    .tag-ssr { background: rgba(255, 170, 0, 0.15); color: #ffaa00; border: 1px solid #ffaa00; padding: 2px 8px; border-radius: var(--radius-pill); font-size: 0.7em; font-weight: 700; }
+    .waifu-card-mini { width: 70px; height: 100px; background: rgba(0,0,0,0.5); border-radius: var(--radius-sm); border: 1px solid var(--glass-border); overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .waifu-card-mini img { width: 100%; height: 100%; object-fit: cover; }
+    .waifu-card-mini .badge { position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); font-size: 0.6em; }
   </style>
 </head>
 <body>
 
 <div class="top-bar-notice">
-  <div><i class="fas fa-check-circle" style="color: var(--secondary-color);"></i> <span id="spTexto">Gabriel S. adquirió Chibi Firefly</span> <span style="color: var(--text-muted); font-size: 0.9em;" id="spLugar">(Bejuma)</span></div>
+  <div><i class="fas fa-check-circle" style="color: var(--secondary-color);"></i> <span id="spTexto">Bienvenido, Aventurero</span></div>
   <div style="color: var(--text-muted); font-size: 0.8em;" id="estadoSincronizacion"><i class="fas fa-wifi"></i> Online</div>
 </div>
 
 <div class="ticker-bar">
-  <div class="ticker-content">
-    Catálogo mayorista vía WhatsApp | Envíos nacionales ZOOM y MRW | Código activo: OTAKU10 (-10% OFF)
+  <div class="ticker-content" id="ajustesTickerObj">
+    Cargando información del servidor...
   </div>
 </div>
 
@@ -287,12 +282,31 @@
   </div>
 </div>
 
+<!-- MÁQUINA GACHA (NUEVA INTERFAZ) -->
 <div id="modalGacha" class="modal">
-  <div class="modal-content" style="text-align: center;">
+  <div class="modal-content" style="text-align: center; background: linear-gradient(180deg, rgba(14,4,31,0.95) 0%, #05010a 100%); border: 2px solid var(--secondary-color);">
     <button class="cerrar-modal" onclick="cerrarGachaModal()">×</button>
-    <h3 style="color: var(--secondary-color); margin-top: 0;">Ruleta de Beneficios</h3>
-    <div id="gachaResultado" style="background: rgba(0,0,0,0.4); border: 1px dashed var(--secondary-color); padding: 18px; border-radius: var(--radius-sm); font-weight: 700; color: #fff; margin-bottom: 14px;">Gira para obtener cupones de compra</div>
-    <button class="btn-comprar" onclick="girarRuletaGacha()">Girar Ruleta</button>
+    <h3 style="color: var(--secondary-color); margin-top: 0; font-size: 1.5em; text-transform: uppercase; text-shadow: 0 0 10px var(--secondary-glow);"><i class="fas fa-capsules"></i> Gacha Waifus</h3>
+    <p style="color: var(--text-muted); font-size: 0.85em; margin-bottom: 15px;">Usa tu XP para invocar Waifus y ganar descuentos únicos.</p>
+    
+    <div id="gachaMachineContainer" style="position: relative; height: 220px; background: rgba(0,0,0,0.6); border-radius: var(--radius-md); margin-bottom: 15px; border: 1px dashed var(--glass-border); display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: inset 0 0 20px rgba(0,0,0,0.8);">
+      <img id="gachaWaifuImg" src="logo.webp?v=2" style="height: 100%; object-fit: contain; opacity: 0.3; transition: all 0.5s ease;">
+      <div id="gachaOverlay" style="position: absolute; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: bold; color: var(--secondary-color); font-size: 1.2em; z-index: 2; backdrop-filter: blur(2px);">
+        <i class="fas fa-bolt" style="font-size: 2em; margin-bottom: 10px; color: #ffaa00; filter: drop-shadow(0 0 10px #ffaa00);"></i>
+        <span id="gachaOverlayText">MÁQUINA LISTA</span>
+      </div>
+    </div>
+
+    <div id="gachaResultado" style="display: none; background: rgba(0,0,0,0.4); border: 1px solid var(--secondary-color); padding: 12px; border-radius: var(--radius-sm); font-weight: 700; color: #fff; margin-bottom: 14px; animation: modalSlideUp 0.3s ease;">
+        <span id="gachaRarezaBadge" class="tag-r">R</span>
+        <div id="gachaNombre" style="font-size: 1.2em; margin: 6px 0;">Waifu</div>
+        <div id="gachaPremio" style="color: #25d366; font-size: 0.9em;">Premio aquí</div>
+    </div>
+
+    <button class="btn-comprar" id="btnTirarGacha" onclick="realizarTiradaGacha()" style="font-size: 1.1em; text-shadow: 0 0 5px rgba(0,0,0,0.5);">
+       Invocar x1 (<span id="lblCostoGacha">100</span> XP)
+    </button>
+    <div style="margin-top: 10px; font-size: 0.85em; color: var(--text-muted);">Tu saldo actual: <strong style="color:var(--secondary-color);"><span id="lblSaldoGacha">0</span> XP</strong></div>
   </div>
 </div>
 
@@ -309,7 +323,7 @@
   </div>
 </div>
 
-<!-- MODAL GAMER PROFILE -->
+<!-- MODAL GAMER PROFILE Y ÁLBUM WAIFUS -->
 <div id="modalGamerProfile" class="modal">
   <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarGamerProfileModal()">×</button>
@@ -325,6 +339,14 @@
         <div class="xp-bar-fill" id="barXp"></div>
       </div>
       <div style="font-size: 0.8em; color: var(--text-muted); text-align: right; margin-top: 6px;" id="lblXpNext">Calculando siguiente rango...</div>
+    </div>
+
+    <!-- COLECCIÓN DE WAIFUS -->
+    <div style="text-align: left; margin-bottom: 14px;">
+      <div style="font-size: 0.85em; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Mi Colección Waifus (<span id="lblTotalWaifusJugador">0</span>)</div>
+      <div id="albumWaifusContenedor" style="display:flex; gap:8px; overflow-x:auto; padding-bottom: 5px; scrollbar-width: none;">
+        <p style="color: var(--text-muted); font-size: 0.8em; margin: 0;">Juega al Gacha para coleccionar.</p>
+      </div>
     </div>
     
     <button class="btn-comprar" onclick="guardarGamerTag()"><i class="fas fa-save"></i> Guardar Perfil Local</button>
@@ -364,12 +386,10 @@
     <button class="cerrar-modal" onclick="cerrarRastreoModal()">×</button>
     <h3 style="color: var(--secondary-color); margin-top: 0; text-align: center;"><i class="fas fa-radar"></i> Rastrear Paquete</h3>
     <p style="font-size: 0.85em; color: var(--text-muted); text-align: center; margin-bottom: 12px;">Ingresa el número de WhatsApp con el que realizaste tu compra.</p>
-    
     <div style="display: flex; gap: 8px; margin-bottom: 14px;">
       <input type="text" id="inputRastreoTlf" class="sugerencia-input" placeholder="Ej: 04241234567">
       <button class="btn-cupon" onclick="buscarPedido()"><i class="fas fa-search"></i></button>
     </div>
-    
     <div id="resultadoRastreo" style="background: rgba(0,0,0,0.3); padding: 14px; border-radius: var(--radius-sm); border: 1px dashed var(--glass-border); min-height: 80px; display: flex; flex-direction: column; justify-content: center;">
       <p style="color: var(--text-muted); text-align: center; margin: 0; font-size: 0.85em;">Tu estado de cuenta aparecerá aquí.</p>
     </div>
@@ -380,8 +400,8 @@
   <img src="logo.webp?v=2" alt="Sakura Gameverse" class="hero-logo" onclick="activarEasterEggLogo()" loading="eager" decoding="async">
   <br>
   <div class="store-status-badge"><div class="status-dot"></div> Horario de Atención: 10:00 AM - 7:00 PM</div>
-  <div class="hero-title">Sakura Gameverse</div>
-  <div style="color: var(--text-muted); font-size: 0.9em; max-width: 500px; margin: 0 auto 14px auto;">Coleccionables, ropa, productos gamer y recargas digitales para ti.</div>
+  <div class="hero-title" id="ajustesHeroTitleObj">Cargando...</div>
+  <div style="color: var(--text-muted); font-size: 0.9em; max-width: 500px; margin: 0 auto 14px auto;" id="ajustesHeroDescObj">...</div>
   <div id="bannerSliderContainer" class="banner-slider-container"></div>
   <br>
 </div>
@@ -521,14 +541,14 @@
       <button class="btn-menu-opcion" style="color: #00e5ff;" id="btnMenuCloud" onclick="cerrarMenuOpciones(); abrirCloudSaveModal()"><i class="fas fa-cloud"></i> Vincular Nube</button>
       <button class="btn-menu-opcion" style="color: #b000ff;" onclick="cerrarMenuOpciones(); abrirRastreoModal()"><i class="fas fa-radar"></i> Rastrear</button>
       <button class="btn-menu-opcion" style="color: #ffaa00;" onclick="cerrarMenuOpciones(); abrirCofreModal()"><i class="fas fa-gift"></i> Cofre Diario</button>
-      <button class="btn-menu-opcion" style="color: var(--secondary-color);" onclick="cerrarMenuOpciones(); abrirGachaModal()"><i class="fas fa-dice"></i> Ruleta</button>
+      <button class="btn-menu-opcion" style="color: var(--secondary-color);" onclick="cerrarMenuOpciones(); abrirGachaModal()"><i class="fas fa-capsules"></i> Gacha Waifu</button>
       <button class="btn-menu-opcion" style="color: #25d366;" onclick="cerrarMenuOpciones(); abrirGamerProfileModal()"><i class="fas fa-user"></i> Mi Perfil</button>
       <button class="btn-menu-opcion" style="color: #ff007f;" onclick="cerrarMenuOpciones(); abrirTemasModal()"><i class="fas fa-palette"></i> Temas</button>
       <button class="btn-menu-opcion" style="color: #e0f4ff;" onclick="toggleMusicaLoFi()"><i class="fas fa-music" id="iconoMusica"></i> Audio Lo-Fi</button>
       <button class="btn-menu-opcion" style="color: var(--text-muted);" onclick="cerrarMenuOpciones(); abrirFaqModal()"><i class="fas fa-question-circle"></i> Preguntas</button>
       <button class="btn-menu-opcion" style="color: #fff;" onclick="cerrarMenuOpciones(); abrirSugerenciaModal()"><i class="fas fa-lightbulb"></i> Encargos</button>
       <a href="admin.html" class="btn-menu-opcion" style="color: #ff3366;"><i class="fas fa-lock"></i> Gestión Admin</a>
-      <a href="https://wa.me/584244970576" target="_blank" class="btn-menu-opcion" style="color: #25D366;"><i class="fab fa-whatsapp"></i> Chat Directo</a>
+      <a href="javascript:void(0)" onclick="abrirChatGlobalWhatsApp()" class="btn-menu-opcion" style="color: #25D366;"><i class="fab fa-whatsapp"></i> Chat Directo</a>
     </div>
   </div>
 </div>
@@ -663,10 +683,136 @@
   let filtroGlobal = { categoria: 'todos', coleccion: 'todos', estado: 'todos', busqueda: '' };
   let limiteActual = 12;
   
+  // VARIABLES CMS Y GACHA
+  let ajustesWebGlobal = { whatsapp: "584244970576", costoGacha: 100 };
+  let waifusGachaGlobal = [];
+  
   let currentUserUid = null;
-  let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, rango: "Genin" };
+  let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, rango: "Genin", waifus: [] };
   let carrito = JSON.parse(localStorage.getItem('sakura_carrito')) || [];
   let favoritos = JSON.parse(localStorage.getItem('sakura_favoritos')) || [];
+
+  // LECTURA DEL CMS Y GACHA
+  async function cargarCMSyGacha() {
+    try {
+        const snap = await getDoc(doc(db, "configuracion", "ajustes_web"));
+        if (snap.exists()) {
+            let d = snap.data();
+            if(d.whatsapp) ajustesWebGlobal.whatsapp = d.whatsapp;
+            if(d.costoGacha) ajustesWebGlobal.costoGacha = parseInt(d.costoGacha);
+            
+            if(d.ticker) document.getElementById('ajustesTickerObj').innerText = d.ticker;
+            if(d.heroTitle) document.getElementById('ajustesHeroTitleObj').innerText = d.heroTitle;
+            if(d.heroDesc) document.getElementById('ajustesHeroDescObj').innerText = d.heroDesc;
+            
+            let lbl = document.getElementById('lblCostoGacha');
+            if(lbl) lbl.innerText = ajustesWebGlobal.costoGacha;
+        }
+    } catch(e){}
+
+    try {
+        const q = query(collection(db, "waifus_gacha"));
+        const snaps = await getDocs(q);
+        waifusGachaGlobal = [];
+        snaps.forEach(d => {
+            let w = d.data();
+            if(!w.oculto) waifusGachaGlobal.push({id: d.id, ...w});
+        });
+    } catch(e){}
+  }
+
+  // --- LÓGICA DE LA MÁQUINA GACHA ---
+  window.abrirGachaModal = function() {
+      reproducirSonido();
+      document.getElementById('lblSaldoGacha').innerText = gamerProfile.xp;
+      document.getElementById('modalGacha').style.display = 'flex';
+      document.getElementById('gachaResultado').style.display = 'none';
+      document.getElementById('gachaOverlay').style.display = 'flex';
+      document.getElementById('gachaOverlayText').innerText = "MÁQUINA LISTA";
+      document.getElementById('gachaWaifuImg').style.opacity = '0.3';
+  };
+  window.cerrarGachaModal = function() { document.getElementById('modalGacha').style.display = 'none'; };
+
+  window.realizarTiradaGacha = function() {
+      reproducirSonido();
+      let costo = ajustesWebGlobal.costoGacha;
+      
+      if(gamerProfile.xp < costo) return alert(`Necesitas al menos ${costo} XP para realizar una invocación.`);
+      if(waifusGachaGlobal.length === 0) return alert("La máquina Gacha está vacía temporalmente. ¡Vuelve pronto!");
+
+      let btn = document.getElementById('btnTirarGacha');
+      btn.disabled = true;
+      
+      gamerProfile.xp -= costo;
+      actualizarRangoSegunXP();
+      guardarProgresoNube();
+      document.getElementById('lblSaldoGacha').innerText = gamerProfile.xp;
+
+      let overlay = document.getElementById('gachaOverlay');
+      let img = document.getElementById('gachaWaifuImg');
+      let resBox = document.getElementById('gachaResultado');
+      
+      overlay.innerHTML = "<i class='fas fa-spinner fa-spin' style='font-size: 2em; margin-bottom:10px; color:#ff007f;'></i><span>INVOCANDO...</span>";
+      overlay.style.display = "flex";
+      img.style.opacity = "0.1";
+      resBox.style.display = "none";
+
+      setTimeout(() => {
+          let rand = Math.random() * 100;
+          let targetRareza = rand <= 5 ? 'SSR' : (rand <= 30 ? 'SR' : 'R');
+          
+          let posibles = waifusGachaGlobal.filter(w => w.rareza === targetRareza);
+          if(posibles.length === 0) posibles = waifusGachaGlobal; // Safe fallback si no hay de esa rareza
+          let elegida = posibles[Math.floor(Math.random() * posibles.length)];
+
+          if(!gamerProfile.waifus) gamerProfile.waifus = [];
+          if(!gamerProfile.waifus.some(w => w.id === elegida.id)) {
+              gamerProfile.waifus.push({id: elegida.id, nombre: elegida.nombre, imgUrl: elegida.imgUrl, rareza: elegida.rareza});
+              guardarProgresoNube();
+              renderizarAlbumWaifus();
+          }
+
+          overlay.style.display = "none";
+          img.src = elegida.imgUrl;
+          img.style.opacity = "1";
+          
+          let badge = document.getElementById('gachaRarezaBadge');
+          badge.innerText = elegida.rareza;
+          badge.className = "tag-badge tag-" + elegida.rareza.toLowerCase();
+          document.getElementById('gachaNombre').innerText = elegida.nombre;
+          document.getElementById('gachaPremio').innerText = elegida.premio;
+          resBox.style.display = "block";
+
+          if(elegida.rareza === 'SSR') { try{ confetti({ particleCount: 150, spread: 80, origin: { y: 0.5 } }); }catch(e){} }
+          else if(elegida.rareza === 'SR') { try{ confetti({ particleCount: 50, spread: 50, origin: { y: 0.5 } }); }catch(e){} }
+
+          btn.disabled = false;
+      }, 1800);
+  }
+
+  function renderizarAlbumWaifus() {
+      let cont = document.getElementById('albumWaifusContenedor');
+      let arr = gamerProfile.waifus || [];
+      document.getElementById('lblTotalWaifusJugador').innerText = arr.length;
+      
+      if(arr.length === 0) {
+          cont.innerHTML = `<p style="color: var(--text-muted); font-size: 0.8em; margin: 0;">Juega al Gacha para coleccionar.</p>`;
+          return;
+      }
+      
+      let html = "";
+      arr.forEach(w => {
+          let badgeColor = w.rareza === 'SSR' ? '#ffaa00' : (w.rareza === 'SR' ? '#b000ff' : '#00e5ff');
+          html += `
+          <div class="waifu-card-mini">
+              <img src="${w.imgUrl}" loading="lazy">
+              <div class="badge" style="background: rgba(0,0,0,0.8); color: ${badgeColor}; padding: 2px 6px; border-radius: 4px; font-weight: bold; border: 1px solid ${badgeColor}40;">${w.rareza}</div>
+          </div>`;
+      });
+      cont.innerHTML = html;
+  }
+
+  // --- FIN LÓGICA GACHA ---
 
   onAuthStateChanged(auth, async (user) => {
     let btnMenu = document.getElementById('btnMenuCloud');
@@ -690,9 +836,7 @@
     }
   });
 
-  window.abrirCloudSaveModal = function() {
-    reproducirSonido(); document.getElementById('authErrorMsg').style.display = 'none'; document.getElementById('modalCloudSave').style.display = 'flex';
-  };
+  window.abrirCloudSaveModal = function() { reproducirSonido(); document.getElementById('authErrorMsg').style.display = 'none'; document.getElementById('modalCloudSave').style.display = 'flex'; };
   window.cerrarCloudSaveModal = function() { document.getElementById('modalCloudSave').style.display = 'none'; };
 
   window.registrarCloud = async function() {
@@ -712,8 +856,8 @@
   window.cerrarSesionCloud = async function() {
     reproducirSonido(); await signOut(auth);
     localStorage.removeItem('sakura_gamer_profile'); localStorage.removeItem('sakura_carrito'); localStorage.removeItem('sakura_favoritos');
-    gamerProfile = { tag: "Gamer_Guest", xp: 0, rango: "Genin" }; carrito = []; favoritos = [];
-    actualizarBadges(); actualizarRangoSegunXP(); cerrarCloudSaveModal(); alert("Sesión cerrada. Tu partida está a salvo en la nube.");
+    gamerProfile = { tag: "Gamer_Guest", xp: 0, rango: "Genin", waifus: [] }; carrito = []; favoritos = [];
+    actualizarBadges(); actualizarRangoSegunXP(); renderizarAlbumWaifus(); cerrarCloudSaveModal(); alert("Sesión cerrada. Tu partida está a salvo en la nube.");
   };
 
   async function descargarProgresoNube(uid) {
@@ -722,29 +866,22 @@
           if(snap.exists()) {
               const d = snap.data();
               if(d.profile) gamerProfile = d.profile; if(d.favoritos) favoritos = d.favoritos; if(d.carrito) carrito = d.carrito;
-              if(d.ultimoCofre) localStorage.setItem('sakura_ultimo_cofre', d.ultimoCofre); if(d.ultimaGacha) localStorage.setItem('sakura_ultima_gacha', d.ultimaGacha);
+              if(d.ultimoCofre) localStorage.setItem('sakura_ultimo_cofre', d.ultimoCofre);
+              
               localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile)); localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos)); localStorage.setItem('sakura_carrito', JSON.stringify(carrito));
-              document.getElementById('inputGamerTag').value = gamerProfile.tag; actualizarBadges(); actualizarRangoSegunXP();
+              document.getElementById('inputGamerTag').value = gamerProfile.tag; actualizarBadges(); actualizarRangoSegunXP(); renderizarAlbumWaifus();
           } else { guardarProgresoNube(); }
       } catch(e) { console.error("Error cloud sync:", e); }
   }
 
   async function guardarProgresoNube() {
       if(!currentUserUid) return;
-      try {
-          await setDoc(doc(db, "jugadores_cloud", currentUserUid), { profile: gamerProfile, favoritos: favoritos, carrito: carrito, ultimoCofre: localStorage.getItem('sakura_ultimo_cofre') || '', ultimaGacha: localStorage.getItem('sakura_ultima_gacha') || '', updatedAt: Date.now() }, { merge: true });
-      } catch(e) { console.error("Error guardando en nube:", e); }
+      try { await setDoc(doc(db, "jugadores_cloud", currentUserUid), { profile: gamerProfile, favoritos: favoritos, carrito: carrito, ultimoCofre: localStorage.getItem('sakura_ultimo_cofre') || '', updatedAt: Date.now() }, { merge: true }); } catch(e) {}
   }
 
   let eventoInstalacion = null;
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault(); eventoInstalacion = e;
-    const btn = document.getElementById('btnInstalarPWA'); if(btn) btn.style.display = 'block'; 
-  });
-  window.instalarPWA = async function() {
-    reproducirSonido(); if (!eventoInstalacion) return; eventoInstalacion.prompt();
-    const { outcome } = await eventoInstalacion.userChoice; if (outcome === 'accepted') document.getElementById('btnInstalarPWA').style.display = 'none'; eventoInstalacion = null;
-  };
+  window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); eventoInstalacion = e; const btn = document.getElementById('btnInstalarPWA'); if(btn) btn.style.display = 'block'; });
+  window.instalarPWA = async function() { reproducirSonido(); if (!eventoInstalacion) return; eventoInstalacion.prompt(); const { outcome } = await eventoInstalacion.userChoice; if (outcome === 'accepted') document.getElementById('btnInstalarPWA').style.display = 'none'; eventoInstalacion = null; };
 
   window.reproducirSonido = function() {
     try {
@@ -758,9 +895,7 @@
     } catch(e) {}
   };
 
-  function sanitizarHTML(str) {
-    if (!str) return ''; return String(str).replace(/[&<>"']/g, function(m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]; });
-  }
+  function sanitizarHTML(str) { if (!str) return ''; return String(str).replace(/[&<>"']/g, function(m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]; }); }
 
   async function cargarConfigCategoriasPublico() {
     try {
@@ -768,7 +903,7 @@
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((docSnap) => {
         let conf = docSnap.data();
-        if(conf.tipo === 'categoria_foto') {
+        if(conf?.tipo === 'categoria_foto') {
           let catImgEl = document.getElementById(`img-cat-${conf.categoriaId}`);
           if(catImgEl && conf.imgUrl) catImgEl.src = conf.imgUrl;
           let catTitleEl = document.getElementById(`title-cat-${conf.categoriaId}`);
@@ -776,22 +911,6 @@
         }
       });
     } catch (e) {}
-  }
-
-  async function cargarDatosPagoNube() {
-    try {
-      const docSnap = await getDoc(doc(db, "configuracion", "datos_pago"));
-      if (docSnap.exists()) window.datosPagoGlobal = docSnap.data();
-      else window.datosPagoGlobal = { banco: "Venezuela (0102)", telefono: "0424-4970576", cedula: "V-24159896", binance: "n3lmary@gmail.com" };
-      renderizarDatosPago();
-    } catch(e) {
-      window.datosPagoGlobal = { banco: "Venezuela (0102)", telefono: "0424-4970576", cedula: "V-24159896", binance: "n3lmary@gmail.com" }; renderizarDatosPago();
-    }
-  }
-
-  function renderizarDatosPago() {
-    let caja = document.getElementById('cajaDatosPagoInfo'); if(!caja) return; let dp = window.datosPagoGlobal;
-    caja.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;"><span>Banco: ${sanitizarHTML(dp.banco)}</span></div><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;"><span>Pago Móvil: ${sanitizarHTML(dp.telefono)}</span></div><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;"><span>Cédula: ${sanitizarHTML(dp.cedula)}</span></div><div style="display:flex; justify-content:space-between; align-items:center;"><span>Binance: ${sanitizarHTML(dp.binance)}</span></div>`;
   }
 
   window.copiarTexto = function(texto) { reproducirSonido(); navigator.clipboard.writeText(texto).then(() => alert("Copiado al portapapeles.")); };
@@ -802,7 +921,7 @@
       const querySnapshot = await getDocs(q);
       const container = document.getElementById('bannerSliderContainer');
       let bannersValidos = [];
-      querySnapshot.forEach((docSnap) => { let b = docSnap.data(); if (b.imgUrl) bannersValidos.push(b.imgUrl); });
+      querySnapshot.forEach((docSnap) => { let b = docSnap.data(); if (b?.imgUrl) bannersValidos.push(b.imgUrl); });
       if (bannersValidos.length === 0) { container.style.display = 'none'; return; }
       container.style.display = 'block';
       let htmlImgs = ''; let htmlDots = '<div class="banner-dots">'; 
@@ -817,7 +936,9 @@
   function iniciarAutoSliderBanners(total) { totalBanners = total; if(total <= 1) return; bannerInterval = setInterval(() => rotarBanner(1), 5000); }
   window.rotarBanner = function(direccion) {
     if(totalBanners <= 1) return; let slides = document.querySelectorAll('.banner-slide'); let dots = document.querySelectorAll('.banner-dot');
+    if(!slides.length) return;
     let currentIdx = Array.from(slides).findIndex(s => s.classList.contains('active'));
+    if(currentIdx === -1) currentIdx = 0;
     slides[currentIdx].classList.remove('active'); dots[currentIdx].classList.remove('active');
     let nextIdx = currentIdx + direccion;
     if(nextIdx >= totalBanners) nextIdx = 0; if(nextIdx < 0) nextIdx = totalBanners - 1;
@@ -911,7 +1032,7 @@
     reproducirSonido(); const prod = productosNubeGlobal.find(p => p.id === prodId); if (!prod) return;
     const fotosArray = (prod.fotos && prod.fotos.length > 0) ? prod.fotos : ['logo.webp?v=2'];
     const esRecarga = prod.categoria === 'recargas'; const esAgotado = (prod.stock !== undefined && prod.stock <= 0) && !esRecarga;
-    window.productoActual = { id: prod.id, img: fotosArray[0], titulo: prod.nombre, precio: prod.precio, esRopa: prod.categoria.includes('ropa'), esRecarga };
+    window.productoActual = { id: prod.id, img: fotosArray[0], titulo: prod.nombre, precio: prod.precio, esRopa: prod?.categoria?.includes('ropa'), esRecarga };
 
     document.getElementById('modalImg').src = fotosArray[0]; document.getElementById('modalTitulo').innerText = prod.nombre; document.getElementById('modalPrecio').innerText = "$" + Number(prod.precio).toFixed(2);
     document.getElementById('modalDesc').innerText = prod.descripcion || 'Producto oficial Sakura Gameverse.';
@@ -993,45 +1114,32 @@
     } catch(err) { alert("Error al guardar la reseña."); }
   };
 
-  window.addEventListener('DOMContentLoaded', () => {
-    cargarBannersDeNube(); cargarProductosDeNube(); cargarConfigCategoriasPublico(); cargarDatosPagoNube(); cargarReviewsNube(); 
+  window.addEventListener('DOMContentLoaded', async () => {
+    await cargarCMSyGacha();
+    cargarBannersDeNube(); cargarProductosDeNube(); cargarConfigCategoriasPublico(); cargarReviewsNube(); 
     cargarUmbralesRangosNube().then(() => { actualizarRangoSegunXP(); });
-    document.getElementById('inputGamerTag').value = gamerProfile.tag; actualizarBadges();
+    document.getElementById('inputGamerTag').value = gamerProfile.tag; actualizarBadges(); renderizarAlbumWaifus();
   });
 
   window.cerrarModal = function() { document.getElementById('miModal').style.display = 'none'; };
 
   window.productoActual = null; let descuentoAplicado = 0; let pestanaCarritoActual = 'fisico';
 
-  // --- SOLUCIÓN FASE 3: LÓGICA DE GUARDADOS Y PESTAÑAS ---
   window.toggleFavoritoPorId = function(event, id) {
-      event.stopPropagation(); // Evita abrir el modal
-      reproducirSonido();
-      let prod = productosNubeGlobal.find(p => p.id === id);
-      if (!prod) return;
+      event.stopPropagation(); reproducirSonido();
+      let prod = productosNubeGlobal.find(p => p.id === id); if (!prod) return;
       let idx = favoritos.findIndex(f => f.id === id);
-      if (idx >= 0) {
-          favoritos.splice(idx, 1);
-      } else {
-          favoritos.push({ id: prod.id, titulo: prod.nombre, precio: prod.precio, img: (prod.fotos && prod.fotos.length > 0) ? prod.fotos[0] : 'logo.webp?v=2' });
-      }
-      localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos));
-      actualizarBadges(); guardarProgresoNube();
+      if (idx >= 0) { favoritos.splice(idx, 1); } 
+      else { favoritos.push({ id: prod.id, titulo: prod.nombre, precio: prod.precio, img: (prod.fotos && prod.fotos.length > 0) ? prod.fotos[0] : 'logo.webp?v=2' }); }
+      localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos)); actualizarBadges(); guardarProgresoNube();
   };
 
   window.abrirFavoritosModal = function() {
-      reproducirSonido();
-      let cont = document.getElementById('listaFavoritosDetalle'); cont.innerHTML = "";
-      if (favoritos.length === 0) {
-          cont.innerHTML = "<p style='color:var(--text-muted); text-align:center;'>No tienes artículos guardados.</p>";
-      } else {
+      reproducirSonido(); let cont = document.getElementById('listaFavoritosDetalle'); cont.innerHTML = "";
+      if (favoritos.length === 0) { cont.innerHTML = "<p style='color:var(--text-muted); text-align:center;'>No tienes artículos guardados.</p>"; } 
+      else {
           favoritos.forEach(f => {
-              cont.innerHTML += `
-                  <div class="cart-item-row" onclick="cerrarFavoritosModal(); abrirModalPorId('${f.id}')" style="cursor:pointer;">
-                      <img src="${f.img}" class="cart-item-img" loading="lazy">
-                      <div class="cart-item-info"><strong>${sanitizarHTML(f.titulo)}</strong><br><span style="color:var(--secondary-color);">$${Number(f.precio).toFixed(2)}</span></div>
-                      <button class="cart-item-del" onclick="event.stopPropagation(); toggleFavoritoPorId(event, '${f.id}')"><i class="fas fa-trash"></i></button>
-                  </div>`;
+              cont.innerHTML += `<div class="cart-item-row" onclick="cerrarFavoritosModal(); abrirModalPorId('${f.id}')" style="cursor:pointer;"><img src="${f.img}" class="cart-item-img" loading="lazy"><div class="cart-item-info"><strong>${sanitizarHTML(f.titulo)}</strong><br><span style="color:var(--secondary-color);">$${Number(f.precio).toFixed(2)}</span></div><button class="cart-item-del" onclick="event.stopPropagation(); toggleFavoritoPorId(event, '${f.id}')"><i class="fas fa-trash"></i></button></div>`;
           });
       }
       document.getElementById('modalFavoritos').style.display = 'flex';
@@ -1041,14 +1149,11 @@
 
   window.cambiarPestanaCarrito = function(pestana) {
       reproducirSonido(); pestanaCarritoActual = pestana;
-      document.getElementById('tabBtnFisico').classList.toggle('activo', pestana === 'fisico');
-      document.getElementById('tabBtnDigital').classList.toggle('activo', pestana === 'digital');
-      document.getElementById('apartadoEnvioFisico').style.display = (pestana === 'fisico') ? 'block' : 'none';
-      document.getElementById('apartadoRecargasDigitales').style.display = (pestana === 'digital') ? 'block' : 'none';
+      document.getElementById('tabBtnFisico').classList.toggle('activo', pestana === 'fisico'); document.getElementById('tabBtnDigital').classList.toggle('activo', pestana === 'digital');
+      document.getElementById('apartadoEnvioFisico').style.display = (pestana === 'fisico') ? 'block' : 'none'; document.getElementById('apartadoRecargasDigitales').style.display = (pestana === 'digital') ? 'block' : 'none';
       renderizarListaCarrito();
   };
 
-  // --- SOLUCIÓN FASE 3: GAMIFICACIÓN Y MENÚ ---
   window.activarEasterEggLogo = function() { reproducirSonido(); try{ confetti({ particleCount: 50, spread: 60, origin: { y: 0.3 } }); }catch(e){} };
   
   window.abrirCofreModal = function() { reproducirSonido(); document.getElementById('modalCofreDiario').style.display = 'flex'; };
@@ -1060,17 +1165,6 @@
     try{ confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } }); }catch(e){} guardarProgresoNube();
   };
 
-  window.abrirGachaModal = function() { reproducirSonido(); document.getElementById('modalGacha').style.display = 'flex'; };
-  window.cerrarGachaModal = function() { document.getElementById('modalGacha').style.display = 'none'; };
-  window.girarRuletaGacha = function() {
-    reproducirSonido(); let ultimo = localStorage.getItem('sakura_ultima_gacha'); let hoy = new Date().toDateString();
-    if(ultimo === hoy) return alert("Ya giraste la ruleta hoy.");
-    let premios = ["Nada hoy", "Cupón 5%", "Nada hoy", "Cupón 10%", "Nada hoy"]; let res = premios[Math.floor(Math.random() * premios.length)];
-    document.getElementById('gachaResultado').innerText = res;
-    if(res.includes("Cupón")) try{ confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } }); }catch(e){}
-    localStorage.setItem('sakura_ultima_gacha', hoy); guardarProgresoNube();
-  };
-
   window.abrirTemasModal = function() { reproducirSonido(); document.getElementById('modalTemas').style.display = 'flex'; };
   window.cerrarTemasModal = function() { document.getElementById('modalTemas').style.display = 'none'; };
   window.cambiarTema = function(tema) { reproducirSonido(); document.body.className = ''; if(tema) document.body.classList.add(tema); cerrarTemasModal(); };
@@ -1080,7 +1174,6 @@
     if(audio.paused) { audio.play(); icon.classList.remove('fa-music'); icon.classList.add('fa-pause-circle'); }
     else { audio.pause(); icon.classList.remove('fa-pause-circle'); icon.classList.add('fa-music'); }
   };
-  // -------------------------------------------------------------
 
   window.agregarAlCarrito = function() {
     reproducirSonido(); let item = { ...window.productoActual };
@@ -1172,7 +1265,7 @@
     carrito.forEach((i, idx) => { msg += `🎁 ${i.titulo} - $${Number(i.precio).toFixed(2)}\n`; });
     let tot = carrito.reduce((s, i) => s + Number(i.precio), 0); msg += `\n*Total aprox:* $${tot.toFixed(2)}\n\n¡Ojalá me regalen algo de aquí! 🥺💖`;
     if (navigator.share) { navigator.share({ title: 'Mi Wishlist Sakura Gameverse', text: msg }).catch(console.error); } 
-    else { window.open("https://wa.me/?text=" + encodeURIComponent(msg), '_blank'); }
+    else { window.open("https://wa.me/" + ajustesWebGlobal.whatsapp + "?text=" + encodeURIComponent(msg), '_blank'); }
   };
 
   window.enviarPedidoWhatsApp = async function() {
@@ -1214,7 +1307,7 @@
             metodoEnvio: tieneFisicos ? metodoEnvio : 'Entrega Digital Directa', direccionEnvio: direccionEnvio,
             detalles: detallesBD.trim(), totalUsd: tot, estadoPedido: "Pendiente", guiaEnvio: "", timestamp: Date.now()
         });
-        window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msgParaWhatsApp), '_blank'); 
+        window.open("https://wa.me/" + ajustesWebGlobal.whatsapp + "?text=" + encodeURIComponent(msgParaWhatsApp), '_blank'); 
         vaciarCarrito(); cerrarCarritoModal();
     } catch(err) { alert("Hubo un error de conexión registrando tu pedido. Por favor intenta de nuevo."); } 
     finally { btnSubmit.disabled = false; btnSubmit.innerHTML = "Enviar Orden"; }
@@ -1222,7 +1315,11 @@
 
   window.compartirProductoWhatsApp = function() {
     reproducirSonido(); let msg = `Hola Sakura Gameverse, deseo consultar disponibilidad de:\n\n*${window.productoActual.titulo}*\nPrecio: $${Number(window.productoActual.precio).toFixed(2)}`; 
-    window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msg), '_blank');
+    window.open("https://wa.me/" + ajustesWebGlobal.whatsapp + "?text=" + encodeURIComponent(msg), '_blank');
+  };
+
+  window.abrirChatGlobalWhatsApp = function() {
+    reproducirSonido(); window.open("https://wa.me/" + ajustesWebGlobal.whatsapp, '_blank'); cerrarMenuOpciones();
   };
 
   window.abrirFaqModal = function() { reproducirSonido(); document.getElementById('modalFaq').style.display = 'flex'; };
@@ -1232,7 +1329,7 @@
       reproducirSonido();
       let n = prompt("Ingresa tu GamerTag o Nombre:"); if(!n) return;
       let d = prompt("¿Qué coleccionable, figura o código te gustaría encargar?"); if(!d) return;
-      window.open("https://wa.me/584244970576?text=" + encodeURIComponent(`*Búsqueda de Tesoro:*\nHola Sakura, soy ${n}. Me gustaría encargar/conseguir el siguiente artículo: ${d}`), '_blank');
+      window.open("https://wa.me/" + ajustesWebGlobal.whatsapp + "?text=" + encodeURIComponent(`*Búsqueda de Tesoro:*\nHola Sakura, soy ${n}. Me gustaría encargar/conseguir el siguiente artículo: ${d}`), '_blank');
   };
 
   window.abrirMenuOpciones = function() { reproducirSonido(); document.getElementById('modalOpcionesMenu').style.display = 'flex'; };
