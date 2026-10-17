@@ -192,7 +192,7 @@
     </div>
   </section>
 
-  <!-- JUGADORES (XP Y TOKENS) -->
+  <!-- JUGADORES -->
   <section id="panel-jugadores" class="admin-panel">
     <div class="card-panel">
       <div class="panel-header"><span class="panel-title"><i class="fas fa-users"></i> Base de Jugadores</span></div>
@@ -358,6 +358,7 @@
     } catch(e) {}
   }
 
+  // >>> HISTORIAL OPTIMIZADO CON TRY/CATCH <<<
   async function cargarHistorialGacha() {
     try {
       const q = query(collection(db, "historial_gacha"), orderBy("timestamp", "desc"));
@@ -382,7 +383,10 @@
         </div>`;
       });
       cont.innerHTML = html;
-    } catch(e) {}
+    } catch(e) {
+      console.error("Error al cargar el historial:", e);
+      document.getElementById('listaHistorialGacha').innerHTML = `<p style='color:#ff3366; text-align:center;'><i class="fas fa-exclamation-triangle"></i> Fallo de conexión: ${e.message}</p>`;
+    }
   }
 
   window.eliminarHistorialGacha = async function(id) {
@@ -521,7 +525,20 @@
   async function cargarReviewsAdmin() { const q = query(collection(db, "reviews"), orderBy("timestamp", "desc")); const snap = await getDocs(q); let html=""; snap.forEach(d => { html += `<div class="item-card-row"><div style="flex-grow:1; font-size:0.9em;">${sanitizar(d.data().nombre)}<br><span style="color:var(--text-muted);">${sanitizar(d.data().texto)}</span></div><button class="btn-action-touch btn-del" onclick="eliminarReview('${d.id}')"><i class="fas fa-trash"></i></button></div>`; }); document.getElementById('listaReviewsAdmin').innerHTML = html; }
   window.eliminarReview = async function(id) { await deleteDoc(doc(db, "reviews", id)); cargarReviewsAdmin(); };
 
-  function cargarTodo() { cargarAjustesWeb(); cargarWaifusAdmin(); cargarHistorialGacha(); cargarProductosAdmin(); cargarPedidosAdmin(); cargarJugadoresAdmin(); cargarFacturasAdmin(); cargarBannersAdmin(); cargarCuponesAdmin(); cargarDatosGenerales(); cargarReviewsAdmin(); }
+  // >>> FUNCIÓN CARGAR TODO ACTUALIZADA <<<
+  function cargarTodo() { 
+    cargarAjustesWeb(); 
+    cargarWaifusAdmin(); 
+    cargarHistorialGacha(); // Fuerza la carga del historial
+    cargarProductosAdmin(); 
+    cargarPedidosAdmin(); 
+    cargarJugadoresAdmin(); 
+    cargarFacturasAdmin(); 
+    cargarBannersAdmin(); 
+    cargarCuponesAdmin(); 
+    cargarDatosGenerales(); 
+    cargarReviewsAdmin(); 
+  }
 </script>
 </body>
 </html>
