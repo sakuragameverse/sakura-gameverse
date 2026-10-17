@@ -65,7 +65,7 @@
                   radial-gradient(circle at 80% 80%, rgba(0, 229, 255, 0.05) 0%, transparent 50%),
                   linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
                   linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-      background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px; pointer-events: none; z-index: -1; 
+      background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px; pointer-events: none; z-index: -1; will-change: transform;
     }
 
     h1, h2, h3, h4 { font-family: 'Chakra Petch', sans-serif; text-transform: uppercase; letter-spacing: 1px; }
@@ -77,13 +77,13 @@
       ::-webkit-scrollbar-thumb:hover { background: var(--primary-color); }
     }
 
-    .top-bar-notice { background: rgba(5, 1, 10, 0.85); backdrop-filter: blur(4px); border-bottom: 1px solid var(--border-color); padding: 7px 14px; font-size: 0.85em; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 10; }
-    .ticker-bar { background: rgba(14, 5, 32, 0.85); border-bottom: 1px solid rgba(255, 0, 127, 0.2); color: var(--secondary-color); font-size: 0.8em; text-transform: uppercase; letter-spacing: 1px; padding: 6px 0; overflow: hidden; white-space: nowrap; position: relative; z-index: 9; }
+    .top-bar-notice { background: rgba(5, 1, 10, 0.8); backdrop-filter: blur(5px); border-bottom: 1px solid var(--border-color); padding: 7px 14px; font-size: 0.85em; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 10; }
+    .ticker-bar { background: rgba(14, 5, 32, 0.8); backdrop-filter: blur(5px); border-bottom: 1px solid rgba(255, 0, 127, 0.2); color: var(--secondary-color); font-size: 0.8em; text-transform: uppercase; letter-spacing: 1px; padding: 6px 0; overflow: hidden; white-space: nowrap; position: relative; z-index: 9; transform: translateZ(0); }
     .ticker-content { display: inline-block; animation: ticker-slide 22s linear infinite; will-change: transform; }
     @keyframes ticker-slide { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
     .hero-banner { background: radial-gradient(ellipse at top, rgba(26, 8, 51, 0.5) 0%, transparent 70%); text-align: center; padding: 25px 20px; border-bottom: 1px solid var(--border-color); position: relative; z-index: 2; }
-    .hero-logo { width: 100%; max-width: 250px; height: auto; margin-bottom: 15px; cursor: pointer; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), filter 0.3s ease; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6)); animation: logo-float 4s infinite ease-in-out; }
+    .hero-logo { width: 100%; max-width: 250px; height: auto; margin-bottom: 15px; cursor: pointer; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), filter 0.3s ease; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6)); animation: logo-float 4s infinite ease-in-out; will-change: transform, filter; }
     .hero-logo:hover { transform: scale(1.08) translateY(-5px); filter: drop-shadow(0 0 15px var(--primary-color)) drop-shadow(0 0 30px var(--secondary-color)); animation: none; }
     @keyframes logo-float { 0% { transform: translateY(0px); } 50% { transform: translateY(-4px); } 100% { transform: translateY(0px); } }
 
@@ -93,10 +93,10 @@
     .status-dot { width: 7px; height: 7px; background-color: #25D366; border-radius: 50%; box-shadow: 0 0 8px #25D366; }
 
     .banner-slider-container { position: relative; width: 100%; max-width: 800px; margin: 18px auto 0 auto; border-radius: var(--radius-md); overflow: hidden; aspect-ratio: 16/9; background: #000; border: 1px solid var(--glass-border); box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: none; }
-    .banner-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.5s ease-in-out; cursor: pointer; }
+    .banner-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.5s ease-in-out; cursor: pointer; will-change: opacity; }
     .banner-slide.active { opacity: 1; z-index: 2; }
     
-    .banner-control-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(4px); color: var(--secondary-color); border: 1px solid var(--glass-border); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; transition: all 0.2s ease; }
+    .banner-control-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(8px); color: var(--secondary-color); border: 1px solid var(--glass-border); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; transition: all 0.2s ease; }
     .banner-control-btn:hover { background: rgba(0, 229, 255, 0.2); color: #fff; box-shadow: 0 0 15px var(--secondary-color); }
     .banner-prev { left: 10px; } .banner-next { right: 10px; }
     
@@ -107,7 +107,7 @@
     .container { padding: 25px 18px 80px 18px; max-width: 1180px; margin: 0 auto; position: relative; z-index: 2; }
 
     .search-box { margin-bottom: 25px; display: flex; justify-content: center; }
-    .search-input { background: var(--glass-bg); backdrop-filter: blur(6px); border: 1px solid var(--glass-border); color: #fff; padding: 12px 20px; width: 100%; max-width: 480px; border-radius: var(--radius-pill); font-family: 'Rajdhani', sans-serif; font-size: 1em; outline: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+    .search-input { background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); color: #fff; padding: 12px 20px; width: 100%; max-width: 480px; border-radius: var(--radius-pill); font-family: 'Rajdhani', sans-serif; font-size: 1em; outline: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
     .search-input:focus { border-color: var(--secondary-color); box-shadow: 0 0 20px rgba(0, 229, 255, 0.2); background: rgba(17, 5, 36, 0.7); }
 
     .categorias-visuales-section { margin-bottom: 30px; }
@@ -116,26 +116,26 @@
     .carrusel-track { display: flex; gap: 12px; overflow-x: auto; scroll-behavior: smooth; scrollbar-width: none; padding: 8px 2px; -webkit-overflow-scrolling: touch; }
     .carrusel-track::-webkit-scrollbar { display: none; }
     
-    .cat-card { flex: 0 0 auto; width: 130px; background: var(--glass-bg); backdrop-filter: blur(6px); border: 1px solid var(--glass-border); border-radius: var(--radius-md); overflow: hidden; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+    .cat-card { flex: 0 0 auto; width: 130px; background: var(--glass-bg); backdrop-filter: blur(8px); border: 1px solid var(--glass-border); border-radius: var(--radius-md); overflow: hidden; cursor: pointer; transition: all 0.3s ease; will-change: transform; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
     .cat-card:hover, .cat-card.activa { transform: translateY(-5px); border-color: var(--secondary-color); box-shadow: 0 8px 20px rgba(0, 229, 255, 0.15); }
     .cat-img { width: 100%; height: 110px; object-fit: contain; background: rgba(0, 0, 0, 0.2); border-bottom: 1px solid var(--glass-border); padding: 10px; }
     .cat-info { padding: 8px 6px; text-align: center; }
     .cat-title { font-family: 'Chakra Petch', sans-serif; font-size: 0.9em; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .cat-count { font-size: 0.75em; color: var(--text-muted); }
     
-    .carrusel-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.6); color: var(--secondary-color); border: 1px solid var(--glass-border); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; transition: all 0.2s ease; }
+    .carrusel-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); color: var(--secondary-color); border: 1px solid var(--glass-border); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; transition: all 0.2s ease; }
     .carrusel-arrow:hover { background: var(--secondary-color); color: #000; box-shadow: 0 0 10px var(--secondary-color); }
     .arrow-prev { left: -10px; } .arrow-next { right: -10px; }
 
     .controles-superiores { margin-bottom: 25px; }
     .panel-controles-avanzados { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
-    .ordenar-select { background: var(--glass-bg); backdrop-filter: blur(6px); border: 1px solid var(--glass-border); color: #fff; padding: 10px 14px; border-radius: var(--radius-sm); font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 0.9em; cursor: pointer; outline: none; transition: all 0.3s ease; appearance: none; background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2300e5ff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"); background-repeat: no-repeat; background-position: right 12px top 50%; background-size: 10px auto; }
+    .ordenar-select { background: var(--glass-bg); backdrop-filter: blur(8px); border: 1px solid var(--glass-border); color: #fff; padding: 10px 14px; border-radius: var(--radius-sm); font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 0.9em; cursor: pointer; outline: none; transition: all 0.3s ease; appearance: none; background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2300e5ff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"); background-repeat: no-repeat; background-position: right 12px top 50%; background-size: 10px auto; }
     .ordenar-select:focus { border-color: var(--secondary-color); background: rgba(17, 5, 36, 0.8); }
 
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 18px; }
     
-    .card { background: var(--glass-bg); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 12px; text-align: left; position: relative; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); }
-    .card:hover { background: rgba(25, 9, 51, 0.55); border-color: var(--secondary-color); transform: translateY(-6px); box-shadow: 0 12px 30px rgba(0, 229, 255, 0.15); }
+    .card { background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 12px; text-align: left; position: relative; cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); will-change: transform; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); }
+    .card:hover { background: rgba(25, 9, 51, 0.55); border-color: var(--secondary-color); transform: translateY(-6px); box-shadow: 0 12px 40px rgba(0, 229, 255, 0.15); }
     .card.agotado { filter: grayscale(100%); opacity: 0.75; border-color: rgba(255, 51, 102, 0.4); }
     .card.agotado:hover { filter: grayscale(80%); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255, 51, 102, 0.15); }
     
@@ -144,14 +144,10 @@
     .card-img-container img.activa { display: block; animation: fadeImg 0.3s ease; }
     @keyframes fadeImg { from { opacity: 0.5; } to { opacity: 1; } }
     
-    .carrusel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.5); color: var(--secondary-color); border: 1px solid var(--glass-border); border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.75em; z-index: 4; transition: all 0.2s ease; }
+    .carrusel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); color: var(--secondary-color); border: 1px solid var(--glass-border); border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.75em; z-index: 4; transition: all 0.2s ease; }
     .carrusel-btn:hover { background: var(--secondary-color); color: #000; }
     .carrusel-prev { left: 6px; } .carrusel-next { right: 6px; }
     
-    .carrusel-dots { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; z-index: 4; background: rgba(0,0,0,0.4); padding: 3px 6px; border-radius: var(--radius-pill); }
-    .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255, 255, 255, 0.4); transition: all 0.2s ease; }
-    .dot.activo { background: var(--secondary-color); transform: scale(1.2); }
-
     .card-title { font-family: 'Chakra Petch', sans-serif; font-size: 1.05em; font-weight: 600; color: #fff; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
     .precio-container { display: flex; align-items: baseline; gap: 8px; }
     .card-price { font-size: 1.3em; font-weight: 700; color: var(--secondary-color); text-shadow: 0 0 10px rgba(0, 229, 255, 0.3); }
@@ -170,11 +166,11 @@
     .cart-tab-btn { flex: 1; background: transparent; color: var(--text-muted); border: none; padding: 10px 10px; border-radius: var(--radius-pill); font-family: 'Chakra Petch', sans-serif; font-size: 0.82em; font-weight: 700; cursor: pointer; transition: all 0.3s ease; }
     .cart-tab-btn.activo { background: var(--secondary-color); color: #000; box-shadow: 0 0 10px rgba(0, 229, 255, 0.4); }
 
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 0, 6, 0.8); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
-    .modal-content { background: rgba(14, 4, 31, 0.95); padding: 24px; border-radius: var(--radius-md); text-align: left; max-width: 95%; width: 440px; border: 1px solid var(--glass-border); box-shadow: 0 15px 50px rgba(0,0,0,0.6); position: relative; max-height: calc(100vh - 40px); overflow-y: auto; animation: modalSlideUp 0.3s ease; }
-    @keyframes modalSlideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 0, 6, 0.75); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+    .modal-content { background: rgba(14, 4, 31, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); padding: 24px; border-radius: var(--radius-md); text-align: left; max-width: 95%; width: 440px; border: 1px solid var(--glass-border); box-shadow: 0 15px 50px rgba(0,0,0,0.6), inset 0 0 20px rgba(255,255,255,0.02); position: relative; max-height: calc(100vh - 100px); overflow-y: auto; animation: modalSlideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    @keyframes modalSlideUp { from { transform: translateY(40px) scale(0.95); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
     
-    .cerrar-modal { position: absolute; top: 12px; right: 14px; font-size: 24px; color: var(--text-muted); cursor: pointer; background: rgba(0,0,0,0.3); border: 1px solid transparent; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; z-index: 10; }
+    .cerrar-modal { position: absolute; top: 12px; right: 14px; font-size: 24px; color: var(--text-muted); cursor: pointer; background: rgba(0,0,0,0.3); border: 1px solid transparent; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
     .cerrar-modal:hover { color: #fff; background: rgba(255, 51, 102, 0.2); border-color: #ff3366; }
     
     .breadcrumbs { font-size: 0.8em; color: var(--text-muted); margin-bottom: 10px; }
@@ -197,7 +193,7 @@
     
     .btn-instalar { background: linear-gradient(135deg, #25D366, #00e5ff); color: #000; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); }
 
-    .btn-compartir { background: rgba(37, 211, 102, 0.05); color: #25d366; border: 1px solid rgba(37, 211, 102, 0.4); padding: 12px; font-family: 'Chakra Petch', sans-serif; font-size: 0.95em; font-weight: 600; border-radius: var(--radius-sm); cursor: pointer; width: 100%; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s ease; }
+    .btn-compartir { background: rgba(37, 211, 102, 0.05); backdrop-filter: blur(4px); color: #25d366; border: 1px solid rgba(37, 211, 102, 0.4); padding: 12px; font-family: 'Chakra Petch', sans-serif; font-size: 0.95em; font-weight: 600; border-radius: var(--radius-sm); cursor: pointer; width: 100%; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s ease; }
     .btn-compartir:hover { background: rgba(37, 211, 102, 0.15); box-shadow: 0 0 15px rgba(37, 211, 102, 0.2); }
 
     .cupon-box { display: flex; gap: 8px; margin-bottom: 12px; }
@@ -222,7 +218,7 @@
     .upsell-btn { background: rgba(0, 229, 255, 0.15); color: var(--secondary-color); border: 1px solid rgba(0,229,255,0.3); padding: 5px; width: 100%; border-radius: 4px; font-size: 0.75em; cursor: pointer; font-weight: bold; transition: all 0.2s ease;}
     .upsell-btn:hover { background: var(--secondary-color); color: #000; box-shadow: 0 0 8px var(--secondary-color); }
 
-    .bottom-nav { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 500px; background: rgba(10, 2, 22, 0.85); border: 1px solid var(--glass-border); border-radius: var(--radius-pill); display: flex; justify-content: space-around; align-items: center; padding: 12px 10px; z-index: 2500; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(0, 229, 255, 0.05); }
+    .bottom-nav { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 500px; background: rgba(10, 2, 22, 0.75); border: 1px solid var(--glass-border); border-radius: var(--radius-pill); display: flex; justify-content: space-around; align-items: center; padding: 12px 10px; z-index: 2500; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(0, 229, 255, 0.05); }
     .nav-item { color: var(--text-muted); display: flex; flex-direction: column; align-items: center; font-size: 0.7em; font-weight: 700; cursor: pointer; position: relative; width: 25%; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
     .nav-item i { font-size: 1.5em; margin-bottom: 4px; color: var(--text-muted); transition: all 0.3s ease; }
     .nav-item:hover, .nav-item.active { color: #fff; transform: translateY(-3px); }
@@ -234,7 +230,7 @@
     .btn-menu-opcion i { font-size: 1.8em; margin-bottom: 8px; }
     .btn-menu-opcion:hover { border-color: var(--secondary-color); background: rgba(0, 229, 255, 0.05); transform: translateY(-2px); }
 
-    .reviews-section, .info-section { background: var(--glass-bg); backdrop-filter: blur(6px); margin-top: 35px; padding: 24px 18px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+    .reviews-section, .info-section { background: var(--glass-bg); backdrop-filter: blur(10px); margin-top: 35px; padding: 24px 18px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
     .review-card { background: rgba(0,0,0,0.3); padding: 14px; border-radius: var(--radius-sm); margin-bottom: 12px; border: 1px solid var(--glass-border); }
     .badge-envio { display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 0, 127, 0.1); border: 1px solid rgba(255, 0, 127, 0.3); padding: 4px 10px; border-radius: var(--radius-pill); font-size: 0.8em; font-weight: 700; margin-right: 6px; margin-bottom: 6px; }
     
@@ -254,31 +250,6 @@
     .waifu-card-mini { width: 70px; height: 100px; background: rgba(0,0,0,0.5); border-radius: var(--radius-sm); border: 1px solid var(--glass-border); overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .waifu-card-mini img { width: 100%; height: 100%; object-fit: cover; }
     .waifu-card-mini .badge { position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); font-size: 0.6em; }
-
-    /* Estilos Gacha Pkmn */
-    .pkmn-machine { position: relative; height: 220px; background: #0b1a20; border: 2px solid #ff0000; border-radius: var(--radius-md); overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
-    .pkmn-machine::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 50%; background: rgba(255,0,0,0.15); border-bottom: 2px solid #ff0000; }
-    .pokeball-sprite { width: 60px; position: absolute; top: -60px; transition: all 0.5s ease; opacity: 0; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5)); }
-    .pokeball-sprite.falling { animation: pkmnDrop 0.5s forwards; }
-    .pokeball-sprite.shaking { top: 50%; transform: translateY(-50%); opacity: 1; animation: pkmnShake 0.5s infinite; }
-    .pokeball-sprite.opened { display: none; }
-    .pkmn-sprite { width: 140px; image-rendering: pixelated; opacity: 0; transform: scale(0.5); transition: all 0.3s ease; filter: drop-shadow(0 0 10px rgba(255,255,255,0.2)); }
-    .pkmn-sprite.revealed { opacity: 1; transform: scale(1.2); }
-    .pkmn-flash { position: absolute; inset: 0; background: yellow; opacity: 0; pointer-events: none; z-index: 10; mix-blend-mode: overlay; }
-    .pkmn-flash.active { animation: pkmnThunder 0.5s ease-out; }
-    @keyframes pkmnDrop { 0% { top: -60px; opacity: 1; } 100% { top: 50%; transform: translateY(-50%); opacity: 1; } }
-    @keyframes pkmnShake { 0% { transform: translateY(-50%) rotate(0deg); } 25% { transform: translateY(-50%) rotate(-20deg); } 50% { transform: translateY(-50%) rotate(0deg); } 75% { transform: translateY(-50%) rotate(20deg); } 100% { transform: translateY(-50%) rotate(0deg); } }
-    @keyframes pkmnThunder { 0% { opacity: 0.8; background: yellow; } 20% { opacity: 0; } 40% { opacity: 0.8; background: white; } 60% { opacity: 0; } 80% { opacity: 0.8; background: yellow; } 100% { opacity: 0; } }
-
-    /* Estilos Gacha Genshin */
-    .genshin-machine { position: relative; height: 220px; background: #0b1528; border: 2px solid #cda55d; border-radius: var(--radius-md); overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
-    .genshin-meteor { position: absolute; top: -100px; width: 6px; height: 60px; background: #fff; box-shadow: 0 0 15px #fff; transform: rotate(45deg); opacity: 0; z-index: 5; }
-    .genshin-meteor.falling-4star { animation: genshinDrop 1.2s forwards; box-shadow: 0 0 15px #a256e1, 0 0 40px #a256e1; background: #a256e1; }
-    .genshin-meteor.falling-5star { animation: genshinDrop 1.2s forwards; box-shadow: 0 0 15px #ffb13f, 0 0 40px #ffb13f; background: #ffb13f; }
-    .genshin-sprite { width: 130px; opacity: 0; transform: scale(0.5); transition: all 0.5s ease; filter: drop-shadow(0 0 10px rgba(255,255,255,0.2)); object-fit: contain; }
-    .genshin-sprite.revealed { opacity: 1; transform: scale(1); }
-    @keyframes genshinDrop { 0% { top: -100px; left: 80%; opacity: 1; transform: rotate(45deg) scale(1); } 50% { top: 50%; left: 50%; opacity: 1; transform: rotate(45deg) scale(2); } 100% { top: 50%; left: 50%; opacity: 0; transform: rotate(45deg) scale(4); } }
-
   </style>
 </head>
 <body>
@@ -294,20 +265,6 @@
   </div>
 </div>
 
-<!-- Modal Personalizado para Alertas y Prompts -->
-<div id="customDialogModal" class="modal" style="z-index: 9999999;">
-  <div class="modal-content" style="max-width: 350px; text-align: center; border-color: var(--secondary-color);">
-    <h3 id="cdTitle" style="color: #fff; margin-top: 0;"><i class="fas fa-exclamation-circle"></i> Mensaje</h3>
-    <p id="cdMessage" style="color: var(--text-muted); font-size: 0.9em; margin-bottom: 15px;"></p>
-    <input type="text" id="cdInput" class="form-input" style="display:none; margin-bottom: 15px; text-align: center; font-weight: bold;">
-    <div style="display: flex; gap: 10px; justify-content: center;">
-      <button id="cdBtnCancel" class="btn-submit" style="background: rgba(255, 51, 102, 0.1); color: #ff3366; border: 1px solid rgba(255,51,102,0.3); display: none;">Cancelar</button>
-      <button id="cdBtnOk" class="btn-submit" style="background: var(--secondary-color); color: #000;">Aceptar</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODALES GAMIFICACIÓN Y TEMAS -->
 <div id="modalCofreDiario" class="modal">
   <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarCofreModal()">×</button>
@@ -317,12 +274,11 @@
   </div>
 </div>
 
-<!-- MÁQUINA GACHA WAIFUS -->
 <div id="modalGacha" class="modal">
   <div class="modal-content" style="text-align: center; background: linear-gradient(180deg, rgba(14,4,31,0.95) 0%, #05010a 100%); border: 2px solid var(--secondary-color);">
     <button class="cerrar-modal" onclick="cerrarGachaModal()">×</button>
     <h3 style="color: var(--secondary-color); margin-top: 0; font-size: 1.5em; text-transform: uppercase; text-shadow: 0 0 10px var(--secondary-glow);"><i class="fas fa-capsules"></i> Gacha Waifus</h3>
-    <p style="color: var(--text-muted); font-size: 0.85em; margin-bottom: 15px;">Usa tus TOKENS para invocar Waifus y ganar descuentos.</p>
+    <p style="color: var(--text-muted); font-size: 0.85em; margin-bottom: 15px;">Usa tus TOKENS para invocar Waifus y ganar descuentos únicos.</p>
     
     <div id="gachaMachineContainer" style="position: relative; height: 220px; background: rgba(0,0,0,0.6); border-radius: var(--radius-md); margin-bottom: 15px; border: 1px dashed var(--glass-border); display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: inset 0 0 20px rgba(0,0,0,0.8);">
       <img id="gachaWaifuImg" src="logo.webp?v=2" style="height: 100%; object-fit: contain; opacity: 0.3; transition: all 0.5s ease;">
@@ -332,7 +288,7 @@
       </div>
     </div>
 
-    <div id="gachaResultado" style="display: none; background: rgba(0,0,0,0.4); border: 1px solid var(--secondary-color); padding: 12px; border-radius: var(--radius-sm); font-weight: 700; color: #fff; margin-bottom: 14px;">
+    <div id="gachaResultado" style="display: none; background: rgba(0,0,0,0.4); border: 1px solid var(--secondary-color); padding: 12px; border-radius: var(--radius-sm); font-weight: 700; color: #fff; margin-bottom: 14px; animation: modalSlideUp 0.3s ease;">
         <span id="gachaRarezaBadge" class="tag-r">R</span>
         <div id="gachaNombre" style="font-size: 1.2em; margin: 6px 0;">Waifu</div>
         <div id="gachaPremio" style="color: #25d366; font-size: 0.9em;">Premio aquí</div>
@@ -342,55 +298,6 @@
        Invocar x1 (<span id="lblCostoGacha">100</span> Tokens)
     </button>
     <div style="margin-top: 10px; font-size: 0.85em; color: var(--text-muted);">Tu saldo actual: <strong style="color:#ffaa00;"><i class="fas fa-coins"></i> <span id="lblSaldoGacha">0</span></strong></div>
-  </div>
-</div>
-
-<!-- MÁQUINA GACHA POKEMON -->
-<div id="modalGachaPkmn" class="modal">
-  <div class="modal-content" style="text-align: center; background: linear-gradient(180deg, #110524 0%, #05010a 100%); border: 2px solid #ffde00; box-shadow: 0 0 30px rgba(255, 222, 0, 0.2);">
-    <button class="cerrar-modal" onclick="cerrarGachaPkmnModal()">×</button>
-    <h3 style="color: #ffde00; margin-top: 0; font-size: 1.5em; text-transform: uppercase; text-shadow: 0 0 10px rgba(255,222,0,0.5);"><i class="fas fa-gamepad"></i> Poké Gacha</h3>
-    <p style="color: var(--text-muted); font-size: 0.85em; margin-bottom: 15px;">Usa tus TOKENS para capturar criaturas pixeladas.</p>
-    
-    <div class="pkmn-machine" id="pkmnMachine">
-      <div class="pkmn-flash" id="pkmnFlash"></div>
-      <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" id="pokeBallSprite" class="pokeball-sprite">
-      <img src="" id="pkmnResultSprite" class="pkmn-sprite">
-    </div>
-
-    <div id="pkmnResultado" style="display: none; background: rgba(0,0,0,0.6); border: 1px dashed #ffde00; padding: 12px; border-radius: var(--radius-sm); color: #fff; margin-bottom: 14px; margin-top: 14px;">
-        <div id="pkmnNombre" style="font-size: 1.4em; font-family: 'Chakra Petch', sans-serif; font-weight: bold; text-transform: capitalize; margin-bottom: 4px; color: #ffde00;">Pikachu</div>
-        <div style="font-size: 0.85em; color: var(--text-muted);">¡Añadido a tu Pokédex Mini!</div>
-    </div>
-
-    <button class="btn-comprar" id="btnTirarPkmn" onclick="realizarTiradaPkmn()" style="background: linear-gradient(135deg, #ff0000, #cc0000); font-size: 1.1em; text-shadow: 0 0 5px rgba(0,0,0,0.5); box-shadow: 0 4px 15px rgba(255,0,0,0.4);">
-       Lanzar Pokéball (50 Tokens)
-    </button>
-    <div style="margin-top: 10px; font-size: 0.85em; color: var(--text-muted);">Tu saldo actual: <strong style="color:#ffaa00;"><i class="fas fa-coins"></i> <span id="lblSaldoGachaPkmn">0</span></strong></div>
-  </div>
-</div>
-
-<!-- MÁQUINA GACHA GENSHIN IMPACT -->
-<div id="modalGachaGenshin" class="modal">
-  <div class="modal-content" style="text-align: center; background: linear-gradient(180deg, #0b1528 0%, #05010a 100%); border: 2px solid #cda55d; box-shadow: 0 0 30px rgba(205, 165, 93, 0.2);">
-    <button class="cerrar-modal" onclick="cerrarGachaGenshinModal()">×</button>
-    <h3 style="color: #cda55d; margin-top: 0; font-size: 1.5em; text-transform: uppercase; text-shadow: 0 0 10px rgba(205,165,93,0.5);"><i class="fas fa-meteor"></i> Gachapón</h3>
-    <p style="color: var(--text-muted); font-size: 0.85em; margin-bottom: 15px;">Usa Destinos Entrelazados (50 Tokens)</p>
-    
-    <div class="genshin-machine">
-      <div class="genshin-meteor" id="genshinMeteor"></div>
-      <img src="" id="genshinResultSprite" class="genshin-sprite">
-    </div>
-
-    <div id="genshinResultado" style="display: none; background: rgba(0,0,0,0.6); border: 1px dashed #cda55d; padding: 12px; border-radius: var(--radius-sm); color: #fff; margin-bottom: 14px; margin-top: 14px;">
-        <div id="genshinNombre" style="font-size: 1.4em; font-family: 'Chakra Petch', sans-serif; font-weight: bold; margin-bottom: 4px; color: #fff;">Personaje</div>
-        <div style="font-size: 0.85em; color: var(--text-muted);">¡Añadido a tu Taverna!</div>
-    </div>
-
-    <button class="btn-comprar" id="btnTirarGenshin" onclick="realizarTiradaGenshin()" style="background: linear-gradient(135deg, #cda55d, #a67c00); color: #000; font-size: 1.1em; text-shadow: 0 0 5px rgba(255,255,255,0.5); box-shadow: 0 4px 15px rgba(205,165,93,0.4);">
-       Pedir un Deseo (50 Tokens)
-    </button>
-    <div style="margin-top: 10px; font-size: 0.85em; color: var(--text-muted);">Tu saldo actual: <strong style="color:#ffaa00;"><i class="fas fa-coins"></i> <span id="lblSaldoGachaGenshin">0</span></strong></div>
   </div>
 </div>
 
@@ -407,7 +314,6 @@
   </div>
 </div>
 
-<!-- MODAL GAMER PROFILE Y COLECCIONES (DISEÑO GRID) -->
 <div id="modalGamerProfile" class="modal">
   <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarGamerProfileModal()">×</button>
@@ -428,27 +334,10 @@
       <div style="font-size: 0.8em; color: var(--text-muted); text-align: right; margin-top: 6px;" id="lblXpNext">Calculando siguiente rango...</div>
     </div>
 
-    <!-- COLECCIÓN DE WAIFUS -->
     <div style="text-align: left; margin-bottom: 14px;">
-      <div style="font-size: 0.85em; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Waifus (<span id="lblTotalWaifusJugador">0</span>)</div>
-      <div id="albumWaifusContenedor" style="display:flex; flex-wrap:wrap; gap:8px; max-height:200px; overflow-y:auto; background: rgba(0,0,0,0.2); padding:8px; border-radius:var(--radius-sm); border:1px solid rgba(255,0,127,0.2);">
+      <div style="font-size: 0.85em; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Mi Colección Waifus (<span id="lblTotalWaifusJugador">0</span>)</div>
+      <div id="albumWaifusContenedor" style="display:flex; gap:8px; overflow-x:auto; padding-bottom: 5px; scrollbar-width: none;">
         <p style="color: var(--text-muted); font-size: 0.8em; margin: 0;">Juega al Gacha para coleccionar.</p>
-      </div>
-    </div>
-
-    <!-- COLECCIÓN DE POKEMON -->
-    <div style="text-align: left; margin-bottom: 14px;">
-      <div style="font-size: 0.85em; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Pokédex Mini (<span id="lblTotalPkmnJugador">0</span>)</div>
-      <div id="albumPkmnContenedor" style="display:flex; flex-wrap:wrap; gap:8px; max-height:200px; overflow-y:auto; background: rgba(0,0,0,0.2); padding:8px; border-radius:var(--radius-sm); border:1px solid rgba(255,222,0,0.2);">
-        <p style="color: var(--text-muted); font-size: 0.8em; margin: 0;">Usa el Poké Gacha para capturar.</p>
-      </div>
-    </div>
-
-    <!-- COLECCIÓN DE GENSHIN -->
-    <div style="text-align: left; margin-bottom: 14px;">
-      <div style="font-size: 0.85em; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Taverna Genshin (<span id="lblTotalGenshinJugador">0</span>)</div>
-      <div id="albumGenshinContenedor" style="display:flex; flex-wrap:wrap; gap:8px; max-height:200px; overflow-y:auto; background: rgba(0,0,0,0.2); padding:8px; border-radius:var(--radius-sm); border:1px solid rgba(205,165,93,0.2);">
-        <p style="color: var(--text-muted); font-size: 0.8em; margin: 0;">Pide un deseo en el Gachapón.</p>
       </div>
     </div>
     
@@ -456,7 +345,6 @@
   </div>
 </div>
 
-<!-- MODAL CLOUD SAVE (LOGIN) -->
 <div id="modalCloudSave" class="modal">
   <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarCloudSaveModal()">×</button>
@@ -483,7 +371,6 @@
   </div>
 </div>
 
-<!-- MODAL RASTREO DE PEDIDO -->
 <div id="modalRastreo" class="modal">
   <div class="modal-content">
     <button class="cerrar-modal" onclick="cerrarRastreoModal()">×</button>
@@ -577,7 +464,7 @@
 
   <div class="grid" id="catalogoNube"><p style="text-align: center; color: var(--text-muted); grid-column: 1/-1;">Sincronizando inventario...</p></div>
 
-  <!-- BOTÓN CARGAR MÁS PRODUCTOS (PAGINACIÓN) -->
+  <!-- BOTÓN CARGAR MÁS PRODUCTOS -->
   <div id="contenedorCargarMas" style="text-align: center; margin-top: 25px;">
     <button id="btnCargarMas" style="display: none; width: auto; padding: 12px 30px; margin: 0 auto; border-radius: var(--radius-pill); background: rgba(0, 229, 255, 0.1); border: 1px solid var(--secondary-color); color: var(--secondary-color); font-family: 'Chakra Petch', sans-serif; font-weight: 700; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 0 10px rgba(0,229,255,0.2);" onclick="cargarMasProductos()">
       Mostrar más productos <i class="fas fa-chevron-down" style="margin-left: 5px;"></i>
@@ -602,13 +489,16 @@
 
 </div>
 
-<!-- MODAL PRODUCTO DETALLE -->
+<!-- MODAL PRODUCTO DETALLE CON MINIGALERIA -->
 <div id="miModal" class="modal">
   <div class="modal-content">
     <button class="cerrar-modal" onclick="cerrarModal()">×</button>
     <div class="breadcrumbs" id="modalBreadcrumbs">Inicio / <span>Categoría</span></div>
     <img id="modalImg" src="" alt="Producto" class="modal-img" loading="eager" decoding="async">
+    
+    <!-- NUEVA MINIGALERÍA -->
     <div id="modalContainerMinis" class="modal-miniaturas"></div>
+    
     <div id="modalTag" class="modal-tag-info">Disponible</div>
     <h3 id="modalTitulo" style="color: #fff; margin: 4px 0 8px 0;">Título</h3>
     <div id="modalPrecio" style="color: var(--secondary-color); font-size: 1.4em; font-weight: 700; margin-bottom: 8px;">$0.00</div>
@@ -644,17 +534,14 @@
       <button class="btn-menu-opcion" style="color: #00e5ff;" id="btnMenuCloud" onclick="cerrarMenuOpciones(); abrirCloudSaveModal()"><i class="fas fa-cloud"></i> Vincular Nube</button>
       <button class="btn-menu-opcion" style="color: #b000ff;" onclick="cerrarMenuOpciones(); abrirRastreoModal()"><i class="fas fa-radar"></i> Rastrear</button>
       <button class="btn-menu-opcion" style="color: #ffaa00;" onclick="cerrarMenuOpciones(); abrirCofreModal()"><i class="fas fa-gift"></i> Cofre Diario</button>
-      
       <button class="btn-menu-opcion" style="color: var(--secondary-color);" onclick="cerrarMenuOpciones(); abrirGachaModal()"><i class="fas fa-capsules"></i> Gacha Waifu</button>
-      <button class="btn-menu-opcion" style="color: #ffde00;" onclick="cerrarMenuOpciones(); abrirGachaPkmnModal()"><i class="fas fa-gamepad"></i> Poké Gacha</button>
-      <button class="btn-menu-opcion" style="color: #cda55d;" onclick="cerrarMenuOpciones(); abrirGachaGenshinModal()"><i class="fas fa-meteor"></i> Gachapón Genshin</button>
-      
       <button class="btn-menu-opcion" style="color: #25d366;" onclick="cerrarMenuOpciones(); abrirGamerProfileModal()"><i class="fas fa-user"></i> Mi Perfil</button>
       <button class="btn-menu-opcion" style="color: #ff007f;" onclick="cerrarMenuOpciones(); abrirTemasModal()"><i class="fas fa-palette"></i> Temas</button>
       <button class="btn-menu-opcion" style="color: #e0f4ff;" onclick="toggleMusicaLoFi()"><i class="fas fa-music" id="iconoMusica"></i> Audio Lo-Fi</button>
       <button class="btn-menu-opcion" style="color: var(--text-muted);" onclick="cerrarMenuOpciones(); abrirFaqModal()"><i class="fas fa-question-circle"></i> Preguntas</button>
       <button class="btn-menu-opcion" style="color: #fff;" onclick="cerrarMenuOpciones(); abrirSugerenciaModal()"><i class="fas fa-lightbulb"></i> Encargos</button>
       <a href="admin.html" class="btn-menu-opcion" style="color: #ff3366;"><i class="fas fa-lock"></i> Gestión Admin</a>
+      <a href="javascript:void(0)" onclick="abrirChatGlobalWhatsApp()" class="btn-menu-opcion" style="color: #25D366;"><i class="fab fa-whatsapp"></i> Chat Directo</a>
     </div>
   </div>
 </div>
@@ -794,37 +681,9 @@
   let waifusGachaGlobal = [];
   
   let currentUserUid = null;
-  let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, tokens: 0, rango: "Genin", waifus: [], pkmns: [], genshin: [] };
+  let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, tokens: 0, rango: "Genin", waifus: [] };
   let carrito = JSON.parse(localStorage.getItem('sakura_carrito')) || [];
   let favoritos = JSON.parse(localStorage.getItem('sakura_favoritos')) || [];
-
-  // SISTEMA DE MODALES PERSONALIZADOS
-  window.customDialog = function(type, title, message, defaultValue = "") {
-      return new Promise((resolve) => {
-          const modal = document.getElementById('customDialogModal');
-          const titleEl = document.getElementById('cdTitle');
-          const msgEl = document.getElementById('cdMessage');
-          const inputEl = document.getElementById('cdInput');
-          const btnOk = document.getElementById('cdBtnOk');
-          const btnCancel = document.getElementById('cdBtnCancel');
-
-          titleEl.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${title}`;
-          msgEl.innerText = message;
-          
-          if(type === 'prompt') { inputEl.style.display = 'block'; inputEl.value = defaultValue; } 
-          else { inputEl.style.display = 'none'; }
-
-          if(type === 'alert') { btnCancel.style.display = 'none'; } 
-          else { btnCancel.style.display = 'block'; }
-
-          modal.style.display = 'flex';
-
-          btnOk.onclick = () => { modal.style.display = 'none'; resolve(type === 'prompt' ? inputEl.value : true); };
-          btnCancel.onclick = () => { modal.style.display = 'none'; resolve(type === 'prompt' ? null : false); };
-      });
-  };
-
-  window.sysAlert = async (msg) => { await customDialog('alert', 'Sistema', msg); };
 
   async function cargarCMSyGacha() {
     try {
@@ -855,7 +714,6 @@
     } catch(e){}
   }
 
-  // GACHA WAIFUS LOGIC
   window.abrirGachaModal = function() {
       reproducirSonido();
       document.getElementById('lblSaldoGacha').innerText = gamerProfile.tokens || 0;
@@ -867,13 +725,13 @@
   };
   window.cerrarGachaModal = function() { document.getElementById('modalGacha').style.display = 'none'; };
 
-  window.realizarTiradaGacha = async function() {
+  window.realizarTiradaGacha = function() {
       reproducirSonido();
       let costo = ajustesWebGlobal.costoGacha;
       
       if(!gamerProfile.tokens) gamerProfile.tokens = 0;
-      if(gamerProfile.tokens < costo) return await sysAlert(`Necesitas al menos ${costo} Tokens para realizar una invocación.`);
-      if(waifusGachaGlobal.length === 0) return await sysAlert("La máquina Gacha está vacía temporalmente. ¡Vuelve pronto!");
+      if(gamerProfile.tokens < costo) return alert(`Necesitas al menos ${costo} Tokens para realizar una invocación.`);
+      if(waifusGachaGlobal.length === 0) return alert("La máquina Gacha está vacía temporalmente. ¡Vuelve pronto!");
 
       let btn = document.getElementById('btnTirarGacha');
       btn.disabled = true;
@@ -894,17 +752,18 @@
 
       setTimeout(() => {
           let rand = Math.random() * 100;
+          // >>> NUEVA PROBABILIDAD DE DROP AJUSTADA Y BALANCEADA <<<
           let targetRareza = rand <= 2 ? 'SSR' : (rand <= 10 ? 'SR' : (rand <= 40 ? 'R' : 'N'));
           
           let posibles = waifusGachaGlobal.filter(w => w.rareza === targetRareza);
-          if(posibles.length === 0) posibles = waifusGachaGlobal; // Safe fallback
+          if(posibles.length === 0) posibles = waifusGachaGlobal; // Safe fallback si no hay de esa rareza
           let elegida = posibles[Math.floor(Math.random() * posibles.length)];
 
           if(!gamerProfile.waifus) gamerProfile.waifus = [];
           if(!gamerProfile.waifus.some(w => w.id === elegida.id)) {
               gamerProfile.waifus.push({id: elegida.id, nombre: elegida.nombre, imgUrl: elegida.imgUrl, rareza: elegida.rareza});
               guardarProgresoNube();
-              renderizarColecciones();
+              renderizarAlbumWaifus();
           }
 
           try {
@@ -913,7 +772,6 @@
                   waifu: elegida.nombre,
                   rareza: elegida.rareza,
                   premio: elegida.premio,
-                  tipoGacha: 'Waifu',
                   timestamp: Date.now()
               });
           } catch(e) {}
@@ -936,230 +794,26 @@
       }, 1800);
   }
 
-  // --- LÓGICA GACHA POKEMON (TODAS LAS GENERACIONES) ---
-  window.abrirGachaPkmnModal = function() {
-      reproducirSonido();
-      document.getElementById('lblSaldoGachaPkmn').innerText = gamerProfile.tokens || 0;
-      document.getElementById('modalGachaPkmn').style.display = 'flex';
+  function renderizarAlbumWaifus() {
+      let cont = document.getElementById('albumWaifusContenedor');
+      let arr = gamerProfile.waifus || [];
+      document.getElementById('lblTotalWaifusJugador').innerText = arr.length;
       
-      document.getElementById('pkmnResultado').style.display = 'none';
-      document.getElementById('pokeBallSprite').className = 'pokeball-sprite';
-      document.getElementById('pkmnResultSprite').className = 'pkmn-sprite';
-      document.getElementById('pkmnResultSprite').src = '';
-      document.getElementById('btnTirarPkmn').disabled = false;
-  };
-  window.cerrarGachaPkmnModal = function() { document.getElementById('modalGachaPkmn').style.display = 'none'; };
-
-  window.realizarTiradaPkmn = async function() {
-      reproducirSonido();
-      let costo = 50;
-      if(!gamerProfile.tokens) gamerProfile.tokens = 0;
-      if(gamerProfile.tokens < costo) return await sysAlert(`Necesitas al menos ${costo} Tokens para tirar una Pokéball.`);
-
-      let btn = document.getElementById('btnTirarPkmn');
-      btn.disabled = true;
-      gamerProfile.tokens -= costo;
-      document.getElementById('lblSaldoGachaPkmn').innerText = gamerProfile.tokens;
-      actualizarRangoSegunXP();
-      guardarProgresoNube();
-
-      document.getElementById('pkmnResultado').style.display = 'none';
-      let pball = document.getElementById('pokeBallSprite');
-      let resultSprite = document.getElementById('pkmnResultSprite');
-      let flash = document.getElementById('pkmnFlash');
-      
-      pball.className = 'pokeball-sprite';
-      resultSprite.className = 'pkmn-sprite';
-      resultSprite.src = '';
-      
-      // Random Pokemon (Generaciones 1 a 1025)
-      let randomId = Math.floor(Math.random() * 1025) + 1;
-      let isRaro = Math.random() < 0.15; // Probabilidad extra de brillo
-
-      fetch(`https://pokeapi.co/api/v2/pokemon/${randomId}`)
-        .then(res => res.json())
-        .then(data => {
-            let elegido = { id: data.id, nombre: data.name, raro: isRaro };
-            pball.classList.add('falling');
-            
-            setTimeout(() => {
-                pball.classList.remove('falling');
-                pball.classList.add('shaking');
-                
-                setTimeout(() => {
-                    pball.classList.remove('shaking');
-                    pball.classList.add('opened');
-                    
-                    let isElectric = data.types.some(t => t.type.name === 'electric');
-                    if (isElectric || elegido.raro) { 
-                        flash.classList.add('active');
-                        reproducirSonido();
-                        setTimeout(() => flash.classList.remove('active'), 500);
-                    }
-
-                    resultSprite.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${elegido.id}.png`;
-                    resultSprite.classList.add('revealed');
-                    
-                    document.getElementById('pkmnNombre').innerText = elegido.nombre;
-                    document.getElementById('pkmnResultado').style.display = 'block';
-
-                    if(!gamerProfile.pkmns) gamerProfile.pkmns = [];
-                    if(!gamerProfile.pkmns.some(p => p.id === elegido.id)) {
-                        gamerProfile.pkmns.push({id: elegido.id, nombre: elegido.nombre});
-                        guardarProgresoNube();
-                        renderizarColecciones();
-                    }
-
-                    try { addDoc(collection(db, "historial_gacha"), { jugador: gamerProfile.tag, waifu: elegido.nombre, rareza: elegido.raro ? 'Raro' : 'Común', premio: 'Pokémon Capturado', tipoGacha: 'Pokemon', timestamp: Date.now() }); } catch(e) {}
-
-                    btn.disabled = false;
-                    if(elegido.raro) { try{ confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } }); }catch(e){} }
-                }, 1500);
-            }, 500);
-        })
-        .catch(async err => { 
-            await sysAlert("El Pokémon escapó. ¡Intenta de nuevo!"); 
-            btn.disabled = false; 
-            gamerProfile.tokens += costo; // Devolver tokens si falla API
-            document.getElementById('lblSaldoGachaPkmn').innerText = gamerProfile.tokens;
-        });
-  };
-
-  // --- LÓGICA GACHA GENSHIN IMPACT ---
-  const poolGenshin = [
-      { id: "raiden", nombre: "Raiden Shogun", raro: true, img: "https://genshin.jmp.blue/characters/raiden/icon-big" },
-      { id: "hutao", nombre: "Hu Tao", raro: true, img: "https://genshin.jmp.blue/characters/hu-tao/icon-big" },
-      { id: "zhongli", nombre: "Zhongli", raro: true, img: "https://genshin.jmp.blue/characters/zhongli/icon-big" },
-      { id: "ayaka", nombre: "Kamisato Ayaka", raro: true, img: "https://genshin.jmp.blue/characters/ayaka/icon-big" },
-      { id: "arlecchino", nombre: "Arlecchino", raro: true, img: "https://genshin.jmp.blue/characters/arlecchino/icon-big" },
-      { id: "bennett", nombre: "Bennett", raro: false, img: "https://genshin.jmp.blue/characters/bennett/icon-big" },
-      { id: "xingqiu", nombre: "Xingqiu", raro: false, img: "https://genshin.jmp.blue/characters/xingqiu/icon-big" },
-      { id: "xiangling", nombre: "Xiangling", raro: false, img: "https://genshin.jmp.blue/characters/xiangling/icon-big" },
-      { id: "fischl", nombre: "Fischl", raro: false, img: "https://genshin.jmp.blue/characters/fischl/icon-big" }
-  ];
-
-  window.abrirGachaGenshinModal = function() {
-      reproducirSonido();
-      document.getElementById('lblSaldoGachaGenshin').innerText = gamerProfile.tokens || 0;
-      document.getElementById('modalGachaGenshin').style.display = 'flex';
-      
-      document.getElementById('genshinResultado').style.display = 'none';
-      document.getElementById('genshinMeteor').className = 'genshin-meteor';
-      document.getElementById('genshinResultSprite').className = 'genshin-sprite';
-      document.getElementById('genshinResultSprite').src = '';
-      document.getElementById('btnTirarGenshin').disabled = false;
-  };
-  window.cerrarGachaGenshinModal = function() { document.getElementById('modalGachaGenshin').style.display = 'none'; };
-
-  window.realizarTiradaGenshin = async function() {
-      reproducirSonido();
-      let costo = 50;
-      if(!gamerProfile.tokens) gamerProfile.tokens = 0;
-      if(gamerProfile.tokens < costo) return await sysAlert(`Necesitas al menos ${costo} Tokens para pedir un deseo.`);
-
-      let btn = document.getElementById('btnTirarGenshin');
-      btn.disabled = true;
-      gamerProfile.tokens -= costo;
-      document.getElementById('lblSaldoGachaGenshin').innerText = gamerProfile.tokens;
-      actualizarRangoSegunXP();
-      guardarProgresoNube();
-
-      document.getElementById('genshinResultado').style.display = 'none';
-      let meteor = document.getElementById('genshinMeteor');
-      let resultSprite = document.getElementById('genshinResultSprite');
-      
-      meteor.className = 'genshin-meteor';
-      resultSprite.className = 'genshin-sprite';
-      resultSprite.src = '';
-      
-      // Lógica de Pity Gacha
-      let rand = Math.random();
-      let isRaro = rand < 0.15; // 15% para 5 Estrellas
-      let pool = poolGenshin.filter(p => p.raro === isRaro);
-      let elegido = pool[Math.floor(Math.random() * pool.length)];
-
-      let classMeteor = isRaro ? 'falling-5star' : 'falling-4star';
-      meteor.classList.add(classMeteor);
-      
-      setTimeout(() => {
-          meteor.classList.remove(classMeteor); // Ocultar meteorito
-          
-          resultSprite.src = elegido.img;
-          resultSprite.classList.add('revealed');
-          
-          document.getElementById('genshinNombre').innerText = elegido.nombre;
-          document.getElementById('genshinNombre').style.color = isRaro ? '#ffb13f' : '#a256e1';
-          document.getElementById('genshinResultado').style.display = 'block';
-
-          // Guardar en la Taverna Genshin
-          if(!gamerProfile.genshin) gamerProfile.genshin = [];
-          if(!gamerProfile.genshin.some(p => p.id === elegido.id)) {
-              gamerProfile.genshin.push({id: elegido.id, nombre: elegido.nombre, img: elegido.img});
-              guardarProgresoNube();
-              renderizarColecciones();
-          }
-
-          try { addDoc(collection(db, "historial_gacha"), { jugador: gamerProfile.tag, waifu: elegido.nombre, rareza: elegido.raro ? '5 Estrellas' : '4 Estrellas', premio: 'Personaje Genshin', tipoGacha: 'Genshin', timestamp: Date.now() }); } catch(e) {}
-
-          btn.disabled = false;
-          
-          if(elegido.raro) {
-              try{ confetti({ particleCount: 150, spread: 90, origin: { y: 0.6 }, colors: ['#ffb13f', '#ffffff'] }); }catch(e){}
-          }
-      }, 1200);
-  };
-  // ------------------------------------
-
-  function renderizarColecciones() {
-      // Waifus
-      let contW = document.getElementById('albumWaifusContenedor');
-      let arrW = gamerProfile.waifus || [];
-      document.getElementById('lblTotalWaifusJugador').innerText = arrW.length;
-      
-      if(arrW.length === 0) {
-          contW.innerHTML = `<p style="color: var(--text-muted); font-size: 0.8em; margin: 0;">Juega al Gacha para coleccionar.</p>`;
-      } else {
-          let html = "";
-          arrW.forEach(w => {
-              let badgeColor = w.rareza === 'SSR' ? '#ffaa00' : (w.rareza === 'SR' ? '#b000ff' : (w.rareza === 'R' ? '#00e5ff' : '#b4becd'));
-              html += `
-              <div class="waifu-card-mini">
-                  <img src="${w.imgUrl}" loading="lazy">
-                  <div class="badge" style="background: rgba(0,0,0,0.8); color: ${badgeColor}; padding: 2px 6px; border-radius: 4px; font-weight: bold; border: 1px solid ${badgeColor}40;">${w.rareza}</div>
-              </div>`;
-          });
-          contW.innerHTML = html;
+      if(arr.length === 0) {
+          cont.innerHTML = `<p style="color: var(--text-muted); font-size: 0.8em; margin: 0;">Juega al Gacha para coleccionar.</p>`;
+          return;
       }
-
-      // Pokemon
-      let contP = document.getElementById('albumPkmnContenedor');
-      let arrP = gamerProfile.pkmns || [];
-      document.getElementById('lblTotalPkmnJugador').innerText = arrP.length;
       
-      if(arrP.length === 0) {
-          contP.innerHTML = `<p style="color: var(--text-muted); font-size: 0.8em; margin: 0;">Usa el Poké Gacha para capturar.</p>`;
-      } else {
-          let html = "";
-          arrP.forEach(p => {
-              html += `<div class="waifu-card-mini" style="background: rgba(255,255,255,0.9); border: 1px solid #ffde00;"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${p.id}.png" style="image-rendering: pixelated; transform: scale(1.3);" loading="lazy"></div>`;
-          });
-          contP.innerHTML = html;
-      }
-
-      // Genshin
-      let contG = document.getElementById('albumGenshinContenedor');
-      let arrG = gamerProfile.genshin || [];
-      document.getElementById('lblTotalGenshinJugador').innerText = arrG.length;
-      
-      if(arrG.length === 0) {
-          contG.innerHTML = `<p style="color: var(--text-muted); font-size: 0.8em; margin: 0;">Pide un deseo en el Gachapón.</p>`;
-      } else {
-          let html = "";
-          arrG.forEach(g => {
-              html += `<div class="waifu-card-mini" style="background: #0b1528; border: 1px solid #cda55d;"><img src="${g.img}" style="object-fit: cover;" loading="lazy"></div>`;
-          });
-          contG.innerHTML = html;
-      }
+      let html = "";
+      arr.forEach(w => {
+          let badgeColor = w.rareza === 'SSR' ? '#ffaa00' : (w.rareza === 'SR' ? '#b000ff' : (w.rareza === 'R' ? '#00e5ff' : '#b4becd'));
+          html += `
+          <div class="waifu-card-mini">
+              <img src="${w.imgUrl}" loading="lazy">
+              <div class="badge" style="background: rgba(0,0,0,0.8); color: ${badgeColor}; padding: 2px 6px; border-radius: 4px; font-weight: bold; border: 1px solid ${badgeColor}40;">${w.rareza}</div>
+          </div>`;
+      });
+      cont.innerHTML = html;
   }
 
   onAuthStateChanged(auth, async (user) => {
@@ -1204,8 +858,8 @@
   window.cerrarSesionCloud = async function() {
     reproducirSonido(); await signOut(auth);
     localStorage.removeItem('sakura_gamer_profile'); localStorage.removeItem('sakura_carrito'); localStorage.removeItem('sakura_favoritos');
-    gamerProfile = { tag: "Gamer_Guest", xp: 0, tokens: 0, rango: "Genin", waifus: [], pkmns: [], genshin: [] }; carrito = []; favoritos = [];
-    actualizarBadges(); actualizarRangoSegunXP(); renderizarColecciones(); cerrarCloudSaveModal(); await sysAlert("Sesión cerrada. Tu partida está a salvo en la nube.");
+    gamerProfile = { tag: "Gamer_Guest", xp: 0, tokens: 0, rango: "Genin", waifus: [] }; carrito = []; favoritos = [];
+    actualizarBadges(); actualizarRangoSegunXP(); renderizarAlbumWaifus(); cerrarCloudSaveModal(); alert("Sesión cerrada. Tu partida está a salvo en la nube.");
   };
 
   async function descargarProgresoNube(uid) {
@@ -1221,7 +875,7 @@
               if(d.ultimoCofre) localStorage.setItem('sakura_ultimo_cofre', d.ultimoCofre);
               
               localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile)); localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos)); localStorage.setItem('sakura_carrito', JSON.stringify(carrito));
-              document.getElementById('inputGamerTag').value = gamerProfile.tag; actualizarBadges(); actualizarRangoSegunXP(); renderizarColecciones();
+              document.getElementById('inputGamerTag').value = gamerProfile.tag; actualizarBadges(); actualizarRangoSegunXP(); renderizarAlbumWaifus();
           } else { guardarProgresoNube(); }
       } catch(e) { console.error("Error cloud sync:", e); }
   }
@@ -1265,7 +919,7 @@
     } catch (e) {}
   }
 
-  window.copiarTexto = async function(texto) { reproducirSonido(); await navigator.clipboard.writeText(texto); await sysAlert("Copiado al portapapeles."); };
+  window.copiarTexto = function(texto) { reproducirSonido(); navigator.clipboard.writeText(texto).then(() => alert("Copiado al portapapeles.")); };
 
   async function cargarBannersDeNube() {
     try {
@@ -1307,6 +961,7 @@
     } catch (error) { document.getElementById('catalogoNube').innerHTML = "<p style='color: #ff3366; text-align: center; grid-column: 1/-1;'>No fue posible conectar con la base de datos.</p>"; }
   }
 
+  // >>> AQUÍ SE AÑADIERON LAS FLECHAS DEL CARRUSEL <<<
   window.renderizarProductosEnTienda = function(lista) {
     let contenedor = document.getElementById('catalogoNube'); if (!contenedor) return; contenedor.innerHTML = "";
     let conteo = { recargas: 0, mangas: 0, ropa: 0, mandos: 0, perifericos: 0, figuras: 0, peluches: 0, cartas: 0, katanas: 0, lamparas: 0, accesorios: 0 };
@@ -1329,13 +984,27 @@
       let textoBadge = isAgotado ? 'AGOTADO' : (prod.estado || (esRecarga ? 'Recarga Directa' : 'Stock'));
       let cardClassAddition = isAgotado ? ' agotado' : '';
 
-      let imgsHtml = ''; fotosArray.forEach((foto, fIdx) => { imgsHtml += `<img src="${foto}" class="${fIdx === 0 ? 'activa' : ''}" loading="lazy">`; });
+      let imgsHtml = ''; 
+      fotosArray.forEach((foto, fIdx) => { 
+        imgsHtml += `<img src="${foto}" class="${fIdx === 0 ? 'activa' : ''}" loading="lazy">`; 
+      });
+
+      let btnCarruselHtml = '';
+      if(fotosArray.length > 1) {
+          btnCarruselHtml = `
+            <button class="carrusel-btn carrusel-prev" onclick="event.stopPropagation(); moverCarruselCard('${prod.id}', -1)"><i class="fas fa-chevron-left"></i></button>
+            <button class="carrusel-btn carrusel-next" onclick="event.stopPropagation(); moverCarruselCard('${prod.id}', 1)"><i class="fas fa-chevron-right"></i></button>
+          `;
+      }
 
       contenedor.innerHTML += `
         <div class="card item-producto${cardClassAddition}" data-id="${prod.id}" data-nombre="${sanitizarHTML(prod.nombre).toLowerCase()}" data-categoria="${categoria}" data-precio="${prod.precio}" onclick="abrirModalPorId('${prod.id}')">
           <button class="btn-fav-card" onclick="toggleFavoritoPorId(event, '${prod.id}')"><i class="fas fa-heart"></i></button>
           <div class="badge-estado ${badgeClase}">${textoBadge}</div>
-          <div class="card-img-container" id="carrusel-card-${indexProd}">${imgsHtml}</div>
+          <div class="card-img-container" id="carrusel-card-${prod.id}">
+            ${imgsHtml}
+            ${btnCarruselHtml}
+          </div>
           <div class="card-title">${sanitizarHTML(prod.nombre)}</div>
           <div class="precio-container"><span class="card-price">$${Number(prod.precio).toFixed(2)}</span></div>
         </div>
@@ -1344,6 +1013,23 @@
 
     for(let cat in conteo) { let elem = document.getElementById('count-' + cat); if(elem) elem.innerText = conteo[cat] + " items"; }
     renderizarSelectColecciones(lista); limiteActual = 12; aplicarFiltrosGlobales();
+  };
+
+  // Función para mover imágenes dentro de la tarjeta
+  window.moverCarruselCard = function(prodId, direccion) {
+      reproducirSonido();
+      let contenedor = document.getElementById(`carrusel-card-${prodId}`);
+      if(!contenedor) return;
+      let imgs = Array.from(contenedor.querySelectorAll('img'));
+      let idxActual = imgs.findIndex(img => img.classList.contains('activa'));
+      if(idxActual === -1) idxActual = 0;
+      
+      imgs[idxActual].classList.remove('activa');
+      let nuevoIdx = idxActual + direccion;
+      if(nuevoIdx >= imgs.length) nuevoIdx = 0;
+      if(nuevoIdx < 0) nuevoIdx = imgs.length - 1;
+      
+      imgs[nuevoIdx].classList.add('activa');
   };
 
   function renderizarSelectColecciones(productos) {
@@ -1380,22 +1066,51 @@
 
   window.cargarMasProductos = function() { reproducirSonido(); limiteActual += 12; aplicarFiltrosGlobales(); };
 
+  // >>> AQUÍ SE REPARÓ LA GALERÍA DEL MODAL <<<
   window.abrirModalPorId = function(prodId) {
     reproducirSonido(); const prod = productosNubeGlobal.find(p => p.id === prodId); if (!prod) return;
     const fotosArray = (prod.fotos && prod.fotos.length > 0) ? prod.fotos : ['logo.webp?v=2'];
     const esRecarga = prod.categoria === 'recargas'; const esAgotado = (prod.stock !== undefined && prod.stock <= 0) && !esRecarga;
+    
+    // Objeto Actual guardado en memoria
     window.productoActual = { id: prod.id, img: fotosArray[0], titulo: prod.nombre, precio: prod.precio, esRopa: prod?.categoria?.includes('ropa'), esRecarga };
 
-    document.getElementById('modalImg').src = fotosArray[0]; document.getElementById('modalTitulo').innerText = prod.nombre; document.getElementById('modalPrecio').innerText = "$" + Number(prod.precio).toFixed(2);
+    document.getElementById('modalImg').src = fotosArray[0]; 
+    document.getElementById('modalTitulo').innerText = prod.nombre; 
+    document.getElementById('modalPrecio').innerText = "$" + Number(prod.precio).toFixed(2);
     document.getElementById('modalDesc').innerText = prod.descripcion || 'Producto oficial Sakura Gameverse.';
     document.getElementById('modalTag').innerText = esAgotado ? 'AGOTADO' : (prod.estado || 'Stock');
     document.getElementById('tallasContainer').style.display = window.productoActual.esRopa ? 'block' : 'none';
     document.getElementById('recargaContainer').style.display = esRecarga ? 'block' : 'none';
 
+    // Generar las miniaturas de las otras fotos
+    let minisCont = document.getElementById('modalContainerMinis');
+    if(fotosArray.length > 1) {
+        let htmlMinis = '';
+        fotosArray.forEach((foto, i) => {
+            htmlMinis += `<img src="${foto}" class="modal-mini-img ${i===0?'activo':''}" onclick="cambiarImagenModal(this, '${foto}')">`;
+        });
+        minisCont.innerHTML = htmlMinis;
+    } else {
+        minisCont.innerHTML = '';
+    }
+
     let btnAdd = document.getElementById('btnComprarModal');
     if(esAgotado) { btnAdd.disabled = true; btnAdd.innerHTML = '<i class="fas fa-ban"></i> Sin Stock Temporalmente'; } 
     else { btnAdd.disabled = false; btnAdd.innerHTML = '<i class="fas fa-cart-plus"></i> Añadir al Carrito'; }
+    
     document.getElementById('miModal').style.display = 'flex';
+  };
+
+  // Función para cambiar la imagen al tocar una miniatura
+  window.cambiarImagenModal = function(elemento, url) {
+      reproducirSonido();
+      document.getElementById('modalImg').src = url;
+      // Actualiza la imagen en memoria para que el carrito reciba la variante exacta seleccionada
+      window.productoActual.img = url; 
+      // Estilos activos
+      document.querySelectorAll('.modal-mini-img').forEach(img => img.classList.remove('activo'));
+      elemento.classList.add('activo');
   };
 
   window.abrirRastreoModal = function() {
@@ -1407,7 +1122,7 @@
   
   window.buscarPedido = async function() {
       reproducirSonido(); let tlf = document.getElementById('inputRastreoTlf').value.trim();
-      if(!tlf) return await sysAlert("Por favor ingresa un número de teléfono válido.");
+      if(!tlf) return alert("Por favor ingresa un número de teléfono válido.");
       let cont = document.getElementById('resultadoRastreo'); cont.innerHTML = "<p style='text-align:center; color: var(--secondary-color);'><i class='fas fa-spinner fa-spin'></i> Conectando con la base de datos...</p>";
       try {
           const q = query(collection(db, "pedidos"), where("telefono", "==", tlf)); const snap = await getDocs(q);
@@ -1458,19 +1173,19 @@
 
   window.agregarReview = async function() {
     reproducirSonido(); let n = document.getElementById('revNombre').value.trim(); let e = document.getElementById('revEstrellas').value; let t = document.getElementById('revTexto').value.trim();
-    if(!n || !t) return await sysAlert("Por favor completa tu nombre y comentario.");
+    if(!n || !t) return alert("Por favor completa tu nombre y comentario.");
     try {
       await addDoc(collection(db, "reviews"), { nombre: n, estrellas: e, texto: t, timestamp: Date.now() });
       document.getElementById('revNombre').value = ""; document.getElementById('revTexto').value = ""; 
-      await cargarReviewsNube(); await sysAlert("Opinión registrada correctamente.");
-    } catch(err) { await sysAlert("Error al guardar la reseña."); }
+      await cargarReviewsNube(); alert("Opinión registrada correctamente.");
+    } catch(err) { alert("Error al guardar la reseña."); }
   };
 
   window.addEventListener('DOMContentLoaded', async () => {
     await cargarCMSyGacha();
     cargarBannersDeNube(); cargarProductosDeNube(); cargarConfigCategoriasPublico(); cargarReviewsNube(); 
     cargarUmbralesRangosNube().then(() => { actualizarRangoSegunXP(); });
-    document.getElementById('inputGamerTag').value = gamerProfile.tag; actualizarBadges(); renderizarColecciones();
+    document.getElementById('inputGamerTag').value = gamerProfile.tag; actualizarBadges(); renderizarAlbumWaifus();
   });
 
   window.cerrarModal = function() { document.getElementById('miModal').style.display = 'none'; };
@@ -1514,9 +1229,9 @@
       document.getElementById('modalCofreDiario').style.display = 'flex'; 
   };
   window.cerrarCofreModal = function() { document.getElementById('modalCofreDiario').style.display = 'none'; };
-  window.abrirCofreDiario = async function() {
+  window.abrirCofreDiario = function() {
     reproducirSonido(); let ultimo = localStorage.getItem('sakura_ultimo_cofre'); let hoy = new Date().toDateString();
-    if(ultimo === hoy) return await sysAlert("Ya abriste tu cofre hoy. Vuelve mañana.");
+    if(ultimo === hoy) return alert("Ya abriste tu cofre hoy. Vuelve mañana.");
     
     ganarXP(50);
     let tokensGanados = ajustesWebGlobal.tokensCofre;
@@ -1538,12 +1253,12 @@
     else { audio.pause(); icon.classList.remove('fa-pause-circle'); icon.classList.add('fa-music'); }
   };
 
-  window.agregarAlCarrito = async function() {
+  window.agregarAlCarrito = function() {
     reproducirSonido(); let item = { ...window.productoActual };
     if(item.esRopa) { item.titulo += ` (Talla: ${document.getElementById('selectTalla').value})`; }
     if(item.esRecarga) {
       let playerId = document.getElementById('inputPlayerId').value.trim(); let playerServer = document.getElementById('inputPlayerServer').value.trim();
-      if(!playerId) return await sysAlert("Indica el ID de jugador para procesar la recarga.");
+      if(!playerId) return alert("Indica el ID de jugador para procesar la recarga.");
       item.titulo += ` [ID: ${playerId}${playerServer ? ' / Servidor: ' + playerServer : ''}]`;
     }
     carrito.push(item); actualizarCarritoUI(); cerrarModal(); 
@@ -1622,8 +1337,8 @@
   window.cerrarCarritoModal = function() { document.getElementById('modalCarrito').style.display = 'none'; };
   window.vaciarCarrito = function() { reproducirSonido(); carrito = []; descuentoAplicado = 0; actualizarCarritoUI(); renderizarListaCarrito(); };
 
-  window.compartirCarrito = async function() {
-    reproducirSonido(); if(carrito.length === 0) return await sysAlert("Tu lista está vacía. Añade productos primero.");
+  window.compartirCarrito = function() {
+    reproducirSonido(); if(carrito.length === 0) return alert("Tu lista está vacía. Añade productos primero.");
     let msg = `✨ ¡Hola! Esta es mi lista de deseos (Wishlist) de *Sakura Gameverse*:\n\n`;
     carrito.forEach((i, idx) => { msg += `🎁 ${i.titulo} - $${Number(i.precio).toFixed(2)}\n`; });
     let tot = carrito.reduce((s, i) => s + Number(i.precio), 0); msg += `\n*Total aprox:* $${tot.toFixed(2)}\n\n¡Ojalá me regalen algo de aquí! 🥺💖`;
@@ -1632,17 +1347,17 @@
   };
 
   window.enviarPedidoWhatsApp = async function() {
-    reproducirSonido(); if(carrito.length === 0) return await sysAlert("El carrito está vacío.");
+    reproducirSonido(); if(carrito.length === 0) return alert("El carrito está vacío.");
 
     let nombreCli = document.getElementById('cartClienteNombre').value.trim();
     let tlfCli = document.getElementById('cartClienteTelefono').value.trim();
-    if(!nombreCli || !tlfCli) { return await sysAlert("⚠️ Por favor, llena la casilla 'Tus Datos' (Nombre y WhatsApp) para registrar la orden en el sistema antes de enviarla."); }
+    if(!nombreCli || !tlfCli) { return alert("⚠️ Por favor, llena la casilla 'Tus Datos' (Nombre y WhatsApp) para registrar la orden en el sistema antes de enviarla."); }
     
     let tieneFisicos = carrito.some(i => !i.esRecarga); let tieneDigitales = carrito.some(i => i.esRecarga);
     let metodoEnvio = document.getElementById('selectMetodoEnvio') ? document.getElementById('selectMetodoEnvio').value : "No especificado";
     let direccionEnvio = document.getElementById('inputDireccionEnvio') ? document.getElementById('inputDireccionEnvio').value.trim() : "";
 
-    if (tieneFisicos && !direccionEnvio) { cambiarPestanaCarrito('fisico'); return await sysAlert("Por favor indica la dirección o agencia de destino."); }
+    if (tieneFisicos && !direccionEnvio) { cambiarPestanaCarrito('fisico'); return alert("Por favor indica la dirección o agencia de destino."); }
 
     let sub = carrito.reduce((s, i) => s + Number(i.precio), 0); let tot = sub * (1 - descuentoAplicado); 
     let msgParaWhatsApp = `Hola Sakura Gameverse, deseo procesar el siguiente pedido:\n\n*Cliente:* ${nombreCli}\n*Contacto:* ${tlfCli}\n\n`;
@@ -1672,7 +1387,7 @@
         });
         window.open("https://wa.me/" + ajustesWebGlobal.whatsapp + "?text=" + encodeURIComponent(msgParaWhatsApp), '_blank'); 
         vaciarCarrito(); cerrarCarritoModal();
-    } catch(err) { await sysAlert("Hubo un error de conexión registrando tu pedido. Por favor intenta de nuevo."); } 
+    } catch(err) { alert("Hubo un error de conexión registrando tu pedido. Por favor intenta de nuevo."); } 
     finally { btnSubmit.disabled = false; btnSubmit.innerHTML = "Enviar Orden"; }
   };
 
@@ -1688,10 +1403,10 @@
   window.abrirFaqModal = function() { reproducirSonido(); document.getElementById('modalFaq').style.display = 'flex'; };
   window.cerrarFaqModal = function() { document.getElementById('modalFaq').style.display = 'none'; };
   
-  window.abrirSugerenciaModal = async function() {
+  window.abrirSugerenciaModal = function() {
       reproducirSonido();
-      let n = await customDialog('prompt', 'Identificación', 'Ingresa tu GamerTag o Nombre:'); if(!n) return;
-      let d = await customDialog('prompt', 'Búsqueda de Tesoro', '¿Qué coleccionable, figura o código te gustaría encargar?'); if(!d) return;
+      let n = prompt("Ingresa tu GamerTag o Nombre:"); if(!n) return;
+      let d = prompt("¿Qué coleccionable, figura o código te gustaría encargar?"); if(!d) return;
       window.open("https://wa.me/" + ajustesWebGlobal.whatsapp + "?text=" + encodeURIComponent(`*Búsqueda de Tesoro:*\nHola Sakura, soy ${n}. Me gustaría encargar/conseguir el siguiente artículo: ${d}`), '_blank');
   };
 
