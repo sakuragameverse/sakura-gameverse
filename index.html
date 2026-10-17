@@ -65,7 +65,7 @@
                   radial-gradient(circle at 80% 80%, rgba(0, 229, 255, 0.05) 0%, transparent 50%),
                   linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
                   linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-      background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px; pointer-events: none; z-index: -1; will-change: transform;
+      background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px; pointer-events: none; z-index: -1; 
     }
 
     h1, h2, h3, h4 { font-family: 'Chakra Petch', sans-serif; text-transform: uppercase; letter-spacing: 1px; }
@@ -77,13 +77,13 @@
       ::-webkit-scrollbar-thumb:hover { background: var(--primary-color); }
     }
 
-    .top-bar-notice { background: rgba(5, 1, 10, 0.8); backdrop-filter: blur(5px); border-bottom: 1px solid var(--border-color); padding: 7px 14px; font-size: 0.85em; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 10; }
-    .ticker-bar { background: rgba(14, 5, 32, 0.8); backdrop-filter: blur(5px); border-bottom: 1px solid rgba(255, 0, 127, 0.2); color: var(--secondary-color); font-size: 0.8em; text-transform: uppercase; letter-spacing: 1px; padding: 6px 0; overflow: hidden; white-space: nowrap; position: relative; z-index: 9; transform: translateZ(0); }
+    .top-bar-notice { background: rgba(5, 1, 10, 0.85); backdrop-filter: blur(4px); border-bottom: 1px solid var(--border-color); padding: 7px 14px; font-size: 0.85em; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 10; }
+    .ticker-bar { background: rgba(14, 5, 32, 0.85); border-bottom: 1px solid rgba(255, 0, 127, 0.2); color: var(--secondary-color); font-size: 0.8em; text-transform: uppercase; letter-spacing: 1px; padding: 6px 0; overflow: hidden; white-space: nowrap; position: relative; z-index: 9; }
     .ticker-content { display: inline-block; animation: ticker-slide 22s linear infinite; will-change: transform; }
     @keyframes ticker-slide { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
     .hero-banner { background: radial-gradient(ellipse at top, rgba(26, 8, 51, 0.5) 0%, transparent 70%); text-align: center; padding: 25px 20px; border-bottom: 1px solid var(--border-color); position: relative; z-index: 2; }
-    .hero-logo { width: 100%; max-width: 250px; height: auto; margin-bottom: 15px; cursor: pointer; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), filter 0.3s ease; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6)); animation: logo-float 4s infinite ease-in-out; will-change: transform, filter; }
+    .hero-logo { width: 100%; max-width: 250px; height: auto; margin-bottom: 15px; cursor: pointer; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), filter 0.3s ease; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6)); animation: logo-float 4s infinite ease-in-out; }
     .hero-logo:hover { transform: scale(1.08) translateY(-5px); filter: drop-shadow(0 0 15px var(--primary-color)) drop-shadow(0 0 30px var(--secondary-color)); animation: none; }
     @keyframes logo-float { 0% { transform: translateY(0px); } 50% { transform: translateY(-4px); } 100% { transform: translateY(0px); } }
 
@@ -93,10 +93,10 @@
     .status-dot { width: 7px; height: 7px; background-color: #25D366; border-radius: 50%; box-shadow: 0 0 8px #25D366; }
 
     .banner-slider-container { position: relative; width: 100%; max-width: 800px; margin: 18px auto 0 auto; border-radius: var(--radius-md); overflow: hidden; aspect-ratio: 16/9; background: #000; border: 1px solid var(--glass-border); box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: none; }
-    .banner-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.5s ease-in-out; cursor: pointer; will-change: opacity; }
+    .banner-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.5s ease-in-out; cursor: pointer; }
     .banner-slide.active { opacity: 1; z-index: 2; }
     
-    .banner-control-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(8px); color: var(--secondary-color); border: 1px solid var(--glass-border); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; transition: all 0.2s ease; }
+    .banner-control-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(4px); color: var(--secondary-color); border: 1px solid var(--glass-border); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; transition: all 0.2s ease; }
     .banner-control-btn:hover { background: rgba(0, 229, 255, 0.2); color: #fff; box-shadow: 0 0 15px var(--secondary-color); }
     .banner-prev { left: 10px; } .banner-next { right: 10px; }
     
@@ -107,7 +107,7 @@
     .container { padding: 25px 18px 80px 18px; max-width: 1180px; margin: 0 auto; position: relative; z-index: 2; }
 
     .search-box { margin-bottom: 25px; display: flex; justify-content: center; }
-    .search-input { background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); color: #fff; padding: 12px 20px; width: 100%; max-width: 480px; border-radius: var(--radius-pill); font-family: 'Rajdhani', sans-serif; font-size: 1em; outline: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+    .search-input { background: var(--glass-bg); backdrop-filter: blur(6px); border: 1px solid var(--glass-border); color: #fff; padding: 12px 20px; width: 100%; max-width: 480px; border-radius: var(--radius-pill); font-family: 'Rajdhani', sans-serif; font-size: 1em; outline: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
     .search-input:focus { border-color: var(--secondary-color); box-shadow: 0 0 20px rgba(0, 229, 255, 0.2); background: rgba(17, 5, 36, 0.7); }
 
     .categorias-visuales-section { margin-bottom: 30px; }
@@ -116,26 +116,26 @@
     .carrusel-track { display: flex; gap: 12px; overflow-x: auto; scroll-behavior: smooth; scrollbar-width: none; padding: 8px 2px; -webkit-overflow-scrolling: touch; }
     .carrusel-track::-webkit-scrollbar { display: none; }
     
-    .cat-card { flex: 0 0 auto; width: 130px; background: var(--glass-bg); backdrop-filter: blur(8px); border: 1px solid var(--glass-border); border-radius: var(--radius-md); overflow: hidden; cursor: pointer; transition: all 0.3s ease; will-change: transform; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+    .cat-card { flex: 0 0 auto; width: 130px; background: var(--glass-bg); backdrop-filter: blur(6px); border: 1px solid var(--glass-border); border-radius: var(--radius-md); overflow: hidden; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
     .cat-card:hover, .cat-card.activa { transform: translateY(-5px); border-color: var(--secondary-color); box-shadow: 0 8px 20px rgba(0, 229, 255, 0.15); }
     .cat-img { width: 100%; height: 110px; object-fit: contain; background: rgba(0, 0, 0, 0.2); border-bottom: 1px solid var(--glass-border); padding: 10px; }
     .cat-info { padding: 8px 6px; text-align: center; }
     .cat-title { font-family: 'Chakra Petch', sans-serif; font-size: 0.9em; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .cat-count { font-size: 0.75em; color: var(--text-muted); }
     
-    .carrusel-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); color: var(--secondary-color); border: 1px solid var(--glass-border); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; transition: all 0.2s ease; }
+    .carrusel-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.6); color: var(--secondary-color); border: 1px solid var(--glass-border); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; transition: all 0.2s ease; }
     .carrusel-arrow:hover { background: var(--secondary-color); color: #000; box-shadow: 0 0 10px var(--secondary-color); }
     .arrow-prev { left: -10px; } .arrow-next { right: -10px; }
 
     .controles-superiores { margin-bottom: 25px; }
     .panel-controles-avanzados { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
-    .ordenar-select { background: var(--glass-bg); backdrop-filter: blur(8px); border: 1px solid var(--glass-border); color: #fff; padding: 10px 14px; border-radius: var(--radius-sm); font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 0.9em; cursor: pointer; outline: none; transition: all 0.3s ease; appearance: none; background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2300e5ff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"); background-repeat: no-repeat; background-position: right 12px top 50%; background-size: 10px auto; }
+    .ordenar-select { background: var(--glass-bg); backdrop-filter: blur(6px); border: 1px solid var(--glass-border); color: #fff; padding: 10px 14px; border-radius: var(--radius-sm); font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 0.9em; cursor: pointer; outline: none; transition: all 0.3s ease; appearance: none; background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2300e5ff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"); background-repeat: no-repeat; background-position: right 12px top 50%; background-size: 10px auto; }
     .ordenar-select:focus { border-color: var(--secondary-color); background: rgba(17, 5, 36, 0.8); }
 
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 18px; }
     
-    .card { background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 12px; text-align: left; position: relative; cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); will-change: transform; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); }
-    .card:hover { background: rgba(25, 9, 51, 0.55); border-color: var(--secondary-color); transform: translateY(-6px); box-shadow: 0 12px 40px rgba(0, 229, 255, 0.15); }
+    .card { background: var(--glass-bg); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 12px; text-align: left; position: relative; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); }
+    .card:hover { background: rgba(25, 9, 51, 0.55); border-color: var(--secondary-color); transform: translateY(-6px); box-shadow: 0 12px 30px rgba(0, 229, 255, 0.15); }
     .card.agotado { filter: grayscale(100%); opacity: 0.75; border-color: rgba(255, 51, 102, 0.4); }
     .card.agotado:hover { filter: grayscale(80%); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255, 51, 102, 0.15); }
     
@@ -144,7 +144,7 @@
     .card-img-container img.activa { display: block; animation: fadeImg 0.3s ease; }
     @keyframes fadeImg { from { opacity: 0.5; } to { opacity: 1; } }
     
-    .carrusel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); color: var(--secondary-color); border: 1px solid var(--glass-border); border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.75em; z-index: 4; transition: all 0.2s ease; }
+    .carrusel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.5); color: var(--secondary-color); border: 1px solid var(--glass-border); border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.75em; z-index: 4; transition: all 0.2s ease; }
     .carrusel-btn:hover { background: var(--secondary-color); color: #000; }
     .carrusel-prev { left: 6px; } .carrusel-next { right: 6px; }
     
@@ -170,11 +170,11 @@
     .cart-tab-btn { flex: 1; background: transparent; color: var(--text-muted); border: none; padding: 10px 10px; border-radius: var(--radius-pill); font-family: 'Chakra Petch', sans-serif; font-size: 0.82em; font-weight: 700; cursor: pointer; transition: all 0.3s ease; }
     .cart-tab-btn.activo { background: var(--secondary-color); color: #000; box-shadow: 0 0 10px rgba(0, 229, 255, 0.4); }
 
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 0, 6, 0.75); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-    .modal-content { background: rgba(14, 4, 31, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); padding: 24px; border-radius: var(--radius-md); text-align: left; max-width: 95%; width: 440px; border: 1px solid var(--glass-border); box-shadow: 0 15px 50px rgba(0,0,0,0.6), inset 0 0 20px rgba(255,255,255,0.02); position: relative; max-height: calc(100vh - 100px); overflow-y: auto; animation: modalSlideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-    @keyframes modalSlideUp { from { transform: translateY(40px) scale(0.95); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 0, 6, 0.8); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+    .modal-content { background: rgba(14, 4, 31, 0.95); padding: 24px; border-radius: var(--radius-md); text-align: left; max-width: 95%; width: 440px; border: 1px solid var(--glass-border); box-shadow: 0 15px 50px rgba(0,0,0,0.6); position: relative; max-height: calc(100vh - 40px); overflow-y: auto; animation: modalSlideUp 0.3s ease; }
+    @keyframes modalSlideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     
-    .cerrar-modal { position: absolute; top: 12px; right: 14px; font-size: 24px; color: var(--text-muted); cursor: pointer; background: rgba(0,0,0,0.3); border: 1px solid transparent; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
+    .cerrar-modal { position: absolute; top: 12px; right: 14px; font-size: 24px; color: var(--text-muted); cursor: pointer; background: rgba(0,0,0,0.3); border: 1px solid transparent; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; z-index: 10; }
     .cerrar-modal:hover { color: #fff; background: rgba(255, 51, 102, 0.2); border-color: #ff3366; }
     
     .breadcrumbs { font-size: 0.8em; color: var(--text-muted); margin-bottom: 10px; }
@@ -197,7 +197,7 @@
     
     .btn-instalar { background: linear-gradient(135deg, #25D366, #00e5ff); color: #000; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); }
 
-    .btn-compartir { background: rgba(37, 211, 102, 0.05); backdrop-filter: blur(4px); color: #25d366; border: 1px solid rgba(37, 211, 102, 0.4); padding: 12px; font-family: 'Chakra Petch', sans-serif; font-size: 0.95em; font-weight: 600; border-radius: var(--radius-sm); cursor: pointer; width: 100%; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s ease; }
+    .btn-compartir { background: rgba(37, 211, 102, 0.05); color: #25d366; border: 1px solid rgba(37, 211, 102, 0.4); padding: 12px; font-family: 'Chakra Petch', sans-serif; font-size: 0.95em; font-weight: 600; border-radius: var(--radius-sm); cursor: pointer; width: 100%; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s ease; }
     .btn-compartir:hover { background: rgba(37, 211, 102, 0.15); box-shadow: 0 0 15px rgba(37, 211, 102, 0.2); }
 
     .cupon-box { display: flex; gap: 8px; margin-bottom: 12px; }
@@ -222,7 +222,7 @@
     .upsell-btn { background: rgba(0, 229, 255, 0.15); color: var(--secondary-color); border: 1px solid rgba(0,229,255,0.3); padding: 5px; width: 100%; border-radius: 4px; font-size: 0.75em; cursor: pointer; font-weight: bold; transition: all 0.2s ease;}
     .upsell-btn:hover { background: var(--secondary-color); color: #000; box-shadow: 0 0 8px var(--secondary-color); }
 
-    .bottom-nav { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 500px; background: rgba(10, 2, 22, 0.75); border: 1px solid var(--glass-border); border-radius: var(--radius-pill); display: flex; justify-content: space-around; align-items: center; padding: 12px 10px; z-index: 2500; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(0, 229, 255, 0.05); }
+    .bottom-nav { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 500px; background: rgba(10, 2, 22, 0.85); border: 1px solid var(--glass-border); border-radius: var(--radius-pill); display: flex; justify-content: space-around; align-items: center; padding: 12px 10px; z-index: 2500; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(0, 229, 255, 0.05); }
     .nav-item { color: var(--text-muted); display: flex; flex-direction: column; align-items: center; font-size: 0.7em; font-weight: 700; cursor: pointer; position: relative; width: 25%; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
     .nav-item i { font-size: 1.5em; margin-bottom: 4px; color: var(--text-muted); transition: all 0.3s ease; }
     .nav-item:hover, .nav-item.active { color: #fff; transform: translateY(-3px); }
@@ -234,7 +234,7 @@
     .btn-menu-opcion i { font-size: 1.8em; margin-bottom: 8px; }
     .btn-menu-opcion:hover { border-color: var(--secondary-color); background: rgba(0, 229, 255, 0.05); transform: translateY(-2px); }
 
-    .reviews-section, .info-section { background: var(--glass-bg); backdrop-filter: blur(10px); margin-top: 35px; padding: 24px 18px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+    .reviews-section, .info-section { background: var(--glass-bg); backdrop-filter: blur(6px); margin-top: 35px; padding: 24px 18px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
     .review-card { background: rgba(0,0,0,0.3); padding: 14px; border-radius: var(--radius-sm); margin-bottom: 12px; border: 1px solid var(--glass-border); }
     .badge-envio { display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 0, 127, 0.1); border: 1px solid rgba(255, 0, 127, 0.3); padding: 4px 10px; border-radius: var(--radius-pill); font-size: 0.8em; font-weight: 700; margin-right: 6px; margin-bottom: 6px; }
     
@@ -294,6 +294,19 @@
   </div>
 </div>
 
+<!-- Modal Personalizado para Alertas y Prompts -->
+<div id="customDialogModal" class="modal" style="z-index: 9999999;">
+  <div class="modal-content" style="max-width: 350px; text-align: center; border-color: var(--secondary-color);">
+    <h3 id="cdTitle" style="color: #fff; margin-top: 0;"><i class="fas fa-exclamation-circle"></i> Mensaje</h3>
+    <p id="cdMessage" style="color: var(--text-muted); font-size: 0.9em; margin-bottom: 15px;"></p>
+    <input type="text" id="cdInput" class="form-input" style="display:none; margin-bottom: 15px; text-align: center; font-weight: bold;">
+    <div style="display: flex; gap: 10px; justify-content: center;">
+      <button id="cdBtnCancel" class="btn-submit" style="background: rgba(255, 51, 102, 0.1); color: #ff3366; border: 1px solid rgba(255,51,102,0.3); display: none;">Cancelar</button>
+      <button id="cdBtnOk" class="btn-submit" style="background: var(--secondary-color); color: #000;">Aceptar</button>
+    </div>
+  </div>
+</div>
+
 <!-- MODALES GAMIFICACIÓN Y TEMAS -->
 <div id="modalCofreDiario" class="modal">
   <div class="modal-content" style="text-align: center;">
@@ -319,7 +332,7 @@
       </div>
     </div>
 
-    <div id="gachaResultado" style="display: none; background: rgba(0,0,0,0.4); border: 1px solid var(--secondary-color); padding: 12px; border-radius: var(--radius-sm); font-weight: 700; color: #fff; margin-bottom: 14px; animation: modalSlideUp 0.3s ease;">
+    <div id="gachaResultado" style="display: none; background: rgba(0,0,0,0.4); border: 1px solid var(--secondary-color); padding: 12px; border-radius: var(--radius-sm); font-weight: 700; color: #fff; margin-bottom: 14px;">
         <span id="gachaRarezaBadge" class="tag-r">R</span>
         <div id="gachaNombre" style="font-size: 1.2em; margin: 6px 0;">Waifu</div>
         <div id="gachaPremio" style="color: #25d366; font-size: 0.9em;">Premio aquí</div>
@@ -345,7 +358,7 @@
       <img src="" id="pkmnResultSprite" class="pkmn-sprite">
     </div>
 
-    <div id="pkmnResultado" style="display: none; background: rgba(0,0,0,0.6); border: 1px dashed #ffde00; padding: 12px; border-radius: var(--radius-sm); color: #fff; margin-bottom: 14px; margin-top: 14px; animation: modalSlideUp 0.3s ease;">
+    <div id="pkmnResultado" style="display: none; background: rgba(0,0,0,0.6); border: 1px dashed #ffde00; padding: 12px; border-radius: var(--radius-sm); color: #fff; margin-bottom: 14px; margin-top: 14px;">
         <div id="pkmnNombre" style="font-size: 1.4em; font-family: 'Chakra Petch', sans-serif; font-weight: bold; text-transform: capitalize; margin-bottom: 4px; color: #ffde00;">Pikachu</div>
         <div style="font-size: 0.85em; color: var(--text-muted);">¡Añadido a tu Pokédex Mini!</div>
     </div>
@@ -369,7 +382,7 @@
       <img src="" id="genshinResultSprite" class="genshin-sprite">
     </div>
 
-    <div id="genshinResultado" style="display: none; background: rgba(0,0,0,0.6); border: 1px dashed #cda55d; padding: 12px; border-radius: var(--radius-sm); color: #fff; margin-bottom: 14px; margin-top: 14px; animation: modalSlideUp 0.3s ease;">
+    <div id="genshinResultado" style="display: none; background: rgba(0,0,0,0.6); border: 1px dashed #cda55d; padding: 12px; border-radius: var(--radius-sm); color: #fff; margin-bottom: 14px; margin-top: 14px;">
         <div id="genshinNombre" style="font-size: 1.4em; font-family: 'Chakra Petch', sans-serif; font-weight: bold; margin-bottom: 4px; color: #fff;">Personaje</div>
         <div style="font-size: 0.85em; color: var(--text-muted);">¡Añadido a tu Taverna!</div>
     </div>
@@ -394,7 +407,7 @@
   </div>
 </div>
 
-<!-- MODAL GAMER PROFILE Y COLECCIONES -->
+<!-- MODAL GAMER PROFILE Y COLECCIONES (DISEÑO GRID) -->
 <div id="modalGamerProfile" class="modal">
   <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarGamerProfileModal()">×</button>
@@ -418,7 +431,7 @@
     <!-- COLECCIÓN DE WAIFUS -->
     <div style="text-align: left; margin-bottom: 14px;">
       <div style="font-size: 0.85em; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Waifus (<span id="lblTotalWaifusJugador">0</span>)</div>
-      <div id="albumWaifusContenedor" style="display:flex; gap:8px; overflow-x:auto; padding-bottom: 5px; scrollbar-width: none;">
+      <div id="albumWaifusContenedor" style="display:flex; flex-wrap:wrap; gap:8px; max-height:200px; overflow-y:auto; background: rgba(0,0,0,0.2); padding:8px; border-radius:var(--radius-sm); border:1px solid rgba(255,0,127,0.2);">
         <p style="color: var(--text-muted); font-size: 0.8em; margin: 0;">Juega al Gacha para coleccionar.</p>
       </div>
     </div>
@@ -426,7 +439,7 @@
     <!-- COLECCIÓN DE POKEMON -->
     <div style="text-align: left; margin-bottom: 14px;">
       <div style="font-size: 0.85em; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Pokédex Mini (<span id="lblTotalPkmnJugador">0</span>)</div>
-      <div id="albumPkmnContenedor" style="display:flex; gap:8px; overflow-x:auto; padding-bottom: 5px; scrollbar-width: none;">
+      <div id="albumPkmnContenedor" style="display:flex; flex-wrap:wrap; gap:8px; max-height:200px; overflow-y:auto; background: rgba(0,0,0,0.2); padding:8px; border-radius:var(--radius-sm); border:1px solid rgba(255,222,0,0.2);">
         <p style="color: var(--text-muted); font-size: 0.8em; margin: 0;">Usa el Poké Gacha para capturar.</p>
       </div>
     </div>
@@ -434,7 +447,7 @@
     <!-- COLECCIÓN DE GENSHIN -->
     <div style="text-align: left; margin-bottom: 14px;">
       <div style="font-size: 0.85em; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Taverna Genshin (<span id="lblTotalGenshinJugador">0</span>)</div>
-      <div id="albumGenshinContenedor" style="display:flex; gap:8px; overflow-x:auto; padding-bottom: 5px; scrollbar-width: none;">
+      <div id="albumGenshinContenedor" style="display:flex; flex-wrap:wrap; gap:8px; max-height:200px; overflow-y:auto; background: rgba(0,0,0,0.2); padding:8px; border-radius:var(--radius-sm); border:1px solid rgba(205,165,93,0.2);">
         <p style="color: var(--text-muted); font-size: 0.8em; margin: 0;">Pide un deseo en el Gachapón.</p>
       </div>
     </div>
@@ -785,6 +798,34 @@
   let carrito = JSON.parse(localStorage.getItem('sakura_carrito')) || [];
   let favoritos = JSON.parse(localStorage.getItem('sakura_favoritos')) || [];
 
+  // SISTEMA DE MODALES PERSONALIZADOS
+  window.customDialog = function(type, title, message, defaultValue = "") {
+      return new Promise((resolve) => {
+          const modal = document.getElementById('customDialogModal');
+          const titleEl = document.getElementById('cdTitle');
+          const msgEl = document.getElementById('cdMessage');
+          const inputEl = document.getElementById('cdInput');
+          const btnOk = document.getElementById('cdBtnOk');
+          const btnCancel = document.getElementById('cdBtnCancel');
+
+          titleEl.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${title}`;
+          msgEl.innerText = message;
+          
+          if(type === 'prompt') { inputEl.style.display = 'block'; inputEl.value = defaultValue; } 
+          else { inputEl.style.display = 'none'; }
+
+          if(type === 'alert') { btnCancel.style.display = 'none'; } 
+          else { btnCancel.style.display = 'block'; }
+
+          modal.style.display = 'flex';
+
+          btnOk.onclick = () => { modal.style.display = 'none'; resolve(type === 'prompt' ? inputEl.value : true); };
+          btnCancel.onclick = () => { modal.style.display = 'none'; resolve(type === 'prompt' ? null : false); };
+      });
+  };
+
+  window.sysAlert = async (msg) => { await customDialog('alert', 'Sistema', msg); };
+
   async function cargarCMSyGacha() {
     try {
         const snap = await getDoc(doc(db, "configuracion", "ajustes_web"));
@@ -826,13 +867,13 @@
   };
   window.cerrarGachaModal = function() { document.getElementById('modalGacha').style.display = 'none'; };
 
-  window.realizarTiradaGacha = function() {
+  window.realizarTiradaGacha = async function() {
       reproducirSonido();
       let costo = ajustesWebGlobal.costoGacha;
       
       if(!gamerProfile.tokens) gamerProfile.tokens = 0;
-      if(gamerProfile.tokens < costo) return alert(`Necesitas al menos ${costo} Tokens para realizar una invocación.`);
-      if(waifusGachaGlobal.length === 0) return alert("La máquina Gacha está vacía temporalmente. ¡Vuelve pronto!");
+      if(gamerProfile.tokens < costo) return await sysAlert(`Necesitas al menos ${costo} Tokens para realizar una invocación.`);
+      if(waifusGachaGlobal.length === 0) return await sysAlert("La máquina Gacha está vacía temporalmente. ¡Vuelve pronto!");
 
       let btn = document.getElementById('btnTirarGacha');
       btn.disabled = true;
@@ -909,11 +950,11 @@
   };
   window.cerrarGachaPkmnModal = function() { document.getElementById('modalGachaPkmn').style.display = 'none'; };
 
-  window.realizarTiradaPkmn = function() {
+  window.realizarTiradaPkmn = async function() {
       reproducirSonido();
       let costo = 50;
       if(!gamerProfile.tokens) gamerProfile.tokens = 0;
-      if(gamerProfile.tokens < costo) return alert(`Necesitas al menos ${costo} Tokens para tirar una Pokéball.`);
+      if(gamerProfile.tokens < costo) return await sysAlert(`Necesitas al menos ${costo} Tokens para tirar una Pokéball.`);
 
       let btn = document.getElementById('btnTirarPkmn');
       btn.disabled = true;
@@ -976,8 +1017,8 @@
                 }, 1500);
             }, 500);
         })
-        .catch(err => { 
-            alert("El Pokémon escapó. ¡Intenta de nuevo!"); 
+        .catch(async err => { 
+            await sysAlert("El Pokémon escapó. ¡Intenta de nuevo!"); 
             btn.disabled = false; 
             gamerProfile.tokens += costo; // Devolver tokens si falla API
             document.getElementById('lblSaldoGachaPkmn').innerText = gamerProfile.tokens;
@@ -1010,11 +1051,11 @@
   };
   window.cerrarGachaGenshinModal = function() { document.getElementById('modalGachaGenshin').style.display = 'none'; };
 
-  window.realizarTiradaGenshin = function() {
+  window.realizarTiradaGenshin = async function() {
       reproducirSonido();
       let costo = 50;
       if(!gamerProfile.tokens) gamerProfile.tokens = 0;
-      if(gamerProfile.tokens < costo) return alert(`Necesitas al menos ${costo} Tokens para pedir un deseo.`);
+      if(gamerProfile.tokens < costo) return await sysAlert(`Necesitas al menos ${costo} Tokens para pedir un deseo.`);
 
       let btn = document.getElementById('btnTirarGenshin');
       btn.disabled = true;
@@ -1164,7 +1205,7 @@
     reproducirSonido(); await signOut(auth);
     localStorage.removeItem('sakura_gamer_profile'); localStorage.removeItem('sakura_carrito'); localStorage.removeItem('sakura_favoritos');
     gamerProfile = { tag: "Gamer_Guest", xp: 0, tokens: 0, rango: "Genin", waifus: [], pkmns: [], genshin: [] }; carrito = []; favoritos = [];
-    actualizarBadges(); actualizarRangoSegunXP(); renderizarColecciones(); cerrarCloudSaveModal(); alert("Sesión cerrada. Tu partida está a salvo en la nube.");
+    actualizarBadges(); actualizarRangoSegunXP(); renderizarColecciones(); cerrarCloudSaveModal(); await sysAlert("Sesión cerrada. Tu partida está a salvo en la nube.");
   };
 
   async function descargarProgresoNube(uid) {
@@ -1224,7 +1265,7 @@
     } catch (e) {}
   }
 
-  window.copiarTexto = function(texto) { reproducirSonido(); navigator.clipboard.writeText(texto).then(() => alert("Copiado al portapapeles.")); };
+  window.copiarTexto = async function(texto) { reproducirSonido(); await navigator.clipboard.writeText(texto); await sysAlert("Copiado al portapapeles."); };
 
   async function cargarBannersDeNube() {
     try {
@@ -1366,7 +1407,7 @@
   
   window.buscarPedido = async function() {
       reproducirSonido(); let tlf = document.getElementById('inputRastreoTlf').value.trim();
-      if(!tlf) return alert("Por favor ingresa un número de teléfono válido.");
+      if(!tlf) return await sysAlert("Por favor ingresa un número de teléfono válido.");
       let cont = document.getElementById('resultadoRastreo'); cont.innerHTML = "<p style='text-align:center; color: var(--secondary-color);'><i class='fas fa-spinner fa-spin'></i> Conectando con la base de datos...</p>";
       try {
           const q = query(collection(db, "pedidos"), where("telefono", "==", tlf)); const snap = await getDocs(q);
@@ -1417,12 +1458,12 @@
 
   window.agregarReview = async function() {
     reproducirSonido(); let n = document.getElementById('revNombre').value.trim(); let e = document.getElementById('revEstrellas').value; let t = document.getElementById('revTexto').value.trim();
-    if(!n || !t) return alert("Por favor completa tu nombre y comentario.");
+    if(!n || !t) return await sysAlert("Por favor completa tu nombre y comentario.");
     try {
       await addDoc(collection(db, "reviews"), { nombre: n, estrellas: e, texto: t, timestamp: Date.now() });
       document.getElementById('revNombre').value = ""; document.getElementById('revTexto').value = ""; 
-      await cargarReviewsNube(); alert("Opinión registrada correctamente.");
-    } catch(err) { alert("Error al guardar la reseña."); }
+      await cargarReviewsNube(); await sysAlert("Opinión registrada correctamente.");
+    } catch(err) { await sysAlert("Error al guardar la reseña."); }
   };
 
   window.addEventListener('DOMContentLoaded', async () => {
@@ -1473,9 +1514,9 @@
       document.getElementById('modalCofreDiario').style.display = 'flex'; 
   };
   window.cerrarCofreModal = function() { document.getElementById('modalCofreDiario').style.display = 'none'; };
-  window.abrirCofreDiario = function() {
+  window.abrirCofreDiario = async function() {
     reproducirSonido(); let ultimo = localStorage.getItem('sakura_ultimo_cofre'); let hoy = new Date().toDateString();
-    if(ultimo === hoy) return alert("Ya abriste tu cofre hoy. Vuelve mañana.");
+    if(ultimo === hoy) return await sysAlert("Ya abriste tu cofre hoy. Vuelve mañana.");
     
     ganarXP(50);
     let tokensGanados = ajustesWebGlobal.tokensCofre;
@@ -1497,12 +1538,12 @@
     else { audio.pause(); icon.classList.remove('fa-pause-circle'); icon.classList.add('fa-music'); }
   };
 
-  window.agregarAlCarrito = function() {
+  window.agregarAlCarrito = async function() {
     reproducirSonido(); let item = { ...window.productoActual };
     if(item.esRopa) { item.titulo += ` (Talla: ${document.getElementById('selectTalla').value})`; }
     if(item.esRecarga) {
       let playerId = document.getElementById('inputPlayerId').value.trim(); let playerServer = document.getElementById('inputPlayerServer').value.trim();
-      if(!playerId) return alert("Indica el ID de jugador para procesar la recarga.");
+      if(!playerId) return await sysAlert("Indica el ID de jugador para procesar la recarga.");
       item.titulo += ` [ID: ${playerId}${playerServer ? ' / Servidor: ' + playerServer : ''}]`;
     }
     carrito.push(item); actualizarCarritoUI(); cerrarModal(); 
@@ -1581,8 +1622,8 @@
   window.cerrarCarritoModal = function() { document.getElementById('modalCarrito').style.display = 'none'; };
   window.vaciarCarrito = function() { reproducirSonido(); carrito = []; descuentoAplicado = 0; actualizarCarritoUI(); renderizarListaCarrito(); };
 
-  window.compartirCarrito = function() {
-    reproducirSonido(); if(carrito.length === 0) return alert("Tu lista está vacía. Añade productos primero.");
+  window.compartirCarrito = async function() {
+    reproducirSonido(); if(carrito.length === 0) return await sysAlert("Tu lista está vacía. Añade productos primero.");
     let msg = `✨ ¡Hola! Esta es mi lista de deseos (Wishlist) de *Sakura Gameverse*:\n\n`;
     carrito.forEach((i, idx) => { msg += `🎁 ${i.titulo} - $${Number(i.precio).toFixed(2)}\n`; });
     let tot = carrito.reduce((s, i) => s + Number(i.precio), 0); msg += `\n*Total aprox:* $${tot.toFixed(2)}\n\n¡Ojalá me regalen algo de aquí! 🥺💖`;
@@ -1591,17 +1632,17 @@
   };
 
   window.enviarPedidoWhatsApp = async function() {
-    reproducirSonido(); if(carrito.length === 0) return alert("El carrito está vacío.");
+    reproducirSonido(); if(carrito.length === 0) return await sysAlert("El carrito está vacío.");
 
     let nombreCli = document.getElementById('cartClienteNombre').value.trim();
     let tlfCli = document.getElementById('cartClienteTelefono').value.trim();
-    if(!nombreCli || !tlfCli) { return alert("⚠️ Por favor, llena la casilla 'Tus Datos' (Nombre y WhatsApp) para registrar la orden en el sistema antes de enviarla."); }
+    if(!nombreCli || !tlfCli) { return await sysAlert("⚠️ Por favor, llena la casilla 'Tus Datos' (Nombre y WhatsApp) para registrar la orden en el sistema antes de enviarla."); }
     
     let tieneFisicos = carrito.some(i => !i.esRecarga); let tieneDigitales = carrito.some(i => i.esRecarga);
     let metodoEnvio = document.getElementById('selectMetodoEnvio') ? document.getElementById('selectMetodoEnvio').value : "No especificado";
     let direccionEnvio = document.getElementById('inputDireccionEnvio') ? document.getElementById('inputDireccionEnvio').value.trim() : "";
 
-    if (tieneFisicos && !direccionEnvio) { cambiarPestanaCarrito('fisico'); return alert("Por favor indica la dirección o agencia de destino."); }
+    if (tieneFisicos && !direccionEnvio) { cambiarPestanaCarrito('fisico'); return await sysAlert("Por favor indica la dirección o agencia de destino."); }
 
     let sub = carrito.reduce((s, i) => s + Number(i.precio), 0); let tot = sub * (1 - descuentoAplicado); 
     let msgParaWhatsApp = `Hola Sakura Gameverse, deseo procesar el siguiente pedido:\n\n*Cliente:* ${nombreCli}\n*Contacto:* ${tlfCli}\n\n`;
@@ -1631,7 +1672,7 @@
         });
         window.open("https://wa.me/" + ajustesWebGlobal.whatsapp + "?text=" + encodeURIComponent(msgParaWhatsApp), '_blank'); 
         vaciarCarrito(); cerrarCarritoModal();
-    } catch(err) { alert("Hubo un error de conexión registrando tu pedido. Por favor intenta de nuevo."); } 
+    } catch(err) { await sysAlert("Hubo un error de conexión registrando tu pedido. Por favor intenta de nuevo."); } 
     finally { btnSubmit.disabled = false; btnSubmit.innerHTML = "Enviar Orden"; }
   };
 
@@ -1647,10 +1688,10 @@
   window.abrirFaqModal = function() { reproducirSonido(); document.getElementById('modalFaq').style.display = 'flex'; };
   window.cerrarFaqModal = function() { document.getElementById('modalFaq').style.display = 'none'; };
   
-  window.abrirSugerenciaModal = function() {
+  window.abrirSugerenciaModal = async function() {
       reproducirSonido();
-      let n = prompt("Ingresa tu GamerTag o Nombre:"); if(!n) return;
-      let d = prompt("¿Qué coleccionable, figura o código te gustaría encargar?"); if(!d) return;
+      let n = await customDialog('prompt', 'Identificación', 'Ingresa tu GamerTag o Nombre:'); if(!n) return;
+      let d = await customDialog('prompt', 'Búsqueda de Tesoro', '¿Qué coleccionable, figura o código te gustaría encargar?'); if(!d) return;
       window.open("https://wa.me/" + ajustesWebGlobal.whatsapp + "?text=" + encodeURIComponent(`*Búsqueda de Tesoro:*\nHola Sakura, soy ${n}. Me gustaría encargar/conseguir el siguiente artículo: ${d}`), '_blank');
   };
 
