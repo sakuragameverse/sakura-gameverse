@@ -128,7 +128,7 @@
   <div class="tabs-wrapper">
     <button class="tab-btn active" onclick="cambiarSeccion('productos')"><i class="fas fa-boxes"></i> Inventario</button>
     <button class="tab-btn" onclick="cambiarSeccion('ajustes')"><i class="fas fa-cogs"></i> Ajustes Web</button>
-    <button class="tab-btn" onclick="cambiarSeccion('gacha')"><i class="fas fa-capsules"></i> Gacha Waifus</button>
+    <button class="tab-btn" onclick="cambiarSeccion('gacha')"><i class="fas fa-capsules"></i> Máquinas Gacha</button>
     <button class="tab-btn" onclick="cambiarSeccion('pedidos')"><i class="fas fa-truck-fast"></i> Pedidos</button>
     <button class="tab-btn" onclick="cambiarSeccion('jugadores')"><i class="fas fa-users"></i> Jugadores</button>
     <button class="tab-btn" onclick="cambiarSeccion('facturas')"><i class="fas fa-file-invoice-dollar"></i> Facturas</button>
@@ -158,9 +158,16 @@
     </div>
   </section>
 
-  <!-- GACHA WAIFUS -->
+  <!-- GACHA WAIFUS Y POKEMON -->
   <section id="panel-gacha" class="admin-panel">
-    <button class="btn-toggle-box" onclick="toggleFormWaifu()"><i class="fas fa-plus"></i> <span id="lblToggleWaifu">Agregar Tarjeta Waifu</span></button>
+    
+    <div class="card-panel">
+      <div class="panel-header"><span class="panel-title" style="color: #ffaa00;"><i class="fas fa-history"></i> Historial Global de Gacha</span></div>
+      <p style="font-size: 0.8em; color: var(--text-muted); margin-bottom: 15px;">Monitorea las tiradas de los usuarios en tiempo real. Borra los registros de la Máquina de Descuentos una vez entregues el premio.</p>
+      <div id="listaHistorialGacha"><p style="color: var(--text-muted);"><i class="fas fa-spinner fa-spin"></i> Cargando historial...</p></div>
+    </div>
+
+    <button class="btn-toggle-box" onclick="toggleFormWaifu()"><i class="fas fa-plus"></i> <span id="lblToggleWaifu">Agregar Tarjeta a Máquina Waifu</span></button>
     <div class="card-panel" id="cajaFormWaifu" style="display: none;">
       <div class="panel-header"><span class="panel-title"><i class="fas fa-gem"></i> Creador de Cartas Gacha</span><button style="background: none; border: none; color: #ff3366; font-weight: bold; cursor: pointer;" onclick="toggleFormWaifu()">Cerrar</button></div>
       <form onsubmit="guardarWaifu(event)" id="formWaifuGacha">
@@ -179,15 +186,9 @@
         <button type="submit" class="btn-submit" id="btnSubirWaifu">Publicar Tarjeta Gacha</button>
       </form>
     </div>
-    
-    <div class="card-panel">
-      <div class="panel-header"><span class="panel-title" style="color: #ffaa00;"><i class="fas fa-history"></i> Historial de Recompensas</span></div>
-      <p style="font-size: 0.8em; color: var(--text-muted); margin-bottom: 15px;">Aquí aparecerán los premios que la gente gane en la máquina. Bórralos una vez los hayas entregado o cobrado.</p>
-      <div id="listaHistorialGacha"><p style="color: var(--text-muted);"><i class="fas fa-spinner fa-spin"></i> Cargando historial...</p></div>
-    </div>
 
     <div class="card-panel">
-      <div class="panel-header"><span class="panel-title"><i class="fas fa-capsules"></i> Álbum de Cartas Activas</span></div>
+      <div class="panel-header"><span class="panel-title"><i class="fas fa-images"></i> Álbum de Cartas Activas (Waifus)</span></div>
       <div id="listaWaifusAdmin"></div>
     </div>
   </section>
@@ -196,7 +197,7 @@
   <section id="panel-jugadores" class="admin-panel">
     <div class="card-panel">
       <div class="panel-header"><span class="panel-title"><i class="fas fa-users"></i> Base de Jugadores</span></div>
-      <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 15px;">Gestiona a tus clientes: modifica su GamerTag, suma/resta XP para subir su rango, o regálales Tokens 🪙 para el Gacha.</p>
+      <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 15px;">Gestiona a tus clientes: modifica su GamerTag, suma/resta XP para subir su rango, regálales Tokens 🪙, o mira sus colecciones.</p>
       <div id="listaJugadoresAdmin"><p style="color: var(--text-muted); text-align: center;"><i class="fas fa-spinner fa-spin"></i> Cargando jugadores...</p></div>
     </div>
   </section>
@@ -342,13 +343,13 @@
     } catch(err) {} 
   };
 
-  /* GACHA WAIFUS Y NÚCLEO DE AUDITORÍA */
-  window.toggleFormWaifu = function() { const box = document.getElementById('cajaFormWaifu'); const lbl = document.getElementById('lblToggleWaifu'); if(box.style.display === 'none') { box.style.display = 'block'; lbl.innerText = "Cerrar Creador"; } else { box.style.display = 'none'; lbl.innerText = "Agregar Tarjeta Waifu"; } };
+  /* GACHA WAIFUS Y POKEMON (NÚCLEO DE AUDITORÍA) */
+  window.toggleFormWaifu = function() { const box = document.getElementById('cajaFormWaifu'); const lbl = document.getElementById('lblToggleWaifu'); if(box.style.display === 'none') { box.style.display = 'block'; lbl.innerText = "Cerrar Creador"; } else { box.style.display = 'none'; lbl.innerText = "Agregar Tarjeta a Máquina Waifu"; } };
 
   async function cargarWaifusAdmin() {
     try {
       const q = query(collection(db, "waifus_gacha"), orderBy("timestamp", "desc")); const snapshot = await getDocs(q); const cont = document.getElementById('listaWaifusAdmin');
-      if (snapshot.empty) { cont.innerHTML = "<p style='color:var(--text-muted); text-align:center;'>Gacha vacío.</p>"; return; }
+      if (snapshot.empty) { cont.innerHTML = "<p style='color:var(--text-muted); text-align:center;'>Gacha de Descuentos vacío.</p>"; return; }
       let htmlBloque = "";
       snapshot.forEach(d => {
         const w = { id: d.id, ...d.data() }; let tagClase = w.rareza === 'SSR' ? 'tag-ssr' : (w.rareza === 'SR' ? 'tag-sr' : (w.rareza === 'R' ? 'tag-r' : 'tag-n')); let iconOculto = w.oculto ? 'fa-eye-slash' : 'fa-eye'; let colorOculto = w.oculto ? '#ffaa00' : 'var(--secondary-color)';
@@ -358,7 +359,7 @@
     } catch(e) {}
   }
 
-  // >>> HISTORIAL OPTIMIZADO CON TRY/CATCH <<<
+  // HISTORIAL GLOBAL (AHORA INCLUYE POKÉMON Y WAIFUS)
   async function cargarHistorialGacha() {
     try {
       const q = query(collection(db, "historial_gacha"), orderBy("timestamp", "desc"));
@@ -370,16 +371,31 @@
       snapshot.forEach(d => {
         let h = d.data();
         let fecha = new Date(h.timestamp).toLocaleString();
-        let colorR = h.rareza === 'SSR' ? '#ffaa00' : (h.rareza === 'SR' ? '#b000ff' : (h.rareza === 'R' ? '#00e5ff' : '#b4becd'));
         
+        let tipoGacha = h.tipoGacha || 'Waifu';
+        let isPkmn = tipoGacha === 'Pokemon';
+        
+        // Estilos según el tipo de Gacha
+        let colorR = h.rareza === 'SSR' ? '#ffaa00' : (h.rareza === 'SR' ? '#b000ff' : (h.rareza === 'R' ? '#00e5ff' : '#b4becd'));
+        if(isPkmn) colorR = h.rareza === 'Raro' ? '#ffaa00' : '#00e5ff';
+
+        let detallePremio = isPkmn ? 
+            `<i class="fas fa-gamepad" style="color:#ffde00;"></i> Capturó a: <strong>${sanitizar(h.waifu)}</strong>` : 
+            `<i class="fas fa-gift" style="color:#ff007f;"></i> Premio Pendiente: <strong>${sanitizar(h.premio)}</strong>`;
+        
+        let headerTipo = isPkmn ? `<span style="color:#ffde00; font-size:0.8em; border:1px solid #ffde00; padding:2px 6px; border-radius:4px;">POKÉ GACHA</span>` : `<span style="color:#ff007f; font-size:0.8em; border:1px solid #ff007f; padding:2px 6px; border-radius:4px;">WAIFU GACHA</span>`;
+
         html += `
         <div class="item-card-row">
           <div style="flex-grow:1;">
-            <div style="font-weight:bold; color:#fff;">👤 ${sanitizar(h.jugador)} <span style="font-size:0.8em; color:var(--text-muted); font-weight:normal;">- ${fecha}</span></div>
-            <div style="font-size:0.9em; color:var(--text-muted);">Desbloqueó: <strong style="color:${colorR};">${sanitizar(h.waifu)} (${h.rareza})</strong></div>
-            <div style="font-size:0.85em; color:#25d366; margin-top:4px;"><i class="fas fa-gift"></i> Premio Pendiente: <strong>${sanitizar(h.premio)}</strong></div>
+            <div style="font-weight:bold; color:#fff; display:flex; justify-content:space-between; align-items:center;">
+              <span>👤 ${sanitizar(h.jugador)}</span>
+              ${headerTipo}
+            </div>
+            <div style="font-size:0.8em; color:var(--text-muted); font-weight:normal; margin-bottom: 4px;">Fecha: ${fecha}</div>
+            <div style="font-size:0.95em; color:#25d366; margin-top:4px;">${detallePremio} <span style="font-size:0.8em; color:${colorR};">(${h.rareza})</span></div>
           </div>
-          <button class="btn-action-touch btn-del" onclick="eliminarHistorialGacha('${d.id}')" title="Marcar como entregado"><i class="fas fa-check"></i></button>
+          <button class="btn-action-touch btn-del" onclick="eliminarHistorialGacha('${d.id}')" title="Marcar como visto/entregado"><i class="fas fa-check"></i></button>
         </div>`;
       });
       cont.innerHTML = html;
@@ -390,7 +406,7 @@
   }
 
   window.eliminarHistorialGacha = async function(id) {
-    if(confirm("¿Ya aplicaste este descuento o entregaste el premio? (Esto borrará el registro de auditoría)")) {
+    if(confirm("¿Seguro que deseas borrar este registro de auditoría? (Hazlo si ya entregaste el premio)")) {
       await deleteDoc(doc(db, "historial_gacha", id));
       cargarHistorialGacha();
     }
@@ -422,7 +438,7 @@
   window.guardarPedidoManual = async function(e) { e.preventDefault(); try { await addDoc(collection(db, "pedidos"), { cliente: document.getElementById('pedCliente').value, telefono: document.getElementById('pedTelefono').value, tipo: document.getElementById('pedTipo').value, metodoEnvio: document.getElementById('pedTipo').value, detalles: document.getElementById('pedDetalles').value, totalUsd: parseFloat(document.getElementById('pedTotalUsd').value), estadoPedido: "Pendiente", timestamp: Date.now() }); toggleCajaPedidoManual(); cargarPedidosAdmin(); } catch(err){} };
   window.eliminarPedido = async function(id) { if (confirm("¿Eliminar pedido?")) { await deleteDoc(doc(db, "pedidos", id)); cargarPedidosAdmin(); } };
 
-  /* JUGADORES (EDITAR, ASIGNAR XP Y ELIMINAR) */
+  /* JUGADORES (MOSTRANDO COLECCIONES) */
   function calcularRangoXP(xp) {
     let chunin = parseInt(document.getElementById('xpChunin')?.value) || 300;
     let jonin = parseInt(document.getElementById('xpJonin')?.value) || 600;
@@ -446,12 +462,21 @@
         const xp = p.xp || 0; 
         const tokens = p.tokens || 0;
         const rango = p.rango || 'Genin'; 
+        
+        // Contadores de coleccionables
+        const waifusCount = p.waifus ? p.waifus.length : 0;
+        const pkmnsCount = p.pkmns ? p.pkmns.length : 0;
+
         htmlBloque += `
         <div class="item-card-row">
           <div style="flex-grow: 1;">
             <div style="font-weight:700; color:#fff; font-size:1.05em;">${sanitizar(tag)}</div>
-            <div style="font-size:0.85em; color:var(--text-muted);">
+            <div style="font-size:0.85em; color:var(--text-muted); margin-bottom: 4px;">
               Rango: <strong>${rango}</strong> | <strong style="color:var(--secondary-color);">${xp} XP</strong> | <strong style="color:#ffaa00;"><i class="fas fa-coins"></i> ${tokens} Tokens</strong>
+            </div>
+            <div style="font-size: 0.85em;">
+              <span style="border:1px solid rgba(255,0,127,0.3); padding:2px 6px; border-radius:4px; margin-right:4px;"><i class="fas fa-heart" style="color:#ff007f;"></i> ${waifusCount} Waifus</span>
+              <span style="border:1px solid rgba(255,222,0,0.3); padding:2px 6px; border-radius:4px;"><i class="fas fa-gamepad" style="color:#ffde00;"></i> ${pkmnsCount} Pokémon</span>
             </div>
           </div>
           <div class="item-card-actions">
@@ -525,11 +550,10 @@
   async function cargarReviewsAdmin() { const q = query(collection(db, "reviews"), orderBy("timestamp", "desc")); const snap = await getDocs(q); let html=""; snap.forEach(d => { html += `<div class="item-card-row"><div style="flex-grow:1; font-size:0.9em;">${sanitizar(d.data().nombre)}<br><span style="color:var(--text-muted);">${sanitizar(d.data().texto)}</span></div><button class="btn-action-touch btn-del" onclick="eliminarReview('${d.id}')"><i class="fas fa-trash"></i></button></div>`; }); document.getElementById('listaReviewsAdmin').innerHTML = html; }
   window.eliminarReview = async function(id) { await deleteDoc(doc(db, "reviews", id)); cargarReviewsAdmin(); };
 
-  // >>> FUNCIÓN CARGAR TODO ACTUALIZADA <<<
   function cargarTodo() { 
     cargarAjustesWeb(); 
     cargarWaifusAdmin(); 
-    cargarHistorialGacha(); // Fuerza la carga del historial
+    cargarHistorialGacha(); 
     cargarProductosAdmin(); 
     cargarPedidosAdmin(); 
     cargarJugadoresAdmin(); 
