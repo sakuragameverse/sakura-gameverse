@@ -242,7 +242,6 @@
     .timeline-item::before { content: ''; position: absolute; left: -26px; top: 2px; width: 10px; height: 10px; border-radius: 50%; background: var(--glass-border); transition: all 0.3s ease; }
     .timeline-item.active::before { background: var(--secondary-color); box-shadow: 0 0 10px var(--secondary-glow); }
 
-    /* Estilos Gacha Waifus */
     .tag-n { background: rgba(180, 190, 205, 0.15); color: #b4becd; border: 1px solid #8b8f9e; padding: 2px 8px; border-radius: var(--radius-pill); font-size: 0.7em; font-weight: 700; }
     .tag-r { background: rgba(0, 229, 255, 0.15); color: #00e5ff; border: 1px solid #00e5ff; padding: 2px 8px; border-radius: var(--radius-pill); font-size: 0.7em; font-weight: 700; }
     .tag-sr { background: rgba(176, 0, 255, 0.15); color: #b000ff; border: 1px solid #b000ff; padding: 2px 8px; border-radius: var(--radius-pill); font-size: 0.7em; font-weight: 700; }
@@ -464,14 +463,12 @@
 
   <div class="grid" id="catalogoNube"><p style="text-align: center; color: var(--text-muted); grid-column: 1/-1;">Sincronizando inventario...</p></div>
 
-  <!-- BOTÓN CARGAR MÁS PRODUCTOS -->
   <div id="contenedorCargarMas" style="text-align: center; margin-top: 25px;">
     <button id="btnCargarMas" style="display: none; width: auto; padding: 12px 30px; margin: 0 auto; border-radius: var(--radius-pill); background: rgba(0, 229, 255, 0.1); border: 1px solid var(--secondary-color); color: var(--secondary-color); font-family: 'Chakra Petch', sans-serif; font-weight: 700; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 0 10px rgba(0,229,255,0.2);" onclick="cargarMasProductos()">
       Mostrar más productos <i class="fas fa-chevron-down" style="margin-left: 5px;"></i>
     </button>
   </div>
 
-  <!-- RESEÑAS -->
   <div class="reviews-section">
     <h3 style="color: #fff; margin-top: 0; margin-bottom: 15px;">Opiniones de Clientes</h3>
     <div id="contenedorReviews"><p style="color: var(--text-muted);">Cargando reseñas verificadas...</p></div>
@@ -496,7 +493,6 @@
     <div class="breadcrumbs" id="modalBreadcrumbs">Inicio / <span>Categoría</span></div>
     <img id="modalImg" src="" alt="Producto" class="modal-img" loading="eager" decoding="async">
     
-    <!-- NUEVA MINIGALERÍA -->
     <div id="modalContainerMinis" class="modal-miniaturas"></div>
     
     <div id="modalTag" class="modal-tag-info">Disponible</div>
@@ -523,7 +519,6 @@
   </div>
 </div>
 
-<!-- MODAL MENÚ DE OPCIONES -->
 <div id="modalOpcionesMenu" class="modal">
   <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarMenuOpciones()">×</button>
@@ -546,7 +541,6 @@
   </div>
 </div>
 
-<!-- MODAL FAVORITOS -->
 <div id="modalFavoritos" class="modal">
   <div class="modal-content">
     <button class="cerrar-modal" onclick="cerrarFavoritosModal()">×</button>
@@ -555,7 +549,6 @@
   </div>
 </div>
 
-<!-- MODAL CARRITO MAGICO -->
 <div id="modalCarrito" class="modal">
   <div class="modal-content">
     <button class="cerrar-modal" onclick="cerrarCarritoModal()">×</button>
@@ -630,7 +623,6 @@
   </div>
 </div>
 
-<!-- MODAL FAQ -->
 <div id="modalFaq" class="modal">
   <div class="modal-content">
     <button class="cerrar-modal" onclick="cerrarFaqModal()">×</button>
@@ -642,7 +634,6 @@
   </div>
 </div>
 
-<!-- NAVEGACIÓN INFERIOR -->
 <div class="bottom-nav">
   <div class="nav-item active" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); reproducirSonido();"><i class="fas fa-th-large"></i><span>Catálogo</span></div>
   <div class="nav-item" onclick="abrirFavoritosModal()"><i class="fas fa-heart"></i><span>Guardados</span><div class="nav-badge" id="favBadge">0</div></div>
@@ -676,7 +667,6 @@
   let filtroGlobal = { categoria: 'todos', coleccion: 'todos', estado: 'todos', busqueda: '' };
   let limiteActual = 12;
   
-  // VARIABLES CMS Y GACHA
   let ajustesWebGlobal = { whatsapp: "584244970576", costoGacha: 100, tokensCofre: 15 };
   let waifusGachaGlobal = [];
   
@@ -752,11 +742,11 @@
 
       setTimeout(() => {
           let rand = Math.random() * 100;
-          // >>> NUEVA PROBABILIDAD DE DROP AJUSTADA Y BALANCEADA <<<
+          // >>> PROBABILIDADES GACHA AJUSTADAS A LA VIDA REAL <<<
           let targetRareza = rand <= 2 ? 'SSR' : (rand <= 10 ? 'SR' : (rand <= 40 ? 'R' : 'N'));
           
           let posibles = waifusGachaGlobal.filter(w => w.rareza === targetRareza);
-          if(posibles.length === 0) posibles = waifusGachaGlobal; // Safe fallback si no hay de esa rareza
+          if(posibles.length === 0) posibles = waifusGachaGlobal; 
           let elegida = posibles[Math.floor(Math.random() * posibles.length)];
 
           if(!gamerProfile.waifus) gamerProfile.waifus = [];
@@ -961,7 +951,7 @@
     } catch (error) { document.getElementById('catalogoNube').innerHTML = "<p style='color: #ff3366; text-align: center; grid-column: 1/-1;'>No fue posible conectar con la base de datos.</p>"; }
   }
 
-  // >>> AQUÍ SE AÑADIERON LAS FLECHAS DEL CARRUSEL <<<
+  // >>> FLECHAS Y CAROUSEL PARA LOS PRODUCTOS <<<
   window.renderizarProductosEnTienda = function(lista) {
     let contenedor = document.getElementById('catalogoNube'); if (!contenedor) return; contenedor.innerHTML = "";
     let conteo = { recargas: 0, mangas: 0, ropa: 0, mandos: 0, perifericos: 0, figuras: 0, peluches: 0, cartas: 0, katanas: 0, lamparas: 0, accesorios: 0 };
@@ -1015,7 +1005,6 @@
     renderizarSelectColecciones(lista); limiteActual = 12; aplicarFiltrosGlobales();
   };
 
-  // Función para mover imágenes dentro de la tarjeta
   window.moverCarruselCard = function(prodId, direccion) {
       reproducirSonido();
       let contenedor = document.getElementById(`carrusel-card-${prodId}`);
@@ -1066,13 +1055,12 @@
 
   window.cargarMasProductos = function() { reproducirSonido(); limiteActual += 12; aplicarFiltrosGlobales(); };
 
-  // >>> AQUÍ SE REPARÓ LA GALERÍA DEL MODAL <<<
+  // >>> REPARADA LA GALERÍA DEL MODAL <<<
   window.abrirModalPorId = function(prodId) {
     reproducirSonido(); const prod = productosNubeGlobal.find(p => p.id === prodId); if (!prod) return;
     const fotosArray = (prod.fotos && prod.fotos.length > 0) ? prod.fotos : ['logo.webp?v=2'];
     const esRecarga = prod.categoria === 'recargas'; const esAgotado = (prod.stock !== undefined && prod.stock <= 0) && !esRecarga;
     
-    // Objeto Actual guardado en memoria
     window.productoActual = { id: prod.id, img: fotosArray[0], titulo: prod.nombre, precio: prod.precio, esRopa: prod?.categoria?.includes('ropa'), esRecarga };
 
     document.getElementById('modalImg').src = fotosArray[0]; 
@@ -1083,7 +1071,6 @@
     document.getElementById('tallasContainer').style.display = window.productoActual.esRopa ? 'block' : 'none';
     document.getElementById('recargaContainer').style.display = esRecarga ? 'block' : 'none';
 
-    // Generar las miniaturas de las otras fotos
     let minisCont = document.getElementById('modalContainerMinis');
     if(fotosArray.length > 1) {
         let htmlMinis = '';
@@ -1102,13 +1089,10 @@
     document.getElementById('miModal').style.display = 'flex';
   };
 
-  // Función para cambiar la imagen al tocar una miniatura
   window.cambiarImagenModal = function(elemento, url) {
       reproducirSonido();
       document.getElementById('modalImg').src = url;
-      // Actualiza la imagen en memoria para que el carrito reciba la variante exacta seleccionada
       window.productoActual.img = url; 
-      // Estilos activos
       document.querySelectorAll('.modal-mini-img').forEach(img => img.classList.remove('activo'));
       elemento.classList.add('activo');
   };
