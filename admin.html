@@ -140,6 +140,7 @@
   </div>
 
   <section id="panel-ajustes" class="admin-panel">
+    <!-- PANEL DE CONFIGURACIÓN CMS -->
     <div class="card-panel">
       <div class="panel-header"><span class="panel-title"><i class="fas fa-cogs"></i> Configuración del Sitio (CMS)</span></div>
       <form onsubmit="guardarAjustesWeb(event)">
@@ -154,6 +155,25 @@
         </div>
 
         <button type="submit" class="btn-submit">Guardar Ajustes Web</button>
+      </form>
+    </div>
+
+    <!-- NUEVO PANEL: SEGURIDAD Y CAMBIO DE CONTRASEÑA -->
+    <div class="card-panel" style="margin-top: 20px; border-color: rgba(255, 170, 0, 0.4);">
+      <div class="panel-header"><span class="panel-title" style="color: #ffaa00;"><i class="fas fa-key"></i> Seguridad de la Cuenta</span></div>
+      <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 15px;">Renueva la contraseña de acceso al administrador periódicamente por seguridad.</p>
+      <form onsubmit="cambiarContrasenaAdmin(event)">
+        <div class="form-group">
+          <label class="form-label">Nueva Contraseña:</label>
+          <input type="password" id="adminNuevaClave" class="form-input" required minlength="6" placeholder="Mínimo 6 caracteres">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirmar Contraseña:</label>
+          <input type="password" id="adminConfirmarClave" class="form-input" required minlength="6" placeholder="Repite la contraseña">
+        </div>
+        <button type="submit" class="btn-submit" style="background: linear-gradient(135deg, #ffaa00, #ff5500); color: #000; box-shadow: 0 4px 15px rgba(255, 170, 0, 0.3);">
+          <i class="fas fa-lock"></i> Actualizar Contraseña
+        </button>
       </form>
     </div>
   </section>
@@ -291,9 +311,10 @@
 </div>
 
 <script type="module">
+  // AÑADIMOS LA FUNCIÓN updatePassword DE FIREBASE
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
   import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, setDoc, addDoc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
-  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, updatePassword } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
   const firebaseConfig = { apiKey: "AIzaSyDH1DZqaIi5sKRXspXDUWbMUZ4nr5JIy8Q", authDomain: "sakura-gameverse.firebaseapp.com", projectId: "sakura-gameverse", storageBucket: "sakura-gameverse.firebasestorage.app", messagingSenderId: "226328425516", appId: "1:226328425516:web:8dc11761639228c6120d89" };
   const app = initializeApp(firebaseConfig); const db = getFirestore(app); const auth = getAuth(app);
@@ -354,6 +375,34 @@
       const lector = new FileReader(); lector.onload = (e) => { const img = new Image(); img.onload = () => { let ancho = img.width; let alto = img.height; if (ancho > maxDim || alto > maxDim) { if (ancho > alto) { alto = Math.round((alto * maxDim) / ancho); ancho = maxDim; } else { ancho = Math.round((ancho * maxDim) / alto); alto = maxDim; } } const canvas = document.createElement('canvas'); canvas.width = ancho; canvas.height = alto; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, ancho, alto); resolve(canvas.toDataURL('image/webp', calidad)); }; img.onerror = reject; img.src = e.target.result; }; lector.onerror = reject; lector.readAsDataURL(archivo);
     });
   }
+
+  // >>> NUEVA FUNCIÓN DE CAMBIO DE CONTRASEÑA <<<
+  window.cambiarContrasenaAdmin = async function(e) {
+    e.preventDefault();
+    const p1 = document.getElementById('adminNuevaClave').value;
+    const p2 = document.getElementById('adminConfirmarClave').value;
+
+    if (p1 !== p2) return alert("❌ Las contraseñas no coinciden. Escríbelas exactamente igual en ambas casillas.");
+    if (p1.length < 6) return alert("❌ La contraseña es muy corta. Debe tener al menos 6 caracteres.");
+
+    const user = auth.currentUser;
+    if (user) {
+      try {
+        await updatePassword(user, p1);
+        alert("✅ ¡Contraseña actualizada con éxito! La próxima vez que inicies sesión usarás esta nueva clave.");
+        document.getElementById('adminNuevaClave').value = '';
+        document.getElementById('adminConfirmarClave').value = '';
+      } catch (error) {
+        if (error.code === 'auth/requires-recent-login') {
+          alert("⚠️ Por seguridad, Firebase requiere que inicies sesión recientemente para cambiar la clave. Por favor, cierra sesión arriba a la derecha, vuelve a entrar al panel e inténtalo de nuevo.");
+        } else {
+          alert("❌ Error al cambiar la contraseña: " + error.message);
+        }
+      }
+    } else {
+      alert("Error: No se detectó un usuario activo.");
+    }
+  };
 
   /* AJUSTES WEB */
   async function cargarAjustesWeb() { 
@@ -465,12 +514,15 @@
   window.guardarPedidoManual = async function(e) { e.preventDefault(); try { await addDoc(collection(db, "pedidos"), { cliente: document.getElementById('pedCliente').value, telefono: document.getElementById('pedTelefono').value, tipo: document.getElementById('pedTipo').value, metodoEnvio: document.getElementById('pedTipo').value, detalles: document.getElementById('pedDetalles').value, totalUsd: parseFloat(document.getElementById('pedTotalUsd').value), estadoPedido: "Pendiente", timestamp: Date.now() }); toggleCajaPedidoManual(); cargarPedidosAdmin(); } catch(err){} };
   window.eliminarPedido = async function(id) { if (confirm("¿Eliminar pedido?")) { await deleteDoc(doc(db, "pedidos", id)); cargarPedidosAdmin(); } };
 
-  /* JUGADORES */
+  /* JUGADORES (EDITAR, ASIGNAR XP Y ELIMINAR) */
   function calcularRangoXP(xp) {
     let chunin = parseInt(document.getElementById('xpChunin')?.value) || 300;
     let jonin = parseInt(document.getElementById('xpJonin')?.value) || 600;
     let hokage = parseInt(document.getElementById('xpHokage')?.value) || 1000;
-    if (xp >= hokage) return "Hokage"; if (xp >= jonin) return "Jōnin"; if (xp >= chunin) return "Chūnin"; return "Genin";
+    if (xp >= hokage) return "Hokage";
+    if (xp >= jonin) return "Jōnin";
+    if (xp >= chunin) return "Chūnin";
+    return "Genin";
   }
 
   async function cargarJugadoresAdmin() { 
