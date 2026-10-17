@@ -247,6 +247,7 @@
     .timeline-item.active::before { background: var(--secondary-color); box-shadow: 0 0 10px var(--secondary-glow); }
 
     /* Estilos Gacha Waifus */
+    .tag-n { background: rgba(180, 190, 205, 0.15); color: #b4becd; border: 1px solid #8b8f9e; padding: 2px 8px; border-radius: var(--radius-pill); font-size: 0.7em; font-weight: 700; }
     .tag-r { background: rgba(0, 229, 255, 0.15); color: #00e5ff; border: 1px solid #00e5ff; padding: 2px 8px; border-radius: var(--radius-pill); font-size: 0.7em; font-weight: 700; }
     .tag-sr { background: rgba(176, 0, 255, 0.15); color: #b000ff; border: 1px solid #b000ff; padding: 2px 8px; border-radius: var(--radius-pill); font-size: 0.7em; font-weight: 700; }
     .tag-ssr { background: rgba(255, 170, 0, 0.15); color: #ffaa00; border: 1px solid #ffaa00; padding: 2px 8px; border-radius: var(--radius-pill); font-size: 0.7em; font-weight: 700; }
@@ -273,7 +274,7 @@
   <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarCofreModal()">×</button>
     <h3 style="color: #ffaa00; margin-top: 0;">Recompensa Diaria</h3>
-    <div id="cofreResultado" style="background: rgba(0,0,0,0.4); border: 1px dashed #ffaa00; padding: 18px; border-radius: var(--radius-sm); font-weight: 700; color: #fff; margin-bottom: 14px;">Cofre disponible (+50 XP)</div>
+    <div id="cofreResultado" style="background: rgba(0,0,0,0.4); border: 1px dashed #ffaa00; padding: 18px; border-radius: var(--radius-sm); font-weight: 700; color: #fff; margin-bottom: 14px;">Cofre disponible (+50 XP y +50 Tokens)</div>
     <button class="btn-comprar" style="background: #ffaa00; color: #000; box-shadow: 0 0 15px rgba(255,170,0,0.4);" onclick="abrirCofreDiario()">Reclamar Recompensa</button>
   </div>
 </div>
@@ -283,7 +284,7 @@
   <div class="modal-content" style="text-align: center; background: linear-gradient(180deg, rgba(14,4,31,0.95) 0%, #05010a 100%); border: 2px solid var(--secondary-color);">
     <button class="cerrar-modal" onclick="cerrarGachaModal()">×</button>
     <h3 style="color: var(--secondary-color); margin-top: 0; font-size: 1.5em; text-transform: uppercase; text-shadow: 0 0 10px var(--secondary-glow);"><i class="fas fa-capsules"></i> Gacha Waifus</h3>
-    <p style="color: var(--text-muted); font-size: 0.85em; margin-bottom: 15px;">Usa tu XP para invocar Waifus y ganar descuentos únicos.</p>
+    <p style="color: var(--text-muted); font-size: 0.85em; margin-bottom: 15px;">Usa tus TOKENS para invocar Waifus y ganar descuentos únicos.</p>
     
     <div id="gachaMachineContainer" style="position: relative; height: 220px; background: rgba(0,0,0,0.6); border-radius: var(--radius-md); margin-bottom: 15px; border: 1px dashed var(--glass-border); display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: inset 0 0 20px rgba(0,0,0,0.8);">
       <img id="gachaWaifuImg" src="logo.webp?v=2" style="height: 100%; object-fit: contain; opacity: 0.3; transition: all 0.5s ease;">
@@ -300,9 +301,9 @@
     </div>
 
     <button class="btn-comprar" id="btnTirarGacha" onclick="realizarTiradaGacha()" style="font-size: 1.1em; text-shadow: 0 0 5px rgba(0,0,0,0.5);">
-       Invocar x1 (<span id="lblCostoGacha">100</span> XP)
+       Invocar x1 (<span id="lblCostoGacha">100</span> Tokens)
     </button>
-    <div style="margin-top: 10px; font-size: 0.85em; color: var(--text-muted);">Tu saldo actual: <strong style="color:var(--secondary-color);"><span id="lblSaldoGacha">0</span> XP</strong></div>
+    <div style="margin-top: 10px; font-size: 0.85em; color: var(--text-muted);">Tu saldo actual: <strong style="color:#ffaa00;"><i class="fas fa-coins"></i> <span id="lblSaldoGacha">0</span></strong></div>
   </div>
 </div>
 
@@ -329,7 +330,10 @@
     <div style="background: rgba(0,0,0,0.3); padding: 16px; border-radius: var(--radius-md); margin-bottom: 14px; border: 1px solid var(--glass-border); text-align: left; font-size: 0.9em;">
       <div style="display: flex; justify-content: space-between;">
         <span>Rango: <strong id="lblRango" style="color: #ffaa00; font-size: 1.1em;">Genin</strong></span>
-        <span><strong id="lblXp" style="color: var(--secondary-color);">150</strong> XP</span>
+        <span>
+          <strong id="lblTokens" style="color: #ffaa00;"><i class="fas fa-coins"></i> 0</strong> &nbsp;|&nbsp;
+          <strong id="lblXp" style="color: var(--secondary-color);">150</strong> XP
+        </span>
       </div>
       <div class="xp-bar-container">
         <div class="xp-bar-fill" id="barXp"></div>
@@ -684,7 +688,8 @@
   let waifusGachaGlobal = [];
   
   let currentUserUid = null;
-  let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, rango: "Genin", waifus: [] };
+  // -> NUEVO: SE AÑADEN TOKENS AL PERFIL INICIAL <-
+  let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, tokens: 0, rango: "Genin", waifus: [] };
   let carrito = JSON.parse(localStorage.getItem('sakura_carrito')) || [];
   let favoritos = JSON.parse(localStorage.getItem('sakura_favoritos')) || [];
 
@@ -717,10 +722,11 @@
     } catch(e){}
   }
 
-  // --- LÓGICA DE LA MÁQUINA GACHA Y ENVÍO DE REPORTE ---
+  // --- LÓGICA DE LA MÁQUINA GACHA (AHORA USA TOKENS) ---
   window.abrirGachaModal = function() {
       reproducirSonido();
-      document.getElementById('lblSaldoGacha').innerText = gamerProfile.xp;
+      // Mostrar Tokens en el Gacha
+      document.getElementById('lblSaldoGacha').innerText = gamerProfile.tokens || 0;
       document.getElementById('modalGacha').style.display = 'flex';
       document.getElementById('gachaResultado').style.display = 'none';
       document.getElementById('gachaOverlay').style.display = 'flex';
@@ -733,16 +739,18 @@
       reproducirSonido();
       let costo = ajustesWebGlobal.costoGacha;
       
-      if(gamerProfile.xp < costo) return alert(`Necesitas al menos ${costo} XP para realizar una invocación.`);
+      // -> SE USA LA VARIABLE TOKENS EN VEZ DE XP <-
+      if(!gamerProfile.tokens) gamerProfile.tokens = 0;
+      if(gamerProfile.tokens < costo) return alert(`Necesitas al menos ${costo} Tokens para realizar una invocación.`);
       if(waifusGachaGlobal.length === 0) return alert("La máquina Gacha está vacía temporalmente. ¡Vuelve pronto!");
 
       let btn = document.getElementById('btnTirarGacha');
       btn.disabled = true;
       
-      gamerProfile.xp -= costo;
-      actualizarRangoSegunXP();
+      gamerProfile.tokens -= costo; // Restamos tokens
+      actualizarRangoSegunXP(); // Refrescamos pantalla
       guardarProgresoNube();
-      document.getElementById('lblSaldoGacha').innerText = gamerProfile.xp;
+      document.getElementById('lblSaldoGacha').innerText = gamerProfile.tokens;
 
       let overlay = document.getElementById('gachaOverlay');
       let img = document.getElementById('gachaWaifuImg');
@@ -755,10 +763,10 @@
 
       setTimeout(() => {
           let rand = Math.random() * 100;
-          let targetRareza = rand <= 5 ? 'SSR' : (rand <= 30 ? 'SR' : 'R');
+          let targetRareza = rand <= 5 ? 'SSR' : (rand <= 30 ? 'SR' : (rand <= 65 ? 'R' : 'N'));
           
           let posibles = waifusGachaGlobal.filter(w => w.rareza === targetRareza);
-          if(posibles.length === 0) posibles = waifusGachaGlobal;
+          if(posibles.length === 0) posibles = waifusGachaGlobal; // Safe fallback si no hay de esa rareza
           let elegida = posibles[Math.floor(Math.random() * posibles.length)];
 
           if(!gamerProfile.waifus) gamerProfile.waifus = [];
@@ -768,7 +776,6 @@
               renderizarAlbumWaifus();
           }
 
-          // >>> REPORTE SILENCIOSO AL ADMIN <<<
           try {
               addDoc(collection(db, "historial_gacha"), {
                   jugador: gamerProfile.tag,
@@ -809,7 +816,7 @@
       
       let html = "";
       arr.forEach(w => {
-          let badgeColor = w.rareza === 'SSR' ? '#ffaa00' : (w.rareza === 'SR' ? '#b000ff' : '#00e5ff');
+          let badgeColor = w.rareza === 'SSR' ? '#ffaa00' : (w.rareza === 'SR' ? '#b000ff' : (w.rareza === 'R' ? '#00e5ff' : '#b4becd'));
           html += `
           <div class="waifu-card-mini">
               <img src="${w.imgUrl}" loading="lazy">
@@ -863,7 +870,7 @@
   window.cerrarSesionCloud = async function() {
     reproducirSonido(); await signOut(auth);
     localStorage.removeItem('sakura_gamer_profile'); localStorage.removeItem('sakura_carrito'); localStorage.removeItem('sakura_favoritos');
-    gamerProfile = { tag: "Gamer_Guest", xp: 0, rango: "Genin", waifus: [] }; carrito = []; favoritos = [];
+    gamerProfile = { tag: "Gamer_Guest", xp: 0, tokens: 0, rango: "Genin", waifus: [] }; carrito = []; favoritos = [];
     actualizarBadges(); actualizarRangoSegunXP(); renderizarAlbumWaifus(); cerrarCloudSaveModal(); alert("Sesión cerrada. Tu partida está a salvo en la nube.");
   };
 
@@ -872,7 +879,11 @@
           const docRef = doc(db, "jugadores_cloud", uid); const snap = await getDoc(docRef);
           if(snap.exists()) {
               const d = snap.data();
-              if(d.profile) gamerProfile = d.profile; if(d.favoritos) favoritos = d.favoritos; if(d.carrito) carrito = d.carrito;
+              if(d.profile) {
+                  gamerProfile = d.profile;
+                  if (gamerProfile.tokens === undefined) gamerProfile.tokens = 0; // parche de seguridad
+              }
+              if(d.favoritos) favoritos = d.favoritos; if(d.carrito) carrito = d.carrito;
               if(d.ultimoCofre) localStorage.setItem('sakura_ultimo_cofre', d.ultimoCofre);
               
               localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile)); localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos)); localStorage.setItem('sakura_carrito', JSON.stringify(carrito));
@@ -1168,8 +1179,14 @@
   window.abrirCofreDiario = function() {
     reproducirSonido(); let ultimo = localStorage.getItem('sakura_ultimo_cofre'); let hoy = new Date().toDateString();
     if(ultimo === hoy) return alert("Ya abriste tu cofre hoy. Vuelve mañana.");
-    ganarXP(50); localStorage.setItem('sakura_ultimo_cofre', hoy); document.getElementById('cofreResultado').innerText = "¡Ganaste 50 XP!";
-    try{ confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } }); }catch(e){} guardarProgresoNube();
+    // -> SE DAN TOKENS TAMBIÉN <-
+    ganarXP(50);
+    gamerProfile.tokens = (gamerProfile.tokens || 0) + 50; 
+    localStorage.setItem('sakura_ultimo_cofre', hoy); 
+    document.getElementById('cofreResultado').innerText = "¡Ganaste 50 XP y 50 Tokens!";
+    try{ confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } }); }catch(e){} 
+    guardarProgresoNube();
+    actualizarRangoSegunXP();
   };
 
   window.abrirTemasModal = function() { reproducirSonido(); document.getElementById('modalTemas').style.display = 'flex'; };
@@ -1365,7 +1382,13 @@
     
     let barra = document.getElementById('barXp'); if(barra) setTimeout(() => { barra.style.width = pct + "%"; }, 200);
     localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
-    document.getElementById('lblXp').innerText = gamerProfile.xp; document.getElementById('lblRango').innerText = gamerProfile.rango;
+    
+    document.getElementById('lblXp').innerText = gamerProfile.xp; 
+    document.getElementById('lblRango').innerText = gamerProfile.rango;
+    
+    // -> SE PINTAN LOS TOKENS EN LA INTERFAZ <-
+    let lblTokens = document.getElementById('lblTokens');
+    if(lblTokens) lblTokens.innerHTML = `<i class="fas fa-coins"></i> ${gamerProfile.tokens || 0}`;
   }
 
   function ganarXP(cantidad) { gamerProfile.xp += cantidad; actualizarRangoSegunXP(); guardarProgresoNube(); }
