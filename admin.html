@@ -95,6 +95,11 @@
     .btn-del:hover { background: #ff3366; color: #fff; }
     .btn-print { background: rgba(255, 255, 255, 0.1); color: #fff; border-color: rgba(255, 255, 255, 0.3); }
 
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 0, 6, 0.75); z-index: 9000; justify-content: center; align-items: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+    .modal-content { background: rgba(14, 4, 31, 0.95); backdrop-filter: blur(16px); padding: 24px; border-radius: var(--radius-md); text-align: left; max-width: 95%; width: 440px; border: 1px solid var(--glass-border); box-shadow: 0 15px 50px rgba(0,0,0,0.6); position: relative; max-height: calc(100vh - 40px); overflow-y: auto; }
+    .cerrar-modal { position: absolute; top: 12px; right: 14px; font-size: 24px; color: var(--text-muted); cursor: pointer; background: rgba(0,0,0,0.3); border: 1px solid transparent; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
+    .cerrar-modal:hover { color: #fff; background: rgba(255, 51, 102, 0.2); border-color: #ff3366; }
+
     #lockScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 0, 6, 0.85); backdrop-filter: blur(12px); display: flex; justify-content: center; align-items: center; z-index: 999999; padding: 16px; }
     .lock-box { background: rgba(14, 4, 31, 0.85); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); padding: 32px 24px; border-radius: var(--radius-md); text-align: center; width: 100%; max-width: 360px; box-shadow: 0 15px 50px rgba(0,0,0,0.8); }
     @media screen { .print-area { display: none; } }
@@ -110,6 +115,41 @@
     <div class="form-group"><input type="email" id="adminEmailInput" class="form-input" placeholder="Correo electrónico" style="border-radius: var(--radius-pill);"><input type="password" id="adminPassInput" class="form-input" placeholder="Contraseña" style="border-radius: var(--radius-pill);" onkeypress="if(event.key === 'Enter') iniciarSesionAdmin()"></div>
     <div id="loginErrorMsg" style="color: #ff3366; font-size: 0.85em; margin-bottom: 14px; display: none; font-weight: 700;"></div>
     <button class="btn-submit" id="btnLoginSubmit" onclick="iniciarSesionAdmin()" style="border-radius: var(--radius-pill);">Iniciar Sesión</button>
+  </div>
+</div>
+
+<!-- MODAL INVENTARIO JUGADOR (NUEVO) -->
+<div id="modalInventarioAdmin" class="modal">
+  <div class="modal-content" style="max-width: 500px;">
+    <button class="cerrar-modal" onclick="cerrarInventarioAdmin()">×</button>
+    <h3 style="color: #fff; margin-top: 0; border-bottom: 1px solid var(--glass-border); padding-bottom: 10px;">Inventario: <span id="invAdminGamerTag" style="color: var(--secondary-color);"></span></h3>
+    
+    <!-- Colección Waifus -->
+    <div style="margin-bottom: 18px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">
+        <strong style="color: #ff007f;"><i class="fas fa-heart"></i> Gacha Waifus</strong>
+        <button class="btn-action-touch btn-del" style="width:auto; padding: 0 10px; border-radius: var(--radius-sm); font-size:0.75em;" onclick="resetColeccion('waifus')"><i class="fas fa-trash"></i> Vaciar</button>
+      </div>
+      <div id="invAdminWaifus" style="display:flex; gap:8px; overflow-x:auto; padding-bottom:5px; background: rgba(0,0,0,0.4); padding: 10px; border-radius: var(--radius-sm); border: 1px solid rgba(255,0,127,0.2); scrollbar-width: none;"></div>
+    </div>
+
+    <!-- Colección Pkmns -->
+    <div style="margin-bottom: 18px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">
+        <strong style="color: #ffde00;"><i class="fas fa-gamepad"></i> Pokémon</strong>
+        <button class="btn-action-touch btn-del" style="width:auto; padding: 0 10px; border-radius: var(--radius-sm); font-size:0.75em;" onclick="resetColeccion('pkmns')"><i class="fas fa-trash"></i> Vaciar</button>
+      </div>
+      <div id="invAdminPkmns" style="display:flex; gap:8px; overflow-x:auto; padding-bottom:5px; background: rgba(0,0,0,0.4); padding: 10px; border-radius: var(--radius-sm); border: 1px solid rgba(255,222,0,0.2); scrollbar-width: none;"></div>
+    </div>
+
+    <!-- Colección Genshin -->
+    <div style="margin-bottom: 10px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">
+        <strong style="color: #cda55d;"><i class="fas fa-meteor"></i> Genshin Impact</strong>
+        <button class="btn-action-touch btn-del" style="width:auto; padding: 0 10px; border-radius: var(--radius-sm); font-size:0.75em;" onclick="resetColeccion('genshin')"><i class="fas fa-trash"></i> Vaciar</button>
+      </div>
+      <div id="invAdminGenshin" style="display:flex; gap:8px; overflow-x:auto; padding-bottom:5px; background: rgba(0,0,0,0.4); padding: 10px; border-radius: var(--radius-sm); border: 1px solid rgba(205,165,93,0.2); scrollbar-width: none;"></div>
+    </div>
   </div>
 </div>
 
@@ -197,7 +237,7 @@
   <section id="panel-jugadores" class="admin-panel">
     <div class="card-panel">
       <div class="panel-header"><span class="panel-title"><i class="fas fa-users"></i> Base de Jugadores</span></div>
-      <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 15px;">Gestiona a tus clientes: modifica su GamerTag, suma/resta XP para subir su rango, regálales Tokens 🪙, o mira sus colecciones de Waifus, Pokémon y Genshin.</p>
+      <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 15px;">Gestiona a tus clientes: modifica su GamerTag, suma/resta XP para subir su rango, regálales Tokens 🪙, o abre su Inventario para ver o resetear sus colecciones.</p>
       <div id="listaJugadoresAdmin"><p style="color: var(--text-muted); text-align: center;"><i class="fas fa-spinner fa-spin"></i> Cargando jugadores...</p></div>
     </div>
   </section>
@@ -299,6 +339,11 @@
   const firebaseConfig = { apiKey: "AIzaSyDH1DZqaIi5sKRXspXDUWbMUZ4nr5JIy8Q", authDomain: "sakura-gameverse.firebaseapp.com", projectId: "sakura-gameverse", storageBucket: "sakura-gameverse.firebasestorage.app", messagingSenderId: "226328425516", appId: "1:226328425516:web:8dc11761639228c6120d89" };
   const app = initializeApp(firebaseConfig); const db = getFirestore(app); const auth = getAuth(app);
   let productosAdminGlobal = []; let facturasAdminGlobal = []; let fotosBufferProducto = [];
+  let jugadoresAdminGlobal = []; // Array global para los jugadores
+
+  // Variables para controlar de qué jugador se está viendo el inventario
+  let currentAdminEditUid = null;
+  let currentAdminEditTag = "";
 
   onAuthStateChanged(auth, (user) => { if (user) { document.getElementById('lockScreen').style.display = 'none'; document.getElementById('adminMainContent').style.display = 'block'; cargarTodo(); } else { document.getElementById('lockScreen').style.display = 'flex'; document.getElementById('adminMainContent').style.display = 'none'; } });
   window.iniciarSesionAdmin = async function() { const email = document.getElementById('adminEmailInput').value.trim(); const pass = document.getElementById('adminPassInput').value; const errorBox = document.getElementById('loginErrorMsg'); const btn = document.getElementById('btnLoginSubmit'); if (!email || !pass) return; btn.disabled = true; errorBox.style.display = 'none'; try { await signInWithEmailAndPassword(auth, email, pass); document.getElementById('adminPassInput').value = ""; } catch (err) { errorBox.innerText = "Credenciales inválidas."; errorBox.style.display = 'block'; } finally { btn.disabled = false; } };
@@ -376,19 +421,12 @@
         let isPkmn = tipoGacha === 'Pokemon';
         let isGenshin = tipoGacha === 'Genshin';
         
-        // Estilos según el tipo de Gacha
         let colorR = '#b4becd';
-        if (isGenshin) {
-            colorR = h.rareza === '5 Estrellas' ? '#ffb13f' : '#a256e1';
-        } else if (isPkmn) {
-            colorR = h.rareza === 'Raro' ? '#ffaa00' : '#00e5ff';
-        } else {
-            colorR = h.rareza === 'SSR' ? '#ffaa00' : (h.rareza === 'SR' ? '#b000ff' : (h.rareza === 'R' ? '#00e5ff' : '#b4becd'));
-        }
+        if (isGenshin) { colorR = h.rareza === '5 Estrellas' ? '#ffb13f' : '#a256e1'; } 
+        else if (isPkmn) { colorR = h.rareza === 'Raro' ? '#ffaa00' : '#00e5ff'; } 
+        else { colorR = h.rareza === 'SSR' ? '#ffaa00' : (h.rareza === 'SR' ? '#b000ff' : (h.rareza === 'R' ? '#00e5ff' : '#b4becd')); }
 
-        let detallePremio = '';
-        let headerTipo = '';
-
+        let detallePremio = ''; let headerTipo = '';
         if (isGenshin) {
             detallePremio = `<i class="fas fa-meteor" style="color:#ffb13f;"></i> Reclutó a: <strong>${sanitizar(h.waifu)}</strong>`;
             headerTipo = `<span style="color:#cda55d; font-size:0.8em; border:1px solid #cda55d; padding:2px 6px; border-radius:4px;">GACHAPÓN GENSHIN</span>`;
@@ -400,24 +438,10 @@
             headerTipo = `<span style="color:#ff007f; font-size:0.8em; border:1px solid #ff007f; padding:2px 6px; border-radius:4px;">WAIFU GACHA</span>`;
         }
 
-        html += `
-        <div class="item-card-row">
-          <div style="flex-grow:1;">
-            <div style="font-weight:bold; color:#fff; display:flex; justify-content:space-between; align-items:center;">
-              <span>👤 ${sanitizar(h.jugador)}</span>
-              ${headerTipo}
-            </div>
-            <div style="font-size:0.8em; color:var(--text-muted); font-weight:normal; margin-bottom: 4px;">Fecha: ${fecha}</div>
-            <div style="font-size:0.95em; color:#25d366; margin-top:4px;">${detallePremio} <span style="font-size:0.8em; color:${colorR};">(${h.rareza})</span></div>
-          </div>
-          <button class="btn-action-touch btn-del" onclick="eliminarHistorialGacha('${d.id}')" title="Marcar como visto/entregado"><i class="fas fa-check"></i></button>
-        </div>`;
+        html += `<div class="item-card-row"><div style="flex-grow:1;"><div style="font-weight:bold; color:#fff; display:flex; justify-content:space-between; align-items:center;"><span>👤 ${sanitizar(h.jugador)}</span>${headerTipo}</div><div style="font-size:0.8em; color:var(--text-muted); font-weight:normal; margin-bottom: 4px;">Fecha: ${fecha}</div><div style="font-size:0.95em; color:#25d366; margin-top:4px;">${detallePremio} <span style="font-size:0.8em; color:${colorR};">(${h.rareza})</span></div></div><button class="btn-action-touch btn-del" onclick="eliminarHistorialGacha('${d.id}')" title="Marcar como visto/entregado"><i class="fas fa-check"></i></button></div>`;
       });
       cont.innerHTML = html;
-    } catch(e) {
-      console.error("Error al cargar el historial:", e);
-      document.getElementById('listaHistorialGacha').innerHTML = `<p style='color:#ff3366; text-align:center;'><i class="fas fa-exclamation-triangle"></i> Fallo de conexión: ${e.message}</p>`;
-    }
+    } catch(e) { }
   }
 
   window.eliminarHistorialGacha = async function(id) {
@@ -453,7 +477,7 @@
   window.guardarPedidoManual = async function(e) { e.preventDefault(); try { await addDoc(collection(db, "pedidos"), { cliente: document.getElementById('pedCliente').value, telefono: document.getElementById('pedTelefono').value, tipo: document.getElementById('pedTipo').value, metodoEnvio: document.getElementById('pedTipo').value, detalles: document.getElementById('pedDetalles').value, totalUsd: parseFloat(document.getElementById('pedTotalUsd').value), estadoPedido: "Pendiente", timestamp: Date.now() }); toggleCajaPedidoManual(); cargarPedidosAdmin(); } catch(err){} };
   window.eliminarPedido = async function(id) { if (confirm("¿Eliminar pedido?")) { await deleteDoc(doc(db, "pedidos", id)); cargarPedidosAdmin(); } };
 
-  /* JUGADORES (MOSTRANDO COLECCIONES COMPLETAS) */
+  /* JUGADORES (MOSTRANDO COLECCIONES Y PANEL INVENTARIO) */
   function calcularRangoXP(xp) {
     let chunin = parseInt(document.getElementById('xpChunin')?.value) || 300;
     let jonin = parseInt(document.getElementById('xpJonin')?.value) || 600;
@@ -471,14 +495,17 @@
       const cont = document.getElementById('listaJugadoresAdmin'); 
       if (snapshot.empty) { cont.innerHTML = "<p style='text-align:center;'>No hay jugadores registrados.</p>"; return; } 
       let htmlBloque = ""; 
+      jugadoresAdminGlobal = []; // Actualizamos el array global
       snapshot.forEach(d => { 
-        const p = d.data().profile || {}; 
+        const data = d.data();
+        const p = data.profile || {}; 
+        jugadoresAdminGlobal.push({id: d.id, ...data});
+
         const tag = p.tag || 'Sin Nombre'; 
         const xp = p.xp || 0; 
         const tokens = p.tokens || 0;
         const rango = p.rango || 'Genin'; 
         
-        // Contadores de coleccionables multiverso
         const waifusCount = p.waifus ? p.waifus.length : 0;
         const pkmnsCount = p.pkmns ? p.pkmns.length : 0;
         const genshinCount = p.genshin ? p.genshin.length : 0;
@@ -488,15 +515,16 @@
           <div style="flex-grow: 1;">
             <div style="font-weight:700; color:#fff; font-size:1.05em;">${sanitizar(tag)}</div>
             <div style="font-size:0.85em; color:var(--text-muted); margin-bottom: 4px;">
-              Rango: <strong>${rango}</strong> | <strong style="color:var(--secondary-color);">${xp} XP</strong> | <strong style="color:#ffaa00;"><i class="fas fa-coins"></i> ${tokens} Tokens</strong>
+              Rango: <strong>${rango}</strong> | <strong style="color:var(--secondary-color);">${xp} XP</strong> | <strong style="color:#ffaa00;"><i class="fas fa-coins"></i> ${tokens}</strong>
             </div>
             <div style="font-size: 0.85em; display:flex; flex-wrap:wrap; gap:4px; margin-top:6px;">
-              <span style="border:1px solid rgba(255,0,127,0.3); padding:2px 6px; border-radius:4px;"><i class="fas fa-heart" style="color:#ff007f;"></i> ${waifusCount} Waifus</span>
-              <span style="border:1px solid rgba(255,222,0,0.3); padding:2px 6px; border-radius:4px;"><i class="fas fa-gamepad" style="color:#ffde00;"></i> ${pkmnsCount} Pokémon</span>
-              <span style="border:1px solid rgba(205,165,93,0.3); padding:2px 6px; border-radius:4px;"><i class="fas fa-meteor" style="color:#cda55d;"></i> ${genshinCount} Genshin</span>
+              <span style="border:1px solid rgba(255,0,127,0.3); padding:2px 6px; border-radius:4px;"><i class="fas fa-heart" style="color:#ff007f;"></i> ${waifusCount}</span>
+              <span style="border:1px solid rgba(255,222,0,0.3); padding:2px 6px; border-radius:4px;"><i class="fas fa-gamepad" style="color:#ffde00;"></i> ${pkmnsCount}</span>
+              <span style="border:1px solid rgba(205,165,93,0.3); padding:2px 6px; border-radius:4px;"><i class="fas fa-meteor" style="color:#cda55d;"></i> ${genshinCount}</span>
             </div>
           </div>
           <div class="item-card-actions">
+            <button class="btn-action-touch" style="color: #00e5ff; border: 1px solid rgba(0,229,255,0.3);" title="Ver Inventario" onclick="abrirInventarioAdmin('${d.id}', '${sanitizar(tag)}')"><i class="fas fa-box-open"></i></button>
             <button class="btn-action-touch" style="color: #ff007f; border: 1px solid rgba(255,0,127,0.3);" title="Sumar/Restar XP" onclick="asignarXpManualmente('${d.id}', ${xp}, '${sanitizar(tag)}')"><i class="fas fa-star"></i></button>
             <button class="btn-action-touch" style="color: #ffaa00; border: 1px solid rgba(255,170,0,0.3);" title="Gestionar Tokens" onclick="asignarTokensManualmente('${d.id}', ${tokens}, '${sanitizar(tag)}')"><i class="fas fa-coins"></i></button>
             <button class="btn-action-touch btn-edit" title="Editar GamerTag" onclick="editarJugadorManualmente('${d.id}', '${sanitizar(tag)}')"><i class="fas fa-pen"></i></button>
@@ -508,16 +536,72 @@
     } catch(e) {} 
   }
 
+  // --- LÓGICA DEL PANEL DE INVENTARIO DEL JUGADOR ---
+  window.abrirInventarioAdmin = function(uid, tag) {
+      currentAdminEditUid = uid;
+      currentAdminEditTag = tag;
+      document.getElementById('invAdminGamerTag').innerText = tag;
+      
+      const userDoc = jugadoresAdminGlobal.find(j => j.id === uid);
+      if(!userDoc) return;
+      const p = userDoc.profile || {};
+      
+      renderizarMinisAdmin('invAdminWaifus', p.waifus || [], 'waifu');
+      renderizarMinisAdmin('invAdminPkmns', p.pkmns || [], 'pkmn');
+      renderizarMinisAdmin('invAdminGenshin', p.genshin || [], 'genshin');
+
+      document.getElementById('modalInventarioAdmin').style.display = 'flex';
+  };
+
+  window.cerrarInventarioAdmin = () => document.getElementById('modalInventarioAdmin').style.display = 'none';
+
+  function renderizarMinisAdmin(containerId, arr, type) {
+      const cont = document.getElementById(containerId);
+      if(arr.length === 0) { cont.innerHTML = '<span style="color:var(--text-muted); font-size:0.85em; padding: 4px;">Colección vacía.</span>'; return; }
+      let html = '';
+      arr.forEach(item => {
+          let imgUrl = item.imgUrl || item.img || '';
+          if(type === 'pkmn') imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${item.id}.png`;
+          
+          html += `<div style="width: 50px; height: 50px; flex-shrink: 0; border-radius: 4px; overflow: hidden; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border);" title="${sanitizar(item.nombre)}">
+              <img src="${imgUrl}" style="width: 100%; height: 100%; object-fit: cover; image-rendering: ${type==='pkmn'?'pixelated':'auto'};">
+          </div>`;
+      });
+      cont.innerHTML = html;
+  }
+
+  window.resetColeccion = async function(type) {
+      if(!currentAdminEditUid) return;
+      let typeName = type === 'waifus' ? 'Waifus' : (type === 'pkmns' ? 'Pokémon' : 'Genshin Impact');
+      if(!confirm(`¿Estás seguro de que quieres VACIAR TODA LA COLECCIÓN de ${typeName} para ${currentAdminEditTag}? Esta acción no se puede deshacer.`)) return;
+      
+      try {
+          let updateData = {};
+          updateData[`profile.${type}`] = [];
+          updateData["updatedAt"] = Date.now();
+          
+          await updateDoc(doc(db, "jugadores_cloud", currentAdminEditUid), updateData);
+          
+          // Actualizar la memoria local para que la UI se refresque sin descargar todo de nuevo
+          let userDoc = jugadoresAdminGlobal.find(j => j.id === currentAdminEditUid);
+          if(userDoc && userDoc.profile) userDoc.profile[type] = [];
+          
+          abrirInventarioAdmin(currentAdminEditUid, currentAdminEditTag);
+          cargarJugadoresAdmin(); 
+          alert(`La colección de ${typeName} ha sido reseteada.`);
+      } catch(e) {
+          alert("Hubo un error al resetear la colección.");
+      }
+  };
+  // --------------------------------------------------
+
   window.asignarXpManualmente = async function(uid, currentXp, tag) { 
     let cantidad = parseInt(prompt(`⭐ ASIGNAR XP A: ${tag}\n\nIngresa la cantidad (usa negativos para restar):`)); 
     if (isNaN(cantidad)) return; 
     let newXp = currentXp + cantidad; 
     if (newXp < 0) newXp = 0; 
     let newRank = calcularRangoXP(newXp);
-    try { 
-      await updateDoc(doc(db, "jugadores_cloud", uid), { "profile.xp": newXp, "profile.rango": newRank, "updatedAt": Date.now() }); 
-      cargarJugadoresAdmin(); 
-    } catch(e) { alert("Error al actualizar XP"); } 
+    try { await updateDoc(doc(db, "jugadores_cloud", uid), { "profile.xp": newXp, "profile.rango": newRank, "updatedAt": Date.now() }); cargarJugadoresAdmin(); } catch(e) { alert("Error al actualizar XP"); } 
   };
 
   window.asignarTokensManualmente = async function(uid, currentTokens, tag) {
@@ -525,24 +609,17 @@
     if (isNaN(cantidad)) return;
     let newTokens = currentTokens + cantidad;
     if (newTokens < 0) newTokens = 0;
-    try {
-      await updateDoc(doc(db, "jugadores_cloud", uid), { "profile.tokens": newTokens, "updatedAt": Date.now() });
-      cargarJugadoresAdmin();
-    } catch(e) { alert("Error al actualizar tokens."); }
+    try { await updateDoc(doc(db, "jugadores_cloud", uid), { "profile.tokens": newTokens, "updatedAt": Date.now() }); cargarJugadoresAdmin(); } catch(e) { alert("Error al actualizar tokens."); }
   };
 
   window.editarJugadorManualmente = async function(uid, currentTag) {
     let nuevoTag = prompt("Modificar GamerTag:", currentTag);
     if (!nuevoTag || nuevoTag.trim() === "") return;
-    try {
-      await updateDoc(doc(db, "jugadores_cloud", uid), { "profile.tag": nuevoTag.trim(), "updatedAt": Date.now() });
-      alert("GamerTag actualizado correctamente.");
-      cargarJugadoresAdmin();
-    } catch(e) { alert("Error al editar jugador."); }
+    try { await updateDoc(doc(db, "jugadores_cloud", uid), { "profile.tag": nuevoTag.trim(), "updatedAt": Date.now() }); alert("GamerTag actualizado."); cargarJugadoresAdmin(); } catch(e) { alert("Error al editar jugador."); }
   };
 
   window.eliminarJugadorManualmente = async function(uid, tag) {
-    if (confirm(`¿Estás seguro de eliminar al jugador "${tag}"? Esta acción borrará sus datos de la nube.`)) {
+    if (confirm(`¿Estás seguro de eliminar al jugador "${tag}"? Esta acción borrará todos sus datos de la nube.`)) {
       try { await deleteDoc(doc(db, "jugadores_cloud", uid)); cargarJugadoresAdmin(); } catch(e) { alert("Error al eliminar el jugador."); }
     }
   };
