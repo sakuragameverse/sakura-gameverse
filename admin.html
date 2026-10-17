@@ -27,10 +27,10 @@
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Rajdhani', sans-serif; font-size: 16px; min-height: 100vh; overflow-x: hidden; padding-bottom: 40px; }
-    body::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 0%, rgba(255, 0, 127, 0.08) 0%, transparent 60%), radial-gradient(circle at 80% 80%, rgba(0, 229, 255, 0.05) 0%, transparent 50%), linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px); background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px; pointer-events: none; z-index: 0; will-change: transform; }
+    body::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 0%, rgba(255, 0, 127, 0.08) 0%, transparent 60%), radial-gradient(circle at 80% 80%, rgba(0, 229, 255, 0.05) 0%, transparent 50%), linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px); background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px; pointer-events: none; z-index: 0; }
     h1, h2, h3, h4 { font-family: 'Chakra Petch', sans-serif; text-transform: uppercase; letter-spacing: 0.5px; }
 
-    .admin-navbar { background: rgba(5, 1, 10, 0.75); backdrop-filter: blur(12px); border-bottom: 1px solid var(--glass-border); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+    .admin-navbar { background: rgba(5, 1, 10, 0.85); backdrop-filter: blur(8px); border-bottom: 1px solid var(--glass-border); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
     .brand-box { display: flex; align-items: center; gap: 8px; }
     .brand-logo { width: 28px; height: 28px; object-fit: contain; filter: drop-shadow(0 0 5px var(--primary-color)); }
     .brand-title { font-family: 'Chakra Petch', sans-serif; font-size: 1.05em; font-weight: 700; color: #fff; text-shadow: 0 0 10px rgba(0,0,0,0.8); }
@@ -41,38 +41,41 @@
     
     .admin-container { max-width: 1100px; margin: 18px auto 0 auto; padding: 0 12px; position: relative; z-index: 1; }
     .dashboard-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
-    .dash-card { background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); border: 1px solid var(--glass-border); padding: 12px 8px; border-radius: var(--radius-md); text-align: center; }
+    .dash-card { background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); border: 1px solid var(--glass-border); padding: 12px 8px; border-radius: var(--radius-md); text-align: center; }
     .dash-title { font-size: 0.65em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; font-weight: 700; }
     .dash-val { font-size: 1.25em; color: var(--secondary-color); font-weight: 700; font-family: 'Chakra Petch', sans-serif; }
     .dash-val.ganancias { color: #25d366; } .dash-val.pendientes { color: #ffaa00; }
 
-    .tabs-wrapper { display: flex; gap: 8px; overflow-x: auto; padding: 4px 4px 14px 4px; margin-bottom: 10px; scrollbar-width: none; }
+    .tabs-wrapper { display: flex; gap: 8px; overflow-x: auto; padding: 4px 20px 14px 4px; margin-bottom: 10px; scrollbar-width: none; }
     .tabs-wrapper::-webkit-scrollbar { display: none; }
-    .tab-btn { flex: 0 0 auto; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); border: 1px solid var(--glass-border); color: var(--text-muted); padding: 10px 16px; border-radius: var(--radius-pill); font-family: 'Chakra Petch', sans-serif; font-size: 0.82em; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.3s ease; }
+    .tab-btn { flex: 0 0 auto; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); color: var(--text-muted); padding: 10px 16px; border-radius: var(--radius-pill); font-family: 'Chakra Petch', sans-serif; font-size: 0.82em; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.3s ease; }
     .tab-btn.active { background: var(--secondary-color); color: #000; border-color: var(--secondary-color); box-shadow: 0 0 12px var(--secondary-glow); }
 
-    .admin-panel { display: none; } .admin-panel.active { display: block; animation: fade-in 0.4s ease; }
-    @keyframes fade-in { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    .admin-panel { display: none; } .admin-panel.active { display: block; animation: fade-in 0.3s ease; }
+    @keyframes fade-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    .card-panel { background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 18px; margin-bottom: 18px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); }
+    /* Reducido el blur de 16px a 8px para mejor rendimiento */
+    .card-panel { background: var(--glass-bg); backdrop-filter: blur(8px); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 18px; margin-bottom: 18px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); }
     .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.06); }
     .panel-title { font-size: 1.05em; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; }
 
     .btn-toggle-box { width: 100%; background: rgba(0, 229, 255, 0.08); border: 1px dashed rgba(0, 229, 255, 0.4); color: var(--secondary-color); padding: 14px; border-radius: var(--radius-sm); font-family: 'Chakra Petch', sans-serif; font-size: 0.9em; font-weight: 700; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 16px; }
     .form-group { margin-bottom: 14px; text-align: left; }
     .form-label { display: block; font-size: 0.8em; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; }
-    .form-input, .form-select, .form-textarea { width: 100%; min-height: 44px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: #fff; padding: 10px 14px; border-radius: var(--radius-sm); font-family: 'Rajdhani', sans-serif; font-size: 16px; outline: none; }
-    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--secondary-color); background: rgba(17, 5, 36, 0.6); }
+    .form-input, .form-select, .form-textarea { width: 100%; min-height: 44px; background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); color: #fff; padding: 10px 14px; border-radius: var(--radius-sm); font-family: 'Rajdhani', sans-serif; font-size: 16px; outline: none; }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--secondary-color); background: rgba(17, 5, 36, 0.7); }
     .btn-file-select { width: 100%; min-height: 46px; background: rgba(0, 229, 255, 0.08); border: 1px dashed var(--secondary-color); color: var(--secondary-color); border-radius: var(--radius-sm); font-family: 'Chakra Petch', sans-serif; font-size: 0.9em; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
     .preview-fotos-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; max-height: 200px; overflow-y: auto; padding-right: 4px; }
     .preview-foto-item { position: relative; width: 64px; height: 64px; border-radius: var(--radius-sm); border: 1px solid var(--glass-border); overflow: hidden; background: rgba(0,0,0,0.5); }
     .preview-foto-item img { width: 100%; height: 100%; object-fit: cover; }
     .btn-del-foto-preview { position: absolute; top: 2px; right: 2px; background: rgba(0, 0, 0, 0.85); color: #ff3366; border: none; width: 20px; height: 20px; border-radius: 50%; font-size: 0.7em; cursor: pointer; }
-    .btn-submit { width: 100%; min-height: 46px; background: linear-gradient(135deg, var(--primary-color), #cc0066); color: #fff; border: none; padding: 10px; font-family: 'Chakra Petch', sans-serif; font-size: 1em; font-weight: 700; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn-submit { width: 100%; min-height: 46px; background: linear-gradient(135deg, var(--primary-color), #cc0066); color: #fff; border: none; padding: 10px; font-family: 'Chakra Petch', sans-serif; font-size: 1em; font-weight: 700; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: filter 0.2s; }
+    .btn-submit:hover { filter: brightness(1.2); }
     
-    .item-card-row { display: flex; align-items: center; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 10px; gap: 12px; }
-    .item-card-row.is-paused { opacity: 0.4; border-style: dashed; filter: grayscale(80%); }
-    .item-card-thumb { width: 54px; height: 54px; object-fit: contain; border-radius: var(--radius-sm); background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); flex-shrink: 0; padding: 3px; }
+    .item-card-row { display: flex; align-items: center; background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 10px; gap: 12px; transition: background 0.2s; }
+    .item-card-row:hover { background: rgba(255,255,255,0.03); }
+    .item-card-row.is-paused { opacity: 0.5; border-style: dashed; filter: grayscale(50%); }
+    .item-card-thumb { width: 54px; height: 54px; object-fit: contain; border-radius: var(--radius-sm); background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.05); flex-shrink: 0; padding: 3px; }
     .item-card-info { flex-grow: 1; min-width: 0; }
     .item-card-title { font-family: 'Chakra Petch', sans-serif; font-size: 0.95em; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px; }
     .item-card-meta { font-size: 0.8em; color: var(--text-muted); display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 4px; }
@@ -82,11 +85,6 @@
     .tag-encargo { background: rgba(255, 0, 127, 0.15); color: var(--primary-color); border: 1px solid rgba(255,0,127,0.3); }
     .tag-digital { background: rgba(37, 211, 102, 0.15); color: #25d366; border: 1px solid rgba(37,211,102,0.3); }
     
-    .tag-n { background: rgba(180, 190, 205, 0.15); color: #b4becd; border: 1px solid #8b8f9e; }
-    .tag-r { background: rgba(0, 229, 255, 0.15); color: #00e5ff; border: 1px solid #00e5ff; }
-    .tag-sr { background: rgba(176, 0, 255, 0.15); color: #b000ff; border: 1px solid #b000ff; }
-    .tag-ssr { background: rgba(255, 170, 0, 0.15); color: #ffaa00; border: 1px solid #ffaa00; }
-    
     .item-card-actions { display: flex; flex-direction: row; gap: 6px; flex-shrink: 0; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
     .btn-action-touch { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid transparent; font-size: 0.85em; transition: all 0.2s ease; }
     .btn-edit { background: rgba(0, 229, 255, 0.1); color: var(--secondary-color); border-color: rgba(0,229,255,0.3); }
@@ -95,19 +93,20 @@
     .btn-del:hover { background: #ff3366; color: #fff; }
     .btn-print { background: rgba(255, 255, 255, 0.1); color: #fff; border-color: rgba(255, 255, 255, 0.3); }
 
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 0, 6, 0.75); z-index: 9000; justify-content: center; align-items: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-    .modal-content { background: rgba(14, 4, 31, 0.95); backdrop-filter: blur(16px); padding: 24px; border-radius: var(--radius-md); text-align: left; max-width: 95%; width: 440px; border: 1px solid var(--glass-border); box-shadow: 0 15px 50px rgba(0,0,0,0.6); position: relative; max-height: calc(100vh - 40px); overflow-y: auto; }
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 0, 6, 0.85); z-index: 9000; justify-content: center; align-items: center; backdrop-filter: blur(6px); }
+    .modal-content { background: rgba(14, 4, 31, 0.98); padding: 24px; border-radius: var(--radius-md); text-align: left; max-width: 95%; width: 440px; border: 1px solid var(--glass-border); box-shadow: 0 15px 50px rgba(0,0,0,0.8); position: relative; max-height: calc(100vh - 40px); overflow-y: auto; }
     .cerrar-modal { position: absolute; top: 12px; right: 14px; font-size: 24px; color: var(--text-muted); cursor: pointer; background: rgba(0,0,0,0.3); border: 1px solid transparent; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
     .cerrar-modal:hover { color: #fff; background: rgba(255, 51, 102, 0.2); border-color: #ff3366; }
 
-    #lockScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 0, 6, 0.85); backdrop-filter: blur(12px); display: flex; justify-content: center; align-items: center; z-index: 999999; padding: 16px; }
-    .lock-box { background: rgba(14, 4, 31, 0.85); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); padding: 32px 24px; border-radius: var(--radius-md); text-align: center; width: 100%; max-width: 360px; box-shadow: 0 15px 50px rgba(0,0,0,0.8); }
+    #lockScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 0, 6, 0.95); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 999999; padding: 16px; }
+    .lock-box { background: rgba(14, 4, 31, 0.95); border: 1px solid var(--glass-border); padding: 32px 24px; border-radius: var(--radius-md); text-align: center; width: 100%; max-width: 360px; box-shadow: 0 15px 50px rgba(0,0,0,0.9); }
     @media screen { .print-area { display: none; } }
     @media print { body > :not(.print-area) { display: none !important; } .print-area { display: block; background: #fff; color: #000; width: 100%; max-width: 350px; margin: 0 auto; font-family: monospace; padding: 15px; } .print-area h2 { font-family: monospace; text-align: center; } .print-area .divider { border-top: 1px dashed #000; margin: 10px 0; } }
   </style>
 </head>
 <body>
 
+<!-- Pantalla de Login Administrador -->
 <div id="lockScreen">
   <div class="lock-box">
     <div style="font-size: 42px; color: var(--secondary-color); margin-bottom: 12px;"><i class="fas fa-shield-halved"></i></div>
@@ -118,37 +117,47 @@
   </div>
 </div>
 
-<!-- MODAL INVENTARIO JUGADOR (NUEVO) -->
+<!-- Modal Personalizado para Alertas y Prompts (Reemplazo del Alert Nativo) -->
+<div id="customDialogModal" class="modal" style="z-index: 9999999;">
+  <div class="modal-content" style="max-width: 350px; text-align: center; border-color: var(--secondary-color);">
+    <h3 id="cdTitle" style="color: #fff; margin-top: 0;"><i class="fas fa-exclamation-circle"></i> Sistema</h3>
+    <p id="cdMessage" style="color: var(--text-muted); font-size: 0.9em; margin-bottom: 15px;"></p>
+    <input type="text" id="cdInput" class="form-input" style="display:none; margin-bottom: 15px; text-align: center; font-weight: bold;">
+    <div style="display: flex; gap: 10px; justify-content: center;">
+      <button id="cdBtnCancel" class="btn-submit" style="background: rgba(255, 51, 102, 0.1); color: #ff3366; border: 1px solid rgba(255,51,102,0.3); display: none;">Cancelar</button>
+      <button id="cdBtnOk" class="btn-submit" style="background: var(--secondary-color); color: #000;">Aceptar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL INVENTARIO JUGADOR (Modo Dios Optimizado) -->
 <div id="modalInventarioAdmin" class="modal">
-  <div class="modal-content" style="max-width: 500px;">
+  <div class="modal-content" style="max-width: 550px;">
     <button class="cerrar-modal" onclick="cerrarInventarioAdmin()">×</button>
     <h3 style="color: #fff; margin-top: 0; border-bottom: 1px solid var(--glass-border); padding-bottom: 10px;">Inventario: <span id="invAdminGamerTag" style="color: var(--secondary-color);"></span></h3>
     
-    <!-- Colección Waifus -->
     <div style="margin-bottom: 18px;">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">
         <strong style="color: #ff007f;"><i class="fas fa-heart"></i> Gacha Waifus</strong>
         <button class="btn-action-touch btn-del" style="width:auto; padding: 0 10px; border-radius: var(--radius-sm); font-size:0.75em;" onclick="resetColeccion('waifus')"><i class="fas fa-trash"></i> Vaciar</button>
       </div>
-      <div id="invAdminWaifus" style="display:flex; gap:8px; overflow-x:auto; padding-bottom:5px; background: rgba(0,0,0,0.4); padding: 10px; border-radius: var(--radius-sm); border: 1px solid rgba(255,0,127,0.2); scrollbar-width: none;"></div>
+      <div id="invAdminWaifus" style="display:flex; flex-wrap: wrap; gap:8px; max-height: 200px; overflow-y:auto; background: rgba(0,0,0,0.4); padding: 10px; border-radius: var(--radius-sm); border: 1px solid rgba(255,0,127,0.2);"></div>
     </div>
 
-    <!-- Colección Pkmns -->
     <div style="margin-bottom: 18px;">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">
         <strong style="color: #ffde00;"><i class="fas fa-gamepad"></i> Pokémon</strong>
         <button class="btn-action-touch btn-del" style="width:auto; padding: 0 10px; border-radius: var(--radius-sm); font-size:0.75em;" onclick="resetColeccion('pkmns')"><i class="fas fa-trash"></i> Vaciar</button>
       </div>
-      <div id="invAdminPkmns" style="display:flex; gap:8px; overflow-x:auto; padding-bottom:5px; background: rgba(0,0,0,0.4); padding: 10px; border-radius: var(--radius-sm); border: 1px solid rgba(255,222,0,0.2); scrollbar-width: none;"></div>
+      <div id="invAdminPkmns" style="display:flex; flex-wrap: wrap; gap:8px; max-height: 200px; overflow-y:auto; background: rgba(0,0,0,0.4); padding: 10px; border-radius: var(--radius-sm); border: 1px solid rgba(255,222,0,0.2);"></div>
     </div>
 
-    <!-- Colección Genshin -->
     <div style="margin-bottom: 10px;">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">
         <strong style="color: #cda55d;"><i class="fas fa-meteor"></i> Genshin Impact</strong>
         <button class="btn-action-touch btn-del" style="width:auto; padding: 0 10px; border-radius: var(--radius-sm); font-size:0.75em;" onclick="resetColeccion('genshin')"><i class="fas fa-trash"></i> Vaciar</button>
       </div>
-      <div id="invAdminGenshin" style="display:flex; gap:8px; overflow-x:auto; padding-bottom:5px; background: rgba(0,0,0,0.4); padding: 10px; border-radius: var(--radius-sm); border: 1px solid rgba(205,165,93,0.2); scrollbar-width: none;"></div>
+      <div id="invAdminGenshin" style="display:flex; flex-wrap: wrap; gap:8px; max-height: 200px; overflow-y:auto; background: rgba(0,0,0,0.4); padding: 10px; border-radius: var(--radius-sm); border: 1px solid rgba(205,165,93,0.2);"></div>
     </div>
   </div>
 </div>
@@ -192,7 +201,6 @@
           <div class="form-group" style="flex:1;"><label class="form-label">Costo Tirada Gacha (Tokens):</label><input type="number" id="ajustesCostoGacha" class="form-input"></div>
           <div class="form-group" style="flex:1;"><label class="form-label">Tokens Cofre Diario:</label><input type="number" id="ajustesTokensCofre" class="form-input" placeholder="Ej: 15"></div>
         </div>
-
         <button type="submit" class="btn-submit">Guardar Ajustes Web</button>
       </form>
     </div>
@@ -200,10 +208,9 @@
 
   <!-- GACHA WAIFUS Y POKEMON Y GENSHIN -->
   <section id="panel-gacha" class="admin-panel">
-    
     <div class="card-panel">
       <div class="panel-header"><span class="panel-title" style="color: #ffaa00;"><i class="fas fa-history"></i> Historial Global de Gacha</span></div>
-      <p style="font-size: 0.8em; color: var(--text-muted); margin-bottom: 15px;">Monitorea las tiradas de los usuarios en tiempo real. Borra los registros de la Máquina de Descuentos una vez entregues el premio.</p>
+      <p style="font-size: 0.8em; color: var(--text-muted); margin-bottom: 15px;">Monitorea las tiradas de los usuarios en tiempo real. Borra los registros una vez entregues el premio físico/digital.</p>
       <div id="listaHistorialGacha"><p style="color: var(--text-muted);"><i class="fas fa-spinner fa-spin"></i> Cargando historial...</p></div>
     </div>
 
@@ -212,13 +219,9 @@
       <div class="panel-header"><span class="panel-title"><i class="fas fa-gem"></i> Creador de Cartas Gacha</span><button style="background: none; border: none; color: #ff3366; font-weight: bold; cursor: pointer;" onclick="toggleFormWaifu()">Cerrar</button></div>
       <form onsubmit="guardarWaifu(event)" id="formWaifuGacha">
         <div class="form-group"><label class="form-label">Nombre de la Waifu:</label><input type="text" id="waifuNombre" class="form-input" required></div>
-        <div class="form-group">
-          <label class="form-label">Rareza:</label>
+        <div class="form-group"><label class="form-label">Rareza:</label>
           <select id="waifuRareza" class="form-select">
-            <option value="N">N (Normal) - Gris</option>
-            <option value="R">R (Rare) - Azul</option>
-            <option value="SR">SR (Super Rare) - Morado</option>
-            <option value="SSR">SSR (Specially Super) - Dorado</option>
+            <option value="N">N (Normal) - Gris</option><option value="R">R (Rare) - Azul</option><option value="SR">SR (Super Rare) - Morado</option><option value="SSR">SSR (Specially Super) - Dorado</option>
           </select>
         </div>
         <div class="form-group"><label class="form-label">Premio / Beneficio:</label><input type="text" id="waifuPremio" class="form-input" placeholder="Ej: Sin premio o Cupón 5%" required></div>
@@ -273,7 +276,7 @@
         <div class="form-group"><label class="form-label">Fotos (Sin límite):</label>
           <input type="file" id="prodFileInput" multiple accept="image/*" style="display: none;" onchange="procesarArchivosGaleria(event)">
           <button type="button" class="btn-file-select" onclick="document.getElementById('prodFileInput').click()"><i class="fas fa-camera"></i> Seleccionar Fotos</button>
-          <div id="txtEstadoSubida" class="upload-status-text"><i class="fas fa-spinner fa-spin"></i> Procesando...</div>
+          <div id="txtEstadoSubida" class="upload-status-text" style="display:none; text-align:center; font-size:0.85em; margin-top:5px; color:var(--secondary-color);"><i class="fas fa-spinner fa-spin"></i> Procesando...</div>
           <div id="contenedorPreviewFotos" class="preview-fotos-grid"></div>
         </div>
         <div class="form-group"><label class="form-label">Descripción:</label><textarea id="prodDesc" class="form-textarea" rows="2"></textarea></div>
@@ -339,15 +342,39 @@
   const firebaseConfig = { apiKey: "AIzaSyDH1DZqaIi5sKRXspXDUWbMUZ4nr5JIy8Q", authDomain: "sakura-gameverse.firebaseapp.com", projectId: "sakura-gameverse", storageBucket: "sakura-gameverse.firebasestorage.app", messagingSenderId: "226328425516", appId: "1:226328425516:web:8dc11761639228c6120d89" };
   const app = initializeApp(firebaseConfig); const db = getFirestore(app); const auth = getAuth(app);
   let productosAdminGlobal = []; let facturasAdminGlobal = []; let fotosBufferProducto = [];
-  let jugadoresAdminGlobal = []; // Array global para los jugadores
+  let jugadoresAdminGlobal = [];
 
-  // Variables para controlar de qué jugador se está viendo el inventario
-  let currentAdminEditUid = null;
-  let currentAdminEditTag = "";
+  // SISTEMA DE MODALES PERSONALIZADOS (MODO DIOS)
+  window.customDialog = function(type, title, message, defaultValue = "") {
+      return new Promise((resolve) => {
+          const modal = document.getElementById('customDialogModal');
+          const titleEl = document.getElementById('cdTitle');
+          const msgEl = document.getElementById('cdMessage');
+          const inputEl = document.getElementById('cdInput');
+          const btnOk = document.getElementById('cdBtnOk');
+          const btnCancel = document.getElementById('cdBtnCancel');
+
+          titleEl.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${title}`;
+          msgEl.innerText = message;
+          
+          if(type === 'prompt') { inputEl.style.display = 'block'; inputEl.value = defaultValue; } 
+          else { inputEl.style.display = 'none'; }
+
+          if(type === 'alert') { btnCancel.style.display = 'none'; } 
+          else { btnCancel.style.display = 'block'; }
+
+          modal.style.display = 'flex';
+
+          btnOk.onclick = () => { modal.style.display = 'none'; resolve(type === 'prompt' ? inputEl.value : true); };
+          btnCancel.onclick = () => { modal.style.display = 'none'; resolve(type === 'prompt' ? null : false); };
+      });
+  };
+
+  window.sysAlert = async (msg) => { await customDialog('alert', 'Sistema', msg); };
 
   onAuthStateChanged(auth, (user) => { if (user) { document.getElementById('lockScreen').style.display = 'none'; document.getElementById('adminMainContent').style.display = 'block'; cargarTodo(); } else { document.getElementById('lockScreen').style.display = 'flex'; document.getElementById('adminMainContent').style.display = 'none'; } });
   window.iniciarSesionAdmin = async function() { const email = document.getElementById('adminEmailInput').value.trim(); const pass = document.getElementById('adminPassInput').value; const errorBox = document.getElementById('loginErrorMsg'); const btn = document.getElementById('btnLoginSubmit'); if (!email || !pass) return; btn.disabled = true; errorBox.style.display = 'none'; try { await signInWithEmailAndPassword(auth, email, pass); document.getElementById('adminPassInput').value = ""; } catch (err) { errorBox.innerText = "Credenciales inválidas."; errorBox.style.display = 'block'; } finally { btn.disabled = false; } };
-  window.cerrarSesionAdmin = async function() { if (confirm("¿Cerrar sesión?")) await signOut(auth); };
+  window.cerrarSesionAdmin = async function() { if (await customDialog('confirm', 'Cerrar Sesión', '¿Estás seguro de que deseas salir del panel de administrador?')) await signOut(auth); };
   window.cambiarSeccion = function(panelId) { document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active')); event.currentTarget.classList.add('active'); document.getElementById(`panel-${panelId}`).classList.add('active'); };
   function sanitizar(str) { if (!str) return ''; return String(str).replace(/[&<>"']/g, function(m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]; }); }
 
@@ -358,35 +385,8 @@
   }
 
   /* AJUSTES WEB */
-  async function cargarAjustesWeb() { 
-    try { 
-      const snap = await getDoc(doc(db, "configuracion", "ajustes_web")); 
-      if (snap.exists()) { 
-        const d = snap.data(); 
-        document.getElementById('ajustesTicker').value = d.ticker || ''; 
-        document.getElementById('ajustesHeroTitle').value = d.heroTitle || ''; 
-        document.getElementById('ajustesHeroDesc').value = d.heroDesc || ''; 
-        document.getElementById('ajustesWhatsapp').value = d.whatsapp || ''; 
-        document.getElementById('ajustesCostoGacha').value = d.costoGacha || 100; 
-        document.getElementById('ajustesTokensCofre').value = d.tokensCofre || 15;
-      } 
-    } catch(e) {} 
-  }
-  
-  window.guardarAjustesWeb = async function(e) { 
-    e.preventDefault(); 
-    try { 
-      await setDoc(doc(db, "configuracion", "ajustes_web"), { 
-        ticker: document.getElementById('ajustesTicker').value.trim(), 
-        heroTitle: document.getElementById('ajustesHeroTitle').value.trim(), 
-        heroDesc: document.getElementById('ajustesHeroDesc').value.trim(), 
-        whatsapp: document.getElementById('ajustesWhatsapp').value.trim(), 
-        costoGacha: parseInt(document.getElementById('ajustesCostoGacha').value) || 100,
-        tokensCofre: parseInt(document.getElementById('ajustesTokensCofre').value) || 15
-      }, { merge: true }); 
-      alert("Ajustes actualizados."); 
-    } catch(err) {} 
-  };
+  async function cargarAjustesWeb() { try { const snap = await getDoc(doc(db, "configuracion", "ajustes_web")); if (snap.exists()) { const d = snap.data(); document.getElementById('ajustesTicker').value = d.ticker || ''; document.getElementById('ajustesHeroTitle').value = d.heroTitle || ''; document.getElementById('ajustesHeroDesc').value = d.heroDesc || ''; document.getElementById('ajustesWhatsapp').value = d.whatsapp || ''; document.getElementById('ajustesCostoGacha').value = d.costoGacha || 100; document.getElementById('ajustesTokensCofre').value = d.tokensCofre || 15; } } catch(e) {} }
+  window.guardarAjustesWeb = async function(e) { e.preventDefault(); try { await setDoc(doc(db, "configuracion", "ajustes_web"), { ticker: document.getElementById('ajustesTicker').value.trim(), heroTitle: document.getElementById('ajustesHeroTitle').value.trim(), heroDesc: document.getElementById('ajustesHeroDesc').value.trim(), whatsapp: document.getElementById('ajustesWhatsapp').value.trim(), costoGacha: parseInt(document.getElementById('ajustesCostoGacha').value) || 100, tokensCofre: parseInt(document.getElementById('ajustesTokensCofre').value) || 15 }, { merge: true }); sysAlert("Ajustes web guardados correctamente."); } catch(err) {} };
 
   /* GACHA WAIFUS Y POKEMON (NÚCLEO DE AUDITORÍA) */
   window.toggleFormWaifu = function() { const box = document.getElementById('cajaFormWaifu'); const lbl = document.getElementById('lblToggleWaifu'); if(box.style.display === 'none') { box.style.display = 'block'; lbl.innerText = "Cerrar Creador"; } else { box.style.display = 'none'; lbl.innerText = "Agregar Tarjeta a Máquina Waifu"; } };
@@ -404,40 +404,18 @@
     } catch(e) {}
   }
 
-  // HISTORIAL GLOBAL MULTIVERSO
   async function cargarHistorialGacha() {
     try {
       const q = query(collection(db, "historial_gacha"), orderBy("timestamp", "desc"));
       const snapshot = await getDocs(q);
       const cont = document.getElementById('listaHistorialGacha');
       if (snapshot.empty) { cont.innerHTML = "<p style='color:var(--text-muted); text-align:center;'>Nadie ha invocado aún.</p>"; return; }
-      
       let html = "";
       snapshot.forEach(d => {
-        let h = d.data();
-        let fecha = new Date(h.timestamp).toLocaleString();
-        
-        let tipoGacha = h.tipoGacha || 'Waifu';
-        let isPkmn = tipoGacha === 'Pokemon';
-        let isGenshin = tipoGacha === 'Genshin';
-        
-        let colorR = '#b4becd';
-        if (isGenshin) { colorR = h.rareza === '5 Estrellas' ? '#ffb13f' : '#a256e1'; } 
-        else if (isPkmn) { colorR = h.rareza === 'Raro' ? '#ffaa00' : '#00e5ff'; } 
-        else { colorR = h.rareza === 'SSR' ? '#ffaa00' : (h.rareza === 'SR' ? '#b000ff' : (h.rareza === 'R' ? '#00e5ff' : '#b4becd')); }
-
+        let h = d.data(); let fecha = new Date(h.timestamp).toLocaleString(); let tipoGacha = h.tipoGacha || 'Waifu'; let isPkmn = tipoGacha === 'Pokemon'; let isGenshin = tipoGacha === 'Genshin';
+        let colorR = '#b4becd'; if (isGenshin) { colorR = h.rareza === '5 Estrellas' ? '#ffb13f' : '#a256e1'; } else if (isPkmn) { colorR = h.rareza === 'Raro' ? '#ffaa00' : '#00e5ff'; } else { colorR = h.rareza === 'SSR' ? '#ffaa00' : (h.rareza === 'SR' ? '#b000ff' : (h.rareza === 'R' ? '#00e5ff' : '#b4becd')); }
         let detallePremio = ''; let headerTipo = '';
-        if (isGenshin) {
-            detallePremio = `<i class="fas fa-meteor" style="color:#ffb13f;"></i> Reclutó a: <strong>${sanitizar(h.waifu)}</strong>`;
-            headerTipo = `<span style="color:#cda55d; font-size:0.8em; border:1px solid #cda55d; padding:2px 6px; border-radius:4px;">GACHAPÓN GENSHIN</span>`;
-        } else if (isPkmn) {
-            detallePremio = `<i class="fas fa-gamepad" style="color:#ffde00;"></i> Capturó a: <strong>${sanitizar(h.waifu)}</strong>`;
-            headerTipo = `<span style="color:#ffde00; font-size:0.8em; border:1px solid #ffde00; padding:2px 6px; border-radius:4px;">POKÉ GACHA</span>`;
-        } else {
-            detallePremio = `<i class="fas fa-gift" style="color:#ff007f;"></i> Premio Pendiente: <strong>${sanitizar(h.premio)}</strong>`;
-            headerTipo = `<span style="color:#ff007f; font-size:0.8em; border:1px solid #ff007f; padding:2px 6px; border-radius:4px;">WAIFU GACHA</span>`;
-        }
-
+        if (isGenshin) { detallePremio = `<i class="fas fa-meteor" style="color:#ffb13f;"></i> Reclutó a: <strong>${sanitizar(h.waifu)}</strong>`; headerTipo = `<span style="color:#cda55d; font-size:0.8em; border:1px solid #cda55d; padding:2px 6px; border-radius:4px;">GACHAPÓN GENSHIN</span>`; } else if (isPkmn) { detallePremio = `<i class="fas fa-gamepad" style="color:#ffde00;"></i> Capturó a: <strong>${sanitizar(h.waifu)}</strong>`; headerTipo = `<span style="color:#ffde00; font-size:0.8em; border:1px solid #ffde00; padding:2px 6px; border-radius:4px;">POKÉ GACHA</span>`; } else { detallePremio = `<i class="fas fa-gift" style="color:#ff007f;"></i> Premio Pendiente: <strong>${sanitizar(h.premio)}</strong>`; headerTipo = `<span style="color:#ff007f; font-size:0.8em; border:1px solid #ff007f; padding:2px 6px; border-radius:4px;">WAIFU GACHA</span>`; }
         html += `<div class="item-card-row"><div style="flex-grow:1;"><div style="font-weight:bold; color:#fff; display:flex; justify-content:space-between; align-items:center;"><span>👤 ${sanitizar(h.jugador)}</span>${headerTipo}</div><div style="font-size:0.8em; color:var(--text-muted); font-weight:normal; margin-bottom: 4px;">Fecha: ${fecha}</div><div style="font-size:0.95em; color:#25d366; margin-top:4px;">${detallePremio} <span style="font-size:0.8em; color:${colorR};">(${h.rareza})</span></div></div><button class="btn-action-touch btn-del" onclick="eliminarHistorialGacha('${d.id}')" title="Marcar como visto/entregado"><i class="fas fa-check"></i></button></div>`;
       });
       cont.innerHTML = html;
@@ -445,15 +423,15 @@
   }
 
   window.eliminarHistorialGacha = async function(id) {
-    if(confirm("¿Seguro que deseas borrar este registro de auditoría? (Hazlo si ya entregaste el premio)")) {
+    if(await customDialog('confirm', 'Registro Gacha', '¿Seguro que deseas borrar este registro de auditoría? Hazlo solo si ya entregaste el premio físico/digital.')) {
       await deleteDoc(doc(db, "historial_gacha", id));
       cargarHistorialGacha();
     }
   };
 
-  window.guardarWaifu = async function(e) { e.preventDefault(); const file = document.getElementById('waifuFileInput').files[0]; if (!file) return; const btn = document.getElementById('btnSubirWaifu'); btn.disabled = true; btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Imprimiendo carta...`; try { const imgUrl = await comprimirYConvertirAWebP(file, 600, 0.8); await addDoc(collection(db, "waifus_gacha"), { nombre: document.getElementById('waifuNombre').value.trim(), rareza: document.getElementById('waifuRareza').value, premio: document.getElementById('waifuPremio').value.trim(), imgUrl, oculto: false, timestamp: Date.now() }); document.getElementById('formWaifuGacha').reset(); cargarWaifusAdmin(); toggleFormWaifu(); } catch(err){} finally { btn.disabled = false; btn.innerText = "Publicar Tarjeta Gacha"; } };
+  window.guardarWaifu = async function(e) { e.preventDefault(); const file = document.getElementById('waifuFileInput').files[0]; if (!file) return; const btn = document.getElementById('btnSubirWaifu'); btn.disabled = true; btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Imprimiendo...`; try { const imgUrl = await comprimirYConvertirAWebP(file, 600, 0.8); await addDoc(collection(db, "waifus_gacha"), { nombre: document.getElementById('waifuNombre').value.trim(), rareza: document.getElementById('waifuRareza').value, premio: document.getElementById('waifuPremio').value.trim(), imgUrl, oculto: false, timestamp: Date.now() }); document.getElementById('formWaifuGacha').reset(); cargarWaifusAdmin(); toggleFormWaifu(); sysAlert("Tarjeta creada exitosamente."); } catch(err){} finally { btn.disabled = false; btn.innerText = "Publicar Tarjeta Gacha"; } };
   window.toggleOcultarWaifu = async function(id, estadoActual) { try { await updateDoc(doc(db, "waifus_gacha", id), { oculto: !estadoActual }); cargarWaifusAdmin(); } catch(e) {} };
-  window.eliminarWaifu = async function(id) { if (confirm("¿Quemar esta tarjeta permanentemente?")) { await deleteDoc(doc(db, "waifus_gacha", id)); cargarWaifusAdmin(); } };
+  window.eliminarWaifu = async function(id) { if (await customDialog('confirm', 'Eliminar Carta', '¿Quemar esta tarjeta permanentemente?')) { await deleteDoc(doc(db, "waifus_gacha", id)); cargarWaifusAdmin(); } };
 
   /* PRODUCTOS */
   window.toggleFormularioProducto = function() { const box = document.getElementById('cajaFormProducto'); const lbl = document.getElementById('lblToggleForm'); if(box.style.display === 'none') { box.style.display = 'block'; lbl.innerText = "Cerrar Formulario"; } else { box.style.display = 'none'; lbl.innerText = "Crear Nuevo Producto"; } };
@@ -462,10 +440,10 @@
   window.removerFotoBuffer = function(index) { fotosBufferProducto.splice(index, 1); renderizarMiniaturasFotos(); };
   async function cargarProductosAdmin() { try { const q = query(collection(db, "productos"), orderBy("timestamp", "desc")); const snapshot = await getDocs(q); productosAdminGlobal = []; document.getElementById('totalProdsLbl').innerText = snapshot.size; document.getElementById('dashProds').innerText = snapshot.size; const cont = document.getElementById('listaProductosMobile'); if (snapshot.empty) { cont.innerHTML = `<p style="text-align:center;">No hay productos.</p>`; return; } let htmlBloque = ""; snapshot.forEach(docSnap => { const p = { id: docSnap.id, ...docSnap.data() }; productosAdminGlobal.push(p); const foto = (p.fotos && p.fotos.length > 0) ? p.fotos[0] : 'logo.webp?v=2'; let badgeClase = 'tag-stock'; if (p.estado && p.estado.includes("Encargo")) badgeClase = 'tag-encargo'; if (p.categoria === 'recargas') badgeClase = 'tag-digital'; let isOculto = p.oculto === true; let cardClass = isOculto ? "item-card-row card-item-filtro is-paused" : "item-card-row card-item-filtro"; let colorOculto = isOculto ? '#ffaa00' : 'var(--secondary-color)'; let stockValor = p.stock !== undefined ? p.stock : 'N/A'; htmlBloque += `<div class="${cardClass}" data-nombre="${sanitizar(p.nombre).toLowerCase()}"><img src="${foto}" class="item-card-thumb" loading="lazy"><div class="item-card-info"><div class="item-card-title">${sanitizar(p.nombre)}</div><div class="item-card-meta"><span>${sanitizar(p.categoria)}</span> <span>•</span> <span class="tag-badge ${badgeClase}">${p.estado || 'Stock'}</span> <span>•</span> <span style="color:var(--secondary-color);"><i class="fas fa-box-open"></i> ${stockValor} uds.</span></div><div class="item-card-price">$${Number(p.precio).toFixed(2)}</div></div><div class="item-card-actions"><button class="btn-action-touch" style="color: ${colorOculto}; background: rgba(0,0,0,0.4); border: 1px solid ${colorOculto}40;" onclick="toggleOcultarProducto('${p.id}', ${isOculto})"><i class="fas fa-eye"></i></button><button class="btn-action-touch btn-edit" onclick="prepararEdicion('${p.id}')"><i class="fas fa-pen"></i></button><button class="btn-action-touch btn-del" onclick="eliminarProducto('${p.id}')"><i class="fas fa-trash"></i></button></div></div>`; }); cont.innerHTML = htmlBloque; } catch(e) {} }
   window.toggleOcultarProducto = async function(id, isOculto) { try { await updateDoc(doc(db, "productos", id), { oculto: !isOculto }); cargarProductosAdmin(); } catch(e) {} };
-  window.guardarProducto = async function(e) { e.preventDefault(); const id = document.getElementById('prodEditId').value; if (fotosBufferProducto.length === 0) return alert("Añade foto."); try { const data = { nombre: document.getElementById('prodNombre').value.trim(), precio: parseFloat(document.getElementById('prodPrecio').value), stock: parseInt(document.getElementById('prodStock').value) || 0, categoria: document.getElementById('prodCategoria').value, coleccion: document.getElementById('prodColeccion').value.trim() || 'General', estado: document.getElementById('prodEstado').value, descripcion: document.getElementById('prodDesc').value.trim(), fotos: fotosBufferProducto, timestamp: Date.now() }; if (id) { await updateDoc(doc(db, "productos", id), data); } else { data.oculto = false; await addDoc(collection(db, "productos"), data); } resetFormularioProducto(); cargarProductosAdmin(); } catch(err) {} };
+  window.guardarProducto = async function(e) { e.preventDefault(); const id = document.getElementById('prodEditId').value; if (fotosBufferProducto.length === 0) return sysAlert("Añade al menos una foto."); try { const data = { nombre: document.getElementById('prodNombre').value.trim(), precio: parseFloat(document.getElementById('prodPrecio').value), stock: parseInt(document.getElementById('prodStock').value) || 0, categoria: document.getElementById('prodCategoria').value, coleccion: document.getElementById('prodColeccion').value.trim() || 'General', estado: document.getElementById('prodEstado').value, descripcion: document.getElementById('prodDesc').value.trim(), fotos: fotosBufferProducto, timestamp: Date.now() }; if (id) { await updateDoc(doc(db, "productos", id), data); } else { data.oculto = false; await addDoc(collection(db, "productos"), data); } resetFormularioProducto(); cargarProductosAdmin(); sysAlert("Producto guardado exitosamente."); } catch(err) {} };
   window.prepararEdicion = function(id) { const p = productosAdminGlobal.find(item => item.id === id); if (!p) return; document.getElementById('prodEditId').value = p.id; document.getElementById('prodNombre').value = p.nombre || ''; document.getElementById('prodPrecio').value = p.precio || ''; document.getElementById('prodStock').value = p.stock !== undefined ? p.stock : 10; document.getElementById('prodCategoria').value = p.categoria || 'figuras'; document.getElementById('prodColeccion').value = p.coleccion || ''; document.getElementById('prodEstado').value = p.estado || 'Envío Inmediato 📦'; document.getElementById('prodDesc').value = p.descripcion || ''; fotosBufferProducto = p.fotos ? [...p.fotos] : []; renderizarMiniaturasFotos(); document.getElementById('cajaFormProducto').style.display = "block"; window.scrollTo({ top: 0, behavior: 'smooth' }); };
   window.resetFormularioProducto = function() { document.getElementById('formProducto').reset(); document.getElementById('prodEditId').value = ""; fotosBufferProducto = []; renderizarMiniaturasFotos(); document.getElementById('cajaFormProducto').style.display = "none"; };
-  window.eliminarProducto = async function(id) { if(confirm("¿Eliminar?")) { await deleteDoc(doc(db, "productos", id)); cargarProductosAdmin(); } };
+  window.eliminarProducto = async function(id) { if(await customDialog('confirm', 'Eliminar Producto', '¿Seguro que deseas borrar este producto del catálogo?')) { await deleteDoc(doc(db, "productos", id)); cargarProductosAdmin(); } };
   window.filtrarTarjetasAdmin = function() { const val = document.getElementById('buscarEnAdmin').value.toLowerCase(); document.querySelectorAll('.card-item-filtro').forEach(c => { const nom = c.getAttribute('data-nombre') || ''; c.style.display = nom.includes(val) ? 'flex' : 'none'; }); };
 
   /* PEDIDOS Y ANALÍTICAS */
@@ -474,85 +452,35 @@
   async function cargarPedidosAdmin() { try { const q = query(collection(db, "pedidos"), orderBy("timestamp", "desc")); const snapshot = await getDocs(q); const cont = document.getElementById('listaPedidosMobile'); document.getElementById('totalPedidosLbl').innerText = snapshot.size; if (snapshot.empty) { cont.innerHTML = `<p style="text-align: center;">Sin órdenes.</p>`; document.getElementById('dashIngresos').innerText = "$0.00"; document.getElementById('dashOrdenes').innerText = "0"; return; } let htmlBloque = ""; let totalUsdGanado = 0; let pedidosPendientes = 0; let ventas7Dias = [0, 0, 0, 0, 0, 0, 0]; let labels7Dias = []; let hoy = new Date(); hoy.setHours(23, 59, 59, 999); let limite7Dias = new Date(hoy); limite7Dias.setDate(limite7Dias.getDate() - 6); limite7Dias.setHours(0, 0, 0, 0); for(let i=6; i>=0; i--) { let d = new Date(); d.setDate(d.getDate() - i); labels7Dias.push(d.toLocaleDateString('es-ES', {weekday: 'short', day: 'numeric'})); } snapshot.forEach(docSnap => { const ped = docSnap.data(); let est = ped.estadoPedido || 'Pendiente'; if(est === 'Completado') totalUsdGanado += Number(ped.totalUsd || 0); else pedidosPendientes++; let ts = ped.timestamp || 0; if (est === 'Completado' && ts >= limite7Dias.getTime() && ts <= hoy.getTime()) { let dVenta = new Date(ts); let diffDays = Math.floor((hoy.getTime() - dVenta.getTime()) / (1000 * 3600 * 24)); if(diffDays >= 0 && diffDays <= 6) ventas7Dias[6 - diffDays] += Number(ped.totalUsd); } let colorEstado = '#ffaa00'; if(est === 'Pagado') colorEstado = '#00e5ff'; else if(est === 'Enviado') colorEstado = '#b000ff'; else if(est === 'Completado') colorEstado = '#25d366'; htmlBloque += `<div class="item-card-row"><div class="item-card-info"><div style="display:flex; justify-content:space-between; margin-bottom: 2px;"><strong>${sanitizar(ped.cliente)}</strong><span class="tag-badge" style="background: ${colorEstado}20; color: ${colorEstado}; border: 1px solid ${colorEstado}40;">${est}</span></div><div style="font-size:0.85em; color:var(--text-muted);"><i class="fab fa-whatsapp" style="color:#25d366;"></i> ${sanitizar(ped.telefono)}</div><div style="font-size:1.05em; font-weight:700; color:var(--secondary-color);">$${Number(ped.totalUsd).toFixed(2)}</div></div><div class="item-card-actions"><button class="btn-action-touch" style="color: ${colorEstado}; background: rgba(0,0,0,0.4); border: 1px solid ${colorEstado}40;" onclick="cambiarEstadoPedido('${docSnap.id}', '${est}')"><i class="fas fa-sync-alt"></i></button><button class="btn-action-touch btn-del" onclick="eliminarPedido('${docSnap.id}')"><i class="fas fa-trash"></i></button></div></div>`; }); cont.innerHTML = htmlBloque; document.getElementById('dashIngresos').innerText = "$" + totalUsdGanado.toFixed(2); document.getElementById('dashOrdenes').innerText = pedidosPendientes; dibujarGraficaVentas(labels7Dias, ventas7Dias); } catch(e) {} }
   window.graficoVentasAdmin = null; function dibujarGraficaVentas(etiquetas, datos) { if (window.graficoVentasAdmin) window.graficoVentasAdmin.destroy(); const ctx = document.getElementById('graficoVentas').getContext('2d'); window.graficoVentasAdmin = new Chart(ctx, { type: 'line', data: { labels: etiquetas, datasets: [{ data: datos, borderColor: '#00e5ff', backgroundColor: 'rgba(0, 229, 255, 0.2)', borderWidth: 2, pointBackgroundColor: '#ff007f', pointBorderColor: '#fff', fill: true }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8b8f9e' } }, x: { grid: { display: false }, ticks: { color: '#8b8f9e' } } } } }); }
   window.cambiarEstadoPedido = async function(id, est) { let nuevo = 'Pendiente'; if(est === 'Pendiente') nuevo = 'Pagado'; else if(est === 'Pagado') nuevo = 'Enviado'; else if(est === 'Enviado') nuevo = 'Completado'; try { await updateDoc(doc(db, "pedidos", id), { estadoPedido: nuevo }); cargarPedidosAdmin(); } catch(e){} };
-  window.guardarPedidoManual = async function(e) { e.preventDefault(); try { await addDoc(collection(db, "pedidos"), { cliente: document.getElementById('pedCliente').value, telefono: document.getElementById('pedTelefono').value, tipo: document.getElementById('pedTipo').value, metodoEnvio: document.getElementById('pedTipo').value, detalles: document.getElementById('pedDetalles').value, totalUsd: parseFloat(document.getElementById('pedTotalUsd').value), estadoPedido: "Pendiente", timestamp: Date.now() }); toggleCajaPedidoManual(); cargarPedidosAdmin(); } catch(err){} };
-  window.eliminarPedido = async function(id) { if (confirm("¿Eliminar pedido?")) { await deleteDoc(doc(db, "pedidos", id)); cargarPedidosAdmin(); } };
+  window.guardarPedidoManual = async function(e) { e.preventDefault(); try { await addDoc(collection(db, "pedidos"), { cliente: document.getElementById('pedCliente').value, telefono: document.getElementById('pedTelefono').value, tipo: document.getElementById('pedTipo').value, metodoEnvio: document.getElementById('pedTipo').value, detalles: document.getElementById('pedDetalles').value, totalUsd: parseFloat(document.getElementById('pedTotalUsd').value), estadoPedido: "Pendiente", timestamp: Date.now() }); toggleCajaPedidoManual(); cargarPedidosAdmin(); sysAlert("Orden manual registrada."); } catch(err){} };
+  window.eliminarPedido = async function(id) { if (await customDialog('confirm', 'Eliminar Pedido', '¿Borrar esta orden permanentemente?')) { await deleteDoc(doc(db, "pedidos", id)); cargarPedidosAdmin(); } };
 
   /* JUGADORES (MOSTRANDO COLECCIONES Y PANEL INVENTARIO) */
-  function calcularRangoXP(xp) {
-    let chunin = parseInt(document.getElementById('xpChunin')?.value) || 300;
-    let jonin = parseInt(document.getElementById('xpJonin')?.value) || 600;
-    let hokage = parseInt(document.getElementById('xpHokage')?.value) || 1000;
-    if (xp >= hokage) return "Hokage";
-    if (xp >= jonin) return "Jōnin";
-    if (xp >= chunin) return "Chūnin";
-    return "Genin";
-  }
+  function calcularRangoXP(xp) { let chunin = parseInt(document.getElementById('xpChunin')?.value) || 300; let jonin = parseInt(document.getElementById('xpJonin')?.value) || 600; let hokage = parseInt(document.getElementById('xpHokage')?.value) || 1000; if (xp >= hokage) return "Hokage"; if (xp >= jonin) return "Jōnin"; if (xp >= chunin) return "Chūnin"; return "Genin"; }
+  let currentAdminEditUid = null; let currentAdminEditTag = "";
 
   async function cargarJugadoresAdmin() { 
     try { 
-      const q = query(collection(db, "jugadores_cloud"), orderBy("updatedAt", "desc")); 
-      const snapshot = await getDocs(q); 
-      const cont = document.getElementById('listaJugadoresAdmin'); 
+      const q = query(collection(db, "jugadores_cloud"), orderBy("updatedAt", "desc")); const snapshot = await getDocs(q); const cont = document.getElementById('listaJugadoresAdmin'); 
       if (snapshot.empty) { cont.innerHTML = "<p style='text-align:center;'>No hay jugadores registrados.</p>"; return; } 
-      let htmlBloque = ""; 
-      jugadoresAdminGlobal = []; // Actualizamos el array global
+      let htmlBloque = ""; jugadoresAdminGlobal = [];
       snapshot.forEach(d => { 
-        const data = d.data();
-        const p = data.profile || {}; 
-        jugadoresAdminGlobal.push({id: d.id, ...data});
-
-        const tag = p.tag || 'Sin Nombre'; 
-        const xp = p.xp || 0; 
-        const tokens = p.tokens || 0;
-        const rango = p.rango || 'Genin'; 
-        
-        const waifusCount = p.waifus ? p.waifus.length : 0;
-        const pkmnsCount = p.pkmns ? p.pkmns.length : 0;
-        const genshinCount = p.genshin ? p.genshin.length : 0;
-
-        htmlBloque += `
-        <div class="item-card-row">
-          <div style="flex-grow: 1;">
-            <div style="font-weight:700; color:#fff; font-size:1.05em;">${sanitizar(tag)}</div>
-            <div style="font-size:0.85em; color:var(--text-muted); margin-bottom: 4px;">
-              Rango: <strong>${rango}</strong> | <strong style="color:var(--secondary-color);">${xp} XP</strong> | <strong style="color:#ffaa00;"><i class="fas fa-coins"></i> ${tokens}</strong>
-            </div>
-            <div style="font-size: 0.85em; display:flex; flex-wrap:wrap; gap:4px; margin-top:6px;">
-              <span style="border:1px solid rgba(255,0,127,0.3); padding:2px 6px; border-radius:4px;"><i class="fas fa-heart" style="color:#ff007f;"></i> ${waifusCount}</span>
-              <span style="border:1px solid rgba(255,222,0,0.3); padding:2px 6px; border-radius:4px;"><i class="fas fa-gamepad" style="color:#ffde00;"></i> ${pkmnsCount}</span>
-              <span style="border:1px solid rgba(205,165,93,0.3); padding:2px 6px; border-radius:4px;"><i class="fas fa-meteor" style="color:#cda55d;"></i> ${genshinCount}</span>
-            </div>
-          </div>
-          <div class="item-card-actions">
-            <button class="btn-action-touch" style="color: #00e5ff; border: 1px solid rgba(0,229,255,0.3);" title="Ver Inventario" onclick="abrirInventarioAdmin('${d.id}', '${sanitizar(tag)}')"><i class="fas fa-box-open"></i></button>
-            <button class="btn-action-touch" style="color: #ff007f; border: 1px solid rgba(255,0,127,0.3);" title="Sumar/Restar XP" onclick="asignarXpManualmente('${d.id}', ${xp}, '${sanitizar(tag)}')"><i class="fas fa-star"></i></button>
-            <button class="btn-action-touch" style="color: #ffaa00; border: 1px solid rgba(255,170,0,0.3);" title="Gestionar Tokens" onclick="asignarTokensManualmente('${d.id}', ${tokens}, '${sanitizar(tag)}')"><i class="fas fa-coins"></i></button>
-            <button class="btn-action-touch btn-edit" title="Editar GamerTag" onclick="editarJugadorManualmente('${d.id}', '${sanitizar(tag)}')"><i class="fas fa-pen"></i></button>
-            <button class="btn-action-touch btn-del" title="Eliminar Jugador" onclick="eliminarJugadorManualmente('${d.id}', '${sanitizar(tag)}')"><i class="fas fa-trash"></i></button>
-          </div>
-        </div>`; 
+        const data = d.data(); const p = data.profile || {}; jugadoresAdminGlobal.push({id: d.id, ...data});
+        const tag = p.tag || 'Sin Nombre'; const xp = p.xp || 0; const tokens = p.tokens || 0; const rango = p.rango || 'Genin'; 
+        const waifusCount = p.waifus ? p.waifus.length : 0; const pkmnsCount = p.pkmns ? p.pkmns.length : 0; const genshinCount = p.genshin ? p.genshin.length : 0;
+        htmlBloque += `<div class="item-card-row"><div style="flex-grow: 1;"><div style="font-weight:700; color:#fff; font-size:1.05em;">${sanitizar(tag)}</div><div style="font-size:0.85em; color:var(--text-muted); margin-bottom: 4px;">Rango: <strong>${rango}</strong> | <strong style="color:var(--secondary-color);">${xp} XP</strong> | <strong style="color:#ffaa00;"><i class="fas fa-coins"></i> ${tokens}</strong></div><div style="font-size: 0.85em; display:flex; flex-wrap:wrap; gap:4px; margin-top:6px;"><span style="border:1px solid rgba(255,0,127,0.3); padding:2px 6px; border-radius:4px;"><i class="fas fa-heart" style="color:#ff007f;"></i> ${waifusCount}</span><span style="border:1px solid rgba(255,222,0,0.3); padding:2px 6px; border-radius:4px;"><i class="fas fa-gamepad" style="color:#ffde00;"></i> ${pkmnsCount}</span><span style="border:1px solid rgba(205,165,93,0.3); padding:2px 6px; border-radius:4px;"><i class="fas fa-meteor" style="color:#cda55d;"></i> ${genshinCount}</span></div></div><div class="item-card-actions"><button class="btn-action-touch" style="color: #00e5ff; border: 1px solid rgba(0,229,255,0.3);" title="Ver Inventario" onclick="abrirInventarioAdmin('${d.id}', '${sanitizar(tag)}')"><i class="fas fa-box-open"></i></button><button class="btn-action-touch" style="color: #ff007f; border: 1px solid rgba(255,0,127,0.3);" title="Sumar/Restar XP" onclick="asignarXpManualmente('${d.id}', ${xp}, '${sanitizar(tag)}')"><i class="fas fa-star"></i></button><button class="btn-action-touch" style="color: #ffaa00; border: 1px solid rgba(255,170,0,0.3);" title="Gestionar Tokens" onclick="asignarTokensManualmente('${d.id}', ${tokens}, '${sanitizar(tag)}')"><i class="fas fa-coins"></i></button><button class="btn-action-touch btn-edit" title="Editar GamerTag" onclick="editarJugadorManualmente('${d.id}', '${sanitizar(tag)}')"><i class="fas fa-pen"></i></button><button class="btn-action-touch btn-del" title="Eliminar Jugador" onclick="eliminarJugadorManualmente('${d.id}', '${sanitizar(tag)}')"><i class="fas fa-trash"></i></button></div></div>`; 
       }); 
       cont.innerHTML = htmlBloque; 
     } catch(e) {} 
   }
 
-  // --- LÓGICA DEL PANEL DE INVENTARIO DEL JUGADOR ---
+  // PANEL INVENTARIO JUGADOR
   window.abrirInventarioAdmin = function(uid, tag) {
-      currentAdminEditUid = uid;
-      currentAdminEditTag = tag;
-      document.getElementById('invAdminGamerTag').innerText = tag;
-      
-      const userDoc = jugadoresAdminGlobal.find(j => j.id === uid);
-      if(!userDoc) return;
-      const p = userDoc.profile || {};
-      
-      renderizarMinisAdmin('invAdminWaifus', p.waifus || [], 'waifu');
-      renderizarMinisAdmin('invAdminPkmns', p.pkmns || [], 'pkmn');
-      renderizarMinisAdmin('invAdminGenshin', p.genshin || [], 'genshin');
-
+      currentAdminEditUid = uid; currentAdminEditTag = tag; document.getElementById('invAdminGamerTag').innerText = tag;
+      const userDoc = jugadoresAdminGlobal.find(j => j.id === uid); if(!userDoc) return; const p = userDoc.profile || {};
+      renderizarMinisAdmin('invAdminWaifus', p.waifus || [], 'waifu'); renderizarMinisAdmin('invAdminPkmns', p.pkmns || [], 'pkmn'); renderizarMinisAdmin('invAdminGenshin', p.genshin || [], 'genshin');
       document.getElementById('modalInventarioAdmin').style.display = 'flex';
   };
-
   window.cerrarInventarioAdmin = () => document.getElementById('modalInventarioAdmin').style.display = 'none';
 
   function renderizarMinisAdmin(containerId, arr, type) {
@@ -560,102 +488,71 @@
       if(arr.length === 0) { cont.innerHTML = '<span style="color:var(--text-muted); font-size:0.85em; padding: 4px;">Colección vacía.</span>'; return; }
       let html = '';
       arr.forEach(item => {
-          let imgUrl = item.imgUrl || item.img || '';
-          if(type === 'pkmn') imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${item.id}.png`;
-          
-          html += `<div style="width: 50px; height: 50px; flex-shrink: 0; border-radius: 4px; overflow: hidden; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border);" title="${sanitizar(item.nombre)}">
-              <img src="${imgUrl}" style="width: 100%; height: 100%; object-fit: cover; image-rendering: ${type==='pkmn'?'pixelated':'auto'};">
-          </div>`;
+          let imgUrl = item.imgUrl || item.img || ''; if(type === 'pkmn') imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${item.id}.png`;
+          html += `<div style="width: 50px; height: 50px; flex-shrink: 0; border-radius: 4px; overflow: hidden; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border);" title="${sanitizar(item.nombre)}"><img src="${imgUrl}" style="width: 100%; height: 100%; object-fit: cover; image-rendering: ${type==='pkmn'?'pixelated':'auto'};"></div>`;
       });
       cont.innerHTML = html;
   }
 
   window.resetColeccion = async function(type) {
-      if(!currentAdminEditUid) return;
-      let typeName = type === 'waifus' ? 'Waifus' : (type === 'pkmns' ? 'Pokémon' : 'Genshin Impact');
-      if(!confirm(`¿Estás seguro de que quieres VACIAR TODA LA COLECCIÓN de ${typeName} para ${currentAdminEditTag}? Esta acción no se puede deshacer.`)) return;
-      
-      try {
-          let updateData = {};
-          updateData[`profile.${type}`] = [];
-          updateData["updatedAt"] = Date.now();
-          
-          await updateDoc(doc(db, "jugadores_cloud", currentAdminEditUid), updateData);
-          
-          // Actualizar la memoria local para que la UI se refresque sin descargar todo de nuevo
-          let userDoc = jugadoresAdminGlobal.find(j => j.id === currentAdminEditUid);
-          if(userDoc && userDoc.profile) userDoc.profile[type] = [];
-          
-          abrirInventarioAdmin(currentAdminEditUid, currentAdminEditTag);
-          cargarJugadoresAdmin(); 
-          alert(`La colección de ${typeName} ha sido reseteada.`);
-      } catch(e) {
-          alert("Hubo un error al resetear la colección.");
-      }
+      if(!currentAdminEditUid) return; let typeName = type === 'waifus' ? 'Waifus' : (type === 'pkmns' ? 'Pokémon' : 'Genshin Impact');
+      if(!await customDialog('confirm', 'Vaciar Colección', `¿Estás seguro de que quieres VACIAR TODA LA COLECCIÓN de ${typeName} para ${currentAdminEditTag}? Esta acción no se puede deshacer.`)) return;
+      try { let updateData = {}; updateData[`profile.${type}`] = []; updateData["updatedAt"] = Date.now(); await updateDoc(doc(db, "jugadores_cloud", currentAdminEditUid), updateData);
+          let userDoc = jugadoresAdminGlobal.find(j => j.id === currentAdminEditUid); if(userDoc && userDoc.profile) userDoc.profile[type] = [];
+          abrirInventarioAdmin(currentAdminEditUid, currentAdminEditTag); cargarJugadoresAdmin(); sysAlert(`Colección de ${typeName} reseteada.`);
+      } catch(e) { sysAlert("Error al resetear la colección."); }
   };
-  // --------------------------------------------------
 
   window.asignarXpManualmente = async function(uid, currentXp, tag) { 
-    let cantidad = parseInt(prompt(`⭐ ASIGNAR XP A: ${tag}\n\nIngresa la cantidad (usa negativos para restar):`)); 
-    if (isNaN(cantidad)) return; 
-    let newXp = currentXp + cantidad; 
-    if (newXp < 0) newXp = 0; 
-    let newRank = calcularRangoXP(newXp);
-    try { await updateDoc(doc(db, "jugadores_cloud", uid), { "profile.xp": newXp, "profile.rango": newRank, "updatedAt": Date.now() }); cargarJugadoresAdmin(); } catch(e) { alert("Error al actualizar XP"); } 
+    let res = await customDialog('prompt', 'Asignar XP', `Sumar o restar XP para: ${tag}\n(Ej: 100 o -50)`, "50"); 
+    if(!res) return; let cantidad = parseInt(res); if (isNaN(cantidad)) return; 
+    let newXp = currentXp + cantidad; if (newXp < 0) newXp = 0; let newRank = calcularRangoXP(newXp);
+    try { await updateDoc(doc(db, "jugadores_cloud", uid), { "profile.xp": newXp, "profile.rango": newRank, "updatedAt": Date.now() }); cargarJugadoresAdmin(); sysAlert("XP actualizada."); } catch(e) {} 
   };
 
   window.asignarTokensManualmente = async function(uid, currentTokens, tag) {
-    let cantidad = parseInt(prompt(`🪙 GESTIONAR TOKENS DE: ${tag}\n\nIngresa la cantidad a sumar (usa negativos para restar):`));
-    if (isNaN(cantidad)) return;
-    let newTokens = currentTokens + cantidad;
-    if (newTokens < 0) newTokens = 0;
-    try { await updateDoc(doc(db, "jugadores_cloud", uid), { "profile.tokens": newTokens, "updatedAt": Date.now() }); cargarJugadoresAdmin(); } catch(e) { alert("Error al actualizar tokens."); }
+    let res = await customDialog('prompt', 'Gestionar Tokens', `Sumar o restar Tokens para: ${tag}\n(Ej: 100 o -50)`, "50"); 
+    if(!res) return; let cantidad = parseInt(res); if (isNaN(cantidad)) return; 
+    let newTokens = currentTokens + cantidad; if (newTokens < 0) newTokens = 0;
+    try { await updateDoc(doc(db, "jugadores_cloud", uid), { "profile.tokens": newTokens, "updatedAt": Date.now() }); cargarJugadoresAdmin(); sysAlert("Tokens actualizados."); } catch(e) {}
   };
 
   window.editarJugadorManualmente = async function(uid, currentTag) {
-    let nuevoTag = prompt("Modificar GamerTag:", currentTag);
-    if (!nuevoTag || nuevoTag.trim() === "") return;
-    try { await updateDoc(doc(db, "jugadores_cloud", uid), { "profile.tag": nuevoTag.trim(), "updatedAt": Date.now() }); alert("GamerTag actualizado."); cargarJugadoresAdmin(); } catch(e) { alert("Error al editar jugador."); }
+    let res = await customDialog('prompt', 'Editar GamerTag', 'Modificar el nombre de usuario:', currentTag);
+    if (!res || res.trim() === "") return;
+    try { await updateDoc(doc(db, "jugadores_cloud", uid), { "profile.tag": res.trim(), "updatedAt": Date.now() }); cargarJugadoresAdmin(); } catch(e) {}
   };
 
   window.eliminarJugadorManualmente = async function(uid, tag) {
-    if (confirm(`¿Estás seguro de eliminar al jugador "${tag}"? Esta acción borrará todos sus datos de la nube.`)) {
-      try { await deleteDoc(doc(db, "jugadores_cloud", uid)); cargarJugadoresAdmin(); } catch(e) { alert("Error al eliminar el jugador."); }
+    if (await customDialog('confirm', 'Borrar Cuenta', `¿Eliminar al jugador "${tag}" permanentemente? Se borrarán todas sus colecciones en la nube.`)) {
+      try { await deleteDoc(doc(db, "jugadores_cloud", uid)); cargarJugadoresAdmin(); sysAlert("Jugador eliminado."); } catch(e) {}
     }
   };
 
-  /* FACTURAS, BANNERS, CUPONES */
+  /* FACTURAS Y BANNERS */
   window.toggleCajaFactura = function() { const box = document.getElementById('cajaFacturaManual'); box.style.display = (box.style.display === 'none') ? 'block' : 'none'; };
   async function cargarFacturasAdmin() { const q = query(collection(db, "facturas"), orderBy("timestamp", "desc")); const snapshot = await getDocs(q); facturasAdminGlobal = []; const cont = document.getElementById('listaFacturasMobile'); document.getElementById('totalFacturasLbl').innerText = snapshot.size; if (snapshot.empty) { cont.innerHTML = ""; return; } let htmlBloque = ""; snapshot.forEach(docSnap => { const fac = { id: docSnap.id, ...docSnap.data() }; facturasAdminGlobal.push(fac); htmlBloque += `<div class="item-card-row"><div class="item-card-info"><strong>${sanitizar(fac.cliente)}</strong><br><span style="color:var(--secondary-color);">$${Number(fac.totalUsd).toFixed(2)}</span></div><div class="item-card-actions"><button class="btn-action-touch btn-print" onclick="imprimirFactura('${fac.id}')"><i class="fas fa-print"></i></button><button class="btn-action-touch btn-del" onclick="eliminarFactura('${fac.id}')"><i class="fas fa-trash"></i></button></div></div>`; }); cont.innerHTML = htmlBloque; }
-  window.guardarFactura = async function(e) { e.preventDefault(); await addDoc(collection(db, "facturas"), { cliente: document.getElementById('facCliente').value, cedula: document.getElementById('facCedula').value, metodo: document.getElementById('facMetodo').value, detalles: document.getElementById('facDetalles').value, totalUsd: parseFloat(document.getElementById('facTotal').value), timestamp: Date.now() }); document.getElementById('formFactura').reset(); toggleCajaFactura(); cargarFacturasAdmin(); };
-  window.eliminarFactura = async function(id) { if (confirm("¿Eliminar?")) { await deleteDoc(doc(db, "facturas", id)); cargarFacturasAdmin(); } };
+  window.guardarFactura = async function(e) { e.preventDefault(); await addDoc(collection(db, "facturas"), { cliente: document.getElementById('facCliente').value, cedula: document.getElementById('facCedula').value, metodo: document.getElementById('facMetodo').value, detalles: document.getElementById('facDetalles').value, totalUsd: parseFloat(document.getElementById('facTotal').value), timestamp: Date.now() }); document.getElementById('formFactura').reset(); toggleCajaFactura(); cargarFacturasAdmin(); sysAlert("Factura generada."); };
+  window.eliminarFactura = async function(id) { if (await customDialog('confirm', 'Eliminar Factura', '¿Borrar este recibo del sistema?')) { await deleteDoc(doc(db, "facturas", id)); cargarFacturasAdmin(); } };
   window.imprimirFactura = function(id) { const fac = facturasAdminGlobal.find(f => f.id === id); if(!fac) return; document.getElementById('printFecha').innerText = new Date(fac.timestamp).toLocaleString(); document.getElementById('printCliente').innerText = fac.cliente; document.getElementById('printCedula').innerText = fac.cedula || 'N/A'; document.getElementById('printMetodo').innerText = fac.metodo; document.getElementById('printDetalles').innerText = fac.detalles; document.getElementById('printTotal').innerText = Number(fac.totalUsd).toFixed(2); window.print(); };
   
   async function cargarBannersAdmin() { const q = query(collection(db, "banners"), orderBy("timestamp", "desc")); const snapshot = await getDocs(q); const cont = document.getElementById('listaBannersAdmin'); if (snapshot.empty) { cont.innerHTML = ""; return; } let htmlBloque = ""; snapshot.forEach(d => { htmlBloque += `<div class="item-card-row"><img src="${d.data().imgUrl}" style="width: 70px; height: 40px; object-fit: cover;"><button class="btn-action-touch btn-del" onclick="eliminarBanner('${d.id}')"><i class="fas fa-trash"></i></button></div>`; }); cont.innerHTML = htmlBloque; }
-  window.agregarBanner = async function(e) { e.preventDefault(); const file = document.getElementById('bannerFileInput').files[0]; if (!file) return; const url = await comprimirYConvertirAWebP(file, 900, 0.75); await addDoc(collection(db, "banners"), { imgUrl: url, timestamp: Date.now() }); cargarBannersAdmin(); };
-  window.eliminarBanner = async function(id) { if(confirm("¿Eliminar?")) { await deleteDoc(doc(db, "banners", id)); cargarBannersAdmin(); } };
+  window.agregarBanner = async function(e) { e.preventDefault(); const file = document.getElementById('bannerFileInput').files[0]; if (!file) return; const url = await comprimirYConvertirAWebP(file, 900, 0.75); await addDoc(collection(db, "banners"), { imgUrl: url, timestamp: Date.now() }); cargarBannersAdmin(); sysAlert("Banner activo."); };
+  window.eliminarBanner = async function(id) { if(await customDialog('confirm', 'Borrar Banner', '¿Quitar imagen promocional?')) { await deleteDoc(doc(db, "banners", id)); cargarBannersAdmin(); } };
+  
   async function cargarCuponesAdmin() { const snap = await getDocs(collection(db, "cupones")); const cont = document.getElementById('listaCuponesAdmin'); let html = ""; snap.forEach(d => { html += `<div class="item-card-row"><div style="flex-grow:1; color:var(--secondary-color); font-weight:bold;">${sanitizar(d.data().codigo)}</div><button class="btn-action-touch btn-del" onclick="eliminarCupon('${d.id}')"><i class="fas fa-trash"></i></button></div>`; }); cont.innerHTML = html; }
-  window.agregarCupon = async function(e) { e.preventDefault(); await addDoc(collection(db, "cupones"), { codigo: document.getElementById('cuponCodigo').value.toUpperCase(), porcentaje: parseInt(document.getElementById('cuponPorcentaje').value), timestamp: Date.now() }); cargarCuponesAdmin(); };
+  window.agregarCupon = async function(e) { e.preventDefault(); await addDoc(collection(db, "cupones"), { codigo: document.getElementById('cuponCodigo').value.toUpperCase(), porcentaje: parseInt(document.getElementById('cuponPorcentaje').value), timestamp: Date.now() }); cargarCuponesAdmin(); sysAlert("Cupón activo."); };
   window.eliminarCupon = async function(id) { await deleteDoc(doc(db, "cupones", id)); cargarCuponesAdmin(); };
+  
   async function cargarDatosGenerales() { try { const snap = await getDoc(doc(db, "configuracion", "datos_pago")); if (snap.exists()) { const d = snap.data(); document.getElementById('pagoBanco').value = d.banco||''; document.getElementById('pagoTelefono').value = d.telefono||''; document.getElementById('pagoCedula').value = d.cedula||''; document.getElementById('pagoBinance').value = d.binance||''; } } catch(e){} try { const s = await getDoc(doc(db, "configuracion", "rangos_ninja")); if (s.exists()) { const d = s.data(); document.getElementById('xpChunin').value = d.chunin??300; document.getElementById('xpJonin').value = d.jonin??600; document.getElementById('xpHokage').value = d.hokage??1000; } } catch(e){} }
-  window.guardarDatosPago = async function(e) { e.preventDefault(); await setDoc(doc(db, "configuracion", "datos_pago"), { banco: document.getElementById('pagoBanco').value, telefono: document.getElementById('pagoTelefono').value, cedula: document.getElementById('pagoCedula').value, binance: document.getElementById('pagoBinance').value }); alert("Guardado."); };
-  window.guardarRangosNinja = async function(e) { e.preventDefault(); await setDoc(doc(db, "configuracion", "rangos_ninja"), { genin: 0, chunin: parseInt(document.getElementById('xpChunin').value), jonin: parseInt(document.getElementById('xpJonin').value), hokage: parseInt(document.getElementById('xpHokage').value) }); alert("Guardado."); };
+  window.guardarDatosPago = async function(e) { e.preventDefault(); await setDoc(doc(db, "configuracion", "datos_pago"), { banco: document.getElementById('pagoBanco').value, telefono: document.getElementById('pagoTelefono').value, cedula: document.getElementById('pagoCedula').value, binance: document.getElementById('pagoBinance').value }); sysAlert("Cuentas bancarias actualizadas."); };
+  window.guardarRangosNinja = async function(e) { e.preventDefault(); await setDoc(doc(db, "configuracion", "rangos_ninja"), { genin: 0, chunin: parseInt(document.getElementById('xpChunin').value), jonin: parseInt(document.getElementById('xpJonin').value), hokage: parseInt(document.getElementById('xpHokage').value) }); sysAlert("Metas de XP actualizadas."); };
   
   async function cargarReviewsAdmin() { const q = query(collection(db, "reviews"), orderBy("timestamp", "desc")); const snap = await getDocs(q); let html=""; snap.forEach(d => { html += `<div class="item-card-row"><div style="flex-grow:1; font-size:0.9em;">${sanitizar(d.data().nombre)}<br><span style="color:var(--text-muted);">${sanitizar(d.data().texto)}</span></div><button class="btn-action-touch btn-del" onclick="eliminarReview('${d.id}')"><i class="fas fa-trash"></i></button></div>`; }); document.getElementById('listaReviewsAdmin').innerHTML = html; }
-  window.eliminarReview = async function(id) { await deleteDoc(doc(db, "reviews", id)); cargarReviewsAdmin(); };
+  window.eliminarReview = async function(id) { if(await customDialog('confirm', 'Eliminar Reseña', '¿Borrar este comentario público?')) { await deleteDoc(doc(db, "reviews", id)); cargarReviewsAdmin(); } };
 
   function cargarTodo() { 
-    cargarAjustesWeb(); 
-    cargarWaifusAdmin(); 
-    cargarHistorialGacha(); 
-    cargarProductosAdmin(); 
-    cargarPedidosAdmin(); 
-    cargarJugadoresAdmin(); 
-    cargarFacturasAdmin(); 
-    cargarBannersAdmin(); 
-    cargarCuponesAdmin(); 
-    cargarDatosGenerales(); 
-    cargarReviewsAdmin(); 
+    cargarAjustesWeb(); cargarWaifusAdmin(); cargarHistorialGacha(); cargarProductosAdmin(); cargarPedidosAdmin(); cargarJugadoresAdmin(); cargarFacturasAdmin(); cargarBannersAdmin(); cargarCuponesAdmin(); cargarDatosGenerales(); cargarReviewsAdmin(); 
   }
 </script>
 </body>
