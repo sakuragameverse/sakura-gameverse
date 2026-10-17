@@ -743,7 +743,7 @@
       let btn = document.getElementById('btnTirarGacha');
       btn.disabled = true;
       
-      gamerProfile.tokens -= costo;
+      gamerProfile.tokens -= costo; 
       actualizarRangoSegunXP(); 
       guardarProgresoNube();
       document.getElementById('lblSaldoGacha').innerText = gamerProfile.tokens;
@@ -759,10 +759,11 @@
 
       setTimeout(() => {
           let rand = Math.random() * 100;
-          let targetRareza = rand <= 5 ? 'SSR' : (rand <= 30 ? 'SR' : (rand <= 65 ? 'R' : 'N'));
+          // >>> NUEVA PROBABILIDAD DE DROP AJUSTADA Y BALANCEADA <<<
+          let targetRareza = rand <= 2 ? 'SSR' : (rand <= 10 ? 'SR' : (rand <= 40 ? 'R' : 'N'));
           
           let posibles = waifusGachaGlobal.filter(w => w.rareza === targetRareza);
-          if(posibles.length === 0) posibles = waifusGachaGlobal;
+          if(posibles.length === 0) posibles = waifusGachaGlobal; // Safe fallback si no hay de esa rareza
           let elegida = posibles[Math.floor(Math.random() * posibles.length)];
 
           if(!gamerProfile.waifus) gamerProfile.waifus = [];
