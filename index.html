@@ -274,7 +274,7 @@
   <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarCofreModal()">×</button>
     <h3 style="color: #ffaa00; margin-top: 0;">Recompensa Diaria</h3>
-    <div id="cofreResultado" style="background: rgba(0,0,0,0.4); border: 1px dashed #ffaa00; padding: 18px; border-radius: var(--radius-sm); font-weight: 700; color: #fff; margin-bottom: 14px;">Cofre disponible (+50 XP y +50 Tokens)</div>
+    <div id="cofreResultado" style="background: rgba(0,0,0,0.4); border: 1px dashed #ffaa00; padding: 18px; border-radius: var(--radius-sm); font-weight: 700; color: #fff; margin-bottom: 14px;">Cofre disponible (+50 XP y Tokens)</div>
     <button class="btn-comprar" style="background: #ffaa00; color: #000; box-shadow: 0 0 15px rgba(255,170,0,0.4);" onclick="abrirCofreDiario()">Reclamar Recompensa</button>
   </div>
 </div>
@@ -684,16 +684,14 @@
   let limiteActual = 12;
   
   // VARIABLES CMS Y GACHA
-  let ajustesWebGlobal = { whatsapp: "584244970576", costoGacha: 100 };
+  let ajustesWebGlobal = { whatsapp: "584244970576", costoGacha: 100, tokensCofre: 15 };
   let waifusGachaGlobal = [];
   
   let currentUserUid = null;
-  // -> NUEVO: SE AÑADEN TOKENS AL PERFIL INICIAL <-
   let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, tokens: 0, rango: "Genin", waifus: [] };
   let carrito = JSON.parse(localStorage.getItem('sakura_carrito')) || [];
   let favoritos = JSON.parse(localStorage.getItem('sakura_favoritos')) || [];
 
-  // LECTURA DEL CMS Y GACHA
   async function cargarCMSyGacha() {
     try {
         const snap = await getDoc(doc(db, "configuracion", "ajustes_web"));
@@ -701,6 +699,7 @@
             let d = snap.data();
             if(d.whatsapp) ajustesWebGlobal.whatsapp = d.whatsapp;
             if(d.costoGacha) ajustesWebGlobal.costoGacha = parseInt(d.costoGacha);
+            if(d.tokensCofre !== undefined) ajustesWebGlobal.tokensCofre = parseInt(d.tokensCofre);
             
             if(d.ticker) document.getElementById('ajustesTickerObj').innerText = d.ticker;
             if(d.heroTitle) document.getElementById('ajustesHeroTitleObj').innerText = d.heroTitle;
@@ -722,10 +721,8 @@
     } catch(e){}
   }
 
-  // --- LÓGICA DE LA MÁQUINA GACHA (AHORA USA TOKENS) ---
   window.abrirGachaModal = function() {
       reproducirSonido();
-      // Mostrar Tokens en el Gacha
       document.getElementById('lblSaldoGacha').innerText = gamerProfile.tokens || 0;
       document.getElementById('modalGacha').style.display = 'flex';
       document.getElementById('gachaResultado').style.display = 'none';
@@ -739,7 +736,6 @@
       reproducirSonido();
       let costo = ajustesWebGlobal.costoGacha;
       
-      // -> SE USA LA VARIABLE TOKENS EN VEZ DE XP <-
       if(!gamerProfile.tokens) gamerProfile.tokens = 0;
       if(gamerProfile.tokens < costo) return alert(`Necesitas al menos ${costo} Tokens para realizar una invocación.`);
       if(waifusGachaGlobal.length === 0) return alert("La máquina Gacha está vacía temporalmente. ¡Vuelve pronto!");
@@ -747,8 +743,8 @@
       let btn = document.getElementById('btnTirarGacha');
       btn.disabled = true;
       
-      gamerProfile.tokens -= costo; // Restamos tokens
-      actualizarRangoSegunXP(); // Refrescamos pantalla
+      gamerProfile.tokens -= costo;
+      actualizarRangoSegunXP(); 
       guardarProgresoNube();
       document.getElementById('lblSaldoGacha').innerText = gamerProfile.tokens;
 
@@ -766,7 +762,7 @@
           let targetRareza = rand <= 5 ? 'SSR' : (rand <= 30 ? 'SR' : (rand <= 65 ? 'R' : 'N'));
           
           let posibles = waifusGachaGlobal.filter(w => w.rareza === targetRareza);
-          if(posibles.length === 0) posibles = waifusGachaGlobal; // Safe fallback si no hay de esa rareza
+          if(posibles.length === 0) posibles = waifusGachaGlobal;
           let elegida = posibles[Math.floor(Math.random() * posibles.length)];
 
           if(!gamerProfile.waifus) gamerProfile.waifus = [];
@@ -826,8 +822,6 @@
       cont.innerHTML = html;
   }
 
-  // --- FIN LÓGICA GACHA ---
-
   onAuthStateChanged(auth, async (user) => {
     let btnMenu = document.getElementById('btnMenuCloud');
     let lblEstado = document.getElementById('estadoSincronizacion');
@@ -881,7 +875,7 @@
               const d = snap.data();
               if(d.profile) {
                   gamerProfile = d.profile;
-                  if (gamerProfile.tokens === undefined) gamerProfile.tokens = 0; // parche de seguridad
+                  if (gamerProfile.tokens === undefined) gamerProfile.tokens = 0; 
               }
               if(d.favoritos) favoritos = d.favoritos; if(d.carrito) carrito = d.carrito;
               if(d.ultimoCofre) localStorage.setItem('sakura_ultimo_cofre', d.ultimoCofre);
@@ -1174,16 +1168,21 @@
 
   window.activarEasterEggLogo = function() { reproducirSonido(); try{ confetti({ particleCount: 50, spread: 60, origin: { y: 0.3 } }); }catch(e){} };
   
-  window.abrirCofreModal = function() { reproducirSonido(); document.getElementById('modalCofreDiario').style.display = 'flex'; };
+  window.abrirCofreModal = function() { 
+      reproducirSonido(); 
+      document.getElementById('cofreResultado').innerText = `Cofre disponible (+50 XP y +${ajustesWebGlobal.tokensCofre} Tokens)`;
+      document.getElementById('modalCofreDiario').style.display = 'flex'; 
+  };
   window.cerrarCofreModal = function() { document.getElementById('modalCofreDiario').style.display = 'none'; };
   window.abrirCofreDiario = function() {
     reproducirSonido(); let ultimo = localStorage.getItem('sakura_ultimo_cofre'); let hoy = new Date().toDateString();
     if(ultimo === hoy) return alert("Ya abriste tu cofre hoy. Vuelve mañana.");
-    // -> SE DAN TOKENS TAMBIÉN <-
+    
     ganarXP(50);
-    gamerProfile.tokens = (gamerProfile.tokens || 0) + 50; 
+    let tokensGanados = ajustesWebGlobal.tokensCofre;
+    gamerProfile.tokens = (gamerProfile.tokens || 0) + tokensGanados; 
     localStorage.setItem('sakura_ultimo_cofre', hoy); 
-    document.getElementById('cofreResultado').innerText = "¡Ganaste 50 XP y 50 Tokens!";
+    document.getElementById('cofreResultado').innerText = `¡Ganaste 50 XP y ${tokensGanados} Tokens!`;
     try{ confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } }); }catch(e){} 
     guardarProgresoNube();
     actualizarRangoSegunXP();
@@ -1386,7 +1385,6 @@
     document.getElementById('lblXp').innerText = gamerProfile.xp; 
     document.getElementById('lblRango').innerText = gamerProfile.rango;
     
-    // -> SE PINTAN LOS TOKENS EN LA INTERFAZ <-
     let lblTokens = document.getElementById('lblTokens');
     if(lblTokens) lblTokens.innerHTML = `<i class="fas fa-coins"></i> ${gamerProfile.tokens || 0}`;
   }
