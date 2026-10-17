@@ -5,25 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sakura Gameverse</title>
   
-  <!-- Etiquetas para vista previa en Redes Sociales y WhatsApp -->
   <meta property="og:title" content="Sakura Gameverse">
   <meta property="og:description" content="Coleccionables, ropa, productos gamer y recargas digitales para ti.">
   <meta property="og:image" content="https://sakuragameverse.com/icono.png">
   <meta property="og:url" content="https://sakuragameverse.com/">
   <meta property="og:type" content="website">
 
-  <!-- Twitter Cards (Refuerzo de imagen) -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Sakura Gameverse">
   <meta name="twitter:description" content="Coleccionables, ropa, productos gamer y recargas digitales para ti.">
   <meta name="twitter:image" content="https://sakuragameverse.com/icono.png">
   
-  <!-- Configuración App / PWA -->
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/webp" href="logo.webp?v=2">
   <meta name="theme-color" content="#090314">
   
-  <!-- Fuentes Gamer / UI -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -721,7 +717,7 @@
     } catch(e){}
   }
 
-  // --- LÓGICA DE LA MÁQUINA GACHA ---
+  // --- LÓGICA DE LA MÁQUINA GACHA Y ENVÍO DE REPORTE ---
   window.abrirGachaModal = function() {
       reproducirSonido();
       document.getElementById('lblSaldoGacha').innerText = gamerProfile.xp;
@@ -762,7 +758,7 @@
           let targetRareza = rand <= 5 ? 'SSR' : (rand <= 30 ? 'SR' : 'R');
           
           let posibles = waifusGachaGlobal.filter(w => w.rareza === targetRareza);
-          if(posibles.length === 0) posibles = waifusGachaGlobal; // Safe fallback si no hay de esa rareza
+          if(posibles.length === 0) posibles = waifusGachaGlobal;
           let elegida = posibles[Math.floor(Math.random() * posibles.length)];
 
           if(!gamerProfile.waifus) gamerProfile.waifus = [];
@@ -771,6 +767,17 @@
               guardarProgresoNube();
               renderizarAlbumWaifus();
           }
+
+          // >>> REPORTE SILENCIOSO AL ADMIN <<<
+          try {
+              addDoc(collection(db, "historial_gacha"), {
+                  jugador: gamerProfile.tag,
+                  waifu: elegida.nombre,
+                  rareza: elegida.rareza,
+                  premio: elegida.premio,
+                  timestamp: Date.now()
+              });
+          } catch(e) {}
 
           overlay.style.display = "none";
           img.src = elegida.imgUrl;
