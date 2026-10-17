@@ -11,7 +11,20 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
-    :root { --bg-color: #05010a; --glass-bg: rgba(17, 5, 36, 0.45); --glass-border: rgba(255, 255, 255, 0.08); --text-color: #e6e9f0; --text-muted: #8b8f9e; --primary-color: #ff007f; --primary-glow: rgba(255, 0, 127, 0.4); --secondary-color: #00e5ff; --secondary-glow: rgba(0, 229, 255, 0.4); --radius-sm: 8px; --radius-md: 16px; --radius-pill: 50px; }
+    :root { 
+      --bg-color: #05010a; 
+      --glass-bg: rgba(17, 5, 36, 0.45); 
+      --glass-border: rgba(255, 255, 255, 0.08); 
+      --text-color: #e6e9f0; 
+      --text-muted: #8b8f9e; 
+      --primary-color: #ff007f; 
+      --primary-glow: rgba(255, 0, 127, 0.4); 
+      --secondary-color: #00e5ff; 
+      --secondary-glow: rgba(0, 229, 255, 0.4); 
+      --radius-sm: 8px; 
+      --radius-md: 16px; 
+      --radius-pill: 50px; 
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Rajdhani', sans-serif; font-size: 16px; min-height: 100vh; overflow-x: hidden; padding-bottom: 40px; }
     body::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 0%, rgba(255, 0, 127, 0.08) 0%, transparent 60%), radial-gradient(circle at 80% 80%, rgba(0, 229, 255, 0.05) 0%, transparent 50%), linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px); background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px; pointer-events: none; z-index: 0; will-change: transform; }
@@ -134,7 +147,12 @@
         <div class="form-group"><label class="form-label">Título Principal (Hero):</label><input type="text" id="ajustesHeroTitle" class="form-input"></div>
         <div class="form-group"><label class="form-label">Descripción debajo del logo:</label><textarea id="ajustesHeroDesc" class="form-textarea" rows="2"></textarea></div>
         <div class="form-group"><label class="form-label">WhatsApp Oficial:</label><input type="text" id="ajustesWhatsapp" class="form-input"></div>
-        <div class="form-group"><label class="form-label">Costo por Tirada Gacha (En Tokens 🪙):</label><input type="number" id="ajustesCostoGacha" class="form-input"></div>
+        
+        <div style="display:flex; gap: 8px;">
+          <div class="form-group" style="flex:1;"><label class="form-label">Costo Tirada Gacha (Tokens):</label><input type="number" id="ajustesCostoGacha" class="form-input"></div>
+          <div class="form-group" style="flex:1;"><label class="form-label">Tokens Cofre Diario:</label><input type="number" id="ajustesTokensCofre" class="form-input" placeholder="Ej: 15"></div>
+        </div>
+
         <button type="submit" class="btn-submit">Guardar Ajustes Web</button>
       </form>
     </div>
@@ -294,8 +312,35 @@
   }
 
   /* AJUSTES WEB */
-  async function cargarAjustesWeb() { try { const snap = await getDoc(doc(db, "configuracion", "ajustes_web")); if (snap.exists()) { const d = snap.data(); document.getElementById('ajustesTicker').value = d.ticker || ''; document.getElementById('ajustesHeroTitle').value = d.heroTitle || ''; document.getElementById('ajustesHeroDesc').value = d.heroDesc || ''; document.getElementById('ajustesWhatsapp').value = d.whatsapp || ''; document.getElementById('ajustesCostoGacha').value = d.costoGacha || 100; } } catch(e) {} }
-  window.guardarAjustesWeb = async function(e) { e.preventDefault(); try { await setDoc(doc(db, "configuracion", "ajustes_web"), { ticker: document.getElementById('ajustesTicker').value.trim(), heroTitle: document.getElementById('ajustesHeroTitle').value.trim(), heroDesc: document.getElementById('ajustesHeroDesc').value.trim(), whatsapp: document.getElementById('ajustesWhatsapp').value.trim(), costoGacha: parseInt(document.getElementById('ajustesCostoGacha').value) || 100 }); alert("Ajustes actualizados."); } catch(err) {} };
+  async function cargarAjustesWeb() { 
+    try { 
+      const snap = await getDoc(doc(db, "configuracion", "ajustes_web")); 
+      if (snap.exists()) { 
+        const d = snap.data(); 
+        document.getElementById('ajustesTicker').value = d.ticker || ''; 
+        document.getElementById('ajustesHeroTitle').value = d.heroTitle || ''; 
+        document.getElementById('ajustesHeroDesc').value = d.heroDesc || ''; 
+        document.getElementById('ajustesWhatsapp').value = d.whatsapp || ''; 
+        document.getElementById('ajustesCostoGacha').value = d.costoGacha || 100; 
+        document.getElementById('ajustesTokensCofre').value = d.tokensCofre || 15;
+      } 
+    } catch(e) {} 
+  }
+  
+  window.guardarAjustesWeb = async function(e) { 
+    e.preventDefault(); 
+    try { 
+      await setDoc(doc(db, "configuracion", "ajustes_web"), { 
+        ticker: document.getElementById('ajustesTicker').value.trim(), 
+        heroTitle: document.getElementById('ajustesHeroTitle').value.trim(), 
+        heroDesc: document.getElementById('ajustesHeroDesc').value.trim(), 
+        whatsapp: document.getElementById('ajustesWhatsapp').value.trim(), 
+        costoGacha: parseInt(document.getElementById('ajustesCostoGacha').value) || 100,
+        tokensCofre: parseInt(document.getElementById('ajustesTokensCofre').value) || 15
+      }, { merge: true }); 
+      alert("Ajustes actualizados."); 
+    } catch(err) {} 
+  };
 
   /* GACHA WAIFUS Y NÚCLEO DE AUDITORÍA */
   window.toggleFormWaifu = function() { const box = document.getElementById('cajaFormWaifu'); const lbl = document.getElementById('lblToggleWaifu'); if(box.style.display === 'none') { box.style.display = 'block'; lbl.innerText = "Cerrar Creador"; } else { box.style.display = 'none'; lbl.innerText = "Agregar Tarjeta Waifu"; } };
@@ -373,15 +418,17 @@
   window.guardarPedidoManual = async function(e) { e.preventDefault(); try { await addDoc(collection(db, "pedidos"), { cliente: document.getElementById('pedCliente').value, telefono: document.getElementById('pedTelefono').value, tipo: document.getElementById('pedTipo').value, metodoEnvio: document.getElementById('pedTipo').value, detalles: document.getElementById('pedDetalles').value, totalUsd: parseFloat(document.getElementById('pedTotalUsd').value), estadoPedido: "Pendiente", timestamp: Date.now() }); toggleCajaPedidoManual(); cargarPedidosAdmin(); } catch(err){} };
   window.eliminarPedido = async function(id) { if (confirm("¿Eliminar pedido?")) { await deleteDoc(doc(db, "pedidos", id)); cargarPedidosAdmin(); } };
 
-  /* JUGADORES */
+  /* JUGADORES (EDITAR, ASIGNAR XP Y ELIMINAR) */
   function calcularRangoXP(xp) {
     let chunin = parseInt(document.getElementById('xpChunin')?.value) || 300;
     let jonin = parseInt(document.getElementById('xpJonin')?.value) || 600;
     let hokage = parseInt(document.getElementById('xpHokage')?.value) || 1000;
-    if (xp >= hokage) return "Hokage"; if (xp >= jonin) return "Jōnin"; if (xp >= chunin) return "Chūnin"; return "Genin";
+    if (xp >= hokage) return "Hokage";
+    if (xp >= jonin) return "Jōnin";
+    if (xp >= chunin) return "Chūnin";
+    return "Genin";
   }
 
-  // >>> AQUÍ ESTÁ EL NUEVO SISTEMA QUE LEE LOS TOKENS DE LOS JUGADORES <<<
   async function cargarJugadoresAdmin() { 
     try { 
       const q = query(collection(db, "jugadores_cloud"), orderBy("updatedAt", "desc")); 
@@ -404,13 +451,8 @@
             </div>
           </div>
           <div class="item-card-actions">
-            <!-- Botón Estrellita: XP -->
             <button class="btn-action-touch" style="color: #ff007f; border: 1px solid rgba(255,0,127,0.3);" title="Sumar/Restar XP" onclick="asignarXpManualmente('${d.id}', ${xp}, '${sanitizar(tag)}')"><i class="fas fa-star"></i></button>
-            
-            <!-- NUEVO Botón Moneda: Tokens -->
             <button class="btn-action-touch" style="color: #ffaa00; border: 1px solid rgba(255,170,0,0.3);" title="Gestionar Tokens" onclick="asignarTokensManualmente('${d.id}', ${tokens}, '${sanitizar(tag)}')"><i class="fas fa-coins"></i></button>
-            
-            <!-- Lápiz y Basurita -->
             <button class="btn-action-touch btn-edit" title="Editar GamerTag" onclick="editarJugadorManualmente('${d.id}', '${sanitizar(tag)}')"><i class="fas fa-pen"></i></button>
             <button class="btn-action-touch btn-del" title="Eliminar Jugador" onclick="eliminarJugadorManualmente('${d.id}', '${sanitizar(tag)}')"><i class="fas fa-trash"></i></button>
           </div>
@@ -426,20 +468,19 @@
     let newXp = currentXp + cantidad; 
     if (newXp < 0) newXp = 0; 
     let newRank = calcularRangoXP(newXp);
-    try { await updateDoc(doc(db, "jugadores_cloud", uid), { "profile.xp": newXp, "profile.rango": newRank, "updatedAt": Date.now() }); cargarJugadoresAdmin(); } catch(e) { alert("Error al actualizar XP"); } 
+    try { 
+      await updateDoc(doc(db, "jugadores_cloud", uid), { "profile.xp": newXp, "profile.rango": newRank, "updatedAt": Date.now() }); 
+      cargarJugadoresAdmin(); 
+    } catch(e) { alert("Error al actualizar XP"); } 
   };
 
-  // >>> NUEVA FUNCIÓN PARA AÑADIR TOKENS <<<
   window.asignarTokensManualmente = async function(uid, currentTokens, tag) {
     let cantidad = parseInt(prompt(`🪙 GESTIONAR TOKENS DE: ${tag}\n\nIngresa la cantidad a sumar (usa negativos para restar):`));
     if (isNaN(cantidad)) return;
     let newTokens = currentTokens + cantidad;
     if (newTokens < 0) newTokens = 0;
     try {
-      await updateDoc(doc(db, "jugadores_cloud", uid), {
-        "profile.tokens": newTokens,
-        "updatedAt": Date.now()
-      });
+      await updateDoc(doc(db, "jugadores_cloud", uid), { "profile.tokens": newTokens, "updatedAt": Date.now() });
       cargarJugadoresAdmin();
     } catch(e) { alert("Error al actualizar tokens."); }
   };
@@ -447,11 +488,17 @@
   window.editarJugadorManualmente = async function(uid, currentTag) {
     let nuevoTag = prompt("Modificar GamerTag:", currentTag);
     if (!nuevoTag || nuevoTag.trim() === "") return;
-    try { await updateDoc(doc(db, "jugadores_cloud", uid), { "profile.tag": nuevoTag.trim(), "updatedAt": Date.now() }); alert("GamerTag actualizado."); cargarJugadoresAdmin(); } catch(e) {}
+    try {
+      await updateDoc(doc(db, "jugadores_cloud", uid), { "profile.tag": nuevoTag.trim(), "updatedAt": Date.now() });
+      alert("GamerTag actualizado correctamente.");
+      cargarJugadoresAdmin();
+    } catch(e) { alert("Error al editar jugador."); }
   };
 
   window.eliminarJugadorManualmente = async function(uid, tag) {
-    if (confirm(`¿Estás seguro de eliminar al jugador "${tag}"?`)) { try { await deleteDoc(doc(db, "jugadores_cloud", uid)); cargarJugadoresAdmin(); } catch(e) {} }
+    if (confirm(`¿Estás seguro de eliminar al jugador "${tag}"? Esta acción borrará sus datos de la nube.`)) {
+      try { await deleteDoc(doc(db, "jugadores_cloud", uid)); cargarJugadoresAdmin(); } catch(e) { alert("Error al eliminar el jugador."); }
+    }
   };
 
   /* FACTURAS, BANNERS, CUPONES */
