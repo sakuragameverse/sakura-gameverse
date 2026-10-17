@@ -270,6 +270,15 @@
     @keyframes pkmnShake { 0% { transform: translateY(-50%) rotate(0deg); } 25% { transform: translateY(-50%) rotate(-20deg); } 50% { transform: translateY(-50%) rotate(0deg); } 75% { transform: translateY(-50%) rotate(20deg); } 100% { transform: translateY(-50%) rotate(0deg); } }
     @keyframes pkmnThunder { 0% { opacity: 0.8; background: yellow; } 20% { opacity: 0; } 40% { opacity: 0.8; background: white; } 60% { opacity: 0; } 80% { opacity: 0.8; background: yellow; } 100% { opacity: 0; } }
 
+    /* Estilos Gacha Genshin */
+    .genshin-machine { position: relative; height: 220px; background: #0b1528; border: 2px solid #cda55d; border-radius: var(--radius-md); overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
+    .genshin-meteor { position: absolute; top: -100px; width: 6px; height: 60px; background: #fff; box-shadow: 0 0 15px #fff; transform: rotate(45deg); opacity: 0; z-index: 5; }
+    .genshin-meteor.falling-4star { animation: genshinDrop 1.2s forwards; box-shadow: 0 0 15px #a256e1, 0 0 40px #a256e1; background: #a256e1; }
+    .genshin-meteor.falling-5star { animation: genshinDrop 1.2s forwards; box-shadow: 0 0 15px #ffb13f, 0 0 40px #ffb13f; background: #ffb13f; }
+    .genshin-sprite { width: 130px; opacity: 0; transform: scale(0.5); transition: all 0.5s ease; filter: drop-shadow(0 0 10px rgba(255,255,255,0.2)); object-fit: contain; }
+    .genshin-sprite.revealed { opacity: 1; transform: scale(1); }
+    @keyframes genshinDrop { 0% { top: -100px; left: 80%; opacity: 1; transform: rotate(45deg) scale(1); } 50% { top: 50%; left: 50%; opacity: 1; transform: rotate(45deg) scale(2); } 100% { top: 50%; left: 50%; opacity: 0; transform: rotate(45deg) scale(4); } }
+
   </style>
 </head>
 <body>
@@ -348,6 +357,30 @@
   </div>
 </div>
 
+<!-- MÁQUINA GACHA GENSHIN IMPACT -->
+<div id="modalGachaGenshin" class="modal">
+  <div class="modal-content" style="text-align: center; background: linear-gradient(180deg, #0b1528 0%, #05010a 100%); border: 2px solid #cda55d; box-shadow: 0 0 30px rgba(205, 165, 93, 0.2);">
+    <button class="cerrar-modal" onclick="cerrarGachaGenshinModal()">×</button>
+    <h3 style="color: #cda55d; margin-top: 0; font-size: 1.5em; text-transform: uppercase; text-shadow: 0 0 10px rgba(205,165,93,0.5);"><i class="fas fa-meteor"></i> Gachapón</h3>
+    <p style="color: var(--text-muted); font-size: 0.85em; margin-bottom: 15px;">Usa Destinos Entrelazados (50 Tokens)</p>
+    
+    <div class="genshin-machine">
+      <div class="genshin-meteor" id="genshinMeteor"></div>
+      <img src="" id="genshinResultSprite" class="genshin-sprite">
+    </div>
+
+    <div id="genshinResultado" style="display: none; background: rgba(0,0,0,0.6); border: 1px dashed #cda55d; padding: 12px; border-radius: var(--radius-sm); color: #fff; margin-bottom: 14px; margin-top: 14px; animation: modalSlideUp 0.3s ease;">
+        <div id="genshinNombre" style="font-size: 1.4em; font-family: 'Chakra Petch', sans-serif; font-weight: bold; margin-bottom: 4px; color: #fff;">Personaje</div>
+        <div style="font-size: 0.85em; color: var(--text-muted);">¡Añadido a tu Taverna!</div>
+    </div>
+
+    <button class="btn-comprar" id="btnTirarGenshin" onclick="realizarTiradaGenshin()" style="background: linear-gradient(135deg, #cda55d, #a67c00); color: #000; font-size: 1.1em; text-shadow: 0 0 5px rgba(255,255,255,0.5); box-shadow: 0 4px 15px rgba(205,165,93,0.4);">
+       Pedir un Deseo (50 Tokens)
+    </button>
+    <div style="margin-top: 10px; font-size: 0.85em; color: var(--text-muted);">Tu saldo actual: <strong style="color:#ffaa00;"><i class="fas fa-coins"></i> <span id="lblSaldoGachaGenshin">0</span></strong></div>
+  </div>
+</div>
+
 <div id="modalTemas" class="modal">
   <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarTemasModal()">×</button>
@@ -361,7 +394,7 @@
   </div>
 </div>
 
-<!-- MODAL GAMER PROFILE Y ÁLBUM WAIFUS/POKEMON -->
+<!-- MODAL GAMER PROFILE Y COLECCIONES -->
 <div id="modalGamerProfile" class="modal">
   <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarGamerProfileModal()">×</button>
@@ -384,7 +417,7 @@
 
     <!-- COLECCIÓN DE WAIFUS -->
     <div style="text-align: left; margin-bottom: 14px;">
-      <div style="font-size: 0.85em; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Mi Colección Waifus (<span id="lblTotalWaifusJugador">0</span>)</div>
+      <div style="font-size: 0.85em; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Waifus (<span id="lblTotalWaifusJugador">0</span>)</div>
       <div id="albumWaifusContenedor" style="display:flex; gap:8px; overflow-x:auto; padding-bottom: 5px; scrollbar-width: none;">
         <p style="color: var(--text-muted); font-size: 0.8em; margin: 0;">Juega al Gacha para coleccionar.</p>
       </div>
@@ -395,6 +428,14 @@
       <div style="font-size: 0.85em; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Pokédex Mini (<span id="lblTotalPkmnJugador">0</span>)</div>
       <div id="albumPkmnContenedor" style="display:flex; gap:8px; overflow-x:auto; padding-bottom: 5px; scrollbar-width: none;">
         <p style="color: var(--text-muted); font-size: 0.8em; margin: 0;">Usa el Poké Gacha para capturar.</p>
+      </div>
+    </div>
+
+    <!-- COLECCIÓN DE GENSHIN -->
+    <div style="text-align: left; margin-bottom: 14px;">
+      <div style="font-size: 0.85em; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Taverna Genshin (<span id="lblTotalGenshinJugador">0</span>)</div>
+      <div id="albumGenshinContenedor" style="display:flex; gap:8px; overflow-x:auto; padding-bottom: 5px; scrollbar-width: none;">
+        <p style="color: var(--text-muted); font-size: 0.8em; margin: 0;">Pide un deseo en el Gachapón.</p>
       </div>
     </div>
     
@@ -593,6 +634,7 @@
       
       <button class="btn-menu-opcion" style="color: var(--secondary-color);" onclick="cerrarMenuOpciones(); abrirGachaModal()"><i class="fas fa-capsules"></i> Gacha Waifu</button>
       <button class="btn-menu-opcion" style="color: #ffde00;" onclick="cerrarMenuOpciones(); abrirGachaPkmnModal()"><i class="fas fa-gamepad"></i> Poké Gacha</button>
+      <button class="btn-menu-opcion" style="color: #cda55d;" onclick="cerrarMenuOpciones(); abrirGachaGenshinModal()"><i class="fas fa-meteor"></i> Gachapón Genshin</button>
       
       <button class="btn-menu-opcion" style="color: #25d366;" onclick="cerrarMenuOpciones(); abrirGamerProfileModal()"><i class="fas fa-user"></i> Mi Perfil</button>
       <button class="btn-menu-opcion" style="color: #ff007f;" onclick="cerrarMenuOpciones(); abrirTemasModal()"><i class="fas fa-palette"></i> Temas</button>
@@ -600,7 +642,6 @@
       <button class="btn-menu-opcion" style="color: var(--text-muted);" onclick="cerrarMenuOpciones(); abrirFaqModal()"><i class="fas fa-question-circle"></i> Preguntas</button>
       <button class="btn-menu-opcion" style="color: #fff;" onclick="cerrarMenuOpciones(); abrirSugerenciaModal()"><i class="fas fa-lightbulb"></i> Encargos</button>
       <a href="admin.html" class="btn-menu-opcion" style="color: #ff3366;"><i class="fas fa-lock"></i> Gestión Admin</a>
-      <a href="javascript:void(0)" onclick="abrirChatGlobalWhatsApp()" class="btn-menu-opcion" style="color: #25D366;"><i class="fab fa-whatsapp"></i> Chat Directo</a>
     </div>
   </div>
 </div>
@@ -740,7 +781,7 @@
   let waifusGachaGlobal = [];
   
   let currentUserUid = null;
-  let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, tokens: 0, rango: "Genin", waifus: [] };
+  let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, tokens: 0, rango: "Genin", waifus: [], pkmns: [], genshin: [] };
   let carrito = JSON.parse(localStorage.getItem('sakura_carrito')) || [];
   let favoritos = JSON.parse(localStorage.getItem('sakura_favoritos')) || [];
 
@@ -815,7 +856,7 @@
           let targetRareza = rand <= 2 ? 'SSR' : (rand <= 10 ? 'SR' : (rand <= 40 ? 'R' : 'N'));
           
           let posibles = waifusGachaGlobal.filter(w => w.rareza === targetRareza);
-          if(posibles.length === 0) posibles = waifusGachaGlobal; // Safe fallback si no hay de esa rareza
+          if(posibles.length === 0) posibles = waifusGachaGlobal; // Safe fallback
           let elegida = posibles[Math.floor(Math.random() * posibles.length)];
 
           if(!gamerProfile.waifus) gamerProfile.waifus = [];
@@ -831,6 +872,7 @@
                   waifu: elegida.nombre,
                   rareza: elegida.rareza,
                   premio: elegida.premio,
+                  tipoGacha: 'Waifu',
                   timestamp: Date.now()
               });
           } catch(e) {}
@@ -853,18 +895,7 @@
       }, 1800);
   }
 
-  // --- NUEVA LÓGICA GACHA POKEMON ---
-  const pkmnDisponibles = [
-      { id: 25, nombre: "pikachu", raro: true },
-      { id: 1, nombre: "bulbasaur", raro: false },
-      { id: 4, nombre: "charmander", raro: false },
-      { id: 7, nombre: "squirtle", raro: false },
-      { id: 94, nombre: "gengar", raro: true },
-      { id: 133, nombre: "eevee", raro: false },
-      { id: 150, nombre: "mewtwo", raro: true },
-      { id: 143, nombre: "snorlax", raro: false }
-  ];
-
+  // --- LÓGICA GACHA POKEMON (TODAS LAS GENERACIONES) ---
   window.abrirGachaPkmnModal = function() {
       reproducirSonido();
       document.getElementById('lblSaldoGachaPkmn').innerText = gamerProfile.tokens || 0;
@@ -884,14 +915,14 @@
       if(!gamerProfile.tokens) gamerProfile.tokens = 0;
       if(gamerProfile.tokens < costo) return alert(`Necesitas al menos ${costo} Tokens para tirar una Pokéball.`);
 
-      document.getElementById('btnTirarPkmn').disabled = true;
+      let btn = document.getElementById('btnTirarPkmn');
+      btn.disabled = true;
       gamerProfile.tokens -= costo;
       document.getElementById('lblSaldoGachaPkmn').innerText = gamerProfile.tokens;
       actualizarRangoSegunXP();
       guardarProgresoNube();
 
       document.getElementById('pkmnResultado').style.display = 'none';
-      
       let pball = document.getElementById('pokeBallSprite');
       let resultSprite = document.getElementById('pkmnResultSprite');
       let flash = document.getElementById('pkmnFlash');
@@ -900,53 +931,141 @@
       resultSprite.className = 'pkmn-sprite';
       resultSprite.src = '';
       
-      // Randomize Pokemon
+      // Random Pokemon (Generaciones 1 a 1025)
+      let randomId = Math.floor(Math.random() * 1025) + 1;
+      let isRaro = Math.random() < 0.15; // Probabilidad extra de brillo
+
+      fetch(`https://pokeapi.co/api/v2/pokemon/${randomId}`)
+        .then(res => res.json())
+        .then(data => {
+            let elegido = { id: data.id, nombre: data.name, raro: isRaro };
+            pball.classList.add('falling');
+            
+            setTimeout(() => {
+                pball.classList.remove('falling');
+                pball.classList.add('shaking');
+                
+                setTimeout(() => {
+                    pball.classList.remove('shaking');
+                    pball.classList.add('opened');
+                    
+                    let isElectric = data.types.some(t => t.type.name === 'electric');
+                    if (isElectric || elegido.raro) { 
+                        flash.classList.add('active');
+                        reproducirSonido();
+                        setTimeout(() => flash.classList.remove('active'), 500);
+                    }
+
+                    resultSprite.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${elegido.id}.png`;
+                    resultSprite.classList.add('revealed');
+                    
+                    document.getElementById('pkmnNombre').innerText = elegido.nombre;
+                    document.getElementById('pkmnResultado').style.display = 'block';
+
+                    if(!gamerProfile.pkmns) gamerProfile.pkmns = [];
+                    if(!gamerProfile.pkmns.some(p => p.id === elegido.id)) {
+                        gamerProfile.pkmns.push({id: elegido.id, nombre: elegido.nombre});
+                        guardarProgresoNube();
+                        renderizarColecciones();
+                    }
+
+                    try { addDoc(collection(db, "historial_gacha"), { jugador: gamerProfile.tag, waifu: elegido.nombre, rareza: elegido.raro ? 'Raro' : 'Común', premio: 'Pokémon Capturado', tipoGacha: 'Pokemon', timestamp: Date.now() }); } catch(e) {}
+
+                    btn.disabled = false;
+                    if(elegido.raro) { try{ confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } }); }catch(e){} }
+                }, 1500);
+            }, 500);
+        })
+        .catch(err => { 
+            alert("El Pokémon escapó. ¡Intenta de nuevo!"); 
+            btn.disabled = false; 
+            gamerProfile.tokens += costo; // Devolver tokens si falla API
+            document.getElementById('lblSaldoGachaPkmn').innerText = gamerProfile.tokens;
+        });
+  };
+
+  // --- LÓGICA GACHA GENSHIN IMPACT ---
+  const poolGenshin = [
+      { id: "raiden", nombre: "Raiden Shogun", raro: true, img: "https://genshin.jmp.blue/characters/raiden/icon-big" },
+      { id: "hutao", nombre: "Hu Tao", raro: true, img: "https://genshin.jmp.blue/characters/hu-tao/icon-big" },
+      { id: "zhongli", nombre: "Zhongli", raro: true, img: "https://genshin.jmp.blue/characters/zhongli/icon-big" },
+      { id: "ayaka", nombre: "Kamisato Ayaka", raro: true, img: "https://genshin.jmp.blue/characters/ayaka/icon-big" },
+      { id: "arlecchino", nombre: "Arlecchino", raro: true, img: "https://genshin.jmp.blue/characters/arlecchino/icon-big" },
+      { id: "bennett", nombre: "Bennett", raro: false, img: "https://genshin.jmp.blue/characters/bennett/icon-big" },
+      { id: "xingqiu", nombre: "Xingqiu", raro: false, img: "https://genshin.jmp.blue/characters/xingqiu/icon-big" },
+      { id: "xiangling", nombre: "Xiangling", raro: false, img: "https://genshin.jmp.blue/characters/xiangling/icon-big" },
+      { id: "fischl", nombre: "Fischl", raro: false, img: "https://genshin.jmp.blue/characters/fischl/icon-big" }
+  ];
+
+  window.abrirGachaGenshinModal = function() {
+      reproducirSonido();
+      document.getElementById('lblSaldoGachaGenshin').innerText = gamerProfile.tokens || 0;
+      document.getElementById('modalGachaGenshin').style.display = 'flex';
+      
+      document.getElementById('genshinResultado').style.display = 'none';
+      document.getElementById('genshinMeteor').className = 'genshin-meteor';
+      document.getElementById('genshinResultSprite').className = 'genshin-sprite';
+      document.getElementById('genshinResultSprite').src = '';
+      document.getElementById('btnTirarGenshin').disabled = false;
+  };
+  window.cerrarGachaGenshinModal = function() { document.getElementById('modalGachaGenshin').style.display = 'none'; };
+
+  window.realizarTiradaGenshin = function() {
+      reproducirSonido();
+      let costo = 50;
+      if(!gamerProfile.tokens) gamerProfile.tokens = 0;
+      if(gamerProfile.tokens < costo) return alert(`Necesitas al menos ${costo} Tokens para pedir un deseo.`);
+
+      let btn = document.getElementById('btnTirarGenshin');
+      btn.disabled = true;
+      gamerProfile.tokens -= costo;
+      document.getElementById('lblSaldoGachaGenshin').innerText = gamerProfile.tokens;
+      actualizarRangoSegunXP();
+      guardarProgresoNube();
+
+      document.getElementById('genshinResultado').style.display = 'none';
+      let meteor = document.getElementById('genshinMeteor');
+      let resultSprite = document.getElementById('genshinResultSprite');
+      
+      meteor.className = 'genshin-meteor';
+      resultSprite.className = 'genshin-sprite';
+      resultSprite.src = '';
+      
+      // Lógica de Pity Gacha
       let rand = Math.random();
-      let isRaro = rand < 0.2; // 20% de probabilidad de que salga raro
-      let pool = pkmnDisponibles.filter(p => p.raro === isRaro);
+      let isRaro = rand < 0.15; // 15% para 5 Estrellas
+      let pool = poolGenshin.filter(p => p.raro === isRaro);
       let elegido = pool[Math.floor(Math.random() * pool.length)];
 
-      // Fase 1: Cae
-      pball.classList.add('falling');
+      let classMeteor = isRaro ? 'falling-5star' : 'falling-4star';
+      meteor.classList.add(classMeteor);
       
       setTimeout(() => {
-          // Fase 2: Tiembla
-          pball.classList.remove('falling');
-          pball.classList.add('shaking');
+          meteor.classList.remove(classMeteor); // Ocultar meteorito
           
-          setTimeout(() => {
-              // Fase 3: Abre y Muestra
-              pball.classList.remove('shaking');
-              pball.classList.add('opened');
-              
-              // Trueno si es Pikachu
-              if (elegido.id === 25) { 
-                  flash.classList.add('active');
-                  reproducirSonido();
-                  setTimeout(() => flash.classList.remove('active'), 500);
-              }
+          resultSprite.src = elegido.img;
+          resultSprite.classList.add('revealed');
+          
+          document.getElementById('genshinNombre').innerText = elegido.nombre;
+          document.getElementById('genshinNombre').style.color = isRaro ? '#ffb13f' : '#a256e1';
+          document.getElementById('genshinResultado').style.display = 'block';
 
-              resultSprite.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${elegido.id}.png`;
-              resultSprite.classList.add('revealed');
-              
-              document.getElementById('pkmnNombre').innerText = elegido.nombre;
-              document.getElementById('pkmnResultado').style.display = 'block';
+          // Guardar en la Taverna Genshin
+          if(!gamerProfile.genshin) gamerProfile.genshin = [];
+          if(!gamerProfile.genshin.some(p => p.id === elegido.id)) {
+              gamerProfile.genshin.push({id: elegido.id, nombre: elegido.nombre, img: elegido.img});
+              guardarProgresoNube();
+              renderizarColecciones();
+          }
 
-              // Guardar en la pokedex
-              if(!gamerProfile.pkmns) gamerProfile.pkmns = [];
-              if(!gamerProfile.pkmns.some(p => p.id === elegido.id)) {
-                  gamerProfile.pkmns.push({id: elegido.id, nombre: elegido.nombre});
-                  guardarProgresoNube();
-                  renderizarColecciones();
-              }
+          try { addDoc(collection(db, "historial_gacha"), { jugador: gamerProfile.tag, waifu: elegido.nombre, rareza: elegido.raro ? '5 Estrellas' : '4 Estrellas', premio: 'Personaje Genshin', tipoGacha: 'Genshin', timestamp: Date.now() }); } catch(e) {}
 
-              document.getElementById('btnTirarPkmn').disabled = false;
-              
-              if(elegido.raro) {
-                  try{ confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } }); }catch(e){}
-              }
-          }, 1500);
-      }, 500);
+          btn.disabled = false;
+          
+          if(elegido.raro) {
+              try{ confetti({ particleCount: 150, spread: 90, origin: { y: 0.6 }, colors: ['#ffb13f', '#ffffff'] }); }catch(e){}
+          }
+      }, 1200);
   };
   // ------------------------------------
 
@@ -984,6 +1103,21 @@
               html += `<div class="waifu-card-mini" style="background: rgba(255,255,255,0.9); border: 1px solid #ffde00;"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${p.id}.png" style="image-rendering: pixelated; transform: scale(1.3);" loading="lazy"></div>`;
           });
           contP.innerHTML = html;
+      }
+
+      // Genshin
+      let contG = document.getElementById('albumGenshinContenedor');
+      let arrG = gamerProfile.genshin || [];
+      document.getElementById('lblTotalGenshinJugador').innerText = arrG.length;
+      
+      if(arrG.length === 0) {
+          contG.innerHTML = `<p style="color: var(--text-muted); font-size: 0.8em; margin: 0;">Pide un deseo en el Gachapón.</p>`;
+      } else {
+          let html = "";
+          arrG.forEach(g => {
+              html += `<div class="waifu-card-mini" style="background: #0b1528; border: 1px solid #cda55d;"><img src="${g.img}" style="object-fit: cover;" loading="lazy"></div>`;
+          });
+          contG.innerHTML = html;
       }
   }
 
@@ -1029,7 +1163,7 @@
   window.cerrarSesionCloud = async function() {
     reproducirSonido(); await signOut(auth);
     localStorage.removeItem('sakura_gamer_profile'); localStorage.removeItem('sakura_carrito'); localStorage.removeItem('sakura_favoritos');
-    gamerProfile = { tag: "Gamer_Guest", xp: 0, tokens: 0, rango: "Genin", waifus: [], pkmns: [] }; carrito = []; favoritos = [];
+    gamerProfile = { tag: "Gamer_Guest", xp: 0, tokens: 0, rango: "Genin", waifus: [], pkmns: [], genshin: [] }; carrito = []; favoritos = [];
     actualizarBadges(); actualizarRangoSegunXP(); renderizarColecciones(); cerrarCloudSaveModal(); alert("Sesión cerrada. Tu partida está a salvo en la nube.");
   };
 
