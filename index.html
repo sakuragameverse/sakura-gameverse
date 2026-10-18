@@ -404,6 +404,45 @@
   </div>
 </div>
 
+<!-- MODAL EL GREMIO (RPG) -->
+<div id="modalGremio" class="modal">
+  <div class="modal-content" style="text-align: center;">
+    <button class="cerrar-modal" onclick="cerrarGremioModal()">×</button>
+    <h3 style="color: #25d366; margin-top: 0;"><i class="fas fa-campground"></i> Tablón del Gremio</h3>
+    <p style="font-size: 0.85em; color: var(--text-muted);">Realiza misiones para ganar XP y Tokens.</p>
+
+    <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: var(--radius-md); border: 1px dashed #25d366; margin-bottom: 15px;">
+      <div id="rpgResultado" style="font-weight: bold; color: #fff; min-height: 40px; margin-bottom: 10px;">¿Qué deseas hacer hoy, aventurero?</div>
+    </div>
+
+    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+      <button class="btn-comprar" style="margin-top: 0; background: linear-gradient(135deg, #ffaa00, #ff5500);" onclick="accionRPG('cazar')">
+        <i class="fas fa-crosshairs"></i> Cazar<br><span style="font-size: 0.7em; font-weight: normal;">(Cooldown: 3 min)</span>
+      </button>
+      <button class="btn-comprar" style="margin-top: 0; background: linear-gradient(135deg, #0099ff, #b000ff);" onclick="accionRPG('aventura')">
+        <i class="fas fa-map"></i> Aventura<br><span style="font-size: 0.7em; font-weight: normal;">(Cooldown: 10 min)</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL LA ARENA (RUMBLE) -->
+<div id="modalRumble" class="modal">
+  <div class="modal-content" style="text-align: center; border-color: #ff3366;">
+    <button class="cerrar-modal" onclick="cerrarRumbleModal()">×</button>
+    <h3 style="color: #ff3366; margin-top: 0;"><i class="fas fa-skull-crossbones"></i> Arena Rumble</h3>
+    <p style="font-size: 0.85em; color: var(--text-muted);">Sobrevive a la batalla campal virtual.</p>
+
+    <div id="rumbleLog" style="background: #000; padding: 15px; border-radius: var(--radius-sm); border: 1px solid #ff3366; height: 200px; overflow-y: auto; text-align: left; font-family: monospace; font-size: 0.85em; color: #fff; margin-bottom: 15px; box-shadow: inset 0 0 10px rgba(255,51,102,0.3);">
+      Esperando contendientes...
+    </div>
+
+    <button id="btnIniciarRumble" class="btn-comprar" style="background: #ff3366; box-shadow: 0 0 15px rgba(255,51,102,0.4);" onclick="iniciarRumble()">
+      Inscribirse a la Batalla (Cuesta 10 Tokens)
+    </button>
+  </div>
+</div>
+
 <div class="hero-banner">
   <img src="logo.webp?v=2" alt="Sakura Gameverse" class="hero-logo" onclick="activarEasterEggLogo()" loading="eager" decoding="async">
   <br>
@@ -550,6 +589,11 @@
       <button class="btn-menu-opcion" style="color: #ffaa00;" onclick="cerrarMenuOpciones(); abrirCofreModal()"><i class="fas fa-gift"></i> Cofre Diario</button>
       <button class="btn-menu-opcion" style="color: var(--secondary-color);" onclick="cerrarMenuOpciones(); abrirGachaModal()"><i class="fas fa-capsules"></i> Gacha Center</button>
       <button class="btn-menu-opcion" style="color: #25d366;" onclick="cerrarMenuOpciones(); abrirGamerProfileModal()"><i class="fas fa-user"></i> Mi Perfil</button>
+      
+      <!-- BOTONES NUEVOS RPG Y RUMBLE -->
+      <button class="btn-menu-opcion" style="color: #ff3366;" onclick="cerrarMenuOpciones(); abrirRumbleModal()"><i class="fas fa-skull-crossbones"></i> La Arena</button>
+      <button class="btn-menu-opcion" style="color: #25d366;" onclick="cerrarMenuOpciones(); abrirGremioModal()"><i class="fas fa-campground"></i> El Gremio RPG</button>
+      
       <button class="btn-menu-opcion" style="color: #ff007f;" onclick="cerrarMenuOpciones(); abrirTemasModal()"><i class="fas fa-palette"></i> Temas</button>
       <button class="btn-menu-opcion" style="color: #e0f4ff;" onclick="toggleMusicaLoFi()"><i class="fas fa-music" id="iconoMusica"></i> Audio Lo-Fi</button>
       <button class="btn-menu-opcion" style="color: var(--text-muted);" onclick="cerrarMenuOpciones(); abrirFaqModal()"><i class="fas fa-question-circle"></i> Preguntas</button>
@@ -1541,7 +1585,132 @@
     if(lblTokens) lblTokens.innerHTML = `<i class="fas fa-coins"></i> ${gamerProfile.tokens || 0}`;
   }
 
-  function ganarXP(cantidad) { gamerProfile.xp += cantidad; actualizarRangoSegunXP(); guardarProgresoNube(); }
+  window.ganarXP = function(cantidad) { gamerProfile.xp += cantidad; actualizarRangoSegunXP(); guardarProgresoNube(); };
+
+  // ==========================================
+  // SISTEMA RPG (CAZA Y AVENTURA)
+  // ==========================================
+  window.abrirGremioModal = function() { reproducirSonido(); document.getElementById('modalGremio').style.display = 'flex'; };
+  window.cerrarGremioModal = function() { document.getElementById('modalGremio').style.display = 'none'; };
+
+  window.accionRPG = function(tipo) {
+    reproducirSonido();
+    let ahora = Date.now();
+    let cooldownTime = tipo === 'cazar' ? (3 * 60 * 1000) : (10 * 60 * 1000); // 3 mins o 10 mins
+    let keyCooldown = 'sakura_cooldown_' + tipo;
+    let ultimoUso = localStorage.getItem(keyCooldown) || 0;
+
+    // Revisar si está en enfriamiento
+    if (ahora - ultimoUso < cooldownTime) {
+      let faltanSegundos = Math.ceil((cooldownTime - (ahora - ultimoUso)) / 1000);
+      let faltanMinutos = Math.floor(faltanSegundos / 60);
+      let seg = faltanSegundos % 60;
+      document.getElementById('rpgResultado').innerHTML = `<span style="color:#ff3366;"><i class="fas fa-hourglass-half"></i> Debes descansar. Vuelve en ${faltanMinutos}m y ${seg}s.</span>`;
+      return;
+    }
+
+    // Ejecutar acción si no hay cooldown
+    let rng = Math.floor(Math.random() * 100);
+    let xpGanada = 0;
+    let tokensGanados = 0;
+    let mensaje = "";
+
+    if (tipo === 'cazar') {
+      if (rng < 20) { mensaje = "El bosque estaba vacío. No encontraste nada."; xpGanada = 5; }
+      else if (rng < 80) { mensaje = "Cazaste un Slime salvaje."; xpGanada = 15; tokensGanados = 2; }
+      else { mensaje = "¡Encontraste un Jabalí Dorado! Caza perfecta."; xpGanada = 35; tokensGanados = 10; }
+    } else { // Aventura
+      if (rng < 30) { mensaje = "Caíste en una trampa de goblins, pero lograste escapar."; xpGanada = 10; tokensGanados = 0; }
+      else if (rng < 90) { mensaje = "Exploraste una cueva y encontraste un cofre antiguo."; xpGanada = 50; tokensGanados = 15; }
+      else { mensaje = "¡Derrotaste a un Dragón Menor en las montañas!"; xpGanada = 120; tokensGanados = 40; }
+    }
+
+    // Aplicar recompensas
+    localStorage.setItem(keyCooldown, ahora);
+    gamerProfile.tokens = (gamerProfile.tokens || 0) + tokensGanados;
+    window.ganarXP(xpGanada); // Llamamos a la función global para sumar XP y guardar
+
+    document.getElementById('rpgResultado').innerHTML = `
+      <span style="color:var(--secondary-color);">${mensaje}</span><br>
+      <span style="color:#25d366; font-size: 0.9em;">+${xpGanada} XP | +${tokensGanados} Tokens</span>
+    `;
+  };
+
+  // ==========================================
+  // SISTEMA RUMBLE ROYALE (SIMULADO)
+  // ==========================================
+  window.abrirRumbleModal = function() { 
+    reproducirSonido(); 
+    document.getElementById('modalRumble').style.display = 'flex'; 
+    document.getElementById('btnIniciarRumble').disabled = false;
+    document.getElementById('btnIniciarRumble').innerText = "Inscribirse a la Batalla (Cuesta 10 Tokens)";
+    document.getElementById('rumbleLog').innerHTML = "La arena está en silencio. ¿Te atreves a entrar?";
+  };
+  window.cerrarRumbleModal = function() { document.getElementById('modalRumble').style.display = 'none'; };
+
+  window.iniciarRumble = function() {
+    reproducirSonido();
+    let costoInscripcion = 10;
+
+    if ((gamerProfile.tokens || 0) < costoInscripcion) {
+      alert("No tienes suficientes Tokens para inscribirte (Cuesta 10). Ve a Cazar o abre tu Cofre Diario.");
+      return;
+    }
+
+    // Cobrar entrada
+    gamerProfile.tokens -= costoInscripcion;
+    guardarProgresoNube(); 
+    
+    document.getElementById('btnIniciarRumble').disabled = true;
+    let log = document.getElementById('rumbleLog');
+    log.innerHTML = `<span style="color: #ffaa00;">${gamerProfile.tag} ha entrado a la Arena...</span><br><br>`;
+    
+    // Nombres simulados para la batalla
+    let enemigos = ["ShadowNinja", "Kira_99", "OtakuMaster", "CyberPunk_X"];
+    
+    // Eventos narrativos aleatorios
+    let eventos = [
+      " encuentras un escudo tirado en el suelo.",
+      " esquivas por poco una flecha explosiva.",
+      " te escondes en un arbusto para recuperar aliento.",
+      ` te enfrentas cara a cara con ${enemigos[0]}.`,
+      ` ves como ${enemigos[1]} elimina a ${enemigos[2]} con una sartén.`,
+      " pisas una trampa pero logras saltar a tiempo."
+    ];
+
+    let turnos = 0;
+    let maxTurnos = 5;
+
+    let intervalo = setInterval(() => {
+      if (turnos < maxTurnos) {
+        // Narrar un evento al azar
+        let eventoAzar = eventos[Math.floor(Math.random() * eventos.length)];
+        log.innerHTML += `[Turno ${turnos + 1}] <strong>${gamerProfile.tag}</strong>${eventoAzar}<br>`;
+        log.scrollTop = log.scrollHeight; // Autoscroll hacia abajo
+        turnos++;
+      } else {
+        // Final del juego (RNG para ver si ganas o mueres)
+        clearInterval(intervalo);
+        log.innerHTML += `<br><strong>¡EL CÍRCULO FINAL SE CIERRA!</strong><br>`;
+        
+        setTimeout(() => {
+          let rngVictoria = Math.random();
+          if (rngVictoria > 0.6) { // 40% de probabilidad de ganar
+            let premio = Math.floor(Math.random() * 50) + 30; // Entre 30 y 80 tokens
+            log.innerHTML += `<span style="color: #25d366;">¡HAS SOBREVIVIDO! Eres el Campeón de la Arena.</span><br>Ganaste +${premio} Tokens y +100 XP.`;
+            gamerProfile.tokens += premio;
+            window.ganarXP(100);
+            try{ confetti({ particleCount: 150, spread: 80 }); }catch(e){} 
+          } else {
+            log.innerHTML += `<span style="color: #ff3366;">Has sido eliminado por un francotirador. Fin de la partida.</span><br>Mejor suerte la próxima vez.`;
+          }
+          log.scrollTop = log.scrollHeight;
+          document.getElementById('btnIniciarRumble').disabled = false;
+          document.getElementById('btnIniciarRumble').innerText = "Volver a jugar (-10 Tokens)";
+        }, 1500);
+      }
+    }, 1500); // 1.5 segundos entre cada línea de texto
+  };
 
 </script>
 </body>
