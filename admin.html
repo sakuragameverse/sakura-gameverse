@@ -11,11 +11,25 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
-    :root { --bg-color: #05010a; --glass-bg: rgba(17, 5, 36, 0.45); --glass-border: rgba(255, 255, 255, 0.08); --text-color: #e6e9f0; --text-muted: #8b8f9e; --primary-color: #ff007f; --secondary-color: #00e5ff; --secondary-glow: rgba(0, 229, 255, 0.4); --radius-sm: 8px; --radius-md: 16px; --radius-pill: 50px; }
+    :root { 
+      --bg-color: #05010a; 
+      --glass-bg: rgba(17, 5, 36, 0.45); 
+      --glass-border: rgba(255, 255, 255, 0.08); 
+      --text-color: #e6e9f0; 
+      --text-muted: #8b8f9e; 
+      --primary-color: #ff007f; 
+      --primary-glow: rgba(255, 0, 127, 0.4); 
+      --secondary-color: #00e5ff; 
+      --secondary-glow: rgba(0, 229, 255, 0.4); 
+      --radius-sm: 8px; 
+      --radius-md: 16px; 
+      --radius-pill: 50px; 
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Rajdhani', sans-serif; font-size: 16px; min-height: 100vh; overflow-x: hidden; padding-bottom: 40px; }
-    body::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 0%, rgba(255, 0, 127, 0.08) 0%, transparent 60%), radial-gradient(circle at 80% 80%, rgba(0, 229, 255, 0.05) 0%, transparent 50%), linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px); background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px; pointer-events: none; z-index: 0; }
+    body::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 0%, rgba(255, 0, 127, 0.08) 0%, transparent 60%), radial-gradient(circle at 80% 80%, rgba(0, 229, 255, 0.05) 0%, transparent 50%), linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px); background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px; pointer-events: none; z-index: 0; will-change: transform; }
     h1, h2, h3, h4 { font-family: 'Chakra Petch', sans-serif; text-transform: uppercase; letter-spacing: 0.5px; }
+
     .admin-navbar { background: rgba(5, 1, 10, 0.75); backdrop-filter: blur(12px); border-bottom: 1px solid var(--glass-border); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
     .brand-box { display: flex; align-items: center; gap: 8px; }
     .brand-logo { width: 28px; height: 28px; object-fit: contain; filter: drop-shadow(0 0 5px var(--primary-color)); }
@@ -24,21 +38,26 @@
     .btn-nav { padding: 6px 14px; border-radius: var(--radius-pill); font-family: 'Chakra Petch', sans-serif; font-weight: 700; font-size: 0.8em; text-decoration: none; display: flex; align-items: center; gap: 5px; cursor: pointer; transition: all 0.3s ease; }
     .btn-tienda { background: rgba(0, 229, 255, 0.1); color: var(--secondary-color); border: 1px solid rgba(0,229,255,0.3); }
     .btn-exit { background: rgba(255, 0, 127, 0.1); color: var(--primary-color); border: 1px solid rgba(255,0,127,0.3); }
+    
     .admin-container { max-width: 1100px; margin: 18px auto 0 auto; padding: 0 12px; position: relative; z-index: 1; }
     .dashboard-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
     .dash-card { background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); border: 1px solid var(--glass-border); padding: 12px 8px; border-radius: var(--radius-md); text-align: center; }
     .dash-title { font-size: 0.65em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; font-weight: 700; }
     .dash-val { font-size: 1.25em; color: var(--secondary-color); font-weight: 700; font-family: 'Chakra Petch', sans-serif; }
     .dash-val.ganancias { color: #25d366; } .dash-val.pendientes { color: #ffaa00; }
+
     .tabs-wrapper { display: flex; gap: 8px; overflow-x: auto; padding: 4px 4px 14px 4px; margin-bottom: 10px; scrollbar-width: none; }
     .tabs-wrapper::-webkit-scrollbar { display: none; }
     .tab-btn { flex: 0 0 auto; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); border: 1px solid var(--glass-border); color: var(--text-muted); padding: 10px 16px; border-radius: var(--radius-pill); font-family: 'Chakra Petch', sans-serif; font-size: 0.82em; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.3s ease; }
     .tab-btn.active { background: var(--secondary-color); color: #000; border-color: var(--secondary-color); box-shadow: 0 0 12px var(--secondary-glow); }
+
     .admin-panel { display: none; } .admin-panel.active { display: block; animation: fade-in 0.4s ease; }
     @keyframes fade-in { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
     .card-panel { background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 18px; margin-bottom: 18px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); }
     .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.06); }
     .panel-title { font-size: 1.05em; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; }
+
     .btn-toggle-box { width: 100%; background: rgba(0, 229, 255, 0.08); border: 1px dashed rgba(0, 229, 255, 0.4); color: var(--secondary-color); padding: 14px; border-radius: var(--radius-sm); font-family: 'Chakra Petch', sans-serif; font-size: 0.9em; font-weight: 700; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 16px; }
     .form-group { margin-bottom: 14px; text-align: left; }
     .form-label { display: block; font-size: 0.8em; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; }
@@ -50,6 +69,7 @@
     .preview-foto-item img { width: 100%; height: 100%; object-fit: cover; }
     .btn-del-foto-preview { position: absolute; top: 2px; right: 2px; background: rgba(0, 0, 0, 0.85); color: #ff3366; border: none; width: 20px; height: 20px; border-radius: 50%; font-size: 0.7em; cursor: pointer; }
     .btn-submit { width: 100%; min-height: 46px; background: linear-gradient(135deg, var(--primary-color), #cc0066); color: #fff; border: none; padding: 10px; font-family: 'Chakra Petch', sans-serif; font-size: 1em; font-weight: 700; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    
     .item-card-row { display: flex; align-items: center; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 10px; gap: 12px; }
     .item-card-row.is-paused { opacity: 0.4; border-style: dashed; filter: grayscale(80%); }
     .item-card-thumb { width: 54px; height: 54px; object-fit: contain; border-radius: var(--radius-sm); background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); flex-shrink: 0; padding: 3px; }
@@ -59,12 +79,26 @@
     .item-card-price { font-size: 1.05em; font-weight: 700; color: var(--secondary-color); }
     .tag-badge { display: inline-block; padding: 2px 8px; font-size: 0.7em; font-weight: 700; border-radius: var(--radius-pill); text-transform: uppercase; }
     .tag-stock { background: rgba(0, 229, 255, 0.15); color: var(--secondary-color); border: 1px solid rgba(0,229,255,0.3); }
+    .tag-encargo { background: rgba(255, 0, 127, 0.15); color: var(--primary-color); border: 1px solid rgba(255,0,127,0.3); }
+    .tag-digital { background: rgba(37, 211, 102, 0.15); color: #25d366; border: 1px solid rgba(37,211,102,0.3); }
+    
+    .tag-n { background: rgba(180, 190, 205, 0.15); color: #b4becd; border: 1px solid #8b8f9e; }
+    .tag-r { background: rgba(0, 229, 255, 0.15); color: #00e5ff; border: 1px solid #00e5ff; }
+    .tag-sr { background: rgba(176, 0, 255, 0.15); color: #b000ff; border: 1px solid #b000ff; }
+    .tag-ssr { background: rgba(255, 170, 0, 0.15); color: #ffaa00; border: 1px solid #ffaa00; }
+    
     .item-card-actions { display: flex; flex-direction: row; gap: 6px; flex-shrink: 0; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
     .btn-action-touch { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid transparent; font-size: 0.85em; transition: all 0.2s ease; }
     .btn-edit { background: rgba(0, 229, 255, 0.1); color: var(--secondary-color); border-color: rgba(0,229,255,0.3); }
+    .btn-edit:hover { background: rgba(0, 229, 255, 0.2); }
     .btn-del { background: rgba(255, 51, 102, 0.1); color: #ff3366; border-color: rgba(255,51,102,0.3); }
+    .btn-del:hover { background: #ff3366; color: #fff; }
+    .btn-print { background: rgba(255, 255, 255, 0.1); color: #fff; border-color: rgba(255, 255, 255, 0.3); }
+
     #lockScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 0, 6, 0.85); backdrop-filter: blur(12px); display: flex; justify-content: center; align-items: center; z-index: 999999; padding: 16px; }
     .lock-box { background: rgba(14, 4, 31, 0.85); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); padding: 32px 24px; border-radius: var(--radius-md); text-align: center; width: 100%; max-width: 360px; box-shadow: 0 15px 50px rgba(0,0,0,0.8); }
+    @media screen { .print-area { display: none; } }
+    @media print { body > :not(.print-area) { display: none !important; } .print-area { display: block; background: #fff; color: #000; width: 100%; max-width: 350px; margin: 0 auto; font-family: monospace; padding: 15px; } .print-area h2 { font-family: monospace; text-align: center; } .print-area .divider { border-top: 1px dashed #000; margin: 10px 0; } }
   </style>
 </head>
 <body>
@@ -73,9 +107,9 @@
   <div class="lock-box">
     <div style="font-size: 42px; color: var(--secondary-color); margin-bottom: 12px;"><i class="fas fa-shield-halved"></i></div>
     <h3 style="color: #fff; margin-bottom: 6px;">Acceso Administrador</h3>
-    <div class="form-group"><input type="email" id="adminEmailInput" class="form-input" placeholder="Correo electrónico"><input type="password" id="adminPassInput" class="form-input" placeholder="Contraseña" style="margin-top: 10px;" onkeypress="if(event.key === 'Enter') iniciarSesionAdmin()"></div>
+    <div class="form-group"><input type="email" id="adminEmailInput" class="form-input" placeholder="Correo electrónico" style="border-radius: var(--radius-pill);"><input type="password" id="adminPassInput" class="form-input" placeholder="Contraseña" style="border-radius: var(--radius-pill);" onkeypress="if(event.key === 'Enter') iniciarSesionAdmin()"></div>
     <div id="loginErrorMsg" style="color: #ff3366; font-size: 0.85em; margin-bottom: 14px; display: none; font-weight: 700;"></div>
-    <button class="btn-submit" id="btnLoginSubmit" onclick="iniciarSesionAdmin()">Iniciar Sesión</button>
+    <button class="btn-submit" id="btnLoginSubmit" onclick="iniciarSesionAdmin()" style="border-radius: var(--radius-pill);">Iniciar Sesión</button>
   </div>
 </div>
 
@@ -94,16 +128,105 @@
   <div class="tabs-wrapper">
     <button class="tab-btn active" onclick="cambiarSeccion('productos')"><i class="fas fa-boxes"></i> Inventario</button>
     <button class="tab-btn" onclick="cambiarSeccion('rpg')"><i class="fas fa-dragon"></i> Sistema RPG</button>
-    <button class="tab-btn" onclick="cambiarSeccion('jugadores')"><i class="fas fa-users"></i> Jugadores</button>
-    <button class="tab-btn" onclick="cambiarSeccion('pedidos')"><i class="fas fa-truck-fast"></i> Pedidos</button>
-    <button class="tab-btn" onclick="cambiarSeccion('gacha')"><i class="fas fa-capsules"></i> Gacha Waifus</button>
     <button class="tab-btn" onclick="cambiarSeccion('ajustes')"><i class="fas fa-cogs"></i> Ajustes Web</button>
+    <button class="tab-btn" onclick="cambiarSeccion('gacha')"><i class="fas fa-capsules"></i> Gacha Waifus</button>
+    <button class="tab-btn" onclick="cambiarSeccion('pedidos')"><i class="fas fa-truck-fast"></i> Pedidos</button>
+    <button class="tab-btn" onclick="cambiarSeccion('jugadores')"><i class="fas fa-users"></i> Jugadores</button>
+    <button class="tab-btn" onclick="cambiarSeccion('facturas')"><i class="fas fa-file-invoice-dollar"></i> Facturas</button>
+    <button class="tab-btn" onclick="cambiarSeccion('banners')"><i class="fas fa-images"></i> Banners</button>
+    <button class="tab-btn" onclick="cambiarSeccion('cupones')"><i class="fas fa-ticket-alt"></i> Cupones</button>
+    <button class="tab-btn" onclick="cambiarSeccion('pagos')"><i class="fas fa-wallet"></i> Pagos</button>
+    <button class="tab-btn" onclick="cambiarSeccion('reviews')"><i class="fas fa-star"></i> Reseñas</button>
+    <button class="tab-btn" onclick="cambiarSeccion('rangos')"><i class="fas fa-trophy"></i> Rangos XP</button>
   </div>
 
-  <!-- INVENTARIO (Simplificado visualmente para el ejemplo, pero 100% funcional) -->
+  <section id="panel-ajustes" class="admin-panel">
+    <!-- PANEL DE CONFIGURACIÓN CMS -->
+    <div class="card-panel">
+      <div class="panel-header"><span class="panel-title"><i class="fas fa-cogs"></i> Configuración del Sitio (CMS)</span></div>
+      <form onsubmit="guardarAjustesWeb(event)">
+        <div class="form-group"><label class="form-label">Texto Deslizante (Ticker):</label><input type="text" id="ajustesTicker" class="form-input"></div>
+        <div class="form-group"><label class="form-label">Título Principal (Hero):</label><input type="text" id="ajustesHeroTitle" class="form-input"></div>
+        <div class="form-group"><label class="form-label">Descripción debajo del logo:</label><textarea id="ajustesHeroDesc" class="form-textarea" rows="2"></textarea></div>
+        <div class="form-group"><label class="form-label">WhatsApp Oficial:</label><input type="text" id="ajustesWhatsapp" class="form-input"></div>
+        
+        <div style="display:flex; gap: 8px;">
+          <div class="form-group" style="flex:1;"><label class="form-label">Costo Tirada Gacha (Tokens):</label><input type="number" id="ajustesCostoGacha" class="form-input"></div>
+          <div class="form-group" style="flex:1;"><label class="form-label">Tokens Cofre Diario:</label><input type="number" id="ajustesTokensCofre" class="form-input" placeholder="Ej: 15"></div>
+        </div>
+
+        <button type="submit" class="btn-submit">Guardar Ajustes Web</button>
+      </form>
+    </div>
+
+    <!-- NUEVO PANEL: SEGURIDAD Y CAMBIO DE CONTRASEÑA -->
+    <div class="card-panel" style="margin-top: 20px; border-color: rgba(255, 170, 0, 0.4);">
+      <div class="panel-header"><span class="panel-title" style="color: #ffaa00;"><i class="fas fa-key"></i> Seguridad de la Cuenta</span></div>
+      <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 15px;">Renueva la contraseña de acceso al administrador periódicamente por seguridad.</p>
+      <form onsubmit="cambiarContrasenaAdmin(event)">
+        <div class="form-group">
+          <label class="form-label">Nueva Contraseña:</label>
+          <input type="password" id="adminNuevaClave" class="form-input" required minlength="6" placeholder="Mínimo 6 caracteres">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirmar Contraseña:</label>
+          <input type="password" id="adminConfirmarClave" class="form-input" required minlength="6" placeholder="Repite la contraseña">
+        </div>
+        <button type="submit" class="btn-submit" style="background: linear-gradient(135deg, #ffaa00, #ff5500); color: #000; box-shadow: 0 4px 15px rgba(255, 170, 0, 0.3);">
+          <i class="fas fa-lock"></i> Actualizar Contraseña
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- GACHA WAIFUS -->
+  <section id="panel-gacha" class="admin-panel">
+    <button class="btn-toggle-box" onclick="toggleFormWaifu()"><i class="fas fa-plus"></i> <span id="lblToggleWaifu">Agregar Tarjeta Waifu</span></button>
+    <div class="card-panel" id="cajaFormWaifu" style="display: none;">
+      <div class="panel-header"><span class="panel-title"><i class="fas fa-gem"></i> Creador de Cartas Gacha</span><button style="background: none; border: none; color: #ff3366; font-weight: bold; cursor: pointer;" onclick="toggleFormWaifu()">Cerrar</button></div>
+      <form onsubmit="guardarWaifu(event)" id="formWaifuGacha">
+        <div class="form-group"><label class="form-label">Nombre de la Waifu:</label><input type="text" id="waifuNombre" class="form-input" required></div>
+        <div class="form-group">
+          <label class="form-label">Rareza:</label>
+          <select id="waifuRareza" class="form-select">
+            <option value="N">N (Normal) - Gris</option>
+            <option value="R">R (Rare) - Azul</option>
+            <option value="SR">SR (Super Rare) - Morado</option>
+            <option value="SSR">SSR (Specially Super) - Dorado</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Premio / Beneficio:</label><input type="text" id="waifuPremio" class="form-input" placeholder="Ej: Sin premio o Cupón 5%" required></div>
+        <div class="form-group"><label class="form-label">Foto de la Carta:</label><input type="file" id="waifuFileInput" accept="image/*" class="form-input" style="padding: 10px;" required></div>
+        <button type="submit" class="btn-submit" id="btnSubirWaifu">Publicar Tarjeta Gacha</button>
+      </form>
+    </div>
+    
+    <div class="card-panel">
+      <div class="panel-header"><span class="panel-title" style="color: #ffaa00;"><i class="fas fa-history"></i> Historial de Recompensas</span></div>
+      <p style="font-size: 0.8em; color: var(--text-muted); margin-bottom: 15px;">Aquí aparecerán los premios que la gente gane en la máquina. Bórralos una vez los hayas entregado o cobrado.</p>
+      <div id="listaHistorialGacha"><p style="color: var(--text-muted);"><i class="fas fa-spinner fa-spin"></i> Cargando historial...</p></div>
+    </div>
+
+    <div class="card-panel">
+      <div class="panel-header"><span class="panel-title"><i class="fas fa-capsules"></i> Álbum de Cartas Activas</span></div>
+      <div id="listaWaifusAdmin"></div>
+    </div>
+  </section>
+
+  <!-- JUGADORES -->
+  <section id="panel-jugadores" class="admin-panel">
+    <div class="card-panel">
+      <div class="panel-header"><span class="panel-title"><i class="fas fa-users"></i> Base de Jugadores</span></div>
+      <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 15px;">Gestiona a tus clientes: modifica su GamerTag, suma/resta XP para subir su rango, o regálales Tokens 🪙 para el Gacha.</p>
+      <div id="listaJugadoresAdmin"><p style="color: var(--text-muted); text-align: center;"><i class="fas fa-spinner fa-spin"></i> Cargando jugadores...</p></div>
+    </div>
+  </section>
+
+  <!-- INVENTARIO -->
   <section id="panel-productos" class="admin-panel active">
     <button class="btn-toggle-box" onclick="toggleFormularioProducto()"><i class="fas fa-plus"></i> <span id="lblToggleForm">Crear Nuevo Producto</span></button>
     <div class="card-panel" id="cajaFormProducto" style="display: none;">
+      <div class="panel-header"><span class="panel-title" id="formProdTitulo"><i class="fas fa-plus-circle"></i> Nuevo Producto</span><button style="background:none; border:none; color:#ff3366; cursor:pointer; font-weight:bold;" onclick="resetFormularioProducto()">Cerrar</button></div>
       <form id="formProducto" onsubmit="guardarProducto(event)">
         <input type="hidden" id="prodEditId" value="">
         <div class="form-group"><label class="form-label">Nombre del Producto:</label><input type="text" id="prodNombre" class="form-input" required></div>
@@ -111,12 +234,38 @@
           <div class="form-group" style="flex: 1;"><label class="form-label">Precio ($):</label><input type="number" id="prodPrecio" class="form-input" step="0.01" required></div>
           <div class="form-group" style="flex: 1;"><label class="form-label">Stock:</label><input type="number" id="prodStock" class="form-input" min="0" value="10" required></div>
         </div>
-        <div class="form-group"><label class="form-label">Categoría:</label><select id="prodCategoria" class="form-select"><option value="figuras">Figuras</option><option value="recargas">Recargas</option></select></div>
-        <div class="form-group"><label class="form-label">Fotos (Sin límite):</label><input type="file" id="prodFileInput" multiple accept="image/*" style="display: none;" onchange="procesarArchivosGaleria(event)"><button type="button" class="btn-file-select" onclick="document.getElementById('prodFileInput').click()"><i class="fas fa-camera"></i> Seleccionar Fotos</button><div id="contenedorPreviewFotos" class="preview-fotos-grid"></div></div>
+        <div class="form-group"><label class="form-label">Categoría:</label>
+          <select id="prodCategoria" class="form-select">
+            <option value="figuras">Figuras Anime</option><option value="perifericos">Periféricos Gamer</option>
+            <option value="recargas">Recargas ⚡</option><option value="mangas">Mangas</option>
+            <option value="ropa">Vestimenta</option><option value="cartas">TCG / Cartas</option>
+            <option value="mandos">Mandos</option><option value="peluches">Peluches</option>
+            <option value="katanas">Katanas</option><option value="lamparas">Lámparas</option>
+            <option value="accesorios">Accesorios</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Colección:</label><input type="text" id="prodColeccion" class="form-input"></div>
+        <div class="form-group"><label class="form-label">Estado:</label>
+          <select id="prodEstado" class="form-select">
+            <option value="Envío Inmediato 📦">Envío Inmediato</option><option value="Por Encargo ⚡">Por Encargo</option><option value="Acreditación Inmediata ⚡">Acreditación</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Fotos (Sin límite):</label>
+          <input type="file" id="prodFileInput" multiple accept="image/*" style="display: none;" onchange="procesarArchivosGaleria(event)">
+          <button type="button" class="btn-file-select" onclick="document.getElementById('prodFileInput').click()"><i class="fas fa-camera"></i> Seleccionar Fotos</button>
+          <div id="txtEstadoSubida" class="upload-status-text" style="display:none; color: var(--secondary-color); margin-top: 10px;"><i class="fas fa-spinner fa-spin"></i> Procesando...</div>
+          <div id="contenedorPreviewFotos" class="preview-fotos-grid"></div>
+        </div>
+        <div class="form-group"><label class="form-label">Descripción:</label><textarea id="prodDesc" class="form-textarea" rows="2"></textarea></div>
         <button type="submit" class="btn-submit" id="btnGuardarProd">Guardar Producto</button>
       </form>
     </div>
-    <div class="card-panel"><div class="panel-header"><span class="panel-title"><i class="fas fa-boxes"></i> Inventario (<span id="totalProdsLbl">0</span>)</span></div><div id="listaProductosMobile"></div></div>
+    <div class="card-panel">
+      <div class="panel-header"><span class="panel-title"><i class="fas fa-boxes"></i> Inventario (<span id="totalProdsLbl">0</span>)</span>
+        <input type="text" id="buscarEnAdmin" class="form-input" style="max-width:140px; min-height:34px; padding:6px 10px;" placeholder="Buscar..." onkeyup="filtrarTarjetasAdmin()">
+      </div>
+      <div id="listaProductosMobile"><p style="text-align:center;"><i class="fas fa-spinner fa-spin"></i> Cargando...</p></div>
+    </div>
   </section>
 
   <!-- NUEVA PESTAÑA: SISTEMA RPG Y RUMBLE -->
@@ -143,47 +292,161 @@
     </div>
   </section>
 
-  <!-- OTRAS SECCIONES SIMPLIFICADAS PARA ESPACIO -->
-  <section id="panel-jugadores" class="admin-panel"><div class="card-panel"><div class="panel-header"><span class="panel-title">Jugadores</span></div><div id="listaJugadoresAdmin"></div></div></section>
-  <section id="panel-pedidos" class="admin-panel"><div class="card-panel"><div class="panel-header"><span class="panel-title">Pedidos</span></div><div id="listaPedidosMobile"></div></div></section>
-  <section id="panel-gacha" class="admin-panel"><div class="card-panel"><div class="panel-header"><span class="panel-title">Gacha</span></div></div></section>
-  <section id="panel-ajustes" class="admin-panel"><div class="card-panel"><div class="panel-header"><span class="panel-title">Ajustes</span></div></div></section>
+  <!-- PEDIDOS -->
+  <section id="panel-pedidos" class="admin-panel">
+    <div class="card-panel"><div class="panel-header" style="margin-bottom: 8px;"><span class="panel-title"><i class="fas fa-chart-line"></i> Ingresos (7 días)</span></div><div style="height:180px;"><canvas id="graficoVentas"></canvas></div></div>
+    <button class="btn-toggle-box" onclick="toggleCajaPedidoManual()"><i class="fas fa-plus"></i> Registrar Pedido</button>
+    <div class="card-panel" id="cajaPedidoManual" style="display:none;">
+      <form id="formPedidoManual" onsubmit="guardarPedidoManual(event)">
+        <div class="form-group"><label class="form-label">Cliente & WhatsApp:</label><input type="text" id="pedCliente" class="form-input" style="margin-bottom:6px;" required><input type="text" id="pedTelefono" class="form-input" required></div>
+        <div class="form-group"><label class="form-label">Tipo:</label><select id="pedTipo" class="form-select" onchange="toggleFormEnvioPedido(this.value)"><option value="fisico">📦 Artículo Físico</option><option value="digital">⚡ Recarga</option></select></div>
+        <div id="boxCamposEnvioAdmin"><div class="form-group"><label class="form-label">Despacho:</label><select id="pedMetodo" class="form-select"><option value="ZOOM">ZOOM</option><option value="MRW">MRW</option><option value="Personal">Personal</option></select></div><div class="form-group"><label class="form-label">Dirección:</label><input type="text" id="pedDireccion" class="form-input"></div></div>
+        <div class="form-group"><label class="form-label">Detalles y Monto:</label><textarea id="pedDetalles" class="form-textarea" rows="2" style="margin-bottom:6px;" required></textarea><input type="number" id="pedTotalUsd" class="form-input" step="0.01" required></div>
+        <button type="submit" class="btn-submit">Guardar Pedido</button>
+      </form>
+    </div>
+    <div class="card-panel"><div class="panel-header"><span class="panel-title"><i class="fas fa-truck"></i> Órdenes (<span id="totalPedidosLbl">0</span>)</span></div><div id="listaPedidosMobile"></div></div>
+  </section>
 
+  <!-- FACTURAS -->
+  <section id="panel-facturas" class="admin-panel">
+    <button class="btn-toggle-box" onclick="toggleCajaFactura()"><i class="fas fa-file-invoice-dollar"></i> Emitir Nueva Factura / Recibo</button>
+    <div class="card-panel" id="cajaFacturaManual" style="display: none;">
+      <form id="formFactura" onsubmit="guardarFactura(event)">
+        <div class="form-group"><label class="form-label">Cliente:</label><input type="text" id="facCliente" class="form-input" style="margin-bottom:6px;" required><input type="text" id="facCedula" class="form-input"></div>
+        <div class="form-group"><label class="form-label">Vía:</label><select id="facMetodo" class="form-select"><option value="Pago Móvil">Pago Móvil</option><option value="Binance / USDT">Binance</option><option value="Efectivo USD">Efectivo USD</option></select></div>
+        <div class="form-group"><label class="form-label">Detalles:</label><textarea id="facDetalles" class="form-textarea" rows="3" required></textarea></div>
+        <div class="form-group"><label class="form-label">Total USD:</label><input type="number" id="facTotal" class="form-input" step="0.01" required></div>
+        <button type="submit" class="btn-submit">Guardar Factura</button>
+      </form>
+    </div>
+    <div class="card-panel"><div class="panel-header"><span class="panel-title"><i class="fas fa-file-invoice"></i> Historial (<span id="totalFacturasLbl">0</span>)</span></div><div id="listaFacturasMobile"></div></div>
+  </section>
+
+  <!-- BANNERS, CUPONES, PAGOS, REVIEWS, RANGOS -->
+  <section id="panel-banners" class="admin-panel"><div class="card-panel"><div class="panel-header"><span class="panel-title"><i class="fas fa-plus"></i> Añadir Banner</span></div><form onsubmit="agregarBanner(event)"><div class="form-group"><input type="file" id="bannerFileInput" accept="image/*" class="form-input" style="padding:10px;" required></div><button type="submit" class="btn-submit" id="btnSubirBanner">Publicar</button></form></div><div class="card-panel"><div class="panel-header"><span class="panel-title"><i class="fas fa-images"></i> Banners Activos</span></div><div id="listaBannersAdmin"></div></div></section>
+  <section id="panel-cupones" class="admin-panel"><div class="card-panel"><div class="panel-header"><span class="panel-title"><i class="fas fa-plus"></i> Nuevo Cupón</span></div><form onsubmit="agregarCupon(event)"><div class="form-group"><input type="text" id="cuponCodigo" class="form-input" placeholder="CÓDIGO" style="text-transform:uppercase;" required></div><div class="form-group"><input type="number" id="cuponPorcentaje" class="form-input" placeholder="%" required></div><button type="submit" class="btn-submit">Activar</button></form></div><div class="card-panel"><div class="panel-header"><span class="panel-title"><i class="fas fa-tags"></i> Cupones Activos</span></div><div id="listaCuponesAdmin"></div></div></section>
+  <section id="panel-pagos" class="admin-panel"><div class="card-panel"><div class="panel-header"><span class="panel-title"><i class="fas fa-wallet"></i> Pagos</span></div><form onsubmit="guardarDatosPago(event)"><div class="form-group"><label>Banco:</label><input type="text" id="pagoBanco" class="form-input" required></div><div class="form-group"><label>Teléfono:</label><input type="text" id="pagoTelefono" class="form-input" required></div><div class="form-group"><label>Cédula:</label><input type="text" id="pagoCedula" class="form-input" required></div><div class="form-group"><label>Binance:</label><input type="text" id="pagoBinance" class="form-input" required></div><button type="submit" class="btn-submit">Actualizar</button></form></div></section>
+  <section id="panel-reviews" class="admin-panel"><div class="card-panel"><div class="panel-header"><span class="panel-title"><i class="fas fa-star"></i> Reseñas</span></div><div id="listaReviewsAdmin"></div></div></section>
+  <section id="panel-rangos" class="admin-panel"><div class="card-panel"><div class="panel-header"><span class="panel-title"><i class="fas fa-trophy"></i> XP Ninja</span></div><form onsubmit="guardarRangosNinja(event)"><div class="form-group"><label>Chūnin:</label><input type="number" id="xpChunin" class="form-input" required></div><div class="form-group"><label>Jōnin:</label><input type="number" id="xpJonin" class="form-input" required></div><div class="form-group"><label>Hokage:</label><input type="number" id="xpHokage" class="form-input" required></div><button type="submit" class="btn-submit">Guardar</button></form></div></section>
 </main>
+
+<div class="print-area" id="reciboPrint">
+  <h2>SAKURA GAMEVERSE</h2><p style="text-align:center;">Comprobante de Venta</p><div class="divider"></div><p><strong>Fecha:</strong> <span id="printFecha"></span></p><p><strong>Cliente:</strong> <span id="printCliente"></span></p><p><strong>C.I / ID:</strong> <span id="printCedula"></span></p><p><strong>Pago vía:</strong> <span id="printMetodo"></span></p><div class="divider"></div><p><strong>Detalle de Compra:</strong></p><pre id="printDetalles" style="font-family:inherit; white-space: pre-wrap; margin: 5px 0; font-size: 14px;"></pre><div class="divider"></div><p style="text-align:right; font-size: 1.2em;"><strong>TOTAL USD: $<span id="printTotal"></span></strong></p><p style="text-align:center; margin-top:20px; font-size: 0.9em;">¡Gracias por tu compra!</p>
+</div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
   import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, setDoc, addDoc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
-  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, updatePassword } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
   const firebaseConfig = { apiKey: "AIzaSyDH1DZqaIi5sKRXspXDUWbMUZ4nr5JIy8Q", authDomain: "sakura-gameverse.firebaseapp.com", projectId: "sakura-gameverse", storageBucket: "sakura-gameverse.firebasestorage.app", messagingSenderId: "226328425516", appId: "1:226328425516:web:8dc11761639228c6120d89" };
   const app = initializeApp(firebaseConfig); const db = getFirestore(app); const auth = getAuth(app);
   
   const CORREO_ADMIN = "Sakuragameverse@gmail.com";
-  let productosAdminGlobal = []; let fotosBufferProducto = [];
+  let productosAdminGlobal = []; let facturasAdminGlobal = []; let fotosBufferProducto = [];
 
   onAuthStateChanged(auth, (user) => { 
     if (user && user.email.toLowerCase() === CORREO_ADMIN.toLowerCase()) { 
-      document.getElementById('lockScreen').style.display = 'none'; document.getElementById('adminMainContent').style.display = 'block'; cargarTodo(); 
+      document.getElementById('lockScreen').style.display = 'none'; 
+      document.getElementById('adminMainContent').style.display = 'block'; 
+      cargarTodo(); 
     } else { 
-      document.getElementById('lockScreen').style.display = 'flex'; document.getElementById('adminMainContent').style.display = 'none'; 
-      if(user) { signOut(auth); alert("ACCESO DENEGADO."); }
+      document.getElementById('lockScreen').style.display = 'flex'; 
+      document.getElementById('adminMainContent').style.display = 'none'; 
+      if(user) {
+        signOut(auth);
+        alert("🛑 ACCESO DENEGADO: Tu cuenta de jugador no tiene permisos de administrador.");
+      }
     } 
   });
 
   window.iniciarSesionAdmin = async function() { 
-    const email = document.getElementById('adminEmailInput').value.trim(); const pass = document.getElementById('adminPassInput').value; 
+    const email = document.getElementById('adminEmailInput').value.trim(); 
+    const pass = document.getElementById('adminPassInput').value; 
+    const errorBox = document.getElementById('loginErrorMsg'); 
+    const btn = document.getElementById('btnLoginSubmit'); 
     if (!email || !pass) return; 
-    if (email.toLowerCase() !== CORREO_ADMIN.toLowerCase()) { document.getElementById('loginErrorMsg').innerText = "🛑 Sin permisos."; document.getElementById('loginErrorMsg').style.display = 'block'; return; }
-    try { await signInWithEmailAndPassword(auth, email, pass); document.getElementById('adminPassInput').value = ""; } catch (err) { document.getElementById('loginErrorMsg').innerText = "Credenciales inválidas."; document.getElementById('loginErrorMsg').style.display = 'block'; } 
+
+    if (email.toLowerCase() !== CORREO_ADMIN.toLowerCase()) {
+        errorBox.innerText = "🛑 No tienes permisos de administrador.";
+        errorBox.style.display = 'block';
+        return;
+    }
+
+    btn.disabled = true; errorBox.style.display = 'none'; 
+    try { 
+      await signInWithEmailAndPassword(auth, email, pass); 
+      document.getElementById('adminPassInput').value = ""; 
+    } catch (err) { 
+      errorBox.innerText = "Credenciales inválidas."; 
+      errorBox.style.display = 'block'; 
+    } finally { 
+      btn.disabled = false; 
+    } 
   };
 
   window.cerrarSesionAdmin = async function() { if (confirm("¿Cerrar sesión?")) await signOut(auth); };
   window.cambiarSeccion = function(panelId) { document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active')); event.currentTarget.classList.add('active'); document.getElementById(`panel-${panelId}`).classList.add('active'); };
+  function sanitizar(str) { if (!str) return ''; return String(str).replace(/[&<>"']/g, function(m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]; }); }
 
-  // =====================================
-  // LÓGICA DEL SISTEMA RPG (FORJA Y RUMBLE)
-  // =====================================
+  function comprimirYConvertirAWebP(archivo, maxDim = 600, calidad = 0.72) {
+    return new Promise((resolve, reject) => {
+      const lector = new FileReader(); lector.onload = (e) => { const img = new Image(); img.onload = () => { let ancho = img.width; let alto = img.height; if (ancho > maxDim || alto > maxDim) { if (ancho > alto) { alto = Math.round((alto * maxDim) / ancho); ancho = maxDim; } else { ancho = Math.round((ancho * maxDim) / alto); alto = maxDim; } } const canvas = document.createElement('canvas'); canvas.width = ancho; canvas.height = alto; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, ancho, alto); resolve(canvas.toDataURL('image/webp', calidad)); }; img.onerror = reject; img.src = e.target.result; }; lector.onerror = reject; lector.readAsDataURL(archivo);
+    });
+  }
+
+  window.cambiarContrasenaAdmin = async function(e) {
+    e.preventDefault();
+    const p1 = document.getElementById('adminNuevaClave').value;
+    const p2 = document.getElementById('adminConfirmarClave').value;
+    if (p1 !== p2) return alert("❌ Las contraseñas no coinciden.");
+    if (p1.length < 6) return alert("❌ La contraseña es muy corta. Debe tener al menos 6 caracteres.");
+    const user = auth.currentUser;
+    if (user) {
+      try {
+        await updatePassword(user, p1);
+        alert("✅ ¡Contraseña actualizada con éxito!");
+        document.getElementById('adminNuevaClave').value = '';
+        document.getElementById('adminConfirmarClave').value = '';
+      } catch (error) {
+        if (error.code === 'auth/requires-recent-login') { alert("⚠️ Requiere inicio de sesión reciente para cambiar clave."); } else { alert("❌ Error: " + error.message); }
+      }
+    }
+  };
+
+  /* AJUSTES WEB */
+  async function cargarAjustesWeb() { 
+    try { 
+      const snap = await getDoc(doc(db, "configuracion", "ajustes_web")); 
+      if (snap.exists()) { 
+        const d = snap.data(); 
+        document.getElementById('ajustesTicker').value = d.ticker || ''; 
+        document.getElementById('ajustesHeroTitle').value = d.heroTitle || ''; 
+        document.getElementById('ajustesHeroDesc').value = d.heroDesc || ''; 
+        document.getElementById('ajustesWhatsapp').value = d.whatsapp || ''; 
+        document.getElementById('ajustesCostoGacha').value = d.costoGacha || 100; 
+        document.getElementById('ajustesTokensCofre').value = d.tokensCofre || 15;
+      } 
+    } catch(e) {} 
+  }
+  
+  window.guardarAjustesWeb = async function(e) { 
+    e.preventDefault(); 
+    try { 
+      await setDoc(doc(db, "configuracion", "ajustes_web"), { 
+        ticker: document.getElementById('ajustesTicker').value.trim(), 
+        heroTitle: document.getElementById('ajustesHeroTitle').value.trim(), 
+        heroDesc: document.getElementById('ajustesHeroDesc').value.trim(), 
+        whatsapp: document.getElementById('ajustesWhatsapp').value.trim(), 
+        costoGacha: parseInt(document.getElementById('ajustesCostoGacha').value) || 100,
+        tokensCofre: parseInt(document.getElementById('ajustesTokensCofre').value) || 15
+      }, { merge: true }); 
+      alert("Ajustes actualizados."); 
+    } catch(err) {} 
+  };
+
+  /* LÓGICA DEL SISTEMA RPG (FORJA Y RUMBLE) */
   window.guardarObjetoRPG = async function() {
     let nombre = document.getElementById('rpgItemNombre').value.trim();
     let tipo = document.getElementById('rpgItemTipo').value;
@@ -227,8 +490,200 @@
     alert(`Torneo finalizado con éxito. Ganador: ${ganador}.`);
   };
 
-  function cargarTodo() {
-    // Aquí van tus funciones de cargarProductosAdmin(), etc.
+  /* GACHA WAIFUS Y NÚCLEO DE AUDITORÍA */
+  window.toggleFormWaifu = function() { const box = document.getElementById('cajaFormWaifu'); const lbl = document.getElementById('lblToggleWaifu'); if(box.style.display === 'none') { box.style.display = 'block'; lbl.innerText = "Cerrar Creador"; } else { box.style.display = 'none'; lbl.innerText = "Agregar Tarjeta Waifu"; } };
+
+  async function cargarWaifusAdmin() {
+    try {
+      const q = query(collection(db, "waifus_gacha"), orderBy("timestamp", "desc")); const snapshot = await getDocs(q); const cont = document.getElementById('listaWaifusAdmin');
+      if (snapshot.empty) { cont.innerHTML = "<p style='color:var(--text-muted); text-align:center;'>Gacha vacío.</p>"; return; }
+      let htmlBloque = "";
+      snapshot.forEach(d => {
+        const w = { id: d.id, ...d.data() }; let tagClase = w.rareza === 'SSR' ? 'tag-ssr' : (w.rareza === 'SR' ? 'tag-sr' : (w.rareza === 'R' ? 'tag-r' : 'tag-n')); let iconOculto = w.oculto ? 'fa-eye-slash' : 'fa-eye'; let colorOculto = w.oculto ? '#ffaa00' : 'var(--secondary-color)';
+        htmlBloque += `<div class="item-card-row ${w.oculto ? 'is-paused' : ''}"><img src="${w.imgUrl}" class="item-card-thumb"><div class="item-card-info"><div class="item-card-title">${sanitizar(w.nombre)}</div><div class="item-card-meta"><span class="tag-badge ${tagClase}">${w.rareza}</span> <span>•</span> <span style="color:#25d366;">${sanitizar(w.premio)}</span></div></div><div class="item-card-actions"><button class="btn-action-touch" style="color: ${colorOculto}; background: rgba(0,0,0,0.4); border: 1px solid ${colorOculto}40;" onclick="toggleOcultarWaifu('${w.id}', ${w.oculto})"><i class="fas ${iconOculto}"></i></button><button class="btn-action-touch btn-del" onclick="eliminarWaifu('${w.id}')"><i class="fas fa-trash"></i></button></div></div>`;
+      });
+      cont.innerHTML = htmlBloque;
+    } catch(e) {}
+  }
+
+  async function cargarHistorialGacha() {
+    try {
+      const q = query(collection(db, "historial_gacha"), orderBy("timestamp", "desc"));
+      const snapshot = await getDocs(q);
+      const cont = document.getElementById('listaHistorialGacha');
+      if (snapshot.empty) { cont.innerHTML = "<p style='color:var(--text-muted); text-align:center;'>Nadie ha invocado aún.</p>"; return; }
+      
+      let html = "";
+      snapshot.forEach(d => {
+        let h = d.data();
+        let fecha = new Date(h.timestamp).toLocaleString();
+        let colorR = h.rareza === 'SSR' ? '#ffaa00' : (h.rareza === 'SR' ? '#b000ff' : (h.rareza === 'R' ? '#00e5ff' : '#b4becd'));
+        
+        html += `
+        <div class="item-card-row">
+          <div style="flex-grow:1;">
+            <div style="font-weight:bold; color:#fff;">👤 ${sanitizar(h.jugador)} <span style="font-size:0.8em; color:var(--text-muted); font-weight:normal;">- ${fecha}</span></div>
+            <div style="font-size:0.9em; color:var(--text-muted);">Desbloqueó: <strong style="color:${colorR};">${sanitizar(h.waifu)} (${h.rareza})</strong></div>
+            <div style="font-size:0.85em; color:#25d366; margin-top:4px;"><i class="fas fa-gift"></i> Premio Pendiente: <strong>${sanitizar(h.premio)}</strong></div>
+          </div>
+          <button class="btn-action-touch btn-del" onclick="eliminarHistorialGacha('${d.id}')" title="Marcar como entregado"><i class="fas fa-check"></i></button>
+        </div>`;
+      });
+      cont.innerHTML = html;
+    } catch(e) {
+      console.error("Error al cargar el historial:", e);
+      document.getElementById('listaHistorialGacha').innerHTML = `<p style='color:#ff3366; text-align:center;'><i class="fas fa-exclamation-triangle"></i> Fallo de conexión: ${e.message}</p>`;
+    }
+  }
+
+  window.eliminarHistorialGacha = async function(id) {
+    if(confirm("¿Ya aplicaste este descuento o entregaste el premio? (Esto borrará el registro de auditoría)")) {
+      await deleteDoc(doc(db, "historial_gacha", id));
+      cargarHistorialGacha();
+    }
+  };
+
+  window.guardarWaifu = async function(e) { e.preventDefault(); const file = document.getElementById('waifuFileInput').files[0]; if (!file) return; const btn = document.getElementById('btnSubirWaifu'); btn.disabled = true; btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Imprimiendo carta...`; try { const imgUrl = await comprimirYConvertirAWebP(file, 600, 0.8); await addDoc(collection(db, "waifus_gacha"), { nombre: document.getElementById('waifuNombre').value.trim(), rareza: document.getElementById('waifuRareza').value, premio: document.getElementById('waifuPremio').value.trim(), imgUrl, oculto: false, timestamp: Date.now() }); document.getElementById('formWaifuGacha').reset(); cargarWaifusAdmin(); toggleFormWaifu(); } catch(err){} finally { btn.disabled = false; btn.innerText = "Publicar Tarjeta Gacha"; } };
+  window.toggleOcultarWaifu = async function(id, estadoActual) { try { await updateDoc(doc(db, "waifus_gacha", id), { oculto: !estadoActual }); cargarWaifusAdmin(); } catch(e) {} };
+  window.eliminarWaifu = async function(id) { if (confirm("¿Quemar esta tarjeta permanentemente?")) { await deleteDoc(doc(db, "waifus_gacha", id)); cargarWaifusAdmin(); } };
+
+  /* PRODUCTOS */
+  window.toggleFormularioProducto = function() { const box = document.getElementById('cajaFormProducto'); const lbl = document.getElementById('lblToggleForm'); if(box.style.display === 'none') { box.style.display = 'block'; lbl.innerText = "Cerrar Formulario"; } else { box.style.display = 'none'; lbl.innerText = "Crear Nuevo Producto"; } };
+  window.procesarArchivosGaleria = async function(e) { const archivos = Array.from(e.target.files); if (!archivos.length) return; document.getElementById('txtEstadoSubida').style.display = 'block'; for (let archivo of archivos) { try { const url = await comprimirYConvertirAWebP(archivo, 600, 0.72); fotosBufferProducto.push(url); } catch(err){} } document.getElementById('txtEstadoSubida').style.display = 'none'; renderizarMiniaturasFotos(); e.target.value = ""; };
+  function renderizarMiniaturasFotos() { const cont = document.getElementById('contenedorPreviewFotos'); cont.innerHTML = ""; fotosBufferProducto.forEach((url, index) => { cont.innerHTML += `<div class="preview-foto-item"><img src="${url}"><button type="button" class="btn-del-foto-preview" onclick="removerFotoBuffer(${index})">✕</button></div>`; }); }
+  window.removerFotoBuffer = function(index) { fotosBufferProducto.splice(index, 1); renderizarMiniaturasFotos(); };
+  async function cargarProductosAdmin() { try { const q = query(collection(db, "productos"), orderBy("timestamp", "desc")); const snapshot = await getDocs(q); productosAdminGlobal = []; document.getElementById('totalProdsLbl').innerText = snapshot.size; document.getElementById('dashProds').innerText = snapshot.size; const cont = document.getElementById('listaProductosMobile'); if (snapshot.empty) { cont.innerHTML = `<p style="text-align:center;">No hay productos.</p>`; return; } let htmlBloque = ""; snapshot.forEach(docSnap => { const p = { id: docSnap.id, ...docSnap.data() }; productosAdminGlobal.push(p); const foto = (p.fotos && p.fotos.length > 0) ? p.fotos[0] : 'logo.webp?v=2'; let badgeClase = 'tag-stock'; if (p.estado && p.estado.includes("Encargo")) badgeClase = 'tag-encargo'; if (p.categoria === 'recargas') badgeClase = 'tag-digital'; let isOculto = p.oculto === true; let cardClass = isOculto ? "item-card-row card-item-filtro is-paused" : "item-card-row card-item-filtro"; let colorOculto = isOculto ? '#ffaa00' : 'var(--secondary-color)'; let stockValor = p.stock !== undefined ? p.stock : 'N/A'; htmlBloque += `<div class="${cardClass}" data-nombre="${sanitizar(p.nombre).toLowerCase()}"><img src="${foto}" class="item-card-thumb" loading="lazy"><div class="item-card-info"><div class="item-card-title">${sanitizar(p.nombre)}</div><div class="item-card-meta"><span>${sanitizar(p.categoria)}</span> <span>•</span> <span class="tag-badge ${badgeClase}">${p.estado || 'Stock'}</span> <span>•</span> <span style="color:var(--secondary-color);"><i class="fas fa-box-open"></i> ${stockValor} uds.</span></div><div class="item-card-price">$${Number(p.precio).toFixed(2)}</div></div><div class="item-card-actions"><button class="btn-action-touch" style="color: ${colorOculto}; background: rgba(0,0,0,0.4); border: 1px solid ${colorOculto}40;" onclick="toggleOcultarProducto('${p.id}', ${isOculto})"><i class="fas fa-eye"></i></button><button class="btn-action-touch btn-edit" onclick="prepararEdicion('${p.id}')"><i class="fas fa-pen"></i></button><button class="btn-action-touch btn-del" onclick="eliminarProducto('${p.id}')"><i class="fas fa-trash"></i></button></div></div>`; }); cont.innerHTML = htmlBloque; } catch(e) {} }
+  window.toggleOcultarProducto = async function(id, isOculto) { try { await updateDoc(doc(db, "productos", id), { oculto: !isOculto }); cargarProductosAdmin(); } catch(e) {} };
+  window.guardarProducto = async function(e) { e.preventDefault(); const id = document.getElementById('prodEditId').value; if (fotosBufferProducto.length === 0) return alert("Añade foto."); try { const data = { nombre: document.getElementById('prodNombre').value.trim(), precio: parseFloat(document.getElementById('prodPrecio').value), stock: parseInt(document.getElementById('prodStock').value) || 0, categoria: document.getElementById('prodCategoria').value, coleccion: document.getElementById('prodColeccion').value.trim() || 'General', estado: document.getElementById('prodEstado').value, descripcion: document.getElementById('prodDesc').value.trim(), fotos: fotosBufferProducto, timestamp: Date.now() }; if (id) { await updateDoc(doc(db, "productos", id), data); } else { data.oculto = false; await addDoc(collection(db, "productos"), data); } resetFormularioProducto(); cargarProductosAdmin(); } catch(err) {} };
+  window.prepararEdicion = function(id) { const p = productosAdminGlobal.find(item => item.id === id); if (!p) return; document.getElementById('prodEditId').value = p.id; document.getElementById('prodNombre').value = p.nombre || ''; document.getElementById('prodPrecio').value = p.precio || ''; document.getElementById('prodStock').value = p.stock !== undefined ? p.stock : 10; document.getElementById('prodCategoria').value = p.categoria || 'figuras'; document.getElementById('prodColeccion').value = p.coleccion || ''; document.getElementById('prodEstado').value = p.estado || 'Envío Inmediato 📦'; document.getElementById('prodDesc').value = p.descripcion || ''; fotosBufferProducto = p.fotos ? [...p.fotos] : []; renderizarMiniaturasFotos(); document.getElementById('cajaFormProducto').style.display = "block"; window.scrollTo({ top: 0, behavior: 'smooth' }); };
+  window.resetFormularioProducto = function() { document.getElementById('formProducto').reset(); document.getElementById('prodEditId').value = ""; fotosBufferProducto = []; renderizarMiniaturasFotos(); document.getElementById('cajaFormProducto').style.display = "none"; };
+  window.eliminarProducto = async function(id) { if(confirm("¿Eliminar?")) { await deleteDoc(doc(db, "productos", id)); cargarProductosAdmin(); } };
+  window.filtrarTarjetasAdmin = function() { const val = document.getElementById('buscarEnAdmin').value.toLowerCase(); document.querySelectorAll('.card-item-filtro').forEach(c => { const nom = c.getAttribute('data-nombre') || ''; c.style.display = nom.includes(val) ? 'flex' : 'none'; }); };
+
+  /* PEDIDOS Y ANALÍTICAS */
+  window.toggleCajaPedidoManual = function() { const box = document.getElementById('cajaPedidoManual'); box.style.display = (box.style.display === 'none') ? 'block' : 'none'; };
+  window.toggleFormEnvioPedido = function(tipo) { document.getElementById('boxCamposEnvioAdmin').style.display = (tipo === 'digital') ? 'none' : 'block'; };
+  async function cargarPedidosAdmin() { try { const q = query(collection(db, "pedidos"), orderBy("timestamp", "desc")); const snapshot = await getDocs(q); const cont = document.getElementById('listaPedidosMobile'); document.getElementById('totalPedidosLbl').innerText = snapshot.size; if (snapshot.empty) { cont.innerHTML = `<p style="text-align: center;">Sin órdenes.</p>`; document.getElementById('dashIngresos').innerText = "$0.00"; document.getElementById('dashOrdenes').innerText = "0"; return; } let htmlBloque = ""; let totalUsdGanado = 0; let pedidosPendientes = 0; let ventas7Dias = [0, 0, 0, 0, 0, 0, 0]; let labels7Dias = []; let hoy = new Date(); hoy.setHours(23, 59, 59, 999); let limite7Dias = new Date(hoy); limite7Dias.setDate(limite7Dias.getDate() - 6); limite7Dias.setHours(0, 0, 0, 0); for(let i=6; i>=0; i--) { let d = new Date(); d.setDate(d.getDate() - i); labels7Dias.push(d.toLocaleDateString('es-ES', {weekday: 'short', day: 'numeric'})); } snapshot.forEach(docSnap => { const ped = docSnap.data(); let est = ped.estadoPedido || 'Pendiente'; if(est === 'Completado') totalUsdGanado += Number(ped.totalUsd || 0); else pedidosPendientes++; let ts = ped.timestamp || 0; if (est === 'Completado' && ts >= limite7Dias.getTime() && ts <= hoy.getTime()) { let dVenta = new Date(ts); let diffDays = Math.floor((hoy.getTime() - dVenta.getTime()) / (1000 * 3600 * 24)); if(diffDays >= 0 && diffDays <= 6) ventas7Dias[6 - diffDays] += Number(ped.totalUsd); } let colorEstado = '#ffaa00'; if(est === 'Pagado') colorEstado = '#00e5ff'; else if(est === 'Enviado') colorEstado = '#b000ff'; else if(est === 'Completado') colorEstado = '#25d366'; htmlBloque += `<div class="item-card-row"><div class="item-card-info"><div style="display:flex; justify-content:space-between; margin-bottom: 2px;"><strong>${sanitizar(ped.cliente)}</strong><span class="tag-badge" style="background: ${colorEstado}20; color: ${colorEstado}; border: 1px solid ${colorEstado}40;">${est}</span></div><div style="font-size:0.85em; color:var(--text-muted);"><i class="fab fa-whatsapp" style="color:#25d366;"></i> ${sanitizar(ped.telefono)}</div><div style="font-size:1.05em; font-weight:700; color:var(--secondary-color);">$${Number(ped.totalUsd).toFixed(2)}</div></div><div class="item-card-actions"><button class="btn-action-touch" style="color: ${colorEstado}; background: rgba(0,0,0,0.4); border: 1px solid ${colorEstado}40;" onclick="cambiarEstadoPedido('${docSnap.id}', '${est}')"><i class="fas fa-sync-alt"></i></button><button class="btn-action-touch btn-del" onclick="eliminarPedido('${docSnap.id}')"><i class="fas fa-trash"></i></button></div></div>`; }); cont.innerHTML = htmlBloque; document.getElementById('dashIngresos').innerText = "$" + totalUsdGanado.toFixed(2); document.getElementById('dashOrdenes').innerText = pedidosPendientes; dibujarGraficaVentas(labels7Dias, ventas7Dias); } catch(e) {} }
+  window.graficoVentasAdmin = null; function dibujarGraficaVentas(etiquetas, datos) { if (window.graficoVentasAdmin) window.graficoVentasAdmin.destroy(); const ctx = document.getElementById('graficoVentas').getContext('2d'); window.graficoVentasAdmin = new Chart(ctx, { type: 'line', data: { labels: etiquetas, datasets: [{ data: datos, borderColor: '#00e5ff', backgroundColor: 'rgba(0, 229, 255, 0.2)', borderWidth: 2, pointBackgroundColor: '#ff007f', pointBorderColor: '#fff', fill: true }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8b8f9e' } }, x: { grid: { display: false }, ticks: { color: '#8b8f9e' } } } } }); }
+  window.cambiarEstadoPedido = async function(id, est) { let nuevo = 'Pendiente'; if(est === 'Pendiente') nuevo = 'Pagado'; else if(est === 'Pagado') nuevo = 'Enviado'; else if(est === 'Enviado') nuevo = 'Completado'; try { await updateDoc(doc(db, "pedidos", id), { estadoPedido: nuevo }); cargarPedidosAdmin(); } catch(e){} };
+  window.guardarPedidoManual = async function(e) { e.preventDefault(); try { await addDoc(collection(db, "pedidos"), { cliente: document.getElementById('pedCliente').value, telefono: document.getElementById('pedTelefono').value, tipo: document.getElementById('pedTipo').value, metodoEnvio: document.getElementById('pedTipo').value, detalles: document.getElementById('pedDetalles').value, totalUsd: parseFloat(document.getElementById('pedTotalUsd').value), estadoPedido: "Pendiente", timestamp: Date.now() }); toggleCajaPedidoManual(); cargarPedidosAdmin(); } catch(err){} };
+  window.eliminarPedido = async function(id) { if (confirm("¿Eliminar pedido?")) { await deleteDoc(doc(db, "pedidos", id)); cargarPedidosAdmin(); } };
+
+  /* JUGADORES (EDITAR, ASIGNAR XP Y ELIMINAR) */
+  function calcularRangoXP(xp) {
+    let chunin = parseInt(document.getElementById('xpChunin')?.value) || 300;
+    let jonin = parseInt(document.getElementById('xpJonin')?.value) || 600;
+    let hokage = parseInt(document.getElementById('xpHokage')?.value) || 1000;
+    if (xp >= hokage) return "Hokage";
+    if (xp >= jonin) return "Jōnin";
+    if (xp >= chunin) return "Chūnin";
+    return "Genin";
+  }
+
+  async function cargarJugadoresAdmin() { 
+    try { 
+      const q = query(collection(db, "jugadores_cloud"), orderBy("updatedAt", "desc")); 
+      const snapshot = await getDocs(q); 
+      const cont = document.getElementById('listaJugadoresAdmin'); 
+      if (snapshot.empty) { cont.innerHTML = "<p style='text-align:center;'>No hay jugadores registrados.</p>"; return; } 
+      let htmlBloque = ""; 
+      snapshot.forEach(d => { 
+        const p = d.data().profile || {}; 
+        const tag = p.tag || 'Sin Nombre'; 
+        const xp = p.xp || 0; 
+        const tokens = p.tokens || 0;
+        const rango = p.rango || 'Genin'; 
+        htmlBloque += `
+        <div class="item-card-row">
+          <div style="flex-grow: 1;">
+            <div style="font-weight:700; color:#fff; font-size:1.05em;">${sanitizar(tag)}</div>
+            <div style="font-size:0.85em; color:var(--text-muted);">
+              Rango: <strong>${rango}</strong> | <strong style="color:var(--secondary-color);">${xp} XP</strong> | <strong style="color:#ffaa00;"><i class="fas fa-coins"></i> ${tokens} Tokens</strong>
+            </div>
+          </div>
+          <div class="item-card-actions">
+            <button class="btn-action-touch" style="color: #ff007f; border: 1px solid rgba(255,0,127,0.3);" title="Sumar/Restar XP" onclick="asignarXpManualmente('${d.id}', ${xp}, '${sanitizar(tag)}')"><i class="fas fa-star"></i></button>
+            <button class="btn-action-touch" style="color: #ffaa00; border: 1px solid rgba(255,170,0,0.3);" title="Gestionar Tokens" onclick="asignarTokensManualmente('${d.id}', ${tokens}, '${sanitizar(tag)}')"><i class="fas fa-coins"></i></button>
+            <button class="btn-action-touch btn-edit" title="Editar GamerTag" onclick="editarJugadorManualmente('${d.id}', '${sanitizar(tag)}')"><i class="fas fa-pen"></i></button>
+            <button class="btn-action-touch btn-del" title="Eliminar Jugador" onclick="eliminarJugadorManualmente('${d.id}', '${sanitizar(tag)}')"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>`; 
+      }); 
+      cont.innerHTML = htmlBloque; 
+    } catch(e) {} 
+  }
+
+  window.asignarXpManualmente = async function(uid, currentXp, tag) { 
+    let cantidad = parseInt(prompt(`⭐ ASIGNAR XP A: ${tag}\n\nIngresa la cantidad (usa negativos para restar):`)); 
+    if (isNaN(cantidad)) return; 
+    let newXp = currentXp + cantidad; 
+    if (newXp < 0) newXp = 0; 
+    let newRank = calcularRangoXP(newXp);
+    try { 
+      await updateDoc(doc(db, "jugadores_cloud", uid), { "profile.xp": newXp, "profile.rango": newRank, "updatedAt": Date.now() }); 
+      cargarJugadoresAdmin(); 
+    } catch(e) { alert("Error al actualizar XP"); } 
+  };
+
+  window.asignarTokensManualmente = async function(uid, currentTokens, tag) {
+    let cantidad = parseInt(prompt(`🪙 GESTIONAR TOKENS DE: ${tag}\n\nIngresa la cantidad a sumar (usa negativos para restar):`));
+    if (isNaN(cantidad)) return;
+    let newTokens = currentTokens + cantidad;
+    if (newTokens < 0) newTokens = 0;
+    try {
+      await updateDoc(doc(db, "jugadores_cloud", uid), { "profile.tokens": newTokens, "updatedAt": Date.now() });
+      cargarJugadoresAdmin();
+    } catch(e) { alert("Error al actualizar tokens."); }
+  };
+
+  window.editarJugadorManualmente = async function(uid, currentTag) {
+    let nuevoTag = prompt("Modificar GamerTag:", currentTag);
+    if (!nuevoTag || nuevoTag.trim() === "") return;
+    try {
+      await updateDoc(doc(db, "jugadores_cloud", uid), { "profile.tag": nuevoTag.trim(), "updatedAt": Date.now() });
+      alert("GamerTag actualizado correctamente.");
+      cargarJugadoresAdmin();
+    } catch(e) { alert("Error al editar jugador."); }
+  };
+
+  window.eliminarJugadorManualmente = async function(uid, tag) {
+    if (confirm(`¿Estás seguro de eliminar al jugador "${tag}"? Esta acción borrará sus datos de la nube.`)) {
+      try { await deleteDoc(doc(db, "jugadores_cloud", uid)); cargarJugadoresAdmin(); } catch(e) { alert("Error al eliminar el jugador."); }
+    }
+  };
+
+  /* FACTURAS, BANNERS, CUPONES */
+  window.toggleCajaFactura = function() { const box = document.getElementById('cajaFacturaManual'); box.style.display = (box.style.display === 'none') ? 'block' : 'none'; };
+  async function cargarFacturasAdmin() { const q = query(collection(db, "facturas"), orderBy("timestamp", "desc")); const snapshot = await getDocs(q); facturasAdminGlobal = []; const cont = document.getElementById('listaFacturasMobile'); document.getElementById('totalFacturasLbl').innerText = snapshot.size; if (snapshot.empty) { cont.innerHTML = ""; return; } let htmlBloque = ""; snapshot.forEach(docSnap => { const fac = { id: docSnap.id, ...docSnap.data() }; facturasAdminGlobal.push(fac); htmlBloque += `<div class="item-card-row"><div class="item-card-info"><strong>${sanitizar(fac.cliente)}</strong><br><span style="color:var(--secondary-color);">$${Number(fac.totalUsd).toFixed(2)}</span></div><div class="item-card-actions"><button class="btn-action-touch btn-print" onclick="imprimirFactura('${fac.id}')"><i class="fas fa-print"></i></button><button class="btn-action-touch btn-del" onclick="eliminarFactura('${fac.id}')"><i class="fas fa-trash"></i></button></div></div>`; }); cont.innerHTML = htmlBloque; }
+  window.guardarFactura = async function(e) { e.preventDefault(); await addDoc(collection(db, "facturas"), { cliente: document.getElementById('facCliente').value, cedula: document.getElementById('facCedula').value, metodo: document.getElementById('facMetodo').value, detalles: document.getElementById('facDetalles').value, totalUsd: parseFloat(document.getElementById('facTotal').value), timestamp: Date.now() }); document.getElementById('formFactura').reset(); toggleCajaFactura(); cargarFacturasAdmin(); };
+  window.eliminarFactura = async function(id) { if (confirm("¿Eliminar?")) { await deleteDoc(doc(db, "facturas", id)); cargarFacturasAdmin(); } };
+  window.imprimirFactura = function(id) { const fac = facturasAdminGlobal.find(f => f.id === id); if(!fac) return; document.getElementById('printFecha').innerText = new Date(fac.timestamp).toLocaleString(); document.getElementById('printCliente').innerText = fac.cliente; document.getElementById('printCedula').innerText = fac.cedula || 'N/A'; document.getElementById('printMetodo').innerText = fac.metodo; document.getElementById('printDetalles').innerText = fac.detalles; document.getElementById('printTotal').innerText = Number(fac.totalUsd).toFixed(2); window.print(); };
+  
+  async function cargarBannersAdmin() { const q = query(collection(db, "banners"), orderBy("timestamp", "desc")); const snapshot = await getDocs(q); const cont = document.getElementById('listaBannersAdmin'); if (snapshot.empty) { cont.innerHTML = ""; return; } let htmlBloque = ""; snapshot.forEach(d => { htmlBloque += `<div class="item-card-row"><img src="${d.data().imgUrl}" style="width: 70px; height: 40px; object-fit: cover;"><button class="btn-action-touch btn-del" onclick="eliminarBanner('${d.id}')"><i class="fas fa-trash"></i></button></div>`; }); cont.innerHTML = htmlBloque; }
+  window.agregarBanner = async function(e) { e.preventDefault(); const file = document.getElementById('bannerFileInput').files[0]; if (!file) return; const url = await comprimirYConvertirAWebP(file, 900, 0.75); await addDoc(collection(db, "banners"), { imgUrl: url, timestamp: Date.now() }); cargarBannersAdmin(); };
+  window.eliminarBanner = async function(id) { if(confirm("¿Eliminar?")) { await deleteDoc(doc(db, "banners", id)); cargarBannersAdmin(); } };
+  async function cargarCuponesAdmin() { const snap = await getDocs(collection(db, "cupones")); const cont = document.getElementById('listaCuponesAdmin'); let html = ""; snap.forEach(d => { html += `<div class="item-card-row"><div style="flex-grow:1; color:var(--secondary-color); font-weight:bold;">${sanitizar(d.data().codigo)}</div><button class="btn-action-touch btn-del" onclick="eliminarCupon('${d.id}')"><i class="fas fa-trash"></i></button></div>`; }); cont.innerHTML = html; }
+  window.agregarCupon = async function(e) { e.preventDefault(); await addDoc(collection(db, "cupones"), { codigo: document.getElementById('cuponCodigo').value.toUpperCase(), porcentaje: parseInt(document.getElementById('cuponPorcentaje').value), timestamp: Date.now() }); cargarCuponesAdmin(); };
+  window.eliminarCupon = async function(id) { await deleteDoc(doc(db, "cupones", id)); cargarCuponesAdmin(); };
+  async function cargarDatosGenerales() { try { const snap = await getDoc(doc(db, "configuracion", "datos_pago")); if (snap.exists()) { const d = snap.data(); document.getElementById('pagoBanco').value = d.banco||''; document.getElementById('pagoTelefono').value = d.telefono||''; document.getElementById('pagoCedula').value = d.cedula||''; document.getElementById('pagoBinance').value = d.binance||''; } } catch(e){} try { const s = await getDoc(doc(db, "configuracion", "rangos_ninja")); if (s.exists()) { const d = s.data(); document.getElementById('xpChunin').value = d.chunin??300; document.getElementById('xpJonin').value = d.jonin??600; document.getElementById('xpHokage').value = d.hokage??1000; } } catch(e){} }
+  window.guardarDatosPago = async function(e) { e.preventDefault(); await setDoc(doc(db, "configuracion", "datos_pago"), { banco: document.getElementById('pagoBanco').value, telefono: document.getElementById('pagoTelefono').value, cedula: document.getElementById('pagoCedula').value, binance: document.getElementById('pagoBinance').value }); alert("Guardado."); };
+  window.guardarRangosNinja = async function(e) { e.preventDefault(); await setDoc(doc(db, "configuracion", "rangos_ninja"), { genin: 0, chunin: parseInt(document.getElementById('xpChunin').value), jonin: parseInt(document.getElementById('xpJonin').value), hokage: parseInt(document.getElementById('xpHokage').value) }); alert("Guardado."); };
+  
+  async function cargarReviewsAdmin() { const q = query(collection(db, "reviews"), orderBy("timestamp", "desc")); const snap = await getDocs(q); let html=""; snap.forEach(d => { html += `<div class="item-card-row"><div style="flex-grow:1; font-size:0.9em;">${sanitizar(d.data().nombre)}<br><span style="color:var(--text-muted);">${sanitizar(d.data().texto)}</span></div><button class="btn-action-touch btn-del" onclick="eliminarReview('${d.id}')"><i class="fas fa-trash"></i></button></div>`; }); document.getElementById('listaReviewsAdmin').innerHTML = html; }
+  window.eliminarReview = async function(id) { await deleteDoc(doc(db, "reviews", id)); cargarReviewsAdmin(); };
+
+  function cargarTodo() { 
+    cargarAjustesWeb(); 
+    cargarWaifusAdmin(); 
+    cargarHistorialGacha(); 
+    cargarProductosAdmin(); 
+    cargarPedidosAdmin(); 
+    cargarJugadoresAdmin(); 
+    cargarFacturasAdmin(); 
+    cargarBannersAdmin(); 
+    cargarCuponesAdmin(); 
+    cargarDatosGenerales(); 
+    cargarReviewsAdmin(); 
   }
 </script>
 </body>
