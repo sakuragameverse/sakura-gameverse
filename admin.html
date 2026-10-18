@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -271,18 +272,36 @@
   <!-- NUEVA PESTAÑA: SISTEMA RPG Y RUMBLE -->
   <section id="panel-rpg" class="admin-panel">
     <div class="card-panel" style="border-color: rgba(0, 229, 255, 0.4);">
-      <div class="panel-header"><span class="panel-title" style="color: #00e5ff;"><i class="fas fa-hammer"></i> Forja de Objetos RPG</span></div>
-      <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 15px;">Crea armas, armaduras o materiales de crafteo para los jugadores.</p>
-      <input type="text" id="rpgItemNombre" class="form-input" placeholder="Nombre del Objeto (Ej: Espada de Fuego)" style="margin-bottom: 10px;">
+      <div class="panel-header">
+        <span class="panel-title" style="color: #00e5ff;"><i class="fas fa-hammer"></i> Forja de Objetos RPG</span>
+        <button style="background:none; border:none; color:#ff3366; cursor:pointer; font-weight:bold;" onclick="resetFormularioRPG()">Limpiar</button>
+      </div>
+      <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 15px;">Crea o edita armas, armaduras o materiales y súbeles su arte Pixel Art.</p>
+      
+      <!-- Campo oculto para saber si estamos editando -->
+      <input type="hidden" id="rpgEditId" value="">
+      
       <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-        <select id="rpgItemTipo" class="form-select"><option value="arma">Arma / Equipamiento</option><option value="material">Material (Mineral, Hueso)</option><option value="consumible">Poción</option></select>
+        <input type="text" id="rpgItemNombre" class="form-input" placeholder="Nombre del Objeto" style="flex: 2;">
+        <input type="file" id="rpgItemImg" accept="image/*" class="form-input" style="flex: 1; padding: 10px;">
+      </div>
+      
+      <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+        <select id="rpgItemTipo" class="form-select"><option value="arma">Arma / Equipo</option><option value="material">Material</option><option value="consumible">Poción</option></select>
         <select id="rpgItemRareza" class="form-select"><option value="N">Común (N)</option><option value="R">Raro (R)</option><option value="SR">Épico (SR)</option><option value="SSR">Legendario (SSR)</option></select>
       </div>
+      
       <div style="display: flex; gap: 10px; margin-bottom: 10px;">
         <input type="number" id="rpgItemAtk" class="form-input" placeholder="+ Ataque (Ej: 15)">
         <input type="number" id="rpgItemDef" class="form-input" placeholder="+ Defensa (Ej: 5)">
       </div>
-      <button onclick="guardarObjetoRPG()" class="btn-submit" style="background: rgba(0, 229, 255, 0.1); color: #00e5ff; border: 1px solid #00e5ff;">Crear Objeto en el Servidor</button>
+      <button onclick="guardarObjetoRPG(this)" class="btn-submit" style="background: rgba(0, 229, 255, 0.1); color: #00e5ff; border: 1px solid #00e5ff;">Forjar / Actualizar Objeto</button>
+    </div>
+
+    <!-- NUEVO: LISTA DE OBJETOS PARA EDITARLOS -->
+    <div class="card-panel">
+      <div class="panel-header"><span class="panel-title"><i class="fas fa-list"></i> Inventario de la Forja</span></div>
+      <div id="listaObjetosRPGAdmin"><p style="text-align:center; color: var(--text-muted);"><i class="fas fa-spinner fa-spin"></i> Cargando objetos...</p></div>
     </div>
 
     <div class="card-panel" style="border-color: rgba(255, 51, 102, 0.4); margin-top: 20px;">
@@ -336,7 +355,6 @@
 </div>
 
 <script type="module">
-  // CORRECCIÓN 1: Firebase a la versión correcta para que no se rompa la conexión
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
   import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, setDoc, addDoc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
   import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, updatePassword } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
@@ -346,6 +364,7 @@
   
   const CORREO_ADMIN = "Sakuragameverse@gmail.com";
   let productosAdminGlobal = []; let facturasAdminGlobal = []; let fotosBufferProducto = [];
+  let rpgObjetosAdminGlobal = [];
 
   onAuthStateChanged(auth, (user) => { 
     if (user && user.email.toLowerCase() === CORREO_ADMIN.toLowerCase()) { 
@@ -448,19 +467,110 @@
   };
 
   /* LÓGICA DEL SISTEMA RPG (FORJA Y RUMBLE) */
-  window.guardarObjetoRPG = async function() {
+  async function cargarObjetosRPGAdmin() {
+    try {
+      const q = query(collection(db, "rpg_objetos"), orderBy("timestamp", "desc"));
+      const snapshot = await getDocs(q);
+      rpgObjetosAdminGlobal = [];
+      const cont = document.getElementById('listaObjetosRPGAdmin');
+      if (snapshot.empty) { cont.innerHTML = "<p style='text-align:center; color:var(--text-muted);'>No hay objetos forjados aún.</p>"; return; }
+      
+      let html = "";
+      snapshot.forEach(docSnap => {
+        const obj = { id: docSnap.id, ...docSnap.data() };
+        rpgObjetosAdminGlobal.push(obj);
+        let imgDisplay = obj.imgUrl ? `<img src="${obj.imgUrl}" class="item-card-thumb" style="object-fit:cover;">` : `<div class="item-card-thumb" style="display:flex; align-items:center; justify-content:center; font-size:1.5em;">🗡️</div>`;
+        
+        html += `
+        <div class="item-card-row">
+          ${imgDisplay}
+          <div class="item-card-info">
+            <div class="item-card-title rareza-${obj.rareza}">${sanitizar(obj.nombre)}</div>
+            <div class="item-card-meta"><span>${obj.tipo.toUpperCase()}</span> • <span class="tag-badge tag-${obj.rareza.toLowerCase()}">${obj.rareza}</span></div>
+          </div>
+          <div class="item-card-actions">
+            <button class="btn-action-touch btn-edit" onclick="prepararEdicionRPG('${obj.id}')"><i class="fas fa-pen"></i></button>
+            <button class="btn-action-touch btn-del" onclick="eliminarObjetoRPG('${obj.id}')"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>`;
+      });
+      cont.innerHTML = html;
+    } catch(e) { console.warn("Error cargar RPG:", e); }
+  }
+
+  window.guardarObjetoRPG = async function(btnElement) {
+    let idEdit = document.getElementById('rpgEditId').value;
     let nombre = document.getElementById('rpgItemNombre').value.trim();
     let tipo = document.getElementById('rpgItemTipo').value;
     let rareza = document.getElementById('rpgItemRareza').value;
     let atk = parseInt(document.getElementById('rpgItemAtk').value) || 0;
     let def = parseInt(document.getElementById('rpgItemDef').value) || 0;
+    let fileInput = document.getElementById('rpgItemImg');
 
     if(!nombre) return alert("Ponle un nombre al objeto.");
+    if(!idEdit && !fileInput.files[0]) return alert("Selecciona una imagen para el objeto nuevo.");
+    
+    let btn = (btnElement && btnElement instanceof HTMLElement) ? btnElement : document.createElement('button');
+    btn.disabled = true;
+    let btnOriginalText = btn.innerHTML || 'Forjar / Actualizar Objeto';
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subiendo al Servidor...';
+
     try {
-      await addDoc(collection(db, "rpg_objetos"), { nombre: nombre, tipo: tipo, rareza: rareza, stats: { atk: atk, def: def }, timestamp: Date.now() });
-      alert(`Objeto "${nombre}" forjado y guardado en la base de datos.`);
-      document.getElementById('rpgItemNombre').value = "";
-    } catch(e) { alert("Error al guardar el objeto."); console.warn(e); }
+      let datosObj = { 
+        nombre: nombre, 
+        tipo: tipo, 
+        rareza: rareza, 
+        stats: { atk: atk, def: def },
+        timestamp: Date.now() 
+      };
+
+      if(fileInput.files[0]) {
+        datosObj.imgUrl = await comprimirYConvertirAWebP(fileInput.files[0], 200, 0.8);
+      }
+
+      if(idEdit) {
+        await updateDoc(doc(db, "rpg_objetos", idEdit), datosObj);
+        alert(`¡Objeto "${nombre}" actualizado!`);
+      } else {
+        await addDoc(collection(db, "rpg_objetos"), datosObj);
+        alert(`¡Objeto "${nombre}" forjado con éxito!`);
+      }
+      resetFormularioRPG();
+      cargarObjetosRPGAdmin();
+    } catch(e) { 
+      alert("Error al guardar el objeto."); console.warn(e); 
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = btnOriginalText;
+    }
+  };
+
+  window.prepararEdicionRPG = function(id) {
+    const obj = rpgObjetosAdminGlobal.find(item => item.id === id);
+    if (!obj) return;
+    document.getElementById('rpgEditId').value = obj.id;
+    document.getElementById('rpgItemNombre').value = obj.nombre || '';
+    document.getElementById('rpgItemTipo').value = obj.tipo || 'arma';
+    document.getElementById('rpgItemRareza').value = obj.rareza || 'N';
+    document.getElementById('rpgItemAtk').value = obj.stats?.atk || 0;
+    document.getElementById('rpgItemDef').value = obj.stats?.def || 0;
+    document.getElementById('rpgItemImg').value = ""; 
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  window.resetFormularioRPG = function() {
+    document.getElementById('rpgEditId').value = "";
+    document.getElementById('rpgItemNombre').value = "";
+    document.getElementById('rpgItemAtk').value = "";
+    document.getElementById('rpgItemDef').value = "";
+    document.getElementById('rpgItemImg').value = "";
+  };
+
+  window.eliminarObjetoRPG = async function(id) {
+    if(confirm("¿Destruir este objeto de la base de datos?")) {
+      await deleteDoc(doc(db, "rpg_objetos", id));
+      cargarObjetosRPGAdmin();
+    }
   };
 
   window.ejecutarTorneoRumble = async function() {
@@ -684,7 +794,8 @@
     cargarBannersAdmin(); 
     cargarCuponesAdmin(); 
     cargarDatosGenerales(); 
-    cargarReviewsAdmin(); 
+    cargarReviewsAdmin();
+    cargarObjetosRPGAdmin(); // Carga la lista de la Forja
   }
 </script>
 </body>
