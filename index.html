@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sakura Gameverse</title>
+  <title>Sakura Gameverse | RPG Edition V2</title>
   
   <meta property="og:title" content="Sakura Gameverse">
   <meta property="og:description" content="Coleccionables, ropa, productos gamer y recargas digitales para ti.">
@@ -20,42 +20,25 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
   <style>
-    :root {
-      --bg-color: #05010a; 
-      --card-bg-solid: #110524;
-      --glass-bg: rgba(17, 5, 36, 0.45); 
-      --glass-border: rgba(255, 255, 255, 0.08); 
-      --glass-highlight: rgba(0, 229, 255, 0.2); 
-      --text-color: #e6e9f0;
-      --text-muted: #8b8f9e;
-      --primary-color: #ff007f;
-      --primary-glow: rgba(255, 0, 127, 0.4);
-      --secondary-color: #00e5ff;
-      --secondary-glow: rgba(0, 229, 255, 0.4);
-      --border-color: rgba(0, 229, 255, 0.16);
-      --radius-sm: 8px; 
-      --radius-md: 16px;
-      --radius-pill: 50px;
-    }
-
-    body.theme-rosa { --bg-color: #05010a; --glass-bg: rgba(17, 5, 36, 0.45); --primary-color: #ff007f; --secondary-color: #00e5ff; }
-    body.theme-azul { --bg-color: #01040a; --glass-bg: rgba(6, 21, 43, 0.45); --primary-color: #0099ff; --secondary-color: #00ffcc; }
-    body.theme-purpura { --bg-color: #08010f; --glass-bg: rgba(27, 7, 44, 0.45); --primary-color: #b000ff; --secondary-color: #ff00c8; }
-    body.theme-overdrive { --bg-color: #0a0100; --glass-bg: rgba(41, 10, 3, 0.45); --primary-color: #ff5500; --secondary-color: #ffaa00; }
-
+    /* VARIABLES Y ESTILOS GLOBALES */
+    :root { --bg-color: #05010a; --glass-bg: rgba(17, 5, 36, 0.45); --glass-border: rgba(255, 255, 255, 0.08); --text-color: #e6e9f0; --text-muted: #8b8f9e; --primary-color: #ff007f; --primary-glow: rgba(255, 0, 127, 0.4); --secondary-color: #00e5ff; --secondary-glow: rgba(0, 229, 255, 0.4); --radius-sm: 8px; --radius-md: 16px; --radius-pill: 50px; }
+    body.theme-rosa { --bg-color: #05010a; --primary-color: #ff007f; --secondary-color: #00e5ff; }
+    body.theme-azul { --bg-color: #01040a; --primary-color: #0099ff; --secondary-color: #00ffcc; }
+    body.theme-purpura { --bg-color: #08010f; --primary-color: #b000ff; --secondary-color: #ff00c8; }
+    body.theme-overdrive { --bg-color: #0a0100; --primary-color: #ff5500; --secondary-color: #ffaa00; }
     * { box-sizing: border-box; }
-
-    body { margin: 0; background-color: var(--bg-color); color: var(--text-color); font-family: 'Rajdhani', sans-serif; font-size: 16px; overflow-x: hidden; padding-bottom: 90px; }
+    body { margin: 0; background-color: var(--bg-color); color: var(--text-color); font-family: 'Rajdhani', sans-serif; overflow-x: hidden; padding-bottom: 90px; }
     body::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 0%, rgba(255, 0, 127, 0.08) 0%, transparent 60%), radial-gradient(circle at 80% 80%, rgba(0, 229, 255, 0.05) 0%, transparent 50%), linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px); background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px; pointer-events: none; z-index: -1; }
     h1, h2, h3, h4 { font-family: 'Chakra Petch', sans-serif; text-transform: uppercase; letter-spacing: 1px; }
 
-    .top-bar-notice { background: rgba(5, 1, 10, 0.8); backdrop-filter: blur(5px); border-bottom: 1px solid var(--border-color); padding: 7px 14px; font-size: 0.85em; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 10; }
+    /* BARRAS Y CONTENEDORES */
+    .top-bar-notice { background: rgba(5, 1, 10, 0.8); backdrop-filter: blur(5px); border-bottom: 1px solid var(--glass-border); padding: 7px 14px; font-size: 0.85em; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 10; }
     .ticker-bar { background: rgba(14, 5, 32, 0.8); backdrop-filter: blur(5px); border-bottom: 1px solid rgba(255, 0, 127, 0.2); color: var(--secondary-color); font-size: 0.8em; text-transform: uppercase; padding: 6px 0; overflow: hidden; white-space: nowrap; position: relative; z-index: 9; }
     .ticker-content { display: inline-block; animation: ticker-slide 22s linear infinite; }
     @keyframes ticker-slide { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-    .hero-banner { background: radial-gradient(ellipse at top, rgba(26, 8, 51, 0.5) 0%, transparent 70%); text-align: center; padding: 25px 20px; border-bottom: 1px solid var(--border-color); position: relative; z-index: 2; }
-    .hero-logo { width: 100%; max-width: 250px; height: auto; margin-bottom: 15px; cursor: pointer; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6)); animation: logo-float 4s infinite ease-in-out; }
+    .hero-banner { text-align: center; padding: 25px 20px; border-bottom: 1px solid var(--glass-border); }
+    .hero-logo { width: 100%; max-width: 250px; cursor: pointer; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6)); animation: logo-float 4s infinite ease-in-out; }
     @keyframes logo-float { 0% { transform: translateY(0px); } 50% { transform: translateY(-4px); } 100% { transform: translateY(0px); } }
     .hero-title { font-size: 1.15em; color: #fff; margin-bottom: 12px; font-weight: 600; text-shadow: 0 0 10px rgba(0,0,0,0.8); }
     .store-status-badge { display: inline-flex; align-items: center; gap: 7px; background: rgba(37, 211, 102, 0.15); border: 1px solid rgba(37, 211, 102, 0.4); padding: 4px 12px; border-radius: var(--radius-pill); font-size: 0.8em; font-weight: 600; color: #25d366; margin-bottom: 12px; }
@@ -63,11 +46,12 @@
 
     .container { padding: 25px 18px 80px 18px; max-width: 1180px; margin: 0 auto; position: relative; z-index: 2; }
     .search-box { margin-bottom: 25px; display: flex; justify-content: center; }
-    .search-input { background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); color: #fff; padding: 12px 20px; width: 100%; max-width: 480px; border-radius: var(--radius-pill); font-family: 'Rajdhani', sans-serif; font-size: 1em; outline: none; }
+    .search-input { background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); color: #fff; padding: 12px 20px; width: 100%; max-width: 480px; border-radius: var(--radius-pill); font-family: 'Rajdhani', sans-serif; font-size: 1em; outline: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+    .search-input:focus { border-color: var(--secondary-color); box-shadow: 0 0 20px rgba(0, 229, 255, 0.2); background: rgba(17, 5, 36, 0.7); }
 
-    .categorias-visuales-section { margin-bottom: 30px; }
+    /* CARRUSEL Y CATEGORIAS */
     .categorias-visuales-header { font-family: 'Chakra Petch', sans-serif; font-size: 1.1em; font-weight: 700; color: #fff; margin-bottom: 12px; border-left: 3px solid var(--primary-color); padding-left: 8px; }
-    .carrusel-wrapper { position: relative; display: flex; align-items: center; }
+    .carrusel-wrapper { position: relative; display: flex; align-items: center; margin-bottom: 30px; }
     .carrusel-track { display: flex; gap: 12px; overflow-x: auto; scroll-behavior: smooth; scrollbar-width: none; padding: 8px 2px; }
     .carrusel-track::-webkit-scrollbar { display: none; }
     .cat-card { flex: 0 0 auto; width: 130px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--radius-md); overflow: hidden; cursor: pointer; transition: all 0.3s ease; }
@@ -75,36 +59,68 @@
     .cat-img { width: 100%; height: 110px; object-fit: contain; background: rgba(0, 0, 0, 0.2); padding: 10px; }
     .cat-info { padding: 8px 6px; text-align: center; }
     .cat-title { font-family: 'Chakra Petch', sans-serif; font-size: 0.9em; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .cat-count { font-size: 0.75em; color: var(--text-muted); }
+    .carrusel-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.6); color: var(--secondary-color); border: 1px solid var(--glass-border); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; }
+    .arrow-prev { left: -10px; } .arrow-next { right: -10px; }
 
-    .controles-superiores { margin-bottom: 25px; }
-    .panel-controles-avanzados { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
-    .ordenar-select { background: var(--glass-bg); border: 1px solid var(--glass-border); color: #fff; padding: 10px 14px; border-radius: var(--radius-sm); font-family: 'Rajdhani', sans-serif; outline: none; appearance: none; }
-
+    /* FILTROS Y GRID */
+    .panel-controles-avanzados { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 25px; }
+    .ordenar-select { background: var(--glass-bg); border: 1px solid var(--glass-border); color: #fff; padding: 10px 14px; border-radius: var(--radius-sm); font-family: 'Rajdhani', sans-serif; font-weight: 600; outline: none; appearance: none; }
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 18px; }
     .card { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 12px; text-align: left; position: relative; cursor: pointer; transition: all 0.3s; }
     .card:hover { border-color: var(--secondary-color); transform: translateY(-6px); }
     .card.agotado { filter: grayscale(100%); opacity: 0.75; border-color: rgba(255, 51, 102, 0.4); }
     .card-img-container { position: relative; width: 100%; height: 220px; background: rgba(0, 0, 0, 0.4); border-radius: var(--radius-sm); margin-bottom: 12px; overflow: hidden; }
     .card-img-container img { width: 100%; height: 100%; object-fit: contain; display: none; }
-    .card-img-container img.activa { display: block; }
+    .card-img-container img.activa { display: block; animation: fadeImg 0.3s ease; }
+    @keyframes fadeImg { from { opacity: 0.5; } to { opacity: 1; } }
+    .carrusel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: var(--secondary-color); border: 1px solid var(--glass-border); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .carrusel-prev { left: 6px; } .carrusel-next { right: 6px; }
     .card-title { font-family: 'Chakra Petch', sans-serif; font-size: 1.05em; font-weight: 600; color: #fff; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .precio-container { display: flex; align-items: baseline; gap: 8px; }
     .card-price { font-size: 1.3em; font-weight: 700; color: var(--secondary-color); }
     .badge-estado { position: absolute; top: 10px; right: 10px; padding: 4px 10px; font-size: 0.7em; font-weight: 700; border-radius: var(--radius-pill); text-transform: uppercase; z-index: 3; }
     .badge-stock { background: rgba(0, 229, 255, 0.85); color: #000; }
+    .badge-encargo { background: rgba(255, 0, 127, 0.85); color: #fff; }
+    .badge-digital { background: rgba(37, 211, 102, 0.85); color: #000; }
     .badge-agotado { background: rgba(255, 51, 102, 0.95); color: #fff; border: 1px solid #ff3366; }
     .btn-fav-card { position: absolute; top: 10px; left: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid var(--glass-border); color: var(--text-muted); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 3; }
     .btn-fav-card.favorito { color: #ff3366; background: rgba(255, 51, 102, 0.15); border-color: #ff3366; }
 
+    /* BOTONES GLOBALES Y MODALES */
+    .btn-comprar { background: linear-gradient(135deg, var(--primary-color), #cc0066); color: #fff; border: none; padding: 14px; font-family: 'Chakra Petch', sans-serif; font-size: 1.05em; font-weight: 700; border-radius: var(--radius-sm); cursor: pointer; width: 100%; margin-top: 14px; box-shadow: 0 4px 15px var(--primary-glow); }
+    .btn-comprar:disabled { filter: grayscale(100%); cursor: not-allowed; opacity: 0.5; }
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 0, 6, 0.75); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
     .modal-content { background: rgba(14, 4, 31, 0.95); padding: 24px; border-radius: var(--radius-md); max-width: 95%; width: 440px; border: 1px solid var(--glass-border); position: relative; max-height: 90vh; overflow-y: auto; }
     .cerrar-modal { position: absolute; top: 12px; right: 14px; font-size: 24px; color: var(--text-muted); cursor: pointer; background: rgba(0,0,0,0.3); border: 1px solid transparent; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-    .modal-img { width: 100%; max-height: 320px; object-fit: contain; background: rgba(0,0,0,0.4); border-radius: var(--radius-sm); margin-bottom: 12px; }
-    .btn-comprar { background: linear-gradient(135deg, var(--primary-color), #cc0066); color: #fff; border: none; padding: 14px; font-family: 'Chakra Petch', sans-serif; font-size: 1.05em; font-weight: 700; border-radius: var(--radius-sm); cursor: pointer; width: 100%; margin-top: 14px; box-shadow: 0 4px 15px var(--primary-glow); }
-    .btn-comprar:disabled { filter: grayscale(100%); cursor: not-allowed; opacity: 0.5; }
+    .modal-img { width: 100%; max-height: 320px; object-fit: contain; background: rgba(0,0,0,0.4); border-radius: var(--radius-sm); margin-bottom: 12px; border: 1px solid var(--glass-border); }
+    .modal-miniaturas { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 4px; }
+    .modal-mini-img { width: 65px; height: 65px; object-fit: cover; border-radius: var(--radius-sm); cursor: pointer; border: 2px solid transparent; opacity: 0.5; }
+    .modal-mini-img.activo { opacity: 1; border-color: var(--secondary-color); }
+    .sugerencia-input, .talla-select, .recarga-input, .cupon-input { background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: #fff; padding: 10px 14px; border-radius: var(--radius-sm); width: 100%; font-family: 'Rajdhani', sans-serif; outline: none; }
+    .btn-compartir { background: rgba(37, 211, 102, 0.05); color: #25d366; border: 1px solid rgba(37, 211, 102, 0.4); padding: 12px; font-family: 'Chakra Petch', sans-serif; font-weight: 600; border-radius: var(--radius-sm); cursor: pointer; width: 100%; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
-    /* ESTILOS RPG */
+    /* CARRITO Y RESEÑAS */
+    .cart-tabs { display: flex; gap: 6px; margin-bottom: 15px; background: rgba(0,0,0,0.3); padding: 5px; border-radius: var(--radius-pill); }
+    .cart-tab-btn { flex: 1; background: transparent; color: var(--text-muted); border: none; padding: 10px; border-radius: var(--radius-pill); font-family: 'Chakra Petch', sans-serif; font-weight: 700; cursor: pointer; }
+    .cart-tab-btn.activo { background: var(--secondary-color); color: #000; box-shadow: 0 0 10px rgba(0, 229, 255, 0.4); }
+    .cart-item-row { display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.3); padding: 10px; border-radius: var(--radius-sm); margin-bottom: 8px; border: 1px solid var(--glass-border); }
+    .cart-item-img { width: 48px; height: 48px; object-fit: cover; border-radius: 4px; margin-right: 12px; }
+    .cart-item-info { flex-grow: 1; font-size: 0.9em; }
+    .cart-item-del { background: rgba(255, 51, 102, 0.1); color: #ff3366; border: 1px solid rgba(255, 51, 102, 0.3); padding: 6px 10px; border-radius: var(--radius-sm); cursor: pointer; }
+    .reviews-section { background: var(--glass-bg); padding: 24px 18px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); margin-top: 35px; }
+    .review-card { background: rgba(0,0,0,0.3); padding: 14px; border-radius: var(--radius-sm); margin-bottom: 12px; border: 1px solid var(--glass-border); }
+
+    /* NAVEGACIÓN INFERIOR DE LA TIENDA */
+    .bottom-nav { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 500px; background: rgba(10, 2, 22, 0.85); border: 1px solid var(--glass-border); border-radius: var(--radius-pill); display: flex; justify-content: space-around; padding: 12px 10px; z-index: 2500; backdrop-filter: blur(15px); }
+    .nav-item { color: var(--text-muted); display: flex; flex-direction: column; align-items: center; font-size: 0.7em; font-weight: 700; cursor: pointer; width: 25%; position: relative; }
+    .nav-item i { font-size: 1.5em; margin-bottom: 4px; }
+    .nav-item:hover, .nav-item.active { color: #fff; } .nav-item:hover i { color: var(--secondary-color); }
+    .nav-badge { position: absolute; top: -5px; right: 15%; background: var(--primary-color); color: #fff; font-size: 0.8em; padding: 2px 6px; border-radius: 12px; }
+
+    .menu-opciones-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 18px; }
+    .btn-menu-opcion { display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); padding: 14px 8px; border-radius: var(--radius-sm); color: #fff; text-decoration: none; font-size: 0.75em; font-weight: 600; cursor: pointer; text-align: center; }
+
+    /* ESTILOS RPG V2 */
     .xp-bar-container { background: rgba(0,0,0,0.6); border-radius: var(--radius-pill); height: 14px; margin-top: 12px; overflow: hidden; border: 1px solid var(--glass-border); }
     .xp-bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); border-radius: var(--radius-pill); transition: width 0.8s; }
     .rpg-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
@@ -114,15 +130,9 @@
     .rpg-item-name { font-size: 0.85em; font-weight: bold; font-family: 'Chakra Petch', sans-serif; }
     .rpg-item-stats { font-size: 0.75em; color: var(--secondary-color); margin-top: 4px; }
     .rareza-N { color: #b4becd; font-weight: bold; } .rareza-R { color: #00e5ff; font-weight: bold; } .rareza-SR { color: #b000ff; font-weight: bold; } .rareza-SSR { color: #ffaa00; font-weight: bold; text-shadow: 0 0 5px rgba(255,170,0,0.5); }
-
-    .bottom-nav { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 500px; background: rgba(10, 2, 22, 0.85); border: 1px solid var(--glass-border); border-radius: var(--radius-pill); display: flex; justify-content: space-around; padding: 12px 10px; z-index: 2500; backdrop-filter: blur(15px); }
-    .nav-item { color: var(--text-muted); display: flex; flex-direction: column; align-items: center; font-size: 0.7em; font-weight: 700; cursor: pointer; width: 25%; position: relative; }
-    .nav-item i { font-size: 1.5em; margin-bottom: 4px; }
-    .nav-item:hover, .nav-item.active { color: #fff; } .nav-item:hover i { color: var(--secondary-color); }
-    .nav-badge { position: absolute; top: -5px; right: 15%; background: var(--primary-color); color: #fff; font-size: 0.8em; padding: 2px 6px; border-radius: 12px; }
-    
-    .menu-opciones-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 18px; }
-    .btn-menu-opcion { display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); padding: 14px 8px; border-radius: var(--radius-sm); color: #fff; text-decoration: none; font-size: 0.75em; font-weight: 600; cursor: pointer; text-align: center; }
+    .waifu-card-mini { width: 70px; height: 100px; background: rgba(0,0,0,0.5); border-radius: var(--radius-sm); border: 1px solid var(--glass-border); overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .waifu-card-mini img { width: 100%; height: 100%; object-fit: cover; }
+    .waifu-card-mini .badge { position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); font-size: 0.6em; }
   </style>
 </head>
 <body>
@@ -143,8 +153,12 @@
 </div>
 
 <div class="container">
-  <div class="search-box"><input type="text" id="buscador" class="search-input" placeholder="Buscar por producto..." onkeyup="buscarProductos()"></div>
+  <!-- BUSCADOR RESTAURADO -->
+  <div class="search-box">
+    <input type="text" id="buscador" class="search-input" placeholder="Buscar por producto..." onkeyup="buscarProductos()">
+  </div>
 
+  <!-- CATEGORÍAS VISUALES RESTAURADAS -->
   <div class="categorias-visuales-section">
     <div class="categorias-visuales-header">Categorías de Catálogo</div>
     <div class="carrusel-wrapper">
@@ -159,14 +173,33 @@
     </div>
   </div>
 
+  <!-- FILTROS RESTAURADOS -->
   <div class="controles-superiores">
     <div class="panel-controles-avanzados">
       <select id="selectColeccion" class="ordenar-select" onchange="cambiarColeccionDropdown(this.value)"><option value="todos">Colección: Todas</option></select>
       <select id="selectEstado" class="ordenar-select" onchange="filtrarEstadoDropdown(this.value)"><option value="todos">Disponibilidad: Todo</option><option value="Envío Inmediato 📦">Stock Inmediato</option><option value="Por Encargo ⚡">Por Encargo</option></select>
+      <select id="selectOrden" class="ordenar-select" onchange="ordenarProductos()"><option value="defecto">Ordenar: Predeterminado</option><option value="reciente">Novedades</option><option value="menor">Precio: Menor a Mayor</option><option value="mayor">Precio: Mayor a Menor</option></select>
     </div>
   </div>
 
+  <!-- CATÁLOGO -->
   <div class="grid" id="catalogoNube"><p style="text-align: center; color: var(--text-muted); grid-column: 1/-1;">Sincronizando inventario...</p></div>
+
+  <!-- RESEÑAS -->
+  <div class="reviews-section">
+    <h3 style="color: #fff; margin-top: 0; margin-bottom: 15px;">Opiniones de Clientes</h3>
+    <div id="contenedorReviews"><p style="color: var(--text-muted);">Cargando reseñas verificadas...</p></div>
+    <div style="margin-top: 15px;">
+      <input type="text" id="revNombre" class="sugerencia-input" placeholder="Nombre o GamerTag" style="margin-bottom: 8px;">
+      <select id="revEstrellas" class="sugerencia-input" style="margin-bottom: 8px;">
+        <option value="⭐⭐⭐⭐⭐">5 / 5 - Excelente servicio</option>
+        <option value="⭐⭐⭐⭐">4 / 5 - Muy bueno</option>
+        <option value="⭐⭐⭐">3 / 5 - Conforme</option>
+      </select>
+      <textarea id="revTexto" class="sugerencia-input" rows="2" placeholder="Describe tu experiencia..." style="margin-bottom: 8px;"></textarea>
+      <button class="btn-comprar" style="width: auto; padding: 8px 18px;" onclick="agregarReview()">Publicar Opinión</button>
+    </div>
+  </div>
 </div>
 
 <!-- NAVEGACIÓN INFERIOR DE LA TIENDA -->
@@ -178,14 +211,27 @@
 </div>
 
 <!-- ================= MODALES DE LA TIENDA ================= -->
-
 <div id="miModal" class="modal">
   <div class="modal-content">
     <button class="cerrar-modal" onclick="cerrarModal()">×</button>
     <img id="modalImg" src="" class="modal-img">
+    <div id="modalContainerMinis" class="modal-miniaturas"></div>
     <div id="modalTag" style="color:var(--secondary-color); font-weight:bold; font-size:0.8em; margin-bottom:5px;">Disponible</div>
     <h3 id="modalTitulo" style="color: #fff; margin: 0 0 5px 0;">Título</h3>
     <div id="modalPrecio" style="color: var(--secondary-color); font-size: 1.4em; font-weight: 700; margin-bottom: 8px;">$0.00</div>
+    
+    <div id="tallasContainer" style="display: none; margin-bottom: 12px;">
+      <label for="selectTalla" style="display: block; font-size: 0.85em; font-weight: 700; margin-bottom: 4px;">Seleccionar Talla:</label>
+      <select id="selectTalla" class="talla-select">
+        <option value="S">Talla S</option><option value="M" selected>Talla M</option><option value="L">Talla L</option><option value="XL">Talla XL</option>
+      </select>
+    </div>
+
+    <div id="recargaContainer" style="display: none; margin-bottom: 12px;">
+      <label for="inputPlayerId" style="display: block; font-size: 0.85em; font-weight: 700; margin-bottom: 4px;">ID de Jugador:</label>
+      <input type="text" id="inputPlayerId" class="recarga-input" placeholder="Ingresa tu ID de cuenta">
+    </div>
+
     <button id="btnComprarModal" class="btn-comprar" onclick="agregarAlCarrito()"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
   </div>
 </div>
@@ -196,10 +242,22 @@
   <div class="modal-content">
     <button class="cerrar-modal" onclick="cerrarCarritoModal()">×</button>
     <h3 style="color:#fff; margin-top:0;">Tu Carrito</h3>
+    
+    <div class="cart-tabs">
+      <button class="cart-tab-btn activo" id="tabBtnFisico" onclick="cambiarPestanaCarrito('fisico')">Físicos (<span id="countCartFisico">0</span>)</button>
+      <button class="cart-tab-btn" id="tabBtnDigital" onclick="cambiarPestanaCarrito('digital')">Recargas (<span id="countCartDigital">0</span>)</button>
+    </div>
+
     <div id="listaCarritoDetalle" style="max-height:150px; overflow-y:auto; margin-bottom:12px;"></div>
     <div id="modalCarritoTotal" style="color:var(--secondary-color); font-size:1.3em; font-weight:bold; margin-bottom:12px;">Total: $0.00</div>
     <input type="text" id="cartClienteNombre" placeholder="Tu Nombre" style="width:100%; padding:8px; margin-bottom:8px; background:rgba(0,0,0,0.5); color:#fff; border:1px solid #fff;">
     <input type="number" id="cartClienteTelefono" placeholder="Tu WhatsApp" style="width:100%; padding:8px; margin-bottom:12px; background:rgba(0,0,0,0.5); color:#fff; border:1px solid #fff;">
+    
+    <div id="apartadoEnvioFisico">
+      <select id="selectMetodoEnvio" class="talla-select" style="margin-bottom:8px;"><option value="ZOOM (Cobro a destino)">Envío ZOOM</option><option value="MRW (Cobro a destino)">Envío MRW</option></select>
+      <input type="text" id="inputDireccionEnvio" class="sugerencia-input" placeholder="Ciudad, Estado, Dirección..." style="margin-bottom:12px;">
+    </div>
+
     <button class="btn-comprar" style="background:#25d366; color:#000;" onclick="enviarPedidoWhatsApp()">Enviar Orden por WhatsApp</button>
   </div>
 </div>
@@ -243,16 +301,24 @@
         <span>Nivel: <strong id="lblRango" style="color: #ffaa00;">Genin</strong></span>
         <span><strong id="lblTokens" style="color: #ffaa00;"><i class="fas fa-coins"></i> 0</strong> | <strong id="lblXp" style="color: var(--secondary-color);">0</strong> XP</span>
       </div>
-      <div style="font-size: 0.85em; color: #fff; background: rgba(0, 229, 255, 0.1); padding: 10px; border-radius: 8px; border: 1px solid rgba(0,229,255,0.2); text-align: center;">
+      <div class="xp-bar-container">
+        <div class="xp-bar-fill" id="barXp"></div>
+      </div>
+      <div style="font-size: 0.8em; color: var(--text-muted); text-align: right; margin-top: 6px;" id="lblXpNext">Calculando siguiente rango...</div>
+      
+      <div style="font-size: 0.85em; color: #fff; background: rgba(0, 229, 255, 0.1); padding: 10px; border-radius: 8px; border: 1px solid rgba(0,229,255,0.2); text-align: center; margin-top: 10px;">
         <div style="margin-bottom: 4px;">Clase: <strong id="lblProfesion" style="color: var(--secondary-color); text-transform: uppercase;">Ninguna</strong></div>
         ❤️ Vida: <span id="lblHp" style="font-weight: bold; color: #ff3366;">100</span> | ⚔️ ATK: <span id="lblAtk" style="font-weight: bold; color: #ffaa00;">10</span> | 🛡️ DEF: <span id="lblDef" style="font-weight: bold; color: #00e5ff;">5</span>
       </div>
     </div>
 
-    <h4 style="color: #fff; text-align: left; margin-bottom: 5px;"><i class="fas fa-backpack"></i> Inventario de Equipo</h4>
-    <div style="text-align: left; font-size: 0.8em; color: #00e5ff; margin-bottom: 10px;"><i class="fas fa-gem"></i> Materiales de Crafteo: <strong id="lblTotalMateriales">0</strong></div>
-    <div id="contenedorInventario" class="rpg-grid"></div>
-    <button class="btn-comprar" onclick="guardarGamerTag()"><i class="fas fa-save"></i> Guardar Perfil</button>
+    <h4 style="color: #fff; text-align: left; margin-bottom: 5px;"><i class="fas fa-backpack"></i> Inventario</h4>
+    <div style="text-align: left; font-size: 0.8em; color: #00e5ff; margin-bottom: 10px;">
+      <i class="fas fa-gem"></i> Materiales: <strong id="lblTotalMateriales">0</strong>
+    </div>
+    <div id="contenedorInventario" class="rpg-grid" style="margin-bottom: 15px;"></div>
+    
+    <button class="btn-comprar" onclick="guardarGamerTag()"><i class="fas fa-save"></i> Guardar Perfil Local</button>
   </div>
 </div>
 
@@ -268,9 +334,9 @@
     </div>
     <h4 style="color: #ff3366; margin-top: 20px; margin-bottom: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;"><i class="fas fa-dungeon"></i> Mazmorras de Jefe</h4>
     <div style="display: flex; flex-direction: column; gap: 8px;">
-      <button class="btn-comprar" style="margin-top:0; background: rgba(0, 229, 255, 0.1); border: 1px solid #00e5ff; color: #00e5ff; box-shadow:none;" onclick="entrarMazmorra('facil')">🌲 Bosque Slime (Nv. Bajo)</button>
-      <button class="btn-comprar" style="margin-top:0; background: rgba(176, 0, 255, 0.1); border: 1px solid #b000ff; color: #b000ff; box-shadow:none;" onclick="entrarMazmorra('media')">🦇 Cueva Sangrienta (Nv. Medio)</button>
-      <button class="btn-comprar" style="margin-top:0; background: rgba(255, 51, 102, 0.1); border: 1px solid #ff3366; color: #ff3366; box-shadow:none;" onclick="entrarMazmorra('dificil')">🐉 Torre del Dragón (Nv. Alto)</button>
+      <button class="btn-comprar" style="margin-top:0; background: rgba(0, 229, 255, 0.1); border: 1px solid #00e5ff; color: #00e5ff; box-shadow:none;" onclick="entrarMazmorra('facil')">🌲 Bosque Slime (Dificultad Baja)</button>
+      <button class="btn-comprar" style="margin-top:0; background: rgba(176, 0, 255, 0.1); border: 1px solid #b000ff; color: #b000ff; box-shadow:none;" onclick="entrarMazmorra('media')">🦇 Cueva Sangrienta (Dificultad Media)</button>
+      <button class="btn-comprar" style="margin-top:0; background: rgba(255, 51, 102, 0.1); border: 1px solid #ff3366; color: #ff3366; box-shadow:none;" onclick="entrarMazmorra('dificil')">🐉 Torre del Dragón (Dificultad Brutal)</button>
     </div>
   </div>
 </div>
@@ -289,40 +355,31 @@
   </div>
 </div>
 
-<!-- 1. ARENA SOLITARIA (CONTRA BOTS) -->
+<!-- 1. ARENA SOLITARIA -->
 <div id="modalArenaSolo" class="modal">
   <div class="modal-content" style="text-align: center; border-color: #ff3366;">
     <button class="cerrar-modal" onclick="cerrarArenaSoloModal()">×</button>
     <h3 style="color: #ff3366; margin-top: 0;"><i class="fas fa-skull"></i> Arena Solitaria</h3>
-    <p style="font-size: 0.85em; color: var(--text-muted);">Pelea contra guerreros controlados por el sistema en cualquier momento.</p>
-    
-    <div id="logArenaSolo" style="background: #000; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--glass-border); height: 180px; overflow-y: auto; font-family: monospace; font-size: 0.85em; color: #fff; margin-bottom: 15px; text-align: left;">
-      La arena espera por ti...
-    </div>
-
+    <p style="font-size: 0.85em; color: var(--text-muted);">Pelea contra guerreros controlados por el sistema.</p>
+    <div id="logArenaSolo" style="background: #000; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--glass-border); height: 180px; overflow-y: auto; font-family: monospace; font-size: 0.85em; color: #fff; margin-bottom: 15px; text-align: left;">La arena espera por ti...</div>
     <button id="btnIniciarArenaSolo" class="btn-comprar" style="background: #ff3366;" onclick="iniciarArenaSolo()"><i class="fas fa-play"></i> Luchar (-10 Tokens)</button>
   </div>
 </div>
 
-<!-- 2. TORNEO BATTLE ROYALE (MULTIJUGADOR EVENTOS) -->
+<!-- 2. TORNEO BATTLE ROYALE -->
 <div id="modalTorneoBR" class="modal">
   <div class="modal-content" style="text-align: center; border-color: #b000ff;">
     <button class="cerrar-modal" onclick="cerrarTorneoBRModal()">×</button>
     <h3 style="color: #b000ff; margin-top: 0;"><i class="fas fa-trophy"></i> Torneo B. Royale</h3>
     <p style="font-size: 0.85em; color: var(--text-muted);">Inscríbete en el evento oficial. El administrador iniciará la batalla cuando estén listos.</p>
-
     <div style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: var(--radius-sm); border: 1px dashed #b000ff; margin-bottom: 15px;">
       Estado: <strong style="color: #ffaa00;">Inscripciones Abiertas</strong><br>
       Inscritos actuales: <strong id="lblInscritosTorneo" style="color: #fff;">0</strong>
     </div>
-
     <button id="btnInscribirseTorneo" class="btn-comprar" style="background: #b000ff;" onclick="inscribirseTorneoBD()"><i class="fas fa-pen-nib"></i> Inscribirse a la Batalla</button>
-
     <div style="margin-top: 20px; text-align: left;">
       <h4 style="color: var(--secondary-color); margin-bottom: 5px; font-size: 0.9em;">Última Batalla del Servidor:</h4>
-      <div id="logUltimoTorneo" style="background: #000; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--glass-border); height: 120px; overflow-y: auto; font-family: monospace; font-size: 0.8em; color: #fff;">
-        Cargando resultados anteriores...
-      </div>
+      <div id="logUltimoTorneo" style="background: #000; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--glass-border); height: 120px; overflow-y: auto; font-family: monospace; font-size: 0.8em; color: #fff;">Cargando resultados anteriores...</div>
     </div>
   </div>
 </div>
@@ -339,13 +396,14 @@
   let productosNubeGlobal = [];
   let rpgObjetosGlobal = [];
   let currentUserUid = null;
+  let filtroGlobal = { categoria: 'todos', coleccion: 'todos', estado: 'todos', busqueda: '' };
+  let limiteActual = 12;
 
   let carrito = JSON.parse(localStorage.getItem('sakura_carrito')) || [];
   let favoritos = JSON.parse(localStorage.getItem('sakura_favoritos')) || [];
   let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, tokens: 0, rango: "Genin", waifus: [], profesion: "", stats: { hp: 100, atk: 10, def: 5 }, inventario: [], equipo: { armaId: null } };
   if(gamerProfile.profesion === undefined) { gamerProfile.profesion = ""; gamerProfile.stats = { hp: 100, atk: 10, def: 5 }; gamerProfile.inventario = []; gamerProfile.equipo = { armaId: null }; }
 
-  // INICIO DE LA PÁGINA
   window.addEventListener('DOMContentLoaded', async () => {
     try {
       const snap = await getDoc(doc(db, "configuracion", "ajustes_web"));
@@ -362,10 +420,15 @@
       const querySnapshot = await getDocs(q);
       productosNubeGlobal = [];
       querySnapshot.forEach((docSnap) => { productosNubeGlobal.push({ id: docSnap.id, ...docSnap.data() }); });
-      renderizarProductosEnTienda(productosNubeGlobal);
+      window.renderizarProductosEnTienda(productosNubeGlobal);
     } catch(e){}
 
-    // CONEXIÓN EN VIVO AL RPG (LA FRAGUA SIEMPRE ACTUALIZADA)
+    try {
+      cargarReviewsNube();
+      cargarUmbralesRangosNube().then(() => { actualizarRangoSegunXP(); });
+    } catch(e){}
+
+    // CONEXIÓN EN VIVO AL RPG
     onSnapshot(query(collection(db, "rpg_objetos")), (snapsObj) => {
       rpgObjetosGlobal = [];
       snapsObj.forEach(d => {
@@ -378,40 +441,137 @@
     actualizarUiPerfil();
   });
 
-  // ================= FUNCIONES DE LA TIENDA =================
+  // ================= FUNCIONES DE LA TIENDA (COMPLETAS) =================
   window.renderizarProductosEnTienda = function(lista) {
     let contenedor = document.getElementById('catalogoNube'); if (!contenedor) return; contenedor.innerHTML = "";
+    let conteo = { recargas: 0, mangas: 0, ropa: 0, mandos: 0, perifericos: 0, figuras: 0, cartas: 0 };
+    
     let prodsVisibles = lista.filter(p => !p.oculto);
+    let elTodos = document.getElementById('count-todos'); if(elTodos) elTodos.innerText = prodsVisibles.length;
     if (prodsVisibles.length === 0) { contenedor.innerHTML = "<p style='color: var(--text-muted); text-align: center; grid-column: 1/-1;'>No hay productos.</p>"; return; }
     
     lista.forEach((prod) => {
       if(prod.oculto) return; 
       let foto = (prod.fotos && prod.fotos.length > 0) ? prod.fotos[0] : 'logo.webp?v=2';
-      let isAgotado = (prod.stock !== undefined && prod.stock <= 0);
-      let badgeClase = isAgotado ? 'badge-agotado' : 'badge-stock';
+      let categoria = (prod.categoria || 'mangas').toLowerCase();
+      let esRecarga = categoria === 'recargas';
+      if (categoria === 'teclados' || categoria === 'audifonos' || categoria === 'perifericos') { conteo.perifericos++; } else if (conteo[categoria] !== undefined) { conteo[categoria]++; }
+
+      let isAgotado = (prod.stock !== undefined && prod.stock <= 0) && !esRecarga;
+      let badgeClase = isAgotado ? 'badge-agotado' : (prod.estado && prod.estado.includes("Encargo") ? 'badge-encargo' : (esRecarga ? 'badge-digital' : 'badge-stock'));
+      
       contenedor.innerHTML += `
-        <div class="card ${isAgotado ? 'agotado' : ''}" onclick="abrirModalPorId('${prod.id}')">
+        <div class="card item-producto ${isAgotado ? 'agotado' : ''}" data-id="${prod.id}" data-nombre="${sanitizarHTML(prod.nombre).toLowerCase()}" data-categoria="${categoria}" data-precio="${prod.precio}" onclick="abrirModalPorId('${prod.id}')">
+          <button class="btn-fav-card" onclick="event.stopPropagation(); toggleFavoritoPorId('${prod.id}')"><i class="fas fa-heart"></i></button>
           <div class="badge-estado ${badgeClase}">${isAgotado ? 'AGOTADO' : (prod.estado || 'Stock')}</div>
           <div class="card-img-container"><img src="${foto}" class="activa"></div>
-          <div class="card-title">${prod.nombre}</div> <div class="precio-container"><span class="card-price">$${Number(prod.precio).toFixed(2)}</span></div>
+          <div class="card-title">${prod.nombre}</div>
+          <div class="precio-container"><span class="card-price">$${Number(prod.precio).toFixed(2)}</span></div>
         </div>`;
     });
+
+    for(let cat in conteo) { let elem = document.getElementById('count-' + cat); if(elem) elem.innerText = conteo[cat]; }
+    window.aplicarFiltrosGlobales();
+  };
+
+  window.filtrarCategoria = function(cat) {
+    document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('activa'));
+    let cardVisual = document.querySelector(`.cat-card[onclick*="'${cat}'"]`); if(cardVisual) cardVisual.classList.add('activa');
+    filtroGlobal.categoria = cat; limiteActual = 12; window.aplicarFiltrosGlobales();
+  };
+
+  window.filtrarEstadoDropdown = function(est) { filtroGlobal.estado = est; limiteActual = 12; window.aplicarFiltrosGlobales(); };
+  window.buscarProductos = function() { filtroGlobal.busqueda = document.getElementById('buscador').value.trim().toLowerCase(); limiteActual = 12; window.aplicarFiltrosGlobales(); };
+  
+  window.aplicarFiltrosGlobales = function() {
+    let productos = document.querySelectorAll('#catalogoNube .item-producto'); 
+    let mostrados = 0; let coincidencias = 0;
+    productos.forEach(card => {
+      let cat = (card.getAttribute('data-categoria') || '').toLowerCase(); 
+      let nom = card.getAttribute('data-nombre') || '';
+      let cumpleCat = (filtroGlobal.categoria === 'todos') ? true : (filtroGlobal.categoria === 'perifericos' ? (cat === 'perifericos' || cat === 'teclados' || cat === 'audifonos') : cat === filtroGlobal.categoria);
+      let cumpleBusqueda = (!filtroGlobal.busqueda || nom.includes(filtroGlobal.busqueda));
+
+      if (cumpleCat && cumpleBusqueda) {
+        coincidencias++; 
+        if (mostrados < limiteActual) { card.style.display = 'block'; mostrados++; } else { card.style.display = 'none'; }
+      } else { card.style.display = 'none'; }
+    });
+    let btnCargarMas = document.getElementById('btnCargarMas'); 
+    if (btnCargarMas) btnCargarMas.style.display = (coincidencias > limiteActual) ? 'block' : 'none';
+  };
+
+  window.cargarMasProductos = function() { limiteActual += 12; window.aplicarFiltrosGlobales(); };
+
+  window.ordenarProductos = function() {
+    let orden = document.getElementById('selectOrden').value;
+    if(orden === 'menor') { productosNubeGlobal.sort((a,b) => parseFloat(a.precio) - parseFloat(b.precio)); } 
+    else if (orden === 'mayor') { productosNubeGlobal.sort((a,b) => parseFloat(b.precio) - parseFloat(a.precio)); } 
+    else { productosNubeGlobal.sort((a,b) => b.timestamp - a.timestamp); }
+    window.renderizarProductosEnTienda(productosNubeGlobal);
   };
 
   window.productoActual = null;
   window.abrirModalPorId = function(prodId) {
     const prod = productosNubeGlobal.find(p => p.id === prodId); if (!prod) return;
-    window.productoActual = { id: prod.id, img: (prod.fotos && prod.fotos.length > 0) ? prod.fotos[0] : 'logo.webp?v=2', titulo: prod.nombre, precio: prod.precio };
-    document.getElementById('modalImg').src = window.productoActual.img; 
+    const fotosArray = (prod.fotos && prod.fotos.length > 0) ? prod.fotos : ['logo.webp?v=2'];
+    window.productoActual = { id: prod.id, img: fotosArray[0], titulo: prod.nombre, precio: prod.precio, esRopa: prod?.categoria?.includes('ropa'), esRecarga: prod?.categoria === 'recargas' };
+    
+    document.getElementById('modalImg').src = fotosArray[0]; 
     document.getElementById('modalTitulo').innerText = prod.nombre; 
     document.getElementById('modalPrecio').innerText = "$" + Number(prod.precio).toFixed(2);
+    document.getElementById('tallasContainer').style.display = window.productoActual.esRopa ? 'block' : 'none';
+    document.getElementById('recargaContainer').style.display = window.productoActual.esRecarga ? 'block' : 'none';
+    
+    let minisCont = document.getElementById('modalContainerMinis');
+    if(fotosArray.length > 1) {
+        let htmlMinis = ''; fotosArray.forEach((foto, i) => { htmlMinis += `<img src="${foto}" class="modal-mini-img ${i===0?'activo':''}" onclick="cambiarImagenModal(this, '${foto}')">`; });
+        minisCont.innerHTML = htmlMinis;
+    } else { minisCont.innerHTML = ''; }
+    
     document.getElementById('miModal').style.display = 'flex';
+  };
+  
+  window.cambiarImagenModal = function(elemento, url) {
+    document.getElementById('modalImg').src = url; window.productoActual.img = url; 
+    document.querySelectorAll('.modal-mini-img').forEach(img => img.classList.remove('activo')); elemento.classList.add('activo');
   };
 
   window.cerrarModal = function() { document.getElementById('miModal').style.display = 'none'; };
-  window.agregarAlCarrito = function() { carrito.push(window.productoActual); actualizarCarritoUI(); cerrarModal(); alert("Añadido al carrito"); };
+  window.agregarAlCarrito = function() { 
+    let item = { ...window.productoActual };
+    if(item.esRopa) item.titulo += ` (Talla: ${document.getElementById('selectTalla').value})`; 
+    if(item.esRecarga) {
+      let pid = document.getElementById('inputPlayerId').value.trim();
+      if(!pid) return alert("Falta ID"); item.titulo += ` [ID: ${pid}]`;
+    }
+    carrito.push(item); actualizarCarritoUI(); cerrarModal(); alert("Añadido al carrito"); 
+  };
+
   function actualizarCarritoUI() { localStorage.setItem('sakura_carrito', JSON.stringify(carrito)); actualizarBadges(); }
-  function actualizarBadges() { document.getElementById('cartBadge').innerText = carrito.length; document.getElementById('favBadge').innerText = favoritos.length; }
+  function actualizarBadges() { 
+    document.getElementById('cartBadge').innerText = carrito.length; 
+    document.getElementById('favBadge').innerText = favoritos.length; 
+    document.querySelectorAll('.item-producto').forEach(card => {
+        let prodId = card.getAttribute('data-id'); let btnFav = card.querySelector('.btn-fav-card');
+        if (favoritos.some(f => f.id === prodId)) { btnFav.classList.add('favorito'); } else { btnFav.classList.remove('favorito'); }
+    });
+  }
+
+  window.toggleFavoritoPorId = function(id) {
+      let prod = productosNubeGlobal.find(p => p.id === id); if (!prod) return;
+      let idx = favoritos.findIndex(f => f.id === id);
+      if (idx >= 0) { favoritos.splice(idx, 1); } else { favoritos.push({ id: prod.id, titulo: prod.nombre, precio: prod.precio, img: (prod.fotos && prod.fotos.length > 0) ? prod.fotos[0] : 'logo.webp?v=2' }); }
+      localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos)); actualizarBadges();
+  };
+
+  window.abrirFavoritosModal = function() {
+      let cont = document.getElementById('listaFavoritosDetalle'); cont.innerHTML = "";
+      if (favoritos.length === 0) { cont.innerHTML = "<p style='color:var(--text-muted); text-align:center;'>Vacío</p>"; } 
+      else { favoritos.forEach(f => { cont.innerHTML += `<div class="cart-item-row" onclick="cerrarFavoritosModal(); abrirModalPorId('${f.id}')" style="cursor:pointer;"><img src="${f.img}" class="cart-item-img"><div class="cart-item-info"><strong>${sanitizarHTML(f.titulo)}</strong><br><span style="color:var(--secondary-color);">$${Number(f.precio).toFixed(2)}</span></div><button class="cart-item-del" onclick="event.stopPropagation(); toggleFavoritoPorId('${f.id}')"><i class="fas fa-trash"></i></button></div>`; }); }
+      document.getElementById('modalFavoritos').style.display = 'flex';
+  };
+  window.cerrarFavoritosModal = function() { document.getElementById('modalFavoritos').style.display = 'none'; };
 
   window.abrirCarritoModal = function() {
     let cont = document.getElementById('listaCarritoDetalle'); cont.innerHTML = "";
@@ -420,36 +580,67 @@
       let tot = 0;
       carrito.forEach((item, idx) => {
         tot += Number(item.precio);
-        cont.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:8px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:5px;"><span>${item.titulo}</span> <span style="color:#00e5ff;">$${Number(item.precio).toFixed(2)}</span></div>`;
+        cont.innerHTML += `<div class="cart-item-row"><img src="${item.img}" class="cart-item-img"><div class="cart-item-info"><strong>${sanitizarHTML(item.titulo)}</strong><br><span style="color:var(--secondary-color);">$${Number(item.precio).toFixed(2)}</span></div><button class="cart-item-del" onclick="removerDelCarrito(${idx})"><i class="fas fa-times"></i></button></div>`;
       });
       document.getElementById('modalCarritoTotal').innerText = `Total: $${tot.toFixed(2)}`;
     }
     document.getElementById('modalCarrito').style.display = 'flex';
   };
   window.cerrarCarritoModal = function() { document.getElementById('modalCarrito').style.display = 'none'; };
+  window.removerDelCarrito = function(index) { carrito.splice(index, 1); actualizarCarritoUI(); window.abrirCarritoModal(); };
 
   window.enviarPedidoWhatsApp = function() {
     if(carrito.length === 0) return alert("Carrito vacío");
-    let n = document.getElementById('cartClienteNombre').value; let t = document.getElementById('cartClienteTelefono').value;
-    if(!n || !t) return alert("Llena tus datos");
-    let msg = `Hola, mi pedido: ${n}\n`;
-    carrito.forEach(i => msg += `- ${i.titulo}\n`);
+    let n = document.getElementById('cartClienteNombre').value.trim(); let t = document.getElementById('cartClienteTelefono').value.trim();
+    if(!n || !t) return alert("Llena tus datos para registrar la orden.");
+    let dir = document.getElementById('inputDireccionEnvio').value.trim();
+    
+    let msg = `Hola, mi pedido: ${n}\nContacto:${t}\n\n`;
+    carrito.forEach(i => msg += `- ${i.titulo} ($${Number(i.precio).toFixed(2)})\n`);
+    msg += `\nDestino: ${dir || 'Digital'}`;
+    
     window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msg), '_blank');
   };
+
+  function sanitizarHTML(str) { if (!str) return ''; return String(str).replace(/[&<>"']/g, function(m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]; }); }
 
   window.abrirMenuOpciones = function() { document.getElementById('modalOpcionesMenu').style.display = 'flex'; };
   window.cerrarMenuOpciones = function() { document.getElementById('modalOpcionesMenu').style.display = 'none'; };
   window.abrirCloudSaveModal = function() { document.getElementById('modalCloudSave').style.display = 'flex'; };
   window.cerrarCloudSaveModal = function() { document.getElementById('modalCloudSave').style.display = 'none'; };
 
+  // ================= SISTEMA DE RESEÑAS =================
+  async function cargarReviewsNube() {
+    try {
+      const q = query(collection(db, "reviews"), orderBy("timestamp", "desc")); const querySnapshot = await getDocs(q);
+      let c = document.getElementById('contenedorReviews'); if(!c) return; c.innerHTML = "";
+      if (querySnapshot.empty) { c.innerHTML = "<p style='color:var(--text-muted);'>Aún no hay reseñas registradas.</p>"; return; }
+      querySnapshot.forEach((docSnap) => {
+        let r = docSnap.data();
+        c.innerHTML += `<div class="review-card"><div style="font-weight:700; color:#fff; margin-bottom:2px;">${sanitizarHTML(r.nombre)}</div><div style="color:#ffcc00; font-size:0.85em; margin-bottom:4px;">${sanitizarHTML(r.estrellas)}</div><div style="color:var(--text-muted); font-size:0.9em;">${sanitizarHTML(r.texto)}</div></div>`;
+      });
+    } catch (e) {}
+  }
+  window.agregarReview = async function() {
+    let n = document.getElementById('revNombre').value.trim(); let e = document.getElementById('revEstrellas').value; let t = document.getElementById('revTexto').value.trim();
+    if(!n || !t) return alert("Por favor completa tu nombre y comentario.");
+    try {
+      await addDoc(collection(db, "reviews"), { nombre: n, estrellas: e, texto: t, timestamp: Date.now() });
+      document.getElementById('revNombre').value = ""; document.getElementById('revTexto').value = ""; 
+      await cargarReviewsNube(); alert("Opinión registrada correctamente.");
+    } catch(err) { alert("Error al guardar la reseña."); }
+  };
+
   // ================= FUNCIONES DEL RPG V2 =================
+  let umbralesRangosNube = { genin: 0, chunin: 300, jonin: 600, hokage: 1000 };
+  async function cargarUmbralesRangosNube() { try { const docRef = doc(db, "configuracion", "rangos_ninja"); const docSnap = await getDoc(docRef); if (docSnap.exists()) umbralesRangosNube = docSnap.data(); } catch(e) {} }
+
   window.guardarProgresoNube = async function() { 
     localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile)); 
     actualizarUiPerfil();
     if(currentUserUid) { try { await setDoc(doc(db, "jugadores_cloud", currentUserUid), { profile: gamerProfile, updatedAt: Date.now() }, { merge: true }); } catch(e) {} }
   };
 
-  // CEREBRO DE ÍCONOS DINÁMICOS
   window.obtenerIconoRPG = function(nombre, tipo) {
     let n = nombre.toLowerCase();
     if (tipo === 'material') {
@@ -463,7 +654,6 @@
     }
     if (tipo === 'consumible') return "🧪";
     
-    // Armamento
     if (n.includes("espada") || n.includes("excalibur") || n.includes("katana") || n.includes("sable")) return "⚔️";
     if (n.includes("daga") || n.includes("cuchillo") || n.includes("kunai")) return "🗡️";
     if (n.includes("arco") || n.includes("ballesta")) return "🏹";
@@ -476,7 +666,7 @@
     if (n.includes("hacha")) return "🪓";
     if (n.includes("látigo")) return "〰️";
     if (n.includes("alas")) return "🪽";
-    return "🗡️"; // Por defecto
+    return "🗡️"; 
   };
 
   window.verificarProfesion = function() {
@@ -527,7 +717,7 @@
       let isEquipped = gamerProfile.equipo.armaId === item.uid_inventario; 
       let cl = isEquipped ? 'rpg-item-card equipped' : 'rpg-item-card';
       
-      let icono = window.obtenerIconoRPG(item.nombre, item.tipo); // Icono Dinámico
+      let icono = window.obtenerIconoRPG(item.nombre, item.tipo); 
       let accionClick = item.tipo === 'arma' ? `equiparItem('${item.uid_inventario}')` : ``;
       let estiloCursor = item.tipo === 'arma' ? 'cursor: pointer;' : 'cursor: default; opacity: 0.8;';
       let infoExtra = item.tipo === 'arma' ? `ATK +${item.atk} | DEF +${item.def}<br><div style="font-size: 0.8em; margin-top: 5px; color: ${isEquipped ? '#25d366' : '#888'};">${isEquipped ? 'EQUIPADO' : 'Click para equipar'}</div>` : `<span style="color:#b000ff">Material</span>`;
@@ -542,7 +732,6 @@
     window.guardarProgresoNube();
   };
 
-  // MODALES RPG
   window.abrirGremioModal = function() { window.verificarProfesion(); document.getElementById('modalGremio').style.display = 'flex'; };
   window.cerrarGremioModal = function() { document.getElementById('modalGremio').style.display = 'none'; };
   window.abrirGamerProfileModal = function() { actualizarUiPerfil(); document.getElementById('modalGamerProfile').style.display = 'flex'; };
@@ -724,7 +913,7 @@
           if (Math.random() > 0.5) { 
             let premio = Math.floor(Math.random() * 30) + 20; 
             log.innerHTML += `<span style="color: #25d366;">¡HAS GANADO!</span><br>Recibes +${premio} Tokens y +50 XP.`;
-            gamerProfile.tokens += premio; gamerProfile.xp += 50; window.guardarProgresoNube();
+            window.ganarXP(50); gamerProfile.tokens += premio; window.guardarProgresoNube();
           } else { log.innerHTML += `<span style="color: #ff3366;">Fuiste eliminado. Suerte la próxima vez.</span>`; }
           log.scrollTop = log.scrollHeight; 
           document.getElementById('btnIniciarArenaSolo').disabled = false; 
@@ -756,6 +945,24 @@
     try { await setDoc(doc(db, "rumble_inscritos", gamerProfile.tag), { tag: gamerProfile.tag, fecha: Date.now() }); alert("¡Te has inscrito al Torneo!"); } 
     catch(e) { alert("Error al inscribirse."); btn.disabled = false; btn.innerHTML = "<i class='fas fa-pen-nib'></i> Inscribirse a la Batalla"; }
   };
+
+  function actualizarRangoSegunXP() {
+    let xp = gamerProfile.xp; let u = umbralesRangosNube; let max = 0; let min = 0; let nextRango = "";
+    if (xp >= (u.hokage ?? 1000)) { gamerProfile.rango = "Hokage"; max = xp; min = u.hokage ?? 1000; nextRango = "MAX"; }
+    else if (xp >= (u.jonin ?? 600)) { gamerProfile.rango = "Jōnin"; max = u.hokage ?? 1000; min = u.jonin ?? 600; nextRango = "Hokage"; }
+    else if (xp >= (u.chunin ?? 300)) { gamerProfile.rango = "Chūnin"; max = u.jonin ?? 600; min = u.chunin ?? 300; nextRango = "Jōnin"; }
+    else { gamerProfile.rango = "Genin"; max = u.chunin ?? 300; min = 0; nextRango = "Chūnin"; }
+
+    let pct = 100;
+    if(nextRango !== "MAX") { pct = ((xp - min) / (max - min)) * 100; let lblNext = document.getElementById('lblXpNext'); if(lblNext) lblNext.innerHTML = `Faltan <strong style="color:var(--secondary-color);">${max - xp} XP</strong> para ${nextRango}`; } 
+    else { let lblNext = document.getElementById('lblXpNext'); if(lblNext) lblNext.innerText = `¡Rango Máximo Alcanzado!`; }
+    let barra = document.getElementById('barXp'); if(barra) setTimeout(() => { barra.style.width = pct + "%"; }, 200);
+    
+    let lblXp = document.getElementById('lblXp'); if(lblXp) lblXp.innerText = gamerProfile.xp; 
+    let lblRango = document.getElementById('lblRango'); if(lblRango) lblRango.innerText = gamerProfile.rango;
+    let lblTokens = document.getElementById('lblTokens'); if(lblTokens) lblTokens.innerHTML = `<i class="fas fa-coins"></i> ${gamerProfile.tokens || 0}`;
+  }
+  window.ganarXP = function(cantidad) { gamerProfile.xp += cantidad; actualizarRangoSegunXP(); window.guardarProgresoNube(); };
 
 </script>
 </body>
