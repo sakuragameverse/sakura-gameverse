@@ -41,8 +41,8 @@
       --secondary-glow: rgba(0, 229, 255, 0.4);
       --border-color: rgba(0, 229, 255, 0.16);
       --radius-sm: 8px; 
-      --radius-md: 16px;
-      --radius-pill: 50px;
+      --radius-md: 16px; 
+      --radius-pill: 50px; 
     }
 
     body.theme-rosa { --bg-color: #05010a; --glass-bg: rgba(17, 5, 36, 0.45); --primary-color: #ff007f; --secondary-color: #00e5ff; }
@@ -265,7 +265,8 @@
     .rpg-item-card { background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 10px; text-align: center; position: relative; cursor: pointer; transition: all 0.2s; }
     .rpg-item-card:hover { border-color: var(--secondary-color); background: rgba(0, 229, 255, 0.1); }
     .rpg-item-card.equipped { border-color: #25d366; background: rgba(37, 211, 102, 0.1); box-shadow: 0 0 10px rgba(37, 211, 102, 0.2); }
-    .rpg-item-icon { font-size: 2em; margin-bottom: 5px; }
+    .rpg-item-icon { font-size: 2em; margin-bottom: 5px; height: 48px; display: flex; align-items: center; justify-content: center; }
+    .rpg-item-icon img { width: 44px; height: 44px; object-fit: contain; image-rendering: pixelated; border-radius: 4px; }
     .rpg-item-name { font-size: 0.85em; font-weight: bold; font-family: 'Chakra Petch', sans-serif; }
     .rpg-item-stats { font-size: 0.75em; color: var(--secondary-color); margin-top: 4px; }
     .rareza-N { color: #b4becd; font-weight: bold; }
@@ -450,7 +451,7 @@
       </button>
     </div>
 
-    <h4 style="color: #ff3366; margin-top: 20px; margin-bottom: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;"><i class="fas fa-dungeon"></i> Mazmorras de Jefe</h4>
+    <h4 style="color: #ff3366; margin-top: 20px; margin-bottom: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;"><i class="fas fa-dungeon"></i> Mazmorras de Jefe (Expediciones)</h4>
     <div style="display: flex; flex-direction: column; gap: 8px;">
       <button class="btn-comprar" style="margin-top:0; background: rgba(0, 229, 255, 0.1); border: 1px solid #00e5ff; color: #00e5ff; box-shadow:none;" onclick="entrarMazmorra('facil')">
         🌲 Bosque Slime (Dificultad Baja)
@@ -649,13 +650,11 @@
     <button id="btnInstalarPWA" class="btn-comprar btn-instalar" style="display: none; margin-bottom: 15px;" onclick="instalarPWA()"><i class="fas fa-download"></i> Instalar App Sakura</button>
 
     <div class="menu-opciones-grid">
-      <!-- BOTONES DEL RPG INTEGRADOS AQUÍ -->
       <button class="btn-menu-opcion" style="color: #25d366;" onclick="cerrarMenuOpciones(); abrirGremioModal()"><i class="fas fa-campground"></i> El Gremio</button>
       <button class="btn-menu-opcion" style="color: #ffaa00;" onclick="cerrarMenuOpciones(); abrirFraguaModal()"><i class="fas fa-hammer"></i> La Fragua</button>
       <button class="btn-menu-opcion" style="color: #00e5ff;" onclick="cerrarMenuOpciones(); abrirGamerProfileModal()"><i class="fas fa-user-ninja"></i> Mi Perfil RPG</button>
       <button class="btn-menu-opcion" style="color: #ff3366;" onclick="cerrarMenuOpciones(); abrirRumbleModal()"><i class="fas fa-skull-crossbones"></i> La Arena</button>
       
-      <!-- BOTONES ORIGINALES DE LA TIENDA -->
       <button class="btn-menu-opcion" style="color: #00e5ff;" id="btnMenuCloud" onclick="cerrarMenuOpciones(); abrirCloudSaveModal()"><i class="fas fa-cloud"></i> Vincular Nube</button>
       <button class="btn-menu-opcion" style="color: #b000ff;" onclick="cerrarMenuOpciones(); abrirRastreoModal()"><i class="fas fa-radar"></i> Rastrear</button>
       <button class="btn-menu-opcion" style="color: #ffaa00;" onclick="cerrarMenuOpciones(); abrirCofreModal()"><i class="fas fa-gift"></i> Cofre Diario</button>
@@ -773,7 +772,6 @@
 <audio id="audioLoFi" loop src="https://stream.zeno.fm/f3wvbbqmdg8uv"></audio>
 
 <script type="module">
-  // CORRECCIÓN 1: Versión de Firebase actualizada para que funcione sin problemas
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
   import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, setDoc, addDoc, where, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
   import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
@@ -801,11 +799,8 @@
   let waifusGachaGlobal = [];
   let modoGachaActual = 'waifus'; 
   let currentUserUid = null;
-
-  // CORRECCIÓN 2: Variable para limpiar el escuchador del Rumble
   let escuchadorRumble = null;
 
-  // NUEVA ESTRUCTURA DEL PERFIL: Incluye Profesión, Stats e Inventario (V2 RPG)
   let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { 
     tag: "GamerOtaku_VE", 
     xp: 150, 
@@ -818,7 +813,6 @@
     equipo: { armaId: null }
   };
   
-  // Garantizar que cuentas viejas no se rompan si no tenían las stats
   if(gamerProfile.profesion === undefined) {
     gamerProfile.profesion = "";
     gamerProfile.stats = { hp: 100, atk: 10, def: 5 };
@@ -830,7 +824,6 @@
   let favoritos = JSON.parse(localStorage.getItem('sakura_favoritos')) || [];
   let rpgObjetosGlobal = [];
 
-  // CORRECCIÓN 3: Se añaden console.warn a los catch
   async function cargarCMSyGacha() {
     try {
         const snap = await getDoc(doc(db, "configuracion", "ajustes_web"));
@@ -937,7 +930,6 @@
               btn.disabled = false;
           }, 1800);
       } 
-      // El gacha externo que pediste dejar, lo mantenemos igual UwU
       else if (modoGachaActual === 'pokemon') {
           try {
               let randomId = Math.floor(Math.random() * 1010) + 1;
@@ -983,7 +975,7 @@
               btn.disabled = false;
           }
       }
-  }
+  };
 
   function procesarResultadoGacha(id, nombre, imgUrl, rareza, premio, tipo) {
       let overlay = document.getElementById('gachaOverlay');
@@ -1405,14 +1397,21 @@
     cargarBannersDeNube(); cargarProductosDeNube(); cargarConfigCategoriasPublico(); cargarReviewsNube(); 
     cargarUmbralesRangosNube().then(() => { actualizarRangoSegunXP(); });
     
-    // CARGAR OBJETOS RPG DESDE ADMIN
     try {
       const qObj = query(collection(db, "rpg_objetos"));
       const snapsObj = await getDocs(qObj);
       rpgObjetosGlobal = [];
       snapsObj.forEach(d => {
         let obj = d.data();
-        rpgObjetosGlobal.push({ id: d.id, nombre: obj.nombre, tipo: obj.tipo || 'arma', rareza: obj.rareza || 'N', atk: obj.stats?.ataque || obj.stats?.atk || 0, def: obj.stats?.defensa || obj.stats?.def || 0 });
+        rpgObjetosGlobal.push({ 
+          id: d.id, 
+          nombre: obj.nombre, 
+          tipo: obj.tipo || 'arma', 
+          rareza: obj.rareza || 'N', 
+          atk: obj.stats?.ataque || obj.stats?.atk || 0, 
+          def: obj.stats?.defensa || obj.stats?.def || 0,
+          imgUrl: obj.imgUrl || ''
+        });
       });
     } catch(e) { console.error("Error cargando objetos RPG:", e); }
 
@@ -1666,9 +1665,8 @@
 
   window.ganarXP = function(cantidad) { gamerProfile.xp += cantidad; actualizarRangoSegunXP(); };
 
-
   // ==========================================
-  // SISTEMA RPG V2 (CAZA, MINERIA, FRAGUA, RUMBLE)
+  // SISTEMA RPG V2 (EXPEDICIONES, MINERÍA, FRAGUA Y RUMBLE)
   // ==========================================
 
   window.guardarProgresoLocalRPG = function() {
@@ -1729,9 +1727,16 @@
     gamerProfile.inventario.forEach((item) => {
       let isEquipped = gamerProfile.equipo.armaId === item.uid_inventario; 
       let cl = isEquipped ? 'rpg-item-card equipped' : 'rpg-item-card';
-      let icono = item.tipo === 'material' ? "💎" : (item.tipo === 'consumible' ? "🧪" : "🗡️");
+      
+      let icono = "";
+      if (item.imgUrl) {
+        icono = `<img src="${item.imgUrl}" alt="${sanitizarHTML(item.nombre)}">`;
+      } else {
+        icono = item.tipo === 'material' ? "💎" : (item.tipo === 'consumible' ? "🧪" : "🗡️");
+      }
+
       let accionClick = item.tipo === 'arma' ? `equiparItem('${item.uid_inventario}')` : ``;
-      let estiloCursor = item.tipo === 'arma' ? 'cursor: pointer;' : 'cursor: default; opacity: 0.8;';
+      let estiloCursor = item.tipo === 'arma' ? 'cursor: pointer;' : 'cursor: default; opacity: 0.85;';
       let infoExtra = item.tipo === 'arma' ? `ATK +${item.atk} | DEF +${item.def}<br><div style="font-size: 0.8em; margin-top: 5px; color: ${isEquipped ? '#25d366' : '#888'};">${isEquipped ? 'EQUIPADO' : 'Click para equipar'}</div>` : `<span style="color:#b000ff">Material</span>`;
       
       cont.innerHTML += `<div class="${cl}" style="${estiloCursor}" onclick="${accionClick}"><div class="rpg-item-icon">${icono}</div><div class="rpg-item-name rareza-${item.rareza}">${sanitizarHTML(item.nombre)}</div><div class="rpg-item-stats">${infoExtra}</div></div>`;
@@ -1776,14 +1781,19 @@
 
         let puedeForjar = (cantMateriales >= costoMat && (gamerProfile.tokens || 0) >= costoTok);
         
+        let thumbImg = arma.imgUrl ? `<img src="${arma.imgUrl}" style="width:36px; height:36px; object-fit:contain; image-rendering:pixelated; margin-right:8px; border-radius:4px; vertical-align:middle;">` : `🗡️ `;
+
         contRecetas.innerHTML += `
           <div style="background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 12px; text-align: left; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-              <div class="rpg-item-name rareza-${arma.rareza}">🗡️ ${sanitizarHTML(arma.nombre)}</div>
-              <div style="font-size: 0.75em; color: var(--text-muted); margin-bottom: 6px;">ATK +${arma.atk} | DEF +${arma.def}</div>
-              <div style="font-size: 0.8em; font-weight: bold;">
-                <span style="color: ${cantMateriales >= costoMat ? '#00e5ff' : '#ff3366'};"><i class="fas fa-gem"></i> ${costoMat}</span> | 
-                <span style="color: ${(gamerProfile.tokens || 0) >= costoTok ? '#ffaa00' : '#ff3366'};"><i class="fas fa-coins"></i> ${costoTok}</span>
+            <div style="display: flex; align-items: center;">
+              ${thumbImg}
+              <div>
+                <div class="rpg-item-name rareza-${arma.rareza}">${sanitizarHTML(arma.nombre)}</div>
+                <div style="font-size: 0.75em; color: var(--text-muted); margin-bottom: 4px;">ATK +${arma.atk} | DEF +${arma.def}</div>
+                <div style="font-size: 0.8em; font-weight: bold;">
+                  <span style="color: ${cantMateriales >= costoMat ? '#00e5ff' : '#ff3366'};"><i class="fas fa-gem"></i> ${costoMat}</span> | 
+                  <span style="color: ${(gamerProfile.tokens || 0) >= costoTok ? '#ffaa00' : '#ff3366'};"><i class="fas fa-coins"></i> ${costoTok}</span>
+                </div>
               </div>
             </div>
             <button class="btn-comprar" style="width: auto; padding: 8px 15px; margin: 0; background: ${puedeForjar ? '#ff5500' : 'rgba(255,255,255,0.1)'}; color: #fff;" onclick="forjarObjeto('${arma.id}', ${costoMat}, ${costoTok})" ${!puedeForjar ? 'disabled' : ''}>
@@ -1838,19 +1848,23 @@
     document.getElementById('rpgResultado').innerHTML = `<span style="color:var(--secondary-color);">${msj}</span><br><span style="color:#25d366;">+${xpG} XP | +${tokG} Tokens</span>`;
   };
 
+  // EXPEDICIÓN CON ENFRIAMIENTO GLOBAL DE 10 MINUTOS Y RIESGO DE PERDER XP
   window.entrarMazmorra = function(dificultad) {
     reproducirSonido();
     
     let ahora = Date.now();
-    let cooldownTime = 3 * 60 * 1000; 
-    let keyCooldown = 'sakura_cooldown_mazmorra_' + dificultad; 
+    let cooldownMinutos = 10;
+    let cooldownTime = cooldownMinutos * 60 * 1000; 
+    let keyCooldown = 'sakura_cooldown_mazmorra_global'; 
     let ultimoUso = localStorage.getItem(keyCooldown) || 0;
+
+    let log = document.getElementById('rpgResultado');
 
     if (ahora - ultimoUso < cooldownTime) {
       let faltanSegundos = Math.ceil((cooldownTime - (ahora - ultimoUso)) / 1000); 
       let faltanMinutos = Math.floor(faltanSegundos / 60); 
       let seg = faltanSegundos % 60;
-      document.getElementById('rpgResultado').innerHTML = `<span style="color:#ff3366;"><i class="fas fa-hourglass-half"></i> El Jefe descansa. Vuelve en ${faltanMinutos}m y ${seg}s.</span>`;
+      log.innerHTML = `<span style="color:#ffaa00;"><i class="fas fa-campground"></i> Reposando en la fogata.</span><br><span style="font-size: 0.85em; color:var(--text-muted);">Tu energía de expedición recarga en ${faltanMinutos}m y ${seg}s. ¡Tómate un café o explora la tienda! ☕✨</span>`;
       return;
     }
 
@@ -1861,61 +1875,48 @@
     }
     let poderTotal = gamerProfile.stats.atk + extraAtk + gamerProfile.stats.def + extraDef + (gamerProfile.xp / 10);
     
-    let poderJefe = 0; let nombreJefe = ""; let lootPool = [];
+    let poderEnemigo = 0; let nombreZonas = ""; let recompensaXp = 0;
+    let matDB = rpgObjetosGlobal.filter(a => a.tipo === 'material' || a.tipo === 'arma');
     
-    let fallbackArmas = [
-        { id: "f_1", nombre: "Daga Oxidada", tipo: "arma", rareza: "N", atk: 5, def: 0 },
-        { id: "f_2", nombre: "Escudo Roto", tipo: "arma", rareza: "N", atk: 0, def: 5 },
-        { id: "f_3", nombre: "Espada Larga", tipo: "arma", rareza: "R", atk: 15, def: 0 },
-        { id: "f_4", nombre: "Báculo de Aprendiz", tipo: "arma", rareza: "R", atk: 20, def: -2 },
-        { id: "f_5", nombre: "Excalibur", tipo: "arma", rareza: "SSR", atk: 80, def: 20 }
-    ];
-    let fallbackMateriales = [
-        { id: "m_1", nombre: "Esencia de Slime", tipo: "material", rareza: "N" },
-        { id: "m_2", nombre: "Hueso de Dragón", tipo: "material", rareza: "SR" }
-    ];
+    if (dificultad === 'facil') { poderEnemigo = 40; nombreZonas = "Bosque Slime"; recompensaXp = 45; }
+    if (dificultad === 'media') { poderEnemigo = 180; nombreZonas = "Cueva Sangrienta"; recompensaXp = 120; }
+    if (dificultad === 'dificil') { poderEnemigo = 600; nombreZonas = "Torre del Dragón"; recompensaXp = 350; }
 
-    let armasDB = rpgObjetosGlobal.filter(a => a.tipo === 'arma');
-    if (armasDB.length === 0) armasDB = fallbackArmas;
-
-    let matDB = rpgObjetosGlobal.filter(a => a.tipo === 'material');
-    if (matDB.length === 0) matDB = fallbackMateriales;
-
-    if (dificultad === 'facil') { poderJefe = 30; nombreJefe = "Rey Slime"; lootPool = armasDB.filter(a => a.rareza === 'N' || a.rareza === 'R'); }
-    if (dificultad === 'media') { poderJefe = 150; nombreJefe = "Vampiro Anciano"; lootPool = armasDB.filter(a => a.rareza === 'R' || a.rareza === 'SR'); }
-    if (dificultad === 'dificil') { poderJefe = 500; nombreJefe = "Dragón del Caos"; lootPool = armasDB.filter(a => a.rareza === 'SR' || a.rareza === 'SSR'); }
-
-    let log = document.getElementById('rpgResultado'); 
-    log.innerHTML = `<span style="color: #ffaa00;">Enfrentando a ${nombreJefe}...</span>`;
+    log.innerHTML = `<span style="color: #00e5ff;"><i class="fas fa-walking"></i> Explorando ${nombreZonas}...</span>`;
     
     localStorage.setItem(keyCooldown, ahora);
 
     setTimeout(() => {
-      if (poderTotal >= poderJefe) {
+      let poderFinalEnemigo = poderEnemigo * (0.9 + (Math.random() * 0.2));
+
+      if (poderTotal >= poderFinalEnemigo) {
         let premioTxt = "Oro y experiencia.";
         let rngDrop = Math.random() * 100;
 
-        if (rngDrop <= 35 && lootPool.length > 0) {
-            let itemDrop = lootPool[Math.floor(Math.random() * lootPool.length)];
+        if (rngDrop <= 40 && matDB.length > 0) {
+            let itemDrop = matDB[Math.floor(Math.random() * matDB.length)];
             gamerProfile.inventario.push({ ...itemDrop, uid_inventario: Date.now().toString() });
-            premioTxt = `<span class="rareza-${itemDrop.rareza}">🗡️ ${sanitizarHTML(itemDrop.nombre)}</span>`;
-        } 
-        else if (matDB.length > 0) {
-            let matDrop = matDB[Math.floor(Math.random() * matDB.length)];
-            gamerProfile.inventario.push({ ...matDrop, uid_inventario: Date.now().toString() });
-            premioTxt = `💎 ${sanitizarHTML(matDrop.nombre)} (Material)`;
+            
+            let displayIcon = itemDrop.imgUrl ? `<img src="${itemDrop.imgUrl}" style="width:22px; height:22px; vertical-align:middle; image-rendering:pixelated; border-radius:4px;">` : `💎`;
+            premioTxt = `<span class="rareza-${itemDrop.rareza}">${displayIcon} ${sanitizarHTML(itemDrop.nombre)}</span>`;
         }
 
-        gamerProfile.xp += (poderJefe); 
-        gamerProfile.tokens += Math.floor(poderJefe / 5); 
+        gamerProfile.xp += recompensaXp; 
+        gamerProfile.tokens += Math.floor(recompensaXp / 10); 
         window.guardarProgresoLocalRPG();
         
-        log.innerHTML = `<span style="color: #25d366;">¡HAS DERROTADO A ${nombreJefe.toUpperCase()}!</span><br>Soltó: <strong>${premioTxt}</strong>`;
-        try{ confetti({ particleCount: 100, spread: 70 }); }catch(e){ console.warn("Aviso Confetti:", e); } 
+        log.innerHTML = `<span style="color: #25d366;"><i class="fas fa-check-circle"></i> ¡Expedición Exitosa en ${nombreZonas}!</span><br>Loot obtenido: <strong>${premioTxt}</strong><br><span style="font-size:0.85em; color:var(--text-muted);">+${recompensaXp} XP | +${Math.floor(recompensaXp / 10)} Tokens</span>`;
+        try{ confetti({ particleCount: 70, spread: 60 }); }catch(e){} 
+
       } else {
-        log.innerHTML = `<span style="color: #ff3366;">${nombreJefe} te ha destrozado.</span><br><span style="font-size: 0.8em;">Tu Poder Total (${Math.floor(poderTotal)}) es muy bajo para el Poder del Jefe (${poderJefe}). ¡Forja mejor equipo!</span>`; 
+        let xpPerdida = Math.floor(recompensaXp / 2);
+        gamerProfile.xp -= xpPerdida;
+        if(gamerProfile.xp < 0) gamerProfile.xp = 0;
+        window.guardarProgresoLocalRPG();
+
+        log.innerHTML = `<span style="color: #ff3366;"><i class="fas fa-skull"></i> ¡Fuiste superado en ${nombreZonas}!</span><br><span style="font-size: 0.85em;">Apenas lograste escapar con vida. Perdiste <strong style="color:#ffaa00;">${xpPerdida} XP</strong>. ¡Mejora tu equipo en la Forja!</span>`; 
       }
-    }, 1500);
+    }, 2000);
   };
 
   // RUMBLE ROYALE CON LIMPIEZA DE ESCUCHADOR
@@ -1923,7 +1924,6 @@
     reproducirSonido();
     document.getElementById('modalRumble').style.display = 'flex'; 
     
-    // Si ya había un escuchador activo, lo apagamos antes de crear otro
     if (escuchadorRumble) escuchadorRumble(); 
 
     escuchadorRumble = onSnapshot(query(collection(db, "rumble_inscritos")), (snapshot) => {
@@ -1947,7 +1947,6 @@
 
   window.cerrarRumbleModal = function() { 
     document.getElementById('modalRumble').style.display = 'none'; 
-    // Apagamos el escuchador al cerrar para ahorrar recursos
     if (escuchadorRumble) { escuchadorRumble(); escuchadorRumble = null; }
   };
 
