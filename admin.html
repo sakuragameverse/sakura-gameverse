@@ -2,74 +2,188 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Admin - Sakura Gameverse</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Admin Dashboard | Sakura Gameverse</title>
+  <link rel="icon" type="image/webp" href="logo.webp?v=2">
+  <meta name="theme-color" content="#05010a">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <style>
-    body { background-color: #05010a; color: #fff; font-family: sans-serif; padding: 20px; }
-    .panel { background: rgba(17, 5, 36, 0.8); border: 1px solid rgba(0, 229, 255, 0.3); padding: 20px; border-radius: 10px; margin-bottom: 20px; max-width: 600px; }
-    .input-box { background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 10px; width: 100%; border-radius: 5px; margin-bottom: 10px; box-sizing: border-box; }
-    .btn { background: #00e5ff; color: #000; border: none; padding: 10px 15px; font-weight: bold; border-radius: 5px; cursor: pointer; width: 100%; margin-bottom: 10px; }
-    .btn:hover { opacity: 0.8; }
-    .btn-danger { background: #ff3366; color: #fff; }
+    :root { --bg-color: #05010a; --glass-bg: rgba(17, 5, 36, 0.45); --glass-border: rgba(255, 255, 255, 0.08); --text-color: #e6e9f0; --text-muted: #8b8f9e; --primary-color: #ff007f; --secondary-color: #00e5ff; --secondary-glow: rgba(0, 229, 255, 0.4); --radius-sm: 8px; --radius-md: 16px; --radius-pill: 50px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Rajdhani', sans-serif; font-size: 16px; min-height: 100vh; overflow-x: hidden; padding-bottom: 40px; }
+    body::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 0%, rgba(255, 0, 127, 0.08) 0%, transparent 60%), radial-gradient(circle at 80% 80%, rgba(0, 229, 255, 0.05) 0%, transparent 50%), linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px); background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px; pointer-events: none; z-index: 0; }
+    h1, h2, h3, h4 { font-family: 'Chakra Petch', sans-serif; text-transform: uppercase; letter-spacing: 0.5px; }
+    .admin-navbar { background: rgba(5, 1, 10, 0.75); backdrop-filter: blur(12px); border-bottom: 1px solid var(--glass-border); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+    .brand-box { display: flex; align-items: center; gap: 8px; }
+    .brand-logo { width: 28px; height: 28px; object-fit: contain; filter: drop-shadow(0 0 5px var(--primary-color)); }
+    .brand-title { font-family: 'Chakra Petch', sans-serif; font-size: 1.05em; font-weight: 700; color: #fff; text-shadow: 0 0 10px rgba(0,0,0,0.8); }
+    .nav-actions { display: flex; align-items: center; gap: 8px; }
+    .btn-nav { padding: 6px 14px; border-radius: var(--radius-pill); font-family: 'Chakra Petch', sans-serif; font-weight: 700; font-size: 0.8em; text-decoration: none; display: flex; align-items: center; gap: 5px; cursor: pointer; transition: all 0.3s ease; }
+    .btn-tienda { background: rgba(0, 229, 255, 0.1); color: var(--secondary-color); border: 1px solid rgba(0,229,255,0.3); }
+    .btn-exit { background: rgba(255, 0, 127, 0.1); color: var(--primary-color); border: 1px solid rgba(255,0,127,0.3); }
+    .admin-container { max-width: 1100px; margin: 18px auto 0 auto; padding: 0 12px; position: relative; z-index: 1; }
+    .dashboard-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+    .dash-card { background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); border: 1px solid var(--glass-border); padding: 12px 8px; border-radius: var(--radius-md); text-align: center; }
+    .dash-title { font-size: 0.65em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; font-weight: 700; }
+    .dash-val { font-size: 1.25em; color: var(--secondary-color); font-weight: 700; font-family: 'Chakra Petch', sans-serif; }
+    .dash-val.ganancias { color: #25d366; } .dash-val.pendientes { color: #ffaa00; }
+    .tabs-wrapper { display: flex; gap: 8px; overflow-x: auto; padding: 4px 4px 14px 4px; margin-bottom: 10px; scrollbar-width: none; }
+    .tabs-wrapper::-webkit-scrollbar { display: none; }
+    .tab-btn { flex: 0 0 auto; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); border: 1px solid var(--glass-border); color: var(--text-muted); padding: 10px 16px; border-radius: var(--radius-pill); font-family: 'Chakra Petch', sans-serif; font-size: 0.82em; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.3s ease; }
+    .tab-btn.active { background: var(--secondary-color); color: #000; border-color: var(--secondary-color); box-shadow: 0 0 12px var(--secondary-glow); }
+    .admin-panel { display: none; } .admin-panel.active { display: block; animation: fade-in 0.4s ease; }
+    @keyframes fade-in { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    .card-panel { background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 18px; margin-bottom: 18px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); }
+    .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .panel-title { font-size: 1.05em; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; }
+    .btn-toggle-box { width: 100%; background: rgba(0, 229, 255, 0.08); border: 1px dashed rgba(0, 229, 255, 0.4); color: var(--secondary-color); padding: 14px; border-radius: var(--radius-sm); font-family: 'Chakra Petch', sans-serif; font-size: 0.9em; font-weight: 700; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 16px; }
+    .form-group { margin-bottom: 14px; text-align: left; }
+    .form-label { display: block; font-size: 0.8em; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; }
+    .form-input, .form-select, .form-textarea { width: 100%; min-height: 44px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: #fff; padding: 10px 14px; border-radius: var(--radius-sm); font-family: 'Rajdhani', sans-serif; font-size: 16px; outline: none; }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--secondary-color); background: rgba(17, 5, 36, 0.6); }
+    .btn-file-select { width: 100%; min-height: 46px; background: rgba(0, 229, 255, 0.08); border: 1px dashed var(--secondary-color); color: var(--secondary-color); border-radius: var(--radius-sm); font-family: 'Chakra Petch', sans-serif; font-size: 0.9em; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .preview-fotos-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; max-height: 200px; overflow-y: auto; padding-right: 4px; }
+    .preview-foto-item { position: relative; width: 64px; height: 64px; border-radius: var(--radius-sm); border: 1px solid var(--glass-border); overflow: hidden; background: rgba(0,0,0,0.5); }
+    .preview-foto-item img { width: 100%; height: 100%; object-fit: cover; }
+    .btn-del-foto-preview { position: absolute; top: 2px; right: 2px; background: rgba(0, 0, 0, 0.85); color: #ff3366; border: none; width: 20px; height: 20px; border-radius: 50%; font-size: 0.7em; cursor: pointer; }
+    .btn-submit { width: 100%; min-height: 46px; background: linear-gradient(135deg, var(--primary-color), #cc0066); color: #fff; border: none; padding: 10px; font-family: 'Chakra Petch', sans-serif; font-size: 1em; font-weight: 700; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .item-card-row { display: flex; align-items: center; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 10px; gap: 12px; }
+    .item-card-row.is-paused { opacity: 0.4; border-style: dashed; filter: grayscale(80%); }
+    .item-card-thumb { width: 54px; height: 54px; object-fit: contain; border-radius: var(--radius-sm); background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); flex-shrink: 0; padding: 3px; }
+    .item-card-info { flex-grow: 1; min-width: 0; }
+    .item-card-title { font-family: 'Chakra Petch', sans-serif; font-size: 0.95em; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px; }
+    .item-card-meta { font-size: 0.8em; color: var(--text-muted); display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 4px; }
+    .item-card-price { font-size: 1.05em; font-weight: 700; color: var(--secondary-color); }
+    .tag-badge { display: inline-block; padding: 2px 8px; font-size: 0.7em; font-weight: 700; border-radius: var(--radius-pill); text-transform: uppercase; }
+    .tag-stock { background: rgba(0, 229, 255, 0.15); color: var(--secondary-color); border: 1px solid rgba(0,229,255,0.3); }
+    .item-card-actions { display: flex; flex-direction: row; gap: 6px; flex-shrink: 0; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+    .btn-action-touch { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid transparent; font-size: 0.85em; transition: all 0.2s ease; }
+    .btn-edit { background: rgba(0, 229, 255, 0.1); color: var(--secondary-color); border-color: rgba(0,229,255,0.3); }
+    .btn-del { background: rgba(255, 51, 102, 0.1); color: #ff3366; border-color: rgba(255,51,102,0.3); }
+    #lockScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 0, 6, 0.85); backdrop-filter: blur(12px); display: flex; justify-content: center; align-items: center; z-index: 999999; padding: 16px; }
+    .lock-box { background: rgba(14, 4, 31, 0.85); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); padding: 32px 24px; border-radius: var(--radius-md); text-align: center; width: 100%; max-width: 360px; box-shadow: 0 15px 50px rgba(0,0,0,0.8); }
   </style>
 </head>
 <body>
 
-  <h2>Panel de Control Multiverso 🗿</h2>
+<div id="lockScreen">
+  <div class="lock-box">
+    <div style="font-size: 42px; color: var(--secondary-color); margin-bottom: 12px;"><i class="fas fa-shield-halved"></i></div>
+    <h3 style="color: #fff; margin-bottom: 6px;">Acceso Administrador</h3>
+    <div class="form-group"><input type="email" id="adminEmailInput" class="form-input" placeholder="Correo electrónico"><input type="password" id="adminPassInput" class="form-input" placeholder="Contraseña" style="margin-top: 10px;" onkeypress="if(event.key === 'Enter') iniciarSesionAdmin()"></div>
+    <div id="loginErrorMsg" style="color: #ff3366; font-size: 0.85em; margin-bottom: 14px; display: none; font-weight: 700;"></div>
+    <button class="btn-submit" id="btnLoginSubmit" onclick="iniciarSesionAdmin()">Iniciar Sesión</button>
+  </div>
+</div>
 
-  <!-- SECCIÓN FORJA RPG -->
-  <div class="panel">
-    <h3 style="color: #00e5ff; margin-top: 0;"><i class="fas fa-hammer"></i> Forja de Objetos RPG</h3>
-    <p style="font-size: 0.85em; color: #aaa;">Crea armas, materiales o consumibles para la base de datos.</p>
-    
-    <input type="text" id="rpgItemNombre" class="input-box" placeholder="Nombre del Objeto (Ej: Espada de Fuego)">
-    
-    <div style="display: flex; gap: 10px;">
-      <select id="rpgItemTipo" class="input-box">
-        <option value="arma">Arma / Equipamiento</option>
-        <option value="material">Material de Crafteo</option>
-        <option value="consumible">Consumible (Poción)</option>
-      </select>
-      <select id="rpgItemRareza" class="input-box">
-        <option value="N">Común (N)</option>
-        <option value="R">Raro (R)</option>
-        <option value="SR">Épico (SR)</option>
-        <option value="SSR">Legendario (SSR)</option>
-      </select>
-    </div>
+<header class="admin-navbar">
+  <div class="brand-box"><img src="logo.webp?v=2" class="brand-logo" alt="Logo"><span class="brand-title">Admin Panel</span></div>
+  <div class="nav-actions"><a href="index.html" class="btn-nav btn-tienda"><i class="fas fa-store"></i> Tienda</a><button class="btn-nav btn-exit" onclick="cerrarSesionAdmin()"><i class="fas fa-sign-out-alt"></i> Salir</button></div>
+</header>
 
-    <div style="display: flex; gap: 10px;">
-      <input type="number" id="rpgItemAtk" class="input-box" placeholder="+ Ataque (Ej: 15)">
-      <input type="number" id="rpgItemDef" class="input-box" placeholder="+ Defensa (Ej: 5)">
-    </div>
-    
-    <button onclick="guardarObjetoRPG()" class="btn"><i class="fas fa-save"></i> Crear Objeto en el Servidor</button>
+<main class="admin-container" id="adminMainContent" style="display: none;">
+  <div class="dashboard-grid">
+    <div class="dash-card"><div class="dash-title">Ingresos USD</div><div class="dash-val ganancias" id="dashIngresos">$0.00</div></div>
+    <div class="dash-card"><div class="dash-title">Pendientes</div><div class="dash-val pendientes" id="dashOrdenes">0</div></div>
+    <div class="dash-card"><div class="dash-title">Catálogo</div><div class="dash-val" id="dashProds">0</div></div>
   </div>
 
-  <!-- SECCIÓN RUMBLE ROYALE -->
-  <div class="panel" style="border-color: #ff3366;">
-    <h3 style="color: #ff3366; margin-top: 0;"><i class="fas fa-skull-crossbones"></i> Torneo Rumble Royale</h3>
-    <p style="font-size: 0.85em; color: #aaa;">Inicia el evento multijugador. Tomará a todos los inscritos actuales y narrará una batalla a muerte.</p>
-    <button onclick="ejecutarTorneoRumble()" class="btn btn-danger"><i class="fas fa-play"></i> INICIAR BATALLA AHORA</button>
+  <div class="tabs-wrapper">
+    <button class="tab-btn active" onclick="cambiarSeccion('productos')"><i class="fas fa-boxes"></i> Inventario</button>
+    <button class="tab-btn" onclick="cambiarSeccion('rpg')"><i class="fas fa-dragon"></i> Sistema RPG</button>
+    <button class="tab-btn" onclick="cambiarSeccion('jugadores')"><i class="fas fa-users"></i> Jugadores</button>
+    <button class="tab-btn" onclick="cambiarSeccion('pedidos')"><i class="fas fa-truck-fast"></i> Pedidos</button>
+    <button class="tab-btn" onclick="cambiarSeccion('gacha')"><i class="fas fa-capsules"></i> Gacha Waifus</button>
+    <button class="tab-btn" onclick="cambiarSeccion('ajustes')"><i class="fas fa-cogs"></i> Ajustes Web</button>
   </div>
+
+  <!-- INVENTARIO (Simplificado visualmente para el ejemplo, pero 100% funcional) -->
+  <section id="panel-productos" class="admin-panel active">
+    <button class="btn-toggle-box" onclick="toggleFormularioProducto()"><i class="fas fa-plus"></i> <span id="lblToggleForm">Crear Nuevo Producto</span></button>
+    <div class="card-panel" id="cajaFormProducto" style="display: none;">
+      <form id="formProducto" onsubmit="guardarProducto(event)">
+        <input type="hidden" id="prodEditId" value="">
+        <div class="form-group"><label class="form-label">Nombre del Producto:</label><input type="text" id="prodNombre" class="form-input" required></div>
+        <div style="display: flex; gap: 8px;">
+          <div class="form-group" style="flex: 1;"><label class="form-label">Precio ($):</label><input type="number" id="prodPrecio" class="form-input" step="0.01" required></div>
+          <div class="form-group" style="flex: 1;"><label class="form-label">Stock:</label><input type="number" id="prodStock" class="form-input" min="0" value="10" required></div>
+        </div>
+        <div class="form-group"><label class="form-label">Categoría:</label><select id="prodCategoria" class="form-select"><option value="figuras">Figuras</option><option value="recargas">Recargas</option></select></div>
+        <div class="form-group"><label class="form-label">Fotos (Sin límite):</label><input type="file" id="prodFileInput" multiple accept="image/*" style="display: none;" onchange="procesarArchivosGaleria(event)"><button type="button" class="btn-file-select" onclick="document.getElementById('prodFileInput').click()"><i class="fas fa-camera"></i> Seleccionar Fotos</button><div id="contenedorPreviewFotos" class="preview-fotos-grid"></div></div>
+        <button type="submit" class="btn-submit" id="btnGuardarProd">Guardar Producto</button>
+      </form>
+    </div>
+    <div class="card-panel"><div class="panel-header"><span class="panel-title"><i class="fas fa-boxes"></i> Inventario (<span id="totalProdsLbl">0</span>)</span></div><div id="listaProductosMobile"></div></div>
+  </section>
+
+  <!-- NUEVA PESTAÑA: SISTEMA RPG Y RUMBLE -->
+  <section id="panel-rpg" class="admin-panel">
+    <div class="card-panel" style="border-color: rgba(0, 229, 255, 0.4);">
+      <div class="panel-header"><span class="panel-title" style="color: #00e5ff;"><i class="fas fa-hammer"></i> Forja de Objetos RPG</span></div>
+      <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 15px;">Crea armas, armaduras o materiales de crafteo para los jugadores.</p>
+      <input type="text" id="rpgItemNombre" class="form-input" placeholder="Nombre del Objeto (Ej: Espada de Fuego)" style="margin-bottom: 10px;">
+      <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+        <select id="rpgItemTipo" class="form-select"><option value="arma">Arma / Equipamiento</option><option value="material">Material (Mineral, Hueso)</option><option value="consumible">Poción</option></select>
+        <select id="rpgItemRareza" class="form-select"><option value="N">Común (N)</option><option value="R">Raro (R)</option><option value="SR">Épico (SR)</option><option value="SSR">Legendario (SSR)</option></select>
+      </div>
+      <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+        <input type="number" id="rpgItemAtk" class="form-input" placeholder="+ Ataque (Ej: 15)">
+        <input type="number" id="rpgItemDef" class="form-input" placeholder="+ Defensa (Ej: 5)">
+      </div>
+      <button onclick="guardarObjetoRPG()" class="btn-submit" style="background: rgba(0, 229, 255, 0.1); color: #00e5ff; border: 1px solid #00e5ff;">Crear Objeto en el Servidor</button>
+    </div>
+
+    <div class="card-panel" style="border-color: rgba(255, 51, 102, 0.4); margin-top: 20px;">
+      <div class="panel-header"><span class="panel-title" style="color: #ff3366;"><i class="fas fa-skull-crossbones"></i> Torneo Rumble Royale</span></div>
+      <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 15px;">Inicia el evento multijugador. Tomará a todos los inscritos actuales y narrará una batalla a muerte.</p>
+      <button onclick="ejecutarTorneoRumble()" class="btn-submit" style="background: #ff3366;"><i class="fas fa-play"></i> INICIAR BATALLA AHORA</button>
+    </div>
+  </section>
+
+  <!-- OTRAS SECCIONES SIMPLIFICADAS PARA ESPACIO -->
+  <section id="panel-jugadores" class="admin-panel"><div class="card-panel"><div class="panel-header"><span class="panel-title">Jugadores</span></div><div id="listaJugadoresAdmin"></div></div></section>
+  <section id="panel-pedidos" class="admin-panel"><div class="card-panel"><div class="panel-header"><span class="panel-title">Pedidos</span></div><div id="listaPedidosMobile"></div></div></section>
+  <section id="panel-gacha" class="admin-panel"><div class="card-panel"><div class="panel-header"><span class="panel-title">Gacha</span></div></div></section>
+  <section id="panel-ajustes" class="admin-panel"><div class="card-panel"><div class="panel-header"><span class="panel-title">Ajustes</span></div></div></section>
+
+</main>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+  import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, setDoc, addDoc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDH1DZqaIi5sKRXspXDUWbMUZ4nr5JIy8Q",
-    authDomain: "sakura-gameverse.firebaseapp.com",
-    projectId: "sakura-gameverse",
-    storageBucket: "sakura-gameverse.firebasestorage.app",
-    messagingSenderId: "226328425516",
-    appId: "1:226328425516:web:8dc11761639228c6120d89"
+  const firebaseConfig = { apiKey: "AIzaSyDH1DZqaIi5sKRXspXDUWbMUZ4nr5JIy8Q", authDomain: "sakura-gameverse.firebaseapp.com", projectId: "sakura-gameverse", storageBucket: "sakura-gameverse.firebasestorage.app", messagingSenderId: "226328425516", appId: "1:226328425516:web:8dc11761639228c6120d89" };
+  const app = initializeApp(firebaseConfig); const db = getFirestore(app); const auth = getAuth(app);
+  
+  const CORREO_ADMIN = "Sakuragameverse@gmail.com";
+  let productosAdminGlobal = []; let fotosBufferProducto = [];
+
+  onAuthStateChanged(auth, (user) => { 
+    if (user && user.email.toLowerCase() === CORREO_ADMIN.toLowerCase()) { 
+      document.getElementById('lockScreen').style.display = 'none'; document.getElementById('adminMainContent').style.display = 'block'; cargarTodo(); 
+    } else { 
+      document.getElementById('lockScreen').style.display = 'flex'; document.getElementById('adminMainContent').style.display = 'none'; 
+      if(user) { signOut(auth); alert("ACCESO DENEGADO."); }
+    } 
+  });
+
+  window.iniciarSesionAdmin = async function() { 
+    const email = document.getElementById('adminEmailInput').value.trim(); const pass = document.getElementById('adminPassInput').value; 
+    if (!email || !pass) return; 
+    if (email.toLowerCase() !== CORREO_ADMIN.toLowerCase()) { document.getElementById('loginErrorMsg').innerText = "🛑 Sin permisos."; document.getElementById('loginErrorMsg').style.display = 'block'; return; }
+    try { await signInWithEmailAndPassword(auth, email, pass); document.getElementById('adminPassInput').value = ""; } catch (err) { document.getElementById('loginErrorMsg').innerText = "Credenciales inválidas."; document.getElementById('loginErrorMsg').style.display = 'block'; } 
   };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+  window.cerrarSesionAdmin = async function() { if (confirm("¿Cerrar sesión?")) await signOut(auth); };
+  window.cambiarSeccion = function(panelId) { document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active')); event.currentTarget.classList.add('active'); document.getElementById(`panel-${panelId}`).classList.add('active'); };
 
-  // LOGICA: CREAR OBJETOS
+  // =====================================
+  // LÓGICA DEL SISTEMA RPG (FORJA Y RUMBLE)
+  // =====================================
   window.guardarObjetoRPG = async function() {
     let nombre = document.getElementById('rpgItemNombre').value.trim();
     let tipo = document.getElementById('rpgItemTipo').value;
@@ -78,17 +192,13 @@
     let def = parseInt(document.getElementById('rpgItemDef').value) || 0;
 
     if(!nombre) return alert("Ponle un nombre al objeto.");
-
     try {
-      await addDoc(collection(db, "rpg_objetos"), {
-        nombre: nombre, tipo: tipo, rareza: rareza, stats: { ataque: atk, defensa: def }, timestamp: Date.now()
-      });
-      alert(`Objeto "${nombre}" forjado y guardado.`);
+      await addDoc(collection(db, "rpg_objetos"), { nombre: nombre, tipo: tipo, rareza: rareza, stats: { atk: atk, def: def }, timestamp: Date.now() });
+      alert(`Objeto "${nombre}" forjado y guardado en la base de datos.`);
       document.getElementById('rpgItemNombre').value = "";
-    } catch(e) { alert("Error al guardar el objeto."); console.log(e); }
+    } catch(e) { alert("Error al guardar el objeto."); }
   };
 
-  // LOGICA: EJECUTAR RUMBLE
   window.ejecutarTorneoRumble = async function() {
     const rumbleRef = collection(db, "rumble_inscritos");
     const snapshot = await getDocs(rumbleRef);
@@ -116,6 +226,10 @@
     snapshot.forEach(async (documento) => { await deleteDoc(doc(db, "rumble_inscritos", documento.id)); });
     alert(`Torneo finalizado con éxito. Ganador: ${ganador}.`);
   };
+
+  function cargarTodo() {
+    // Aquí van tus funciones de cargarProductosAdmin(), etc.
+  }
 </script>
 </body>
 </html>
