@@ -242,6 +242,7 @@
     .timeline-item::before { content: ''; position: absolute; left: -26px; top: 2px; width: 10px; height: 10px; border-radius: 50%; background: var(--glass-border); transition: all 0.3s ease; }
     .timeline-item.active::before { background: var(--secondary-color); box-shadow: 0 0 10px var(--secondary-glow); }
 
+    /* Estilos Gacha Waifus */
     .tag-n { background: rgba(180, 190, 205, 0.15); color: #b4becd; border: 1px solid #8b8f9e; padding: 2px 8px; border-radius: var(--radius-pill); font-size: 0.7em; font-weight: 700; }
     .tag-r { background: rgba(0, 229, 255, 0.15); color: #00e5ff; border: 1px solid #00e5ff; padding: 2px 8px; border-radius: var(--radius-pill); font-size: 0.7em; font-weight: 700; }
     .tag-sr { background: rgba(176, 0, 255, 0.15); color: #b000ff; border: 1px solid #b000ff; padding: 2px 8px; border-radius: var(--radius-pill); font-size: 0.7em; font-weight: 700; }
@@ -249,6 +250,16 @@
     .waifu-card-mini { width: 70px; height: 100px; background: rgba(0,0,0,0.5); border-radius: var(--radius-sm); border: 1px solid var(--glass-border); overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .waifu-card-mini img { width: 100%; height: 100%; object-fit: cover; }
     .waifu-card-mini .badge { position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); font-size: 0.6em; }
+
+    /* Animacion Pokeball/Genshin */
+    @keyframes spinBounce {
+      0% { transform: translateY(0) rotate(0deg); }
+      25% { transform: translateY(-20px) rotate(45deg); }
+      50% { transform: translateY(0) rotate(0deg); }
+      75% { transform: translateY(-10px) rotate(-45deg); }
+      100% { transform: translateY(0) rotate(0deg); }
+    }
+    .animating-gacha { animation: spinBounce 0.6s infinite ease-in-out; }
   </style>
 </head>
 <body>
@@ -273,17 +284,23 @@
   </div>
 </div>
 
+<!-- SALÓN ARCADE GACHA (MULTIVERSO) -->
 <div id="modalGacha" class="modal">
   <div class="modal-content" style="text-align: center; background: linear-gradient(180deg, rgba(14,4,31,0.95) 0%, #05010a 100%); border: 2px solid var(--secondary-color);">
     <button class="cerrar-modal" onclick="cerrarGachaModal()">×</button>
-    <h3 style="color: var(--secondary-color); margin-top: 0; font-size: 1.5em; text-transform: uppercase; text-shadow: 0 0 10px var(--secondary-glow);"><i class="fas fa-capsules"></i> Gacha Waifus</h3>
-    <p style="color: var(--text-muted); font-size: 0.85em; margin-bottom: 15px;">Usa tus TOKENS para invocar Waifus y ganar descuentos únicos.</p>
+    <h3 style="color: var(--secondary-color); margin-top: 0; font-size: 1.5em; text-transform: uppercase; text-shadow: 0 0 10px var(--secondary-glow);"><i class="fas fa-gamepad"></i> Salón Arcade</h3>
+    <p style="color: var(--text-muted); font-size: 0.85em; margin-bottom: 10px;">Elige una máquina y usa tus TOKENS para ganar cartas y descuentos.</p>
+
+    <div class="cart-tabs" style="margin-bottom: 15px; border-radius: var(--radius-sm);">
+      <button class="cart-tab-btn activo" id="tabGachaWaifu" onclick="cambiarModoGacha('waifus')">Waifus</button>
+      <button class="cart-tab-btn" id="tabGachaPoke" onclick="cambiarModoGacha('pokemon')">Pokémon</button>
+      <button class="cart-tab-btn" id="tabGachaGenshin" onclick="cambiarModoGacha('genshin')">Genshin</button>
+    </div>
     
     <div id="gachaMachineContainer" style="position: relative; height: 220px; background: rgba(0,0,0,0.6); border-radius: var(--radius-md); margin-bottom: 15px; border: 1px dashed var(--glass-border); display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: inset 0 0 20px rgba(0,0,0,0.8);">
-      <img id="gachaWaifuImg" src="logo.webp?v=2" style="height: 100%; object-fit: contain; opacity: 0.3; transition: all 0.5s ease;">
+      <img id="gachaWaifuImg" src="logo.webp?v=2" style="height: 100%; object-fit: contain; opacity: 0.3; transition: all 0.3s ease;">
       <div id="gachaOverlay" style="position: absolute; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: bold; color: var(--secondary-color); font-size: 1.2em; z-index: 2; backdrop-filter: blur(2px);">
-        <i class="fas fa-bolt" style="font-size: 2em; margin-bottom: 10px; color: #ffaa00; filter: drop-shadow(0 0 10px #ffaa00);"></i>
-        <span id="gachaOverlayText">MÁQUINA LISTA</span>
+        <span id="gachaOverlayText"><i class="fas fa-bolt"></i> MÁQUINA LISTA</span>
       </div>
     </div>
 
@@ -313,6 +330,7 @@
   </div>
 </div>
 
+<!-- MODAL GAMER PROFILE -->
 <div id="modalGamerProfile" class="modal">
   <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarGamerProfileModal()">×</button>
@@ -333,8 +351,9 @@
       <div style="font-size: 0.8em; color: var(--text-muted); text-align: right; margin-top: 6px;" id="lblXpNext">Calculando siguiente rango...</div>
     </div>
 
+    <!-- COLECCIÓN MULTIVERSO -->
     <div style="text-align: left; margin-bottom: 14px;">
-      <div style="font-size: 0.85em; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Mi Colección Waifus (<span id="lblTotalWaifusJugador">0</span>)</div>
+      <div style="font-size: 0.85em; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Mi Colección Arcade (<span id="lblTotalWaifusJugador">0</span>)</div>
       <div id="albumWaifusContenedor" style="display:flex; gap:8px; overflow-x:auto; padding-bottom: 5px; scrollbar-width: none;">
         <p style="color: var(--text-muted); font-size: 0.8em; margin: 0;">Juega al Gacha para coleccionar.</p>
       </div>
@@ -529,7 +548,7 @@
       <button class="btn-menu-opcion" style="color: #00e5ff;" id="btnMenuCloud" onclick="cerrarMenuOpciones(); abrirCloudSaveModal()"><i class="fas fa-cloud"></i> Vincular Nube</button>
       <button class="btn-menu-opcion" style="color: #b000ff;" onclick="cerrarMenuOpciones(); abrirRastreoModal()"><i class="fas fa-radar"></i> Rastrear</button>
       <button class="btn-menu-opcion" style="color: #ffaa00;" onclick="cerrarMenuOpciones(); abrirCofreModal()"><i class="fas fa-gift"></i> Cofre Diario</button>
-      <button class="btn-menu-opcion" style="color: var(--secondary-color);" onclick="cerrarMenuOpciones(); abrirGachaModal()"><i class="fas fa-capsules"></i> Gacha Waifu</button>
+      <button class="btn-menu-opcion" style="color: var(--secondary-color);" onclick="cerrarMenuOpciones(); abrirGachaModal()"><i class="fas fa-capsules"></i> Gacha Center</button>
       <button class="btn-menu-opcion" style="color: #25d366;" onclick="cerrarMenuOpciones(); abrirGamerProfileModal()"><i class="fas fa-user"></i> Mi Perfil</button>
       <button class="btn-menu-opcion" style="color: #ff007f;" onclick="cerrarMenuOpciones(); abrirTemasModal()"><i class="fas fa-palette"></i> Temas</button>
       <button class="btn-menu-opcion" style="color: #e0f4ff;" onclick="toggleMusicaLoFi()"><i class="fas fa-music" id="iconoMusica"></i> Audio Lo-Fi</button>
@@ -669,6 +688,7 @@
   
   let ajustesWebGlobal = { whatsapp: "584244970576", costoGacha: 100, tokensCofre: 15 };
   let waifusGachaGlobal = [];
+  let modoGachaActual = 'waifus'; // Controla en qué pestaña de la máquina estamos
   
   let currentUserUid = null;
   let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, tokens: 0, rango: "Genin", waifus: [] };
@@ -704,24 +724,52 @@
     } catch(e){}
   }
 
+  // >>> NUEVO SISTEMA DE PESTAÑAS PARA EL GACHA MULTIVERSO <<<
+  window.cambiarModoGacha = function(modo) {
+      reproducirSonido();
+      modoGachaActual = modo;
+      document.getElementById('tabGachaWaifu').classList.remove('activo');
+      document.getElementById('tabGachaPoke').classList.remove('activo');
+      document.getElementById('tabGachaGenshin').classList.remove('activo');
+      
+      let img = document.getElementById('gachaWaifuImg');
+      let text = document.getElementById('gachaOverlayText');
+      document.getElementById('gachaResultado').style.display = 'none';
+
+      if(modo === 'pokemon') {
+          document.getElementById('tabGachaPoke').classList.add('activo');
+          img.src = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/master-ball.png';
+          text.innerHTML = "<i class='fas fa-cube'></i> MÁQUINA POKÉMON";
+      } else if(modo === 'genshin') {
+          document.getElementById('tabGachaGenshin').classList.add('activo');
+          img.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Genshin_Impact_logo.svg/512px-Genshin_Impact_logo.svg.png';
+          text.innerHTML = "<i class='fas fa-star'></i> MÁQUINA GENSHIN";
+      } else {
+          document.getElementById('tabGachaWaifu').classList.add('activo');
+          img.src = 'logo.webp?v=2';
+          text.innerHTML = "<i class='fas fa-bolt'></i> MÁQUINA WAIFUS";
+      }
+      img.style.opacity = '0.3';
+      img.classList.remove('animating-gacha');
+  };
+
   window.abrirGachaModal = function() {
       reproducirSonido();
       document.getElementById('lblSaldoGacha').innerText = gamerProfile.tokens || 0;
       document.getElementById('modalGacha').style.display = 'flex';
-      document.getElementById('gachaResultado').style.display = 'none';
+      cambiarModoGacha('waifus'); // Inicia por defecto en tu máquina
       document.getElementById('gachaOverlay').style.display = 'flex';
-      document.getElementById('gachaOverlayText').innerText = "MÁQUINA LISTA";
-      document.getElementById('gachaWaifuImg').style.opacity = '0.3';
   };
   window.cerrarGachaModal = function() { document.getElementById('modalGacha').style.display = 'none'; };
 
-  window.realizarTiradaGacha = function() {
+  window.realizarTiradaGacha = async function() {
       reproducirSonido();
       let costo = ajustesWebGlobal.costoGacha;
       
       if(!gamerProfile.tokens) gamerProfile.tokens = 0;
       if(gamerProfile.tokens < costo) return alert(`Necesitas al menos ${costo} Tokens para realizar una invocación.`);
-      if(waifusGachaGlobal.length === 0) return alert("La máquina Gacha está vacía temporalmente. ¡Vuelve pronto!");
+      
+      if(modoGachaActual === 'waifus' && waifusGachaGlobal.length === 0) return alert("Tu máquina de Waifus está vacía. Ve al Admin y agrega cartas.");
 
       let btn = document.getElementById('btnTirarGacha');
       btn.disabled = true;
@@ -737,51 +785,112 @@
       
       overlay.innerHTML = "<i class='fas fa-spinner fa-spin' style='font-size: 2em; margin-bottom:10px; color:#ff007f;'></i><span>INVOCANDO...</span>";
       overlay.style.display = "flex";
-      img.style.opacity = "0.1";
+      img.style.opacity = "1";
+      img.classList.add('animating-gacha'); // Agregamos la animación de rebote
       resBox.style.display = "none";
 
-      setTimeout(() => {
-          let rand = Math.random() * 100;
-          // >>> PROBABILIDADES GACHA AJUSTADAS A LA VIDA REAL <<<
-          let targetRareza = rand <= 2 ? 'SSR' : (rand <= 10 ? 'SR' : (rand <= 40 ? 'R' : 'N'));
-          
-          let posibles = waifusGachaGlobal.filter(w => w.rareza === targetRareza);
-          if(posibles.length === 0) posibles = waifusGachaGlobal; 
-          let elegida = posibles[Math.floor(Math.random() * posibles.length)];
+      // LÓGICA MÁQUINA WAIFUS (TUS CARTAS)
+      if (modoGachaActual === 'waifus') {
+          setTimeout(() => {
+              let rand = Math.random() * 100;
+              let targetRareza = rand <= 2 ? 'SSR' : (rand <= 10 ? 'SR' : (rand <= 40 ? 'R' : 'N'));
+              
+              let posibles = waifusGachaGlobal.filter(w => w.rareza === targetRareza);
+              if(posibles.length === 0) posibles = waifusGachaGlobal; 
+              let elegida = posibles[Math.floor(Math.random() * posibles.length)];
 
-          if(!gamerProfile.waifus) gamerProfile.waifus = [];
-          if(!gamerProfile.waifus.some(w => w.id === elegida.id)) {
-              gamerProfile.waifus.push({id: elegida.id, nombre: elegida.nombre, imgUrl: elegida.imgUrl, rareza: elegida.rareza});
-              guardarProgresoNube();
-              renderizarAlbumWaifus();
-          }
-
+              procesarResultadoGacha(elegida.id, elegida.nombre, elegida.imgUrl, elegida.rareza, elegida.premio, "Waifu");
+              btn.disabled = false;
+          }, 1800);
+      } 
+      // LÓGICA MÁQUINA POKÉMON (API 1000+)
+      else if (modoGachaActual === 'pokemon') {
           try {
-              addDoc(collection(db, "historial_gacha"), {
-                  jugador: gamerProfile.tag,
-                  waifu: elegida.nombre,
-                  rareza: elegida.rareza,
-                  premio: elegida.premio,
-                  timestamp: Date.now()
-              });
-          } catch(e) {}
+              let randomId = Math.floor(Math.random() * 1010) + 1;
+              let resp = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomId}`);
+              let data = await resp.json();
+              
+              let rand = Math.random() * 100;
+              let rareza = rand <= 2 ? 'SSR' : (rand <= 10 ? 'SR' : (rand <= 40 ? 'R' : 'N'));
+              
+              let pokeName = data.name.charAt(0).toUpperCase() + data.name.slice(1);
+              let pokeImg = data.sprites.other['official-artwork'].front_default || data.sprites.front_default;
+              
+              setTimeout(() => {
+                  procesarResultadoGacha('poke_'+randomId, pokeName, pokeImg, rareza, "¡Pokémon Atrapado!", "Pokémon");
+                  btn.disabled = false;
+              }, 1000);
+          } catch(e) {
+              alert("Error de conexión con la base Pokémon.");
+              img.classList.remove('animating-gacha');
+              btn.disabled = false;
+          }
+      }
+      // LÓGICA MÁQUINA GENSHIN IMPACT
+      else if (modoGachaActual === 'genshin') {
+          try {
+              let resp = await fetch(`https://genshin.jmp.blue/characters`);
+              let chars = await resp.json();
+              let randomChar = chars[Math.floor(Math.random() * chars.length)];
+              
+              let charDataResp = await fetch(`https://genshin.jmp.blue/characters/${randomChar}`);
+              let charData = await charDataResp.json();
+              
+              let rareza = charData.rarity === 5 ? 'SSR' : (charData.rarity === 4 ? 'SR' : 'R');
+              let charName = charData.name;
+              // Usamos icon-big que es la fuente más segura para Genshin API
+              let charImg = `https://genshin.jmp.blue/characters/${randomChar}/icon-big`;
+              
+              setTimeout(() => {
+                  procesarResultadoGacha('gen_'+randomChar, charName, charImg, rareza, `Visión: ${charData.vision || 'Ninguna'}`, "Genshin");
+                  btn.disabled = false;
+              }, 1000);
+          } catch(e) {
+              alert("Error de conexión con el servidor de Genshin.");
+              img.classList.remove('animating-gacha');
+              btn.disabled = false;
+          }
+      }
+  }
 
-          overlay.style.display = "none";
-          img.src = elegida.imgUrl;
-          img.style.opacity = "1";
-          
-          let badge = document.getElementById('gachaRarezaBadge');
-          badge.innerText = elegida.rareza;
-          badge.className = "tag-badge tag-" + elegida.rareza.toLowerCase();
-          document.getElementById('gachaNombre').innerText = elegida.nombre;
-          document.getElementById('gachaPremio').innerText = elegida.premio;
-          resBox.style.display = "block";
+  // FUNCIÓN UNIVERSAL PARA GUARDAR Y MOSTRAR RESULTADO (Waifu, Poke o Genshin)
+  function procesarResultadoGacha(id, nombre, imgUrl, rareza, premio, tipo) {
+      let overlay = document.getElementById('gachaOverlay');
+      let img = document.getElementById('gachaWaifuImg');
+      let resBox = document.getElementById('gachaResultado');
 
-          if(elegida.rareza === 'SSR') { try{ confetti({ particleCount: 150, spread: 80, origin: { y: 0.5 } }); }catch(e){} }
-          else if(elegida.rareza === 'SR') { try{ confetti({ particleCount: 50, spread: 50, origin: { y: 0.5 } }); }catch(e){} }
+      if(!gamerProfile.waifus) gamerProfile.waifus = [];
+      if(!gamerProfile.waifus.some(w => w.nombre === nombre)) {
+          gamerProfile.waifus.push({id: id, nombre: nombre, imgUrl: imgUrl, rareza: rareza});
+          guardarProgresoNube();
+          renderizarAlbumWaifus();
+      }
 
-          btn.disabled = false;
-      }, 1800);
+      // Enviar reporte silencioso a tu Admin indicando de qué máquina salió
+      try {
+          addDoc(collection(db, "historial_gacha"), {
+              jugador: gamerProfile.tag,
+              waifu: `${tipo}: ${nombre}`,
+              rareza: rareza,
+              premio: premio,
+              timestamp: Date.now()
+          });
+      } catch(e) {}
+
+      overlay.style.display = "none";
+      img.classList.remove('animating-gacha');
+      img.src = imgUrl;
+      img.style.opacity = "1";
+      
+      let badge = document.getElementById('gachaRarezaBadge');
+      badge.innerText = rareza;
+      badge.className = "tag-badge tag-" + rareza.toLowerCase();
+      document.getElementById('gachaNombre').innerText = nombre;
+      document.getElementById('gachaPremio').innerText = premio;
+      resBox.style.display = "block";
+
+      if(rareza === 'SSR') { try{ confetti({ particleCount: 150, spread: 80, origin: { y: 0.5 } }); }catch(e){} }
+      else if(rareza === 'SR') { try{ confetti({ particleCount: 50, spread: 50, origin: { y: 0.5 } }); }catch(e){} }
   }
 
   function renderizarAlbumWaifus() {
@@ -790,11 +899,17 @@
       document.getElementById('lblTotalWaifusJugador').innerText = arr.length;
       
       if(arr.length === 0) {
-          cont.innerHTML = `<p style="color: var(--text-muted); font-size: 0.8em; margin: 0;">Juega al Gacha para coleccionar.</p>`;
+          cont.innerHTML = `<p style="color: var(--text-muted); font-size: 0.8em; margin: 0;">Juega al Arcade para coleccionar.</p>`;
           return;
       }
       
       let html = "";
+      // Ordenamos para que las SSR salgan primero en el álbum del cliente
+      arr.sort((a,b) => {
+         let r = {'SSR':4, 'SR':3, 'R':2, 'N':1};
+         return (r[b.rareza]||0) - (r[a.rareza]||0);
+      });
+
       arr.forEach(w => {
           let badgeColor = w.rareza === 'SSR' ? '#ffaa00' : (w.rareza === 'SR' ? '#b000ff' : (w.rareza === 'R' ? '#00e5ff' : '#b4becd'));
           html += `
@@ -951,7 +1066,6 @@
     } catch (error) { document.getElementById('catalogoNube').innerHTML = "<p style='color: #ff3366; text-align: center; grid-column: 1/-1;'>No fue posible conectar con la base de datos.</p>"; }
   }
 
-  // >>> FLECHAS Y CAROUSEL PARA LOS PRODUCTOS <<<
   window.renderizarProductosEnTienda = function(lista) {
     let contenedor = document.getElementById('catalogoNube'); if (!contenedor) return; contenedor.innerHTML = "";
     let conteo = { recargas: 0, mangas: 0, ropa: 0, mandos: 0, perifericos: 0, figuras: 0, peluches: 0, cartas: 0, katanas: 0, lamparas: 0, accesorios: 0 };
@@ -1055,7 +1169,6 @@
 
   window.cargarMasProductos = function() { reproducirSonido(); limiteActual += 12; aplicarFiltrosGlobales(); };
 
-  // >>> REPARADA LA GALERÍA DEL MODAL <<<
   window.abrirModalPorId = function(prodId) {
     reproducirSonido(); const prod = productosNubeGlobal.find(p => p.id === prodId); if (!prod) return;
     const fotosArray = (prod.fotos && prod.fotos.length > 0) ? prod.fotos : ['logo.webp?v=2'];
