@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Sakura Gameverse</title>
   
   <meta property="og:title" content="Sakura Gameverse">
@@ -69,6 +69,27 @@
 
     h1, h2, h3, h4 { font-family: 'Chakra Petch', sans-serif; text-transform: uppercase; letter-spacing: 1px; }
 
+    /* ====== EXPERIENCIA TÁCTIL Y PROTECCIÓN ====== */
+    button:active, .cat-card:active, .item-card-row:active, .nav-item:active, .btn-menu-opcion:active, .carrusel-btn:active {
+        transform: scale(0.94) !important;
+        transition: transform 0.05s ease;
+    }
+    .modal, .bottom-nav, .btn-comprar, .nav-item, .cat-card, .btn-menu-opcion, img, .carrusel-btn {
+        user-select: none; -webkit-user-select: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+    /* ====== TEXTO FLOTANTE RPG ====== */
+    @keyframes floatUp {
+        0% { opacity: 1; transform: translate(-50%, -50%) scale(0.8); }
+        100% { opacity: 0; transform: translate(-50%, -150px) scale(1.4); }
+    }
+    .floating-text {
+        position: fixed; pointer-events: none; z-index: 9999;
+        font-family: 'Chakra Petch', sans-serif; font-size: 2.5em; font-weight: bold; 
+        text-shadow: 0 0 10px rgba(0,0,0,1), 0 4px 8px rgba(0,0,0,1);
+        animation: floatUp 1.5s ease-out forwards;
+    }
+
     @media (min-width: 768px) {
       ::-webkit-scrollbar { width: 6px; height: 6px; }
       ::-webkit-scrollbar-track { background: var(--bg-color); }
@@ -116,7 +137,7 @@
     .carrusel-track::-webkit-scrollbar { display: none; }
     
     .cat-card { flex: 0 0 auto; width: 130px; background: var(--glass-bg); backdrop-filter: blur(8px); border: 1px solid var(--glass-border); border-radius: var(--radius-md); overflow: hidden; cursor: pointer; transition: all 0.3s ease; will-change: transform; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-    .cat-card:hover, .cat-card.activa { transform: translateY(-5px); border-color: var(--secondary-color); box-shadow: 0 8px 20px rgba(0, 229, 255, 0.15); }
+    .cat-card:hover, .cat-card.activa { border-color: var(--secondary-color); box-shadow: 0 8px 20px rgba(0, 229, 255, 0.15); }
     .cat-img { width: 100%; height: 110px; object-fit: contain; background: rgba(0, 0, 0, 0.2); border-bottom: 1px solid var(--glass-border); padding: 10px; }
     .cat-info { padding: 8px 6px; text-align: center; }
     .cat-title { font-family: 'Chakra Petch', sans-serif; font-size: 0.9em; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -185,7 +206,7 @@
     .talla-select:focus, .recarga-input:focus, .sugerencia-input:focus, .cupon-input:focus { border-color: var(--secondary-color); box-shadow: 0 0 12px rgba(0, 229, 255, 0.15); background: rgba(17, 5, 36, 0.6); }
 
     .btn-comprar { background: linear-gradient(135deg, var(--primary-color), #cc0066); color: #fff; border: none; padding: 14px; font-family: 'Chakra Petch', sans-serif; font-size: 1.05em; font-weight: 700; border-radius: var(--radius-sm); cursor: pointer; width: 100%; margin-top: 14px; letter-spacing: 0.5px; transition: all 0.3s ease; position: relative; overflow: hidden; box-shadow: 0 4px 15px var(--primary-glow); }
-    .btn-comprar:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px var(--primary-glow), 0 0 10px var(--primary-color); }
+    .btn-comprar:hover:not(:disabled) { box-shadow: 0 6px 20px var(--primary-glow), 0 0 10px var(--primary-color); }
     .btn-comprar::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent); transform: skewX(-20deg); transition: 0.5s; }
     .btn-comprar:hover::after { left: 150%; }
     .btn-comprar:disabled { filter: grayscale(100%); cursor: not-allowed; box-shadow: none; }
@@ -197,8 +218,7 @@
 
     .cupon-box { display: flex; gap: 8px; margin-bottom: 12px; }
     .btn-cupon { background: var(--secondary-color); color: #000; border: none; padding: 0 18px; border-radius: var(--radius-sm); font-family: 'Chakra Petch', sans-serif; font-weight: 700; cursor: pointer; box-shadow: 0 0 10px var(--secondary-glow); transition: all 0.2s ease; }
-    .btn-cupon:hover { transform: scale(1.05); }
-
+    
     .recibo-box { background: rgba(0,0,0,0.4); border: 1px dashed var(--glass-border); padding: 14px; border-radius: var(--radius-sm); font-family: monospace; font-size: 0.85em; margin-bottom: 14px; }
     .recibo-line { display: flex; justify-content: space-between; margin-bottom: 6px; }
 
@@ -227,7 +247,7 @@
     .menu-opciones-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 18px; }
     .btn-menu-opcion { display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); padding: 14px 8px; border-radius: var(--radius-sm); color: #fff; text-decoration: none; font-size: 0.75em; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
     .btn-menu-opcion i { font-size: 1.8em; margin-bottom: 8px; }
-    .btn-menu-opcion:hover { border-color: var(--secondary-color); background: rgba(0, 229, 255, 0.05); transform: translateY(-2px); }
+    .btn-menu-opcion:hover { border-color: var(--secondary-color); background: rgba(0, 229, 255, 0.05); }
 
     .reviews-section, .info-section { background: var(--glass-bg); backdrop-filter: blur(10px); margin-top: 35px; padding: 24px 18px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
     .review-card { background: rgba(0,0,0,0.3); padding: 14px; border-radius: var(--radius-sm); margin-bottom: 12px; border: 1px solid var(--glass-border); }
@@ -462,6 +482,12 @@
       <button class="btn-comprar" style="margin-top:0; background: rgba(255, 51, 102, 0.1); border: 1px solid #ff3366; color: #ff3366; box-shadow:none;" onclick="entrarMazmorra('dificil')">
         🐉 Torre del Dragón (Dificultad Brutal)
       </button>
+    </div>
+
+    <!-- RANKING DE JUGADORES (SALÓN DE LA FAMA) -->
+    <h4 style="color: #00e5ff; margin-top: 20px; margin-bottom: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;"><i class="fas fa-trophy"></i> Salón de la Fama</h4>
+    <div id="rankingGremioContainer" style="text-align: left; background: rgba(0,0,0,0.3); border-radius: var(--radius-sm); border: 1px solid var(--glass-border); padding: 10px;">
+       <p style="color: var(--text-muted); font-size: 0.85em; text-align: center;"><i class="fas fa-spinner fa-spin"></i> Cargando leyendas...</p>
     </div>
   </div>
 </div>
@@ -773,7 +799,7 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-  import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, setDoc, addDoc, where, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+  import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, setDoc, addDoc, where, onSnapshot, limit } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
   import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
   const firebaseConfig = {
@@ -800,6 +826,7 @@
   let modoGachaActual = 'waifus'; 
   let currentUserUid = null;
   let escuchadorRumble = null;
+  let rankingCargado = false;
 
   let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { 
     tag: "GamerOtaku_VE", 
@@ -823,6 +850,24 @@
   let carrito = JSON.parse(localStorage.getItem('sakura_carrito')) || [];
   let favoritos = JSON.parse(localStorage.getItem('sakura_favoritos')) || [];
   let rpgObjetosGlobal = [];
+
+  // ====== HISTORIAL Y NAVEGACIÓN (BOTÓN ATRÁS DEL TELÉFONO) ======
+  function pushModalState() { history.pushState({ modalAbierto: true }, null, ""); }
+  window.addEventListener("popstate", function(event) {
+      document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+  });
+
+  // ====== DAÑO FLOTANTE (RPG TOUCH) ======
+  window.mostrarTextoFlotante = function(texto, color) {
+      let el = document.createElement('div');
+      el.className = 'floating-text';
+      el.style.color = color;
+      el.style.left = '50%';
+      el.style.top = '40%';
+      el.innerHTML = texto;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 1500);
+  };
 
   async function cargarCMSyGacha() {
     try {
@@ -882,6 +927,7 @@
   };
 
   window.abrirGachaModal = function() {
+      pushModalState();
       reproducirSonido();
       document.getElementById('lblSaldoGacha').innerText = gamerProfile.tokens || 0;
       document.getElementById('modalGacha').style.display = 'flex';
@@ -1064,7 +1110,7 @@
     }
   });
 
-  window.abrirCloudSaveModal = function() { reproducirSonido(); document.getElementById('authErrorMsg').style.display = 'none'; document.getElementById('modalCloudSave').style.display = 'flex'; };
+  window.abrirCloudSaveModal = function() { pushModalState(); reproducirSonido(); document.getElementById('authErrorMsg').style.display = 'none'; document.getElementById('modalCloudSave').style.display = 'flex'; };
   window.cerrarCloudSaveModal = function() { document.getElementById('modalCloudSave').style.display = 'none'; };
 
   window.registrarCloud = async function() {
@@ -1291,6 +1337,7 @@
   window.cargarMasProductos = function() { reproducirSonido(); limiteActual += 12; aplicarFiltrosGlobales(); };
 
   window.abrirModalPorId = function(prodId) {
+    pushModalState();
     reproducirSonido(); const prod = productosNubeGlobal.find(p => p.id === prodId); if (!prod) return;
     const fotosArray = (prod.fotos && prod.fotos.length > 0) ? prod.fotos : ['logo.webp?v=2'];
     const esRecarga = prod.categoria === 'recargas'; const esAgotado = (prod.stock !== undefined && prod.stock <= 0) && !esRecarga;
@@ -1325,6 +1372,7 @@
   };
 
   window.abrirRastreoModal = function() {
+      pushModalState();
       reproducirSonido(); document.getElementById('modalRastreo').style.display = 'flex';
       document.getElementById('resultadoRastreo').innerHTML = "<p style='color: var(--text-muted); text-align: center; margin: 0; font-size: 0.85em;'>Tu estado de cuenta aparecerá aquí.</p>";
       document.getElementById('inputRastreoTlf').value = "";
@@ -1432,6 +1480,7 @@
   };
 
   window.abrirFavoritosModal = function() {
+      pushModalState();
       reproducirSonido(); let cont = document.getElementById('listaFavoritosDetalle'); cont.innerHTML = "";
       if (favoritos.length === 0) { cont.innerHTML = "<p style='color:var(--text-muted); text-align:center;'>No tienes artículos guardados.</p>"; } 
       else {
@@ -1454,6 +1503,7 @@
   window.activarEasterEggLogo = function() { reproducirSonido(); try{ confetti({ particleCount: 50, spread: 60, origin: { y: 0.3 } }); }catch(e){ console.warn("Aviso Confetti:", e); } };
   
   window.abrirCofreModal = function() { 
+      pushModalState();
       reproducirSonido(); 
       document.getElementById('cofreResultado').innerText = `Cofre disponible (+50 XP y +${ajustesWebGlobal.tokensCofre} Tokens)`;
       document.getElementById('modalCofreDiario').style.display = 'flex'; 
@@ -1468,11 +1518,12 @@
     gamerProfile.tokens = (gamerProfile.tokens || 0) + tokensGanados; 
     localStorage.setItem('sakura_ultimo_cofre', hoy); 
     document.getElementById('cofreResultado').innerText = `¡Ganaste 50 XP y ${tokensGanados} Tokens!`;
+    mostrarTextoFlotante('+50 XP', '#25d366');
     try{ confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } }); }catch(e){ console.warn("Aviso Confetti:", e); } 
     window.guardarProgresoLocalRPG();
   };
 
-  window.abrirTemasModal = function() { reproducirSonido(); document.getElementById('modalTemas').style.display = 'flex'; };
+  window.abrirTemasModal = function() { pushModalState(); reproducirSonido(); document.getElementById('modalTemas').style.display = 'flex'; };
   window.cerrarTemasModal = function() { document.getElementById('modalTemas').style.display = 'none'; };
   window.cambiarTema = function(tema) { reproducirSonido(); document.body.className = ''; if(tema) document.body.classList.add(tema); cerrarTemasModal(); };
   
@@ -1504,6 +1555,7 @@
   }
 
   window.abrirCarritoModal = function() {
+    pushModalState();
     reproducirSonido(); let tieneFisicos = carrito.some(i => !i.esRecarga); let tieneDigitales = carrito.some(i => i.esRecarga);
     pestanaCarritoActual = (tieneDigitales && !tieneFisicos) ? 'digital' : 'fisico';
     document.getElementById('tabBtnFisico').classList.toggle('activo', pestanaCarritoActual === 'fisico'); document.getElementById('tabBtnDigital').classList.toggle('activo', pestanaCarritoActual === 'digital');
@@ -1629,17 +1681,18 @@
     reproducirSonido(); window.open("https://wa.me/" + ajustesWebGlobal.whatsapp, '_blank'); cerrarMenuOpciones();
   };
 
-  window.abrirFaqModal = function() { reproducirSonido(); document.getElementById('modalFaq').style.display = 'flex'; };
+  window.abrirFaqModal = function() { pushModalState(); reproducirSonido(); document.getElementById('modalFaq').style.display = 'flex'; };
   window.cerrarFaqModal = function() { document.getElementById('modalFaq').style.display = 'none'; };
   
   window.abrirSugerenciaModal = function() {
+      pushModalState();
       reproducirSonido();
       let n = prompt("Ingresa tu GamerTag o Nombre:"); if(!n) return;
       let d = prompt("¿Qué coleccionable, figura o código te gustaría encargar?"); if(!d) return;
       window.open("https://wa.me/" + ajustesWebGlobal.whatsapp + "?text=" + encodeURIComponent(`*Búsqueda de Tesoro:*\nHola Sakura, soy ${n}. Me gustaría encargar/conseguir el siguiente artículo: ${d}`), '_blank');
   };
 
-  window.abrirMenuOpciones = function() { reproducirSonido(); document.getElementById('modalOpcionesMenu').style.display = 'flex'; };
+  window.abrirMenuOpciones = function() { pushModalState(); reproducirSonido(); document.getElementById('modalOpcionesMenu').style.display = 'flex'; };
   window.cerrarMenuOpciones = function() { document.getElementById('modalOpcionesMenu').style.display = 'none'; };
 
   function actualizarRangoSegunXP() {
@@ -1751,16 +1804,52 @@
   };
 
   window.abrirGamerProfileModal = function() { 
+      pushModalState();
       reproducirSonido(); 
       window.actualizarUiPerfil();
       document.getElementById('modalGamerProfile').style.display = 'flex'; 
   };
   window.cerrarGamerProfileModal = function() { document.getElementById('modalGamerProfile').style.display = 'none'; };
 
-  window.abrirGremioModal = function() { reproducirSonido(); window.verificarProfesion(); document.getElementById('modalGremio').style.display = 'flex'; };
+  window.abrirGremioModal = function() { 
+      pushModalState();
+      reproducirSonido(); 
+      window.verificarProfesion(); 
+      document.getElementById('modalGremio').style.display = 'flex'; 
+
+      // CARGAR EL RANKING EN VIVO DEL SALÓN DE LA FAMA
+      if(!rankingCargado) {
+          rankingCargado = true;
+          const qRanking = query(collection(db, "jugadores_cloud"), orderBy("profile.xp", "desc"), limit(5));
+          onSnapshot(qRanking, (snapshot) => {
+              let html = "";
+              let pos = 1;
+              snapshot.forEach(doc => {
+                  let d = doc.data().profile;
+                  let tag = d.tag || 'Aventurero';
+                  let xp = d.xp || 0;
+                  let rango = d.rango || 'Genin';
+                  let colorStr = pos === 1 ? '#ffaa00' : (pos === 2 ? '#b4becd' : (pos === 3 ? '#cd7f32' : '#8b8f9e'));
+                  let medalla = pos <= 3 ? `<i class="fas fa-medal" style="color:${colorStr}; font-size:1.2em;"></i>` : `<span style="color:${colorStr}; font-weight:bold; font-size:1.1em;">#${pos}</span>`;
+                  
+                  html += `
+                  <div style="display:flex; justify-content:space-between; align-items:center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                      <div style="display:flex; align-items:center; gap:10px;">
+                          <div style="width: 20px; text-align:center;">${medalla}</div>
+                          <div><strong style="color:#fff;">${sanitizarHTML(tag)}</strong> <br><span style="font-size:0.75em; color:var(--text-muted); text-transform:uppercase;">[${rango}]</span></div>
+                      </div>
+                      <div style="color: var(--secondary-color); font-weight:bold; font-size: 1.1em;">${xp} XP</div>
+                  </div>`;
+                  pos++;
+              });
+              document.getElementById('rankingGremioContainer').innerHTML = html || "<p style='color:var(--text-muted); text-align:center;'>Aún no hay leyendas.</p>";
+          });
+      }
+  };
   window.cerrarGremioModal = function() { document.getElementById('modalGremio').style.display = 'none'; };
 
   window.abrirFraguaModal = function() { 
+    pushModalState();
     reproducirSonido();
     window.verificarProfesion();
     let cantMateriales = gamerProfile.inventario.filter(i => i.tipo === 'material').length;
@@ -1845,6 +1934,7 @@
     }
     localStorage.setItem(keyCooldown, ahora);
     gamerProfile.tokens += tokG; window.ganarXP(xpG); window.guardarProgresoLocalRPG();
+    mostrarTextoFlotante(`+${xpG} XP`, '#25d366');
     document.getElementById('rpgResultado').innerHTML = `<span style="color:var(--secondary-color);">${msj}</span><br><span style="color:#25d366;">+${xpG} XP | +${tokG} Tokens</span>`;
   };
 
@@ -1905,6 +1995,7 @@
         gamerProfile.tokens += Math.floor(recompensaXp / 10); 
         window.guardarProgresoLocalRPG();
         
+        mostrarTextoFlotante(`+${recompensaXp} XP`, '#25d366');
         log.innerHTML = `<span style="color: #25d366;"><i class="fas fa-check-circle"></i> ¡Expedición Exitosa en ${nombreZonas}!</span><br>Loot obtenido: <strong>${premioTxt}</strong><br><span style="font-size:0.85em; color:var(--text-muted);">+${recompensaXp} XP | +${Math.floor(recompensaXp / 10)} Tokens</span>`;
         try{ confetti({ particleCount: 70, spread: 60 }); }catch(e){} 
 
@@ -1914,13 +2005,14 @@
         if(gamerProfile.xp < 0) gamerProfile.xp = 0;
         window.guardarProgresoLocalRPG();
 
+        mostrarTextoFlotante(`-${xpPerdida} XP`, '#ff3366');
         log.innerHTML = `<span style="color: #ff3366;"><i class="fas fa-skull"></i> ¡Fuiste superado en ${nombreZonas}!</span><br><span style="font-size: 0.85em;">Apenas lograste escapar con vida. Perdiste <strong style="color:#ffaa00;">${xpPerdida} XP</strong>. ¡Mejora tu equipo en la Forja!</span>`; 
       }
     }, 2000);
   };
 
-  // RUMBLE ROYALE CON LIMPIEZA DE ESCUCHADOR
   window.abrirRumbleModal = async function() { 
+    pushModalState();
     reproducirSonido();
     document.getElementById('modalRumble').style.display = 'flex'; 
     
