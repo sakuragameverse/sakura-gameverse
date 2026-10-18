@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sakura Gameverse | RPG Edition</title>
+  <title>Sakura Gameverse | RPG Edition V2</title>
   <link rel="icon" type="image/webp" href="logo.webp?v=2">
   <meta name="theme-color" content="#090314">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -16,7 +16,7 @@
     * { box-sizing: border-box; } body { margin: 0; background-color: var(--bg-color); color: var(--text-color); font-family: 'Rajdhani', sans-serif; padding-bottom: 90px; }
     h1, h2, h3, h4 { font-family: 'Chakra Petch', sans-serif; text-transform: uppercase; }
     .btn-comprar { background: linear-gradient(135deg, var(--primary-color), #cc0066); color: #fff; border: none; padding: 14px; font-family: 'Chakra Petch', sans-serif; font-size: 1.05em; font-weight: 700; border-radius: var(--radius-sm); cursor: pointer; width: 100%; margin-top: 14px; transition: all 0.3s ease; box-shadow: 0 4px 15px var(--primary-glow); }
-    .btn-comprar:disabled { filter: grayscale(100%); cursor: not-allowed; }
+    .btn-comprar:disabled { filter: grayscale(100%); cursor: not-allowed; opacity: 0.5; }
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 0, 6, 0.75); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
     .modal-content { background: rgba(14, 4, 31, 0.95); padding: 24px; border-radius: var(--radius-md); max-width: 95%; width: 440px; border: 1px solid var(--glass-border); position: relative; max-height: 90vh; overflow-y: auto; }
     .cerrar-modal { position: absolute; top: 12px; right: 14px; font-size: 24px; color: var(--text-muted); cursor: pointer; background: rgba(0,0,0,0.3); border: 1px solid transparent; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
@@ -28,12 +28,18 @@
     .rpg-item-card.equipped { border-color: #25d366; background: rgba(37, 211, 102, 0.1); box-shadow: 0 0 10px rgba(37, 211, 102, 0.2); }
     .rpg-item-icon { font-size: 2em; margin-bottom: 5px; }
     .rpg-item-name { font-size: 0.85em; font-weight: bold; font-family: 'Chakra Petch', sans-serif; }
-    .rpg-item-stats { font-size: 0.75em; color: var(--secondary-color); }
+    .rpg-item-stats { font-size: 0.75em; color: var(--secondary-color); margin-top: 4px; }
     
     .bottom-nav { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 500px; background: rgba(10, 2, 22, 0.85); border: 1px solid var(--glass-border); border-radius: var(--radius-pill); display: flex; justify-content: space-around; padding: 12px 10px; z-index: 2500; backdrop-filter: blur(15px); }
     .nav-item { color: var(--text-muted); display: flex; flex-direction: column; align-items: center; font-size: 0.7em; font-weight: 700; cursor: pointer; width: 25%; }
     .nav-item i { font-size: 1.5em; margin-bottom: 4px; }
     .nav-item:hover, .nav-item.active { color: #fff; } .nav-item:hover i { color: var(--secondary-color); }
+    
+    /* ETIQUETAS DE RAREZA */
+    .rareza-N { color: #b4becd; font-weight: bold; }
+    .rareza-R { color: #00e5ff; font-weight: bold; }
+    .rareza-SR { color: #b000ff; font-weight: bold; }
+    .rareza-SSR { color: #ffaa00; font-weight: bold; text-shadow: 0 0 5px rgba(255,170,0,0.5); }
   </style>
 </head>
 <body>
@@ -41,6 +47,7 @@
 <!-- BOTONES FLOTANTES DE NAVEGACIÓN -->
 <div class="bottom-nav">
   <div class="nav-item active" onclick="abrirGremioModal()"><i class="fas fa-campground"></i><span>El Gremio</span></div>
+  <div class="nav-item" onclick="abrirFraguaModal()"><i class="fas fa-hammer"></i><span>La Fragua</span></div>
   <div class="nav-item" onclick="abrirGamerProfileModal()"><i class="fas fa-user-ninja"></i><span>Mi Perfil</span></div>
 </div>
 
@@ -67,7 +74,13 @@
     </div>
 
     <h4 style="color: #fff; text-align: left; margin-bottom: 5px;"><i class="fas fa-backpack"></i> Inventario de Equipo</h4>
-    <p style="font-size: 0.75em; color: var(--text-muted); text-align: left;">Haz clic en un arma para equiparla y mejorar tus estadísticas de ataque y defensa.</p>
+    <p style="font-size: 0.75em; color: var(--text-muted); text-align: left;">Haz clic en un arma para equiparla. Los materiales se muestran aquí también.</p>
+    
+    <!-- Contador de materiales rápido -->
+    <div style="text-align: left; font-size: 0.8em; color: #00e5ff; margin-bottom: 10px;">
+      <i class="fas fa-gem"></i> Materiales de Crafteo: <strong id="lblTotalMateriales">0</strong>
+    </div>
+
     <div id="contenedorInventario" class="rpg-grid"></div>
     
     <button class="btn-comprar" onclick="guardarGamerTag()"><i class="fas fa-save"></i> Guardar Perfil</button>
@@ -87,10 +100,10 @@
     <!-- ACCIONES BÁSICAS -->
     <div style="display: flex; gap: 10px; margin-bottom: 10px;">
       <button class="btn-comprar" style="margin-top: 0; background: linear-gradient(135deg, #ffaa00, #ff5500);" onclick="accionRPG('cazar')">
-        <i class="fas fa-crosshairs"></i> Cazar<br><span style="font-size: 0.7em;">(Monstruos base)</span>
+        <i class="fas fa-crosshairs"></i> Cazar<br><span style="font-size: 0.7em;">(Ganar XP y Tokens)</span>
       </button>
-      <button class="btn-comprar" style="margin-top: 0; background: linear-gradient(135deg, #a8a8a8, #5c5c5c);" onclick="accionRPG('minar')">
-        <i class="fas fa-hammer"></i> Minar<br><span style="font-size: 0.7em;">(Materiales)</span>
+      <button class="btn-comprar" style="margin-top: 0; background: linear-gradient(135deg, #00e5ff, #0099ff); color: #000;" onclick="accionRPG('minar')">
+        <i class="fas fa-hammer"></i> Minar<br><span style="font-size: 0.7em;">(Buscar Materiales)</span>
       </button>
     </div>
 
@@ -98,45 +111,84 @@
     <h4 style="color: #ff3366; margin-top: 20px; margin-bottom: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;"><i class="fas fa-dungeon"></i> Mazmorras de Jefe</h4>
     <div style="display: flex; flex-direction: column; gap: 8px;">
       <button class="btn-comprar" style="margin-top:0; background: rgba(0, 229, 255, 0.1); border: 1px solid #00e5ff; color: #00e5ff; box-shadow:none;" onclick="entrarMazmorra('facil')">
-        🌲 Bosque Slime (Nv. Genin) - Dificultad Baja
+        🌲 Bosque Slime (Dificultad Baja)
       </button>
       <button class="btn-comprar" style="margin-top:0; background: rgba(176, 0, 255, 0.1); border: 1px solid #b000ff; color: #b000ff; box-shadow:none;" onclick="entrarMazmorra('media')">
-        🦇 Cueva Sangrienta (Nv. Chūnin) - Dificultad Media
+        🦇 Cueva Sangrienta (Dificultad Media)
       </button>
       <button class="btn-comprar" style="margin-top:0; background: rgba(255, 51, 102, 0.1); border: 1px solid #ff3366; color: #ff3366; box-shadow:none;" onclick="entrarMazmorra('dificil')">
-        🐉 Torre del Dragón (Nv. Jōnin+) - Dificultad Brutal
+        🐉 Torre del Dragón (Dificultad Brutal)
       </button>
     </div>
   </div>
 </div>
 
-<script>
+<!-- NUEVO: MODAL LA FRAGUA (CRAFTEO) -->
+<div id="modalFragua" class="modal">
+  <div class="modal-content" style="text-align: center;">
+    <button class="cerrar-modal" onclick="cerrarFraguaModal()">×</button>
+    <h3 style="color: #ffaa00; margin-top: 0;"><i class="fas fa-fire"></i> La Fragua</h3>
+    <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 15px;">Usa los Materiales que minaste y tus Tokens para forjar equipo y armamento.</p>
+    
+    <div style="display: flex; justify-content: space-around; background: rgba(0,0,0,0.4); padding: 10px; border-radius: var(--radius-sm); border: 1px dashed var(--glass-border); margin-bottom: 15px;">
+      <div style="color: #00e5ff; font-weight: bold;"><i class="fas fa-gem"></i> <span id="fraguaMateriales">0</span> Materiales</div>
+      <div style="color: #ffaa00; font-weight: bold;"><i class="fas fa-coins"></i> <span id="fraguaTokens">0</span> Tokens</div>
+    </div>
+
+    <div id="listaRecetasFragua" style="display: flex; flex-direction: column; gap: 10px; max-height: 350px; overflow-y: auto; padding-right: 5px;">
+      <p style="color: var(--text-muted); font-size: 0.9em;"><i class="fas fa-spinner fa-spin"></i> Calentando la forja...</p>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+  import { getFirestore, collection, getDocs, query } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDH1DZqaIi5sKRXspXDUWbMUZ4nr5JIy8Q",
+    authDomain: "sakura-gameverse.firebaseapp.com",
+    projectId: "sakura-gameverse",
+    storageBucket: "sakura-gameverse.firebasestorage.app",
+    messagingSenderId: "226328425516",
+    appId: "1:226328425516:web:8dc11761639228c6120d89"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
   // ==========================================
-  // NÚCLEO DE DATOS RPG
+  // NÚCLEO DE DATOS RPG Y FIREBASE
   // ==========================================
   let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { 
     tag: "GamerOtaku_VE", xp: 150, tokens: 0, rango: "Genin", waifus: [],
     profesion: "", 
     stats: { hp: 100, atk: 10, def: 5 },
-    inventario: [], // Array de objetos ganados
-    equipo: { armaId: null } // Lo que tiene equipado actualmente
+    inventario: [], 
+    equipo: { armaId: null } 
   };
 
-  // Base de datos local de botín raro (SSR) para las mazmorras
-  const itemsDropTables = {
-    facil: [
-      { id: "w_1", nombre: "Daga Oxidada", icono: "🗡️", atk: 5, def: 0, rareza: "N" },
-      { id: "w_2", nombre: "Escudo de Madera", icono: "🛡️", atk: 0, def: 10, rareza: "N" }
-    ],
-    media: [
-      { id: "w_3", nombre: "Espada Larga", icono: "⚔️", atk: 20, def: 0, rareza: "R" },
-      { id: "w_4", nombre: "Grimorio Menor", icono: "📖", atk: 25, def: -5, rareza: "SR" }
-    ],
-    dificil: [
-      { id: "w_5", nombre: "Excalibur (SSR)", icono: "✨", atk: 80, def: 20, rareza: "SSR" },
-      { id: "w_6", nombre: "Armadura de Dragón", icono: "🐉", atk: 10, def: 100, rareza: "SSR" }
-    ]
-  };
+  let rpgObjetosGlobal = []; // Aquí guardaremos todo lo que viene de tu Admin
+
+  // Cargar los objetos desde Firebase al abrir la página
+  window.addEventListener('DOMContentLoaded', async () => {
+    try {
+      const q = query(collection(db, "rpg_objetos"));
+      const snaps = await getDocs(q);
+      rpgObjetosGlobal = [];
+      snaps.forEach(d => {
+        let obj = d.data();
+        rpgObjetosGlobal.push({
+          id: d.id,
+          nombre: obj.nombre,
+          tipo: obj.tipo || 'arma',
+          rareza: obj.rareza || 'N',
+          atk: obj.stats?.ataque || obj.stats?.atk || 0,
+          def: obj.stats?.defensa || obj.stats?.def || 0,
+        });
+      });
+    } catch(e) { console.error("Error cargando objetos RPG:", e); }
+  });
 
   function guardarProgresoLocal() {
     localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
@@ -149,14 +201,12 @@
   window.verificarProfesion = function() {
     if (!gamerProfile.profesion || gamerProfile.profesion === "") {
       let eleccion = prompt(`¡Bienvenido al Gremio de Sakura!\nDebes elegir tu camino aventurero. Escribe el número:\n\n1. Guerrero (Mucha Defensa)\n2. Cazador (Balanceado)\n3. Hechicero (Mucho Ataque)`);
-      
       if (eleccion === "1") { gamerProfile.profesion = "Guerrero"; gamerProfile.stats = { hp: 150, atk: 8, def: 15 }; } 
       else if (eleccion === "2") { gamerProfile.profesion = "Cazador"; gamerProfile.stats = { hp: 100, atk: 15, def: 8 }; } 
       else if (eleccion === "3") { gamerProfile.profesion = "Hechicero"; gamerProfile.stats = { hp: 80, atk: 25, def: 5 }; } 
       else { return verificarProfesion(); }
-      
       guardarProgresoLocal();
-      alert(`¡Genial! Ahora eres un ${gamerProfile.profesion}. Ve a 'Mi Perfil' para ver tus stats y equipar objetos.`);
+      alert(`¡Genial! Ahora eres un ${gamerProfile.profesion}. Ve a 'Mi Perfil' para ver tus stats.`);
     }
   };
 
@@ -166,7 +216,6 @@
     document.getElementById('lblXp').innerText = gamerProfile.xp;
     document.getElementById('lblTokens').innerHTML = `<i class="fas fa-coins"></i> ${gamerProfile.tokens}`;
     
-    // Stats base + stats del arma equipada
     let extraAtk = 0; let extraDef = 0;
     if (gamerProfile.equipo.armaId) {
       let item = gamerProfile.inventario.find(i => i.id === gamerProfile.equipo.armaId);
@@ -188,33 +237,127 @@
     let cont = document.getElementById('contenedorInventario');
     cont.innerHTML = "";
     
+    // Contar materiales
+    let cantMateriales = gamerProfile.inventario.filter(i => i.tipo === 'material').length;
+    document.getElementById('lblTotalMateriales').innerText = cantMateriales;
+
     if (!gamerProfile.inventario || gamerProfile.inventario.length === 0) {
-      cont.innerHTML = `<div style="grid-column: 1/-1; color: var(--text-muted); font-size: 0.85em;">Tu mochila está vacía. Ve a cazar o a las mazmorras para conseguir equipo.</div>`;
+      cont.innerHTML = `<div style="grid-column: 1/-1; color: var(--text-muted); font-size: 0.85em;">Tu mochila está vacía. Ve a minar o a las mazmorras para conseguir equipo.</div>`;
       return;
     }
 
-    gamerProfile.inventario.forEach(item => {
-      let isEquipped = gamerProfile.equipo.armaId === item.id;
+    gamerProfile.inventario.forEach((item, index) => {
+      let isEquipped = gamerProfile.equipo.armaId === item.uid_inventario; // Usamos un UID único para diferenciar duplicados
       let cl = isEquipped ? 'rpg-item-card equipped' : 'rpg-item-card';
       
+      let icono = "🗡️";
+      if(item.tipo === 'material') icono = "💎";
+      if(item.tipo === 'consumible') icono = "🧪";
+
+      // Si es arma, se puede equipar. Si es material, solo se muestra.
+      let accionClick = item.tipo === 'arma' ? `equiparItem('${item.uid_inventario}')` : ``;
+      let estiloCursor = item.tipo === 'arma' ? 'cursor: pointer;' : 'cursor: default; opacity: 0.8;';
+      
+      let infoExtra = item.tipo === 'arma' 
+        ? `ATK +${item.atk} | DEF +${item.def}<br><div style="font-size: 0.8em; margin-top: 5px; color: ${isEquipped ? '#25d366' : '#888'};">${isEquipped ? 'EQUIPADO' : 'Click para equipar'}</div>`
+        : `<span style="color:#b000ff">Material de Crafteo</span>`;
+
       cont.innerHTML += `
-        <div class="${cl}" onclick="equiparItem('${item.id}')">
-          <div class="rpg-item-icon">${item.icono}</div>
-          <div class="rpg-item-name">${item.nombre}</div>
-          <div class="rpg-item-stats">ATK +${item.atk} | DEF +${item.def}</div>
-          <div style="font-size: 0.65em; margin-top: 5px; color: ${isEquipped ? '#25d366' : '#888'};">${isEquipped ? 'EQUIPADO' : 'Click para equipar'}</div>
+        <div class="${cl}" style="${estiloCursor}" onclick="${accionClick}">
+          <div class="rpg-item-icon">${icono}</div>
+          <div class="rpg-item-name rareza-${item.rareza}">${item.nombre}</div>
+          <div class="rpg-item-stats">${infoExtra}</div>
         </div>
       `;
     });
   }
 
-  window.equiparItem = function(id) {
-    if (gamerProfile.equipo.armaId === id) {
+  window.equiparItem = function(uid_inventario) {
+    if (gamerProfile.equipo.armaId === uid_inventario) {
       gamerProfile.equipo.armaId = null; // Desequipar
     } else {
-      gamerProfile.equipo.armaId = id; // Equipar
+      gamerProfile.equipo.armaId = uid_inventario; // Equipar
     }
     guardarProgresoLocal();
+  };
+
+  // ==========================================
+  // LA FRAGUA (CRAFTEO)
+  // ==========================================
+  window.abrirFraguaModal = function() { 
+    verificarProfesion();
+    let cantMateriales = gamerProfile.inventario.filter(i => i.tipo === 'material').length;
+    document.getElementById('fraguaMateriales').innerText = cantMateriales;
+    document.getElementById('fraguaTokens').innerText = gamerProfile.tokens || 0;
+    
+    let contRecetas = document.getElementById('listaRecetasFragua');
+    contRecetas.innerHTML = "";
+
+    // Filtramos solo las armas creadas en el Admin
+    let armasDisponibles = rpgObjetosGlobal.filter(obj => obj.tipo === 'arma');
+    
+    if (armasDisponibles.length === 0) {
+      contRecetas.innerHTML = `<p style="color:var(--text-muted); font-size:0.9em;">El Admin aún no ha forjado recetas en el servidor. ¡Dile que cree armas!</p>`;
+    } else {
+      armasDisponibles.forEach(arma => {
+        // Asignamos costos dinámicos según rareza
+        let costoMat = 1; let costoTok = 5;
+        if(arma.rareza === 'R') { costoMat = 3; costoTok = 10; }
+        if(arma.rareza === 'SR') { costoMat = 6; costoTok = 25; }
+        if(arma.rareza === 'SSR') { costoMat = 12; costoTok = 60; }
+
+        let puedeForjar = (cantMateriales >= costoMat && (gamerProfile.tokens || 0) >= costoTok);
+        let colorBtn = puedeForjar ? '#25d366' : '#555';
+        
+        contRecetas.innerHTML += `
+          <div style="background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 12px; text-align: left; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div class="rpg-item-name rareza-${arma.rareza}">🗡️ ${arma.nombre}</div>
+              <div style="font-size: 0.75em; color: var(--text-muted); margin-bottom: 6px;">ATK +${arma.atk} | DEF +${arma.def}</div>
+              <div style="font-size: 0.8em; font-weight: bold;">
+                <span style="color: ${cantMateriales >= costoMat ? '#00e5ff' : '#ff3366'};"><i class="fas fa-gem"></i> ${costoMat}</span> | 
+                <span style="color: ${(gamerProfile.tokens || 0) >= costoTok ? '#ffaa00' : '#ff3366'};"><i class="fas fa-coins"></i> ${costoTok}</span>
+              </div>
+            </div>
+            <button class="btn-comprar" style="width: auto; padding: 8px 15px; margin: 0; background: ${puedeForjar ? '#ff5500' : 'rgba(255,255,255,0.1)'}; color: #fff;" onclick="forjarObjeto('${arma.id}', ${costoMat}, ${costoTok})" ${!puedeForjar ? 'disabled' : ''}>
+              <i class="fas fa-hammer"></i> Forjar
+            </button>
+          </div>
+        `;
+      });
+    }
+
+    document.getElementById('modalFragua').style.display = 'flex'; 
+  };
+  
+  window.cerrarFraguaModal = function() { document.getElementById('modalFragua').style.display = 'none'; };
+
+  window.forjarObjeto = function(idArma, costoMat, costoTok) {
+    let cantMateriales = gamerProfile.inventario.filter(i => i.tipo === 'material').length;
+    if(cantMateriales < costoMat || (gamerProfile.tokens || 0) < costoTok) {
+      return alert("No tienes suficientes recursos para forjar esto.");
+    }
+
+    let armaData = rpgObjetosGlobal.find(a => a.id === idArma);
+    if(!armaData) return;
+
+    // Restar recursos
+    gamerProfile.tokens -= costoTok;
+    
+    // Eliminar los materiales requeridos del inventario
+    let borrados = 0;
+    gamerProfile.inventario = gamerProfile.inventario.filter(item => {
+      if(item.tipo === 'material' && borrados < costoMat) { borrados++; return false; }
+      return true;
+    });
+
+    // Crear la nueva arma y darle un UID único para el inventario
+    let nuevaArma = { ...armaData, uid_inventario: Date.now().toString() };
+    gamerProfile.inventario.push(nuevaArma);
+    
+    guardarProgresoLocal();
+    alert(`¡Éxito! Has forjado: ${armaData.nombre}. Revisa tu perfil para equiparla.`);
+    abrirFraguaModal(); // Refrescar UI
   };
 
   // ==========================================
@@ -235,9 +378,20 @@
       else if (rng < 85) { msj = "Cazaste un Goblin."; xpG = 15; tokG = 2; }
       else { msj = "¡Cazaste un Lobo Huargo Gigante!"; xpG = 40; tokG = 10; }
     } else if (tipo === 'minar') {
-      if (rng < 40) { msj = "Solo encontraste piedras inútiles."; xpG = 10; }
-      else if (rng < 90) { msj = "Minaste Mineral de Hierro x3."; xpG = 25; tokG = 5; }
-      else { msj = "¡Has extraído un Cristal de Mithril brillante!"; xpG = 50; tokG = 20; }
+      // Al minar, le damos un Material de la base de datos
+      let materialesDB = rpgObjetosGlobal.filter(obj => obj.tipo === 'material');
+      
+      if(materialesDB.length > 0) {
+        let matGanado = materialesDB[Math.floor(Math.random() * materialesDB.length)];
+        let nuevoItem = { ...matGanado, uid_inventario: Date.now().toString() + rng };
+        gamerProfile.inventario.push(nuevoItem);
+        msj = `¡Minaste un objeto valioso: <strong>${matGanado.nombre}</strong>!`;
+        xpG = 20; tokG = 2;
+      } else {
+        // Fallback si el Admin no ha creado materiales en DB
+        msj = "Has extraído Mineral Básico (Pero el Admin no ha creado objetos en la DB).";
+        xpG = 10;
+      }
     }
 
     gamerProfile.xp += xpG; gamerProfile.tokens += tokG; guardarProgresoLocal();
@@ -247,48 +401,60 @@
   window.entrarMazmorra = function(dificultad) {
     let extraAtk = 0; let extraDef = 0;
     if (gamerProfile.equipo.armaId) {
-      let item = gamerProfile.inventario.find(i => i.id === gamerProfile.equipo.armaId);
+      let item = gamerProfile.inventario.find(i => i.uid_inventario === gamerProfile.equipo.armaId);
       if (item) { extraAtk = item.atk; extraDef = item.def; }
     }
 
     let poderTotal = gamerProfile.stats.atk + extraAtk + gamerProfile.stats.def + extraDef + (gamerProfile.xp / 10);
-    let poderJefe = 0; let nombreJefe = ""; let lootTable = itemsDropTables[dificultad];
-
-    if (dificultad === 'facil') { poderJefe = 30; nombreJefe = "Rey Slime"; }
-    if (dificultad === 'media') { poderJefe = 150; nombreJefe = "Vampiro Anciano"; }
-    if (dificultad === 'dificil') { poderJefe = 500; nombreJefe = "Dragón del Caos"; }
+    let poderJefe = 0; let nombreJefe = ""; 
+    
+    // Filtramos el botín según la dificultad y lo que hay en la BD
+    let lootPool = [];
+    if (dificultad === 'facil') { 
+      poderJefe = 30; nombreJefe = "Rey Slime"; 
+      lootPool = rpgObjetosGlobal.filter(a => a.tipo === 'arma' && (a.rareza === 'N' || a.rareza === 'R'));
+    }
+    if (dificultad === 'media') { 
+      poderJefe = 150; nombreJefe = "Vampiro Anciano"; 
+      lootPool = rpgObjetosGlobal.filter(a => a.tipo === 'arma' && (a.rareza === 'R' || a.rareza === 'SR'));
+    }
+    if (dificultad === 'dificil') { 
+      poderJefe = 500; nombreJefe = "Dragón del Caos"; 
+      lootPool = rpgObjetosGlobal.filter(a => a.tipo === 'arma' && (a.rareza === 'SR' || a.rareza === 'SSR'));
+    }
 
     let log = document.getElementById('rpgResultado');
     log.innerHTML = `<span style="color: #ffaa00;">Entrando a la mazmorra... Enfrentando a ${nombreJefe}!</span>`;
 
     setTimeout(() => {
-      // Simulación de batalla
       if (poderTotal >= poderJefe) {
         // GANA
-        let itemDrop = lootTable[Math.floor(Math.random() * lootTable.length)];
+        let premioTxt = "Nada (El Admin no ha creado armas de esta rareza).";
         
-        // Revisar si ya lo tiene para no duplicar infinitamente
-        if (!gamerProfile.inventario.find(i => i.id === itemDrop.id)) {
-            gamerProfile.inventario.push(itemDrop);
+        if(lootPool.length > 0) {
+          let itemDrop = lootPool[Math.floor(Math.random() * lootPool.length)];
+          let nuevoItem = { ...itemDrop, uid_inventario: Date.now().toString() };
+          gamerProfile.inventario.push(nuevoItem);
+          premioTxt = `<span class="rareza-${itemDrop.rareza}">🗡️ ${itemDrop.nombre}</span>`;
         }
 
-        gamerProfile.xp += (poderJefe); gamerProfile.tokens += (poderJefe / 5);
+        gamerProfile.xp += (poderJefe); gamerProfile.tokens += Math.floor(poderJefe / 5);
         guardarProgresoLocal();
 
         log.innerHTML = `<span style="color: #25d366;">¡HAS DERROTADO A ${nombreJefe.toUpperCase()}!</span><br>
-                         El jefe soltó: <strong>${itemDrop.icono} ${itemDrop.nombre}</strong><br>
+                         El jefe soltó: <strong>${premioTxt}</strong><br>
                          <span style="font-size: 0.8em; color: var(--text-muted);">Revisa tu Mochila en Mi Perfil para equiparlo.</span>`;
         try{ confetti({ particleCount: 100, spread: 70 }); }catch(e){} 
       } else {
         // PIERDE
         log.innerHTML = `<span style="color: #ff3366;">${nombreJefe} te ha destrozado de un golpe.</span><br>
-                         <span style="font-size: 0.8em;">Tu Poder Total (${Math.floor(poderTotal)}) es muy bajo para el Poder del Jefe (${poderJefe}). Sube de XP, caza más o equipa mejores objetos.</span>`;
+                         <span style="font-size: 0.8em;">Tu Poder Total (${Math.floor(poderTotal)}) es muy bajo para el Poder del Jefe (${poderJefe}). ¡Forja mejor equipo!</span>`;
       }
     }, 1500);
   };
 
-  // Inicializar Ui
-  actualizarUiPerfil();
+  // Inicializar UI al cargar
+  setTimeout(actualizarUiPerfil, 500);
 
 </script>
 </body>
