@@ -20,119 +20,165 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
   <style>
-    /* VARIABLES Y ESTILOS GLOBALES */
-    :root { --bg-color: #05010a; --glass-bg: rgba(17, 5, 36, 0.45); --glass-border: rgba(255, 255, 255, 0.08); --text-color: #e6e9f0; --text-muted: #8b8f9e; --primary-color: #ff007f; --primary-glow: rgba(255, 0, 127, 0.4); --secondary-color: #00e5ff; --secondary-glow: rgba(0, 229, 255, 0.4); --radius-sm: 8px; --radius-md: 16px; --radius-pill: 50px; }
-    body.theme-rosa { --bg-color: #05010a; --primary-color: #ff007f; --secondary-color: #00e5ff; }
-    body.theme-azul { --bg-color: #01040a; --primary-color: #0099ff; --secondary-color: #00ffcc; }
-    body.theme-purpura { --bg-color: #08010f; --primary-color: #b000ff; --secondary-color: #ff00c8; }
-    body.theme-overdrive { --bg-color: #0a0100; --primary-color: #ff5500; --secondary-color: #ffaa00; }
+    :root {
+      --bg-color: #05010a; 
+      --card-bg-solid: #110524;
+      --glass-bg: rgba(17, 5, 36, 0.45); 
+      --glass-border: rgba(255, 255, 255, 0.08); 
+      --glass-highlight: rgba(0, 229, 255, 0.2); 
+      --text-color: #e6e9f0;
+      --text-muted: #8b8f9e;
+      --primary-color: #ff007f;
+      --primary-glow: rgba(255, 0, 127, 0.4);
+      --secondary-color: #00e5ff;
+      --secondary-glow: rgba(0, 229, 255, 0.4);
+      --border-color: rgba(0, 229, 255, 0.16);
+      --radius-sm: 8px; 
+      --radius-md: 16px;
+      --radius-pill: 50px;
+    }
+
+    body.theme-rosa { --bg-color: #05010a; --glass-bg: rgba(17, 5, 36, 0.45); --primary-color: #ff007f; --secondary-color: #00e5ff; }
+    body.theme-azul { --bg-color: #01040a; --glass-bg: rgba(6, 21, 43, 0.45); --primary-color: #0099ff; --secondary-color: #00ffcc; }
+    body.theme-purpura { --bg-color: #08010f; --glass-bg: rgba(27, 7, 44, 0.45); --primary-color: #b000ff; --secondary-color: #ff00c8; }
+    body.theme-overdrive { --bg-color: #0a0100; --glass-bg: rgba(41, 10, 3, 0.45); --primary-color: #ff5500; --secondary-color: #ffaa00; }
+
     * { box-sizing: border-box; }
-    body { margin: 0; background-color: var(--bg-color); color: var(--text-color); font-family: 'Rajdhani', sans-serif; overflow-x: hidden; padding-bottom: 90px; }
+
+    body { margin: 0; background-color: var(--bg-color); color: var(--text-color); font-family: 'Rajdhani', sans-serif; font-size: 16px; overflow-x: hidden; padding-bottom: 90px; }
     body::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 0%, rgba(255, 0, 127, 0.08) 0%, transparent 60%), radial-gradient(circle at 80% 80%, rgba(0, 229, 255, 0.05) 0%, transparent 50%), linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px); background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px; pointer-events: none; z-index: -1; }
     h1, h2, h3, h4 { font-family: 'Chakra Petch', sans-serif; text-transform: uppercase; letter-spacing: 1px; }
 
-    /* BARRAS Y CONTENEDORES */
-    .top-bar-notice { background: rgba(5, 1, 10, 0.8); backdrop-filter: blur(5px); border-bottom: 1px solid var(--glass-border); padding: 7px 14px; font-size: 0.85em; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 10; }
-    .ticker-bar { background: rgba(14, 5, 32, 0.8); backdrop-filter: blur(5px); border-bottom: 1px solid rgba(255, 0, 127, 0.2); color: var(--secondary-color); font-size: 0.8em; text-transform: uppercase; padding: 6px 0; overflow: hidden; white-space: nowrap; position: relative; z-index: 9; }
+    @media (min-width: 768px) { ::-webkit-scrollbar { width: 6px; height: 6px; } ::-webkit-scrollbar-track { background: var(--bg-color); } ::-webkit-scrollbar-thumb { background: rgba(0, 229, 255, 0.3); border-radius: var(--radius-sm); } ::-webkit-scrollbar-thumb:hover { background: var(--primary-color); } }
+
+    .top-bar-notice { background: rgba(5, 1, 10, 0.8); backdrop-filter: blur(5px); border-bottom: 1px solid var(--border-color); padding: 7px 14px; font-size: 0.85em; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 10; }
+    .ticker-bar { background: rgba(14, 5, 32, 0.8); backdrop-filter: blur(5px); border-bottom: 1px solid rgba(255, 0, 127, 0.2); color: var(--secondary-color); font-size: 0.8em; text-transform: uppercase; letter-spacing: 1px; padding: 6px 0; overflow: hidden; white-space: nowrap; position: relative; z-index: 9; }
     .ticker-content { display: inline-block; animation: ticker-slide 22s linear infinite; }
     @keyframes ticker-slide { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-    .hero-banner { text-align: center; padding: 25px 20px; border-bottom: 1px solid var(--glass-border); }
-    .hero-logo { width: 100%; max-width: 250px; cursor: pointer; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6)); animation: logo-float 4s infinite ease-in-out; }
+    .hero-banner { background: radial-gradient(ellipse at top, rgba(26, 8, 51, 0.5) 0%, transparent 70%); text-align: center; padding: 25px 20px; border-bottom: 1px solid var(--border-color); position: relative; z-index: 2; }
+    .hero-logo { width: 100%; max-width: 250px; height: auto; margin-bottom: 15px; cursor: pointer; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6)); animation: logo-float 4s infinite ease-in-out; }
     @keyframes logo-float { 0% { transform: translateY(0px); } 50% { transform: translateY(-4px); } 100% { transform: translateY(0px); } }
     .hero-title { font-size: 1.15em; color: #fff; margin-bottom: 12px; font-weight: 600; text-shadow: 0 0 10px rgba(0,0,0,0.8); }
     .store-status-badge { display: inline-flex; align-items: center; gap: 7px; background: rgba(37, 211, 102, 0.15); border: 1px solid rgba(37, 211, 102, 0.4); padding: 4px 12px; border-radius: var(--radius-pill); font-size: 0.8em; font-weight: 600; color: #25d366; margin-bottom: 12px; }
     .status-dot { width: 7px; height: 7px; background-color: #25D366; border-radius: 50%; box-shadow: 0 0 8px #25D366; }
+
+    .banner-slider-container { position: relative; width: 100%; max-width: 800px; margin: 18px auto 0 auto; border-radius: var(--radius-md); overflow: hidden; aspect-ratio: 16/9; background: #000; border: 1px solid var(--glass-border); box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: none; }
+    .banner-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.5s ease-in-out; cursor: pointer; }
+    .banner-slide.active { opacity: 1; z-index: 2; }
+    .banner-dots { position: absolute; bottom: 10px; right: 15px; display: flex; gap: 5px; z-index: 10; background: rgba(0, 0, 0, 0.4); padding: 4px 8px; border-radius: var(--radius-pill); }
+    .banner-dot { width: 6px; height: 6px; background: rgba(255, 255, 255, 0.3); border-radius: var(--radius-pill); cursor: pointer; transition: all 0.3s ease; }
+    .banner-dot.active { background: var(--secondary-color); width: 14px; box-shadow: 0 0 8px var(--secondary-color); }
 
     .container { padding: 25px 18px 80px 18px; max-width: 1180px; margin: 0 auto; position: relative; z-index: 2; }
     .search-box { margin-bottom: 25px; display: flex; justify-content: center; }
     .search-input { background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); color: #fff; padding: 12px 20px; width: 100%; max-width: 480px; border-radius: var(--radius-pill); font-family: 'Rajdhani', sans-serif; font-size: 1em; outline: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
     .search-input:focus { border-color: var(--secondary-color); box-shadow: 0 0 20px rgba(0, 229, 255, 0.2); background: rgba(17, 5, 36, 0.7); }
 
-    /* CARRUSEL Y CATEGORIAS */
-    .categorias-visuales-header { font-family: 'Chakra Petch', sans-serif; font-size: 1.1em; font-weight: 700; color: #fff; margin-bottom: 12px; border-left: 3px solid var(--primary-color); padding-left: 8px; }
-    .carrusel-wrapper { position: relative; display: flex; align-items: center; margin-bottom: 30px; }
+    .categorias-visuales-section { margin-bottom: 30px; }
+    .categorias-visuales-header { font-family: 'Chakra Petch', sans-serif; font-size: 1.1em; font-weight: 700; color: #fff; margin-bottom: 12px; border-left: 3px solid var(--primary-color); padding-left: 8px; text-shadow: 0 0 10px rgba(255,0,127,0.3); }
+    .carrusel-wrapper { position: relative; display: flex; align-items: center; }
     .carrusel-track { display: flex; gap: 12px; overflow-x: auto; scroll-behavior: smooth; scrollbar-width: none; padding: 8px 2px; }
     .carrusel-track::-webkit-scrollbar { display: none; }
-    .cat-card { flex: 0 0 auto; width: 130px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--radius-md); overflow: hidden; cursor: pointer; transition: all 0.3s ease; }
-    .cat-card.activa { border-color: var(--secondary-color); transform: translateY(-5px); }
-    .cat-img { width: 100%; height: 110px; object-fit: contain; background: rgba(0, 0, 0, 0.2); padding: 10px; }
+    .cat-card { flex: 0 0 auto; width: 130px; background: var(--glass-bg); backdrop-filter: blur(8px); border: 1px solid var(--glass-border); border-radius: var(--radius-md); overflow: hidden; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+    .cat-card:hover, .cat-card.activa { transform: translateY(-5px); border-color: var(--secondary-color); box-shadow: 0 8px 20px rgba(0, 229, 255, 0.15); }
+    .cat-img { width: 100%; height: 110px; object-fit: contain; background: rgba(0, 0, 0, 0.2); border-bottom: 1px solid var(--glass-border); padding: 10px; }
     .cat-info { padding: 8px 6px; text-align: center; }
     .cat-title { font-family: 'Chakra Petch', sans-serif; font-size: 0.9em; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .carrusel-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.6); color: var(--secondary-color); border: 1px solid var(--glass-border); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; }
+    .cat-count { font-size: 0.75em; color: var(--text-muted); }
+    .carrusel-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); color: var(--secondary-color); border: 1px solid var(--glass-border); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; transition: all 0.2s ease; }
+    .carrusel-arrow:hover { background: var(--secondary-color); color: #000; box-shadow: 0 0 10px var(--secondary-color); }
     .arrow-prev { left: -10px; } .arrow-next { right: -10px; }
 
-    /* FILTROS Y GRID */
-    .panel-controles-avanzados { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 25px; }
-    .ordenar-select { background: var(--glass-bg); border: 1px solid var(--glass-border); color: #fff; padding: 10px 14px; border-radius: var(--radius-sm); font-family: 'Rajdhani', sans-serif; font-weight: 600; outline: none; appearance: none; }
+    .controles-superiores { margin-bottom: 25px; }
+    .panel-controles-avanzados { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+    .ordenar-select { background: var(--glass-bg); backdrop-filter: blur(8px); border: 1px solid var(--glass-border); color: #fff; padding: 10px 14px; border-radius: var(--radius-sm); font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 0.9em; cursor: pointer; outline: none; appearance: none; }
+    .ordenar-select:focus { border-color: var(--secondary-color); background: rgba(17, 5, 36, 0.8); }
+
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 18px; }
-    .card { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 12px; text-align: left; position: relative; cursor: pointer; transition: all 0.3s; }
-    .card:hover { border-color: var(--secondary-color); transform: translateY(-6px); }
+    .card { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 12px; text-align: left; position: relative; cursor: pointer; transition: all 0.3s; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); }
+    .card:hover { background: rgba(25, 9, 51, 0.55); border-color: var(--secondary-color); transform: translateY(-6px); box-shadow: 0 12px 40px rgba(0, 229, 255, 0.15); }
     .card.agotado { filter: grayscale(100%); opacity: 0.75; border-color: rgba(255, 51, 102, 0.4); }
-    .card-img-container { position: relative; width: 100%; height: 220px; background: rgba(0, 0, 0, 0.4); border-radius: var(--radius-sm); margin-bottom: 12px; overflow: hidden; }
+    .card-img-container { position: relative; width: 100%; height: 220px; background: rgba(0, 0, 0, 0.4); border-radius: var(--radius-sm); margin-bottom: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.03); }
     .card-img-container img { width: 100%; height: 100%; object-fit: contain; display: none; }
     .card-img-container img.activa { display: block; animation: fadeImg 0.3s ease; }
     @keyframes fadeImg { from { opacity: 0.5; } to { opacity: 1; } }
-    .carrusel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: var(--secondary-color); border: 1px solid var(--glass-border); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .carrusel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); color: var(--secondary-color); border: 1px solid var(--glass-border); border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.75em; z-index: 4; }
     .carrusel-prev { left: 6px; } .carrusel-next { right: 6px; }
-    .card-title { font-family: 'Chakra Petch', sans-serif; font-size: 1.05em; font-weight: 600; color: #fff; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .card-title { font-family: 'Chakra Petch', sans-serif; font-size: 1.05em; font-weight: 600; color: #fff; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
     .precio-container { display: flex; align-items: baseline; gap: 8px; }
-    .card-price { font-size: 1.3em; font-weight: 700; color: var(--secondary-color); }
-    .badge-estado { position: absolute; top: 10px; right: 10px; padding: 4px 10px; font-size: 0.7em; font-weight: 700; border-radius: var(--radius-pill); text-transform: uppercase; z-index: 3; }
+    .card-price { font-size: 1.3em; font-weight: 700; color: var(--secondary-color); text-shadow: 0 0 10px rgba(0, 229, 255, 0.3); }
+    .badge-estado { position: absolute; top: 10px; right: 10px; padding: 4px 10px; font-size: 0.7em; font-weight: 700; border-radius: var(--radius-pill); text-transform: uppercase; z-index: 3; backdrop-filter: blur(4px); }
     .badge-stock { background: rgba(0, 229, 255, 0.85); color: #000; }
     .badge-encargo { background: rgba(255, 0, 127, 0.85); color: #fff; }
     .badge-digital { background: rgba(37, 211, 102, 0.85); color: #000; }
     .badge-agotado { background: rgba(255, 51, 102, 0.95); color: #fff; border: 1px solid #ff3366; }
-    .btn-fav-card { position: absolute; top: 10px; left: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid var(--glass-border); color: var(--text-muted); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 3; }
+    .btn-fav-card { position: absolute; top: 10px; left: 10px; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); border: 1px solid var(--glass-border); color: var(--text-muted); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 3; transition: all 0.3s ease; }
     .btn-fav-card.favorito { color: #ff3366; background: rgba(255, 51, 102, 0.15); border-color: #ff3366; }
 
-    /* BOTONES GLOBALES Y MODALES */
-    .btn-comprar { background: linear-gradient(135deg, var(--primary-color), #cc0066); color: #fff; border: none; padding: 14px; font-family: 'Chakra Petch', sans-serif; font-size: 1.05em; font-weight: 700; border-radius: var(--radius-sm); cursor: pointer; width: 100%; margin-top: 14px; box-shadow: 0 4px 15px var(--primary-glow); }
-    .btn-comprar:disabled { filter: grayscale(100%); cursor: not-allowed; opacity: 0.5; }
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 0, 6, 0.75); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
     .modal-content { background: rgba(14, 4, 31, 0.95); padding: 24px; border-radius: var(--radius-md); max-width: 95%; width: 440px; border: 1px solid var(--glass-border); position: relative; max-height: 90vh; overflow-y: auto; }
-    .cerrar-modal { position: absolute; top: 12px; right: 14px; font-size: 24px; color: var(--text-muted); cursor: pointer; background: rgba(0,0,0,0.3); border: 1px solid transparent; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .cerrar-modal { position: absolute; top: 12px; right: 14px; font-size: 24px; color: var(--text-muted); cursor: pointer; background: rgba(0,0,0,0.3); border: 1px solid transparent; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
+    .cerrar-modal:hover { color: #fff; background: rgba(255, 51, 102, 0.2); border-color: #ff3366; }
     .modal-img { width: 100%; max-height: 320px; object-fit: contain; background: rgba(0,0,0,0.4); border-radius: var(--radius-sm); margin-bottom: 12px; border: 1px solid var(--glass-border); }
+    .modal-tag-info { display: inline-block; background: rgba(0, 229, 255, 0.1); border: 1px solid rgba(0, 229, 255, 0.3); color: var(--secondary-color); padding: 4px 10px; border-radius: var(--radius-pill); font-size: 0.75em; font-weight: 700; margin-bottom: 10px; }
     .modal-miniaturas { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 4px; }
-    .modal-mini-img { width: 65px; height: 65px; object-fit: cover; border-radius: var(--radius-sm); cursor: pointer; border: 2px solid transparent; opacity: 0.5; }
-    .modal-mini-img.activo { opacity: 1; border-color: var(--secondary-color); }
+    .modal-mini-img { width: 65px; height: 65px; object-fit: cover; border-radius: var(--radius-sm); cursor: pointer; border: 2px solid transparent; opacity: 0.5; transition: all 0.2s ease; }
+    .modal-mini-img.activo { opacity: 1; border-color: var(--secondary-color); transform: scale(1.05); }
+
     .sugerencia-input, .talla-select, .recarga-input, .cupon-input { background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: #fff; padding: 10px 14px; border-radius: var(--radius-sm); width: 100%; font-family: 'Rajdhani', sans-serif; outline: none; }
-    .btn-compartir { background: rgba(37, 211, 102, 0.05); color: #25d366; border: 1px solid rgba(37, 211, 102, 0.4); padding: 12px; font-family: 'Chakra Petch', sans-serif; font-weight: 600; border-radius: var(--radius-sm); cursor: pointer; width: 100%; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn-comprar { background: linear-gradient(135deg, var(--primary-color), #cc0066); color: #fff; border: none; padding: 14px; font-family: 'Chakra Petch', sans-serif; font-size: 1.05em; font-weight: 700; border-radius: var(--radius-sm); cursor: pointer; width: 100%; margin-top: 14px; box-shadow: 0 4px 15px var(--primary-glow); }
+    .btn-comprar:disabled { filter: grayscale(100%); cursor: not-allowed; box-shadow: none; }
+    .btn-compartir { background: rgba(37, 211, 102, 0.05); color: #25d366; border: 1px solid rgba(37, 211, 102, 0.4); padding: 12px; font-family: 'Chakra Petch', sans-serif; font-size: 0.95em; font-weight: 600; border-radius: var(--radius-sm); cursor: pointer; width: 100%; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
     /* CARRITO Y RESEÑAS */
-    .cart-tabs { display: flex; gap: 6px; margin-bottom: 15px; background: rgba(0,0,0,0.3); padding: 5px; border-radius: var(--radius-pill); }
+    .cart-tabs { display: flex; gap: 6px; margin-bottom: 15px; background: rgba(0,0,0,0.3); padding: 5px; border-radius: var(--radius-pill); border: 1px solid var(--glass-border); }
     .cart-tab-btn { flex: 1; background: transparent; color: var(--text-muted); border: none; padding: 10px; border-radius: var(--radius-pill); font-family: 'Chakra Petch', sans-serif; font-weight: 700; cursor: pointer; }
     .cart-tab-btn.activo { background: var(--secondary-color); color: #000; box-shadow: 0 0 10px rgba(0, 229, 255, 0.4); }
     .cart-item-row { display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.3); padding: 10px; border-radius: var(--radius-sm); margin-bottom: 8px; border: 1px solid var(--glass-border); }
     .cart-item-img { width: 48px; height: 48px; object-fit: cover; border-radius: 4px; margin-right: 12px; }
     .cart-item-info { flex-grow: 1; font-size: 0.9em; }
     .cart-item-del { background: rgba(255, 51, 102, 0.1); color: #ff3366; border: 1px solid rgba(255, 51, 102, 0.3); padding: 6px 10px; border-radius: var(--radius-sm); cursor: pointer; }
-    .reviews-section { background: var(--glass-bg); padding: 24px 18px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); margin-top: 35px; }
+    
+    .reviews-section { background: var(--glass-bg); backdrop-filter: blur(10px); padding: 24px 18px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); margin-top: 35px; }
     .review-card { background: rgba(0,0,0,0.3); padding: 14px; border-radius: var(--radius-sm); margin-bottom: 12px; border: 1px solid var(--glass-border); }
 
-    /* NAVEGACIÓN INFERIOR DE LA TIENDA */
-    .bottom-nav { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 500px; background: rgba(10, 2, 22, 0.85); border: 1px solid var(--glass-border); border-radius: var(--radius-pill); display: flex; justify-content: space-around; padding: 12px 10px; z-index: 2500; backdrop-filter: blur(15px); }
-    .nav-item { color: var(--text-muted); display: flex; flex-direction: column; align-items: center; font-size: 0.7em; font-weight: 700; cursor: pointer; width: 25%; position: relative; }
-    .nav-item i { font-size: 1.5em; margin-bottom: 4px; }
-    .nav-item:hover, .nav-item.active { color: #fff; } .nav-item:hover i { color: var(--secondary-color); }
-    .nav-badge { position: absolute; top: -5px; right: 15%; background: var(--primary-color); color: #fff; font-size: 0.8em; padding: 2px 6px; border-radius: 12px; }
+    /* NAVEGACIÓN INFERIOR */
+    .bottom-nav { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 500px; background: rgba(10, 2, 22, 0.85); border: 1px solid var(--glass-border); border-radius: var(--radius-pill); display: flex; justify-content: space-around; padding: 12px 10px; z-index: 2500; backdrop-filter: blur(15px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .nav-item { color: var(--text-muted); display: flex; flex-direction: column; align-items: center; font-size: 0.7em; font-weight: 700; cursor: pointer; width: 25%; position: relative; transition: all 0.3s; }
+    .nav-item i { font-size: 1.5em; margin-bottom: 4px; transition: all 0.3s; }
+    .nav-item:hover, .nav-item.active { color: #fff; transform: translateY(-3px); }
+    .nav-item:hover i, .nav-item.active i { color: var(--secondary-color); text-shadow: 0 0 10px var(--secondary-glow); }
+    .nav-badge { position: absolute; top: -5px; right: 15%; background: var(--primary-color); color: #fff; font-size: 0.8em; font-weight: bold; padding: 2px 6px; border-radius: 12px; }
 
+    /* MENU DE FUNCIONES */
     .menu-opciones-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 18px; }
-    .btn-menu-opcion { display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); padding: 14px 8px; border-radius: var(--radius-sm); color: #fff; text-decoration: none; font-size: 0.75em; font-weight: 600; cursor: pointer; text-align: center; }
+    .btn-menu-opcion { display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); padding: 14px 8px; border-radius: var(--radius-sm); color: #fff; text-decoration: none; font-size: 0.75em; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .btn-menu-opcion i { font-size: 1.8em; margin-bottom: 8px; }
+    .btn-menu-opcion:hover { border-color: var(--secondary-color); background: rgba(0, 229, 255, 0.05); transform: translateY(-2px); }
 
-    /* ESTILOS RPG V2 */
-    .xp-bar-container { background: rgba(0,0,0,0.6); border-radius: var(--radius-pill); height: 14px; margin-top: 12px; overflow: hidden; border: 1px solid var(--glass-border); }
-    .xp-bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); border-radius: var(--radius-pill); transition: width 0.8s; }
+    /* ESTILOS RPG V2 (Inventario y Stats) */
+    .xp-bar-container { background: rgba(0,0,0,0.6); border-radius: var(--radius-pill); height: 14px; margin-top: 12px; overflow: hidden; border: 1px solid var(--glass-border); position: relative; }
+    .xp-bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); border-radius: var(--radius-pill); transition: width 0.8s; box-shadow: 0 0 10px var(--secondary-glow); }
     .rpg-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
     .rpg-item-card { background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 10px; text-align: center; position: relative; cursor: pointer; transition: all 0.2s; }
-    .rpg-item-card.equipped { border-color: #25d366; background: rgba(37, 211, 102, 0.1); }
+    .rpg-item-card:hover { border-color: var(--secondary-color); }
+    .rpg-item-card.equipped { border-color: #25d366; background: rgba(37, 211, 102, 0.1); box-shadow: 0 0 10px rgba(37, 211, 102, 0.2); }
     .rpg-item-icon { font-size: 2em; margin-bottom: 5px; }
     .rpg-item-name { font-size: 0.85em; font-weight: bold; font-family: 'Chakra Petch', sans-serif; }
     .rpg-item-stats { font-size: 0.75em; color: var(--secondary-color); margin-top: 4px; }
-    .rareza-N { color: #b4becd; font-weight: bold; } .rareza-R { color: #00e5ff; font-weight: bold; } .rareza-SR { color: #b000ff; font-weight: bold; } .rareza-SSR { color: #ffaa00; font-weight: bold; text-shadow: 0 0 5px rgba(255,170,0,0.5); }
+    
+    .rareza-N { color: #b4becd; font-weight: bold; }
+    .rareza-R { color: #00e5ff; font-weight: bold; }
+    .rareza-SR { color: #b000ff; font-weight: bold; }
+    .rareza-SSR { color: #ffaa00; font-weight: bold; text-shadow: 0 0 5px rgba(255,170,0,0.5); }
+    
+    /* Gacha Cartas */
     .waifu-card-mini { width: 70px; height: 100px; background: rgba(0,0,0,0.5); border-radius: var(--radius-sm); border: 1px solid var(--glass-border); overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .waifu-card-mini img { width: 100%; height: 100%; object-fit: cover; }
     .waifu-card-mini .badge { position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); font-size: 0.6em; }
+    @keyframes spinBounce { 0% { transform: translateY(0) rotate(0deg); } 25% { transform: translateY(-20px) rotate(45deg); } 50% { transform: translateY(0) rotate(0deg); } 75% { transform: translateY(-10px) rotate(-45deg); } 100% { transform: translateY(0) rotate(0deg); } }
+    .animating-gacha { animation: spinBounce 0.6s infinite ease-in-out; }
   </style>
 </head>
 <body>
@@ -145,35 +191,40 @@
 <div class="ticker-bar"><div class="ticker-content" id="ajustesTickerObj">Cargando información del servidor...</div></div>
 
 <div class="hero-banner">
-  <img src="logo.webp?v=2" alt="Sakura Gameverse" class="hero-logo" loading="eager">
+  <img src="logo.webp?v=2" alt="Sakura Gameverse" class="hero-logo" onclick="activarEasterEggLogo()" loading="eager">
   <br>
   <div class="store-status-badge"><div class="status-dot"></div> Horario: 10:00 AM - 7:00 PM</div>
   <div class="hero-title" id="ajustesHeroTitleObj">Cargando...</div>
   <div style="color: var(--text-muted); font-size: 0.9em; max-width: 500px; margin: 0 auto 14px auto;" id="ajustesHeroDescObj">...</div>
+  <div id="bannerSliderContainer" class="banner-slider-container"></div>
 </div>
 
 <div class="container">
-  <!-- BUSCADOR RESTAURADO -->
+  <!-- BUSCADOR -->
   <div class="search-box">
-    <input type="text" id="buscador" class="search-input" placeholder="Buscar por producto..." onkeyup="buscarProductos()">
+    <input type="text" id="buscador" class="search-input" placeholder="Buscar por producto, franquicia..." onkeyup="buscarProductos()">
   </div>
 
-  <!-- CATEGORÍAS VISUALES RESTAURADAS -->
+  <!-- CATEGORÍAS VISUALES -->
   <div class="categorias-visuales-section">
     <div class="categorias-visuales-header">Categorías de Catálogo</div>
     <div class="carrusel-wrapper">
+      <button class="carrusel-arrow arrow-prev" onclick="scrollCategoriasVisuales(-1)"><i class="fas fa-chevron-left"></i></button>
       <div class="carrusel-track" id="categoriasTrack">
-        <div class="cat-card activa" onclick="filtrarCategoria('todos')"><img src="logo.webp?v=2" class="cat-img"><div class="cat-info"><div class="cat-title">Todo el Stock</div><div class="cat-count" id="count-todos">0</div></div></div>
-        <div class="cat-card" onclick="filtrarCategoria('recargas')"><img src="logo.webp?v=2" class="cat-img"><div class="cat-info"><div class="cat-title">Recargas</div><div class="cat-count" id="count-recargas">0</div></div></div>
-        <div class="cat-card" onclick="filtrarCategoria('mangas')"><img src="logo.webp?v=2" class="cat-img"><div class="cat-info"><div class="cat-title">Mangas</div><div class="cat-count" id="count-mangas">0</div></div></div>
-        <div class="cat-card" onclick="filtrarCategoria('ropa')"><img src="logo.webp?v=2" class="cat-img"><div class="cat-info"><div class="cat-title">Ropa</div><div class="cat-count" id="count-ropa">0</div></div></div>
-        <div class="cat-card" onclick="filtrarCategoria('cartas')"><img src="logo.webp?v=2" class="cat-img"><div class="cat-info"><div class="cat-title">Cartas</div><div class="cat-count" id="count-cartas">0</div></div></div>
-        <div class="cat-card" onclick="filtrarCategoria('figuras')"><img src="logo.webp?v=2" class="cat-img"><div class="cat-info"><div class="cat-title">Figuras</div><div class="cat-count" id="count-figuras">0</div></div></div>
+        <div class="cat-card activa" onclick="filtrarCategoria('todos')"><img src="logo.webp?v=2" id="img-cat-todos" class="cat-img"><div class="cat-info"><div class="cat-title" id="title-cat-todos">Todo el Stock</div><div class="cat-count" id="count-todos">0 items</div></div></div>
+        <div class="cat-card" onclick="filtrarCategoria('recargas')"><img src="logo.webp?v=2" id="img-cat-recargas" class="cat-img"><div class="cat-info"><div class="cat-title" id="title-cat-recargas">Recargas</div><div class="cat-count" id="count-recargas">0 items</div></div></div>
+        <div class="cat-card" onclick="filtrarCategoria('mangas')"><img src="logo.webp?v=2" id="img-cat-mangas" class="cat-img"><div class="cat-info"><div class="cat-title" id="title-cat-mangas">Mangas</div><div class="cat-count" id="count-mangas">0 items</div></div></div>
+        <div class="cat-card" onclick="filtrarCategoria('ropa')"><img src="logo.webp?v=2" id="img-cat-ropa" class="cat-img"><div class="cat-info"><div class="cat-title" id="title-cat-ropa">Vestimenta</div><div class="cat-count" id="count-ropa">0 items</div></div></div>
+        <div class="cat-card" onclick="filtrarCategoria('cartas')"><img src="logo.webp?v=2" id="img-cat-cartas" class="cat-img"><div class="cat-info"><div class="cat-title" id="title-cat-cartas">Cartas</div><div class="cat-count" id="count-cartas">0 items</div></div></div>
+        <div class="cat-card" onclick="filtrarCategoria('figuras')"><img src="logo.webp?v=2" id="img-cat-figuras" class="cat-img"><div class="cat-info"><div class="cat-title" id="title-cat-figuras">Figuras</div><div class="cat-count" id="count-figuras">0 items</div></div></div>
+        <div class="cat-card" onclick="filtrarCategoria('mandos')"><img src="logo.webp?v=2" id="img-cat-mandos" class="cat-img"><div class="cat-info"><div class="cat-title" id="title-cat-mandos">Mandos</div><div class="cat-count" id="count-mandos">0 items</div></div></div>
+        <div class="cat-card" onclick="filtrarCategoria('perifericos')"><img src="logo.webp?v=2" id="img-cat-perifericos" class="cat-img"><div class="cat-info"><div class="cat-title" id="title-cat-perifericos">Periféricos</div><div class="cat-count" id="count-perifericos">0 items</div></div></div>
       </div>
+      <button class="carrusel-arrow arrow-next" onclick="scrollCategoriasVisuales(1)"><i class="fas fa-chevron-right"></i></button>
     </div>
   </div>
 
-  <!-- FILTROS RESTAURADOS -->
+  <!-- FILTROS -->
   <div class="controles-superiores">
     <div class="panel-controles-avanzados">
       <select id="selectColeccion" class="ordenar-select" onchange="cambiarColeccionDropdown(this.value)"><option value="todos">Colección: Todas</option></select>
@@ -184,6 +235,10 @@
 
   <!-- CATÁLOGO -->
   <div class="grid" id="catalogoNube"><p style="text-align: center; color: var(--text-muted); grid-column: 1/-1;">Sincronizando inventario...</p></div>
+
+  <div id="contenedorCargarMas" style="text-align: center; margin-top: 25px;">
+    <button id="btnCargarMas" style="display: none; width: auto; padding: 12px 30px; margin: 0 auto; border-radius: var(--radius-pill); background: rgba(0, 229, 255, 0.1); border: 1px solid var(--secondary-color); color: var(--secondary-color); font-family: 'Chakra Petch', sans-serif; font-weight: 700; cursor: pointer; transition: all 0.3s ease;" onclick="cargarMasProductos()">Mostrar más productos</button>
+  </div>
 
   <!-- RESEÑAS -->
   <div class="reviews-section">
@@ -196,7 +251,7 @@
         <option value="⭐⭐⭐⭐">4 / 5 - Muy bueno</option>
         <option value="⭐⭐⭐">3 / 5 - Conforme</option>
       </select>
-      <textarea id="revTexto" class="sugerencia-input" rows="2" placeholder="Describe tu experiencia..." style="margin-bottom: 8px;"></textarea>
+      <textarea id="revTexto" class="sugerencia-input" rows="2" placeholder="Describe tu experiencia de compra..." style="margin-bottom: 8px;"></textarea>
       <button class="btn-comprar" style="width: auto; padding: 8px 18px;" onclick="agregarReview()">Publicar Opinión</button>
     </div>
   </div>
@@ -204,7 +259,7 @@
 
 <!-- NAVEGACIÓN INFERIOR DE LA TIENDA -->
 <div class="bottom-nav">
-  <div class="nav-item active" onclick="window.scrollTo({top: 0, behavior: 'smooth'});"><i class="fas fa-th-large"></i><span>Catálogo</span></div>
+  <div class="nav-item active" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); reproducirSonido();"><i class="fas fa-th-large"></i><span>Catálogo</span></div>
   <div class="nav-item" onclick="abrirFavoritosModal()"><i class="fas fa-heart"></i><span>Guardados</span><div class="nav-badge" id="favBadge">0</div></div>
   <div class="nav-item" onclick="abrirCarritoModal()"><i class="fas fa-shopping-bag"></i><span>Carrito</span><div class="nav-badge" id="cartBadge">0</div></div>
   <div class="nav-item" onclick="abrirMenuOpciones()"><i class="fas fa-bars"></i><span>Menú</span></div>
@@ -250,8 +305,8 @@
 
     <div id="listaCarritoDetalle" style="max-height:150px; overflow-y:auto; margin-bottom:12px;"></div>
     <div id="modalCarritoTotal" style="color:var(--secondary-color); font-size:1.3em; font-weight:bold; margin-bottom:12px;">Total: $0.00</div>
-    <input type="text" id="cartClienteNombre" placeholder="Tu Nombre" style="width:100%; padding:8px; margin-bottom:8px; background:rgba(0,0,0,0.5); color:#fff; border:1px solid #fff;">
-    <input type="number" id="cartClienteTelefono" placeholder="Tu WhatsApp" style="width:100%; padding:8px; margin-bottom:12px; background:rgba(0,0,0,0.5); color:#fff; border:1px solid #fff;">
+    <input type="text" id="cartClienteNombre" placeholder="Tu Nombre" style="width:100%; padding:8px; margin-bottom:8px; background:rgba(0,0,0,0.5); color:#fff; border:1px solid var(--glass-border);">
+    <input type="number" id="cartClienteTelefono" placeholder="Tu WhatsApp" style="width:100%; padding:8px; margin-bottom:12px; background:rgba(0,0,0,0.5); color:#fff; border:1px solid var(--glass-border);">
     
     <div id="apartadoEnvioFisico">
       <select id="selectMetodoEnvio" class="talla-select" style="margin-bottom:8px;"><option value="ZOOM (Cobro a destino)">Envío ZOOM</option><option value="MRW (Cobro a destino)">Envío MRW</option></select>
@@ -263,29 +318,41 @@
 </div>
 
 <div id="modalCloudSave" class="modal"><div class="modal-content" style="text-align: center;"><button class="cerrar-modal" onclick="cerrarCloudSaveModal()">×</button><h3 style="color: var(--secondary-color); margin-top: 0;">Sincronización</h3><div id="formCloudSave"><input type="email" id="authEmail" placeholder="Correo" style="padding:8px; width:100%; margin-bottom:8px;"><input type="password" id="authPass" placeholder="Clave" style="padding:8px; width:100%; margin-bottom:8px;"><button class="btn-comprar" onclick="entrarCloud()">Entrar</button></div></div></div>
+<div id="modalRastreo" class="modal"><div class="modal-content"><button class="cerrar-modal" onclick="cerrarRastreoModal()">×</button><h3 style="color: var(--secondary-color); margin-top: 0; text-align: center;"><i class="fas fa-radar"></i> Rastrear Paquete</h3><div style="display: flex; gap: 8px; margin-bottom: 14px;"><input type="text" id="inputRastreoTlf" class="sugerencia-input" placeholder="Tu WhatsApp"><button class="btn-comprar" style="margin:0; width:auto; padding:10px;" onclick="buscarPedido()"><i class="fas fa-search"></i></button></div><div id="resultadoRastreo"></div></div></div>
+<div id="modalFaq" class="modal"><div class="modal-content"><button class="cerrar-modal" onclick="cerrarFaqModal()">×</button><h3 style="color: #fff; margin-top: 0; text-align: center;">Preguntas Frecuentes</h3><div style="font-size: 0.9em; line-height: 1.5; color: var(--text-muted);"><p><strong style="color: #fff;">¿Dónde realizan entregas en persona?</strong><br>Puntos acordados previamente en Bejuma y Miranda, Estado Carabobo.</p></div></div></div>
+<div id="modalTemas" class="modal"><div class="modal-content" style="text-align: center;"><button class="cerrar-modal" onclick="cerrarTemasModal()">×</button><h3 style="color: #fff; margin-top: 0;">Temas</h3><button class="btn-comprar" style="background: #ff007f;" onclick="cambiarTema('theme-rosa')">Rosa</button><button class="btn-comprar" style="background: #0099ff; color: #000;" onclick="cambiarTema('theme-azul')">Azul</button></div></div>
+<div id="modalCofreDiario" class="modal"><div class="modal-content" style="text-align: center;"><button class="cerrar-modal" onclick="cerrarCofreModal()">×</button><h3 style="color: #ffaa00; margin-top: 0;">Recompensa Diaria</h3><div id="cofreResultado" style="margin-bottom: 14px;">Cofre disponible (+50 XP y Tokens)</div><button class="btn-comprar" style="background: #ffaa00; color: #000;" onclick="abrirCofreDiario()">Reclamar</button></div></div>
 
-<!-- EL MENÚ DONDE SE CONECTA EL RPG -->
+<!-- EL MENÚ GENERAL CON TODO INTEGRADO -->
 <div id="modalOpcionesMenu" class="modal">
   <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarMenuOpciones()">×</button>
     <h3 style="color: #fff; margin-top: 0;">Panel de Funciones</h3>
     
     <div class="menu-opciones-grid">
-      <!-- BOTONES DEL RPG INTEGRADOS AQUÍ -->
+      <!-- 5 BOTONES DEL RPG V2 -->
       <button class="btn-menu-opcion" style="color: #25d366;" onclick="cerrarMenuOpciones(); abrirGremioModal()"><i class="fas fa-campground"></i> El Gremio</button>
       <button class="btn-menu-opcion" style="color: #ffaa00;" onclick="cerrarMenuOpciones(); abrirFraguaModal()"><i class="fas fa-hammer"></i> La Fragua</button>
       <button class="btn-menu-opcion" style="color: #00e5ff;" onclick="cerrarMenuOpciones(); abrirGamerProfileModal()"><i class="fas fa-user-ninja"></i> Mi Perfil RPG</button>
-      
-      <!-- LOS DOS MODOS DE RUMBLE SEPARADOS -->
       <button class="btn-menu-opcion" style="color: #ff3366;" onclick="cerrarMenuOpciones(); abrirArenaSoloModal()"><i class="fas fa-skull"></i> Arena Solitaria</button>
       <button class="btn-menu-opcion" style="color: #b000ff;" onclick="cerrarMenuOpciones(); abrirTorneoBRModal()"><i class="fas fa-trophy"></i> Torneo B. Royale</button>
       
-      <!-- OTROS -->
-      <button class="btn-menu-opcion" style="color: var(--secondary-color);" onclick="cerrarMenuOpciones(); alert('Gacha en mantenimiento')"><i class="fas fa-capsules"></i> Gacha Waifus</button>
-      <button class="btn-menu-opcion" style="color: #fff;" onclick="cerrarMenuOpciones(); abrirCloudSaveModal()"><i class="fas fa-cloud"></i> Nube</button>
+      <!-- 10 BOTONES DE LA TIENDA ORIGINAL -->
+      <button class="btn-menu-opcion" style="color: var(--secondary-color);" onclick="cerrarMenuOpciones(); abrirGachaModal()"><i class="fas fa-capsules"></i> Gacha Center</button>
+      <button class="btn-menu-opcion" style="color: #ffaa00;" onclick="cerrarMenuOpciones(); abrirCofreModal()"><i class="fas fa-gift"></i> Cofre Diario</button>
+      <button class="btn-menu-opcion" style="color: #b000ff;" onclick="cerrarMenuOpciones(); abrirRastreoModal()"><i class="fas fa-radar"></i> Rastrear</button>
+      <button class="btn-menu-opcion" style="color: #00e5ff;" onclick="cerrarMenuOpciones(); abrirCloudSaveModal()"><i class="fas fa-cloud"></i> Nube / Cuenta</button>
+      <button class="btn-menu-opcion" style="color: #ff007f;" onclick="cerrarMenuOpciones(); abrirTemasModal()"><i class="fas fa-palette"></i> Temas</button>
+      <button class="btn-menu-opcion" style="color: #e0f4ff;" onclick="toggleMusicaLoFi()"><i class="fas fa-music" id="iconoMusica"></i> Audio Lo-Fi</button>
+      <button class="btn-menu-opcion" style="color: var(--text-muted);" onclick="cerrarMenuOpciones(); abrirFaqModal()"><i class="fas fa-question-circle"></i> Preguntas</button>
+      <button class="btn-menu-opcion" style="color: #fff;" onclick="cerrarMenuOpciones(); abrirSugerenciaModal()"><i class="fas fa-lightbulb"></i> Encargos</button>
+      <a href="admin.html" class="btn-menu-opcion" style="color: #ff3366;"><i class="fas fa-lock"></i> Gestión Admin</a>
+      <a href="javascript:void(0)" onclick="abrirChatGlobalWhatsApp()" class="btn-menu-opcion" style="color: #25D366;"><i class="fab fa-whatsapp"></i> Chat Directo</a>
     </div>
   </div>
 </div>
+
+<div id="modalGacha" class="modal"><div class="modal-content" style="text-align: center;"><button class="cerrar-modal" onclick="cerrarGachaModal()">×</button><h3 style="color: var(--secondary-color); margin-top: 0;">Gacha Center</h3><div id="gachaMachineContainer" style="position:relative; height:200px; margin-bottom:15px;"><img id="gachaWaifuImg" src="logo.webp?v=2" style="height:100%; opacity:0.3;"><div id="gachaOverlay" style="position:absolute; top:0; left:0; width:100%; height:100%; display:flex; justify-content:center; align-items:center; color:#fff; font-weight:bold;">MÁQUINA LISTA</div></div><div id="gachaResultado" style="display:none; color:#25d366; font-weight:bold; margin-bottom:10px;"></div><button class="btn-comprar" id="btnTirarGacha" onclick="realizarTiradaGacha()">Invocar (-100 Tokens)</button></div></div>
 
 <!-- ================= MODALES DEL RPG V2 ================= -->
 
@@ -301,10 +368,8 @@
         <span>Nivel: <strong id="lblRango" style="color: #ffaa00;">Genin</strong></span>
         <span><strong id="lblTokens" style="color: #ffaa00;"><i class="fas fa-coins"></i> 0</strong> | <strong id="lblXp" style="color: var(--secondary-color);">0</strong> XP</span>
       </div>
-      <div class="xp-bar-container">
-        <div class="xp-bar-fill" id="barXp"></div>
-      </div>
-      <div style="font-size: 0.8em; color: var(--text-muted); text-align: right; margin-top: 6px;" id="lblXpNext">Calculando siguiente rango...</div>
+      <div class="xp-bar-container"><div class="xp-bar-fill" id="barXp"></div></div>
+      <div style="font-size: 0.8em; color: var(--text-muted); text-align: right; margin-top: 6px;" id="lblXpNext">Calculando...</div>
       
       <div style="font-size: 0.85em; color: #fff; background: rgba(0, 229, 255, 0.1); padding: 10px; border-radius: 8px; border: 1px solid rgba(0,229,255,0.2); text-align: center; margin-top: 10px;">
         <div style="margin-bottom: 4px;">Clase: <strong id="lblProfesion" style="color: var(--secondary-color); text-transform: uppercase;">Ninguna</strong></div>
@@ -387,7 +452,7 @@
 <!-- ================= SCRIPT PRINCIPAL Y FIREBASE ================= -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-  import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, setDoc, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+  import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, setDoc, addDoc, where, onSnapshot } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
   import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
   const firebaseConfig = { apiKey: "AIzaSyDH1DZqaIi5sKRXspXDUWbMUZ4nr5JIy8Q", authDomain: "sakura-gameverse.firebaseapp.com", projectId: "sakura-gameverse", storageBucket: "sakura-gameverse.firebasestorage.app", messagingSenderId: "226328425516", appId: "1:226328425516:web:8dc11761639228c6120d89" };
@@ -395,9 +460,11 @@
 
   let productosNubeGlobal = [];
   let rpgObjetosGlobal = [];
+  let waifusGachaGlobal = [];
   let currentUserUid = null;
   let filtroGlobal = { categoria: 'todos', coleccion: 'todos', estado: 'todos', busqueda: '' };
   let limiteActual = 12;
+  let ajustesWebGlobal = { whatsapp: "584244970576", costoGacha: 100, tokensCofre: 15 };
 
   let carrito = JSON.parse(localStorage.getItem('sakura_carrito')) || [];
   let favoritos = JSON.parse(localStorage.getItem('sakura_favoritos')) || [];
@@ -409,6 +476,9 @@
       const snap = await getDoc(doc(db, "configuracion", "ajustes_web"));
       if (snap.exists()) {
         let d = snap.data();
+        if(d.whatsapp) ajustesWebGlobal.whatsapp = d.whatsapp;
+        if(d.costoGacha) ajustesWebGlobal.costoGacha = parseInt(d.costoGacha);
+        if(d.tokensCofre) ajustesWebGlobal.tokensCofre = parseInt(d.tokensCofre);
         if(d.ticker) document.getElementById('ajustesTickerObj').innerText = d.ticker;
         if(d.heroTitle) document.getElementById('ajustesHeroTitleObj').innerText = d.heroTitle;
         if(d.heroDesc) document.getElementById('ajustesHeroDescObj').innerText = d.heroDesc;
@@ -424,8 +494,14 @@
     } catch(e){}
 
     try {
-      cargarReviewsNube();
-      cargarUmbralesRangosNube().then(() => { actualizarRangoSegunXP(); });
+      const qG = query(collection(db, "waifus_gacha"));
+      const snapsG = await getDocs(qG);
+      snapsG.forEach(d => { let w = d.data(); if(!w.oculto) waifusGachaGlobal.push({id: d.id, ...w}); });
+    } catch(e){}
+
+    try {
+      window.cargarReviewsNube();
+      window.cargarUmbralesRangosNube().then(() => { actualizarRangoSegunXP(); });
     } catch(e){}
 
     // CONEXIÓN EN VIVO AL RPG
@@ -465,8 +541,7 @@
           <button class="btn-fav-card" onclick="event.stopPropagation(); toggleFavoritoPorId('${prod.id}')"><i class="fas fa-heart"></i></button>
           <div class="badge-estado ${badgeClase}">${isAgotado ? 'AGOTADO' : (prod.estado || 'Stock')}</div>
           <div class="card-img-container"><img src="${foto}" class="activa"></div>
-          <div class="card-title">${prod.nombre}</div>
-          <div class="precio-container"><span class="card-price">$${Number(prod.precio).toFixed(2)}</span></div>
+          <div class="card-title">${prod.nombre}</div> <div class="precio-container"><span class="card-price">$${Number(prod.precio).toFixed(2)}</span></div>
         </div>`;
     });
 
@@ -479,7 +554,7 @@
     let cardVisual = document.querySelector(`.cat-card[onclick*="'${cat}'"]`); if(cardVisual) cardVisual.classList.add('activa');
     filtroGlobal.categoria = cat; limiteActual = 12; window.aplicarFiltrosGlobales();
   };
-
+  window.cambiarColeccionDropdown = function(col) { filtroGlobal.coleccion = col; limiteActual = 12; window.aplicarFiltrosGlobales(); };
   window.filtrarEstadoDropdown = function(est) { filtroGlobal.estado = est; limiteActual = 12; window.aplicarFiltrosGlobales(); };
   window.buscarProductos = function() { filtroGlobal.busqueda = document.getElementById('buscador').value.trim().toLowerCase(); limiteActual = 12; window.aplicarFiltrosGlobales(); };
   
@@ -599,7 +674,7 @@
     carrito.forEach(i => msg += `- ${i.titulo} ($${Number(i.precio).toFixed(2)})\n`);
     msg += `\nDestino: ${dir || 'Digital'}`;
     
-    window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msg), '_blank');
+    window.open("https://wa.me/" + ajustesWebGlobal.whatsapp + "?text=" + encodeURIComponent(msg), '_blank');
   };
 
   function sanitizarHTML(str) { if (!str) return ''; return String(str).replace(/[&<>"']/g, function(m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]; }); }
@@ -608,9 +683,44 @@
   window.cerrarMenuOpciones = function() { document.getElementById('modalOpcionesMenu').style.display = 'none'; };
   window.abrirCloudSaveModal = function() { document.getElementById('modalCloudSave').style.display = 'flex'; };
   window.cerrarCloudSaveModal = function() { document.getElementById('modalCloudSave').style.display = 'none'; };
+  window.abrirRastreoModal = function() { document.getElementById('modalRastreo').style.display = 'flex'; };
+  window.cerrarRastreoModal = function() { document.getElementById('modalRastreo').style.display = 'none'; };
+  window.abrirCofreModal = function() { document.getElementById('modalCofreDiario').style.display = 'flex'; };
+  window.cerrarCofreModal = function() { document.getElementById('modalCofreDiario').style.display = 'none'; };
+  window.abrirTemasModal = function() { document.getElementById('modalTemas').style.display = 'flex'; };
+  window.cerrarTemasModal = function() { document.getElementById('modalTemas').style.display = 'none'; };
+  window.abrirFaqModal = function() { document.getElementById('modalFaq').style.display = 'flex'; };
+  window.cerrarFaqModal = function() { document.getElementById('modalFaq').style.display = 'none'; };
+  
+  window.cambiarTema = function(tema) { document.body.className = ''; if(tema) document.body.classList.add(tema); window.cerrarTemasModal(); };
+  window.abrirChatGlobalWhatsApp = function() { window.open("https://wa.me/" + ajustesWebGlobal.whatsapp, '_blank'); window.cerrarMenuOpciones(); };
+  window.abrirSugerenciaModal = function() { let n = prompt("GamerTag:"); if(!n) return; let d = prompt("¿Qué encargas?"); if(!d) return; window.open("https://wa.me/" + ajustesWebGlobal.whatsapp + "?text=" + encodeURIComponent(`Hola Sakura, soy ${n}. Encargo: ${d}`), '_blank'); };
+  
+  window.abrirCofreDiario = function() {
+    let ultimo = localStorage.getItem('sakura_ultimo_cofre'); let hoy = new Date().toDateString();
+    if(ultimo === hoy) return alert("Vuelve mañana.");
+    window.ganarXP(50);
+    gamerProfile.tokens = (gamerProfile.tokens || 0) + (ajustesWebGlobal.tokensCofre || 15); 
+    localStorage.setItem('sakura_ultimo_cofre', hoy); 
+    document.getElementById('cofreResultado').innerText = `¡Reclamado!`;
+    try{ confetti({ particleCount: 100, spread: 70 }); }catch(e){} 
+    window.guardarProgresoNube();
+  };
+
+  window.buscarPedido = async function() {
+      let tlf = document.getElementById('inputRastreoTlf').value.trim();
+      if(!tlf) return alert("Número inválido.");
+      let cont = document.getElementById('resultadoRastreo'); cont.innerHTML = "Buscando...";
+      try {
+          const q = query(collection(db, "pedidos"), where("telefono", "==", tlf)); const snap = await getDocs(q);
+          if(snap.empty) { cont.innerHTML = "No se encontraron pedidos."; return; }
+          let pedidos = []; snap.forEach(d => pedidos.push(d.data())); pedidos.sort((a,b) => b.timestamp - a.timestamp); let p = pedidos[0]; 
+          cont.innerHTML = `Última orden: ${p.estadoPedido} ($${p.totalUsd})`;
+      } catch(error) { cont.innerHTML = "Error de red."; }
+  };
 
   // ================= SISTEMA DE RESEÑAS =================
-  async function cargarReviewsNube() {
+  window.cargarReviewsNube = async function() {
     try {
       const q = query(collection(db, "reviews"), orderBy("timestamp", "desc")); const querySnapshot = await getDocs(q);
       let c = document.getElementById('contenedorReviews'); if(!c) return; c.innerHTML = "";
@@ -620,26 +730,50 @@
         c.innerHTML += `<div class="review-card"><div style="font-weight:700; color:#fff; margin-bottom:2px;">${sanitizarHTML(r.nombre)}</div><div style="color:#ffcc00; font-size:0.85em; margin-bottom:4px;">${sanitizarHTML(r.estrellas)}</div><div style="color:var(--text-muted); font-size:0.9em;">${sanitizarHTML(r.texto)}</div></div>`;
       });
     } catch (e) {}
-  }
+  };
   window.agregarReview = async function() {
     let n = document.getElementById('revNombre').value.trim(); let e = document.getElementById('revEstrellas').value; let t = document.getElementById('revTexto').value.trim();
     if(!n || !t) return alert("Por favor completa tu nombre y comentario.");
     try {
       await addDoc(collection(db, "reviews"), { nombre: n, estrellas: e, texto: t, timestamp: Date.now() });
       document.getElementById('revNombre').value = ""; document.getElementById('revTexto').value = ""; 
-      await cargarReviewsNube(); alert("Opinión registrada correctamente.");
+      await window.cargarReviewsNube(); alert("Opinión registrada correctamente.");
     } catch(err) { alert("Error al guardar la reseña."); }
+  };
+
+  // ================= GACHA CENTER =================
+  window.abrirGachaModal = function() { 
+    document.getElementById('modalGacha').style.display = 'flex'; 
+  };
+  window.cerrarGachaModal = function() { document.getElementById('modalGacha').style.display = 'none'; };
+  window.realizarTiradaGacha = function() {
+      let costo = ajustesWebGlobal.costoGacha || 100;
+      if((gamerProfile.tokens || 0) < costo) return alert(`Necesitas ${costo} Tokens.`);
+      if(waifusGachaGlobal.length === 0) return alert("Máquina vacía.");
+      
+      gamerProfile.tokens -= costo; window.guardarProgresoNube();
+      document.getElementById('btnTirarGacha').disabled = true;
+      document.getElementById('gachaResultado').style.display = 'none';
+      
+      setTimeout(() => {
+          let rand = Math.random() * 100;
+          let tR = rand <= 2 ? 'SSR' : (rand <= 10 ? 'SR' : (rand <= 40 ? 'R' : 'N'));
+          let pos = waifusGachaGlobal.filter(w => w.rareza === tR);
+          if(pos.length === 0) pos = waifusGachaGlobal; 
+          let elegida = pos[Math.floor(Math.random() * pos.length)];
+
+          document.getElementById('gachaWaifuImg').src = elegida.imgUrl;
+          document.getElementById('gachaResultado').innerText = `¡Obtuviste: ${elegida.nombre} (${elegida.rareza})!`;
+          document.getElementById('gachaResultado').style.display = 'block';
+          document.getElementById('btnTirarGacha').disabled = false;
+          
+          try { addDoc(collection(db, "historial_gacha"), { jugador: gamerProfile.tag, waifu: elegida.nombre, rareza: elegida.rareza, premio: elegida.premio, timestamp: Date.now() }); } catch(e) {}
+      }, 1500);
   };
 
   // ================= FUNCIONES DEL RPG V2 =================
   let umbralesRangosNube = { genin: 0, chunin: 300, jonin: 600, hokage: 1000 };
-  async function cargarUmbralesRangosNube() { try { const docRef = doc(db, "configuracion", "rangos_ninja"); const docSnap = await getDoc(docRef); if (docSnap.exists()) umbralesRangosNube = docSnap.data(); } catch(e) {} }
-
-  window.guardarProgresoNube = async function() { 
-    localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile)); 
-    actualizarUiPerfil();
-    if(currentUserUid) { try { await setDoc(doc(db, "jugadores_cloud", currentUserUid), { profile: gamerProfile, updatedAt: Date.now() }, { merge: true }); } catch(e) {} }
-  };
+  window.cargarUmbralesRangosNube = async function() { try { const docRef = doc(db, "configuracion", "rangos_ninja"); const docSnap = await getDoc(docRef); if (docSnap.exists()) umbralesRangosNube = docSnap.data(); } catch(e) {} }
 
   window.obtenerIconoRPG = function(nombre, tipo) {
     let n = nombre.toLowerCase();
@@ -685,7 +819,6 @@
     document.getElementById('inputGamerTag').value = gamerProfile.tag;
     document.getElementById('lblRango').innerText = gamerProfile.rango;
     document.getElementById('lblXp').innerText = gamerProfile.xp;
-    document.getElementById('lblTokens').innerHTML = `<i class="fas fa-coins"></i> ${gamerProfile.tokens}`;
     
     let extraAtk = 0; let extraDef = 0;
     if (gamerProfile.equipo.armaId && gamerProfile.inventario) {
@@ -818,7 +951,7 @@
       } else { msj = "Has extraído Mineral Básico."; xpG = 10; }
     }
     localStorage.setItem(keyCooldown, ahora);
-    gamerProfile.xp += xpG; gamerProfile.tokens += tokG; window.guardarProgresoNube();
+    gamerProfile.tokens += tokG; window.ganarXP(xpG); window.guardarProgresoNube();
     document.getElementById('rpgResultado').innerHTML = `<span style="color:var(--secondary-color);">${msj}</span><br><span style="color:#25d366;">+${xpG} XP | +${tokG} Tokens</span>`;
   };
 
@@ -874,7 +1007,7 @@
             premioTxt = `${iconM} ${matDrop.nombre} (Material)`;
         }
         
-        gamerProfile.xp += (poderJefe); gamerProfile.tokens += Math.floor(poderJefe / 5); window.guardarProgresoNube();
+        gamerProfile.tokens += Math.floor(poderJefe / 5); window.ganarXP(poderJefe); window.guardarProgresoNube();
         log.innerHTML = `<span style="color: #25d366;">¡HAS DERROTADO A ${nombreJefe.toUpperCase()}!</span><br>Soltó: <strong>${premioTxt}</strong>`;
         try{ confetti({ particleCount: 100, spread: 70 }); }catch(e){} 
       } else { log.innerHTML = `<span style="color: #ff3366;">${nombreJefe} te ha destrozado.</span><br><span style="font-size: 0.8em;">Tu Poder Total (${Math.floor(poderTotal)}) es muy bajo para el Poder del Jefe (${poderJefe}). ¡Forja mejor equipo!</span>`; }
@@ -913,7 +1046,7 @@
           if (Math.random() > 0.5) { 
             let premio = Math.floor(Math.random() * 30) + 20; 
             log.innerHTML += `<span style="color: #25d366;">¡HAS GANADO!</span><br>Recibes +${premio} Tokens y +50 XP.`;
-            window.ganarXP(50); gamerProfile.tokens += premio; window.guardarProgresoNube();
+            gamerProfile.tokens += premio; window.ganarXP(50); window.guardarProgresoNube();
           } else { log.innerHTML += `<span style="color: #ff3366;">Fuiste eliminado. Suerte la próxima vez.</span>`; }
           log.scrollTop = log.scrollHeight; 
           document.getElementById('btnIniciarArenaSolo').disabled = false; 
@@ -960,10 +1093,1327 @@
     
     let lblXp = document.getElementById('lblXp'); if(lblXp) lblXp.innerText = gamerProfile.xp; 
     let lblRango = document.getElementById('lblRango'); if(lblRango) lblRango.innerText = gamerProfile.rango;
-    let lblTokens = document.getElementById('lblTokens'); if(lblTokens) lblTokens.innerHTML = `<i class="fas fa-coins"></i> ${gamerProfile.tokens || 0}`;
+  }
+  window.ganarXP = function(cantidad) { gamerProfile.xp += cantidad; actualizarRangoSegunXP(); window.guardarProgresoNube(); };
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+  import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, setDoc, addDoc, where, onSnapshot } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+  const firebaseConfig = { apiKey: "AIzaSyDH1DZqaIi5sKRXspXDUWbMUZ4nr5JIy8Q", authDomain: "sakura-gameverse.firebaseapp.com", projectId: "sakura-gameverse", storageBucket: "sakura-gameverse.firebasestorage.app", messagingSenderId: "226328425516", appId: "1:226328425516:web:8dc11761639228c6120d89" };
+  const app = initializeApp(firebaseConfig); const db = getFirestore(app); const auth = getAuth(app);
+
+  let productosNubeGlobal = [];
+  let rpgObjetosGlobal = [];
+  let currentUserUid = null;
+  let filtroGlobal = { categoria: 'todos', coleccion: 'todos', estado: 'todos', busqueda: '' };
+  let limiteActual = 12;
+  let totalBanners = 0; let bannerInterval;
+
+  let carrito = JSON.parse(localStorage.getItem('sakura_carrito')) || [];
+  let favoritos = JSON.parse(localStorage.getItem('sakura_favoritos')) || [];
+  let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, tokens: 0, rango: "Genin", waifus: [], profesion: "", stats: { hp: 100, atk: 10, def: 5 }, inventario: [], equipo: { armaId: null } };
+  if(gamerProfile.profesion === undefined) { gamerProfile.profesion = ""; gamerProfile.stats = { hp: 100, atk: 10, def: 5 }; gamerProfile.inventario = []; gamerProfile.equipo = { armaId: null }; }
+
+  window.addEventListener('DOMContentLoaded', async () => {
+    // 1. Cargar Ajustes Web
+    try {
+      const snap = await getDoc(doc(db, "configuracion", "ajustes_web"));
+      if (snap.exists()) {
+        let d = snap.data();
+        if(d.ticker) document.getElementById('ajustesTickerObj').innerText = d.ticker;
+        if(d.heroTitle) document.getElementById('ajustesHeroTitleObj').innerText = d.heroTitle;
+        if(d.heroDesc) document.getElementById('ajustesHeroDescObj').innerText = d.heroDesc;
+      }
+    } catch(e){}
+
+    // 2. Cargar Productos de Tienda
+    try {
+      const q = query(collection(db, "productos"), orderBy("timestamp", "desc"));
+      const querySnapshot = await getDocs(q);
+      productosNubeGlobal = [];
+      querySnapshot.forEach((docSnap) => { productosNubeGlobal.push({ id: docSnap.id, ...docSnap.data() }); });
+      window.renderizarProductosEnTienda(productosNubeGlobal);
+    } catch(e){}
+
+    // 3. RECUPERADOS: Banners y Categorías Visuales
+    cargarBannersDeNube();
+    cargarConfigCategoriasPublico();
+
+    // 4. Reseñas y Rangos
+    try {
+      window.cargarReviewsNube();
+      window.cargarUmbralesRangosNube().then(() => { actualizarRangoSegunXP(); });
+    } catch(e){}
+
+    // 5. CONEXIÓN EN VIVO AL RPG
+    onSnapshot(query(collection(db, "rpg_objetos")), (snapsObj) => {
+      rpgObjetosGlobal = [];
+      snapsObj.forEach(d => {
+        let obj = d.data();
+        rpgObjetosGlobal.push({ id: d.id, nombre: obj.nombre, tipo: obj.tipo || 'arma', rareza: obj.rareza || 'N', atk: obj.stats?.ataque || obj.stats?.atk || 0, def: obj.stats?.defensa || obj.stats?.def || 0 });
+      });
+    });
+
+    actualizarBadges();
+    actualizarUiPerfil();
+  });
+
+  // ================= RECUPERADOS: BANNERS Y CATEGORÍAS =================
+  async function cargarBannersDeNube() {
+    try {
+      const q = query(collection(db, "banners"), orderBy("timestamp", "desc"));
+      const querySnapshot = await getDocs(q);
+      const container = document.getElementById('bannerSliderContainer');
+      let bannersValidos = [];
+      querySnapshot.forEach((docSnap) => { let b = docSnap.data(); if (b?.imgUrl) bannersValidos.push(b.imgUrl); });
+      if (bannersValidos.length === 0) { container.style.display = 'none'; return; }
+      container.style.display = 'block';
+      let htmlImgs = ''; let htmlDots = '<div class="banner-dots">'; 
+      bannersValidos.forEach((url, index) => {
+        htmlImgs += `<img src="${url}" class="banner-slide ${index === 0 ? 'active' : ''}" data-index="${index}" loading="lazy">`;
+        htmlDots += `<div class="banner-dot ${index === 0 ? 'active' : ''}" onclick="cambiarBannerManual(${index})"></div>`;
+      });
+      htmlDots += '</div>'; container.innerHTML = htmlImgs + htmlDots; iniciarAutoSliderBanners(bannersValidos.length);
+    } catch (e) {}
+  }
+
+  function iniciarAutoSliderBanners(total) { totalBanners = total; if(total <= 1) return; bannerInterval = setInterval(() => window.rotarBanner(1), 5000); }
+  
+  window.rotarBanner = function(direccion) {
+    if(totalBanners <= 1) return; let slides = document.querySelectorAll('.banner-slide'); let dots = document.querySelectorAll('.banner-dot');
+    if(!slides.length) return;
+    let currentIdx = Array.from(slides).findIndex(s => s.classList.contains('active'));
+    if(currentIdx === -1) currentIdx = 0;
+    slides[currentIdx].classList.remove('active'); dots[currentIdx].classList.remove('active');
+    let nextIdx = currentIdx + direccion;
+    if(nextIdx >= totalBanners) nextIdx = 0; if(nextIdx < 0) nextIdx = totalBanners - 1;
+    slides[nextIdx].classList.add('active'); dots[nextIdx].classList.add('active');
+  };
+
+  async function cargarConfigCategoriasPublico() {
+    try {
+      const q = query(collection(db, "configuracion"), orderBy("timestamp", "desc"));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((docSnap) => {
+        let conf = docSnap.data();
+        if(conf?.tipo === 'categoria_foto') {
+          let catImgEl = document.getElementById(`img-cat-${conf.categoriaId}`);
+          if(catImgEl && conf.imgUrl) catImgEl.src = conf.imgUrl;
+          let catTitleEl = document.getElementById(`title-cat-${conf.categoriaId}`);
+          if(catTitleEl && conf.nombrePersonalizado) catTitleEl.innerText = conf.nombrePersonalizado;
+        }
+      });
+    } catch (e) {}
+  }
+
+  // ================= FUNCIONES DE LA TIENDA =================
+  window.renderizarProductosEnTienda = function(lista) {
+    let contenedor = document.getElementById('catalogoNube'); if (!contenedor) return; contenedor.innerHTML = "";
+    let conteo = { recargas: 0, mangas: 0, ropa: 0, mandos: 0, perifericos: 0, figuras: 0, cartas: 0 };
+    
+    let prodsVisibles = lista.filter(p => !p.oculto);
+    let elTodos = document.getElementById('count-todos'); if(elTodos) elTodos.innerText = prodsVisibles.length;
+    if (prodsVisibles.length === 0) { contenedor.innerHTML = "<p style='color: var(--text-muted); text-align: center; grid-column: 1/-1;'>No hay productos.</p>"; return; }
+    
+    lista.forEach((prod) => {
+      if(prod.oculto) return; 
+      let foto = (prod.fotos && prod.fotos.length > 0) ? prod.fotos[0] : 'logo.webp?v=2';
+      let categoria = (prod.categoria || 'mangas').toLowerCase();
+      let esRecarga = categoria === 'recargas';
+      if (categoria === 'teclados' || categoria === 'audifonos' || categoria === 'perifericos') { conteo.perifericos++; } else if (conteo[categoria] !== undefined) { conteo[categoria]++; }
+
+      let isAgotado = (prod.stock !== undefined && prod.stock <= 0) && !esRecarga;
+      let badgeClase = isAgotado ? 'badge-agotado' : (prod.estado && prod.estado.includes("Encargo") ? 'badge-encargo' : (esRecarga ? 'badge-digital' : 'badge-stock'));
+      
+      contenedor.innerHTML += `
+        <div class="card item-producto ${isAgotado ? 'agotado' : ''}" data-id="${prod.id}" data-nombre="${sanitizarHTML(prod.nombre).toLowerCase()}" data-categoria="${categoria}" data-precio="${prod.precio}" onclick="abrirModalPorId('${prod.id}')">
+          <button class="btn-fav-card" onclick="event.stopPropagation(); toggleFavoritoPorId('${prod.id}')"><i class="fas fa-heart"></i></button>
+          <div class="badge-estado ${badgeClase}">${isAgotado ? 'AGOTADO' : (prod.estado || 'Stock')}</div>
+          <div class="card-img-container"><img src="${foto}" class="activa"></div>
+          <div class="card-title">${prod.nombre}</div> <div class="precio-container"><span class="card-price">$${Number(prod.precio).toFixed(2)}</span></div>
+        </div>`;
+    });
+
+    for(let cat in conteo) { let elem = document.getElementById('count-' + cat); if(elem) elem.innerText = conteo[cat]; }
+    window.aplicarFiltrosGlobales();
+  };
+
+  window.filtrarCategoria = function(cat) {
+    document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('activa'));
+    let cardVisual = document.querySelector(`.cat-card[onclick*="'${cat}'"]`); if(cardVisual) cardVisual.classList.add('activa');
+    filtroGlobal.categoria = cat; limiteActual = 12; window.aplicarFiltrosGlobales();
+  };
+  window.cambiarColeccionDropdown = function(col) { filtroGlobal.coleccion = col; limiteActual = 12; window.aplicarFiltrosGlobales(); };
+  window.filtrarEstadoDropdown = function(est) { filtroGlobal.estado = est; limiteActual = 12; window.aplicarFiltrosGlobales(); };
+  window.buscarProductos = function() { filtroGlobal.busqueda = document.getElementById('buscador').value.trim().toLowerCase(); limiteActual = 12; window.aplicarFiltrosGlobales(); };
+  
+  window.aplicarFiltrosGlobales = function() {
+    let productos = document.querySelectorAll('#catalogoNube .item-producto'); 
+    let mostrados = 0; let coincidencias = 0;
+    productos.forEach(card => {
+      let cat = (card.getAttribute('data-categoria') || '').toLowerCase(); 
+      let nom = card.getAttribute('data-nombre') || '';
+      let cumpleCat = (filtroGlobal.categoria === 'todos') ? true : (filtroGlobal.categoria === 'perifericos' ? (cat === 'perifericos' || cat === 'teclados' || cat === 'audifonos') : cat === filtroGlobal.categoria);
+      let cumpleBusqueda = (!filtroGlobal.busqueda || nom.includes(filtroGlobal.busqueda));
+
+      if (cumpleCat && cumpleBusqueda) {
+        coincidencias++; 
+        if (mostrados < limiteActual) { card.style.display = 'block'; mostrados++; } else { card.style.display = 'none'; }
+      } else { card.style.display = 'none'; }
+    });
+    let btnCargarMas = document.getElementById('btnCargarMas'); 
+    if (btnCargarMas) btnCargarMas.style.display = (coincidencias > limiteActual) ? 'block' : 'none';
+  };
+
+  window.cargarMasProductos = function() { limiteActual += 12; window.aplicarFiltrosGlobales(); };
+
+  window.ordenarProductos = function() {
+    let orden = document.getElementById('selectOrden').value;
+    if(orden === 'menor') { productosNubeGlobal.sort((a,b) => parseFloat(a.precio) - parseFloat(b.precio)); } 
+    else if (orden === 'mayor') { productosNubeGlobal.sort((a,b) => parseFloat(b.precio) - parseFloat(a.precio)); } 
+    else { productosNubeGlobal.sort((a,b) => b.timestamp - a.timestamp); }
+    window.renderizarProductosEnTienda(productosNubeGlobal);
+  };
+
+  window.productoActual = null;
+  window.abrirModalPorId = function(prodId) {
+    const prod = productosNubeGlobal.find(p => p.id === prodId); if (!prod) return;
+    const fotosArray = (prod.fotos && prod.fotos.length > 0) ? prod.fotos : ['logo.webp?v=2'];
+    window.productoActual = { id: prod.id, img: fotosArray[0], titulo: prod.nombre, precio: prod.precio, esRopa: prod?.categoria?.includes('ropa'), esRecarga: prod?.categoria === 'recargas' };
+    
+    document.getElementById('modalImg').src = fotosArray[0]; 
+    document.getElementById('modalTitulo').innerText = prod.nombre; 
+    document.getElementById('modalPrecio').innerText = "$" + Number(prod.precio).toFixed(2);
+    document.getElementById('tallasContainer').style.display = window.productoActual.esRopa ? 'block' : 'none';
+    document.getElementById('recargaContainer').style.display = window.productoActual.esRecarga ? 'block' : 'none';
+    
+    let minisCont = document.getElementById('modalContainerMinis');
+    if(fotosArray.length > 1) {
+        let htmlMinis = ''; fotosArray.forEach((foto, i) => { htmlMinis += `<img src="${foto}" class="modal-mini-img ${i===0?'activo':''}" onclick="cambiarImagenModal(this, '${foto}')">`; });
+        minisCont.innerHTML = htmlMinis;
+    } else { minisCont.innerHTML = ''; }
+    
+    document.getElementById('miModal').style.display = 'flex';
+  };
+  
+  window.cambiarImagenModal = function(elemento, url) {
+    document.getElementById('modalImg').src = url; window.productoActual.img = url; 
+    document.querySelectorAll('.modal-mini-img').forEach(img => img.classList.remove('activo')); elemento.classList.add('activo');
+  };
+
+  window.cerrarModal = function() { document.getElementById('miModal').style.display = 'none'; };
+  window.agregarAlCarrito = function() { 
+    let item = { ...window.productoActual };
+    if(item.esRopa) item.titulo += ` (Talla: ${document.getElementById('selectTalla').value})`; 
+    if(item.esRecarga) {
+      let pid = document.getElementById('inputPlayerId').value.trim();
+      if(!pid) return alert("Falta ID"); item.titulo += ` [ID: ${pid}]`;
+    }
+    carrito.push(item); actualizarCarritoUI(); cerrarModal(); alert("Añadido al carrito"); 
+  };
+
+  function actualizarCarritoUI() { localStorage.setItem('sakura_carrito', JSON.stringify(carrito)); actualizarBadges(); }
+  function actualizarBadges() { 
+    document.getElementById('cartBadge').innerText = carrito.length; 
+    document.getElementById('favBadge').innerText = favoritos.length; 
+    document.querySelectorAll('.item-producto').forEach(card => {
+        let prodId = card.getAttribute('data-id'); let btnFav = card.querySelector('.btn-fav-card');
+        if (favoritos.some(f => f.id === prodId)) { btnFav.classList.add('favorito'); } else { btnFav.classList.remove('favorito'); }
+    });
+  }
+
+  window.toggleFavoritoPorId = function(id) {
+      let prod = productosNubeGlobal.find(p => p.id === id); if (!prod) return;
+      let idx = favoritos.findIndex(f => f.id === id);
+      if (idx >= 0) { favoritos.splice(idx, 1); } else { favoritos.push({ id: prod.id, titulo: prod.nombre, precio: prod.precio, img: (prod.fotos && prod.fotos.length > 0) ? prod.fotos[0] : 'logo.webp?v=2' }); }
+      localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos)); actualizarBadges();
+  };
+
+  window.abrirFavoritosModal = function() {
+      let cont = document.getElementById('listaFavoritosDetalle'); cont.innerHTML = "";
+      if (favoritos.length === 0) { cont.innerHTML = "<p style='color:var(--text-muted); text-align:center;'>Vacío</p>"; } 
+      else { favoritos.forEach(f => { cont.innerHTML += `<div class="cart-item-row" onclick="cerrarFavoritosModal(); abrirModalPorId('${f.id}')" style="cursor:pointer;"><img src="${f.img}" class="cart-item-img"><div class="cart-item-info"><strong>${sanitizarHTML(f.titulo)}</strong><br><span style="color:var(--secondary-color);">$${Number(f.precio).toFixed(2)}</span></div><button class="cart-item-del" onclick="event.stopPropagation(); toggleFavoritoPorId('${f.id}')"><i class="fas fa-trash"></i></button></div>`; }); }
+      document.getElementById('modalFavoritos').style.display = 'flex';
+  };
+  window.cerrarFavoritosModal = function() { document.getElementById('modalFavoritos').style.display = 'none'; };
+
+  window.abrirCarritoModal = function() {
+    let cont = document.getElementById('listaCarritoDetalle'); cont.innerHTML = "";
+    if (carrito.length === 0) { cont.innerHTML = `<p style='color:var(--text-muted); text-align:center;'>Vacío</p>`; document.getElementById('modalCarritoTotal').innerText = "$0.00"; } 
+    else {
+      let tot = 0;
+      carrito.forEach((item, idx) => {
+        tot += Number(item.precio);
+        cont.innerHTML += `<div class="cart-item-row"><img src="${item.img}" class="cart-item-img"><div class="cart-item-info"><strong>${sanitizarHTML(item.titulo)}</strong><br><span style="color:var(--secondary-color);">$${Number(item.precio).toFixed(2)}</span></div><button class="cart-item-del" onclick="removerDelCarrito(${idx})"><i class="fas fa-times"></i></button></div>`;
+      });
+      document.getElementById('modalCarritoTotal').innerText = `Total: $${tot.toFixed(2)}`;
+    }
+    document.getElementById('modalCarrito').style.display = 'flex';
+  };
+  window.cerrarCarritoModal = function() { document.getElementById('modalCarrito').style.display = 'none'; };
+  window.removerDelCarrito = function(index) { carrito.splice(index, 1); actualizarCarritoUI(); window.abrirCarritoModal(); };
+
+  window.enviarPedidoWhatsApp = function() {
+    if(carrito.length === 0) return alert("Carrito vacío");
+    let n = document.getElementById('cartClienteNombre').value.trim(); let t = document.getElementById('cartClienteTelefono').value.trim();
+    if(!n || !t) return alert("Llena tus datos para registrar la orden.");
+    let dir = document.getElementById('inputDireccionEnvio').value.trim();
+    
+    let msg = `Hola, mi pedido: ${n}\nContacto:${t}\n\n`;
+    carrito.forEach(i => msg += `- ${i.titulo} ($${Number(i.precio).toFixed(2)})\n`);
+    msg += `\nDestino: ${dir || 'Digital'}`;
+    
+    window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msg), '_blank');
+  };
+
+  function sanitizarHTML(str) { if (!str) return ''; return String(str).replace(/[&<>"']/g, function(m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]; }); }
+
+  window.abrirMenuOpciones = function() { document.getElementById('modalOpcionesMenu').style.display = 'flex'; };
+  window.cerrarMenuOpciones = function() { document.getElementById('modalOpcionesMenu').style.display = 'none'; };
+  window.abrirCloudSaveModal = function() { document.getElementById('modalCloudSave').style.display = 'flex'; };
+  window.cerrarCloudSaveModal = function() { document.getElementById('modalCloudSave').style.display = 'none'; };
+  window.abrirRastreoModal = function() { document.getElementById('modalRastreo').style.display = 'flex'; };
+  window.cerrarRastreoModal = function() { document.getElementById('modalRastreo').style.display = 'none'; };
+  window.abrirCofreModal = function() { document.getElementById('modalCofreDiario').style.display = 'flex'; };
+  window.cerrarCofreModal = function() { document.getElementById('modalCofreDiario').style.display = 'none'; };
+  window.abrirTemasModal = function() { document.getElementById('modalTemas').style.display = 'flex'; };
+  window.cerrarTemasModal = function() { document.getElementById('modalTemas').style.display = 'none'; };
+  window.abrirFaqModal = function() { document.getElementById('modalFaq').style.display = 'flex'; };
+  window.cerrarFaqModal = function() { document.getElementById('modalFaq').style.display = 'none'; };
+  
+  window.cambiarTema = function(tema) { document.body.className = ''; if(tema) document.body.classList.add(tema); window.cerrarTemasModal(); };
+  window.abrirChatGlobalWhatsApp = function() { window.open("https://wa.me/" + ajustesWebGlobal.whatsapp, '_blank'); window.cerrarMenuOpciones(); };
+  window.abrirSugerenciaModal = function() { let n = prompt("GamerTag:"); if(!n) return; let d = prompt("¿Qué encargas?"); if(!d) return; window.open("https://wa.me/" + ajustesWebGlobal.whatsapp + "?text=" + encodeURIComponent(`Hola Sakura, soy ${n}. Encargo: ${d}`), '_blank'); };
+  
+  window.abrirCofreDiario = function() {
+    let ultimo = localStorage.getItem('sakura_ultimo_cofre'); let hoy = new Date().toDateString();
+    if(ultimo === hoy) return alert("Vuelve mañana.");
+    window.ganarXP(50);
+    gamerProfile.tokens = (gamerProfile.tokens || 0) + (ajustesWebGlobal.tokensCofre || 15); 
+    localStorage.setItem('sakura_ultimo_cofre', hoy); 
+    document.getElementById('cofreResultado').innerText = `¡Reclamado!`;
+    window.guardarProgresoNube();
+  };
+
+  window.buscarPedido = async function() {
+      let tlf = document.getElementById('inputRastreoTlf').value.trim();
+      if(!tlf) return alert("Número inválido.");
+      let cont = document.getElementById('resultadoRastreo'); cont.innerHTML = "Buscando...";
+      try {
+          const q = query(collection(db, "pedidos"), where("telefono", "==", tlf)); const snap = await getDocs(q);
+          if(snap.empty) { cont.innerHTML = "No se encontraron pedidos."; return; }
+          let pedidos = []; snap.forEach(d => pedidos.push(d.data())); pedidos.sort((a,b) => b.timestamp - a.timestamp); let p = pedidos[0]; 
+          cont.innerHTML = `Última orden: ${p.estadoPedido} ($${p.totalUsd})`;
+      } catch(error) { cont.innerHTML = "Error de red."; }
+  };
+
+  // ================= SISTEMA DE RESEÑAS =================
+  window.cargarReviewsNube = async function() {
+    try {
+      const q = query(collection(db, "reviews"), orderBy("timestamp", "desc")); const querySnapshot = await getDocs(q);
+      let c = document.getElementById('contenedorReviews'); if(!c) return; c.innerHTML = "";
+      if (querySnapshot.empty) { c.innerHTML = "<p style='color:var(--text-muted);'>Aún no hay reseñas registradas.</p>"; return; }
+      querySnapshot.forEach((docSnap) => {
+        let r = docSnap.data();
+        c.innerHTML += `<div class="review-card"><div style="font-weight:700; color:#fff; margin-bottom:2px;">${sanitizarHTML(r.nombre)}</div><div style="color:#ffcc00; font-size:0.85em; margin-bottom:4px;">${sanitizarHTML(r.estrellas)}</div><div style="color:var(--text-muted); font-size:0.9em;">${sanitizarHTML(r.texto)}</div></div>`;
+      });
+    } catch (e) {}
+  };
+  window.agregarReview = async function() {
+    let n = document.getElementById('revNombre').value.trim(); let e = document.getElementById('revEstrellas').value; let t = document.getElementById('revTexto').value.trim();
+    if(!n || !t) return alert("Por favor completa tu nombre y comentario.");
+    try {
+      await addDoc(collection(db, "reviews"), { nombre: n, estrellas: e, texto: t, timestamp: Date.now() });
+      document.getElementById('revNombre').value = ""; document.getElementById('revTexto').value = ""; 
+      await window.cargarReviewsNube(); alert("Opinión registrada correctamente.");
+    } catch(err) { alert("Error al guardar la reseña."); }
+  };
+
+  // ================= FUNCIONES DEL RPG V2 =================
+  let umbralesRangosNube = { genin: 0, chunin: 300, jonin: 600, hokage: 1000 };
+  window.cargarUmbralesRangosNube = async function() { try { const docRef = doc(db, "configuracion", "rangos_ninja"); const docSnap = await getDoc(docRef); if (docSnap.exists()) umbralesRangosNube = docSnap.data(); } catch(e) {} }
+
+  window.guardarProgresoNube = async function() { 
+    localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile)); 
+    actualizarUiPerfil();
+    if(currentUserUid) { try { await setDoc(doc(db, "jugadores_cloud", currentUserUid), { profile: gamerProfile, updatedAt: Date.now() }, { merge: true }); } catch(e) {} }
+  };
+
+  window.obtenerIconoRPG = function(nombre, tipo) {
+    let n = nombre.toLowerCase();
+    if (tipo === 'material') {
+      if (n.includes("mineral") || n.includes("piedra") || n.includes("roca")) return "🪨";
+      if (n.includes("cristal") || n.includes("diamante")) return "💎";
+      if (n.includes("cuero") || n.includes("piel")) return "📜";
+      if (n.includes("hueso")) return "🦴";
+      if (n.includes("madera") || n.includes("rama")) return "🪵";
+      if (n.includes("acero") || n.includes("hierro")) return "⛓️";
+      return "✨";
+    }
+    if (n.includes("espada") || n.includes("excalibur") || n.includes("katana") || n.includes("sable")) return "⚔️";
+    if (n.includes("daga") || n.includes("cuchillo") || n.includes("kunai")) return "🗡️";
+    if (n.includes("arco") || n.includes("ballesta")) return "🏹";
+    if (n.includes("báculo") || n.includes("vara") || n.includes("cetro")) return "🪄";
+    if (n.includes("grimorio") || n.includes("libro")) return "📖";
+    if (n.includes("escudo")) return "🛡️";
+    if (n.includes("armadura") || n.includes("pechera") || n.includes("cota")) return "🦺";
+    if (n.includes("botas") || n.includes("zapatos")) return "🥾";
+    if (n.includes("guadaña")) return "💀";
+    if (n.includes("hacha")) return "🪓";
+    return "🗡️"; 
+  };
+
+  window.verificarProfesion = function() {
+    if (!gamerProfile.profesion || gamerProfile.profesion === "") {
+      let eleccion = prompt(`¡Elige tu camino!\n1. Guerrero (Mucha Defensa)\n2. Cazador (Balanceado)\n3. Hechicero (Mucho Ataque)`);
+      if (eleccion === "1") { gamerProfile.profesion = "Guerrero"; gamerProfile.stats = { hp: 150, atk: 8, def: 15 }; } 
+      else if (eleccion === "2") { gamerProfile.profesion = "Cazador"; gamerProfile.stats = { hp: 100, atk: 15, def: 8 }; } 
+      else if (eleccion === "3") { gamerProfile.profesion = "Hechicero"; gamerProfile.stats = { hp: 80, atk: 25, def: 5 }; } 
+      else { return window.verificarProfesion(); }
+      window.guardarProgresoNube();
+      alert(`¡Genial! Eres un ${gamerProfile.profesion}.`);
+    }
+  };
+
+  function actualizarUiPerfil() {
+    document.getElementById('inputGamerTag').value = gamerProfile.tag;
+    document.getElementById('lblRango').innerText = gamerProfile.rango;
+    document.getElementById('lblXp').innerText = gamerProfile.xp;
+    document.getElementById('lblTokens').innerHTML = `<i class="fas fa-coins"></i> ${gamerProfile.tokens}`;
+    
+    let extraAtk = 0; let extraDef = 0;
+    if (gamerProfile.equipo.armaId && gamerProfile.inventario) {
+      let item = gamerProfile.inventario.find(i => i.uid_inventario === gamerProfile.equipo.armaId);
+      if (item) { extraAtk = item.atk; extraDef = item.def; }
+    }
+
+    document.getElementById('lblProfesion').innerText = gamerProfile.profesion || "Ninguna";
+    document.getElementById('lblHp').innerText = gamerProfile.stats.hp;
+    document.getElementById('lblAtk').innerText = `${gamerProfile.stats.atk} (+${extraAtk})`;
+    document.getElementById('lblDef').innerText = `${gamerProfile.stats.def} (+${extraDef})`;
+
+    renderizarInventario();
+  }
+
+  function renderizarInventario() {
+    let cont = document.getElementById('contenedorInventario'); cont.innerHTML = "";
+    if(!gamerProfile.inventario) gamerProfile.inventario = [];
+    let cantMateriales = gamerProfile.inventario.filter(i => i.tipo === 'material').length;
+    let lblMat = document.getElementById('lblTotalMateriales');
+    if(lblMat) lblMat.innerText = cantMateriales;
+
+    if (gamerProfile.inventario.length === 0) {
+      cont.innerHTML = `<div style="grid-column: 1/-1; color: var(--text-muted); font-size: 0.85em;">Mochila vacía. Ve a minar o a las mazmorras.</div>`;
+      return;
+    }
+
+    gamerProfile.inventario.forEach((item) => {
+      let isEquipped = gamerProfile.equipo.armaId === item.uid_inventario; 
+      let cl = isEquipped ? 'rpg-item-card equipped' : 'rpg-item-card';
+      let icono = window.obtenerIconoRPG(item.nombre, item.tipo); 
+      let accionClick = item.tipo === 'arma' ? `equiparItem('${item.uid_inventario}')` : ``;
+      let estiloCursor = item.tipo === 'arma' ? 'cursor: pointer;' : 'cursor: default; opacity: 0.8;';
+      let infoExtra = item.tipo === 'arma' ? `ATK +${item.atk} | DEF +${item.def}<br><div style="font-size: 0.8em; margin-top: 5px; color: ${isEquipped ? '#25d366' : '#888'};">${isEquipped ? 'EQUIPADO' : 'Click para equipar'}</div>` : `<span style="color:#b000ff">Material</span>`;
+      cont.innerHTML += `<div class="${cl}" style="${estiloCursor}" onclick="${accionClick}"><div class="rpg-item-icon">${icono}</div><div class="rpg-item-name rareza-${item.rareza}">${sanitizarHTML(item.nombre)}</div><div class="rpg-item-stats">${infoExtra}</div></div>`;
+    });
+  }
+
+  window.equiparItem = function(uid_inventario) {
+    if (gamerProfile.equipo.armaId === uid_inventario) { gamerProfile.equipo.armaId = null; } 
+    else { gamerProfile.equipo.armaId = uid_inventario; }
+    window.guardarProgresoNube();
+  };
+
+  window.abrirGremioModal = function() { window.verificarProfesion(); document.getElementById('modalGremio').style.display = 'flex'; };
+  window.cerrarGremioModal = function() { document.getElementById('modalGremio').style.display = 'none'; };
+  window.abrirGamerProfileModal = function() { actualizarUiPerfil(); document.getElementById('modalGamerProfile').style.display = 'flex'; };
+  window.cerrarGamerProfileModal = function() { document.getElementById('modalGamerProfile').style.display = 'none'; };
+  window.guardarGamerTag = function() { gamerProfile.tag = document.getElementById('inputGamerTag').value.trim(); window.guardarProgresoNube(); alert("Guardado"); };
+
+  // FRAGUA EN VIVO
+  window.abrirFraguaModal = function() { 
+    window.verificarProfesion();
+    let cantMateriales = gamerProfile.inventario.filter(i => i.tipo === 'material').length;
+    document.getElementById('fraguaMateriales').innerText = cantMateriales;
+    document.getElementById('fraguaTokens').innerText = gamerProfile.tokens || 0;
+    
+    let contRecetas = document.getElementById('listaRecetasFragua'); contRecetas.innerHTML = "";
+    let armasDisponibles = rpgObjetosGlobal.filter(obj => obj.tipo === 'arma');
+    
+    if (armasDisponibles.length === 0) {
+      contRecetas.innerHTML = `<p style="color:var(--text-muted); font-size:0.9em;">El Admin aún no ha forjado recetas en el servidor.</p>`;
+    } else {
+      armasDisponibles.forEach(arma => {
+        let costoMat = 1; let costoTok = 5;
+        if(arma.rareza === 'R') { costoMat = 3; costoTok = 10; }
+        if(arma.rareza === 'SR') { costoMat = 6; costoTok = 25; }
+        if(arma.rareza === 'SSR') { costoMat = 12; costoTok = 60; }
+
+        let puedeForjar = (cantMateriales >= costoMat && (gamerProfile.tokens || 0) >= costoTok);
+        let iconoDinamico = window.obtenerIconoRPG(arma.nombre, arma.tipo);
+
+        contRecetas.innerHTML += `
+          <div style="background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 12px; text-align: left; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div class="rpg-item-name rareza-${arma.rareza}">${iconoDinamico} ${sanitizarHTML(arma.nombre)}</div>
+              <div style="font-size: 0.75em; color: var(--text-muted); margin-bottom: 6px;">ATK +${arma.atk} | DEF +${arma.def}</div>
+              <div style="font-size: 0.8em; font-weight: bold;">
+                <span style="color: ${cantMateriales >= costoMat ? '#00e5ff' : '#ff3366'};"><i class="fas fa-gem"></i> ${costoMat}</span> | 
+                <span style="color: ${(gamerProfile.tokens || 0) >= costoTok ? '#ffaa00' : '#ff3366'};"><i class="fas fa-coins"></i> ${costoTok}</span>
+              </div>
+            </div>
+            <button class="btn-comprar" style="width: auto; padding: 8px 15px; margin: 0; background: ${puedeForjar ? '#ff5500' : 'rgba(255,255,255,0.1)'}; color: #fff;" onclick="forjarObjeto('${arma.id}', ${costoMat}, ${costoTok})" ${!puedeForjar ? 'disabled' : ''}>
+              <i class="fas fa-hammer"></i>
+            </button>
+          </div>`;
+      });
+    }
+    document.getElementById('modalFragua').style.display = 'flex'; 
+  };
+  window.cerrarFraguaModal = function() { document.getElementById('modalFragua').style.display = 'none'; };
+
+  window.forjarObjeto = function(idArma, costoMat, costoTok) {
+    let cantMateriales = gamerProfile.inventario.filter(i => i.tipo === 'material').length;
+    if(cantMateriales < costoMat || (gamerProfile.tokens || 0) < costoTok) return alert("Recursos insuficientes.");
+    let armaData = rpgObjetosGlobal.find(a => a.id === idArma); if(!armaData) return;
+    
+    gamerProfile.tokens -= costoTok;
+    let borrados = 0;
+    gamerProfile.inventario = gamerProfile.inventario.filter(item => { if(item.tipo === 'material' && borrados < costoMat) { borrados++; return false; } return true; });
+    
+    gamerProfile.inventario.push({ ...armaData, uid_inventario: Date.now().toString() });
+    window.guardarProgresoNube(); alert(`¡Has forjado: ${armaData.nombre}!`); window.abrirFraguaModal();
+  };
+
+  window.accionRPG = function(tipo) {
+    let ahora = Date.now();
+    let cooldownTime = tipo === 'cazar' ? (3 * 60 * 1000) : (10 * 60 * 1000); 
+    let keyCooldown = 'sakura_cooldown_' + tipo; let ultimoUso = localStorage.getItem(keyCooldown) || 0;
+
+    if (ahora - ultimoUso < cooldownTime) {
+      let faltanSegundos = Math.ceil((cooldownTime - (ahora - ultimoUso)) / 1000); let faltanMinutos = Math.floor(faltanSegundos / 60); let seg = faltanSegundos % 60;
+      document.getElementById('rpgResultado').innerHTML = `<span style="color:#ff3366;"><i class="fas fa-hourglass-half"></i> Descansa. Vuelve en ${faltanMinutos}m y ${seg}s.</span>`;
+      return;
+    }
+
+    let rng = Math.floor(Math.random() * 100); let msj = ""; let xpG = 0; let tokG = 0;
+    if (tipo === 'cazar') {
+      if (rng < 30) { msj = "No encontraste monstruos."; xpG = 5; } else if (rng < 85) { msj = "Cazaste un Goblin."; xpG = 15; tokG = 2; } else { msj = "¡Cazaste un Lobo Huargo!"; xpG = 40; tokG = 10; }
+    } else if (tipo === 'minar') {
+      let materialesDB = rpgObjetosGlobal.filter(obj => obj.tipo === 'material');
+      if(materialesDB.length > 0) {
+        let matGanado = materialesDB[Math.floor(Math.random() * materialesDB.length)];
+        gamerProfile.inventario.push({ ...matGanado, uid_inventario: Date.now().toString() + rng });
+        let iconoDinamico = window.obtenerIconoRPG(matGanado.nombre, matGanado.tipo);
+        msj = `¡Minaste: <strong>${iconoDinamico} ${sanitizarHTML(matGanado.nombre)}</strong>!`; xpG = 20; tokG = 2;
+      } else { msj = "Has extraído Mineral Básico."; xpG = 10; }
+    }
+    localStorage.setItem(keyCooldown, ahora);
+    gamerProfile.tokens += tokG; window.ganarXP(xpG); window.guardarProgresoNube();
+    document.getElementById('rpgResultado').innerHTML = `<span style="color:var(--secondary-color);">${msj}</span><br><span style="color:#25d366;">+${xpG} XP | +${tokG} Tokens</span>`;
+  };
+
+  window.entrarMazmorra = function(dificultad) {
+    let ahora = Date.now();
+    let cooldownTime = 3 * 60 * 1000; 
+    let keyCooldown = 'sakura_cooldown_mazmorra_' + dificultad; 
+    let ultimoUso = localStorage.getItem(keyCooldown) || 0;
+
+    if (ahora - ultimoUso < cooldownTime) {
+      let faltanSegundos = Math.ceil((cooldownTime - (ahora - ultimoUso)) / 1000); 
+      let faltanMinutos = Math.floor(faltanSegundos / 60); 
+      let seg = faltanSegundos % 60;
+      document.getElementById('rpgResultado').innerHTML = `<span style="color:#ff3366;"><i class="fas fa-hourglass-half"></i> El Jefe descansa. Vuelve en ${faltanMinutos}m y ${seg}s.</span>`;
+      return;
+    }
+
+    let extraAtk = 0; let extraDef = 0;
+    if (gamerProfile.equipo.armaId && gamerProfile.inventario) {
+      let item = gamerProfile.inventario.find(i => i.uid_inventario === gamerProfile.equipo.armaId);
+      if (item) { extraAtk = item.atk; extraDef = item.def; }
+    }
+    let poderTotal = gamerProfile.stats.atk + extraAtk + gamerProfile.stats.def + extraDef + (gamerProfile.xp / 10);
+    let poderJefe = 0; let nombreJefe = ""; let lootPool = [];
+    
+    let fallbackArmas = [ { id: "f_1", nombre: "Daga Oxidada", tipo: "arma", rareza: "N", atk: 5, def: 0 }, { id: "f_3", nombre: "Espada Larga", tipo: "arma", rareza: "R", atk: 15, def: 0 }, { id: "f_5", nombre: "Excalibur", tipo: "arma", rareza: "SSR", atk: 80, def: 20 } ];
+    let fallbackMateriales = [ { id: "m_1", nombre: "Esencia de Slime", tipo: "material", rareza: "N" } ];
+
+    let armasDB = rpgObjetosGlobal.filter(a => a.tipo === 'arma'); if (armasDB.length === 0) armasDB = fallbackArmas;
+    let matDB = rpgObjetosGlobal.filter(a => a.tipo === 'material'); if (matDB.length === 0) matDB = fallbackMateriales;
+
+    if (dificultad === 'facil') { poderJefe = 30; nombreJefe = "Rey Slime"; lootPool = armasDB.filter(a => a.rareza === 'N' || a.rareza === 'R'); }
+    if (dificultad === 'media') { poderJefe = 150; nombreJefe = "Vampiro Anciano"; lootPool = armasDB.filter(a => a.rareza === 'R' || a.rareza === 'SR'); }
+    if (dificultad === 'dificil') { poderJefe = 500; nombreJefe = "Dragón del Caos"; lootPool = armasDB.filter(a => a.rareza === 'SR' || a.rareza === 'SSR'); }
+
+    let log = document.getElementById('rpgResultado'); log.innerHTML = `<span style="color: #ffaa00;">Enfrentando a ${nombreJefe}...</span>`;
+    localStorage.setItem(keyCooldown, ahora);
+
+    setTimeout(() => {
+      if (poderTotal >= poderJefe) {
+        let premioTxt = "Oro y experiencia.";
+        let rngDrop = Math.random() * 100;
+        
+        if (rngDrop <= 35 && lootPool.length > 0) {
+            let itemDrop = lootPool[Math.floor(Math.random() * lootPool.length)];
+            gamerProfile.inventario.push({ ...itemDrop, uid_inventario: Date.now().toString() });
+            let iconA = window.obtenerIconoRPG(itemDrop.nombre, itemDrop.tipo);
+            premioTxt = `<span class="rareza-${itemDrop.rareza}">${iconA} ${sanitizarHTML(itemDrop.nombre)}</span>`;
+        } else if (matDB.length > 0) {
+            let matDrop = matDB[Math.floor(Math.random() * matDB.length)];
+            gamerProfile.inventario.push({ ...matDrop, uid_inventario: Date.now().toString() });
+            let iconM = window.obtenerIconoRPG(matDrop.nombre, matDrop.tipo);
+            premioTxt = `${iconM} ${sanitizarHTML(matDrop.nombre)} (Material)`;
+        }
+        
+        gamerProfile.tokens += Math.floor(poderJefe / 5); window.ganarXP(poderJefe); window.guardarProgresoNube();
+        log.innerHTML = `<span style="color: #25d366;">¡HAS DERROTADO A ${nombreJefe.toUpperCase()}!</span><br>Soltó: <strong>${premioTxt}</strong>`;
+      } else { log.innerHTML = `<span style="color: #ff3366;">${nombreJefe} te ha destrozado.</span><br><span style="font-size: 0.8em;">Tu Poder Total (${Math.floor(poderTotal)}) es muy bajo para el Poder del Jefe (${poderJefe}). ¡Forja mejor equipo!</span>`; }
+    }, 1500);
+  };
+
+  // 1. ARENA SOLITARIA
+  window.abrirArenaSoloModal = function() { 
+    document.getElementById('modalArenaSolo').style.display = 'flex'; 
+    document.getElementById('btnIniciarArenaSolo').disabled = false;
+    document.getElementById('logArenaSolo').innerHTML = "La arena está en silencio. ¿Te atreves a entrar?";
+  };
+  window.cerrarArenaSoloModal = function() { document.getElementById('modalArenaSolo').style.display = 'none'; };
+  
+  window.iniciarArenaSolo = function() {
+    let costo = 10;
+    if ((gamerProfile.tokens || 0) < costo) return alert("No tienes 10 Tokens.");
+    gamerProfile.tokens -= costo; window.guardarProgresoNube(); 
+    
+    document.getElementById('btnIniciarArenaSolo').disabled = true; 
+    let log = document.getElementById('logArenaSolo');
+    log.innerHTML = `<span style="color: #ffaa00;">${gamerProfile.tag} ha entrado a la Arena...</span><br><br>`;
+    
+    let enemigos = ["Bot_Ninja", "DarkSamurai", "Cazador_Novato", "Mago_Oscuro"];
+    let eventos = [" encontró una poción curativa.", " esquivó un ataque mortal.", " se escondió detrás de un árbol.", ` peleó cara a cara con ${enemigos[0]}.`, ` vio como ${enemigos[1]} eliminaba a ${enemigos[2]}.`];
+    let turnos = 0; let maxTurnos = 4;
+
+    let intervalo = setInterval(() => {
+      if (turnos < maxTurnos) {
+        let eventoAzar = eventos[Math.floor(Math.random() * eventos.length)];
+        log.innerHTML += `[Ronda ${turnos + 1}] <strong>${gamerProfile.tag}</strong>${eventoAzar}<br>`;
+        log.scrollTop = log.scrollHeight; turnos++;
+      } else {
+        clearInterval(intervalo); log.innerHTML += `<br><strong>¡EL CÍRCULO FINAL SE CIERRA!</strong><br>`;
+        setTimeout(() => {
+          if (Math.random() > 0.5) { 
+            let premio = Math.floor(Math.random() * 30) + 20; 
+            log.innerHTML += `<span style="color: #25d366;">¡HAS GANADO!</span><br>Recibes +${premio} Tokens y +50 XP.`;
+            gamerProfile.tokens += premio; window.ganarXP(50); window.guardarProgresoNube();
+          } else { log.innerHTML += `<span style="color: #ff3366;">Fuiste eliminado. Suerte la próxima vez.</span>`; }
+          log.scrollTop = log.scrollHeight; 
+          document.getElementById('btnIniciarArenaSolo').disabled = false; 
+        }, 1500);
+      }
+    }, 1500);
+  };
+
+  // 2. TORNEO BATTLE ROYALE
+  window.abrirTorneoBRModal = async function() { 
+    document.getElementById('modalTorneoBR').style.display = 'flex'; 
+    try {
+      onSnapshot(query(collection(db, "rumble_inscritos")), (snapshot) => {
+        let lbl = document.getElementById('lblInscritosTorneo'); if(lbl) lbl.innerText = snapshot.size;
+        let yaInscrito = false; snapshot.forEach(doc => { if(doc.data().tag === gamerProfile.tag) yaInscrito = true; });
+        let btn = document.getElementById('btnInscribirseTorneo');
+        if(btn) {
+            if(yaInscrito) { btn.disabled = true; btn.innerHTML = "<i class='fas fa-check'></i> Ya estás inscrito"; btn.style.background = "#25d366"; } 
+            else { btn.disabled = false; btn.innerHTML = "<i class='fas fa-pen-nib'></i> Inscribirse a la Batalla"; btn.style.background = "#b000ff"; }
+        }
+      });
+      const docSnap = await getDoc(doc(db, "rumble_historial", "ultimo_torneo")); 
+      if (docSnap.exists() && document.getElementById('logUltimoTorneo')) { document.getElementById('logUltimoTorneo').innerHTML = docSnap.data().logHTML; }
+    } catch(e) {}
+  };
+  window.cerrarTorneoBRModal = function() { document.getElementById('modalTorneoBR').style.display = 'none'; };
+  window.inscribirseTorneoBD = async function() {
+    let btn = document.getElementById('btnInscribirseTorneo'); btn.disabled = true; btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i>";
+    try { await setDoc(doc(db, "rumble_inscritos", gamerProfile.tag), { tag: gamerProfile.tag, fecha: Date.now() }); alert("¡Te has inscrito al Torneo!"); } 
+    catch(e) { alert("Error al inscribirse."); btn.disabled = false; btn.innerHTML = "<i class='fas fa-pen-nib'></i> Inscribirse a la Batalla"; }
+  };
+
+  function actualizarRangoSegunXP() {
+    let xp = gamerProfile.xp; let u = umbralesRangosNube; let max = 0; let min = 0; let nextRango = "";
+    if (xp >= (u.hokage ?? 1000)) { gamerProfile.rango = "Hokage"; max = xp; min = u.hokage ?? 1000; nextRango = "MAX"; }
+    else if (xp >= (u.jonin ?? 600)) { gamerProfile.rango = "Jōnin"; max = u.hokage ?? 1000; min = u.jonin ?? 600; nextRango = "Hokage"; }
+    else if (xp >= (u.chunin ?? 300)) { gamerProfile.rango = "Chūnin"; max = u.jonin ?? 600; min = u.chunin ?? 300; nextRango = "Jōnin"; }
+    else { gamerProfile.rango = "Genin"; max = u.chunin ?? 300; min = 0; nextRango = "Chūnin"; }
+
+    let pct = 100;
+    if(nextRango !== "MAX") { pct = ((xp - min) / (max - min)) * 100; let lblNext = document.getElementById('lblXpNext'); if(lblNext) lblNext.innerHTML = `Faltan <strong style="color:var(--secondary-color);">${max - xp} XP</strong> para ${nextRango}`; } 
+    else { let lblNext = document.getElementById('lblXpNext'); if(lblNext) lblNext.innerText = `¡Rango Máximo Alcanzado!`; }
+    let barra = document.getElementById('barXp'); if(barra) setTimeout(() => { barra.style.width = pct + "%"; }, 200);
+    
+    let lblXp = document.getElementById('lblXp'); if(lblXp) lblXp.innerText = gamerProfile.xp; 
+    let lblRango = document.getElementById('lblRango'); if(lblRango) lblRango.innerText = gamerProfile.rango;
+  }
+  window.ganarXP = function(cantidad) { gamerProfile.xp += cantidad; actualizarRangoSegunXP(); window.guardarProgresoNube(); };
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+  import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, setDoc, addDoc, where, onSnapshot } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+  const firebaseConfig = { apiKey: "AIzaSyDH1DZqaIi5sKRXspXDUWbMUZ4nr5JIy8Q", authDomain: "sakura-gameverse.firebaseapp.com", projectId: "sakura-gameverse", storageBucket: "sakura-gameverse.firebasestorage.app", messagingSenderId: "226328425516", appId: "1:226328425516:web:8dc11761639228c6120d89" };
+  const app = initializeApp(firebaseConfig); const db = getFirestore(app); const auth = getAuth(app);
+
+  let productosNubeGlobal = [];
+  let rpgObjetosGlobal = [];
+  let currentUserUid = null;
+  let filtroGlobal = { categoria: 'todos', coleccion: 'todos', estado: 'todos', busqueda: '' };
+  let limiteActual = 12;
+  let totalBanners = 0; let bannerInterval;
+
+  let carrito = JSON.parse(localStorage.getItem('sakura_carrito')) || [];
+  let favoritos = JSON.parse(localStorage.getItem('sakura_favoritos')) || [];
+  let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { tag: "GamerOtaku_VE", xp: 150, tokens: 0, rango: "Genin", waifus: [], profesion: "", stats: { hp: 100, atk: 10, def: 5 }, inventario: [], equipo: { armaId: null } };
+  if(gamerProfile.profesion === undefined) { gamerProfile.profesion = ""; gamerProfile.stats = { hp: 100, atk: 10, def: 5 }; gamerProfile.inventario = []; gamerProfile.equipo = { armaId: null }; }
+
+  window.addEventListener('DOMContentLoaded', async () => {
+    // 1. Cargar Ajustes Web
+    try {
+      const snap = await getDoc(doc(db, "configuracion", "ajustes_web"));
+      if (snap.exists()) {
+        let d = snap.data();
+        if(d.ticker) document.getElementById('ajustesTickerObj').innerText = d.ticker;
+        if(d.heroTitle) document.getElementById('ajustesHeroTitleObj').innerText = d.heroTitle;
+        if(d.heroDesc) document.getElementById('ajustesHeroDescObj').innerText = d.heroDesc;
+      }
+    } catch(e){}
+
+    // 2. Cargar Productos de Tienda
+    try {
+      const q = query(collection(db, "productos"), orderBy("timestamp", "desc"));
+      const querySnapshot = await getDocs(q);
+      productosNubeGlobal = [];
+      querySnapshot.forEach((docSnap) => { productosNubeGlobal.push({ id: docSnap.id, ...docSnap.data() }); });
+      window.renderizarProductosEnTienda(productosNubeGlobal);
+    } catch(e){}
+
+    // 3. RECUPERADOS: Banners y Categorías Visuales
+    cargarBannersDeNube();
+    cargarConfigCategoriasPublico();
+
+    // 4. Reseñas y Rangos
+    try {
+      window.cargarReviewsNube();
+      window.cargarUmbralesRangosNube().then(() => { actualizarRangoSegunXP(); });
+    } catch(e){}
+
+    // 5. CONEXIÓN EN VIVO AL RPG
+    onSnapshot(query(collection(db, "rpg_objetos")), (snapsObj) => {
+      rpgObjetosGlobal = [];
+      snapsObj.forEach(d => {
+        let obj = d.data();
+        rpgObjetosGlobal.push({ id: d.id, nombre: obj.nombre, tipo: obj.tipo || 'arma', rareza: obj.rareza || 'N', atk: obj.stats?.ataque || obj.stats?.atk || 0, def: obj.stats?.defensa || obj.stats?.def || 0 });
+      });
+    });
+
+    actualizarBadges();
+    actualizarUiPerfil();
+  });
+
+  // ================= RECUPERADOS: BANNERS Y CATEGORÍAS =================
+  async function cargarBannersDeNube() {
+    try {
+      const q = query(collection(db, "banners"), orderBy("timestamp", "desc"));
+      const querySnapshot = await getDocs(q);
+      const container = document.getElementById('bannerSliderContainer');
+      let bannersValidos = [];
+      querySnapshot.forEach((docSnap) => { let b = docSnap.data(); if (b?.imgUrl) bannersValidos.push(b.imgUrl); });
+      if (bannersValidos.length === 0) { container.style.display = 'none'; return; }
+      container.style.display = 'block';
+      let htmlImgs = ''; let htmlDots = '<div class="banner-dots">'; 
+      bannersValidos.forEach((url, index) => {
+        htmlImgs += `<img src="${url}" class="banner-slide ${index === 0 ? 'active' : ''}" data-index="${index}" loading="lazy">`;
+        htmlDots += `<div class="banner-dot ${index === 0 ? 'active' : ''}" onclick="cambiarBannerManual(${index})"></div>`;
+      });
+      htmlDots += '</div>'; container.innerHTML = htmlImgs + htmlDots; iniciarAutoSliderBanners(bannersValidos.length);
+    } catch (e) {}
+  }
+
+  function iniciarAutoSliderBanners(total) { totalBanners = total; if(total <= 1) return; bannerInterval = setInterval(() => window.rotarBanner(1), 5000); }
+  
+  window.rotarBanner = function(direccion) {
+    if(totalBanners <= 1) return; let slides = document.querySelectorAll('.banner-slide'); let dots = document.querySelectorAll('.banner-dot');
+    if(!slides.length) return;
+    let currentIdx = Array.from(slides).findIndex(s => s.classList.contains('active'));
+    if(currentIdx === -1) currentIdx = 0;
+    slides[currentIdx].classList.remove('active'); dots[currentIdx].classList.remove('active');
+    let nextIdx = currentIdx + direccion;
+    if(nextIdx >= totalBanners) nextIdx = 0; if(nextIdx < 0) nextIdx = totalBanners - 1;
+    slides[nextIdx].classList.add('active'); dots[nextIdx].classList.add('active');
+  };
+
+  async function cargarConfigCategoriasPublico() {
+    try {
+      const q = query(collection(db, "configuracion"), orderBy("timestamp", "desc"));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((docSnap) => {
+        let conf = docSnap.data();
+        if(conf?.tipo === 'categoria_foto') {
+          let catImgEl = document.getElementById(`img-cat-${conf.categoriaId}`);
+          if(catImgEl && conf.imgUrl) catImgEl.src = conf.imgUrl;
+          let catTitleEl = document.getElementById(`title-cat-${conf.categoriaId}`);
+          if(catTitleEl && conf.nombrePersonalizado) catTitleEl.innerText = conf.nombrePersonalizado;
+        }
+      });
+    } catch (e) {}
+  }
+
+  // ================= FUNCIONES DE LA TIENDA =================
+  window.renderizarProductosEnTienda = function(lista) {
+    let contenedor = document.getElementById('catalogoNube'); if (!contenedor) return; contenedor.innerHTML = "";
+    let conteo = { recargas: 0, mangas: 0, ropa: 0, mandos: 0, perifericos: 0, figuras: 0, cartas: 0 };
+    
+    let prodsVisibles = lista.filter(p => !p.oculto);
+    let elTodos = document.getElementById('count-todos'); if(elTodos) elTodos.innerText = prodsVisibles.length;
+    if (prodsVisibles.length === 0) { contenedor.innerHTML = "<p style='color: var(--text-muted); text-align: center; grid-column: 1/-1;'>No hay productos.</p>"; return; }
+    
+    lista.forEach((prod) => {
+      if(prod.oculto) return; 
+      let foto = (prod.fotos && prod.fotos.length > 0) ? prod.fotos[0] : 'logo.webp?v=2';
+      let categoria = (prod.categoria || 'mangas').toLowerCase();
+      let esRecarga = categoria === 'recargas';
+      if (categoria === 'teclados' || categoria === 'audifonos' || categoria === 'perifericos') { conteo.perifericos++; } else if (conteo[categoria] !== undefined) { conteo[categoria]++; }
+
+      let isAgotado = (prod.stock !== undefined && prod.stock <= 0) && !esRecarga;
+      let badgeClase = isAgotado ? 'badge-agotado' : (prod.estado && prod.estado.includes("Encargo") ? 'badge-encargo' : (esRecarga ? 'badge-digital' : 'badge-stock'));
+      
+      contenedor.innerHTML += `
+        <div class="card item-producto ${isAgotado ? 'agotado' : ''}" data-id="${prod.id}" data-nombre="${sanitizarHTML(prod.nombre).toLowerCase()}" data-categoria="${categoria}" data-precio="${prod.precio}" onclick="abrirModalPorId('${prod.id}')">
+          <button class="btn-fav-card" onclick="event.stopPropagation(); toggleFavoritoPorId('${prod.id}')"><i class="fas fa-heart"></i></button>
+          <div class="badge-estado ${badgeClase}">${isAgotado ? 'AGOTADO' : (prod.estado || 'Stock')}</div>
+          <div class="card-img-container"><img src="${foto}" class="activa"></div>
+          <div class="card-title">${prod.nombre}</div> <div class="precio-container"><span class="card-price">$${Number(prod.precio).toFixed(2)}</span></div>
+        </div>`;
+    });
+
+    for(let cat in conteo) { let elem = document.getElementById('count-' + cat); if(elem) elem.innerText = conteo[cat]; }
+    window.aplicarFiltrosGlobales();
+  };
+
+  window.filtrarCategoria = function(cat) {
+    document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('activa'));
+    let cardVisual = document.querySelector(`.cat-card[onclick*="'${cat}'"]`); if(cardVisual) cardVisual.classList.add('activa');
+    filtroGlobal.categoria = cat; limiteActual = 12; window.aplicarFiltrosGlobales();
+  };
+  window.cambiarColeccionDropdown = function(col) { filtroGlobal.coleccion = col; limiteActual = 12; window.aplicarFiltrosGlobales(); };
+  window.filtrarEstadoDropdown = function(est) { filtroGlobal.estado = est; limiteActual = 12; window.aplicarFiltrosGlobales(); };
+  window.buscarProductos = function() { filtroGlobal.busqueda = document.getElementById('buscador').value.trim().toLowerCase(); limiteActual = 12; window.aplicarFiltrosGlobales(); };
+  
+  window.aplicarFiltrosGlobales = function() {
+    let productos = document.querySelectorAll('#catalogoNube .item-producto'); 
+    let mostrados = 0; let coincidencias = 0;
+    productos.forEach(card => {
+      let cat = (card.getAttribute('data-categoria') || '').toLowerCase(); 
+      let nom = card.getAttribute('data-nombre') || '';
+      let cumpleCat = (filtroGlobal.categoria === 'todos') ? true : (filtroGlobal.categoria === 'perifericos' ? (cat === 'perifericos' || cat === 'teclados' || cat === 'audifonos') : cat === filtroGlobal.categoria);
+      let cumpleBusqueda = (!filtroGlobal.busqueda || nom.includes(filtroGlobal.busqueda));
+
+      if (cumpleCat && cumpleBusqueda) {
+        coincidencias++; 
+        if (mostrados < limiteActual) { card.style.display = 'block'; mostrados++; } else { card.style.display = 'none'; }
+      } else { card.style.display = 'none'; }
+    });
+    let btnCargarMas = document.getElementById('btnCargarMas'); 
+    if (btnCargarMas) btnCargarMas.style.display = (coincidencias > limiteActual) ? 'block' : 'none';
+  };
+
+  window.cargarMasProductos = function() { limiteActual += 12; window.aplicarFiltrosGlobales(); };
+
+  window.ordenarProductos = function() {
+    let orden = document.getElementById('selectOrden').value;
+    if(orden === 'menor') { productosNubeGlobal.sort((a,b) => parseFloat(a.precio) - parseFloat(b.precio)); } 
+    else if (orden === 'mayor') { productosNubeGlobal.sort((a,b) => parseFloat(b.precio) - parseFloat(a.precio)); } 
+    else { productosNubeGlobal.sort((a,b) => b.timestamp - a.timestamp); }
+    window.renderizarProductosEnTienda(productosNubeGlobal);
+  };
+
+  window.productoActual = null;
+  window.abrirModalPorId = function(prodId) {
+    const prod = productosNubeGlobal.find(p => p.id === prodId); if (!prod) return;
+    const fotosArray = (prod.fotos && prod.fotos.length > 0) ? prod.fotos : ['logo.webp?v=2'];
+    window.productoActual = { id: prod.id, img: fotosArray[0], titulo: prod.nombre, precio: prod.precio, esRopa: prod?.categoria?.includes('ropa'), esRecarga: prod?.categoria === 'recargas' };
+    
+    document.getElementById('modalImg').src = fotosArray[0]; 
+    document.getElementById('modalTitulo').innerText = prod.nombre; 
+    document.getElementById('modalPrecio').innerText = "$" + Number(prod.precio).toFixed(2);
+    document.getElementById('tallasContainer').style.display = window.productoActual.esRopa ? 'block' : 'none';
+    document.getElementById('recargaContainer').style.display = window.productoActual.esRecarga ? 'block' : 'none';
+    
+    let minisCont = document.getElementById('modalContainerMinis');
+    if(fotosArray.length > 1) {
+        let htmlMinis = ''; fotosArray.forEach((foto, i) => { htmlMinis += `<img src="${foto}" class="modal-mini-img ${i===0?'activo':''}" onclick="cambiarImagenModal(this, '${foto}')">`; });
+        minisCont.innerHTML = htmlMinis;
+    } else { minisCont.innerHTML = ''; }
+    
+    document.getElementById('miModal').style.display = 'flex';
+  };
+  
+  window.cambiarImagenModal = function(elemento, url) {
+    document.getElementById('modalImg').src = url; window.productoActual.img = url; 
+    document.querySelectorAll('.modal-mini-img').forEach(img => img.classList.remove('activo')); elemento.classList.add('activo');
+  };
+
+  window.cerrarModal = function() { document.getElementById('miModal').style.display = 'none'; };
+  window.agregarAlCarrito = function() { 
+    let item = { ...window.productoActual };
+    if(item.esRopa) item.titulo += ` (Talla: ${document.getElementById('selectTalla').value})`; 
+    if(item.esRecarga) {
+      let pid = document.getElementById('inputPlayerId').value.trim();
+      if(!pid) return alert("Falta ID"); item.titulo += ` [ID: ${pid}]`;
+    }
+    carrito.push(item); actualizarCarritoUI(); cerrarModal(); alert("Añadido al carrito"); 
+  };
+
+  function actualizarCarritoUI() { localStorage.setItem('sakura_carrito', JSON.stringify(carrito)); actualizarBadges(); }
+  function actualizarBadges() { 
+    document.getElementById('cartBadge').innerText = carrito.length; 
+    document.getElementById('favBadge').innerText = favoritos.length; 
+    document.querySelectorAll('.item-producto').forEach(card => {
+        let prodId = card.getAttribute('data-id'); let btnFav = card.querySelector('.btn-fav-card');
+        if (favoritos.some(f => f.id === prodId)) { btnFav.classList.add('favorito'); } else { btnFav.classList.remove('favorito'); }
+    });
+  }
+
+  window.toggleFavoritoPorId = function(id) {
+      let prod = productosNubeGlobal.find(p => p.id === id); if (!prod) return;
+      let idx = favoritos.findIndex(f => f.id === id);
+      if (idx >= 0) { favoritos.splice(idx, 1); } else { favoritos.push({ id: prod.id, titulo: prod.nombre, precio: prod.precio, img: (prod.fotos && prod.fotos.length > 0) ? prod.fotos[0] : 'logo.webp?v=2' }); }
+      localStorage.setItem('sakura_favoritos', JSON.stringify(favoritos)); actualizarBadges();
+  };
+
+  window.abrirFavoritosModal = function() {
+      let cont = document.getElementById('listaFavoritosDetalle'); cont.innerHTML = "";
+      if (favoritos.length === 0) { cont.innerHTML = "<p style='color:var(--text-muted); text-align:center;'>Vacío</p>"; } 
+      else { favoritos.forEach(f => { cont.innerHTML += `<div class="cart-item-row" onclick="cerrarFavoritosModal(); abrirModalPorId('${f.id}')" style="cursor:pointer;"><img src="${f.img}" class="cart-item-img"><div class="cart-item-info"><strong>${sanitizarHTML(f.titulo)}</strong><br><span style="color:var(--secondary-color);">$${Number(f.precio).toFixed(2)}</span></div><button class="cart-item-del" onclick="event.stopPropagation(); toggleFavoritoPorId('${f.id}')"><i class="fas fa-trash"></i></button></div>`; }); }
+      document.getElementById('modalFavoritos').style.display = 'flex';
+  };
+  window.cerrarFavoritosModal = function() { document.getElementById('modalFavoritos').style.display = 'none'; };
+
+  window.abrirCarritoModal = function() {
+    let cont = document.getElementById('listaCarritoDetalle'); cont.innerHTML = "";
+    if (carrito.length === 0) { cont.innerHTML = `<p style='color:var(--text-muted); text-align:center;'>Vacío</p>`; document.getElementById('modalCarritoTotal').innerText = "$0.00"; } 
+    else {
+      let tot = 0;
+      carrito.forEach((item, idx) => {
+        tot += Number(item.precio);
+        cont.innerHTML += `<div class="cart-item-row"><img src="${item.img}" class="cart-item-img"><div class="cart-item-info"><strong>${sanitizarHTML(item.titulo)}</strong><br><span style="color:var(--secondary-color);">$${Number(item.precio).toFixed(2)}</span></div><button class="cart-item-del" onclick="removerDelCarrito(${idx})"><i class="fas fa-times"></i></button></div>`;
+      });
+      document.getElementById('modalCarritoTotal').innerText = `Total: $${tot.toFixed(2)}`;
+    }
+    document.getElementById('modalCarrito').style.display = 'flex';
+  };
+  window.cerrarCarritoModal = function() { document.getElementById('modalCarrito').style.display = 'none'; };
+  window.removerDelCarrito = function(index) { carrito.splice(index, 1); actualizarCarritoUI(); window.abrirCarritoModal(); };
+
+  window.enviarPedidoWhatsApp = function() {
+    if(carrito.length === 0) return alert("Carrito vacío");
+    let n = document.getElementById('cartClienteNombre').value.trim(); let t = document.getElementById('cartClienteTelefono').value.trim();
+    if(!n || !t) return alert("Llena tus datos para registrar la orden.");
+    let dir = document.getElementById('inputDireccionEnvio').value.trim();
+    
+    let msg = `Hola, mi pedido: ${n}\nContacto:${t}\n\n`;
+    carrito.forEach(i => msg += `- ${i.titulo} ($${Number(i.precio).toFixed(2)})\n`);
+    msg += `\nDestino: ${dir || 'Digital'}`;
+    
+    window.open("https://wa.me/584244970576?text=" + encodeURIComponent(msg), '_blank');
+  };
+
+  function sanitizarHTML(str) { if (!str) return ''; return String(str).replace(/[&<>"']/g, function(m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]; }); }
+
+  window.abrirMenuOpciones = function() { document.getElementById('modalOpcionesMenu').style.display = 'flex'; };
+  window.cerrarMenuOpciones = function() { document.getElementById('modalOpcionesMenu').style.display = 'none'; };
+  window.abrirCloudSaveModal = function() { document.getElementById('modalCloudSave').style.display = 'flex'; };
+  window.cerrarCloudSaveModal = function() { document.getElementById('modalCloudSave').style.display = 'none'; };
+  window.abrirRastreoModal = function() { document.getElementById('modalRastreo').style.display = 'flex'; };
+  window.cerrarRastreoModal = function() { document.getElementById('modalRastreo').style.display = 'none'; };
+  window.abrirCofreModal = function() { document.getElementById('modalCofreDiario').style.display = 'flex'; };
+  window.cerrarCofreModal = function() { document.getElementById('modalCofreDiario').style.display = 'none'; };
+  window.abrirTemasModal = function() { document.getElementById('modalTemas').style.display = 'flex'; };
+  window.cerrarTemasModal = function() { document.getElementById('modalTemas').style.display = 'none'; };
+  window.abrirFaqModal = function() { document.getElementById('modalFaq').style.display = 'flex'; };
+  window.cerrarFaqModal = function() { document.getElementById('modalFaq').style.display = 'none'; };
+  
+  window.cambiarTema = function(tema) { document.body.className = ''; if(tema) document.body.classList.add(tema); window.cerrarTemasModal(); };
+  window.abrirChatGlobalWhatsApp = function() { window.open("https://wa.me/" + ajustesWebGlobal.whatsapp, '_blank'); window.cerrarMenuOpciones(); };
+  window.abrirSugerenciaModal = function() { let n = prompt("GamerTag:"); if(!n) return; let d = prompt("¿Qué encargas?"); if(!d) return; window.open("https://wa.me/" + ajustesWebGlobal.whatsapp + "?text=" + encodeURIComponent(`Hola Sakura, soy ${n}. Encargo: ${d}`), '_blank'); };
+  
+  window.abrirCofreDiario = function() {
+    let ultimo = localStorage.getItem('sakura_ultimo_cofre'); let hoy = new Date().toDateString();
+    if(ultimo === hoy) return alert("Vuelve mañana.");
+    window.ganarXP(50);
+    gamerProfile.tokens = (gamerProfile.tokens || 0) + (ajustesWebGlobal.tokensCofre || 15); 
+    localStorage.setItem('sakura_ultimo_cofre', hoy); 
+    document.getElementById('cofreResultado').innerText = `¡Reclamado!`;
+    window.guardarProgresoNube();
+  };
+
+  window.buscarPedido = async function() {
+      let tlf = document.getElementById('inputRastreoTlf').value.trim();
+      if(!tlf) return alert("Número inválido.");
+      let cont = document.getElementById('resultadoRastreo'); cont.innerHTML = "Buscando...";
+      try {
+          const q = query(collection(db, "pedidos"), where("telefono", "==", tlf)); const snap = await getDocs(q);
+          if(snap.empty) { cont.innerHTML = "No se encontraron pedidos."; return; }
+          let pedidos = []; snap.forEach(d => pedidos.push(d.data())); pedidos.sort((a,b) => b.timestamp - a.timestamp); let p = pedidos[0]; 
+          cont.innerHTML = `Última orden: ${p.estadoPedido} ($${p.totalUsd})`;
+      } catch(error) { cont.innerHTML = "Error de red."; }
+  };
+
+  // ================= SISTEMA DE RESEÑAS =================
+  window.cargarReviewsNube = async function() {
+    try {
+      const q = query(collection(db, "reviews"), orderBy("timestamp", "desc")); const querySnapshot = await getDocs(q);
+      let c = document.getElementById('contenedorReviews'); if(!c) return; c.innerHTML = "";
+      if (querySnapshot.empty) { c.innerHTML = "<p style='color:var(--text-muted);'>Aún no hay reseñas registradas.</p>"; return; }
+      querySnapshot.forEach((docSnap) => {
+        let r = docSnap.data();
+        c.innerHTML += `<div class="review-card"><div style="font-weight:700; color:#fff; margin-bottom:2px;">${sanitizarHTML(r.nombre)}</div><div style="color:#ffcc00; font-size:0.85em; margin-bottom:4px;">${sanitizarHTML(r.estrellas)}</div><div style="color:var(--text-muted); font-size:0.9em;">${sanitizarHTML(r.texto)}</div></div>`;
+      });
+    } catch (e) {}
+  };
+  window.agregarReview = async function() {
+    let n = document.getElementById('revNombre').value.trim(); let e = document.getElementById('revEstrellas').value; let t = document.getElementById('revTexto').value.trim();
+    if(!n || !t) return alert("Por favor completa tu nombre y comentario.");
+    try {
+      await addDoc(collection(db, "reviews"), { nombre: n, estrellas: e, texto: t, timestamp: Date.now() });
+      document.getElementById('revNombre').value = ""; document.getElementById('revTexto').value = ""; 
+      await window.cargarReviewsNube(); alert("Opinión registrada correctamente.");
+    } catch(err) { alert("Error al guardar la reseña."); }
+  };
+
+  // ================= FUNCIONES DEL RPG V2 =================
+  let umbralesRangosNube = { genin: 0, chunin: 300, jonin: 600, hokage: 1000 };
+  window.cargarUmbralesRangosNube = async function() { try { const docRef = doc(db, "configuracion", "rangos_ninja"); const docSnap = await getDoc(docRef); if (docSnap.exists()) umbralesRangosNube = docSnap.data(); } catch(e) {} }
+
+  window.guardarProgresoNube = async function() { 
+    localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile)); 
+    actualizarUiPerfil();
+    if(currentUserUid) { try { await setDoc(doc(db, "jugadores_cloud", currentUserUid), { profile: gamerProfile, updatedAt: Date.now() }, { merge: true }); } catch(e) {} }
+  };
+
+  window.obtenerIconoRPG = function(nombre, tipo) {
+    let n = nombre.toLowerCase();
+    if (tipo === 'material') {
+      if (n.includes("mineral") || n.includes("piedra") || n.includes("roca")) return "🪨";
+      if (n.includes("cristal") || n.includes("diamante")) return "💎";
+      if (n.includes("cuero") || n.includes("piel")) return "📜";
+      if (n.includes("hueso")) return "🦴";
+      if (n.includes("madera") || n.includes("rama")) return "🪵";
+      if (n.includes("acero") || n.includes("hierro")) return "⛓️";
+      return "✨";
+    }
+    if (n.includes("espada") || n.includes("excalibur") || n.includes("katana") || n.includes("sable")) return "⚔️";
+    if (n.includes("daga") || n.includes("cuchillo") || n.includes("kunai")) return "🗡️";
+    if (n.includes("arco") || n.includes("ballesta")) return "🏹";
+    if (n.includes("báculo") || n.includes("vara") || n.includes("cetro")) return "🪄";
+    if (n.includes("grimorio") || n.includes("libro")) return "📖";
+    if (n.includes("escudo")) return "🛡️";
+    if (n.includes("armadura") || n.includes("pechera") || n.includes("cota")) return "🦺";
+    if (n.includes("botas") || n.includes("zapatos")) return "🥾";
+    if (n.includes("guadaña")) return "💀";
+    if (n.includes("hacha")) return "🪓";
+    return "🗡️"; 
+  };
+
+  window.verificarProfesion = function() {
+    if (!gamerProfile.profesion || gamerProfile.profesion === "") {
+      let eleccion = prompt(`¡Elige tu camino!\n1. Guerrero (Mucha Defensa)\n2. Cazador (Balanceado)\n3. Hechicero (Mucho Ataque)`);
+      if (eleccion === "1") { gamerProfile.profesion = "Guerrero"; gamerProfile.stats = { hp: 150, atk: 8, def: 15 }; } 
+      else if (eleccion === "2") { gamerProfile.profesion = "Cazador"; gamerProfile.stats = { hp: 100, atk: 15, def: 8 }; } 
+      else if (eleccion === "3") { gamerProfile.profesion = "Hechicero"; gamerProfile.stats = { hp: 80, atk: 25, def: 5 }; } 
+      else { return window.verificarProfesion(); }
+      window.guardarProgresoNube();
+      alert(`¡Genial! Eres un ${gamerProfile.profesion}.`);
+    }
+  };
+
+  function actualizarUiPerfil() {
+    document.getElementById('inputGamerTag').value = gamerProfile.tag;
+    document.getElementById('lblRango').innerText = gamerProfile.rango;
+    document.getElementById('lblXp').innerText = gamerProfile.xp;
+    document.getElementById('lblTokens').innerHTML = `<i class="fas fa-coins"></i> ${gamerProfile.tokens}`;
+    
+    let extraAtk = 0; let extraDef = 0;
+    if (gamerProfile.equipo.armaId && gamerProfile.inventario) {
+      let item = gamerProfile.inventario.find(i => i.uid_inventario === gamerProfile.equipo.armaId);
+      if (item) { extraAtk = item.atk; extraDef = item.def; }
+    }
+
+    document.getElementById('lblProfesion').innerText = gamerProfile.profesion || "Ninguna";
+    document.getElementById('lblHp').innerText = gamerProfile.stats.hp;
+    document.getElementById('lblAtk').innerText = `${gamerProfile.stats.atk} (+${extraAtk})`;
+    document.getElementById('lblDef').innerText = `${gamerProfile.stats.def} (+${extraDef})`;
+
+    renderizarInventario();
+  }
+
+  function renderizarInventario() {
+    let cont = document.getElementById('contenedorInventario'); cont.innerHTML = "";
+    if(!gamerProfile.inventario) gamerProfile.inventario = [];
+    let cantMateriales = gamerProfile.inventario.filter(i => i.tipo === 'material').length;
+    let lblMat = document.getElementById('lblTotalMateriales');
+    if(lblMat) lblMat.innerText = cantMateriales;
+
+    if (gamerProfile.inventario.length === 0) {
+      cont.innerHTML = `<div style="grid-column: 1/-1; color: var(--text-muted); font-size: 0.85em;">Mochila vacía. Ve a minar o a las mazmorras.</div>`;
+      return;
+    }
+
+    gamerProfile.inventario.forEach((item) => {
+      let isEquipped = gamerProfile.equipo.armaId === item.uid_inventario; 
+      let cl = isEquipped ? 'rpg-item-card equipped' : 'rpg-item-card';
+      let icono = window.obtenerIconoRPG(item.nombre, item.tipo); 
+      let accionClick = item.tipo === 'arma' ? `equiparItem('${item.uid_inventario}')` : ``;
+      let estiloCursor = item.tipo === 'arma' ? 'cursor: pointer;' : 'cursor: default; opacity: 0.8;';
+      let infoExtra = item.tipo === 'arma' ? `ATK +${item.atk} | DEF +${item.def}<br><div style="font-size: 0.8em; margin-top: 5px; color: ${isEquipped ? '#25d366' : '#888'};">${isEquipped ? 'EQUIPADO' : 'Click para equipar'}</div>` : `<span style="color:#b000ff">Material</span>`;
+      cont.innerHTML += `<div class="${cl}" style="${estiloCursor}" onclick="${accionClick}"><div class="rpg-item-icon">${icono}</div><div class="rpg-item-name rareza-${item.rareza}">${sanitizarHTML(item.nombre)}</div><div class="rpg-item-stats">${infoExtra}</div></div>`;
+    });
+  }
+
+  window.equiparItem = function(uid_inventario) {
+    if (gamerProfile.equipo.armaId === uid_inventario) { gamerProfile.equipo.armaId = null; } 
+    else { gamerProfile.equipo.armaId = uid_inventario; }
+    window.guardarProgresoNube();
+  };
+
+  window.abrirGremioModal = function() { window.verificarProfesion(); document.getElementById('modalGremio').style.display = 'flex'; };
+  window.cerrarGremioModal = function() { document.getElementById('modalGremio').style.display = 'none'; };
+  window.abrirGamerProfileModal = function() { actualizarUiPerfil(); document.getElementById('modalGamerProfile').style.display = 'flex'; };
+  window.cerrarGamerProfileModal = function() { document.getElementById('modalGamerProfile').style.display = 'none'; };
+  window.guardarGamerTag = function() { gamerProfile.tag = document.getElementById('inputGamerTag').value.trim(); window.guardarProgresoNube(); alert("Guardado"); };
+
+  // FRAGUA EN VIVO
+  window.abrirFraguaModal = function() { 
+    window.verificarProfesion();
+    let cantMateriales = gamerProfile.inventario.filter(i => i.tipo === 'material').length;
+    document.getElementById('fraguaMateriales').innerText = cantMateriales;
+    document.getElementById('fraguaTokens').innerText = gamerProfile.tokens || 0;
+    
+    let contRecetas = document.getElementById('listaRecetasFragua'); contRecetas.innerHTML = "";
+    let armasDisponibles = rpgObjetosGlobal.filter(obj => obj.tipo === 'arma');
+    
+    if (armasDisponibles.length === 0) {
+      contRecetas.innerHTML = `<p style="color:var(--text-muted); font-size:0.9em;">El Admin aún no ha forjado recetas en el servidor.</p>`;
+    } else {
+      armasDisponibles.forEach(arma => {
+        let costoMat = 1; let costoTok = 5;
+        if(arma.rareza === 'R') { costoMat = 3; costoTok = 10; }
+        if(arma.rareza === 'SR') { costoMat = 6; costoTok = 25; }
+        if(arma.rareza === 'SSR') { costoMat = 12; costoTok = 60; }
+
+        let puedeForjar = (cantMateriales >= costoMat && (gamerProfile.tokens || 0) >= costoTok);
+        let iconoDinamico = window.obtenerIconoRPG(arma.nombre, arma.tipo);
+
+        contRecetas.innerHTML += `
+          <div style="background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 12px; text-align: left; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div class="rpg-item-name rareza-${arma.rareza}">${iconoDinamico} ${sanitizarHTML(arma.nombre)}</div>
+              <div style="font-size: 0.75em; color: var(--text-muted); margin-bottom: 6px;">ATK +${arma.atk} | DEF +${arma.def}</div>
+              <div style="font-size: 0.8em; font-weight: bold;">
+                <span style="color: ${cantMateriales >= costoMat ? '#00e5ff' : '#ff3366'};"><i class="fas fa-gem"></i> ${costoMat}</span> | 
+                <span style="color: ${(gamerProfile.tokens || 0) >= costoTok ? '#ffaa00' : '#ff3366'};"><i class="fas fa-coins"></i> ${costoTok}</span>
+              </div>
+            </div>
+            <button class="btn-comprar" style="width: auto; padding: 8px 15px; margin: 0; background: ${puedeForjar ? '#ff5500' : 'rgba(255,255,255,0.1)'}; color: #fff;" onclick="forjarObjeto('${arma.id}', ${costoMat}, ${costoTok})" ${!puedeForjar ? 'disabled' : ''}>
+              <i class="fas fa-hammer"></i>
+            </button>
+          </div>`;
+      });
+    }
+    document.getElementById('modalFragua').style.display = 'flex'; 
+  };
+  window.cerrarFraguaModal = function() { document.getElementById('modalFragua').style.display = 'none'; };
+
+  window.forjarObjeto = function(idArma, costoMat, costoTok) {
+    let cantMateriales = gamerProfile.inventario.filter(i => i.tipo === 'material').length;
+    if(cantMateriales < costoMat || (gamerProfile.tokens || 0) < costoTok) return alert("Recursos insuficientes.");
+    let armaData = rpgObjetosGlobal.find(a => a.id === idArma); if(!armaData) return;
+    
+    gamerProfile.tokens -= costoTok;
+    let borrados = 0;
+    gamerProfile.inventario = gamerProfile.inventario.filter(item => { if(item.tipo === 'material' && borrados < costoMat) { borrados++; return false; } return true; });
+    
+    gamerProfile.inventario.push({ ...armaData, uid_inventario: Date.now().toString() });
+    window.guardarProgresoNube(); alert(`¡Has forjado: ${armaData.nombre}!`); window.abrirFraguaModal();
+  };
+
+  window.accionRPG = function(tipo) {
+    let ahora = Date.now();
+    let cooldownTime = tipo === 'cazar' ? (3 * 60 * 1000) : (10 * 60 * 1000); 
+    let keyCooldown = 'sakura_cooldown_' + tipo; let ultimoUso = localStorage.getItem(keyCooldown) || 0;
+
+    if (ahora - ultimoUso < cooldownTime) {
+      let faltanSegundos = Math.ceil((cooldownTime - (ahora - ultimoUso)) / 1000); let faltanMinutos = Math.floor(faltanSegundos / 60); let seg = faltanSegundos % 60;
+      document.getElementById('rpgResultado').innerHTML = `<span style="color:#ff3366;"><i class="fas fa-hourglass-half"></i> Descansa. Vuelve en ${faltanMinutos}m y ${seg}s.</span>`;
+      return;
+    }
+
+    let rng = Math.floor(Math.random() * 100); let msj = ""; let xpG = 0; let tokG = 0;
+    if (tipo === 'cazar') {
+      if (rng < 30) { msj = "No encontraste monstruos."; xpG = 5; } else if (rng < 85) { msj = "Cazaste un Goblin."; xpG = 15; tokG = 2; } else { msj = "¡Cazaste un Lobo Huargo!"; xpG = 40; tokG = 10; }
+    } else if (tipo === 'minar') {
+      let materialesDB = rpgObjetosGlobal.filter(obj => obj.tipo === 'material');
+      if(materialesDB.length > 0) {
+        let matGanado = materialesDB[Math.floor(Math.random() * materialesDB.length)];
+        gamerProfile.inventario.push({ ...matGanado, uid_inventario: Date.now().toString() + rng });
+        let iconoDinamico = window.obtenerIconoRPG(matGanado.nombre, matGanado.tipo);
+        msj = `¡Minaste: <strong>${iconoDinamico} ${sanitizarHTML(matGanado.nombre)}</strong>!`; xpG = 20; tokG = 2;
+      } else { msj = "Has extraído Mineral Básico."; xpG = 10; }
+    }
+    localStorage.setItem(keyCooldown, ahora);
+    gamerProfile.tokens += tokG; window.ganarXP(xpG); window.guardarProgresoNube();
+    document.getElementById('rpgResultado').innerHTML = `<span style="color:var(--secondary-color);">${msj}</span><br><span style="color:#25d366;">+${xpG} XP | +${tokG} Tokens</span>`;
+  };
+
+  window.entrarMazmorra = function(dificultad) {
+    let ahora = Date.now();
+    let cooldownTime = 3 * 60 * 1000; 
+    let keyCooldown = 'sakura_cooldown_mazmorra_' + dificultad; 
+    let ultimoUso = localStorage.getItem(keyCooldown) || 0;
+
+    if (ahora - ultimoUso < cooldownTime) {
+      let faltanSegundos = Math.ceil((cooldownTime - (ahora - ultimoUso)) / 1000); 
+      let faltanMinutos = Math.floor(faltanSegundos / 60); 
+      let seg = faltanSegundos % 60;
+      document.getElementById('rpgResultado').innerHTML = `<span style="color:#ff3366;"><i class="fas fa-hourglass-half"></i> El Jefe descansa. Vuelve en ${faltanMinutos}m y ${seg}s.</span>`;
+      return;
+    }
+
+    let extraAtk = 0; let extraDef = 0;
+    if (gamerProfile.equipo.armaId && gamerProfile.inventario) {
+      let item = gamerProfile.inventario.find(i => i.uid_inventario === gamerProfile.equipo.armaId);
+      if (item) { extraAtk = item.atk; extraDef = item.def; }
+    }
+    let poderTotal = gamerProfile.stats.atk + extraAtk + gamerProfile.stats.def + extraDef + (gamerProfile.xp / 10);
+    let poderJefe = 0; let nombreJefe = ""; let lootPool = [];
+    
+    let fallbackArmas = [ { id: "f_1", nombre: "Daga Oxidada", tipo: "arma", rareza: "N", atk: 5, def: 0 }, { id: "f_3", nombre: "Espada Larga", tipo: "arma", rareza: "R", atk: 15, def: 0 }, { id: "f_5", nombre: "Excalibur", tipo: "arma", rareza: "SSR", atk: 80, def: 20 } ];
+    let fallbackMateriales = [ { id: "m_1", nombre: "Esencia de Slime", tipo: "material", rareza: "N" } ];
+
+    let armasDB = rpgObjetosGlobal.filter(a => a.tipo === 'arma'); if (armasDB.length === 0) armasDB = fallbackArmas;
+    let matDB = rpgObjetosGlobal.filter(a => a.tipo === 'material'); if (matDB.length === 0) matDB = fallbackMateriales;
+
+    if (dificultad === 'facil') { poderJefe = 30; nombreJefe = "Rey Slime"; lootPool = armasDB.filter(a => a.rareza === 'N' || a.rareza === 'R'); }
+    if (dificultad === 'media') { poderJefe = 150; nombreJefe = "Vampiro Anciano"; lootPool = armasDB.filter(a => a.rareza === 'R' || a.rareza === 'SR'); }
+    if (dificultad === 'dificil') { poderJefe = 500; nombreJefe = "Dragón del Caos"; lootPool = armasDB.filter(a => a.rareza === 'SR' || a.rareza === 'SSR'); }
+
+    let log = document.getElementById('rpgResultado'); log.innerHTML = `<span style="color: #ffaa00;">Enfrentando a ${nombreJefe}...</span>`;
+    localStorage.setItem(keyCooldown, ahora);
+
+    setTimeout(() => {
+      if (poderTotal >= poderJefe) {
+        let premioTxt = "Oro y experiencia.";
+        let rngDrop = Math.random() * 100;
+        
+        if (rngDrop <= 35 && lootPool.length > 0) {
+            let itemDrop = lootPool[Math.floor(Math.random() * lootPool.length)];
+            gamerProfile.inventario.push({ ...itemDrop, uid_inventario: Date.now().toString() });
+            let iconA = window.obtenerIconoRPG(itemDrop.nombre, itemDrop.tipo);
+            premioTxt = `<span class="rareza-${itemDrop.rareza}">${iconA} ${sanitizarHTML(itemDrop.nombre)}</span>`;
+        } else if (matDB.length > 0) {
+            let matDrop = matDB[Math.floor(Math.random() * matDB.length)];
+            gamerProfile.inventario.push({ ...matDrop, uid_inventario: Date.now().toString() });
+            let iconM = window.obtenerIconoRPG(matDrop.nombre, matDrop.tipo);
+            premioTxt = `${iconM} ${sanitizarHTML(matDrop.nombre)} (Material)`;
+        }
+        
+        gamerProfile.tokens += Math.floor(poderJefe / 5); window.ganarXP(poderJefe); window.guardarProgresoNube();
+        log.innerHTML = `<span style="color: #25d366;">¡HAS DERROTADO A ${nombreJefe.toUpperCase()}!</span><br>Soltó: <strong>${premioTxt}</strong>`;
+      } else { log.innerHTML = `<span style="color: #ff3366;">${nombreJefe} te ha destrozado.</span><br><span style="font-size: 0.8em;">Tu Poder Total (${Math.floor(poderTotal)}) es muy bajo para el Poder del Jefe (${poderJefe}). ¡Forja mejor equipo!</span>`; }
+    }, 1500);
+  };
+
+  // 1. ARENA SOLITARIA
+  window.abrirArenaSoloModal = function() { 
+    document.getElementById('modalArenaSolo').style.display = 'flex'; 
+    document.getElementById('btnIniciarArenaSolo').disabled = false;
+    document.getElementById('logArenaSolo').innerHTML = "La arena está en silencio. ¿Te atreves a entrar?";
+  };
+  window.cerrarArenaSoloModal = function() { document.getElementById('modalArenaSolo').style.display = 'none'; };
+  
+  window.iniciarArenaSolo = function() {
+    let costo = 10;
+    if ((gamerProfile.tokens || 0) < costo) return alert("No tienes 10 Tokens.");
+    gamerProfile.tokens -= costo; window.guardarProgresoNube(); 
+    
+    document.getElementById('btnIniciarArenaSolo').disabled = true; 
+    let log = document.getElementById('logArenaSolo');
+    log.innerHTML = `<span style="color: #ffaa00;">${gamerProfile.tag} ha entrado a la Arena...</span><br><br>`;
+    
+    let enemigos = ["Bot_Ninja", "DarkSamurai", "Cazador_Novato", "Mago_Oscuro"];
+    let eventos = [" encontró una poción curativa.", " esquivó un ataque mortal.", " se escondió detrás de un árbol.", ` peleó cara a cara con ${enemigos[0]}.`, ` vio como ${enemigos[1]} eliminaba a ${enemigos[2]}.`];
+    let turnos = 0; let maxTurnos = 4;
+
+    let intervalo = setInterval(() => {
+      if (turnos < maxTurnos) {
+        let eventoAzar = eventos[Math.floor(Math.random() * eventos.length)];
+        log.innerHTML += `[Ronda ${turnos + 1}] <strong>${gamerProfile.tag}</strong>${eventoAzar}<br>`;
+        log.scrollTop = log.scrollHeight; turnos++;
+      } else {
+        clearInterval(intervalo); log.innerHTML += `<br><strong>¡EL CÍRCULO FINAL SE CIERRA!</strong><br>`;
+        setTimeout(() => {
+          if (Math.random() > 0.5) { 
+            let premio = Math.floor(Math.random() * 30) + 20; 
+            log.innerHTML += `<span style="color: #25d366;">¡HAS GANADO!</span><br>Recibes +${premio} Tokens y +50 XP.`;
+            gamerProfile.tokens += premio; window.ganarXP(50); window.guardarProgresoNube();
+          } else { log.innerHTML += `<span style="color: #ff3366;">Fuiste eliminado. Suerte la próxima vez.</span>`; }
+          log.scrollTop = log.scrollHeight; 
+          document.getElementById('btnIniciarArenaSolo').disabled = false; 
+        }, 1500);
+      }
+    }, 1500);
+  };
+
+  // 2. TORNEO BATTLE ROYALE
+  window.abrirTorneoBRModal = async function() { 
+    document.getElementById('modalTorneoBR').style.display = 'flex'; 
+    try {
+      onSnapshot(query(collection(db, "rumble_inscritos")), (snapshot) => {
+        let lbl = document.getElementById('lblInscritosTorneo'); if(lbl) lbl.innerText = snapshot.size;
+        let yaInscrito = false; snapshot.forEach(doc => { if(doc.data().tag === gamerProfile.tag) yaInscrito = true; });
+        let btn = document.getElementById('btnInscribirseTorneo');
+        if(btn) {
+            if(yaInscrito) { btn.disabled = true; btn.innerHTML = "<i class='fas fa-check'></i> Ya estás inscrito"; btn.style.background = "#25d366"; } 
+            else { btn.disabled = false; btn.innerHTML = "<i class='fas fa-pen-nib'></i> Inscribirse a la Batalla"; btn.style.background = "#b000ff"; }
+        }
+      });
+      const docSnap = await getDoc(doc(db, "rumble_historial", "ultimo_torneo")); 
+      if (docSnap.exists() && document.getElementById('logUltimoTorneo')) { document.getElementById('logUltimoTorneo').innerHTML = docSnap.data().logHTML; }
+    } catch(e) {}
+  };
+  window.cerrarTorneoBRModal = function() { document.getElementById('modalTorneoBR').style.display = 'none'; };
+  window.inscribirseTorneoBD = async function() {
+    let btn = document.getElementById('btnInscribirseTorneo'); btn.disabled = true; btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i>";
+    try { await setDoc(doc(db, "rumble_inscritos", gamerProfile.tag), { tag: gamerProfile.tag, fecha: Date.now() }); alert("¡Te has inscrito al Torneo!"); } 
+    catch(e) { alert("Error al inscribirse."); btn.disabled = false; btn.innerHTML = "<i class='fas fa-pen-nib'></i> Inscribirse a la Batalla"; }
+  };
+
+  function actualizarRangoSegunXP() {
+    let xp = gamerProfile.xp; let u = umbralesRangosNube; let max = 0; let min = 0; let nextRango = "";
+    if (xp >= (u.hokage ?? 1000)) { gamerProfile.rango = "Hokage"; max = xp; min = u.hokage ?? 1000; nextRango = "MAX"; }
+    else if (xp >= (u.jonin ?? 600)) { gamerProfile.rango = "Jōnin"; max = u.hokage ?? 1000; min = u.jonin ?? 600; nextRango = "Hokage"; }
+    else if (xp >= (u.chunin ?? 300)) { gamerProfile.rango = "Chūnin"; max = u.jonin ?? 600; min = u.chunin ?? 300; nextRango = "Jōnin"; }
+    else { gamerProfile.rango = "Genin"; max = u.chunin ?? 300; min = 0; nextRango = "Chūnin"; }
+
+    let pct = 100;
+    if(nextRango !== "MAX") { pct = ((xp - min) / (max - min)) * 100; let lblNext = document.getElementById('lblXpNext'); if(lblNext) lblNext.innerHTML = `Faltan <strong style="color:var(--secondary-color);">${max - xp} XP</strong> para ${nextRango}`; } 
+    else { let lblNext = document.getElementById('lblXpNext'); if(lblNext) lblNext.innerText = `¡Rango Máximo Alcanzado!`; }
+    let barra = document.getElementById('barXp'); if(barra) setTimeout(() => { barra.style.width = pct + "%"; }, 200);
+    
+    let lblXp = document.getElementById('lblXp'); if(lblXp) lblXp.innerText = gamerProfile.xp; 
+    let lblRango = document.getElementById('lblRango'); if(lblRango) lblRango.innerText = gamerProfile.rango;
   }
   window.ganarXP = function(cantidad) { gamerProfile.xp += cantidad; actualizarRangoSegunXP(); window.guardarProgresoNube(); };
 
 </script>
 </body>
 </html>
+
