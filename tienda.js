@@ -37,14 +37,18 @@ let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || {
   profesion: "", 
   stats: { hp: 100, atk: 10, def: 5 },
   inventario: [],
-  equipo: { armaId: null }
+  equipo: { cabeza: null, pecho: null, piernas: null, pies: null, mano_derecha: null, mano_izquierda: null, amuleto: null, anillo: null, mascota: null }
 };
+
+// Compatibilidad por si el perfil viejo tenía la estructura anterior de un solo equipo
+if(!gamerProfile.equipo || typeof gamerProfile.equipo.armaId !== 'undefined' || typeof gamerProfile.equipo === 'string') {
+  gamerProfile.equipo = { cabeza: null, pecho: null, piernas: null, pies: null, mano_derecha: null, mano_izquierda: null, amuleto: null, anillo: null, mascota: null };
+}
 
 if(gamerProfile.profesion === undefined) {
   gamerProfile.profesion = "";
   gamerProfile.stats = { hp: 100, atk: 10, def: 5 };
   gamerProfile.inventario = [];
-  gamerProfile.equipo = { armaId: null };
 }
 
 let carrito = JSON.parse(localStorage.getItem('sakura_carrito')) || [];
@@ -330,7 +334,7 @@ window.entrarCloud = async function() {
 window.cerrarSesionCloud = async function() {
   reproducirSonido(); await signOut(auth);
   localStorage.removeItem('sakura_gamer_profile'); localStorage.removeItem('sakura_carrito'); localStorage.removeItem('sakura_favoritos');
-  gamerProfile = { tag: "Gamer_Guest", xp: 0, tokens: 0, rango: "Genin", waifus: [], profesion: "", stats: {hp: 100, atk: 10, def: 5}, inventario: [], equipo: {armaId: null} }; carrito = []; favoritos = [];
+  gamerProfile = { tag: "Gamer_Guest", xp: 0, tokens: 0, rango: "Genin", waifus: [], profesion: "", stats: {hp: 100, atk: 10, def: 5}, inventario: [], equipo: { cabeza: null, pecho: null, piernas: null, pies: null, mano_derecha: null, mano_izquierda: null, amuleto: null, anillo: null, mascota: null } }; carrito = []; favoritos = [];
   window.actualizarBadges(); window.actualizarRangoSegunXP(); window.renderizarAlbumWaifus(); window.cerrarCloudSaveModal(); alert("Sesión cerrada. Tu partida está a salvo en la nube.");
 };
 
@@ -345,7 +349,9 @@ window.descargarProgresoNube = async function(uid) {
                 if(gamerProfile.profesion === undefined) gamerProfile.profesion = ""; 
                 if(!gamerProfile.stats) gamerProfile.stats = {hp:100,atk:10,def:5};
                 if(!gamerProfile.inventario) gamerProfile.inventario = [];
-                if(!gamerProfile.equipo) gamerProfile.equipo = {armaId: null};
+                if(!gamerProfile.equipo || typeof gamerProfile.equipo.armaId !== 'undefined' || typeof gamerProfile.equipo === 'string') {
+                  gamerProfile.equipo = { cabeza: null, pecho: null, piernas: null, pies: null, mano_derecha: null, mano_izquierda: null, amuleto: null, anillo: null, mascota: null };
+                }
             }
             if(d.favoritos) favoritos = d.favoritos; if(d.carrito) carrito = d.carrito;
             if(d.ultimoCofre) localStorage.setItem('sakura_ultimo_cofre', d.ultimoCofre);
@@ -656,6 +662,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         nombre: obj.nombre, 
         tipo: obj.tipo || 'arma', 
         rareza: obj.rareza || 'N', 
+        ranura: obj.ranura || 'ninguna',
         atk: obj.stats?.ataque || obj.stats?.atk || 0, 
         def: obj.stats?.defensa || obj.stats?.def || 0,
         imgUrl: obj.imgUrl || ''
@@ -887,7 +894,7 @@ window.cerrarFaqModal = function() { document.getElementById('modalFaq').style.d
 window.abrirSugerenciaModal = function() {
     window.pushModalState();
     reproducirSonido();
-    let n = prompt("Ingresa tu GamerTag o Nombre:"); if(!n) return;
+    let n = prompt("Ingresa tu GamerTag or Nombre:"); if(!n) return;
     let d = prompt("¿Qué coleccionable, figura o código te gustaría encargar?"); if(!d) return;
     window.open("https://wa.me/" + ajustesWebGlobal.whatsapp + "?text=" + encodeURIComponent(`*Búsqueda de Tesoro:*\nHola Sakura, soy ${n}. Me gustaría encargar/conseguir el siguiente artículo: ${d}`), '_blank');
 };
@@ -919,10 +926,6 @@ window.actualizarRangoSegunXP = function() {
 window.ganarXP = function(cantidad) { gamerProfile.xp += cantidad; window.actualizarRangoSegunXP(); };
 
 // ==========================================
-// SISTEMA RPG V2 (EXPEDICIONES, MINERÍA, FRAGUA Y RUMBLE)
-// ==========================================
-
-// ==========================================
 // EL GIMNASIO (Entrenamiento de Stats Base)
 // ==========================================
 window.entrenarStat = function(stat) {
@@ -933,10 +936,8 @@ window.entrenarStat = function(stat) {
     return alert("¡No tienes suficientes Tokens! 🪙\nCuestan 10 Tokens por entrenamiento.\nConsigue más abriendo cofres o cazando en el Gremio.");
   }
   
-  // Cobramos los tokens
   gamerProfile.tokens -= costoTokens;
   
-  // Aumentamos el stat correspondiente
   if (stat === 'hp') {
     gamerProfile.stats.hp += 10;
     window.mostrarTextoFlotante('+10 HP', '#ff3366');
@@ -948,7 +949,6 @@ window.entrenarStat = function(stat) {
     window.mostrarTextoFlotante('+2 DEF', '#00e5ff');
   }
   
-  // Guardamos partida, actualizamos pantalla y lanzamos confetti
   window.guardarProgresoLocalRPG();
   document.getElementById('lblTokens').innerHTML = `<i class="fas fa-coins"></i> ${gamerProfile.tokens}`;
   try { confetti({ particleCount: 30, spread: 50, origin: { y: 0.6 }, colors: ['#ffaa00', '#00e5ff'] }); } catch(e){}
@@ -983,9 +983,19 @@ window.verificarProfesion = function() {
 
 window.actualizarUiPerfil = function() {
   let extraAtk = 0; let extraDef = 0;
-  if (gamerProfile.equipo.armaId && gamerProfile.inventario) {
-    let item = gamerProfile.inventario.find(i => i.uid_inventario === gamerProfile.equipo.armaId);
-    if (item) { extraAtk = item.atk; extraDef = item.def; }
+  
+  // Sumamos los stats de todas las ranuras equipadas en simultáneo
+  if (gamerProfile.equipo) {
+    for (let ranura in gamerProfile.equipo) {
+      let uidItem = gamerProfile.equipo[ranura];
+      if (uidItem && gamerProfile.inventario) {
+        let item = gamerProfile.inventario.find(i => i.uid_inventario === uidItem);
+        if (item) {
+          extraAtk += (item.atk || 0);
+          extraDef += (item.def || 0);
+        }
+      }
+    }
   }
   
   let lblProf = document.getElementById('lblProfesion');
@@ -1001,6 +1011,7 @@ window.actualizarUiPerfil = function() {
   if(lblDef) lblDef.innerText = gamerProfile.stats.def + " (+" + extraDef + ")";
 
   window.renderizarInventario();
+  window.renderizarPaperDoll();
 };
 
 window.renderizarInventario = function() {
@@ -1019,7 +1030,15 @@ window.renderizarInventario = function() {
   }
 
   gamerProfile.inventario.forEach((item) => {
-    let isEquipped = gamerProfile.equipo.armaId === item.uid_inventario; 
+    // Verificamos si este item está equipado en alguna ranura
+    let ranuraEquipada = null;
+    if (gamerProfile.equipo) {
+      for (let r in gamerProfile.equipo) {
+        if (gamerProfile.equipo[r] === item.uid_inventario) { ranuraEquipada = r; break; }
+      }
+    }
+    
+    let isEquipped = ranuraEquipada !== null;
     let cl = isEquipped ? 'rpg-item-card equipped' : 'rpg-item-card';
     
     let icono = "";
@@ -1031,16 +1050,99 @@ window.renderizarInventario = function() {
 
     let accionClick = item.tipo === 'arma' ? `window.equiparItem('${item.uid_inventario}')` : ``;
     let estiloCursor = item.tipo === 'arma' ? 'cursor: pointer;' : 'cursor: default; opacity: 0.85;';
-    let infoExtra = item.tipo === 'arma' ? `ATK +${item.atk} | DEF +${item.def}<br><div style="font-size: 0.8em; margin-top: 5px; color: ${isEquipped ? '#25d366' : '#888'};">${isEquipped ? 'EQUIPADO' : 'Click para equipar'}</div>` : `<span style="color:#b000ff">Material</span>`;
+    
+    let formatoAtk = (item.atk || 0) >= 0 ? `+${item.atk || 0}` : `${item.atk || 0}`;
+    let formatoDef = (item.def || 0) >= 0 ? `+${item.def || 0}` : `${item.def || 0}`;
+    
+    let infoExtra = item.tipo === 'arma' ? `ATK ${formatoAtk} | DEF ${formatoDef}<br><div style="font-size: 0.75em; margin-top: 4px; color: ${isEquipped ? '#25d366' : '#888'};">${isEquipped ? 'EQUIPADO ('+ranuraEquipada.toUpperCase()+')' : 'Click para equipar'}</div>` : `<span style="color:#b000ff">Material</span>`;
     
     cont.innerHTML += `<div class="${cl}" style="${estiloCursor}" onclick="${accionClick}"><div class="rpg-item-icon">${icono}</div><div class="rpg-item-name rareza-${item.rareza}">${window.sanitizarHTML(item.nombre)}</div><div class="rpg-item-stats">${infoExtra}</div></div>`;
   });
 };
 
+// NUEVO: PANEL VISUAL PAPER DOLL (MUÑECA DE PAPEL)
+window.renderizarPaperDoll = function() {
+  let modalPerfilContent = document.querySelector('#modalGamerProfile .modal-content');
+  if(!modalPerfilContent) return;
+
+  let paperDollBox = document.getElementById('paperDollContainer');
+  if(!paperDollBox) {
+    paperDollBox = document.createElement('div');
+    paperDollBox.id = 'paperDollContainer';
+    paperDollBox.style.cssText = "background: rgba(0,0,0,0.4); border: 1px dashed rgba(0,229,255,0.3); border-radius: 8px; padding: 12px; margin-bottom: 14px;";
+    
+    // Insertamos el contenedor del Paper Doll justo antes del inventario
+    let invHeading = modalPerfilContent.querySelector('h4');
+    if(invHeading) {
+      modalPerfilContent.insertBefore(paperDollBox, invHeading);
+    } else {
+      modalPerfilContent.appendChild(paperDollBox);
+    }
+  }
+
+  let ranurasConfig = [
+    { key: 'cabeza', label: 'Cabeza', icon: '🪖' },
+    { key: 'amuleto', label: 'Amuleto', icon: '📿' },
+    { key: 'pecho', label: 'Pecho', icon: '🛡️' },
+    { key: 'mano_derecha', label: 'Mano Der.', icon: '🗡️' },
+    { key: 'mano_izquierda', label: 'Mano Izq.', icon: '🛡️' },
+    { key: 'anillo', label: 'Anillo', icon: '💍' },
+    { key: 'piernas', label: 'Piernas', icon: '👖' },
+    { key: 'pies', label: 'Pies', icon: '🥾' },
+    { key: 'mascota', label: 'Mascota', icon: '🐾' }
+  ];
+
+  let htmlSlots = `<div style="font-size: 0.85em; font-weight: bold; color: var(--secondary-color); margin-bottom: 8px; text-align: center;"><i class="fas fa-shield-alt"></i> Equipo Activo (Paper Doll)</div>`;
+  htmlSlots += `<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">`;
+
+  ranurasConfig.forEach(slot => {
+    let uidItemEquipado = gamerProfile.equipo[slot.key];
+    let itemObj = uidItemEquipado ? gamerProfile.inventario.find(i => i.uid_inventario === uidItemEquipado) : null;
+    
+    let contenidoSlot = `<div style="font-size: 1.2em;">${slot.icon}</div><div style="font-size: 0.65em; color: var(--text-muted);">${slot.label}</div>`;
+    let estilosSlot = "background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 6px; text-align: center; cursor: pointer; min-height: 50px; display: flex; flex-direction: column; align-items: center; justify-content: center;";
+    
+    if (itemObj) {
+      let imgThumb = itemObj.imgUrl ? `<img src="${itemObj.imgUrl}" style="width: 24px; height: 24px; object-fit: contain; image-rendering: pixelated;">` : slot.icon;
+      contenidoSlot = `${imgThumb}<div style="font-size: 0.6em; color: #25d366; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">${window.sanitizarHTML(itemObj.nombre)}</div>`;
+      estilosSlot = "background: rgba(37,211,102,0.1); border: 1px solid rgba(37,211,102,0.4); border-radius: 6px; padding: 6px; text-align: center; cursor: pointer; min-height: 50px; display: flex; flex-direction: column; align-items: center; justify-content: center;";
+    }
+
+    htmlSlots += `<div style="${estilosSlot}" title="Ranura: ${slot.label}" onclick="window.desequiparRanura('${slot.key}')">${contenidoSlot}</div>`;
+  });
+
+  htmlSlots += `</div>`;
+  paperDollBox.innerHTML = htmlSlots;
+};
+
+window.desequiparRanura = function(ranuraKey) {
+  reproducirSonido();
+  if (gamerProfile.equipo && gamerProfile.equipo[ranuraKey]) {
+    gamerProfile.equipo[ranuraKey] = null;
+    window.guardarProgresoLocalRPG();
+    window.mostrarTextoFlotante('Desequipado', '#ffaa00');
+  }
+};
+
 window.equiparItem = function(uid_inventario) {
   reproducirSonido();
-  if (gamerProfile.equipo.armaId === uid_inventario) { gamerProfile.equipo.armaId = null; } 
-  else { gamerProfile.equipo.armaId = uid_inventario; }
+  let item = gamerProfile.inventario.find(i => i.uid_inventario === uid_inventario);
+  if (!item) return;
+
+  let ranuraDestino = item.ranura;
+  if (!ranuraDestino || ranuraDestino === 'ninguna') {
+    return alert("Este objeto es un material o consumible y no se puede equipar directamente en el cuerpo.");
+  }
+
+  // Si ya lo tiene equipado en esa ranura, lo desequipa; si no, lo equipa
+  if (gamerProfile.equipo[ranuraDestino] === uid_inventario) {
+    gamerProfile.equipo[ranuraDestino] = null;
+    window.mostrarTextoFlotante('Desequipado', '#ffaa00');
+  } else {
+    gamerProfile.equipo[ranuraDestino] = uid_inventario;
+    window.mostrarTextoFlotante(`Equipado en ${ranuraDestino.toUpperCase()}`, '#25d366');
+  }
+
   window.guardarProgresoLocalRPG();
 };
 
@@ -1058,7 +1160,6 @@ window.abrirGremioModal = function() {
     window.verificarProfesion(); 
     document.getElementById('modalGremio').style.display = 'flex'; 
 
-    // CARGAR EL RANKING EN VIVO DEL SALÓN DE LA FAMA
     if(!rankingCargado) {
         rankingCargado = true;
         const qRanking = query(collection(db, "jugadores_cloud"), orderBy("profile.xp", "desc"), limit(5));
@@ -1110,8 +1211,8 @@ window.abrirFraguaModal = function() {
       if(arma.rareza === 'SSR') { costoMat = 12; costoTok = 60; }
 
       let puedeForjar = (cantMateriales >= costoMat && (gamerProfile.tokens || 0) >= costoTok);
-      
       let thumbImg = arma.imgUrl ? `<img src="${arma.imgUrl}" style="width:36px; height:36px; object-fit:contain; image-rendering:pixelated; margin-right:8px; border-radius:4px; vertical-align:middle;">` : `🗡️ `;
+      let ranuraLabel = arma.ranura ? arma.ranura.toUpperCase() : 'GENERAL';
 
       contRecetas.innerHTML += `
         <div style="background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 12px; text-align: left; display: flex; justify-content: space-between; align-items: center;">
@@ -1119,6 +1220,7 @@ window.abrirFraguaModal = function() {
             ${thumbImg}
             <div>
               <div class="rpg-item-name rareza-${arma.rareza}">${window.sanitizarHTML(arma.nombre)}</div>
+              <div style="font-size: 0.75em; color: var(--secondary-color); margin-bottom: 2px;">Ranura: [${ranuraLabel}]</div>
               <div style="font-size: 0.75em; color: var(--text-muted); margin-bottom: 4px;">ATK +${arma.atk} | DEF +${arma.def}</div>
               <div style="font-size: 0.8em; font-weight: bold;">
                 <span style="color: ${cantMateriales >= costoMat ? '#00e5ff' : '#ff3366'};"><i class="fas fa-gem"></i> ${costoMat}</span> | 
@@ -1179,7 +1281,6 @@ window.accionRPG = function(tipo) {
   document.getElementById('rpgResultado').innerHTML = `<span style="color:var(--secondary-color);">${msj}</span><br><span style="color:#25d366;">+${xpG} XP | +${tokG} Tokens</span>`;
 };
 
-// EXPEDICIÓN CON ENFRIAMIENTO GLOBAL DE 10 MINUTOS Y RIESGO DE PERDER XP
 window.entrarMazmorra = function(dificultad) {
   reproducirSonido();
   
@@ -1200,10 +1301,16 @@ window.entrarMazmorra = function(dificultad) {
   }
 
   let extraAtk = 0; let extraDef = 0;
-  if (gamerProfile.equipo.armaId && gamerProfile.inventario) {
-    let item = gamerProfile.inventario.find(i => i.uid_inventario === gamerProfile.equipo.armaId);
-    if (item) { extraAtk = item.atk; extraDef = item.def; }
+  if (gamerProfile.equipo && gamerProfile.inventario) {
+    for (let r in gamerProfile.equipo) {
+      let uidItem = gamerProfile.equipo[r];
+      if (uidItem) {
+        let item = gamerProfile.inventario.find(i => i.uid_inventario === uidItem);
+        if (item) { extraAtk += (item.atk || 0); extraDef += (item.def || 0); }
+      }
+    }
   }
+
   let poderTotal = gamerProfile.stats.atk + extraAtk + gamerProfile.stats.def + extraDef + (gamerProfile.xp / 10);
   
   let poderEnemigo = 0; let nombreZonas = ""; let recompensaXp = 0;
@@ -1214,7 +1321,6 @@ window.entrarMazmorra = function(dificultad) {
   if (dificultad === 'dificil') { poderEnemigo = 600; nombreZonas = "Torre del Dragón"; recompensaXp = 350; }
 
   log.innerHTML = `<span style="color: #00e5ff;"><i class="fas fa-walking"></i> Explorando ${nombreZonas}...</span>`;
-  
   localStorage.setItem(keyCooldown, ahora);
 
   setTimeout(() => {
