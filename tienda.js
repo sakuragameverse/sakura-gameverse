@@ -670,9 +670,10 @@ window.cerrarModal = function() { document.getElementById('miModal').style.displ
 
 window.productoActual = null; let descuentoAplicado = 0; let pestanaCarritoActual = 'fisico';
 
+// CORRECCIÓN APLICADA: Parámetro cambiado de prodId a id
 window.toggleFavoritoPorId = function(event, id) {
     event.stopPropagation(); reproducirSonido();
-    let prod = productosNubeGlobal.find(p => p.id === prodId); if (!prod) return;
+    let prod = productosNubeGlobal.find(p => p.id === id); if (!prod) return;
     let idx = favoritos.findIndex(f => f.id === id);
     if (idx >= 0) { favoritos.splice(idx, 1); } 
     else { favoritos.push({ id: prod.id, titulo: prod.nombre, precio: prod.precio, img: (prod.fotos && prod.fotos.length > 0) ? prod.fotos[0] : 'logo.webp?v=2' }); }
@@ -921,6 +922,38 @@ window.ganarXP = function(cantidad) { gamerProfile.xp += cantidad; actualizarRan
 // ==========================================
 // SISTEMA RPG V2 (EXPEDICIONES, MINERÍA, FRAGUA Y RUMBLE)
 // ==========================================
+
+// ==========================================
+// EL GIMNASIO (Entrenamiento de Stats Base)
+// ==========================================
+window.entrenarStat = function(stat) {
+  reproducirSonido();
+  let costoTokens = 10;
+  
+  if (!gamerProfile.tokens || gamerProfile.tokens < costoTokens) {
+    return alert("¡No tienes suficientes Tokens! 🪙\nCuestan 10 Tokens por entrenamiento.\nConsigue más abriendo cofres o cazando en el Gremio.");
+  }
+  
+  // Cobramos los tokens
+  gamerProfile.tokens -= costoTokens;
+  
+  // Aumentamos el stat correspondiente
+  if (stat === 'hp') {
+    gamerProfile.stats.hp += 10;
+    mostrarTextoFlotante('+10 HP', '#ff3366');
+  } else if (stat === 'atk') {
+    gamerProfile.stats.atk += 2;
+    mostrarTextoFlotante('+2 ATK', '#ffaa00');
+  } else if (stat === 'def') {
+    gamerProfile.stats.def += 2;
+    mostrarTextoFlotante('+2 DEF', '#00e5ff');
+  }
+  
+  // Guardamos partida, actualizamos pantalla y lanzamos confetti
+  window.guardarProgresoLocalRPG();
+  document.getElementById('lblTokens').innerHTML = `<i class="fas fa-coins"></i> ${gamerProfile.tokens}`;
+  try { confetti({ particleCount: 30, spread: 50, origin: { y: 0.6 }, colors: ['#ffaa00', '#00e5ff'] }); } catch(e){}
+};
 
 window.guardarProgresoLocalRPG = function() {
   localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
