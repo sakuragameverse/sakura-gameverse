@@ -134,14 +134,16 @@ window.renderizarPaperDollGrande = function() {
   let grid = document.getElementById('paperDollGrid');
   if(!grid) return;
 
+  // Distribución simétrica de la silueta corporal clásica en tiempo real
   grid.style.cssText = `
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-areas: 
       ". cabeza ."
-      "mano_der amuleto mano_izq"
-      "pecho anillo mascota"
-      "piernas pies .";
+      "amuleto . anillo"
+      "mano_der pecho mano_izq"
+      "piernas piernas piernas"
+      "pies . mascota";
     gap: 8px;
     max-width: 280px;
     margin: 0 auto;
@@ -150,10 +152,10 @@ window.renderizarPaperDollGrande = function() {
   let ranurasConfig = {
     cabeza: { label: 'Cabeza', icon: '🪖', area: 'cabeza' },
     amuleto: { label: 'Amuleto', icon: '📿', area: 'amuleto' },
-    pecho: { label: 'Pecho', icon: '🛡️', area: 'pecho' },
-    mano_derecha: { label: 'Mano Der.', icon: '🗡️', area: 'mano_der' },
-    mano_izquierda: { label: 'Mano Izq.', icon: '🛡️', area: 'mano_izq' },
     anillo: { label: 'Anillo', icon: '💍', area: 'anillo' },
+    mano_derecha: { label: 'Mano Der.', icon: '🗡️', area: 'mano_der' },
+    pecho: { label: 'Pecho', icon: '🛡️', area: 'pecho' },
+    mano_izquierda: { label: 'Mano Izq.', icon: '🛡️', area: 'mano_izq' },
     piernas: { label: 'Piernas', icon: '👖', area: 'piernas' },
     pies: { label: 'Pies', icon: '🥾', area: 'pies' },
     mascota: { label: 'Mascota', icon: '🐾', area: 'mascota' }
@@ -304,12 +306,9 @@ window.entrenarStatRPG = function(stat) {
   window.guardarProgresoRPG();
 };
 
-// ==========================================
-// SISTEMA DE COOLDOWN + DROPS (CAZA Y MINERÍA)
-// ==========================================
 window.accionCazaMinas = function(tipo) {
   let ahora = Date.now();
-  let cooldownTime = tipo === 'cazar' ? (2 * 60 * 1000) : (3 * 60 * 1000); // 2 min cazar, 3 min minar
+  let cooldownTime = tipo === 'cazar' ? (2 * 60 * 1000) : (3 * 60 * 1000);
   let keyCooldown = 'sakura_cooldown_' + tipo;
   let ultimoUso = localStorage.getItem(keyCooldown) || 0;
 
@@ -337,12 +336,11 @@ window.accionCazaMinas = function(tipo) {
       msg = "Extrajiste minerales básicos de la roca.";
     }
   } else {
-    // Caza con probabilidad de drop de objetos o consumibles
     let rngDrop = Math.random() * 100;
     if (rngDrop <= 30 && rpgObjetosGlobal.length > 0) {
       let dropItem = rpgObjetosGlobal[Math.floor(Math.random() * rpgObjetosGlobal.length)];
       gamerProfile.inventario.push({ ...dropItem, uid_inventario: Date.now().toString() });
-      msg = `¡Cacería épica! Recibiste un botín: <strong class="rareza-${dropItem.rareza}">${window.sanitizarHTML(dropItem.nombre)}</strong>`;
+      msg = `¡Cacería épica! Botín: <strong class="rareza-${dropItem.rareza}">${window.sanitizarHTML(dropItem.nombre)}</strong>`;
     } else {
       msg = "¡Monstruo abatido en la pradera!";
     }
@@ -356,12 +354,9 @@ window.accionCazaMinas = function(tipo) {
   document.getElementById('rpgResultadoGremio').innerHTML = `<span style="color:#25d366;">${msg}</span><br><span style="font-size:0.8em; color:var(--text-muted);">+${xpG} XP | +${tokG} Tokens</span>`;
 };
 
-// ==========================================
-// MAZMORRAS CON COOLDOWN Y DROPS COMPLETOS
-// ==========================================
 window.entrarMazmorraRPG = function(dif) {
   let ahora = Date.now();
-  let cooldownTime = 5 * 60 * 1000; // 5 minutos de espera para expediciones
+  let cooldownTime = 5 * 60 * 1000;
   let keyCooldown = 'sakura_cooldown_mazmorra_global';
   let ultimoUso = localStorage.getItem(keyCooldown) || 0;
   let log = document.getElementById('rpgResultadoGremio');
@@ -370,7 +365,7 @@ window.entrarMazmorraRPG = function(dif) {
     let faltanSec = Math.ceil((cooldownTime - (ahora - ultimoUso)) / 1000);
     let min = Math.floor(faltanSec / 60);
     let seg = faltanSec % 60;
-    log.innerHTML = `<span style="color:#ffaa00;"><i class="fas fa-campground"></i> Zona en resguardo. Tu grupo descansa en la fogata. Podrás entrar en ${min}m ${seg}s.</span>`;
+    log.innerHTML = `<span style="color:#ffaa00;"><i class="fas fa-campground"></i> Grupo descansando. Podrás entrar en ${min}m ${seg}s.</span>`;
     return;
   }
 
@@ -395,7 +390,6 @@ window.entrarMazmorraRPG = function(dif) {
       let xpW = dif === 'dificil' ? 350 : (dif === 'media' ? 120 : 45);
       let premioTxt = "Oro y Experiencia";
 
-      // Sistema de Drops en Mazmorra
       let rngDrop = Math.random() * 100;
       if(rngDrop <= 50 && rpgObjetosGlobal.length > 0) {
         let loot = rpgObjetosGlobal[Math.floor(Math.random() * rpgObjetosGlobal.length)];
@@ -407,14 +401,14 @@ window.entrarMazmorraRPG = function(dif) {
       gamerProfile.tokens += Math.floor(xpW / 8);
       window.guardarProgresoRPG();
 
-      log.innerHTML = `<span style="color:#25d366;"><i class="fas fa-check-circle"></i> ¡Expedición Exitosa en ${zonaNombre}!</span><br>Loot obtenido: <strong>${premioTxt}</strong><br><span style="font-size:0.8em; color:var(--text-muted);">+${xpW} XP | +${Math.floor(xpW / 8)} Tokens</span>`;
+      log.innerHTML = `<span style="color:#25d366;"><i class="fas fa-check-circle"></i> ¡Expedición Exitosa en ${zonaNombre}!</span><br>Loot obtenido: <strong>${premioTxt}</strong><br><span style="font-size:0.8em; color:var(--text-muted);">+${xpW} XP</span>`;
       try{ confetti({ particleCount: 70, spread: 70 }); }catch(e){}
     } else {
       let perdida = dif === 'dificil' ? 150 : (dif === 'media' ? 50 : 15);
       gamerProfile.xp -= perdida; if(gamerProfile.xp < 0) gamerProfile.xp = 0;
       window.guardarProgresoRPG();
 
-      log.innerHTML = `<span style="color:#ff3366;"><i class="fas fa-skull"></i> Derrota en ${zonaNombre} (${poder}/${req} Poder).</span><br><span style="font-size:0.8em;">Apenas lograste escapar. Perdiste <strong style="color:#ffaa00;">${perdida} XP</strong>. ¡Mejora tu equipo en la Fragua!</span>`;
+      log.innerHTML = `<span style="color:#ff3366;"><i class="fas fa-skull"></i> Derrota en ${zonaNombre} (${poder}/${req} Poder).</span><br><span style="font-size:0.8em;">Perdiste <strong style="color:#ffaa00;">${perdida} XP</strong>. ¡Mejora tu equipo!</span>`;
     }
   }, 1500);
 };
