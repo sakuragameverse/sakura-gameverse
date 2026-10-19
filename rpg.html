@@ -1,260 +1,106 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Centro RPG | Sakura Gameverse</title>
+  <link rel="icon" type="image/webp" href="logo.webp?v=2">
+  <meta name="theme-color" content="#05010a">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <link rel="stylesheet" href="tienda.css">
+  <link rel="stylesheet" href="rpg.css">
+</head>
+<body class="theme-rosa">
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDH1DZqaIi5sKRXspXDUWbMUZ4nr5JIy8Q",
-  authDomain: "sakura-gameverse.firebaseapp.com",
-  projectId: "sakura-gameverse",
-  storageBucket: "sakura-gameverse.firebasestorage.app",
-  messagingSenderId: "226328425516",
-  appId: "1:226328425516:web:8dc11761639228c6120d89"
-};
+<!-- BARRA SUPERIOR DE NAVEGACIÓN RPG -->
+<header class="admin-navbar" style="justify-content: space-between; padding: 10px 20px;">
+  <div class="brand-box" style="display: flex; align-items: center; gap: 10px;">
+    <img src="logo.webp?v=2" class="brand-logo" alt="Logo" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+    <span class="brand-title" style="color: var(--secondary-color); font-size: 1.1em;">Centro RPG</span>
+  </div>
+  <div class="nav-actions">
+    <a href="index.html" class="btn-nav btn-tienda" style="background: rgba(0, 229, 255, 0.1); border: 1px solid var(--secondary-color); color: var(--secondary-color); padding: 6px 12px; border-radius: var(--radius-pill); font-size: 0.85em; text-decoration: none;">
+      <i class="fas fa-store"></i> Tienda
+    </a>
+  </div>
+</header>
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
-
-let currentUserUid = null;
-let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { 
-  tag: "GamerOtaku_VE", 
-  xp: 150, 
-  tokens: 0, 
-  rango: "Genin", 
-  profesion: "", 
-  stats: { hp: 100, atk: 10, def: 5 },
-  inventario: [],
-  equipo: { cabeza: null, pecho: null, piernas: null, pies: null, mano_derecha: null, mano_izquierda: null, amuleto: null, anillo: null, mascota: null }
-};
-
-window.mostrarTextoFlotante = function(texto, color) {
-    let el = document.createElement('div');
-    el.className = 'floating-text';
-    el.style.color = color;
-    el.style.left = '50%';
-    el.style.top = '40%';
-    el.innerHTML = texto;
-    document.body.appendChild(el);
-    setTimeout(() => el.remove(), 1500);
-};
-
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    currentUserUid = user.uid;
-    await window.descargarProgresoNube(user.uid);
-  } else {
-    currentUserUid = null;
-    window.renderizarTodoRPG();
-  }
-});
-
-window.descargarProgresoNube = async function(uid) {
-    try {
-        const docRef = doc(db, "jugadores_cloud", uid); 
-        const snap = await getDoc(docRef);
-        if(snap.exists()) {
-            const d = snap.data();
-            if(d.profile) {
-                gamerProfile = d.profile;
-                if (!gamerProfile.equipo) {
-                  gamerProfile.equipo = { cabeza: null, pecho: null, piernas: null, pies: null, mano_derecha: null, mano_izquierda: null, amuleto: null, anillo: null, mascota: null };
-                }
-            }
-            localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
-        }
-        window.renderizarTodoRPG();
-    } catch(e) { console.warn("Error cargando perfil RPG:", e); }
-};
-
-window.guardarProgresoRPG = async function() {
-    localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
-    if(currentUserUid) {
-        try { 
-            await setDoc(doc(db, "jugadores_cloud", currentUserUid), { profile: gamerProfile, updatedAt: Date.now() }, { merge: true }); 
-        } catch(e) { console.warn("Error guardando nube RPG:", e); }
-    }
-    window.renderizarTodoRPG();
-};
-
-window.renderizarTodoRPG = function() {
-  document.getElementById('rpgPerfilTag').innerText = gamerProfile.tag || "Aventurero";
-  document.getElementById('rpgPerfilClase').innerText = gamerProfile.profesion || "Sin Clase";
-  document.getElementById('rpgPerfilTokens').innerHTML = `<i class="fas fa-coins"></i> ${gamerProfile.tokens || 0} Tokens`;
-  document.getElementById('rpgPerfilXp').innerText = `${gamerProfile.xp || 0} XP`;
-
-  let extraAtk = 0; 
-  let extraDef = 0;
+<main style="max-width: 500px; width: 92%; margin: 20px auto; padding-bottom: 40px;">
   
-  if (gamerProfile.equipo && gamerProfile.inventario) {
-    for (let ranura in gamerProfile.equipo) {
-      let uidItem = gamerProfile.equipo[ranura];
-      if (uidItem) {
-        let item = gamerProfile.inventario.find(i => i.uid_inventario === uidItem);
-        if (item) {
-          extraAtk += (item.atk || 0);
-          extraDef += (item.def || 0);
-        }
-      }
-    }
-  }
+  <!-- INFORMACIÓN DEL AVENTURERO -->
+  <div class="card-panel" style="background: rgba(14, 4, 31, 0.85); border: 1px solid var(--secondary-color); border-radius: var(--radius-md); padding: 20px; margin-bottom: 20px; box-shadow: 0 0 20px rgba(0,229,255,0.15);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+      <div>
+        <h2 id="rpgPerfilTag" style="color: #fff; margin: 0; font-size: 1.4em;">GamerOtaku_VE</h2>
+        <span style="font-size: 0.85em; color: var(--text-muted); text-transform: uppercase;">Clase: <strong id="rpgPerfilClase" style="color: var(--secondary-color);">Ninguna</strong></span>
+      </div>
+      <div>
+        <span style="background: rgba(255,170,0,0.1); border: 1px solid rgba(255,170,0,0.3); padding: 6px 12px; border-radius: var(--radius-pill); color: #ffaa00; font-weight: bold;" id="rpgPerfilTokens">
+          <i class="fas fa-coins"></i> 0 Tokens
+        </span>
+        <span style="background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); padding: 6px 12px; border-radius: var(--radius-pill); color: var(--secondary-color); font-weight: bold; margin-left: 6px;" id="rpgPerfilXp">
+          0 XP
+        </span>
+      </div>
+    </div>
 
-  document.getElementById('rpgStatHp').innerText = gamerProfile.stats?.hp || 100;
-  document.getElementById('rpgStatAtk').innerText = (gamerProfile.stats?.atk || 10) + (extraAtk > 0 ? ` (+${extraAtk})` : '');
-  document.getElementById('rpgStatDef').innerText = (gamerProfile.stats?.def || 5) + (extraDef > 0 ? ` (+${extraDef})` : '');
+    <!-- ATRIBUTOS Y ESTADÍSTICAS -->
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; background: rgba(0,0,0,0.4); padding: 12px; border-radius: var(--radius-sm); border: 1px dashed var(--glass-border);">
+      <div>
+        <div style="font-size: 0.75em; color: var(--text-muted);">VIDA (HP)</div>
+        <div id="rpgStatHp" style="font-size: 1.2em; font-weight: bold; color: #ff3366;">100</div>
+      </div>
+      <div>
+        <div style="font-size: 0.75em; color: var(--text-muted);">ATAQUE (ATK)</div>
+        <div id="rpgStatAtk" style="font-size: 1.2em; font-weight: bold; color: #ffaa00;">10</div>
+      </div>
+      <div>
+        <div style="font-size: 0.75em; color: var(--text-muted);">DEFENSA (DEF)</div>
+        <div id="rpgStatDef" style="font-size: 1.2em; font-weight: bold; color: #00e5ff;">5</div>
+      </div>
+    </div>
+  </div>
 
-  window.renderizarPaperDollGrande();
-  window.renderizarInventarioRPG();
-};
-
-window.renderizarPaperDollGrande = function() {
-  let grid = document.getElementById('paperDollGrid');
-  if(!grid) return;
-
-  grid.style.cssText = `
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-areas: 
-      ". cabeza ."
-      "mano_der amuleto mano_izq"
-      "pecho anillo mascota"
-      "piernas pies .";
-    gap: 10px;
-    max-width: 320px;
-    margin: 0 auto;
-  `;
-
-  let ranurasConfig = {
-    cabeza: { label: 'Cabeza', icon: '🪖', area: 'cabeza' },
-    amuleto: { label: 'Amuleto', icon: '📿', area: 'amuleto' },
-    pecho: { label: 'Pecho', icon: '🛡️', area: 'pecho' },
-    mano_derecha: { label: 'Mano Der.', icon: '🗡️', area: 'mano_der' },
-    mano_izquierda: { label: 'Mano Izq.', icon: '🛡️', area: 'mano_izq' },
-    anillo: { label: 'Anillo', icon: '💍', area: 'anillo' },
-    piernas: { label: 'Piernas', icon: '👖', area: 'piernas' },
-    pies: { label: 'Pies', icon: '🥾', area: 'pies' },
-    mascota: { label: 'Mascota', icon: '🐾', area: 'mascota' }
-  };
-
-  let html = "";
-  for (let key in ranurasConfig) {
-    let slot = ranurasConfig[key];
-    let uidItemEquipado = gamerProfile.equipo?.[key];
-    let itemObj = uidItemEquipado ? gamerProfile.inventario.find(i => i.uid_inventario === uidItemEquipado) : null;
+  <!-- INTERFAZ PAPER DOLL (MUÑECA DE PAPEL) -->
+  <div class="card-panel" style="background: rgba(14, 4, 31, 0.85); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 20px; margin-bottom: 20px; text-align: center;">
+    <h3 style="color: var(--secondary-color); margin-top: 0; margin-bottom: 15px;"><i class="fas fa-user-ninja"></i> Panel de Equipamiento (Paper Doll)</h3>
+    <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 20px;">Haz clic en cualquier ranura para desequipar el objeto correspondiente.</p>
     
-    let contenido = `<div style="font-size: 1.3em; margin-bottom: 2px;">${slot.icon}</div><div style="font-size: 0.6em; color: var(--text-muted);">${slot.label}</div>`;
-    let estilo = `grid-area: ${slot.area}; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 8px; text-align: center; cursor: pointer; min-height: 65px; display: flex; flex-direction: column; align-items: center; justify-content: center;`;
-    
-    if (itemObj) {
-      let imgThumb = itemObj.imgUrl ? `<img src="${itemObj.imgUrl}" style="width: 28px; height: 28px; object-fit: contain; image-rendering: pixelated; margin-bottom: 2px;">` : `<div style="font-size: 1.3em;">${slot.icon}</div>`;
-      contenido = `${imgThumb}<div style="font-size: 0.6em; color: #25d366; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">${window.sanitizarHTML(itemObj.nombre)}</div>`;
-      estilo = `grid-area: ${slot.area}; background: rgba(37,211,102,0.1); border: 1px solid rgba(37,211,102,0.4); border-radius: 8px; padding: 8px; text-align: center; cursor: pointer; min-height: 65px; display: flex; flex-direction: column; align-items: center; justify-content: center;`;
-    }
+    <!-- Cuadrícula de 9 Ranuras -->
+    <div id="paperDollGrid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 100%; margin: 0 auto;">
+      <!-- Se llenará dinámicamente desde el script -->
+    </div>
+  </div>
 
-    html += `<div style="${estilo}" title="Ranura: ${slot.label}" onclick="window.desequiparRanuraRPG('${key}')">${contenido}</div>`;
-  }
+  <!-- MOCHILA E INVENTARIO -->
+  <div class="card-panel" style="background: rgba(14, 4, 31, 0.85); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 20px; margin-bottom: 20px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+      <h3 style="color: #fff; margin: 0;"><i class="fas fa-backpack"></i> Mochila e Inventario</h3>
+      <span style="font-size: 0.85em; color: #00e5ff;"><i class="fas fa-gem"></i> Materiales: <strong id="rpgTotalMateriales">0</strong></span>
+    </div>
+    <div id="rpgContenedorInventario" class="rpg-grid">
+      <!-- Se llenará dinámicamente desde el script -->
+    </div>
+  </div>
 
-  grid.innerHTML = html;
-};
+  <!-- ACCESOS RÁPIDOS A ACTIVIDADES (GIMNASIO, FORJA, MAZMORRAS) -->
+  <div style="display: flex; flex-direction: column; gap: 10px;">
+    <button class="btn-comprar" style="margin: 0; background: linear-gradient(135deg, #ffaa00, #ff5500); padding: 14px;" onclick="location.href='index.html'">
+      <i class="fas fa-dumbbell"></i> Ir al Gimnasio (Tienda)
+    </button>
+    <button class="btn-comprar" style="margin: 0; background: linear-gradient(135deg, #00e5ff, #0099ff); color: #000; padding: 14px;" onclick="location.href='index.html'">
+      <i class="fas fa-hammer"></i> Ir a la Fragua (Tienda)
+    </button>
+    <button class="btn-comprar" style="margin: 0; background: linear-gradient(135deg, #b000ff, #ff007f); padding: 14px;" onclick="location.href='index.html'">
+      <i class="fas fa-dungeon"></i> Explorar Mazmorras (Tienda)
+    </button>
+  </div>
 
-window.desequiparRanuraRPG = function(ranuraKey) {
-  if (gamerProfile.equipo && gamerProfile.equipo[ranuraKey]) {
-    gamerProfile.equipo[ranuraKey] = null;
-    window.guardarProgresoRPG();
-    window.mostrarTextoFlotante('Desequipado', '#ffaa00');
-  }
-};
+</main>
 
-window.renderizarInventarioRPG = function() {
-  let cont = document.getElementById('rpgContenedorInventario');
-  if(!cont) return;
-  cont.innerHTML = "";
-
-  if(!gamerProfile.inventario) gamerProfile.inventario = [];
-  
-  let cantMateriales = gamerProfile.inventario.filter(i => i.tipo === 'material').length;
-  document.getElementById('rpgTotalMateriales').innerText = cantMateriales;
-
-  if (gamerProfile.inventario.length === 0) {
-    cont.innerHTML = "<div style='grid-column: 1/-1; color: var(--text-muted); text-align: center; font-size: 0.85em;'>Tu mochila está vacía. Visita la tienda o mazmorras.</div>";
-    return;
-  }
-
-  gamerProfile.inventario.forEach((item) => {
-    let ranuraEquipada = null;
-    if (gamerProfile.equipo) {
-      for (let r in gamerProfile.equipo) {
-        if (gamerProfile.equipo[r] === item.uid_inventario) { ranuraEquipada = r; break; }
-      }
-    }
-    
-    let isEquipped = ranuraEquipada !== null;
-    let cl = isEquipped ? 'rpg-item-card equipped' : 'rpg-item-card';
-    
-    let icono = item.imgUrl ? `<img src="${item.imgUrl}" alt="${window.sanitizarHTML(item.nombre)}">` : (item.tipo === 'material' ? "💎" : "🗡️");
-    let accionClick = (item.ranura && item.ranura !== 'ninguna') ? `window.equiparItemRPG('${item.uid_inventario}')` : ``;
-    let estiloCursor = (item.ranura && item.ranura !== 'ninguna') ? 'cursor: pointer;' : 'cursor: default; opacity: 0.85;';
-    
-    let infoExtra = (item.ranura && item.ranura !== 'ninguna') ? 
-      `ATK +${item.atk || 0} | DEF +${item.def || 0}<br><div style="font-size: 0.7em; margin-top: 4px; color: ${isEquipped ? '#25d366' : '#888'};">${isEquipped ? 'EQUIPADO ('+ranuraEquipada.toUpperCase()+')' : 'Click para equipar'}</div>` : 
-      `<span style="color:#b000ff">Material</span>`;
-
-    let tokensVenta = item.rareza === 'SSR' ? 50 : (item.rareza === 'SR' ? 20 : (item.rareza === 'R' ? 8 : 2));
-    if(item.tipo === 'material') tokensVenta = 3;
-
-    let btnVenderHtml = `<button onclick="event.stopPropagation(); window.venderItemRPG('${item.uid_inventario}', ${tokensVenta})" style="background: rgba(255,170,0,0.15); border: 1px solid rgba(255,170,0,0.4); color: #ffaa00; border-radius: 4px; padding: 3px 8px; font-size: 0.7em; cursor: pointer; margin-top: 6px; font-family: 'Chakra Petch', sans-serif;"><i class="fas fa-coins"></i> Vender (+${tokensVenta})</button>`;
-
-    cont.innerHTML += `
-      <div class="${cl}" style="${estiloCursor}; background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 10px; text-align: center;" onclick="${accionClick}">
-        <div style="font-size: 2em; margin-bottom: 5px;">${icono}</div>
-        <div class="rpg-item-name rareza-${item.rareza}" style="font-weight: bold; font-size: 0.9em;">${window.sanitizarHTML(item.nombre)}</div>
-        <div class="rpg-item-stats" style="font-size: 0.75em; color: var(--text-muted); margin-top: 4px;">${infoExtra}${btnVenderHtml}</div>
-      </div>`;
-  });
-};
-
-window.equiparItemRPG = function(uid_inventario) {
-  let item = gamerProfile.inventario.find(i => i.uid_inventario === uid_inventario);
-  if (!item) return;
-
-  let ranuraDestino = item.ranura;
-  if (!ranuraDestino || ranuraDestino === 'ninguna') return alert("Este objeto no se puede equipar.");
-
-  if (gamerProfile.equipo[ranuraDestino] === uid_inventario) {
-    gamerProfile.equipo[ranuraDestino] = null;
-    window.mostrarTextoFlotante('Desequipado', '#ffaa00');
-  } else {
-    gamerProfile.equipo[ranuraDestino] = uid_inventario;
-    window.mostrarTextoFlotante(`Equipado en ${ranuraDestino.toUpperCase()}`, '#25d366');
-  }
-
-  window.guardarProgresoRPG();
-};
-
-window.venderItemRPG = function(uid_inventario, tokensGanados) {
-  let index = gamerProfile.inventario.findIndex(i => i.uid_inventario === uid_inventario);
-  if(index === -1) return;
-
-  if (gamerProfile.equipo) {
-    for (let r in gamerProfile.equipo) {
-      if (gamerProfile.equipo[r] === uid_inventario) gamerProfile.equipo[r] = null;
-    }
-  }
-
-  gamerProfile.inventario.splice(index, 1);
-  gamerProfile.tokens = (gamerProfile.tokens || 0) + tokensGanados;
-
-  window.guardarProgresoRPG();
-  window.mostrarTextoFlotante(`+${tokensGanados} Tokens 🪙`, '#ffaa00');
-  try{ confetti({ particleCount: 25, spread: 40, colors: ['#ffaa00', '#ffd700'] }); }catch(e){}
-};
-
-window.sanitizarHTML = function(str) { 
-  if (!str) return ''; 
-  return String(str).replace(/[&<>"']/g, function(m) { 
-    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]; 
-  }); 
-};
-
-window.addEventListener('DOMContentLoaded', () => {
-  window.renderizarTodoRPG();
-});
+<!-- Archivo de lógica dedicado al RPG -->
+<script type="module" src="rpg.js"></script>
+</body>
+</html>
