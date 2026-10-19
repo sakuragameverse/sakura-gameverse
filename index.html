@@ -96,71 +96,6 @@
   </div>
 </div>
 
-<!-- MODAL GAMER PROFILE -->
-<div id="modalGamerProfile" class="modal">
-  <div class="modal-content" style="text-align: center;">
-    <button class="cerrar-modal" onclick="cerrarGamerProfileModal()">×</button>
-    <h3 style="color: var(--secondary-color); margin-top: 0;">Perfil de Usuario</h3>
-    <input type="text" id="inputGamerTag" class="sugerencia-input" placeholder="GamerTag / Identificador" style="margin-bottom: 12px; text-align: center; font-weight: bold; font-size: 1.1em;">
-    
-    <div style="background: rgba(0,0,0,0.3); padding: 16px; border-radius: var(--radius-md); margin-bottom: 14px; border: 1px solid var(--glass-border); text-align: left; font-size: 0.9em;">
-      <div style="display: flex; justify-content: space-between;">
-        <span>Rango: <strong id="lblRango" style="color: #ffaa00; font-size: 1.1em;">Genin</strong></span>
-        <span>
-          <strong id="lblTokens" style="color: #ffaa00;"><i class="fas fa-coins"></i> 0</strong> &nbsp;|&nbsp;
-          <strong id="lblXp" style="color: var(--secondary-color);">150</strong> XP
-        </span>
-      </div>
-      <div class="xp-bar-container">
-        <div class="xp-bar-fill" id="barXp"></div>
-      </div>
-      <div style="font-size: 0.8em; color: var(--text-muted); text-align: right; margin-top: 6px;" id="lblXpNext">Calculando siguiente rango...</div>
-      
-      <!-- STATS RPG ACTUALIZADAS CON ENTRENAMIENTO (GIMNASIO) -->
-      <div style="font-size: 0.85em; color: #fff; background: rgba(0, 229, 255, 0.05); padding: 12px; border-radius: 8px; border: 1px dashed rgba(0,229,255,0.3); text-align: center; margin-top: 10px;">
-        <div style="margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 6px;">Clase: <strong id="lblProfesion" style="color: var(--secondary-color); text-transform: uppercase;">Ninguna</strong></div>
-        
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <!-- Entrenamiento HP -->
-          <div style="display: flex; flex-direction: column; align-items: center; width: 30%;">
-            <span style="margin-bottom: 4px;">❤️ HP: <span id="lblHp" style="font-weight: bold; color: #ff3366; font-size: 1.1em;">100</span></span>
-            <button onclick="entrenarStat('hp')" style="background: rgba(255,51,102,0.1); border: 1px solid rgba(255,51,102,0.4); color: #ff3366; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 0.8em; font-family: 'Chakra Petch', sans-serif; transition: all 0.2s ease; width: 100%;" title="Mejorar HP (10 Tokens)">+ <i class="fas fa-coins"></i> 10</button>
-          </div>
-          
-          <!-- Entrenamiento ATK -->
-          <div style="display: flex; flex-direction: column; align-items: center; width: 30%;">
-            <span style="margin-bottom: 4px;">⚔️ ATK: <span id="lblAtk" style="font-weight: bold; color: #ffaa00; font-size: 1.1em;">10</span></span>
-            <button onclick="entrenarStat('atk')" style="background: rgba(255,170,0,0.1); border: 1px solid rgba(255,170,0,0.4); color: #ffaa00; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 0.8em; font-family: 'Chakra Petch', sans-serif; transition: all 0.2s ease; width: 100%;" title="Mejorar Ataque (10 Tokens)">+ <i class="fas fa-coins"></i> 10</button>
-          </div>
-          
-          <!-- Entrenamiento DEF -->
-          <div style="display: flex; flex-direction: column; align-items: center; width: 30%;">
-            <span style="margin-bottom: 4px;">🛡️ DEF: <span id="lblDef" style="font-weight: bold; color: #00e5ff; font-size: 1.1em;">5</span></span>
-            <button onclick="entrenarStat('def')" style="background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.4); color: #00e5ff; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 0.8em; font-family: 'Chakra Petch', sans-serif; transition: all 0.2s ease; width: 100%;" title="Mejorar Defensa (10 Tokens)">+ <i class="fas fa-coins"></i> 10</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- INVENTARIO RPG -->
-    <h4 style="color: #fff; text-align: left; margin-bottom: 5px;"><i class="fas fa-backpack"></i> Inventario</h4>
-    <div style="text-align: left; font-size: 0.8em; color: #00e5ff; margin-bottom: 10px;">
-      <i class="fas fa-gem"></i> Materiales: <strong id="lblTotalMateriales">0</strong>
-    </div>
-    <div id="contenedorInventario" class="rpg-grid" style="margin-bottom: 15px;"></div>
-
-    <!-- COLECCIÓN MULTIVERSO -->
-    <div style="text-align: left; margin-bottom: 14px;">
-      <div style="font-size: 0.85em; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Mi Colección Arcade (<span id="lblTotalWaifusJugador">0</span>)</div>
-      <div id="albumWaifusContenedor" style="display:flex; gap:8px; overflow-x:auto; padding-bottom: 5px; scrollbar-width: none;">
-        <p style="color: var(--text-muted); font-size: 0.8em; margin: 0;">Juega al Gacha para coleccionar.</p>
-      </div>
-    </div>
-    
-    <button class="btn-comprar" onclick="guardarGamerTag()"><i class="fas fa-save"></i> Guardar Perfil Local</button>
-  </div>
-</div>
-
 <div id="modalCloudSave" class="modal">
   <div class="modal-content" style="text-align: center;">
     <button class="cerrar-modal" onclick="cerrarCloudSaveModal()">×</button>
@@ -198,64 +133,6 @@
     </div>
     <div id="resultadoRastreo" style="background: rgba(0,0,0,0.3); padding: 14px; border-radius: var(--radius-sm); border: 1px dashed var(--glass-border); min-height: 80px; display: flex; flex-direction: column; justify-content: center;">
       <p style="color: var(--text-muted); text-align: center; margin: 0; font-size: 0.85em;">Tu estado de cuenta aparecerá aquí.</p>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL EL GREMIO (RPG AVANZADO) -->
-<div id="modalGremio" class="modal">
-  <div class="modal-content" style="text-align: center;">
-    <button class="cerrar-modal" onclick="cerrarGremioModal()">×</button>
-    <h3 style="color: #25d366; margin-top: 0;"><i class="fas fa-campground"></i> Tablón del Gremio</h3>
-    
-    <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: var(--radius-md); border: 1px dashed #25d366; margin-bottom: 15px;">
-      <div id="rpgResultado" style="font-weight: bold; color: #fff; min-height: 40px;">¿Qué deseas hacer hoy, aventurero?</div>
-    </div>
-
-    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-      <button class="btn-comprar" style="margin-top: 0; background: linear-gradient(135deg, #ffaa00, #ff5500);" onclick="accionRPG('cazar')">
-        <i class="fas fa-crosshairs"></i> Cazar<br><span style="font-size: 0.7em;">(XP y Tokens)</span>
-      </button>
-      <button class="btn-comprar" style="margin-top: 0; background: linear-gradient(135deg, #00e5ff, #0099ff); color: #000;" onclick="accionRPG('minar')">
-        <i class="fas fa-hammer"></i> Minar<br><span style="font-size: 0.7em;">(Materiales)</span>
-      </button>
-    </div>
-
-    <h4 style="color: #ff3366; margin-top: 20px; margin-bottom: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;"><i class="fas fa-dungeon"></i> Mazmorras de Jefe (Expediciones)</h4>
-    <div style="display: flex; flex-direction: column; gap: 8px;">
-      <button class="btn-comprar" style="margin-top:0; background: rgba(0, 229, 255, 0.1); border: 1px solid #00e5ff; color: #00e5ff; box-shadow:none;" onclick="entrarMazmorra('facil')">
-        🌲 Bosque Slime (Dificultad Baja)
-      </button>
-      <button class="btn-comprar" style="margin-top:0; background: rgba(176, 0, 255, 0.1); border: 1px solid #b000ff; color: #b000ff; box-shadow:none;" onclick="entrarMazmorra('media')">
-        🦇 Cueva Sangrienta (Dificultad Media)
-      </button>
-      <button class="btn-comprar" style="margin-top:0; background: rgba(255, 51, 102, 0.1); border: 1px solid #ff3366; color: #ff3366; box-shadow:none;" onclick="entrarMazmorra('dificil')">
-        🐉 Torre del Dragón (Dificultad Brutal)
-      </button>
-    </div>
-
-    <!-- RANKING DE JUGADORES (SALÓN DE LA FAMA) -->
-    <h4 style="color: #00e5ff; margin-top: 20px; margin-bottom: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;"><i class="fas fa-trophy"></i> Salón de la Fama</h4>
-    <div id="rankingGremioContainer" style="text-align: left; background: rgba(0,0,0,0.3); border-radius: var(--radius-sm); border: 1px solid var(--glass-border); padding: 10px;">
-       <p style="color: var(--text-muted); font-size: 0.85em; text-align: center;"><i class="fas fa-spinner fa-spin"></i> Cargando leyendas...</p>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL LA FRAGUA (CRAFTEO) -->
-<div id="modalFragua" class="modal">
-  <div class="modal-content" style="text-align: center;">
-    <button class="cerrar-modal" onclick="cerrarFraguaModal()">×</button>
-    <h3 style="color: #ffaa00; margin-top: 0;"><i class="fas fa-fire"></i> La Fragua</h3>
-    <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 15px;">Usa los Materiales que minaste y tus Tokens para forjar equipo y armamento.</p>
-    
-    <div style="display: flex; justify-content: space-around; background: rgba(0,0,0,0.4); padding: 10px; border-radius: var(--radius-sm); border: 1px dashed var(--glass-border); margin-bottom: 15px;">
-      <div style="color: #00e5ff; font-weight: bold;"><i class="fas fa-gem"></i> <span id="fraguaMateriales">0</span> Materiales</div>
-      <div style="color: #ffaa00; font-weight: bold;"><i class="fas fa-coins"></i> <span id="fraguaTokens">0</span> Tokens</div>
-    </div>
-
-    <div id="listaRecetasFragua" style="display: flex; flex-direction: column; gap: 10px; max-height: 350px; overflow-y: auto; padding-right: 5px;">
-      <p style="color: var(--text-muted); font-size: 0.9em;"><i class="fas fa-spinner fa-spin"></i> Calentando la forja...</p>
     </div>
   </div>
 </div>
@@ -426,14 +303,10 @@
     <button id="btnInstalarPWA" class="btn-comprar btn-instalar" style="display: none; margin-bottom: 15px;" onclick="instalarPWA()"><i class="fas fa-download"></i> Instalar App Sakura</button>
 
     <div class="menu-opciones-grid">
-      <!-- ACCESO DIRECTO AL CENTRO RPG -->
-      <a href="rpg.html" class="btn-menu-opcion" style="color: #00e5ff; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3);"><i class="fas fa-dragon"></i> Centro RPG & Paper Doll</a>
+      <!-- CENTRO RPG UNIFICADO -->
+      <a href="rpg.html" class="btn-menu-opcion" style="grid-column: 1 / -1; color: #00e5ff; background: rgba(0,229,255,0.12); border: 1px solid rgba(0,229,255,0.4); padding: 14px; font-size: 1.05em;"><i class="fas fa-dragon"></i> Centro RPG</a>
       
-      <button class="btn-menu-opcion" style="color: #25d366;" onclick="cerrarMenuOpciones(); abrirGremioModal()"><i class="fas fa-campground"></i> El Gremio</button>
-      <button class="btn-menu-opcion" style="color: #ffaa00;" onclick="cerrarMenuOpciones(); abrirFraguaModal()"><i class="fas fa-hammer"></i> La Fragua</button>
-      <button class="btn-menu-opcion" style="color: #00e5ff;" onclick="cerrarMenuOpciones(); abrirGamerProfileModal()"><i class="fas fa-user-ninja"></i> Mi Perfil RPG</button>
       <button class="btn-menu-opcion" style="color: #ff3366;" onclick="cerrarMenuOpciones(); abrirRumbleModal()"><i class="fas fa-skull-crossbones"></i> La Arena</button>
-      
       <button class="btn-menu-opcion" style="color: #00e5ff;" id="btnMenuCloud" onclick="cerrarMenuOpciones(); abrirCloudSaveModal()"><i class="fas fa-cloud"></i> Vincular Nube</button>
       <button class="btn-menu-opcion" style="color: #b000ff;" onclick="cerrarMenuOpciones(); abrirRastreoModal()"><i class="fas fa-radar"></i> Rastrear</button>
       <button class="btn-menu-opcion" style="color: #ffaa00;" onclick="cerrarMenuOpciones(); abrirCofreModal()"><i class="fas fa-gift"></i> Cofre Diario</button>
