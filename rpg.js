@@ -134,7 +134,6 @@ window.renderizarPaperDollGrande = function() {
   let grid = document.getElementById('paperDollGrid');
   if(!grid) return;
 
-  // Distribución simétrica de la silueta corporal clásica en tiempo real
   grid.style.cssText = `
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -327,28 +326,44 @@ window.accionCazaMinas = function(tipo) {
   let msg = "";
 
   if(tipo === 'minar') {
-    let mats = rpgObjetosGlobal.filter(o => o.tipo === 'material');
+    let mats = rpgObjetosGlobal.filter(o => o.tipo === 'material' || o.tipo === 'Material' || !o.ranura || o.ranura === 'ninguna');
+    let itemConseguido;
     if(mats.length > 0) {
       let m = mats[Math.floor(Math.random() * mats.length)];
-      gamerProfile.inventario.push({ ...m, uid_inventario: Date.now().toString() });
-      msg = `¡Minaste con éxito: <strong>${window.sanitizarHTML(m.nombre)}</strong>!`;
+      itemConseguido = { ...m, tipo: 'material', uid_inventario: 'mat_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7) };
     } else {
-      msg = "Extrajiste minerales básicos de la roca.";
+      itemConseguido = {
+        id: 'default_mineral',
+        nombre: 'Mineral de Hierro',
+        tipo: 'material',
+        rareza: 'N',
+        ranura: 'ninguna',
+        atk: 0,
+        def: 0,
+        imgUrl: '',
+        uid_inventario: 'mat_' + Date.now()
+      };
     }
+
+    gamerProfile.inventario.push(itemConseguido);
+    msg = `¡Minaste con éxito: <strong style="color:#00e5ff;">${window.sanitizarHTML(itemConseguido.nombre)}</strong>!`;
   } else {
     let rngDrop = Math.random() * 100;
     if (rngDrop <= 30 && rpgObjetosGlobal.length > 0) {
       let dropItem = rpgObjetosGlobal[Math.floor(Math.random() * rpgObjetosGlobal.length)];
-      gamerProfile.inventario.push({ ...dropItem, uid_inventario: Date.now().toString() });
+      let itemEquipable = { ...dropItem, uid_inventario: 'eq_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7) };
+      gamerProfile.inventario.push(itemEquipable);
       msg = `¡Cacería épica! Botín: <strong class="rareza-${dropItem.rareza}">${window.sanitizarHTML(dropItem.nombre)}</strong>`;
     } else {
       msg = "¡Monstruo abatido en la pradera!";
     }
   }
 
-  gamerProfile.tokens += tokG;
-  gamerProfile.xp += xpG;
+  gamerProfile.tokens = (gamerProfile.tokens || 0) + tokG;
+  gamerProfile.xp = (gamerProfile.xp || 0) + xpG;
+  
   window.guardarProgresoRPG();
+  window.renderizarTodoRPG();
   
   window.mostrarTextoFlotante(`+${xpG} XP | +${tokG} Tokens`, '#25d366');
   document.getElementById('rpgResultadoGremio').innerHTML = `<span style="color:#25d366;">${msg}</span><br><span style="font-size:0.8em; color:var(--text-muted);">+${xpG} XP | +${tokG} Tokens</span>`;
@@ -393,20 +408,25 @@ window.entrarMazmorraRPG = function(dif) {
       let rngDrop = Math.random() * 100;
       if(rngDrop <= 50 && rpgObjetosGlobal.length > 0) {
         let loot = rpgObjetosGlobal[Math.floor(Math.random() * rpgObjetosGlobal.length)];
-        gamerProfile.inventario.push({ ...loot, uid_inventario: Date.now().toString() });
+        let lootItem = { ...loot, uid_inventario: 'loot_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7) };
+        gamerProfile.inventario.push(lootItem);
         premioTxt = `<span class="rareza-${loot.rareza}">${window.sanitizarHTML(loot.nombre)}</span>`;
       }
 
-      gamerProfile.xp += xpW;
-      gamerProfile.tokens += Math.floor(xpW / 8);
+      gamerProfile.xp = (gamerProfile.xp || 0) + xpW;
+      gamerProfile.tokens = (gamerProfile.tokens || 0) + Math.floor(xpW / 8);
+      
       window.guardarProgresoRPG();
+      window.renderizarTodoRPG();
 
       log.innerHTML = `<span style="color:#25d366;"><i class="fas fa-check-circle"></i> ¡Expedición Exitosa en ${zonaNombre}!</span><br>Loot obtenido: <strong>${premioTxt}</strong><br><span style="font-size:0.8em; color:var(--text-muted);">+${xpW} XP</span>`;
       try{ confetti({ particleCount: 70, spread: 70 }); }catch(e){}
     } else {
       let perdida = dif === 'dificil' ? 150 : (dif === 'media' ? 50 : 15);
       gamerProfile.xp -= perdida; if(gamerProfile.xp < 0) gamerProfile.xp = 0;
+      
       window.guardarProgresoRPG();
+      window.renderizarTodoRPG();
 
       log.innerHTML = `<span style="color:#ff3366;"><i class="fas fa-skull"></i> Derrota en ${zonaNombre} (${poder}/${req} Poder).</span><br><span style="font-size:0.8em;">Perdiste <strong style="color:#ffaa00;">${perdida} XP</strong>. ¡Mejora tu equipo!</span>`;
     }
@@ -462,7 +482,7 @@ window.forjarItemRPG = function(idArma, costoMat, costoTok) {
   gamerProfile.tokens -= costoTok;
   let borrados = 0;
   gamerProfile.inventario = gamerProfile.inventario.filter(i => { if(i.tipo === 'material' && borrados < costoMat) { borrados++; return false; } return true; });
-  gamerProfile.inventario.push({ ...arma, uid_inventario: Date.now().toString() });
+  gamerProfile.inventario.push({ ...arma, uid_inventario: 'forj_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7) });
 
   window.guardarProgresoRPG();
   alert(`¡Has forjado: ${arma.nombre}!`);
