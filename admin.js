@@ -128,45 +128,62 @@ window.guardarAjustesWeb = async function(e) {
   } catch(err) { console.warn("Error Guardar CMS:", err); } 
 };
 
-/* LÓGICA DEL SISTEMA RPG (FORJA, RANURAS Y RUMBLE) */
+/* LÓGICA DEL SISTEMA RPG (FORJA, RANURAS, FILTROS Y RUMBLE) */
 async function cargarObjetosRPGAdmin() {
   try {
     const q = query(collection(db, "rpg_objetos"), orderBy("timestamp", "desc"));
     const snapshot = await getDocs(q);
     rpgObjetosAdminGlobal = [];
-    const cont = document.getElementById('listaObjetosRPGAdmin');
-    if (snapshot.empty) { cont.innerHTML = "<p style='text-align:center; color:var(--text-muted);'>No hay objetos forjados aún.</p>"; return; }
-    
-    let html = "";
     snapshot.forEach(docSnap => {
-      const obj = { id: docSnap.id, ...docSnap.data() };
-      rpgObjetosAdminGlobal.push(obj);
-      let imgDisplay = obj.imgUrl ? `<img src="${obj.imgUrl}" class="item-card-thumb" style="object-fit:cover;">` : `<div class="item-card-thumb" style="display:flex; align-items:center; justify-content:center; font-size:1.5em;">🗡️</div>`;
-      let ranuraTexto = obj.ranura ? obj.ranura.toUpperCase() : 'NINGUNA';
-      
-      html += `
-      <div class="item-card-row">
-        ${imgDisplay}
-        <div class="item-card-info">
-          <div class="item-card-title rareza-${obj.rareza}">${sanitizar(obj.nombre)}</div>
-          <div class="item-card-meta"><span>${obj.tipo.toUpperCase()}</span> • <span class="tag-badge tag-${obj.rareza.toLowerCase()}">${obj.rareza}</span> • <span style="color:#00e5ff;">Ranura: ${ranuraTexto}</span></div>
-        </div>
-        <div class="item-card-actions">
-          <button class="btn-action-touch btn-edit" onclick="prepararEdicionRPG('${obj.id}')"><i class="fas fa-pen"></i></button>
-          <button class="btn-action-touch btn-del" onclick="eliminarObjetoRPG('${obj.id}')"><i class="fas fa-trash"></i></button>
-        </div>
-      </div>`;
+      rpgObjetosAdminGlobal.push({ id: docSnap.id, ...docSnap.data() });
     });
-    cont.innerHTML = html;
+    
+    // Renderizamos con el filtro actual seleccionado
+    renderizarListaRPGAdmin();
   } catch(e) { console.warn("Error cargar RPG:", e); }
 }
+
+window.renderizarListaRPGAdmin = function() {
+  const cont = document.getElementById('listaObjetosRPGAdmin');
+  const filtroRanura = document.getElementById('filtroRanuraAdmin')?.value || 'todos';
+  
+  let objetosFiltrados = rpgObjetosAdminGlobal;
+  if (filtroRanura !== 'todos') {
+    objetosFiltrados = rpgObjetosAdminGlobal.filter(obj => (obj.ranura || 'ninguna') === filtroRanura);
+  }
+
+  if (objetosFiltrados.length === 0) { 
+    cont.innerHTML = "<p style='text-align:center; color:var(--text-muted);'>No hay objetos en esta categoría.</p>"; 
+    return; 
+  }
+  
+  let html = "";
+  objetosFiltrados.forEach(obj => {
+    let imgDisplay = obj.imgUrl ? `<img src="${obj.imgUrl}" class="item-card-thumb" style="object-fit:cover;">` : `<div class="item-card-thumb" style="display:flex; align-items:center; justify-content:center; font-size:1.5em;">🗡️</div>`;
+    let ranuraTexto = obj.ranura ? obj.ranura.toUpperCase() : 'NINGUNA';
+    
+    html += `
+    <div class="item-card-row">
+      ${imgDisplay}
+      <div class="item-card-info">
+        <div class="item-card-title rareza-${obj.rareza}">${sanitizar(obj.nombre)}</div>
+        <div class="item-card-meta"><span>${obj.tipo.toUpperCase()}</span> • <span class="tag-badge tag-${obj.rareza.toLowerCase()}">${obj.rareza}</span> • <span style="color:#00e5ff;">Ranura: ${ranuraTexto}</span></div>
+      </div>
+      <div class="item-card-actions">
+        <button class="btn-action-touch btn-edit" onclick="prepararEdicionRPG('${obj.id}')"><i class="fas fa-pen"></i></button>
+        <button class="btn-action-touch btn-del" onclick="eliminarObjetoRPG('${obj.id}')"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`;
+  });
+  cont.innerHTML = html;
+};
 
 window.guardarObjetoRPG = async function(btnElement) {
   let idEdit = document.getElementById('rpgEditId').value;
   let nombre = document.getElementById('rpgItemNombre').value.trim();
   let tipo = document.getElementById('rpgItemTipo').value;
   let rareza = document.getElementById('rpgItemRareza').value;
-  let ranura = document.getElementById('rpgItemRanura').value; // NUEVA PROPIEDAD RANURA
+  let ranura = document.getElementById('rpgItemRanura').value;
   let atk = parseInt(document.getElementById('rpgItemAtk').value) || 0;
   let def = parseInt(document.getElementById('rpgItemDef').value) || 0;
   let fileInput = document.getElementById('rpgItemImg');
@@ -184,7 +201,7 @@ window.guardarObjetoRPG = async function(btnElement) {
       nombre: nombre, 
       tipo: tipo, 
       rareza: rareza, 
-      ranura: ranura, // GUARDAMOS LA RANURA
+      ranura: ranura,
       stats: { atk: atk, def: def },
       timestamp: Date.now() 
     };
@@ -217,7 +234,7 @@ window.prepararEdicionRPG = function(id) {
   document.getElementById('rpgItemNombre').value = obj.nombre || '';
   document.getElementById('rpgItemTipo').value = obj.tipo || 'arma';
   document.getElementById('rpgItemRareza').value = obj.rareza || 'N';
-  document.getElementById('rpgItemRanura').value = obj.ranura || 'ninguna'; // CARGAR RANURA EN EDICIÓN
+  document.getElementById('rpgItemRanura').value = obj.ranura || 'ninguna';
   document.getElementById('rpgItemAtk').value = obj.stats?.atk || 0;
   document.getElementById('rpgItemDef').value = obj.stats?.def || 0;
   document.getElementById('rpgItemImg').value = ""; 
