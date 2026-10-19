@@ -2,7 +2,6 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <!-- Viewport corregido para mejor accesibilidad en móviles -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard | Sakura Gameverse</title>
   <link rel="icon" type="image/webp" href="logo.webp?v=2">
@@ -10,8 +9,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  
-  <!-- Enlace a tu nuevo archivo de estilos -->
   <link rel="stylesheet" href="admin.css">
 </head>
 <body>
@@ -54,7 +51,6 @@
   </div>
 
   <section id="panel-ajustes" class="admin-panel">
-    <!-- PANEL DE CONFIGURACIÓN CMS -->
     <div class="card-panel">
       <div class="panel-header"><span class="panel-title"><i class="fas fa-cogs"></i> Configuración del Sitio (CMS)</span></div>
       <form onsubmit="guardarAjustesWeb(event)">
@@ -72,7 +68,6 @@
       </form>
     </div>
 
-    <!-- NUEVO PANEL: SEGURIDAD Y CAMBIO DE CONTRASEÑA -->
     <div class="card-panel" style="margin-top: 20px; border-color: rgba(255, 170, 0, 0.4);">
       <div class="panel-header"><span class="panel-title" style="color: #ffaa00;"><i class="fas fa-key"></i> Seguridad de la Cuenta</span></div>
       <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 15px;">Renueva la contraseña de acceso al administrador periódicamente por seguridad.</p>
@@ -92,7 +87,6 @@
     </div>
   </section>
 
-  <!-- GACHA WAIFUS -->
   <section id="panel-gacha" class="admin-panel">
     <button class="btn-toggle-box" onclick="toggleFormWaifu()"><i class="fas fa-plus"></i> <span id="lblToggleWaifu">Agregar Tarjeta Waifu</span></button>
     <div class="card-panel" id="cajaFormWaifu" style="display: none;">
@@ -126,7 +120,6 @@
     </div>
   </section>
 
-  <!-- JUGADORES -->
   <section id="panel-jugadores" class="admin-panel">
     <div class="card-panel">
       <div class="panel-header"><span class="panel-title"><i class="fas fa-users"></i> Base de Jugadores</span></div>
@@ -135,7 +128,6 @@
     </div>
   </section>
 
-  <!-- INVENTARIO -->
   <section id="panel-productos" class="admin-panel active">
     <button class="btn-toggle-box" onclick="toggleFormularioProducto()"><i class="fas fa-plus"></i> <span id="lblToggleForm">Crear Nuevo Producto</span></button>
     <div class="card-panel" id="cajaFormProducto" style="display: none;">
@@ -181,16 +173,15 @@
     </div>
   </section>
 
-  <!-- NUEVA PESTAÑA: SISTEMA RPG Y RUMBLE -->
+  <!-- PESTAÑA: SISTEMA RPG Y FORJA -->
   <section id="panel-rpg" class="admin-panel">
     <div class="card-panel" style="border-color: rgba(0, 229, 255, 0.4);">
       <div class="panel-header">
         <span class="panel-title" style="color: #00e5ff;"><i class="fas fa-hammer"></i> Forja de Objetos RPG</span>
         <button style="background:none; border:none; color:#ff3366; cursor:pointer; font-weight:bold;" onclick="resetFormularioRPG()">Limpiar</button>
       </div>
-      <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 15px;">Crea o edita armas, armaduras o materiales y súbeles su arte Pixel Art.</p>
+      <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 15px;">Crea o edita equipamiento asignando su ranura corporal correspondiente para el Paper Doll.</p>
       
-      <!-- Campo oculto para saber si estamos editando -->
       <input type="hidden" id="rpgEditId" value="">
       
       <div style="display: flex; gap: 10px; margin-bottom: 10px;">
@@ -199,8 +190,34 @@
       </div>
       
       <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-        <select id="rpgItemTipo" class="form-select"><option value="arma">Arma / Equipo</option><option value="material">Material</option><option value="consumible">Poción</option></select>
-        <select id="rpgItemRareza" class="form-select"><option value="N">Común (N)</option><option value="R">Raro (R)</option><option value="SR">Épico (SR)</option><option value="SSR">Legendario (SSR)</option></select>
+        <select id="rpgItemTipo" class="form-select">
+          <option value="arma">Equipo / Pieza</option>
+          <option value="material">Material de Forja</option>
+          <option value="consumible">Poción / Consumible</option>
+        </select>
+        <select id="rpgItemRareza" class="form-select">
+          <option value="N">Común (N)</option>
+          <option value="R">Raro (R)</option>
+          <option value="SR">Épico (SR)</option>
+          <option value="SSR">Legendario (SSR)</option>
+        </select>
+      </div>
+
+      <!-- NUEVO: SELECTOR DE RANURA CORPORAL (PAPER DOLL) -->
+      <div class="form-group" style="margin-bottom: 10px;">
+        <label class="form-label" style="color: var(--secondary-color);">Ranura de Equipamiento (Paper Doll):</label>
+        <select id="rpgItemRanura" class="form-select">
+          <option value="cabeza">🪖 Cabeza (Casco / Sombrero)</option>
+          <option value="pecho">🛡️ Pecho (Armadura / Túnica)</option>
+          <option value="piernas">👖 Piernas (Pantalones)</option>
+          <option value="pies">🥾 Pies (Botas / Zapatos)</option>
+          <option value="mano_derecha">🗡️ Mano Derecha (Arma Principal)</option>
+          <option value="mano_izquierda">🛡️ Mano Izquierda (Escudo / Arma Sec.)</option>
+          <option value="amuleto">📿 Amuleto (Collar)</option>
+          <option value="anillo">💍 Anillo</option>
+          <option value="mascota">🐾 Mascota / Acompañante</option>
+          <option value="ninguna">📦 Ninguna (Solo Material / Consumible)</option>
+        </select>
       </div>
       
       <div style="display: flex; gap: 10px; margin-bottom: 10px;">
@@ -210,7 +227,6 @@
       <button onclick="guardarObjetoRPG(this)" class="btn-submit" style="background: rgba(0, 229, 255, 0.1); color: #00e5ff; border: 1px solid #00e5ff;">Forjar / Actualizar Objeto</button>
     </div>
 
-    <!-- NUEVO: LISTA DE OBJETOS PARA EDITARLOS -->
     <div class="card-panel">
       <div class="panel-header"><span class="panel-title"><i class="fas fa-list"></i> Inventario de la Forja</span></div>
       <div id="listaObjetosRPGAdmin"><p style="text-align:center; color: var(--text-muted);"><i class="fas fa-spinner fa-spin"></i> Cargando objetos...</p></div>
@@ -223,7 +239,6 @@
     </div>
   </section>
 
-  <!-- PEDIDOS -->
   <section id="panel-pedidos" class="admin-panel">
     <div class="card-panel"><div class="panel-header" style="margin-bottom: 8px;"><span class="panel-title"><i class="fas fa-chart-line"></i> Ingresos (7 días)</span></div><div style="height:180px;"><canvas id="graficoVentas"></canvas></div></div>
     <button class="btn-toggle-box" onclick="toggleCajaPedidoManual()"><i class="fas fa-plus"></i> Registrar Pedido</button>
@@ -239,7 +254,6 @@
     <div class="card-panel"><div class="panel-header"><span class="panel-title"><i class="fas fa-truck"></i> Órdenes (<span id="totalPedidosLbl">0</span>)</span></div><div id="listaPedidosMobile"></div></div>
   </section>
 
-  <!-- FACTURAS -->
   <section id="panel-facturas" class="admin-panel">
     <button class="btn-toggle-box" onclick="toggleCajaFactura()"><i class="fas fa-file-invoice-dollar"></i> Emitir Nueva Factura / Recibo</button>
     <div class="card-panel" id="cajaFacturaManual" style="display: none;">
@@ -254,7 +268,6 @@
     <div class="card-panel"><div class="panel-header"><span class="panel-title"><i class="fas fa-file-invoice"></i> Historial (<span id="totalFacturasLbl">0</span>)</span></div><div id="listaFacturasMobile"></div></div>
   </section>
 
-  <!-- BANNERS, CUPONES, PAGOS, REVIEWS, RANGOS -->
   <section id="panel-banners" class="admin-panel"><div class="card-panel"><div class="panel-header"><span class="panel-title"><i class="fas fa-plus"></i> Añadir Banner</span></div><form onsubmit="agregarBanner(event)"><div class="form-group"><input type="file" id="bannerFileInput" accept="image/*" class="form-input" style="padding:10px;" required></div><button type="submit" class="btn-submit" id="btnSubirBanner">Publicar</button></form></div><div class="card-panel"><div class="panel-header"><span class="panel-title"><i class="fas fa-images"></i> Banners Activos</span></div><div id="listaBannersAdmin"></div></div></section>
   <section id="panel-cupones" class="admin-panel"><div class="card-panel"><div class="panel-header"><span class="panel-title"><i class="fas fa-plus"></i> Nuevo Cupón</span></div><form onsubmit="agregarCupon(event)"><div class="form-group"><input type="text" id="cuponCodigo" class="form-input" placeholder="CÓDIGO" style="text-transform:uppercase;" required></div><div class="form-group"><input type="number" id="cuponPorcentaje" class="form-input" placeholder="%" required></div><button type="submit" class="btn-submit">Activar</button></form></div><div class="card-panel"><div class="panel-header"><span class="panel-title"><i class="fas fa-tags"></i> Cupones Activos</span></div><div id="listaCuponesAdmin"></div></div></section>
   <section id="panel-pagos" class="admin-panel"><div class="card-panel"><div class="panel-header"><span class="panel-title"><i class="fas fa-wallet"></i> Pagos</span></div><form onsubmit="guardarDatosPago(event)"><div class="form-group"><label>Banco:</label><input type="text" id="pagoBanco" class="form-input" required></div><div class="form-group"><label>Teléfono:</label><input type="text" id="pagoTelefono" class="form-input" required></div><div class="form-group"><label>Cédula:</label><input type="text" id="pagoCedula" class="form-input" required></div><div class="form-group"><label>Binance:</label><input type="text" id="pagoBinance" class="form-input" required></div><button type="submit" class="btn-submit">Actualizar</button></form></div></section>
@@ -266,7 +279,6 @@
   <h2>SAKURA GAMEVERSE</h2><p style="text-align:center;">Comprobante de Venta</p><div class="divider"></div><p><strong>Fecha:</strong> <span id="printFecha"></span></p><p><strong>Cliente:</strong> <span id="printCliente"></span></p><p><strong>C.I / ID:</strong> <span id="printCedula"></span></p><p><strong>Pago vía:</strong> <span id="printMetodo"></span></p><div class="divider"></div><p><strong>Detalle de Compra:</strong></p><pre id="printDetalles" style="font-family:inherit; white-space: pre-wrap; margin: 5px 0; font-size: 14px;"></pre><div class="divider"></div><p style="text-align:right; font-size: 1.2em;"><strong>TOTAL USD: $<span id="printTotal"></span></strong></p><p style="text-align:center; margin-top:20px; font-size: 0.9em;">¡Gracias por tu compra!</p>
 </div>
 
-<!-- Enlace a tu nuevo archivo JavaScript -->
 <script type="module" src="admin.js"></script>
 </body>
 </html>
