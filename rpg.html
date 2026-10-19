@@ -63,13 +63,13 @@
     </div>
   </div>
 
-  <!-- INTERFAZ PAPER DOLL (MUÑECA DE PAPEL) -->
+  <!-- INTERFAZ PAPER DOLL (SILUETA CORPORAL) -->
   <div class="card-panel" style="background: rgba(14, 4, 31, 0.85); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 20px; margin-bottom: 20px; text-align: center;">
     <h3 style="color: var(--secondary-color); margin-top: 0; margin-bottom: 15px;"><i class="fas fa-user-ninja"></i> Panel de Equipamiento (Paper Doll)</h3>
-    <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 20px;">Haz clic en cualquier ranura para desequipar el objeto correspondiente.</p>
+    <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 20px;">Haz clic en cualquier ranura para desequipar el objeto.</p>
     
-    <!-- Cuadrícula de 9 Ranuras -->
-    <div id="paperDollGrid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 100%; margin: 0 auto;">
+    <!-- Cuadrícula en forma de silueta -->
+    <div id="paperDollGrid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 320px; margin: 0 auto;">
       <!-- Se llenará dinámicamente desde el script -->
     </div>
   </div>
@@ -85,16 +85,16 @@
     </div>
   </div>
 
-  <!-- ACCESOS RÁPIDOS A ACTIVIDADES (GIMNASIO, FORJA, MAZMORRAS) -->
+  <!-- ACCESOS RÁPIDOS A ACTIVIDADES RPG -->
   <div style="display: flex; flex-direction: column; gap: 10px;">
-    <button class="btn-comprar" style="margin: 0; background: linear-gradient(135deg, #ffaa00, #ff5500); padding: 14px;" onclick="location.href='index.html'">
-      <i class="fas fa-dumbbell"></i> Ir al Gimnasio (Tienda)
+    <button class="btn-comprar" style="margin: 0; background: linear-gradient(135deg, #ffaa00, #ff5500); padding: 14px;" onclick="window.abrirGimnasioPrompt()">
+      <i class="fas fa-dumbbell"></i> Gimnasio (Entrenar Stats)
     </button>
-    <button class="btn-comprar" style="margin: 0; background: linear-gradient(135deg, #00e5ff, #0099ff); color: #000; padding: 14px;" onclick="location.href='index.html'">
-      <i class="fas fa-hammer"></i> Ir a la Fragua (Tienda)
+    <button class="btn-comprar" style="margin: 0; background: linear-gradient(135deg, #00e5ff, #0099ff); color: #000; padding: 14px;" onclick="window.abrirFraguaRPG()">
+      <i class="fas fa-hammer"></i> La Fragua (Craftear Equipo)
     </button>
-    <button class="btn-comprar" style="margin: 0; background: linear-gradient(135deg, #b000ff, #ff007f); padding: 14px;" onclick="location.href='index.html'">
-      <i class="fas fa-dungeon"></i> Explorar Mazmorras (Tienda)
+    <button class="btn-comprar" style="margin: 0; background: linear-gradient(135deg, #b000ff, #ff007f); padding: 14px;" onclick="window.abrirMazmorrasRPG()">
+      <i class="fas fa-dungeon"></i> Expediciones y Mazmorras
     </button>
   </div>
 
