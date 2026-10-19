@@ -203,7 +203,7 @@
         </select>
       </div>
 
-      <!-- NUEVO: SELECTOR DE RANURA CORPORAL (PAPER DOLL) -->
+      <!-- SELECTOR DE RANURA CORPORAL -->
       <div class="form-group" style="margin-bottom: 10px;">
         <label class="form-label" style="color: var(--secondary-color);">Ranura de Equipamiento (Paper Doll):</label>
         <select id="rpgItemRanura" class="form-select">
@@ -227,8 +227,24 @@
       <button onclick="guardarObjetoRPG(this)" class="btn-submit" style="background: rgba(0, 229, 255, 0.1); color: #00e5ff; border: 1px solid #00e5ff;">Forjar / Actualizar Objeto</button>
     </div>
 
+    <!-- INVENTARIO DE LA FORJA CON EL FILTRO DESPLEGABLE INTEGRADO -->
     <div class="card-panel">
-      <div class="panel-header"><span class="panel-title"><i class="fas fa-list"></i> Inventario de la Forja</span></div>
+      <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <span class="panel-title"><i class="fas fa-list"></i> Inventario de la Forja</span>
+        <select id="filtroRanuraAdmin" class="form-select" style="max-width: 180px; padding: 6px;" onchange="renderizarListaRPGAdmin()">
+          <option value="todos">🗂️ Ver Todas</option>
+          <option value="cabeza">🪖 Cabeza</option>
+          <option value="pecho">🛡️ Pecho</option>
+          <option value="piernas">👖 Piernas</option>
+          <option value="pies">🥾 Pies</option>
+          <option value="mano_derecha">🗡️ Mano Der.</option>
+          <option value="mano_izquierda">🛡️ Mano Izq.</option>
+          <option value="amuleto">📿 Amuleto</option>
+          <option value="anillo">💍 Anillo</option>
+          <option value="mascota">🐾 Mascota</option>
+          <option value="ninguna">📦 Ninguna</option>
+        </select>
+      </div>
       <div id="listaObjetosRPGAdmin"><p style="text-align:center; color: var(--text-muted);"><i class="fas fa-spinner fa-spin"></i> Cargando objetos...</p></div>
     </div>
 
