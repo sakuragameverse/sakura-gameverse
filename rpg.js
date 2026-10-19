@@ -59,7 +59,7 @@ window.cargarObjetosRPG = async function() {
       rpgObjetosGlobal.push({ 
         id: d.id, 
         nombre: obj.nombre, 
-        tipo: obj.tipo || 'arma', 
+        tipo: (obj.tipo || 'arma').toLowerCase(), 
         rareza: obj.rareza || 'N', 
         ranura: obj.ranura || 'ninguna',
         atk: obj.stats?.ataque || obj.stats?.atk || 0, 
@@ -189,18 +189,34 @@ window.desequiparRanuraRPG = function(ranuraKey) {
   }
 };
 
+// ==========================================
+// MOCHILA OPTIMIZADA CON GRILLA DE 2 COLUMNAS Y ESTÉTICA LIMPIA
+// ==========================================
 window.renderizarInventarioRPG = function() {
   let cont = document.getElementById('rpgContenedorInventario');
   if(!cont) return;
+
+  // Aplicamos un grid estilizado de 2 columnas para una experiencia visual de videojuego ordenada
+  cont.style.cssText = `
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    max-height: 380px;
+    overflow-y: auto;
+    padding-right: 4px;
+  `;
+
   cont.innerHTML = "";
 
   if(!gamerProfile.inventario) gamerProfile.inventario = [];
   
-  let cantMateriales = gamerProfile.inventario.filter(i => i.tipo === 'material').length;
-  document.getElementById('rpgTotalMateriales').innerText = cantMateriales;
+  // Conteo preciso de materiales
+  let cantMateriales = gamerProfile.inventario.filter(i => (i.tipo || '').toLowerCase() === 'material').length;
+  let lblMat = document.getElementById('rpgTotalMateriales');
+  if(lblMat) lblMat.innerText = cantMateriales;
 
   if (gamerProfile.inventario.length === 0) {
-    cont.innerHTML = "<div style='grid-column: 1/-1; color: var(--text-muted); text-align: center; font-size: 0.85em;'>Mochila vacía. ¡Explora las mazmorras!</div>";
+    cont.innerHTML = "<div style='grid-column: 1/-1; color: var(--text-muted); text-align: center; font-size: 0.85em; padding: 15px;'>Mochila vacía. ¡Explora las mazmorras o mina recursos!</div>";
     return;
   }
 
@@ -213,35 +229,43 @@ window.renderizarInventarioRPG = function() {
     }
     
     let isEquipped = ranuraEquipada !== null;
-    let cl = isEquipped ? 'rpg-item-card equipped' : 'rpg-item-card';
-    let icono = item.imgUrl ? `<img src="${item.imgUrl}" alt="${window.sanitizarHTML(item.nombre)}">` : (item.tipo === 'material' ? "💎" : (item.tipo === 'consumible' ? "🧪" : "🗡️"));
+    let tipoLower = (item.tipo || '').toLowerCase();
+    
+    let icono = item.imgUrl ? 
+      `<img src="${item.imgUrl}" alt="${window.sanitizarHTML(item.nombre)}" style="width: 36px; height: 36px; object-fit: contain; image-rendering: pixelated; margin-bottom: 4px;">` : 
+      (tipoLower === 'material' ? "💎" : (tipoLower === 'consumible' ? "🧪" : "🗡️"));
     
     let accionClick = "";
-    let estiloCursor = "cursor: default; opacity: 0.85;";
+    let estiloCursor = "cursor: default;";
     let infoExtra = "";
 
-    if (item.tipo === 'consumible') {
+    if (tipoLower === 'consumible') {
       accionClick = `window.usarConsumibleRPG('${item.uid_inventario}')`;
       estiloCursor = "cursor: pointer;";
-      infoExtra = `<span style="color:#ff3366">Consumible (Click usar)</span>`;
+      infoExtra = `<span style="color:#ff3366; font-size: 0.65em;">Usar poción</span>`;
     } else if (item.ranura && item.ranura !== 'ninguna') {
       accionClick = `window.equiparItemRPG('${item.uid_inventario}')`;
       estiloCursor = "cursor: pointer;";
-      infoExtra = `ATK +${item.atk || 0} | DEF +${item.def || 0}<br><div style="font-size: 0.7em; margin-top: 2px; color: ${isEquipped ? '#25d366' : '#888'};">${isEquipped ? 'EQUIPADO' : 'Click equipar'}</div>`;
+      infoExtra = `<span style="font-size: 0.65em; color: ${isEquipped ? '#25d366' : 'var(--text-muted)'};">${isEquipped ? 'EQUIPADO' : 'ATK+'+(item.atk||0)+' | DEF+'+(item.def||0)}</span>`;
     } else {
-      infoExtra = `<span style="color:#b000ff">Material</span>`;
+      infoExtra = `<span style="color:#b000ff; font-size: 0.65em;">Material de Forja</span>`;
     }
 
     let tokensVenta = item.rareza === 'SSR' ? 50 : (item.rareza === 'SR' ? 20 : (item.rareza === 'R' ? 8 : 2));
-    if(item.tipo === 'material') tokensVenta = 3;
+    if(tipoLower === 'material') tokensVenta = 3;
 
-    let btnVenderHtml = `<button onclick="event.stopPropagation(); window.venderItemRPG('${item.uid_inventario}', ${tokensVenta})" style="background: rgba(255,170,0,0.15); border: 1px solid rgba(255,170,0,0.4); color: #ffaa00; border-radius: 4px; padding: 2px 6px; font-size: 0.65em; cursor: pointer; margin-top: 4px; font-family: 'Chakra Petch', sans-serif;"><i class="fas fa-coins"></i> Vender (+${tokensVenta})</button>`;
+    let btnVenderHtml = `<button onclick="event.stopPropagation(); window.venderItemRPG('${item.uid_inventario}', ${tokensVenta})" style="background: rgba(255,170,0,0.15); border: 1px solid rgba(255,170,0,0.4); color: #ffaa00; border-radius: 4px; padding: 2px 6px; font-size: 0.6em; cursor: pointer; margin-top: 4px; font-family: 'Chakra Petch', sans-serif;"><i class="fas fa-coins"></i> Vender (+${tokensVenta})</button>`;
+
+    let bordeColor = isEquipped ? 'rgba(37,211,102,0.6)' : 'var(--glass-border)';
 
     cont.innerHTML += `
-      <div class="${cl}" style="${estiloCursor}; background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 8px; text-align: center;" onclick="${accionClick}">
-        <div style="font-size: 1.8em; margin-bottom: 2px;">${icono}</div>
-        <div class="rpg-item-name rareza-${item.rareza}" style="font-weight: bold; font-size: 0.8em;">${window.sanitizarHTML(item.nombre)}</div>
-        <div class="rpg-item-stats" style="font-size: 0.7em; color: var(--text-muted); margin-top: 2px;">${infoExtra}${btnVenderHtml}</div>
+      <div style="${estiloCursor} background: rgba(0,0,0,0.45); border: 1px solid ${bordeColor}; border-radius: 8px; padding: 8px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: space-between; transition: all 0.2s ease;" onclick="${accionClick}">
+        <div>
+          <div style="height: 40px; display: flex; align-items: center; justify-content: center;">${icono}</div>
+          <div class="rareza-${item.rareza}" style="font-weight: bold; font-size: 0.75em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">${window.sanitizarHTML(item.nombre)}</div>
+          <div style="margin-top: 2px;">${infoExtra}</div>
+        </div>
+        <div>${btnVenderHtml}</div>
       </div>`;
   });
 };
@@ -326,7 +350,7 @@ window.accionCazaMinas = function(tipo) {
   let msg = "";
 
   if(tipo === 'minar') {
-    let mats = rpgObjetosGlobal.filter(o => o.tipo === 'material' || o.tipo === 'Material' || !o.ranura || o.ranura === 'ninguna');
+    let mats = rpgObjetosGlobal.filter(o => (o.tipo || '').toLowerCase() === 'material' || !o.ranura || o.ranura === 'ninguna');
     let itemConseguido;
     if(mats.length > 0) {
       let m = mats[Math.floor(Math.random() * mats.length)];
@@ -436,14 +460,14 @@ window.entrarMazmorraRPG = function(dif) {
 window.renderizarFraguaRPG = function() {
   let cont = document.getElementById('listaRecetasFragua');
   if(!cont) return;
-  let armas = rpgObjetosGlobal.filter(o => o.tipo === 'arma');
+  let armas = rpgObjetosGlobal.filter(o => (o.tipo || '').toLowerCase() === 'arma');
   
   if(armas.length === 0) {
     cont.innerHTML = "<p style='color: var(--text-muted); font-size: 0.85em; text-align: center;'>No hay recetas en el servidor.</p>";
     return;
   }
 
-  let cantMat = gamerProfile.inventario.filter(i => i.tipo === 'material').length;
+  let cantMat = gamerProfile.inventario.filter(i => (i.tipo || '').toLowerCase() === 'material').length;
   let html = "";
   
   armas.forEach(a => {
@@ -474,14 +498,14 @@ window.renderizarFraguaRPG = function() {
 };
 
 window.forjarItemRPG = function(idArma, costoMat, costoTok) {
-  let cantMat = gamerProfile.inventario.filter(i => i.tipo === 'material').length;
+  let cantMat = gamerProfile.inventario.filter(i => (i.tipo || '').toLowerCase() === 'material').length;
   if(cantMat < costoMat || (gamerProfile.tokens || 0) < costoTok) return alert("Recursos insuficientes.");
   let arma = rpgObjetosGlobal.find(o => o.id === idArma);
   if(!arma) return;
 
   gamerProfile.tokens -= costoTok;
   let borrados = 0;
-  gamerProfile.inventario = gamerProfile.inventario.filter(i => { if(i.tipo === 'material' && borrados < costoMat) { borrados++; return false; } return true; });
+  gamerProfile.inventario = gamerProfile.inventario.filter(i => { if((i.tipo || '').toLowerCase() === 'material' && borrados < costoMat) { borrados++; return false; } return true; });
   gamerProfile.inventario.push({ ...arma, uid_inventario: 'forj_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7) });
 
   window.guardarProgresoRPG();
