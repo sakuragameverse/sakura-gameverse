@@ -13,7 +13,6 @@ onAuthStateChanged(auth, (user) => {
   if (user && user.email.toLowerCase() === CORREO_ADMIN.toLowerCase()) { 
     document.getElementById('lockScreen').style.display = 'none'; 
     document.getElementById('adminMainContent').style.display = 'block'; 
-    // LAZY LOADING ACTIVADO: Solo cargamos productos y ajustes al iniciar
     cargarProductosAdmin(); 
     cargarAjustesWeb(); 
   } else { 
@@ -53,7 +52,6 @@ window.iniciarSesionAdmin = async function() {
 
 window.cerrarSesionAdmin = async function() { if (confirm("¿Cerrar sesión?")) await signOut(auth); };
 
-// LAZY LOADING ACTIVADO: Carga bajo demanda al cambiar de pestaña
 window.cambiarSeccion = function(panelId) { 
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); 
   document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active')); 
@@ -100,7 +98,6 @@ window.cambiarContrasenaAdmin = async function(e) {
   }
 };
 
-/* AJUSTES WEB */
 async function cargarAjustesWeb() { 
   try { 
     const snap = await getDoc(doc(db, "configuracion", "ajustes_web")); 
@@ -131,7 +128,7 @@ window.guardarAjustesWeb = async function(e) {
   } catch(err) { console.warn("Error Guardar CMS:", err); } 
 };
 
-/* LÓGICA DEL SISTEMA RPG (FORJA Y RUMBLE) */
+/* LÓGICA DEL SISTEMA RPG (FORJA, RANURAS Y RUMBLE) */
 async function cargarObjetosRPGAdmin() {
   try {
     const q = query(collection(db, "rpg_objetos"), orderBy("timestamp", "desc"));
@@ -145,13 +142,14 @@ async function cargarObjetosRPGAdmin() {
       const obj = { id: docSnap.id, ...docSnap.data() };
       rpgObjetosAdminGlobal.push(obj);
       let imgDisplay = obj.imgUrl ? `<img src="${obj.imgUrl}" class="item-card-thumb" style="object-fit:cover;">` : `<div class="item-card-thumb" style="display:flex; align-items:center; justify-content:center; font-size:1.5em;">🗡️</div>`;
+      let ranuraTexto = obj.ranura ? obj.ranura.toUpperCase() : 'NINGUNA';
       
       html += `
       <div class="item-card-row">
         ${imgDisplay}
         <div class="item-card-info">
           <div class="item-card-title rareza-${obj.rareza}">${sanitizar(obj.nombre)}</div>
-          <div class="item-card-meta"><span>${obj.tipo.toUpperCase()}</span> • <span class="tag-badge tag-${obj.rareza.toLowerCase()}">${obj.rareza}</span></div>
+          <div class="item-card-meta"><span>${obj.tipo.toUpperCase()}</span> • <span class="tag-badge tag-${obj.rareza.toLowerCase()}">${obj.rareza}</span> • <span style="color:#00e5ff;">Ranura: ${ranuraTexto}</span></div>
         </div>
         <div class="item-card-actions">
           <button class="btn-action-touch btn-edit" onclick="prepararEdicionRPG('${obj.id}')"><i class="fas fa-pen"></i></button>
@@ -168,6 +166,7 @@ window.guardarObjetoRPG = async function(btnElement) {
   let nombre = document.getElementById('rpgItemNombre').value.trim();
   let tipo = document.getElementById('rpgItemTipo').value;
   let rareza = document.getElementById('rpgItemRareza').value;
+  let ranura = document.getElementById('rpgItemRanura').value; // NUEVA PROPIEDAD RANURA
   let atk = parseInt(document.getElementById('rpgItemAtk').value) || 0;
   let def = parseInt(document.getElementById('rpgItemDef').value) || 0;
   let fileInput = document.getElementById('rpgItemImg');
@@ -185,6 +184,7 @@ window.guardarObjetoRPG = async function(btnElement) {
       nombre: nombre, 
       tipo: tipo, 
       rareza: rareza, 
+      ranura: ranura, // GUARDAMOS LA RANURA
       stats: { atk: atk, def: def },
       timestamp: Date.now() 
     };
@@ -217,6 +217,7 @@ window.prepararEdicionRPG = function(id) {
   document.getElementById('rpgItemNombre').value = obj.nombre || '';
   document.getElementById('rpgItemTipo').value = obj.tipo || 'arma';
   document.getElementById('rpgItemRareza').value = obj.rareza || 'N';
+  document.getElementById('rpgItemRanura').value = obj.ranura || 'ninguna'; // CARGAR RANURA EN EDICIÓN
   document.getElementById('rpgItemAtk').value = obj.stats?.atk || 0;
   document.getElementById('rpgItemDef').value = obj.stats?.def || 0;
   document.getElementById('rpgItemImg').value = ""; 
@@ -226,6 +227,7 @@ window.prepararEdicionRPG = function(id) {
 window.resetFormularioRPG = function() {
   document.getElementById('rpgEditId').value = "";
   document.getElementById('rpgItemNombre').value = "";
+  document.getElementById('rpgItemRanura').value = "ninguna";
   document.getElementById('rpgItemAtk').value = "";
   document.getElementById('rpgItemDef').value = "";
   document.getElementById('rpgItemImg').value = "";
@@ -266,7 +268,6 @@ window.ejecutarTorneoRumble = async function() {
   alert(`Torneo finalizado con éxito. Ganador: ${ganador}.`);
 };
 
-/* GACHA WAIFUS Y NÚCLEO DE AUDITORÍA */
 window.toggleFormWaifu = function() { const box = document.getElementById('cajaFormWaifu'); const lbl = document.getElementById('lblToggleWaifu'); if(box.style.display === 'none') { box.style.display = 'block'; lbl.innerText = "Cerrar Creador"; } else { box.style.display = 'none'; lbl.innerText = "Agregar Tarjeta Waifu"; } };
 
 async function cargarWaifusAdmin() {
@@ -323,7 +324,6 @@ window.guardarWaifu = async function(e) { e.preventDefault(); const file = docum
 window.toggleOcultarWaifu = async function(id, estadoActual) { try { await updateDoc(doc(db, "waifus_gacha", id), { oculto: !estadoActual }); cargarWaifusAdmin(); } catch(e) { console.warn("Error ocultar waifu:", e); } };
 window.eliminarWaifu = async function(id) { if (confirm("¿Quemar esta tarjeta permanentemente?")) { await deleteDoc(doc(db, "waifus_gacha", id)); cargarWaifusAdmin(); } };
 
-/* PRODUCTOS */
 window.toggleFormularioProducto = function() { const box = document.getElementById('cajaFormProducto'); const lbl = document.getElementById('lblToggleForm'); if(box.style.display === 'none') { box.style.display = 'block'; lbl.innerText = "Cerrar Formulario"; } else { box.style.display = 'none'; lbl.innerText = "Crear Nuevo Producto"; } };
 window.procesarArchivosGaleria = async function(e) { const archivos = Array.from(e.target.files); if (!archivos.length) return; document.getElementById('txtEstadoSubida').style.display = 'block'; for (let archivo of archivos) { try { const url = await comprimirYConvertirAWebP(archivo, 600, 0.72); fotosBufferProducto.push(url); } catch(err){ console.warn("Error procesar img:", err); } } document.getElementById('txtEstadoSubida').style.display = 'none'; renderizarMiniaturasFotos(); e.target.value = ""; };
 function renderizarMiniaturasFotos() { const cont = document.getElementById('contenedorPreviewFotos'); cont.innerHTML = ""; fotosBufferProducto.forEach((url, index) => { cont.innerHTML += `<div class="preview-foto-item"><img src="${url}"><button type="button" class="btn-del-foto-preview" onclick="removerFotoBuffer(${index})">✕</button></div>`; }); }
@@ -336,7 +336,6 @@ window.resetFormularioProducto = function() { document.getElementById('formProdu
 window.eliminarProducto = async function(id) { if(confirm("¿Eliminar?")) { await deleteDoc(doc(db, "productos", id)); cargarProductosAdmin(); } };
 window.filtrarTarjetasAdmin = function() { const val = document.getElementById('buscarEnAdmin').value.toLowerCase(); document.querySelectorAll('.card-item-filtro').forEach(c => { const nom = c.getAttribute('data-nombre') || ''; c.style.display = nom.includes(val) ? 'flex' : 'none'; }); };
 
-/* PEDIDOS Y ANALÍTICAS */
 window.toggleCajaPedidoManual = function() { const box = document.getElementById('cajaPedidoManual'); box.style.display = (box.style.display === 'none') ? 'block' : 'none'; };
 window.toggleFormEnvioPedido = function(tipo) { document.getElementById('boxCamposEnvioAdmin').style.display = (tipo === 'digital') ? 'none' : 'block'; };
 async function cargarPedidosAdmin() { try { const q = query(collection(db, "pedidos"), orderBy("timestamp", "desc")); const snapshot = await getDocs(q); const cont = document.getElementById('listaPedidosMobile'); document.getElementById('totalPedidosLbl').innerText = snapshot.size; if (snapshot.empty) { cont.innerHTML = `<p style="text-align: center;">Sin órdenes.</p>`; document.getElementById('dashIngresos').innerText = "$0.00"; document.getElementById('dashOrdenes').innerText = "0"; return; } let htmlBloque = ""; let totalUsdGanado = 0; let pedidosPendientes = 0; let ventas7Dias = [0, 0, 0, 0, 0, 0, 0]; let labels7Dias = []; let hoy = new Date(); hoy.setHours(23, 59, 59, 999); let limite7Dias = new Date(hoy); limite7Dias.setDate(limite7Dias.getDate() - 6); limite7Dias.setHours(0, 0, 0, 0); for(let i=6; i>=0; i--) { let d = new Date(); d.setDate(d.getDate() - i); labels7Dias.push(d.toLocaleDateString('es-ES', {weekday: 'short', day: 'numeric'})); } snapshot.forEach(docSnap => { const ped = docSnap.data(); let est = ped.estadoPedido || 'Pendiente'; if(est === 'Completado') totalUsdGanado += Number(ped.totalUsd || 0); else pedidosPendientes++; let ts = ped.timestamp || 0; if (est === 'Completado' && ts >= limite7Dias.getTime() && ts <= hoy.getTime()) { let dVenta = new Date(ts); let diffDays = Math.floor((hoy.getTime() - dVenta.getTime()) / (1000 * 3600 * 24)); if(diffDays >= 0 && diffDays <= 6) ventas7Dias[6 - diffDays] += Number(ped.totalUsd); } let colorEstado = '#ffaa00'; if(est === 'Pagado') colorEstado = '#00e5ff'; else if(est === 'Enviado') colorEstado = '#b000ff'; else if(est === 'Completado') colorEstado = '#25d366'; htmlBloque += `<div class="item-card-row"><div class="item-card-info"><div style="display:flex; justify-content:space-between; margin-bottom: 2px;"><strong>${sanitizar(ped.cliente)}</strong><span class="tag-badge" style="background: ${colorEstado}20; color: ${colorEstado}; border: 1px solid ${colorEstado}40;">${est}</span></div><div style="font-size:0.85em; color:var(--text-muted);"><i class="fab fa-whatsapp" style="color:#25d366;"></i> ${sanitizar(ped.telefono)}</div><div style="font-size:1.05em; font-weight:700; color:var(--secondary-color);">$${Number(ped.totalUsd).toFixed(2)}</div></div><div class="item-card-actions"><button class="btn-action-touch" style="color: ${colorEstado}; background: rgba(0,0,0,0.4); border: 1px solid ${colorEstado}40;" onclick="cambiarEstadoPedido('${docSnap.id}', '${est}')"><i class="fas fa-sync-alt"></i></button><button class="btn-action-touch btn-del" onclick="eliminarPedido('${docSnap.id}')"><i class="fas fa-trash"></i></button></div></div>`; }); cont.innerHTML = htmlBloque; document.getElementById('dashIngresos').innerText = "$" + totalUsdGanado.toFixed(2); document.getElementById('dashOrdenes').innerText = pedidosPendientes; dibujarGraficaVentas(labels7Dias, ventas7Dias); } catch(e) { console.warn("Error cargar pedidos:", e); } }
@@ -345,7 +344,6 @@ window.cambiarEstadoPedido = async function(id, est) { let nuevo = 'Pendiente'; 
 window.guardarPedidoManual = async function(e) { e.preventDefault(); try { await addDoc(collection(db, "pedidos"), { cliente: document.getElementById('pedCliente').value, telefono: document.getElementById('pedTelefono').value, tipo: document.getElementById('pedTipo').value, metodoEnvio: document.getElementById('pedTipo').value, detalles: document.getElementById('pedDetalles').value, totalUsd: parseFloat(document.getElementById('pedTotalUsd').value), estadoPedido: "Pendiente", timestamp: Date.now() }); toggleCajaPedidoManual(); cargarPedidosAdmin(); } catch(err){ console.warn("Error pedido manual:", err); } };
 window.eliminarPedido = async function(id) { if (confirm("¿Eliminar pedido?")) { await deleteDoc(doc(db, "pedidos", id)); cargarPedidosAdmin(); } };
 
-/* JUGADORES (EDITAR, ASIGNAR XP Y ELIMINAR) */
 function calcularRangoXP(xp) {
   let chunin = parseInt(document.getElementById('xpChunin')?.value) || 300;
   let jonin = parseInt(document.getElementById('xpJonin')?.value) || 600;
@@ -428,7 +426,6 @@ window.eliminarJugadorManualmente = async function(uid, tag) {
   }
 };
 
-/* FACTURAS, BANNERS, CUPONES */
 window.toggleCajaFactura = function() { const box = document.getElementById('cajaFacturaManual'); box.style.display = (box.style.display === 'none') ? 'block' : 'none'; };
 async function cargarFacturasAdmin() { const q = query(collection(db, "facturas"), orderBy("timestamp", "desc")); const snapshot = await getDocs(q); facturasAdminGlobal = []; const cont = document.getElementById('listaFacturasMobile'); document.getElementById('totalFacturasLbl').innerText = snapshot.size; if (snapshot.empty) { cont.innerHTML = ""; return; } let htmlBloque = ""; snapshot.forEach(docSnap => { const fac = { id: docSnap.id, ...docSnap.data() }; facturasAdminGlobal.push(fac); htmlBloque += `<div class="item-card-row"><div class="item-card-info"><strong>${sanitizar(fac.cliente)}</strong><br><span style="color:var(--secondary-color);">$${Number(fac.totalUsd).toFixed(2)}</span></div><div class="item-card-actions"><button class="btn-action-touch btn-print" onclick="imprimirFactura('${fac.id}')"><i class="fas fa-print"></i></button><button class="btn-action-touch btn-del" onclick="eliminarFactura('${fac.id}')"><i class="fas fa-trash"></i></button></div></div>`; }); cont.innerHTML = htmlBloque; }
 window.guardarFactura = async function(e) { e.preventDefault(); await addDoc(collection(db, "facturas"), { cliente: document.getElementById('facCliente').value, cedula: document.getElementById('facCedula').value, metodo: document.getElementById('facMetodo').value, detalles: document.getElementById('facDetalles').value, totalUsd: parseFloat(document.getElementById('facTotal').value), timestamp: Date.now() }); document.getElementById('formFactura').reset(); toggleCajaFactura(); cargarFacturasAdmin(); };
