@@ -213,13 +213,23 @@ window.renderizarInventarioRPG = function() {
     
     let isEquipped = ranuraEquipada !== null;
     let cl = isEquipped ? 'rpg-item-card equipped' : 'rpg-item-card';
-    let icono = item.imgUrl ? `<img src="${item.imgUrl}" alt="${window.sanitizarHTML(item.nombre)}">` : (item.tipo === 'material' ? "💎" : "🗡️");
-    let accionClick = (item.ranura && item.ranura !== 'ninguna') ? `window.equiparItemRPG('${item.uid_inventario}')` : ``;
-    let estiloCursor = (item.ranura && item.ranura !== 'ninguna') ? 'cursor: pointer;' : 'cursor: default; opacity: 0.85;';
+    let icono = item.imgUrl ? `<img src="${item.imgUrl}" alt="${window.sanitizarHTML(item.nombre)}">` : (item.tipo === 'material' ? "💎" : (item.tipo === 'consumible' ? "🧪" : "🗡️"));
     
-    let infoExtra = (item.ranura && item.ranura !== 'ninguna') ? 
-      `ATK +${item.atk || 0} | DEF +${item.def || 0}<br><div style="font-size: 0.7em; margin-top: 2px; color: ${isEquipped ? '#25d366' : '#888'};">${isEquipped ? 'EQUIPADO' : 'Click equipar'}</div>` : 
-      `<span style="color:#b000ff">Material</span>`;
+    let accionClick = "";
+    let estiloCursor = "cursor: default; opacity: 0.85;";
+    let infoExtra = "";
+
+    if (item.tipo === 'consumible') {
+      accionClick = `window.usarConsumibleRPG('${item.uid_inventario}')`;
+      estiloCursor = "cursor: pointer;";
+      infoExtra = `<span style="color:#ff3366">Consumible (Click usar)</span>`;
+    } else if (item.ranura && item.ranura !== 'ninguna') {
+      accionClick = `window.equiparItemRPG('${item.uid_inventario}')`;
+      estiloCursor = "cursor: pointer;";
+      infoExtra = `ATK +${item.atk || 0} | DEF +${item.def || 0}<br><div style="font-size: 0.7em; margin-top: 2px; color: ${isEquipped ? '#25d366' : '#888'};">${isEquipped ? 'EQUIPADO' : 'Click equipar'}</div>`;
+    } else {
+      infoExtra = `<span style="color:#b000ff">Material</span>`;
+    }
 
     let tokensVenta = item.rareza === 'SSR' ? 50 : (item.rareza === 'SR' ? 20 : (item.rareza === 'R' ? 8 : 2));
     if(item.tipo === 'material') tokensVenta = 3;
@@ -253,6 +263,17 @@ window.equiparItemRPG = function(uid_inventario) {
   window.guardarProgresoRPG();
 };
 
+window.usarConsumibleRPG = function(uid_inventario) {
+  let idx = gamerProfile.inventario.findIndex(i => i.uid_inventario === uid_inventario);
+  if(idx === -1) return;
+  let item = gamerProfile.inventario[idx];
+
+  gamerProfile.stats.hp += (item.hpBonus || 25);
+  gamerProfile.inventario.splice(idx, 1);
+  window.guardarProgresoRPG();
+  window.mostrarTextoFlotante(`¡Usaste ${item.nombre}! +HP`, '#ff3366');
+};
+
 window.venderItemRPG = function(uid_inventario, tokensGanados) {
   let index = gamerProfile.inventario.findIndex(i => i.uid_inventario === uid_inventario);
   if(index === -1) return;
@@ -283,29 +304,79 @@ window.entrenarStatRPG = function(stat) {
   window.guardarProgresoRPG();
 };
 
+// ==========================================
+// SISTEMA DE COOLDOWN + DROPS (CAZA Y MINERÍA)
+// ==========================================
 window.accionCazaMinas = function(tipo) {
-  let tokG = tipo === 'cazar' ? 5 : 2;
-  let xpG = tipo === 'cazar' ? 20 : 10;
-  
+  let ahora = Date.now();
+  let cooldownTime = tipo === 'cazar' ? (2 * 60 * 1000) : (3 * 60 * 1000); // 2 min cazar, 3 min minar
+  let keyCooldown = 'sakura_cooldown_' + tipo;
+  let ultimoUso = localStorage.getItem(keyCooldown) || 0;
+
+  if (ahora - ultimoUso < cooldownTime) {
+    let faltanSec = Math.ceil((cooldownTime - (ahora - ultimoUso)) / 1000);
+    let min = Math.floor(faltanSec / 60);
+    let seg = faltanSec % 60;
+    document.getElementById('rpgResultadoGremio').innerHTML = `<span style="color:#ff3366;"><i class="fas fa-hourglass-half"></i> Descansa. Faltan ${min}m ${seg}s para volver a ${tipo}.</span>`;
+    return;
+  }
+
+  localStorage.setItem(keyCooldown, ahora);
+
+  let xpG = tipo === 'cazar' ? 25 : 15;
+  let tokG = tipo === 'cazar' ? 5 : 3;
+  let msg = "";
+
   if(tipo === 'minar') {
     let mats = rpgObjetosGlobal.filter(o => o.tipo === 'material');
     if(mats.length > 0) {
       let m = mats[Math.floor(Math.random() * mats.length)];
       gamerProfile.inventario.push({ ...m, uid_inventario: Date.now().toString() });
-      document.getElementById('rpgResultadoGremio').innerHTML = `<span style="color:#00e5ff;">¡Minaste: ${window.sanitizarHTML(m.nombre)}!</span>`;
+      msg = `¡Minaste con éxito: <strong>${window.sanitizarHTML(m.nombre)}</strong>!`;
+    } else {
+      msg = "Extrajiste minerales básicos de la roca.";
     }
   } else {
-    document.getElementById('rpgResultadoGremio').innerHTML = `<span style="color:#ffaa00;">¡Cacería exitosa! Monstruo abatido.</span>`;
+    // Caza con probabilidad de drop de objetos o consumibles
+    let rngDrop = Math.random() * 100;
+    if (rngDrop <= 30 && rpgObjetosGlobal.length > 0) {
+      let dropItem = rpgObjetosGlobal[Math.floor(Math.random() * rpgObjetosGlobal.length)];
+      gamerProfile.inventario.push({ ...dropItem, uid_inventario: Date.now().toString() });
+      msg = `¡Cacería épica! Recibiste un botín: <strong class="rareza-${dropItem.rareza}">${window.sanitizarHTML(dropItem.nombre)}</strong>`;
+    } else {
+      msg = "¡Monstruo abatido en la pradera!";
+    }
   }
 
   gamerProfile.tokens += tokG;
   gamerProfile.xp += xpG;
   window.guardarProgresoRPG();
+  
   window.mostrarTextoFlotante(`+${xpG} XP | +${tokG} Tokens`, '#25d366');
+  document.getElementById('rpgResultadoGremio').innerHTML = `<span style="color:#25d366;">${msg}</span><br><span style="font-size:0.8em; color:var(--text-muted);">+${xpG} XP | +${tokG} Tokens</span>`;
 };
 
+// ==========================================
+// MAZMORRAS CON COOLDOWN Y DROPS COMPLETOS
+// ==========================================
 window.entrarMazmorraRPG = function(dif) {
+  let ahora = Date.now();
+  let cooldownTime = 5 * 60 * 1000; // 5 minutos de espera para expediciones
+  let keyCooldown = 'sakura_cooldown_mazmorra_global';
+  let ultimoUso = localStorage.getItem(keyCooldown) || 0;
+  let log = document.getElementById('rpgResultadoGremio');
+
+  if (ahora - ultimoUso < cooldownTime) {
+    let faltanSec = Math.ceil((cooldownTime - (ahora - ultimoUso)) / 1000);
+    let min = Math.floor(faltanSec / 60);
+    let seg = faltanSec % 60;
+    log.innerHTML = `<span style="color:#ffaa00;"><i class="fas fa-campground"></i> Zona en resguardo. Tu grupo descansa en la fogata. Podrás entrar en ${min}m ${seg}s.</span>`;
+    return;
+  }
+
   let req = dif === 'dificil' ? 500 : (dif === 'media' ? 150 : 30);
+  let zonaNombre = dif === 'dificil' ? 'Torre del Dragón' : (dif === 'media' ? 'Cueva Sangrienta' : 'Bosque Slime');
+
   let extraAtk = 0; let extraDef = 0;
   for (let r in gamerProfile.equipo) {
     let uid = gamerProfile.equipo[r];
@@ -316,16 +387,36 @@ window.entrarMazmorraRPG = function(dif) {
   }
   let poder = gamerProfile.stats.atk + extraAtk + gamerProfile.stats.def + extraDef;
 
-  if(poder >= req) {
-    let xpW = dif === 'dificil' ? 300 : (dif === 'media' ? 100 : 40);
-    gamerProfile.xp += xpW;
-    gamerProfile.tokens += Math.floor(xpW / 10);
-    window.guardarProgresoRPG();
-    document.getElementById('rpgResultadoGremio').innerHTML = `<span style="color:#25d366;"><i class="fas fa-check-circle"></i> ¡Expedición Exitosa! +${xpW} XP</span>`;
-    try{ confetti({ particleCount: 60, spread: 60 }); }catch(e){}
-  } else {
-    document.getElementById('rpgResultadoGremio').innerHTML = `<span style="color:#ff3366;"><i class="fas fa-skull"></i> Derrota (${poder}/${req} Poder). ¡Mejora tu equipo en la Fragua!</span>`;
-  }
+  log.innerHTML = `<span style="color:#00e5ff;"><i class="fas fa-walking"></i> Explorando ${zonaNombre}...</span>`;
+  localStorage.setItem(keyCooldown, ahora);
+
+  setTimeout(() => {
+    if(poder >= req) {
+      let xpW = dif === 'dificil' ? 350 : (dif === 'media' ? 120 : 45);
+      let premioTxt = "Oro y Experiencia";
+
+      // Sistema de Drops en Mazmorra
+      let rngDrop = Math.random() * 100;
+      if(rngDrop <= 50 && rpgObjetosGlobal.length > 0) {
+        let loot = rpgObjetosGlobal[Math.floor(Math.random() * rpgObjetosGlobal.length)];
+        gamerProfile.inventario.push({ ...loot, uid_inventario: Date.now().toString() });
+        premioTxt = `<span class="rareza-${loot.rareza}">${window.sanitizarHTML(loot.nombre)}</span>`;
+      }
+
+      gamerProfile.xp += xpW;
+      gamerProfile.tokens += Math.floor(xpW / 8);
+      window.guardarProgresoRPG();
+
+      log.innerHTML = `<span style="color:#25d366;"><i class="fas fa-check-circle"></i> ¡Expedición Exitosa en ${zonaNombre}!</span><br>Loot obtenido: <strong>${premioTxt}</strong><br><span style="font-size:0.8em; color:var(--text-muted);">+${xpW} XP | +${Math.floor(xpW / 8)} Tokens</span>`;
+      try{ confetti({ particleCount: 70, spread: 70 }); }catch(e){}
+    } else {
+      let perdida = dif === 'dificil' ? 150 : (dif === 'media' ? 50 : 15);
+      gamerProfile.xp -= perdida; if(gamerProfile.xp < 0) gamerProfile.xp = 0;
+      window.guardarProgresoRPG();
+
+      log.innerHTML = `<span style="color:#ff3366;"><i class="fas fa-skull"></i> Derrota en ${zonaNombre} (${poder}/${req} Poder).</span><br><span style="font-size:0.8em;">Apenas lograste escapar. Perdiste <strong style="color:#ffaa00;">${perdida} XP</strong>. ¡Mejora tu equipo en la Fragua!</span>`;
+    }
+  }, 1500);
 };
 
 window.renderizarFraguaRPG = function() {
