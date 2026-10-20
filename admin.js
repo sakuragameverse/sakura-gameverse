@@ -177,7 +177,7 @@ window.renderizarListaRPGAdmin = function() {
   cont.innerHTML = html;
 };
 
-// AHORA LEE Y GUARDA LOS NUEVOS INPUTS EN LA BASE DE DATOS
+// AHORA LEE Y GUARDA LOS NUEVOS INPUTS (INC. NIVEL REQ) EN LA BASE DE DATOS
 window.guardarObjetoRPG = async function(btnElement) {
   let idEdit = document.getElementById('rpgEditId').value;
   let nombre = document.getElementById('rpgItemNombre').value.trim();
@@ -190,6 +190,7 @@ window.guardarObjetoRPG = async function(btnElement) {
   let costoMat = parseInt(document.getElementById('rpgItemCostoMat').value) || null;
   let costoTok = parseInt(document.getElementById('rpgItemCostoTok').value) || null;
   let pesoDrop = parseInt(document.getElementById('rpgItemPesoDrop').value) || null;
+  let nivelReq = parseInt(document.getElementById('rpgItemNivelReq').value) || 1; // AGREGADO: Nivel Requerido
   
   let fileInput = document.getElementById('rpgItemImg');
 
@@ -211,6 +212,7 @@ window.guardarObjetoRPG = async function(btnElement) {
       costoMat: costoMat,
       costoTok: costoTok,
       pesoDrop: pesoDrop,
+      nivelReq: nivelReq, // AGREGADO: Guardando el nivel en Firebase
       timestamp: Date.now() 
     };
 
@@ -246,10 +248,11 @@ window.prepararEdicionRPG = function(id) {
   document.getElementById('rpgItemAtk').value = obj.stats?.atk || 0;
   document.getElementById('rpgItemDef').value = obj.stats?.def || 0;
   
-  // Rellenar nuevos campos de economía si existen
+  // Rellenar nuevos campos de economía y requerimientos
   document.getElementById('rpgItemCostoMat').value = obj.costoMat || '';
   document.getElementById('rpgItemCostoTok').value = obj.costoTok || '';
   document.getElementById('rpgItemPesoDrop').value = obj.pesoDrop || '';
+  document.getElementById('rpgItemNivelReq').value = obj.nivelReq || ''; // AGREGADO: Mostrar nivel al editar
   
   document.getElementById('rpgItemImg').value = ""; 
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -264,6 +267,7 @@ window.resetFormularioRPG = function() {
   document.getElementById('rpgItemCostoMat').value = "";
   document.getElementById('rpgItemCostoTok').value = "";
   document.getElementById('rpgItemPesoDrop').value = "";
+  document.getElementById('rpgItemNivelReq').value = ""; // AGREGADO: Limpiar campo
   document.getElementById('rpgItemImg').value = "";
 };
 
