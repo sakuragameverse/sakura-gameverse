@@ -138,7 +138,6 @@ async function cargarObjetosRPGAdmin() {
       rpgObjetosAdminGlobal.push({ id: docSnap.id, ...docSnap.data() });
     });
     
-    // Renderizamos con el filtro actual seleccionado
     renderizarListaRPGAdmin();
   } catch(e) { console.warn("Error cargar RPG:", e); }
 }
@@ -178,6 +177,7 @@ window.renderizarListaRPGAdmin = function() {
   cont.innerHTML = html;
 };
 
+// AHORA LEE Y GUARDA LOS NUEVOS INPUTS EN LA BASE DE DATOS
 window.guardarObjetoRPG = async function(btnElement) {
   let idEdit = document.getElementById('rpgEditId').value;
   let nombre = document.getElementById('rpgItemNombre').value.trim();
@@ -186,6 +186,11 @@ window.guardarObjetoRPG = async function(btnElement) {
   let ranura = document.getElementById('rpgItemRanura').value;
   let atk = parseInt(document.getElementById('rpgItemAtk').value) || 0;
   let def = parseInt(document.getElementById('rpgItemDef').value) || 0;
+  
+  let costoMat = parseInt(document.getElementById('rpgItemCostoMat').value) || null;
+  let costoTok = parseInt(document.getElementById('rpgItemCostoTok').value) || null;
+  let pesoDrop = parseInt(document.getElementById('rpgItemPesoDrop').value) || null;
+  
   let fileInput = document.getElementById('rpgItemImg');
 
   if(!nombre) return alert("Ponle un nombre al objeto.");
@@ -203,6 +208,9 @@ window.guardarObjetoRPG = async function(btnElement) {
       rareza: rareza, 
       ranura: ranura,
       stats: { atk: atk, def: def },
+      costoMat: costoMat,
+      costoTok: costoTok,
+      pesoDrop: pesoDrop,
       timestamp: Date.now() 
     };
 
@@ -237,6 +245,12 @@ window.prepararEdicionRPG = function(id) {
   document.getElementById('rpgItemRanura').value = obj.ranura || 'ninguna';
   document.getElementById('rpgItemAtk').value = obj.stats?.atk || 0;
   document.getElementById('rpgItemDef').value = obj.stats?.def || 0;
+  
+  // Rellenar nuevos campos de economía si existen
+  document.getElementById('rpgItemCostoMat').value = obj.costoMat || '';
+  document.getElementById('rpgItemCostoTok').value = obj.costoTok || '';
+  document.getElementById('rpgItemPesoDrop').value = obj.pesoDrop || '';
+  
   document.getElementById('rpgItemImg').value = ""; 
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
@@ -247,6 +261,9 @@ window.resetFormularioRPG = function() {
   document.getElementById('rpgItemRanura').value = "ninguna";
   document.getElementById('rpgItemAtk').value = "";
   document.getElementById('rpgItemDef').value = "";
+  document.getElementById('rpgItemCostoMat').value = "";
+  document.getElementById('rpgItemCostoTok').value = "";
+  document.getElementById('rpgItemPesoDrop').value = "";
   document.getElementById('rpgItemImg').value = "";
 };
 
