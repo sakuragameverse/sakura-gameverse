@@ -81,21 +81,33 @@
     <div id="rpgContenedorInventario" class="rpg-grid"></div>
   </div>
 
-  <!-- TABLÓN DEL GREMIO -->
+  <!-- TABLÓN DEL GREMIO (ACTUALIZADO CON ZONAS PROGRESIVAS) -->
   <div class="card-panel" style="background: rgba(14, 4, 31, 0.85); border: 1px solid #25d366; border-radius: var(--radius-md); padding: 18px; margin-bottom: 20px;">
     <h3 style="color: #25d366; margin-top: 0; margin-bottom: 10px; font-size: 1.1em;"><i class="fas fa-campground"></i> Tablón del Gremio</h3>
+    
     <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: var(--radius-sm); border: 1px dashed #25d366; margin-bottom: 12px; text-align: center;">
       <div id="rpgResultadoGremio" style="font-size: 0.85em; color: #fff;">Elige tu misión diaria, aventurero.</div>
     </div>
-    <div style="display: flex; gap: 8px; margin-bottom: 12px;">
-      <button class="btn-comprar" style="margin-top: 0; background: linear-gradient(135deg, #ffaa00, #ff5500); font-size: 0.85em; padding: 10px;" onclick="accionCazaMinas('cazar')"><i class="fas fa-crosshairs"></i> Cazar</button>
-      <button class="btn-comprar" style="margin-top: 0; background: linear-gradient(135deg, #00e5ff, #0099ff); color: #000; font-size: 0.85em; padding: 10px;" onclick="accionCazaMinas('minar')"><i class="fas fa-hammer"></i> Minar</button>
+
+    <!-- SISTEMA DE CAZA PROGRESIVA Y MINERÍA -->
+    <div style="font-size: 0.8em; color: var(--text-muted); margin-bottom: 6px; font-weight: bold;">Zonas de Caza Progresivas:</div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 12px;">
+      <button class="btn-comprar" style="margin-top:0; background: rgba(255, 170, 0, 0.1); border: 1px solid #ffaa00; color: #ffaa00; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="cazarEnZona('gallinas')">🐔 Corral Gallinas (Nvl 0)</button>
+      <button class="btn-comprar" style="margin-top:0; background: rgba(255, 170, 0, 0.15); border: 1px solid #ffaa00; color: #ffaa00; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="cazarEnZona('vacas')">🐮 Prado Vacas (Req: 100 XP)</button>
+      <button class="btn-comprar" style="margin-top:0; background: rgba(255, 85, 0, 0.2); border: 1px solid #ff5500; color: #ff5500; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="cazarEnZona('goblins')">👺 Camp. Goblin (Req: 300 XP)</button>
+      <button class="btn-comprar" style="margin-top:0; background: rgba(255, 51, 102, 0.2); border: 1px solid #ff3366; color: #ff3366; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="cazarEnZona('gigantes')">👹 Valle Gigantes (Req: 800 XP)</button>
     </div>
+
+    <div style="margin-bottom: 16px;">
+      <button class="btn-comprar" style="margin-top: 0; background: linear-gradient(135deg, #00e5ff, #0099ff); color: #000; font-size: 0.85em; padding: 10px;" onclick="minar()"><i class="fas fa-hammer"></i> Ir a la Mina (Buscando Materiales)</button>
+    </div>
+
+    <!-- MAZMORRAS DE EXPEDICIÓN -->
     <div style="font-size: 0.8em; color: var(--text-muted); margin-bottom: 6px; font-weight: bold;">Mazmorras de Expedición:</div>
     <div style="display: flex; flex-direction: column; gap: 6px;">
-      <button class="btn-comprar" style="margin-top:0; background: rgba(0, 229, 255, 0.1); border: 1px solid #00e5ff; color: #00e5ff; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="entrarMazmorraRPG('facil')">🌲 Bosque Slime (Baja)</button>
-      <button class="btn-comprar" style="margin-top:0; background: rgba(176, 0, 255, 0.1); border: 1px solid #b000ff; color: #b000ff; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="entrarMazmorraRPG('media')">🦇 Cueva Sangrienta (Media)</button>
-      <button class="btn-comprar" style="margin-top:0; background: rgba(255, 51, 102, 0.1); border: 1px solid #ff3366; color: #ff3366; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="entrarMazmorraRPG('dificil')">🐉 Torre del Dragón (Brutal)</button>
+      <button class="btn-comprar" style="margin-top:0; background: rgba(0, 229, 255, 0.1); border: 1px solid #00e5ff; color: #00e5ff; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="entrarMazmorraRPG('facil')">🌲 Bosque Slime (Poder: 40)</button>
+      <button class="btn-comprar" style="margin-top:0; background: rgba(176, 0, 255, 0.1); border: 1px solid #b000ff; color: #b000ff; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="entrarMazmorraRPG('media')">🦇 Cueva Sangrienta (Poder: 180)</button>
+      <button class="btn-comprar" style="margin-top:0; background: rgba(255, 51, 102, 0.1); border: 1px solid #ff3366; color: #ff3366; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="entrarMazmorraRPG('dificil')">🐉 Torre del Dragón (Poder: 600)</button>
     </div>
   </div>
 
