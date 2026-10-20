@@ -87,7 +87,7 @@ window.crearCuentaRPG = async function() {
         errBox.style.display = 'block'; return;
     }
 
-    document.getElementById('btnAuthConfirmarReg').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando...';
+    document.getElementById('btnAuthConfirmarReg').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando Nombre...';
     
     try {
         // VALIDACIÓN EN FIREBASE: COMPROBAR SI EL NICK YA EXISTE
@@ -140,7 +140,7 @@ window.cerrarSesionRPG = async function() {
 // MIGRACIÓN Y RECARGA PASIVA DE ENERGÍA
 // ==========================================
 function inicializarStats() {
-    if(!gamerProfile.stats) return; // Protección si no ha cargado
+    if(!gamerProfile.stats) return; 
     if (typeof gamerProfile.stats.hp === 'number') { gamerProfile.stats.hpMax = gamerProfile.stats.hp; gamerProfile.stats.hpActual = gamerProfile.stats.hp; delete gamerProfile.stats.hp; }
     if (!gamerProfile.stats.hpMax) { gamerProfile.stats.hpMax = 100; gamerProfile.stats.hpActual = 100; }
     if (!gamerProfile.stats.energiaMax) { gamerProfile.stats.energiaMax = 100; gamerProfile.stats.energiaActual = 100; gamerProfile.stats.ultimaEnergia = Date.now(); }
@@ -218,8 +218,16 @@ window.descargarProgresoNube = async function(uid) {
                 inicializarStats();
                 if (!gamerProfile.equipo) gamerProfile.equipo = { cabeza: null, pecho: null, piernas: null, pies: null, mano_derecha: null, mano_izquierda: null, amuleto: null, anillo: null, mascota: null }; 
             }
-            localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
+        } else {
+            // SI LA CUENTA NO TIENE PERFIL (EJEMPLO: EL ADMIN), SE LE CREA UNO AUTOMÁTICO
+            gamerProfile = {
+                tag: "Admin_" + uid.substring(0,4), xp: 0, tokens: 0, rango: "Genin", profesion: "Sin Clase", 
+                stats: { hpMax: 100, hpActual: 100, energiaMax: 100, energiaActual: 100, ultimaEnergia: Date.now(), atk: 10, def: 5 }, 
+                inventario: [], equipo: { cabeza: null, pecho: null, piernas: null, pies: null, mano_derecha: null, mano_izquierda: null, amuleto: null, anillo: null, mascota: null }, cooldowns: {}
+            };
+            await setDoc(doc(db, "jugadores_cloud", uid), { profile: gamerProfile, updatedAt: Date.now() });
         }
+        localStorage.setItem('sakura_gamer_profile', JSON.stringify(gamerProfile));
         window.renderizarTodoRPG();
     } catch(e) {}
 };
@@ -232,7 +240,7 @@ window.guardarProgresoRPG = async function() {
 };
 
 window.renderizarTodoRPG = function() {
-  if(!gamerProfile.stats) return; // Evita errores visuales si no hay usuario
+  if(!gamerProfile.stats) return; 
 
   actualizarEnergiaPasiva();
 
@@ -286,6 +294,7 @@ window.renderizarTodoRPG = function() {
 };
 
 window.renderizarPaperDollGrande = function() {
+  if(!currentUserUid || !gamerProfile.equipo) return;
   let grid = document.getElementById('paperDollGrid'); if(!grid) return;
   grid.style.cssText = `display: grid; grid-template-columns: repeat(3, 1fr); grid-template-areas: ". cabeza ." "amuleto . anillo" "mano_der pecho mano_izq" "piernas piernas piernas" "pies . mascota"; gap: 8px; max-width: 280px; margin: 0 auto;`;
 
@@ -318,11 +327,11 @@ window.desequiparRanuraRPG = function(ranuraKey) {
 };
 
 window.renderizarInventarioRPG = function() {
+  if(!currentUserUid || !gamerProfile.inventario) return;
   let cont = document.getElementById('rpgContenedorInventario'); if(!cont) return;
   cont.style.cssText = `display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; max-height: 380px; overflow-y: auto; padding-right: 4px;`;
   cont.innerHTML = "";
 
-  if(!gamerProfile.inventario) gamerProfile.inventario = [];
   let cantMateriales = gamerProfile.inventario.filter(i => (i.tipo || '').toLowerCase() === 'material').length;
   let lblMat = document.getElementById('rpgTotalMateriales'); if(lblMat) lblMat.innerText = cantMateriales;
 
@@ -359,7 +368,6 @@ window.renderizarInventarioRPG = function() {
     let btnVenderHtml = `<button onclick="event.stopPropagation(); window.venderItemRPG('${item.uid_inventario}', ${tokensVenta})" style="background: rgba(255,170,0,0.15); border: 1px solid rgba(255,170,0,0.4); color: #ffaa00; border-radius: 4px; padding: 2px 6px; font-size: 0.6em; cursor: pointer; margin-top: 4px; font-family: 'Chakra Petch', sans-serif; position: relative; z-index:2;"><i class="fas fa-coins"></i> Vender (+${tokensVenta})</button>`;
     let bordeColor = isEquipped ? 'rgba(37,211,102,0.6)' : (isLocked ? 'rgba(255,51,102,0.4)' : 'var(--glass-border)');
     let lockOverlay = isLocked ? `<div class="lock-overlay"><i class="fas fa-lock" style="color:#ff3366; font-size:1.5em; text-shadow: 0 0 5px black;"></i></div>` : '';
-    
     let lblNombre = item.nivelMejora ? `${window.sanitizarHTML(item.nombre)} <span class="text-upgrade">+${item.nivelMejora}</span>` : window.sanitizarHTML(item.nombre);
 
     cont.innerHTML += `
@@ -526,6 +534,7 @@ window.entrarMazmorraRPG = function(zonaId) {
 };
 
 window.renderizarFraguaRPG = function() {
+  if(!currentUserUid || !gamerProfile.inventario) return;
   let cont = document.getElementById('listaRecetasFragua'); if(!cont) return;
   let armas = rpgObjetosGlobal.filter(o => (o.tipo || '').toLowerCase() === 'arma');
   if(armas.length === 0) { cont.innerHTML = "<p style='color: var(--text-muted); font-size: 0.85em; text-align: center;'>No hay recetas en el servidor.</p>"; return; }
@@ -577,6 +586,7 @@ function getProbabilidadRefinamiento(nvl) {
 }
 
 window.renderizarRefinamientoRPG = function() {
+    if(!currentUserUid || !gamerProfile.inventario) return;
     let cont = document.getElementById('listaRefinamientoRPG'); if(!cont) return;
     let armasJugador = gamerProfile.inventario.filter(i => (i.tipo || '').toLowerCase() === 'arma' && i.ranura && i.ranura !== 'ninguna');
     
