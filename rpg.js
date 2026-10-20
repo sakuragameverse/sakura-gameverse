@@ -54,13 +54,28 @@ onAuthStateChanged(auth, async (user) => {
   await window.cargarObjetosRPG();
 });
 
+// ==========================================
+// CARGA DE OBJETOS CON COSTOS Y PESOS DINÁMICOS
+// ==========================================
 window.cargarObjetosRPG = async function() {
   try {
     const snapsObj = await getDocs(query(collection(db, "rpg_objetos")));
     rpgObjetosGlobal = [];
     snapsObj.forEach(d => {
       let obj = d.data();
-      rpgObjetosGlobal.push({ id: d.id, nombre: obj.nombre, tipo: (obj.tipo || 'arma').toLowerCase(), rareza: obj.rareza || 'N', ranura: obj.ranura || 'ninguna', atk: obj.stats?.ataque || obj.stats?.atk || 0, def: obj.stats?.defensa || obj.stats?.def || 0, imgUrl: obj.imgUrl || '' });
+      rpgObjetosGlobal.push({ 
+        id: d.id, 
+        nombre: obj.nombre, 
+        tipo: (obj.tipo || 'arma').toLowerCase(), 
+        rareza: obj.rareza || 'N', 
+        ranura: obj.ranura || 'ninguna', 
+        atk: obj.stats?.ataque || obj.stats?.atk || 0, 
+        def: obj.stats?.defensa || obj.stats?.def || 0, 
+        imgUrl: obj.imgUrl || '',
+        costoMat: obj.costoMat || (obj.rareza === 'SSR' ? 100 : obj.rareza === 'SR' ? 35 : obj.rareza === 'R' ? 10 : 3),
+        costoTok: obj.costoTok || (obj.rareza === 'SSR' ? 1000 : obj.rareza === 'SR' ? 250 : obj.rareza === 'R' ? 50 : 15),
+        pesoDrop: obj.pesoDrop || (obj.rareza === 'SSR' ? 1 : obj.rareza === 'SR' ? 15 : obj.rareza === 'R' ? 100 : 1000)
+      });
     });
     window.renderizarFraguaRPG();
   } catch(e) { console.warn("Error cargando objetos:", e); }
@@ -203,7 +218,25 @@ window.entrenarStatRPG = function(stat) {
 };
 
 // ==========================================
-// NUEVO MOTOR: CAZA PROGRESIVA Y MINERÍA 
+// MOTOR DE DROPS PONDERADOS (WEIGHTED RNG)
+// ==========================================
+function calcularDropConPesos(nombresDrops) {
+    let posibles = nombresDrops.map(nombre => rpgObjetosGlobal.find(o => o.nombre === nombre)).filter(Boolean);
+    if(posibles.length === 0) return null;
+    
+    let pesoTotal = posibles.reduce((sum, item) => sum + item.pesoDrop, 0);
+    let random = Math.random() * pesoTotal;
+    let acumulado = 0;
+    
+    for(let i = 0; i < posibles.length; i++) {
+        acumulado += posibles[i].pesoDrop;
+        if(random <= acumulado) return posibles[i];
+    }
+    return posibles[0];
+}
+
+// ==========================================
+// MOTOR DE CAZA Y MINERÍA PROGRESIVA
 // ==========================================
 window.cazarEnZona = function(zonaId) {
     let zona = zonasCaza[zonaId];
@@ -227,8 +260,7 @@ window.cazarEnZona = function(zonaId) {
     let msj = `Cazaste con éxito en <strong>${zona.nombre}</strong>.`;
 
     if (rngDrop <= zona.probDrop) {
-        let nombreDrop = zona.drops[Math.floor(Math.random() * zona.drops.length)];
-        let itemDB = rpgObjetosGlobal.find(obj => obj.nombre === nombreDrop);
+        let itemDB = calcularDropConPesos(zona.drops);
         if (itemDB) {
             gamerProfile.inventario.push({ ...itemDB, uid_inventario: 'loot_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7) });
             msj += `<br>¡Botín: <strong class="rareza-${itemDB.rareza}">${window.sanitizarHTML(itemDB.nombre)}</strong>!`;
@@ -259,12 +291,12 @@ window.minar = function() {
     let rng = Math.random() * 100;
     let msj = "Picas piedra, pero solo sacas escombros inútiles.";
     
-    let itemsMineria = rpgObjetosGlobal.filter(obj => lootMineria.includes(obj.nombre));
-    
-    if (itemsMineria.length > 0 && rng < 65) { 
-        let matGanado = itemsMineria[Math.floor(Math.random() * itemsMineria.length)];
-        gamerProfile.inventario.push({ ...matGanado, uid_inventario: 'mat_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7) });
-        msj = `¡Minaste con éxito: <strong class="rareza-${matGanado.rareza}">${window.sanitizarHTML(matGanado.nombre)}</strong>!`; 
+    if (rng < 65) { 
+        let matGanado = calcularDropConPesos(lootMineria);
+        if (matGanado) {
+            gamerProfile.inventario.push({ ...matGanado, uid_inventario: 'mat_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7) });
+            msj = `¡Minaste con éxito: <strong class="rareza-${matGanado.rareza}">${window.sanitizarHTML(matGanado.nombre)}</strong>!`; 
+        }
     }
 
     localStorage.setItem(keyCooldown, ahora);
@@ -308,8 +340,7 @@ window.entrarMazmorraRPG = function(zonaId) {
 
       let rngDrop = Math.random() * 100;
       if(rngDrop <= mazmorra.probDrop) {
-        let nombreDrop = mazmorra.drops[Math.floor(Math.random() * mazmorra.drops.length)];
-        let lootItemDB = rpgObjetosGlobal.find(obj => obj.nombre === nombreDrop);
+        let lootItemDB = calcularDropConPesos(mazmorra.drops);
         if(lootItemDB) {
            gamerProfile.inventario.push({ ...lootItemDB, uid_inventario: 'loot_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7) });
            premioTxt = `<span class="rareza-${lootItemDB.rareza}">${window.sanitizarHTML(lootItemDB.nombre)}</span>`;
@@ -333,6 +364,9 @@ window.entrarMazmorraRPG = function(zonaId) {
   }, 1500);
 };
 
+// ==========================================
+// FRAGUA OPTIMIZADA CON COSTOS BASE DE DATOS
+// ==========================================
 window.renderizarFraguaRPG = function() {
   let cont = document.getElementById('listaRecetasFragua'); if(!cont) return;
   let armas = rpgObjetosGlobal.filter(o => (o.tipo || '').toLowerCase() === 'arma');
@@ -343,10 +377,8 @@ window.renderizarFraguaRPG = function() {
   let html = "";
   
   armas.forEach(a => {
-    let costoMat = 2; let costoTok = 10;
-    if(a.rareza === 'R') { costoMat = 3; costoTok = 15; }
-    if(a.rareza === 'SR') { costoMat = 6; costoTok = 30; }
-    if(a.rareza === 'SSR') { costoMat = 10; costoTok = 60; }
+    let costoMat = a.costoMat;
+    let costoTok = a.costoTok;
 
     let puede = cantMat >= costoMat && (gamerProfile.tokens || 0) >= costoTok;
     let thumb = a.imgUrl ? `<img src="${a.imgUrl}" style="width: 28px; height: 28px; object-fit: contain; image-rendering: pixelated; margin-right: 6px;">` : `🗡️`;
@@ -358,7 +390,7 @@ window.renderizarFraguaRPG = function() {
           <div>
             <div class="rpg-item-name rareza-${a.rareza}" style="font-size: 0.85em; font-weight: bold;">${window.sanitizarHTML(a.nombre)}</div>
             <div style="font-size: 0.7em; color: var(--text-muted);">ATK +${a.atk} | DEF +${a.def}</div>
-            <div style="font-size: 0.7em; color: var(--secondary-color);">Costo: ${costoMat} 💎 | ${costoTok} 🪙</div>
+            <div style="font-size: 0.7em; font-weight: bold; color: ${puede ? 'var(--secondary-color)' : '#ff3366'};">Req: ${costoMat} 💎 | ${costoTok} 🪙</div>
           </div>
         </div>
         <button class="btn-comprar" style="margin: 0; padding: 6px 12px; font-size: 0.75em; background: ${puede ? '#ff5500' : 'rgba(255,255,255,0.1);'};" onclick="window.forjarItemRPG('${a.id}', ${costoMat}, ${costoTok})" ${!puede ? 'disabled' : ''}>Forjar</button>
