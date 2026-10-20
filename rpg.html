@@ -11,10 +11,19 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <link rel="stylesheet" href="tienda.css">
   <link rel="stylesheet" href="rpg.css">
+  <style>
+    /* Estilos para las nuevas barras de progreso RPG */
+    .bar-container { width: 100%; background: rgba(0,0,0,0.6); border-radius: 10px; border: 1px solid var(--glass-border); height: 16px; margin-top: 4px; position: relative; overflow: hidden; box-shadow: inset 0 0 5px rgba(0,0,0,0.8); }
+    .bar-fill { height: 100%; transition: width 0.4s ease-in-out; }
+    .fill-xp { background: linear-gradient(90deg, #0055ff, #00e5ff); box-shadow: 0 0 8px #00e5ff; }
+    .fill-hp { background: linear-gradient(90deg, #aa0033, #ff3366); box-shadow: 0 0 8px #ff3366; }
+    .bar-text { position: absolute; width: 100%; text-align: center; top: 0; left: 0; font-size: 0.7em; font-weight: bold; color: white; text-shadow: 1px 1px 2px black, 0 0 4px #000; line-height: 16px; }
+    .nivel-badge { display: inline-block; background: #ffaa00; color: #000; padding: 2px 8px; border-radius: 12px; font-weight: bold; font-size: 0.75em; margin-left: 8px; vertical-align: middle; box-shadow: 0 0 8px rgba(255,170,0,0.6); }
+    .lock-overlay { position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.7); display:flex; justify-content:center; align-items:center; border-radius:8px; flex-direction:column; z-index: 10; }
+  </style>
 </head>
 <body class="theme-rosa">
 
-<!-- BARRA SUPERIOR -->
 <header class="admin-navbar" style="justify-content: space-between; padding: 10px 20px;">
   <div class="brand-box" style="display: flex; align-items: center; gap: 10px;">
     <img src="logo.webp?v=2" class="brand-logo" alt="Logo" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
@@ -29,29 +38,42 @@
 
 <main style="max-width: 500px; width: 92%; margin: 20px auto; padding-bottom: 40px;">
   
-  <!-- INFORMACIÓN DEL AVENTURERO Y STATS -->
+  <!-- INFORMACIÓN DEL AVENTURERO (BARRAS DE VIDA Y XP) -->
   <div class="card-panel" style="background: rgba(14, 4, 31, 0.85); border: 1px solid var(--secondary-color); border-radius: var(--radius-md); padding: 20px; margin-bottom: 20px; box-shadow: 0 0 20px rgba(0,229,255,0.15);">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
-      <div>
-        <h2 id="rpgPerfilTag" style="color: #fff; margin: 0; font-size: 1.3em;">GamerOtaku_VE</h2>
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+      <div style="flex-grow: 1;">
+        <h2 style="color: #fff; margin: 0; font-size: 1.3em; display:flex; align-items:center;">
+          <span id="rpgPerfilTag">GamerOtaku_VE</span> 
+          <span class="nivel-badge" id="rpgNivelBadge">Nv. 1</span>
+        </h2>
         <span style="font-size: 0.8em; color: var(--text-muted); text-transform: uppercase;">Clase: <strong id="rpgPerfilClase" style="color: var(--secondary-color);">Ninguna</strong></span>
+        
+        <!-- BARRA DE XP -->
+        <div style="margin-top: 8px;">
+          <div style="font-size: 0.7em; color: #00e5ff; font-weight: bold; margin-bottom: 2px;">Progreso a Nv. <span id="rpgProximoNivelTxt">2</span></div>
+          <div class="bar-container">
+            <div id="rpgBarraXpFill" class="bar-fill fill-xp" style="width: 0%;"></div>
+            <div id="rpgBarraXpText" class="bar-text">0 / 20 XP</div>
+          </div>
+        </div>
       </div>
-      <div>
-        <span style="background: rgba(255,170,0,0.1); border: 1px solid rgba(255,170,0,0.3); padding: 5px 10px; border-radius: var(--radius-pill); color: #ffaa00; font-weight: bold; font-size: 0.85em;" id="rpgPerfilTokens">
+
+      <div style="text-align: right;">
+        <div style="background: rgba(255,170,0,0.1); border: 1px solid rgba(255,170,0,0.3); padding: 5px 10px; border-radius: var(--radius-pill); color: #ffaa00; font-weight: bold; font-size: 0.85em; display:inline-block;" id="rpgPerfilTokens">
           <i class="fas fa-coins"></i> 0 Tokens
-        </span>
-        <span style="background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); padding: 5px 10px; border-radius: var(--radius-pill); color: var(--secondary-color); font-weight: bold; font-size: 0.85em; margin-left: 4px;" id="rpgPerfilXp">
-          0 XP
-        </span>
+        </div>
       </div>
     </div>
 
-    <!-- ATRIBUTOS Y GIMNASIO -->
-    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center; background: rgba(0,0,0,0.4); padding: 10px; border-radius: var(--radius-sm); border: 1px dashed var(--glass-border);">
-      <div>
-        <div style="font-size: 0.7em; color: var(--text-muted);">HP</div>
-        <div id="rpgStatHp" style="font-size: 1.1em; font-weight: bold; color: #ff3366;">100</div>
-        <button onclick="entrenarStatRPG('hp')" style="margin-top: 4px; background: rgba(255,51,102,0.15); border: 1px solid rgba(255,51,102,0.4); color: #ff3366; border-radius: 4px; padding: 2px 6px; font-size: 0.7em; cursor: pointer;">+10 Tok</button>
+    <!-- ATRIBUTOS Y GIMNASIO CON BARRA DE HP -->
+    <div style="display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 8px; text-align: center; background: rgba(0,0,0,0.4); padding: 10px; border-radius: var(--radius-sm); border: 1px dashed var(--glass-border);">
+      <div style="text-align: left; padding-right: 10px; border-right: 1px solid var(--glass-border);">
+        <div style="font-size: 0.75em; color: var(--text-muted); font-weight:bold;">SALUD (HP)</div>
+        <div class="bar-container" style="height: 18px; margin-top: 6px;">
+          <div id="rpgBarraHpFill" class="bar-fill fill-hp" style="width: 100%;"></div>
+          <div id="rpgBarraHpText" class="bar-text" style="line-height: 18px;">100/100</div>
+        </div>
+        <button onclick="entrenarStatRPG('hp')" style="margin-top: 8px; background: rgba(255,51,102,0.15); border: 1px solid rgba(255,51,102,0.4); color: #ff3366; border-radius: 4px; padding: 4px; font-size: 0.7em; cursor: pointer; width: 100%;"><i class="fas fa-heartbeat"></i> Entrenar MaxHP (10 🪙)</button>
       </div>
       <div>
         <div style="font-size: 0.7em; color: var(--text-muted);">ATK</div>
@@ -66,13 +88,11 @@
     </div>
   </div>
 
-  <!-- PANEL DE EQUIPAMIENTO (SILUETA) -->
   <div class="card-panel" style="background: rgba(14, 4, 31, 0.85); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 18px; margin-bottom: 20px; text-align: center;">
     <h3 style="color: var(--secondary-color); margin-top: 0; margin-bottom: 12px; font-size: 1.1em;"><i class="fas fa-shield-alt"></i> Equipamiento</h3>
     <div id="paperDollGrid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-width: 280px; margin: 0 auto;"></div>
   </div>
 
-  <!-- MOCHILA E INVENTARIO -->
   <div class="card-panel" style="background: rgba(14, 4, 31, 0.85); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 18px; margin-bottom: 20px;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
       <h3 style="color: #fff; margin: 0; font-size: 1.1em;"><i class="fas fa-backpack"></i> Mochila</h3>
@@ -81,44 +101,39 @@
     <div id="rpgContenedorInventario" class="rpg-grid"></div>
   </div>
 
-  <!-- TABLÓN DEL GREMIO (ACTUALIZADO CON ZONAS PROGRESIVAS) -->
   <div class="card-panel" style="background: rgba(14, 4, 31, 0.85); border: 1px solid #25d366; border-radius: var(--radius-md); padding: 18px; margin-bottom: 20px;">
     <h3 style="color: #25d366; margin-top: 0; margin-bottom: 10px; font-size: 1.1em;"><i class="fas fa-campground"></i> Tablón del Gremio</h3>
     
     <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: var(--radius-sm); border: 1px dashed #25d366; margin-bottom: 12px; text-align: center;">
-      <div id="rpgResultadoGremio" style="font-size: 0.85em; color: #fff;">Elige tu misión diaria, aventurero.</div>
+      <div id="rpgResultadoGremio" style="font-size: 0.85em; color: #fff;">Cazar gasta HP. ¡Vigila tu salud!</div>
     </div>
 
-    <!-- SISTEMA DE CAZA PROGRESIVA Y MINERÍA -->
     <div style="font-size: 0.8em; color: var(--text-muted); margin-bottom: 6px; font-weight: bold;">Zonas de Caza Progresivas:</div>
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 12px;">
-      <button class="btn-comprar" style="margin-top:0; background: rgba(255, 170, 0, 0.1); border: 1px solid #ffaa00; color: #ffaa00; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="cazarEnZona('gallinas')">🐔 Corral Gallinas (Nvl 0)</button>
-      <button class="btn-comprar" style="margin-top:0; background: rgba(255, 170, 0, 0.15); border: 1px solid #ffaa00; color: #ffaa00; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="cazarEnZona('vacas')">🐮 Prado Vacas (Req: 100 XP)</button>
-      <button class="btn-comprar" style="margin-top:0; background: rgba(255, 85, 0, 0.2); border: 1px solid #ff5500; color: #ff5500; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="cazarEnZona('goblins')">👺 Camp. Goblin (Req: 300 XP)</button>
-      <button class="btn-comprar" style="margin-top:0; background: rgba(255, 51, 102, 0.2); border: 1px solid #ff3366; color: #ff3366; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="cazarEnZona('gigantes')">👹 Valle Gigantes (Req: 800 XP)</button>
+      <button class="btn-comprar" style="margin-top:0; background: rgba(255, 170, 0, 0.1); border: 1px solid #ffaa00; color: #ffaa00; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="cazarEnZona('gallinas')">🐔 Gallinas (Nv. 1) <br><span style="font-size:0.7em; color:#ff3366;">-2 HP</span></button>
+      <button class="btn-comprar" style="margin-top:0; background: rgba(255, 170, 0, 0.15); border: 1px solid #ffaa00; color: #ffaa00; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="cazarEnZona('vacas')">🐮 Vacas (Req: Nv. 3) <br><span style="font-size:0.7em; color:#ff3366;">-5 HP</span></button>
+      <button class="btn-comprar" style="margin-top:0; background: rgba(255, 85, 0, 0.2); border: 1px solid #ff5500; color: #ff5500; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="cazarEnZona('goblins')">👺 Goblins (Req: Nv. 4)<br><span style="font-size:0.7em; color:#ff3366;">-10 HP</span></button>
+      <button class="btn-comprar" style="margin-top:0; background: rgba(255, 51, 102, 0.2); border: 1px solid #ff3366; color: #ff3366; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="cazarEnZona('gigantes')">👹 Gigantes (Req: Nv. 7)<br><span style="font-size:0.7em; color:#ff3366;">-20 HP</span></button>
     </div>
 
     <div style="margin-bottom: 16px;">
-      <button class="btn-comprar" style="margin-top: 0; background: linear-gradient(135deg, #00e5ff, #0099ff); color: #000; font-size: 0.85em; padding: 10px;" onclick="minar()"><i class="fas fa-hammer"></i> Ir a la Mina (Buscando Materiales)</button>
+      <button class="btn-comprar" style="margin-top: 0; background: linear-gradient(135deg, #00e5ff, #0099ff); color: #000; font-size: 0.85em; padding: 10px;" onclick="minar()"><i class="fas fa-hammer"></i> Ir a la Mina (-5 HP)</button>
     </div>
 
-    <!-- MAZMORRAS DE EXPEDICIÓN -->
     <div style="font-size: 0.8em; color: var(--text-muted); margin-bottom: 6px; font-weight: bold;">Mazmorras de Expedición:</div>
     <div style="display: flex; flex-direction: column; gap: 6px;">
-      <button class="btn-comprar" style="margin-top:0; background: rgba(0, 229, 255, 0.1); border: 1px solid #00e5ff; color: #00e5ff; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="entrarMazmorraRPG('facil')">🌲 Bosque Slime (Poder: 40)</button>
-      <button class="btn-comprar" style="margin-top:0; background: rgba(176, 0, 255, 0.1); border: 1px solid #b000ff; color: #b000ff; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="entrarMazmorraRPG('media')">🦇 Cueva Sangrienta (Poder: 180)</button>
-      <button class="btn-comprar" style="margin-top:0; background: rgba(255, 51, 102, 0.1); border: 1px solid #ff3366; color: #ff3366; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="entrarMazmorraRPG('dificil')">🐉 Torre del Dragón (Poder: 600)</button>
+      <button class="btn-comprar" style="margin-top:0; background: rgba(0, 229, 255, 0.1); border: 1px solid #00e5ff; color: #00e5ff; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="entrarMazmorraRPG('facil')">🌲 Bosque Slime (Poder: 40 | <span style="color:#ff3366;">-15 HP</span>)</button>
+      <button class="btn-comprar" style="margin-top:0; background: rgba(176, 0, 255, 0.1); border: 1px solid #b000ff; color: #b000ff; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="entrarMazmorraRPG('media')">🦇 Cueva Sangrienta (Poder: 180 | <span style="color:#ff3366;">-30 HP</span>)</button>
+      <button class="btn-comprar" style="margin-top:0; background: rgba(255, 51, 102, 0.1); border: 1px solid #ff3366; color: #ff3366; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="entrarMazmorraRPG('dificil')">🐉 Torre del Dragón (Poder: 600 | <span style="color:#ff3366;">-60 HP</span>)</button>
     </div>
   </div>
 
-  <!-- LA FRAGUA -->
   <div class="card-panel" style="background: rgba(14, 4, 31, 0.85); border: 1px solid #ffaa00; border-radius: var(--radius-md); padding: 18px;">
     <h3 style="color: #ffaa00; margin-top: 0; margin-bottom: 10px; font-size: 1.1em;"><i class="fas fa-fire"></i> La Fragua</h3>
     <div id="listaRecetasFragua" style="display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto;">
       <p style="color: var(--text-muted); font-size: 0.85em; text-align: center;">Cargando recetas...</p>
     </div>
   </div>
-
 </main>
 
 <script type="module" src="rpg.js"></script>
