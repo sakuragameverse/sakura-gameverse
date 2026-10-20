@@ -22,7 +22,9 @@
     .lock-overlay { position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.7); display:flex; justify-content:center; align-items:center; border-radius:8px; flex-direction:column; z-index: 10; }
     .text-upgrade { font-weight: bold; color: #00e5ff; text-shadow: 0 0 5px #00e5ff; }
     
-    /* Estilos del Modal de Clases */
+    /* NUEVO: Estilo para la cantidad apilada */
+    .badge-cantidad { position: absolute; top: -6px; right: -6px; background: #ff3366; color: #fff; font-size: 0.75em; font-weight: bold; padding: 2px 6px; border-radius: 12px; border: 1px solid #fff; box-shadow: 0 0 5px #000; z-index: 5; pointer-events: none; }
+    
     .class-card { background: rgba(0,0,0,0.6); border: 1px solid var(--glass-border); border-radius: 8px; padding: 12px; margin-bottom: 10px; text-align: left; cursor: pointer; transition: 0.2s; }
     .class-card:hover { border-color: var(--secondary-color); background: rgba(0,229,255,0.1); }
     .class-card h4 { margin: 0 0 5px 0; font-size: 1.1em; }
@@ -37,15 +39,11 @@
     <img src="logo.webp?v=2" style="width: 80px; border-radius: 50%; margin-bottom: 15px; border: 2px solid var(--secondary-color);">
     <h2 style="color: var(--secondary-color); margin-bottom: 5px; font-size: 1.5em;">SAKURA GAMEVERSE</h2>
     <p style="color: var(--text-muted); font-size: 0.85em; margin-bottom: 20px;" id="authSubtitle">Ingresa tu Nickname para continuar</p>
-    
     <input type="text" id="authNick" class="form-input" placeholder="Nombre de Usuario (Nickname)" style="width: 100%; box-sizing: border-box; margin-bottom: 12px; border-radius: var(--radius-pill);" maxlength="15">
     <input type="password" id="authPass" class="form-input" placeholder="Contraseña" style="width: 100%; box-sizing: border-box; margin-bottom: 12px; border-radius: var(--radius-pill);">
-    
     <div id="authErrorMsg" style="color: #ff3366; font-size: 0.85em; margin-bottom: 12px; display: none; font-weight: bold;"></div>
-
     <button class="btn-submit" id="btnAuthEntrar" onclick="iniciarSesionRPG()" style="width: 100%; box-sizing: border-box; background: linear-gradient(135deg, #00e5ff, #0099ff); color: #000; border-radius: var(--radius-pill); margin-bottom: 12px;">Iniciar Sesión</button>
     <button class="btn-comprar" id="btnAuthToggleRegistrar" onclick="toggleRegistroRPG()" style="width: 100%; box-sizing: border-box; background: transparent; border: 1px solid #ffaa00; color: #ffaa00; border-radius: var(--radius-pill); padding: 12px; margin: 0;">¿Nuevo Aventurero? Regístrate</button>
-    
     <button class="btn-submit" id="btnAuthConfirmarReg" onclick="crearCuentaRPG()" style="width: 100%; box-sizing: border-box; background: linear-gradient(135deg, #ffaa00, #ff5500); color: #000; border-radius: var(--radius-pill); display: none; margin-bottom: 12px;">Crear Personaje</button>
     <button class="btn-comprar" id="btnAuthVolverLogin" onclick="toggleRegistroRPG()" style="width: 100%; box-sizing: border-box; background: transparent; border: none; color: var(--text-muted); display: none; margin: 0; padding: 10px;">Volver al Login</button>
   </div>
@@ -56,48 +54,36 @@
   <div class="card-panel" style="width: 100%; max-width: 400px; text-align: center; border-color: #ffaa00; max-height: 90vh; overflow-y: auto;">
     <h2 style="color: #ffaa00; margin-top: 0; margin-bottom: 10px;"><i class="fas fa-gavel"></i> Elige tu Destino</h2>
     <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 20px;">Has alcanzado el Nivel 5. Es hora de jurar lealtad a un Gremio. Esta decisión es permanente.</p>
-    
     <div class="class-card" onclick="seleccionarClaseRPG('Guerrero')">
-      <h4 style="color: #ff3366;"><i class="fas fa-shield-alt"></i> Guerrero</h4>
-      <p>+10% Defensa Total. Gastas 20% menos de Salud (HP) en las Mazmorras.</p>
+      <h4 style="color: #ff3366;"><i class="fas fa-shield-alt"></i> Guerrero</h4><p>+10% Defensa Total. Gastas 20% menos de Salud (HP) en las Mazmorras.</p>
     </div>
     <div class="class-card" onclick="seleccionarClaseRPG('Explorador')">
-      <h4 style="color: #25d366;"><i class="fas fa-leaf"></i> Explorador</h4>
-      <p>-5 Costo de Energía al Cazar. +15% probabilidad de obtener Drop en la caza.</p>
+      <h4 style="color: #25d366;"><i class="fas fa-leaf"></i> Explorador</h4><p>-5 Costo de Energía al Cazar. +15% probabilidad de obtener Drop en la caza.</p>
     </div>
     <div class="class-card" onclick="seleccionarClaseRPG('Mago')">
-      <h4 style="color: #b000ff;"><i class="fas fa-magic"></i> Mago</h4>
-      <p>+30 Energía Máxima. +10% Ataque (ATK) con cualquier arma equipada.</p>
+      <h4 style="color: #b000ff;"><i class="fas fa-magic"></i> Mago</h4><p>+30 Energía Máxima. +10% Ataque (ATK) con cualquier arma equipada.</p>
     </div>
     <div class="class-card" onclick="seleccionarClaseRPG('Artesano')">
-      <h4 style="color: #ffaa00;"><i class="fas fa-hammer"></i> Artesano</h4>
-      <p>30% probabilidad de doble mineral. Refinar armas cuesta 1 Material menos.</p>
+      <h4 style="color: #ffaa00;"><i class="fas fa-hammer"></i> Artesano</h4><p>30% probabilidad de doble mineral. Refinar armas cuesta 1 Material menos.</p>
     </div>
-    
     <button onclick="document.getElementById('modalElegirClase').style.display='none'" style="margin-top: 15px; background: transparent; border: none; color: var(--text-muted); text-decoration: underline;">Decidir más tarde</button>
   </div>
 </div>
 
 <!-- CONTENEDOR DEL JUEGO -->
 <div id="contenidoJuegoRPG" style="display: none;">
-  
   <header class="admin-navbar" style="justify-content: space-between; padding: 10px 20px;">
     <div class="brand-box" style="display: flex; align-items: center; gap: 10px;">
       <img src="logo.webp?v=2" class="brand-logo" alt="Logo" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
       <span class="brand-title" style="color: var(--secondary-color); font-size: 1.1em;">Centro RPG</span>
     </div>
     <div class="nav-actions" style="display: flex; gap: 8px;">
-      <a href="index.html" class="btn-nav btn-tienda" style="background: rgba(0, 229, 255, 0.1); border: 1px solid var(--secondary-color); color: var(--secondary-color); padding: 6px 12px; border-radius: var(--radius-pill); font-size: 0.85em; text-decoration: none;">
-        <i class="fas fa-store"></i> Tienda
-      </a>
-      <button class="btn-nav btn-tienda" style="background: rgba(255, 51, 102, 0.1); border: 1px solid #ff3366; color: #ff3366; padding: 6px 12px; border-radius: var(--radius-pill); font-size: 0.85em; cursor: pointer;" onclick="cerrarSesionRPG()">
-        <i class="fas fa-sign-out-alt"></i> Salir
-      </button>
+      <a href="index.html" class="btn-nav btn-tienda" style="background: rgba(0, 229, 255, 0.1); border: 1px solid var(--secondary-color); color: var(--secondary-color); padding: 6px 12px; border-radius: var(--radius-pill); font-size: 0.85em; text-decoration: none;"><i class="fas fa-store"></i> Tienda</a>
+      <button class="btn-nav btn-tienda" style="background: rgba(255, 51, 102, 0.1); border: 1px solid #ff3366; color: #ff3366; padding: 6px 12px; border-radius: var(--radius-pill); font-size: 0.85em; cursor: pointer;" onclick="cerrarSesionRPG()"><i class="fas fa-sign-out-alt"></i> Salir</button>
     </div>
   </header>
 
   <main style="max-width: 500px; width: 92%; margin: 20px auto; padding-bottom: 40px;">
-    
     <div class="card-panel" style="background: rgba(14, 4, 31, 0.85); border: 1px solid var(--secondary-color); border-radius: var(--radius-md); padding: 20px; margin-bottom: 20px; box-shadow: 0 0 20px rgba(0,229,255,0.15);">
       <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
         <div style="flex-grow: 1;">
@@ -110,52 +96,28 @@
           
           <div style="margin-top: 8px;">
             <div style="font-size: 0.7em; color: #00e5ff; font-weight: bold; margin-bottom: 2px;">Progreso a Nv. <span id="rpgProximoNivelTxt">2</span></div>
-            <div class="bar-container">
-              <div id="rpgBarraXpFill" class="bar-fill fill-xp" style="width: 0%;"></div>
-              <div id="rpgBarraXpText" class="bar-text">0 / 20 XP</div>
-            </div>
+            <div class="bar-container"><div id="rpgBarraXpFill" class="bar-fill fill-xp" style="width: 0%;"></div><div id="rpgBarraXpText" class="bar-text">0 / 20 XP</div></div>
           </div>
         </div>
-
-        <div style="text-align: right;">
-          <div style="background: rgba(255,170,0,0.1); border: 1px solid rgba(255,170,0,0.3); padding: 5px 10px; border-radius: var(--radius-pill); color: #ffaa00; font-weight: bold; font-size: 0.85em; display:inline-block;" id="rpgPerfilTokens">
-            <i class="fas fa-coins"></i> 0 Tokens
-          </div>
-        </div>
+        <div style="text-align: right;"><div style="background: rgba(255,170,0,0.1); border: 1px solid rgba(255,170,0,0.3); padding: 5px 10px; border-radius: var(--radius-pill); color: #ffaa00; font-weight: bold; font-size: 0.85em; display:inline-block;" id="rpgPerfilTokens"><i class="fas fa-coins"></i> 0 Tokens</div></div>
       </div>
 
       <div style="background: rgba(0,0,0,0.4); padding: 12px; border-radius: var(--radius-sm); border: 1px dashed var(--glass-border);">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
           <div style="text-align: left;">
             <div style="font-size: 0.75em; color: var(--text-muted); font-weight:bold;"><i class="fas fa-heart"></i> SALUD</div>
-            <div class="bar-container" style="height: 18px; margin-top: 6px;">
-              <div id="rpgBarraHpFill" class="bar-fill fill-hp" style="width: 100%;"></div>
-              <div id="rpgBarraHpText" class="bar-text" style="line-height: 18px;">100/100</div>
-            </div>
+            <div class="bar-container" style="height: 18px; margin-top: 6px;"><div id="rpgBarraHpFill" class="bar-fill fill-hp" style="width: 100%;"></div><div id="rpgBarraHpText" class="bar-text" style="line-height: 18px;">100/100</div></div>
             <button onclick="entrenarStatRPG('hp')" style="margin-top: 8px; background: rgba(255,51,102,0.15); border: 1px solid rgba(255,51,102,0.4); color: #ff3366; border-radius: 4px; padding: 4px; font-size: 0.7em; cursor: pointer; width: 100%;">+10 MaxHP (10 🪙)</button>
           </div>
-          
           <div style="text-align: left;">
             <div style="font-size: 0.75em; color: var(--text-muted); font-weight:bold;"><i class="fas fa-bolt"></i> ENERGÍA <span style="font-size:0.7em; font-weight:normal;">(+1/min)</span></div>
-            <div class="bar-container" style="height: 18px; margin-top: 6px;">
-              <div id="rpgBarraEnergiaFill" class="bar-fill fill-en" style="width: 100%;"></div>
-              <div id="rpgBarraEnergiaText" class="bar-text" style="line-height: 18px;">100/100</div>
-            </div>
+            <div class="bar-container" style="height: 18px; margin-top: 6px;"><div id="rpgBarraEnergiaFill" class="bar-fill fill-en" style="width: 100%;"></div><div id="rpgBarraEnergiaText" class="bar-text" style="line-height: 18px;">100/100</div></div>
             <button onclick="entrenarStatRPG('energia')" style="margin-top: 8px; background: rgba(255,204,0,0.15); border: 1px solid rgba(255,204,0,0.4); color: #ffcc00; border-radius: 4px; padding: 4px; font-size: 0.7em; cursor: pointer; width: 100%;">+10 MaxEnergía (10 🪙)</button>
           </div>
         </div>
-
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; text-align: center; border-top: 1px solid var(--glass-border); padding-top: 10px;">
-          <div>
-            <div style="font-size: 0.7em; color: var(--text-muted);">ATK</div>
-            <div id="rpgStatAtk" style="font-size: 1.1em; font-weight: bold; color: #ffaa00;">10</div>
-            <button onclick="entrenarStatRPG('atk')" style="margin-top: 4px; background: rgba(255,170,0,0.15); border: 1px solid rgba(255,170,0,0.4); color: #ffaa00; border-radius: 4px; padding: 2px 6px; font-size: 0.7em; cursor: pointer;">+2 ATK (10 🪙)</button>
-          </div>
-          <div>
-            <div style="font-size: 0.7em; color: var(--text-muted);">DEF</div>
-            <div id="rpgStatDef" style="font-size: 1.1em; font-weight: bold; color: #00e5ff;">5</div>
-            <button onclick="entrenarStatRPG('def')" style="margin-top: 4px; background: rgba(0,229,255,0.15); border: 1px solid rgba(0,229,255,0.4); color: #00e5ff; border-radius: 4px; padding: 2px 6px; font-size: 0.7em; cursor: pointer;">+2 DEF (10 🪙)</button>
-          </div>
+          <div><div style="font-size: 0.7em; color: var(--text-muted);">ATK</div><div id="rpgStatAtk" style="font-size: 1.1em; font-weight: bold; color: #ffaa00;">10</div><button onclick="entrenarStatRPG('atk')" style="margin-top: 4px; background: rgba(255,170,0,0.15); border: 1px solid rgba(255,170,0,0.4); color: #ffaa00; border-radius: 4px; padding: 2px 6px; font-size: 0.7em; cursor: pointer;">+2 ATK (10 🪙)</button></div>
+          <div><div style="font-size: 0.7em; color: var(--text-muted);">DEF</div><div id="rpgStatDef" style="font-size: 1.1em; font-weight: bold; color: #00e5ff;">5</div><button onclick="entrenarStatRPG('def')" style="margin-top: 4px; background: rgba(0,229,255,0.15); border: 1px solid rgba(0,229,255,0.4); color: #00e5ff; border-radius: 4px; padding: 2px 6px; font-size: 0.7em; cursor: pointer;">+2 DEF (10 🪙)</button></div>
         </div>
       </div>
     </div>
@@ -175,9 +137,6 @@
 
     <div class="card-panel" style="background: rgba(14, 4, 31, 0.85); border: 1px solid #25d366; border-radius: var(--radius-md); padding: 18px; margin-bottom: 20px;">
       <h3 style="color: #25d366; margin-top: 0; margin-bottom: 10px; font-size: 1.1em;"><i class="fas fa-campground"></i> Tablón del Gremio</h3>
-      <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: var(--radius-sm); border: 1px dashed #25d366; margin-bottom: 12px; text-align: center;">
-        <div id="rpgResultadoGremio" style="font-size: 0.85em; color: #fff;">Explorar agota tu Vida (HP) y Energía (⚡).</div>
-      </div>
       <div style="font-size: 0.8em; color: var(--text-muted); margin-bottom: 6px; font-weight: bold;">Zonas de Caza Progresivas:</div>
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 12px;">
         <button class="btn-comprar" style="margin-top:0; background: rgba(255, 170, 0, 0.1); border: 1px solid #ffaa00; color: #ffaa00; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="cazarEnZona('gallinas')">🐔 Gallinas (Nv. 1) <br><span style="font-size:0.7em; color:#ffcc00;">-5 ⚡</span> | <span style="font-size:0.7em; color:#ff3366;">-2 HP</span></button>
@@ -185,32 +144,35 @@
         <button class="btn-comprar" style="margin-top:0; background: rgba(255, 85, 0, 0.2); border: 1px solid #ff5500; color: #ff5500; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="cazarEnZona('goblins')">👺 Goblins (Req: Nv. 4)<br><span style="font-size:0.7em; color:#ffcc00;">-15 ⚡</span> | <span style="font-size:0.7em; color:#ff3366;">-10 HP</span></button>
         <button class="btn-comprar" style="margin-top:0; background: rgba(255, 51, 102, 0.2); border: 1px solid #ff3366; color: #ff3366; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="cazarEnZona('gigantes')">👹 Gigantes (Req: Nv. 7)<br><span style="font-size:0.7em; color:#ffcc00;">-20 ⚡</span> | <span style="font-size:0.7em; color:#ff3366;">-20 HP</span></button>
       </div>
-      <div style="margin-bottom: 16px;">
-        <button class="btn-comprar" style="margin-top: 0; background: linear-gradient(135deg, #00e5ff, #0099ff); color: #000; font-size: 0.85em; padding: 10px;" onclick="minar()"><i class="fas fa-hammer"></i> Ir a la Mina (<span style="color:#202020;">-15 ⚡ | -5 HP</span>)</button>
-      </div>
+      <div style="margin-bottom: 16px;"><button class="btn-comprar" style="margin-top: 0; background: linear-gradient(135deg, #00e5ff, #0099ff); color: #000; font-size: 0.85em; padding: 10px;" onclick="minar()"><i class="fas fa-hammer"></i> Ir a la Mina (<span style="color:#202020;">-15 ⚡ | -5 HP</span>)</button></div>
       <div style="font-size: 0.8em; color: var(--text-muted); margin-bottom: 6px; font-weight: bold;">Mazmorras de Expedición:</div>
       <div style="display: flex; flex-direction: column; gap: 6px;">
         <button class="btn-comprar" style="margin-top:0; background: rgba(0, 229, 255, 0.1); border: 1px solid #00e5ff; color: #00e5ff; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="entrarMazmorraRPG('facil')">🌲 Bosque Slime (Poder: 40 | <span style="color:#ffcc00;">-25 ⚡</span>)</button>
         <button class="btn-comprar" style="margin-top:0; background: rgba(176, 0, 255, 0.1); border: 1px solid #b000ff; color: #b000ff; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="entrarMazmorraRPG('media')">🦇 Cueva Sangrienta (Poder: 180 | <span style="color:#ffcc00;">-40 ⚡</span>)</button>
         <button class="btn-comprar" style="margin-top:0; background: rgba(255, 51, 102, 0.1); border: 1px solid #ff3366; color: #ff3366; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="entrarMazmorraRPG('dificil')">🐉 Torre del Dragón (Poder: 600 | <span style="color:#ffcc00;">-60 ⚡</span>)</button>
       </div>
+      <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: var(--radius-sm); border: 1px dashed #25d366; margin-top: 12px; text-align: center;">
+        <div id="rpgResultadoGremio" style="font-size: 0.85em; color: #fff;">Explorar agota tu Vida (HP) y Energía (⚡).</div>
+      </div>
     </div>
 
+    <!-- ZONA DE CREACIÓN: FRAGUA, REFINAMIENTO Y HORNO -->
     <div class="card-panel" style="background: rgba(14, 4, 31, 0.85); border: 1px solid #ffaa00; border-radius: var(--radius-md); padding: 18px;">
-      <h3 style="color: #ffaa00; margin-top: 0; margin-bottom: 10px; font-size: 1.1em;"><i class="fas fa-fire"></i> La Fragua (Crear)</h3>
-      <div id="listaRecetasFragua" style="display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto; margin-bottom: 20px;">
-        <p style="color: var(--text-muted); font-size: 0.85em; text-align: center;">Cargando recetas...</p>
-      </div>
+      
+      <h3 style="color: #ffaa00; margin-top: 0; margin-bottom: 10px; font-size: 1.1em;"><i class="fas fa-fire"></i> La Fragua (Crear Armas)</h3>
+      <div id="listaRecetasFragua" style="display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto; margin-bottom: 20px;"></div>
+
+      <h3 style="color: #b000ff; margin-top: 15px; margin-bottom: 10px; font-size: 1.1em; border-top: 1px dashed var(--glass-border); padding-top: 15px;"><i class="fas fa-smog"></i> Horno de Fundición</h3>
+      <p style="font-size: 0.75em; color: var(--text-muted); margin-bottom: 12px;">Derrite tus minerales apilados para crear lingotes y materiales puros.</p>
+      <div id="listaHornoFundicion" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px;"></div>
 
       <h3 style="color: #00e5ff; margin-top: 15px; margin-bottom: 10px; font-size: 1.1em; border-top: 1px dashed var(--glass-border); padding-top: 15px;"><i class="fas fa-gem"></i> Mesa de Refinamiento</h3>
-      <p style="font-size: 0.75em; color: var(--text-muted); margin-bottom: 12px; line-height: 1.3;">Sube de nivel tus armas (+1 a +10). A partir de +4 hay riesgo de fallar. A partir de +6 hay riesgo de <strong style="color:#ff3366;">destruir</strong> el arma.</p>
-      <div id="listaRefinamientoRPG" style="display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto;">
-        <!-- Se llena con JS -->
-      </div>
+      <p style="font-size: 0.75em; color: var(--text-muted); margin-bottom: 12px; line-height: 1.3;">Mejora tus armas (+1 a +10). A partir de +6 hay riesgo de <strong style="color:#ff3366;">destrucción</strong>.</p>
+      <div id="listaRefinamientoRPG" style="display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto;"></div>
+
     </div>
   </main>
-  
-</div> <!-- FIN CONTENEDOR DE JUEGO -->
+</div> 
 
 <script type="module" src="rpg.js"></script>
 </body>
