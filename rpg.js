@@ -20,7 +20,8 @@ let rpgObjetosGlobal = [];
 let gamerProfile = JSON.parse(localStorage.getItem('sakura_gamer_profile')) || { 
   tag: "GamerOtaku_VE", xp: 0, tokens: 0, rango: "Genin", profesion: "", 
   stats: { hpMax: 100, hpActual: 100, energiaMax: 100, energiaActual: 100, ultimaEnergia: Date.now(), atk: 10, def: 5 }, inventario: [],
-  equipo: { cabeza: null, pecho: null, piernas: null, pies: null, mano_derecha: null, mano_izquierda: null, amuleto: null, anillo: null, mascota: null }
+  equipo: { cabeza: null, pecho: null, piernas: null, pies: null, mano_derecha: null, mano_izquierda: null, amuleto: null, anillo: null, mascota: null },
+  cooldowns: {}
 };
 
 // ==========================================
@@ -30,6 +31,7 @@ function inicializarStats() {
     if (typeof gamerProfile.stats.hp === 'number') { gamerProfile.stats.hpMax = gamerProfile.stats.hp; gamerProfile.stats.hpActual = gamerProfile.stats.hp; delete gamerProfile.stats.hp; }
     if (!gamerProfile.stats.hpMax) { gamerProfile.stats.hpMax = 100; gamerProfile.stats.hpActual = 100; }
     if (!gamerProfile.stats.energiaMax) { gamerProfile.stats.energiaMax = 100; gamerProfile.stats.energiaActual = 100; gamerProfile.stats.ultimaEnergia = Date.now(); }
+    if (!gamerProfile.cooldowns) { gamerProfile.cooldowns = {}; }
 }
 inicializarStats();
 
@@ -61,7 +63,7 @@ function calcularXpNivelActual(nivel) { return Math.pow(nivel - 1, 2) * 20; }
 function calcularXpSiguienteNivel(nivel) { return Math.pow(nivel, 2) * 20; }
 
 // ==========================================
-// DICCIONARIOS DE LOOT Y ZONAS CON COSTOS DE ENERGÍA
+// DICCIONARIOS DE LOOT Y ZONAS CON COSTOS
 // ==========================================
 const lootMineria = ['Mineral de Cobre', 'Mineral de Hierro', 'Cristal de Caos', 'Acero Vorpal'];
 
@@ -279,7 +281,6 @@ window.usarConsumibleRPG = function(uid_inventario) {
   
   let nombreMinus = (item.nombre || "").toLowerCase();
   
-  // Si el nombre dice Energía o Stamina, recarga la barra amarilla. Si no, recarga HP.
   if (nombreMinus.includes("energía") || nombreMinus.includes("energia") || nombreMinus.includes("stamina")) {
       gamerProfile.stats.energiaActual += 50; 
       if(gamerProfile.stats.energiaActual > gamerProfile.stats.energiaMax) gamerProfile.stats.energiaActual = gamerProfile.stats.energiaMax;
@@ -325,6 +326,9 @@ function calcularDropConPesos(nombresDrops) {
     return posibles[0];
 }
 
+// ==========================================
+// ACCIONES ANTI-CHEAT: COOLDOWNS EN LA NUBE
+// ==========================================
 window.cazarEnZona = function(zonaId) {
     let zona = zonasCaza[zonaId];
     let nivelJugador = calcularNivel(gamerProfile.xp);
@@ -344,7 +348,17 @@ window.cazarEnZona = function(zonaId) {
         return;
     }
 
-    // Cobramos la Vida y la Energía
+    let ahora = Date.now();
+    let cooldownTime = 1 * 60 * 1000; 
+    let keyCooldown = 'cooldown_caza'; 
+    let ultimoUso = gamerProfile.cooldowns[keyCooldown] || 0;
+
+    if (ahora - ultimoUso < cooldownTime) {
+        let faltanSec = Math.ceil((cooldownTime - (ahora - ultimoUso)) / 1000); 
+        document.getElementById('rpgResultadoGremio').innerHTML = `<span style="color:#00e5ff;"><i class="fas fa-hourglass-half"></i> Cazador descansando... (${Math.floor(faltanSec / 60)}m ${faltanSec % 60}s).</span>`;
+        return;
+    }
+
     gamerProfile.stats.hpActual -= zona.gastaHp;
     gamerProfile.stats.energiaActual -= zona.gastaEn;
 
@@ -359,6 +373,7 @@ window.cazarEnZona = function(zonaId) {
         }
     }
 
+    gamerProfile.cooldowns[keyCooldown] = ahora; // SE GUARDA EN LA NUBE
     gamerProfile.tokens = (gamerProfile.tokens || 0) + zona.tokGana; 
     gamerProfile.xp = (gamerProfile.xp || 0) + zona.xpGana; 
     window.guardarProgresoRPG();
@@ -378,6 +393,17 @@ window.minar = function() {
         return;
     }
 
+    let ahora = Date.now();
+    let cooldownTime = 2 * 60 * 1000; 
+    let keyCooldown = 'cooldown_minar'; 
+    let ultimoUso = gamerProfile.cooldowns[keyCooldown] || 0;
+
+    if (ahora - ultimoUso < cooldownTime) {
+        let faltanSec = Math.ceil((cooldownTime - (ahora - ultimoUso)) / 1000); 
+        document.getElementById('rpgResultadoGremio').innerHTML = `<span style="color:#00e5ff;"><i class="fas fa-hourglass-half"></i> Recuperando fuerzas... (${Math.floor(faltanSec / 60)}m ${faltanSec % 60}s).</span>`;
+        return;
+    }
+
     gamerProfile.stats.energiaActual -= 15;
     gamerProfile.stats.hpActual -= 5;
 
@@ -392,6 +418,7 @@ window.minar = function() {
         }
     }
 
+    gamerProfile.cooldowns[keyCooldown] = ahora; // SE GUARDA EN LA NUBE
     gamerProfile.tokens = (gamerProfile.tokens || 0) + 3; 
     gamerProfile.xp = (gamerProfile.xp || 0) + 15; 
     window.guardarProgresoRPG();
@@ -414,7 +441,17 @@ window.entrarMazmorraRPG = function(zonaId) {
       return;
   }
 
+  let ahora = Date.now();
+  let cooldownTime = 5 * 60 * 1000;
+  let keyCooldown = 'cooldown_mazmorra_global';
+  let ultimoUso = gamerProfile.cooldowns[keyCooldown] || 0;
   let log = document.getElementById('rpgResultadoGremio');
+
+  if (ahora - ultimoUso < cooldownTime) {
+    let faltanSec = Math.ceil((cooldownTime - (ahora - ultimoUso)) / 1000);
+    log.innerHTML = `<span style="color:#ffaa00;"><i class="fas fa-campground"></i> Grupo descansando. Podrás entrar en ${Math.floor(faltanSec / 60)}m ${faltanSec % 60}s.</span>`;
+    return;
+  }
 
   let extraAtk = 0; let extraDef = 0;
   for (let r in gamerProfile.equipo) {
@@ -425,10 +462,10 @@ window.entrarMazmorraRPG = function(zonaId) {
 
   log.innerHTML = `<span style="color:#00e5ff;"><i class="fas fa-walking"></i> Explorando ${mazmorra.nombre}...</span>`;
   
-  // Cobramos la entrada inmediatamente
   gamerProfile.stats.energiaActual -= mazmorra.gastaEn;
   gamerProfile.stats.hpActual -= mazmorra.gastaHp;
-  window.guardarProgresoRPG(); // Guardamos para actualizar la barra en vivo
+  gamerProfile.cooldowns[keyCooldown] = ahora; // SE GUARDA EN LA NUBE
+  window.guardarProgresoRPG(); 
 
   setTimeout(() => {
     if(poder >= mazmorra.poderReq) {
@@ -457,6 +494,76 @@ window.entrarMazmorraRPG = function(zonaId) {
       log.innerHTML = `<span style="color:#ff3366;"><i class="fas fa-skull"></i> Derrota en ${mazmorra.nombre} (${poder}/${mazmorra.poderReq} Poder).</span><br><span style="font-size:0.8em;">Perdiste <strong style="color:#ffaa00;">${perdida} XP</strong>. ¡Mejora tu equipo!</span>`;
     }
   }, 1500);
+};
+
+// ==========================================
+// JEFE DE EVENTO (EL REY CALABAZA)
+// ==========================================
+window.atacarJefeEvento = function() {
+    let poderReq = 800;
+    let gastaEn = 80;
+    let gastaHp = 50;
+
+    if (gamerProfile.stats.energiaActual < gastaEn || gamerProfile.stats.hpActual < gastaHp) {
+        return alert(`¡Estás muy débil! Necesitas ${gastaEn} de Energía y ${gastaHp} HP para sobrevivir a este monstruo.`);
+    }
+
+    let ahora = Date.now();
+    let cooldownTime = 10 * 60 * 1000; // 10 minutos de cooldown para el Boss
+    let keyCooldown = 'cooldown_boss_evento';
+    let ultimoUso = gamerProfile.cooldowns[keyCooldown] || 0;
+
+    if (ahora - ultimoUso < cooldownTime) {
+        let faltanSec = Math.ceil((cooldownTime - (ahora - ultimoUso)) / 1000);
+        return alert(`El Rey Calabaza se está regenerando. Vuelve en ${Math.floor(faltanSec / 60)} minutos.`);
+    }
+
+    let extraAtk = 0; let extraDef = 0;
+    for (let r in gamerProfile.equipo) {
+        let uid = gamerProfile.equipo[r];
+        if(uid) { let it = gamerProfile.inventario.find(i => i.uid_inventario === uid); if(it) { extraAtk += (it.atk||0); extraDef += (it.def||0); } }
+    }
+    let poderJugador = gamerProfile.stats.atk + extraAtk + gamerProfile.stats.def + extraDef;
+
+    let log = document.getElementById('rpgResultadoGremio');
+    log.innerHTML = `<span style="color:#ff5500;"><i class="fas fa-ghost"></i> Entrando a la Cripta del Rey Calabaza...</span>`;
+    
+    gamerProfile.stats.energiaActual -= gastaEn;
+    gamerProfile.stats.hpActual -= gastaHp;
+    gamerProfile.cooldowns[keyCooldown] = ahora;
+    window.guardarProgresoRPG();
+
+    setTimeout(() => {
+        if(poderJugador >= poderReq) {
+            let xpGanada = 1000;
+            let tokGanados = 100;
+            let premioTxt = "Pilas de Oro Maldito";
+            
+            let dropsEvento = ['Casco de Calabaza (SSR)', 'Guadaña Espectral (SSR)', 'Armadura Condenada (SR)'];
+            let rngDrop = Math.random() * 100;
+            
+            if(rngDrop <= 40) {
+                let lootItemDB = calcularDropConPesos(dropsEvento);
+                if(lootItemDB) {
+                   gamerProfile.inventario.push({ ...lootItemDB, uid_inventario: 'event_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7) });
+                   premioTxt = `<strong style="color:#ffaa00; text-shadow: 0 0 5px #ff5500;">¡RELICIA DE HALLOWEEN: ${window.sanitizarHTML(lootItemDB.nombre)}!</strong>`;
+                }
+            }
+
+            gamerProfile.xp += xpGanada;
+            gamerProfile.tokens += tokGanados;
+            window.guardarProgresoRPG();
+            window.mostrarTextoFlotante(`¡VICTORIA!`, '#ffaa00');
+            log.innerHTML = `<span style="color:#ffaa00;"><i class="fas fa-trophy"></i> ¡Rey Calabaza Derrotado!</span><br>Botín: ${premioTxt}<br><span style="font-size:0.8em; color:var(--text-muted);">+${xpGanada} XP | +${tokGanados} Tokens</span>`;
+            try{ confetti({ particleCount: 150, spread: 100, colors: ['#ff5500', '#000000'] }); }catch(e){}
+        } else {
+            let perdidaXp = 300;
+            gamerProfile.xp = Math.max(0, gamerProfile.xp - perdidaXp);
+            window.guardarProgresoRPG();
+            window.mostrarTextoFlotante(`MASACRE`, '#ff3366');
+            log.innerHTML = `<span style="color:#ff3366;"><i class="fas fa-tombstone"></i> El Rey Calabaza te aplastó (${poderJugador}/${poderReq} Poder).</span><br><span style="font-size:0.8em;">Perdiste <strong style="color:#ffaa00;">${perdidaXp} XP</strong>. Huye mientras puedas.</span>`;
+        }
+    }, 2000);
 };
 
 window.renderizarFraguaRPG = function() {
