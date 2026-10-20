@@ -20,6 +20,7 @@
     .bar-text { position: absolute; width: 100%; text-align: center; top: 0; left: 0; font-size: 0.7em; font-weight: bold; color: white; text-shadow: 1px 1px 2px black, 0 0 4px #000; line-height: 16px; }
     .nivel-badge { display: inline-block; background: #ffaa00; color: #000; padding: 2px 8px; border-radius: 12px; font-weight: bold; font-size: 0.75em; margin-left: 8px; vertical-align: middle; box-shadow: 0 0 8px rgba(255,170,0,0.6); }
     .lock-overlay { position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.7); display:flex; justify-content:center; align-items:center; border-radius:8px; flex-direction:column; z-index: 10; }
+    .text-upgrade { font-weight: bold; color: #00e5ff; text-shadow: 0 0 5px #00e5ff; }
   </style>
 </head>
 <body class="theme-rosa">
@@ -63,7 +64,7 @@
       </div>
     </div>
 
-    <!-- NUEVO BLOQUE DE ESTADÍSTICAS Y BARRAS -->
+    <!-- BLOQUE DE ESTADÍSTICAS Y BARRAS -->
     <div style="background: rgba(0,0,0,0.4); padding: 12px; border-radius: var(--radius-sm); border: 1px dashed var(--glass-border);">
       
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
@@ -116,11 +117,9 @@
 
   <div class="card-panel" style="background: rgba(14, 4, 31, 0.85); border: 1px solid #25d366; border-radius: var(--radius-md); padding: 18px; margin-bottom: 20px;">
     <h3 style="color: #25d366; margin-top: 0; margin-bottom: 10px; font-size: 1.1em;"><i class="fas fa-campground"></i> Tablón del Gremio</h3>
-    
     <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: var(--radius-sm); border: 1px dashed #25d366; margin-bottom: 12px; text-align: center;">
       <div id="rpgResultadoGremio" style="font-size: 0.85em; color: #fff;">Explorar agota tu Vida (HP) y Energía (⚡).</div>
     </div>
-
     <div style="font-size: 0.8em; color: var(--text-muted); margin-bottom: 6px; font-weight: bold;">Zonas de Caza Progresivas:</div>
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 12px;">
       <button class="btn-comprar" style="margin-top:0; background: rgba(255, 170, 0, 0.1); border: 1px solid #ffaa00; color: #ffaa00; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="cazarEnZona('gallinas')">🐔 Gallinas (Nv. 1) <br><span style="font-size:0.7em; color:#ffcc00;">-5 ⚡</span> | <span style="font-size:0.7em; color:#ff3366;">-2 HP</span></button>
@@ -128,11 +127,9 @@
       <button class="btn-comprar" style="margin-top:0; background: rgba(255, 85, 0, 0.2); border: 1px solid #ff5500; color: #ff5500; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="cazarEnZona('goblins')">👺 Goblins (Req: Nv. 4)<br><span style="font-size:0.7em; color:#ffcc00;">-15 ⚡</span> | <span style="font-size:0.7em; color:#ff3366;">-10 HP</span></button>
       <button class="btn-comprar" style="margin-top:0; background: rgba(255, 51, 102, 0.2); border: 1px solid #ff3366; color: #ff3366; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="cazarEnZona('gigantes')">👹 Gigantes (Req: Nv. 7)<br><span style="font-size:0.7em; color:#ffcc00;">-20 ⚡</span> | <span style="font-size:0.7em; color:#ff3366;">-20 HP</span></button>
     </div>
-
     <div style="margin-bottom: 16px;">
       <button class="btn-comprar" style="margin-top: 0; background: linear-gradient(135deg, #00e5ff, #0099ff); color: #000; font-size: 0.85em; padding: 10px;" onclick="minar()"><i class="fas fa-hammer"></i> Ir a la Mina (<span style="color:#202020;">-15 ⚡ | -5 HP</span>)</button>
     </div>
-
     <div style="font-size: 0.8em; color: var(--text-muted); margin-bottom: 6px; font-weight: bold;">Mazmorras de Expedición:</div>
     <div style="display: flex; flex-direction: column; gap: 6px;">
       <button class="btn-comprar" style="margin-top:0; background: rgba(0, 229, 255, 0.1); border: 1px solid #00e5ff; color: #00e5ff; box-shadow:none; font-size: 0.8em; padding: 8px;" onclick="entrarMazmorraRPG('facil')">🌲 Bosque Slime (Poder: 40 | <span style="color:#ffcc00;">-25 ⚡</span>)</button>
@@ -141,11 +138,22 @@
     </div>
   </div>
 
+  <!-- LA FRAGUA Y LA MESA DE REFINAMIENTO -->
   <div class="card-panel" style="background: rgba(14, 4, 31, 0.85); border: 1px solid #ffaa00; border-radius: var(--radius-md); padding: 18px;">
-    <h3 style="color: #ffaa00; margin-top: 0; margin-bottom: 10px; font-size: 1.1em;"><i class="fas fa-fire"></i> La Fragua</h3>
-    <div id="listaRecetasFragua" style="display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto;">
+    
+    <!-- PESTAÑA 1: CREAR -->
+    <h3 style="color: #ffaa00; margin-top: 0; margin-bottom: 10px; font-size: 1.1em;"><i class="fas fa-fire"></i> La Fragua (Crear)</h3>
+    <div id="listaRecetasFragua" style="display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto; margin-bottom: 20px;">
       <p style="color: var(--text-muted); font-size: 0.85em; text-align: center;">Cargando recetas...</p>
     </div>
+
+    <!-- PESTAÑA 2: REFINAR (END-GAME) -->
+    <h3 style="color: #00e5ff; margin-top: 15px; margin-bottom: 10px; font-size: 1.1em; border-top: 1px dashed var(--glass-border); padding-top: 15px;"><i class="fas fa-gem"></i> Mesa de Refinamiento</h3>
+    <p style="font-size: 0.75em; color: var(--text-muted); margin-bottom: 12px; line-height: 1.3;">Sube de nivel tus armas (+1 a +10). A partir de +4 hay riesgo de fallar. A partir de +6 hay riesgo de <strong style="color:#ff3366;">destruir</strong> el arma.</p>
+    <div id="listaRefinamientoRPG" style="display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto;">
+      <!-- Se llena con JS -->
+    </div>
+    
   </div>
 </main>
 
