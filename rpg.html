@@ -27,25 +27,25 @@
 
 <!-- PANTALLA DE LOGIN / REGISTRO RPG -->
 <div id="pantallaAuthRPG" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #05010a; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-  <div class="card-panel" style="width: 90%; max-width: 350px; text-align: center; border-color: var(--secondary-color); box-shadow: 0 0 20px rgba(0,229,255,0.2);">
+  <div class="card-panel" style="width: 90%; max-width: 350px; text-align: center; border-color: var(--secondary-color); box-shadow: 0 0 20px rgba(0,229,255,0.2); padding: 25px;">
     <img src="logo.webp?v=2" style="width: 80px; border-radius: 50%; margin-bottom: 15px; border: 2px solid var(--secondary-color);">
-    <h2 style="color: var(--secondary-color); margin-bottom: 5px; font-size: 1.5em;">Sakura Gameverse</h2>
+    <h2 style="color: var(--secondary-color); margin-bottom: 5px; font-size: 1.5em;">SAKURA GAMEVERSE</h2>
     <p style="color: var(--text-muted); font-size: 0.85em; margin-bottom: 20px;">Inicia sesión para continuar tu aventura</p>
     
-    <input type="email" id="authEmail" class="form-input" placeholder="Correo electrónico" style="margin-bottom: 12px; border-radius: var(--radius-pill);">
-    <input type="password" id="authPass" class="form-input" placeholder="Contraseña" style="margin-bottom: 12px; border-radius: var(--radius-pill);">
+    <input type="email" id="authEmail" class="form-input" placeholder="Correo electrónico" style="width: 100%; box-sizing: border-box; margin-bottom: 12px; border-radius: var(--radius-pill);">
+    <input type="password" id="authPass" class="form-input" placeholder="Contraseña" style="width: 100%; box-sizing: border-box; margin-bottom: 12px; border-radius: var(--radius-pill);">
     
-    <div id="cajaRegistroRPG" style="display: none;">
-       <input type="text" id="authTag" class="form-input" placeholder="Tu Nombre RPG (Ej: Yoshimura)" style="margin-bottom: 12px; border-radius: var(--radius-pill);" maxlength="15">
+    <div id="cajaRegistroRPG" style="display: none; width: 100%;">
+       <input type="text" id="authTag" class="form-input" placeholder="Nombre RPG (Ej: Yoshimura)" style="width: 100%; box-sizing: border-box; margin-bottom: 12px; border-radius: var(--radius-pill);" maxlength="15">
     </div>
     
     <div id="authErrorMsg" style="color: #ff3366; font-size: 0.85em; margin-bottom: 12px; display: none; font-weight: bold;"></div>
 
-    <button class="btn-submit" id="btnAuthEntrar" onclick="iniciarSesionRPG()" style="background: linear-gradient(135deg, #00e5ff, #0099ff); color: #000; border-radius: var(--radius-pill); margin-bottom: 12px;">Iniciar Sesión</button>
-    <button class="btn-comprar" id="btnAuthToggleRegistrar" onclick="toggleRegistroRPG()" style="background: transparent; border: 1px solid #ffaa00; color: #ffaa00; border-radius: var(--radius-pill); width: 100%; padding: 12px; margin: 0;">¿Nuevo Aventurero? Regístrate</button>
+    <button class="btn-submit" id="btnAuthEntrar" onclick="iniciarSesionRPG()" style="width: 100%; box-sizing: border-box; background: linear-gradient(135deg, #00e5ff, #0099ff); color: #000; border-radius: var(--radius-pill); margin-bottom: 12px;">Iniciar Sesión</button>
+    <button class="btn-comprar" id="btnAuthToggleRegistrar" onclick="toggleRegistroRPG()" style="width: 100%; box-sizing: border-box; background: transparent; border: 1px solid #ffaa00; color: #ffaa00; border-radius: var(--radius-pill); padding: 12px; margin: 0;">¿Nuevo Aventurero? Regístrate</button>
     
-    <button class="btn-submit" id="btnAuthConfirmarReg" onclick="crearCuentaRPG()" style="background: linear-gradient(135deg, #ffaa00, #ff5500); color: #000; border-radius: var(--radius-pill); display: none; margin-bottom: 12px;">Crear Personaje</button>
-    <button class="btn-comprar" id="btnAuthVolverLogin" onclick="toggleRegistroRPG()" style="background: transparent; border: none; color: var(--text-muted); display: none; width: 100%; margin: 0; padding: 10px;">Volver al Login</button>
+    <button class="btn-submit" id="btnAuthConfirmarReg" onclick="crearCuentaRPG()" style="width: 100%; box-sizing: border-box; background: linear-gradient(135deg, #ffaa00, #ff5500); color: #000; border-radius: var(--radius-pill); display: none; margin-bottom: 12px;">Crear Personaje</button>
+    <button class="btn-comprar" id="btnAuthVolverLogin" onclick="toggleRegistroRPG()" style="width: 100%; box-sizing: border-box; background: transparent; border: none; color: var(--text-muted); display: none; margin: 0; padding: 10px;">Volver al Login</button>
   </div>
 </div>
 
