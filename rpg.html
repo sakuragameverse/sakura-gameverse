@@ -21,14 +21,18 @@
     .nivel-badge { display: inline-block; background: #ffaa00; color: #000; padding: 2px 8px; border-radius: 12px; font-weight: bold; font-size: 0.75em; margin-left: 8px; vertical-align: middle; box-shadow: 0 0 8px rgba(255,170,0,0.6); }
     .lock-overlay { position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.7); display:flex; justify-content:center; align-items:center; border-radius:8px; flex-direction:column; z-index: 10; }
     .text-upgrade { font-weight: bold; color: #00e5ff; text-shadow: 0 0 5px #00e5ff; }
-    
-    /* NUEVO: Estilo para la cantidad apilada */
     .badge-cantidad { position: absolute; top: -6px; right: -6px; background: #ff3366; color: #fff; font-size: 0.75em; font-weight: bold; padding: 2px 6px; border-radius: 12px; border: 1px solid #fff; box-shadow: 0 0 5px #000; z-index: 5; pointer-events: none; }
-    
     .class-card { background: rgba(0,0,0,0.6); border: 1px solid var(--glass-border); border-radius: 8px; padding: 12px; margin-bottom: 10px; text-align: left; cursor: pointer; transition: 0.2s; }
     .class-card:hover { border-color: var(--secondary-color); background: rgba(0,229,255,0.1); }
     .class-card h4 { margin: 0 0 5px 0; font-size: 1.1em; }
     .class-card p { margin: 0; font-size: 0.75em; color: var(--text-muted); }
+    
+    /* Estilos del Motor Narrativo */
+    .narrative-box { background: rgba(0,0,0,0.8); border: 1px dashed #b000ff; border-radius: 8px; padding: 15px; font-family: 'Chakra Petch', sans-serif; font-size: 0.9em; line-height: 1.5; color: #e0f4ff; margin-bottom: 12px; min-height: 80px; text-shadow: 0 0 2px #000; }
+    .narrative-options { display: flex; flex-direction: column; gap: 8px; }
+    .narrative-btn { background: rgba(176,0,255,0.15); border: 1px solid rgba(176,0,255,0.5); color: #b000ff; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; text-align: left; }
+    .narrative-btn:hover { background: rgba(176,0,255,0.3); border-color: #b000ff; color: #fff; }
+    .narrative-btn i { width: 20px; text-align: center; margin-right: 5px; }
   </style>
 </head>
 <body class="theme-rosa">
@@ -54,23 +58,14 @@
   <div class="card-panel" style="width: 100%; max-width: 400px; text-align: center; border-color: #ffaa00; max-height: 90vh; overflow-y: auto;">
     <h2 style="color: #ffaa00; margin-top: 0; margin-bottom: 10px;"><i class="fas fa-gavel"></i> Elige tu Destino</h2>
     <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 20px;">Has alcanzado el Nivel 5. Es hora de jurar lealtad a un Gremio. Esta decisión es permanente.</p>
-    <div class="class-card" onclick="seleccionarClaseRPG('Guerrero')">
-      <h4 style="color: #ff3366;"><i class="fas fa-shield-alt"></i> Guerrero</h4><p>+10% Defensa Total. Gastas 20% menos de Salud (HP) en las Mazmorras.</p>
-    </div>
-    <div class="class-card" onclick="seleccionarClaseRPG('Explorador')">
-      <h4 style="color: #25d366;"><i class="fas fa-leaf"></i> Explorador</h4><p>-5 Costo de Energía al Cazar. +15% probabilidad de obtener Drop en la caza.</p>
-    </div>
-    <div class="class-card" onclick="seleccionarClaseRPG('Mago')">
-      <h4 style="color: #b000ff;"><i class="fas fa-magic"></i> Mago</h4><p>+30 Energía Máxima. +10% Ataque (ATK) con cualquier arma equipada.</p>
-    </div>
-    <div class="class-card" onclick="seleccionarClaseRPG('Artesano')">
-      <h4 style="color: #ffaa00;"><i class="fas fa-hammer"></i> Artesano</h4><p>30% probabilidad de doble mineral. Refinar armas cuesta 1 Material menos.</p>
-    </div>
+    <div class="class-card" onclick="seleccionarClaseRPG('Guerrero')"><h4 style="color: #ff3366;"><i class="fas fa-shield-alt"></i> Guerrero</h4><p>+10% Defensa Total. Gastas 20% menos de Salud (HP) en las Mazmorras.</p></div>
+    <div class="class-card" onclick="seleccionarClaseRPG('Explorador')"><h4 style="color: #25d366;"><i class="fas fa-leaf"></i> Explorador</h4><p>-5 Costo de Energía al Cazar. +15% probabilidad de obtener Drop en la caza.</p></div>
+    <div class="class-card" onclick="seleccionarClaseRPG('Mago')"><h4 style="color: #b000ff;"><i class="fas fa-magic"></i> Mago</h4><p>+30 Energía Máxima. +10% Ataque (ATK) con cualquier arma equipada.</p></div>
+    <div class="class-card" onclick="seleccionarClaseRPG('Artesano')"><h4 style="color: #ffaa00;"><i class="fas fa-hammer"></i> Artesano</h4><p>30% probabilidad de doble mineral. Refinar armas cuesta 1 Material menos.</p></div>
     <button onclick="document.getElementById('modalElegirClase').style.display='none'" style="margin-top: 15px; background: transparent; border: none; color: var(--text-muted); text-decoration: underline;">Decidir más tarde</button>
   </div>
 </div>
 
-<!-- CONTENEDOR DEL JUEGO -->
 <div id="contenidoJuegoRPG" style="display: none;">
   <header class="admin-navbar" style="justify-content: space-between; padding: 10px 20px;">
     <div class="brand-box" style="display: flex; align-items: center; gap: 10px;">
@@ -84,6 +79,8 @@
   </header>
 
   <main style="max-width: 500px; width: 92%; margin: 20px auto; padding-bottom: 40px;">
+    
+    <!-- PERFIL -->
     <div class="card-panel" style="background: rgba(14, 4, 31, 0.85); border: 1px solid var(--secondary-color); border-radius: var(--radius-md); padding: 20px; margin-bottom: 20px; box-shadow: 0 0 20px rgba(0,229,255,0.15);">
       <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
         <div style="flex-grow: 1;">
@@ -93,7 +90,6 @@
           </h2>
           <span style="font-size: 0.8em; color: var(--text-muted); text-transform: uppercase;">Clase: <strong id="rpgPerfilClase" style="color: var(--secondary-color);">Sin Clase</strong></span>
           <button id="btnAbrirModalClase" style="display: none; background: rgba(255,170,0,0.2); border: 1px solid #ffaa00; color: #ffaa00; border-radius: 4px; padding: 2px 8px; font-size: 0.65em; margin-left: 8px; cursor: pointer;" onclick="document.getElementById('modalElegirClase').style.display='flex'">Elegir Clase</button>
-          
           <div style="margin-top: 8px;">
             <div style="font-size: 0.7em; color: #00e5ff; font-weight: bold; margin-bottom: 2px;">Progreso a Nv. <span id="rpgProximoNivelTxt">2</span></div>
             <div class="bar-container"><div id="rpgBarraXpFill" class="bar-fill fill-xp" style="width: 0%;"></div><div id="rpgBarraXpText" class="bar-text">0 / 20 XP</div></div>
@@ -101,7 +97,6 @@
         </div>
         <div style="text-align: right;"><div style="background: rgba(255,170,0,0.1); border: 1px solid rgba(255,170,0,0.3); padding: 5px 10px; border-radius: var(--radius-pill); color: #ffaa00; font-weight: bold; font-size: 0.85em; display:inline-block;" id="rpgPerfilTokens"><i class="fas fa-coins"></i> 0 Tokens</div></div>
       </div>
-
       <div style="background: rgba(0,0,0,0.4); padding: 12px; border-radius: var(--radius-sm); border: 1px dashed var(--glass-border);">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
           <div style="text-align: left;">
@@ -156,9 +151,48 @@
       </div>
     </div>
 
+    <!-- EL COLISEO (ARENA Y AVENTURAS TEXTUALES) -->
+    <div class="card-panel" style="background: rgba(14, 4, 31, 0.85); border: 1px solid #b000ff; border-radius: var(--radius-md); padding: 18px; margin-bottom: 20px;">
+      <h3 style="color: #b000ff; margin-top: 0; margin-bottom: 12px; font-size: 1.2em;"><i class="fas fa-skull-crossbones"></i> El Coliseo</h3>
+      
+      <div class="cart-tabs" style="margin-bottom: 15px;">
+        <button class="cart-tab-btn activo" id="tabModoAventura" onclick="cambiarPestanaColiseo('aventura')" style="font-size: 0.75em;">Aventura (Solo)</button>
+        <button class="cart-tab-btn" id="tabModoRumble" onclick="cambiarPestanaColiseo('rumble')" style="font-size: 0.75em;">Torneo (Multi)</button>
+      </div>
+
+      <!-- MOTOR NARRATIVO (LIFE IN ADVENTURE) -->
+      <div id="coliseoAventura">
+        <p style="font-size: 0.75em; color: var(--text-muted); margin-bottom: 10px; line-height: 1.3;">Embárcate en una historia donde tus atributos (ATK/DEF) y decisiones dictan si vives o mueres. <br><strong style="color:#ffcc00;">Costo: 30 Energía ⚡</strong></p>
+        
+        <div class="narrative-box" id="narrativeBox">
+          Las puertas del coliseo abandonado se abren ante ti. ¿Estás listo para forjar tu destino?
+        </div>
+        
+        <div class="narrative-options" id="narrativeOptions">
+          <button class="narrative-btn" onclick="iniciarAventuraNarrativa()"><i class="fas fa-play"></i> Iniciar Historia (-30 ⚡)</button>
+        </div>
+      </div>
+
+      <!-- TORNEO RUMBLE MULTIJUGADOR -->
+      <div id="coliseoRumble" style="display: none;">
+        <div style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: var(--radius-sm); border: 1px dashed #ff3366; margin-bottom: 15px; text-align: center;">
+          Estado: <strong id="lblEstadoRumble" style="color: #ffaa00;">Inscripciones Abiertas</strong><br>
+          Inscritos actuales: <strong id="lblInscritosRumble" style="color: #fff;">0</strong>
+        </div>
+        <button id="btnInscribirseRumble" class="btn-comprar" style="background: #ff3366; box-shadow: 0 0 15px rgba(255,51,102,0.4); margin-bottom: 15px;" onclick="inscribirseRumbleBD()">
+          <i class="fas fa-pen-nib"></i> Inscribirse a la Batalla
+        </button>
+        <div style="text-align: left;">
+          <h4 style="color: var(--secondary-color); margin-bottom: 5px; font-size: 0.9em;">Última Batalla Multijugador:</h4>
+          <div id="logUltimoRumble" style="background: rgba(0,0,0,0.8); padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--glass-border); height: 120px; overflow-y: auto; font-family: 'Chakra Petch', monospace; font-size: 0.8em; color: #fff;">
+            Cargando resultados anteriores...
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ZONA DE CREACIÓN: FRAGUA, REFINAMIENTO Y HORNO -->
     <div class="card-panel" style="background: rgba(14, 4, 31, 0.85); border: 1px solid #ffaa00; border-radius: var(--radius-md); padding: 18px;">
-      
       <h3 style="color: #ffaa00; margin-top: 0; margin-bottom: 10px; font-size: 1.1em;"><i class="fas fa-fire"></i> La Fragua (Crear Armas)</h3>
       <div id="listaRecetasFragua" style="display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto; margin-bottom: 20px;"></div>
 
@@ -169,7 +203,6 @@
       <h3 style="color: #00e5ff; margin-top: 15px; margin-bottom: 10px; font-size: 1.1em; border-top: 1px dashed var(--glass-border); padding-top: 15px;"><i class="fas fa-gem"></i> Mesa de Refinamiento</h3>
       <p style="font-size: 0.75em; color: var(--text-muted); margin-bottom: 12px; line-height: 1.3;">Mejora tus armas (+1 a +10). A partir de +6 hay riesgo de <strong style="color:#ff3366;">destrucción</strong>.</p>
       <div id="listaRefinamientoRPG" style="display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto;"></div>
-
     </div>
   </main>
 </div> 
