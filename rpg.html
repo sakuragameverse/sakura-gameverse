@@ -30,14 +30,11 @@
   <div class="card-panel" style="width: 90%; max-width: 350px; text-align: center; border-color: var(--secondary-color); box-shadow: 0 0 20px rgba(0,229,255,0.2); padding: 25px;">
     <img src="logo.webp?v=2" style="width: 80px; border-radius: 50%; margin-bottom: 15px; border: 2px solid var(--secondary-color);">
     <h2 style="color: var(--secondary-color); margin-bottom: 5px; font-size: 1.5em;">SAKURA GAMEVERSE</h2>
-    <p style="color: var(--text-muted); font-size: 0.85em; margin-bottom: 20px;">Inicia sesión para continuar tu aventura</p>
+    <p style="color: var(--text-muted); font-size: 0.85em; margin-bottom: 20px;" id="authSubtitle">Ingresa tu Nickname para continuar</p>
     
-    <input type="email" id="authEmail" class="form-input" placeholder="Correo electrónico" style="width: 100%; box-sizing: border-box; margin-bottom: 12px; border-radius: var(--radius-pill);">
+    <!-- AHORA SOLO PIDE NICKNAME -->
+    <input type="text" id="authNick" class="form-input" placeholder="Nombre de Usuario (Nickname)" style="width: 100%; box-sizing: border-box; margin-bottom: 12px; border-radius: var(--radius-pill);" maxlength="15">
     <input type="password" id="authPass" class="form-input" placeholder="Contraseña" style="width: 100%; box-sizing: border-box; margin-bottom: 12px; border-radius: var(--radius-pill);">
-    
-    <div id="cajaRegistroRPG" style="display: none; width: 100%;">
-       <input type="text" id="authTag" class="form-input" placeholder="Nombre RPG (Ej: Yoshimura)" style="width: 100%; box-sizing: border-box; margin-bottom: 12px; border-radius: var(--radius-pill);" maxlength="15">
-    </div>
     
     <div id="authErrorMsg" style="color: #ff3366; font-size: 0.85em; margin-bottom: 12px; display: none; font-weight: bold;"></div>
 
