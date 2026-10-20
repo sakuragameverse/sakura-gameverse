@@ -20,7 +20,7 @@ let rpgObjetosGlobal = [];
 let gamerProfile = {}; 
 
 // ==========================================
-// SISTEMA DE LOGIN, REGISTRO Y ANTI-DUPLICADOS
+// SISTEMA DE LOGIN Y REGISTRO (CON FALSO CORREO)
 // ==========================================
 onAuthStateChanged(auth, async (user) => {
   if (user) { 
@@ -30,7 +30,7 @@ onAuthStateChanged(auth, async (user) => {
       await window.descargarProgresoNube(user.uid); 
   } else { 
       currentUserUid = null; 
-      gamerProfile = {}; // Limpia la memoria local por seguridad
+      gamerProfile = {}; 
       document.getElementById('pantallaAuthRPG').style.display = 'flex';
       document.getElementById('contenidoJuegoRPG').style.display = 'none';
   }
@@ -38,90 +38,74 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 window.toggleRegistroRPG = function() {
-    let cajaReg = document.getElementById('cajaRegistroRPG');
-    let isLogin = cajaReg.style.display === 'none';
+    let titulo = document.getElementById('authSubtitle');
+    let isLogin = document.getElementById('btnAuthConfirmarReg').style.display === 'none';
     
-    cajaReg.style.display = isLogin ? 'block' : 'none';
     document.getElementById('btnAuthEntrar').style.display = isLogin ? 'none' : 'block';
     document.getElementById('btnAuthToggleRegistrar').style.display = isLogin ? 'none' : 'block';
     
     document.getElementById('btnAuthConfirmarReg').style.display = isLogin ? 'block' : 'none';
     document.getElementById('btnAuthVolverLogin').style.display = isLogin ? 'block' : 'none';
     document.getElementById('authErrorMsg').style.display = 'none';
+    
+    titulo.innerText = isLogin ? "Crea tu Nickname para registrarte" : "Ingresa tu Nickname para continuar";
 };
 
 window.iniciarSesionRPG = async function() {
-    let email = document.getElementById('authEmail').value.trim();
+    let nick = document.getElementById('authNick').value.trim();
     let pass = document.getElementById('authPass').value;
     let errBox = document.getElementById('authErrorMsg');
-    if(!email || !pass) return;
+    if(!nick || !pass) return;
+
+    // MAGIA: Si tiene "@", es el correo de Admin. Si no, es un jugador normal y le inventamos el correo.
+    let emailAUsar = nick.includes('@') ? nick : nick.toLowerCase() + "@sakura.game";
 
     document.getElementById('btnAuthEntrar').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Conectando...';
     try {
-        await signInWithEmailAndPassword(auth, email, pass);
+        await signInWithEmailAndPassword(auth, emailAUsar, pass);
     } catch(e) {
-        errBox.innerText = "Credenciales incorrectas.";
+        errBox.innerText = "Nickname o Contraseña incorrectos.";
         errBox.style.display = 'block';
         document.getElementById('btnAuthEntrar').innerHTML = 'Iniciar Sesión';
     }
 };
 
 window.crearCuentaRPG = async function() {
-    let email = document.getElementById('authEmail').value.trim();
+    let nick = document.getElementById('authNick').value.trim();
     let pass = document.getElementById('authPass').value;
-    let tagValido = document.getElementById('authTag').value.trim();
     let errBox = document.getElementById('authErrorMsg');
 
-    if(!email || !pass || !tagValido) {
-        errBox.innerText = "Completa todos los campos.";
-        errBox.style.display = 'block'; return;
-    }
-    if(pass.length < 6) {
-        errBox.innerText = "La contraseña debe tener al menos 6 caracteres.";
-        errBox.style.display = 'block'; return;
-    }
+    if(!nick || !pass) { errBox.innerText = "Completa todos los campos."; errBox.style.display = 'block'; return; }
+    if(pass.length < 6) { errBox.innerText = "La contraseña debe tener al menos 6 caracteres."; errBox.style.display = 'block'; return; }
+    if(nick.includes('@')) { errBox.innerText = "El Nickname no puede llevar @."; errBox.style.display = 'block'; return; }
 
     // PROTECCIÓN DE NOMBRES BASE O ADMIN
-    if(tagValido.toLowerCase() === "gamerotaku_ve" || tagValido.toLowerCase().includes("admin")) {
+    if(nick.toLowerCase() === "gamerotaku_ve" || nick.toLowerCase().includes("admin")) {
         errBox.innerText = "Ese nombre está reservado. Por favor elige otro.";
         errBox.style.display = 'block'; return;
     }
 
-    document.getElementById('btnAuthConfirmarReg').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando Nombre...';
+    document.getElementById('btnAuthConfirmarReg').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando...';
     
     try {
-        // VALIDACIÓN EN FIREBASE: COMPROBAR SI EL NICK YA EXISTE
-        const qTag = query(collection(db, "jugadores_cloud"), where("profile.tag", "==", tagValido));
-        const tagSnap = await getDocs(qTag);
+        let fakeEmail = nick.toLowerCase() + "@sakura.game";
         
-        if(!tagSnap.empty) {
-            errBox.innerText = "Ese Nombre (GamerTag) ya está en uso. ¡Elige otro!";
-            errBox.style.display = 'block';
-            document.getElementById('btnAuthConfirmarReg').innerHTML = 'Crear Personaje';
-            return;
-        }
-
-        // SI EL NICK ESTÁ LIBRE, CREAMOS EL USUARIO EN AUTH
-        document.getElementById('btnAuthConfirmarReg').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creando...';
-        const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+        // El mismo Firebase Auth nos avisará si ya hay alguien con ese "correo" (es decir, ese Nickname)
+        const userCredential = await createUserWithEmailAndPassword(auth, fakeEmail, pass);
         const nuevoUser = userCredential.user;
         
-        // CREAMOS SU PERFIL DESDE CERO
         let perfilInicial = {
-            tag: tagValido, xp: 0, tokens: 0, rango: "Genin", profesion: "Sin Clase", 
+            tag: nick, xp: 0, tokens: 0, rango: "Genin", profesion: "Sin Clase", 
             stats: { hpMax: 100, hpActual: 100, energiaMax: 100, energiaActual: 100, ultimaEnergia: Date.now(), atk: 10, def: 5 }, 
             inventario: [],
             equipo: { cabeza: null, pecho: null, piernas: null, pies: null, mano_derecha: null, mano_izquierda: null, amuleto: null, anillo: null, mascota: null },
             cooldowns: {}
         };
 
-        await setDoc(doc(db, "jugadores_cloud", nuevoUser.uid), { 
-            profile: perfilInicial, 
-            updatedAt: Date.now() 
-        });
+        await setDoc(doc(db, "jugadores_cloud", nuevoUser.uid), { profile: perfilInicial, updatedAt: Date.now() });
 
     } catch(e) {
-        if(e.code === 'auth/email-already-in-use') errBox.innerText = "El correo ya está en uso.";
+        if(e.code === 'auth/email-already-in-use') errBox.innerText = "Ese Nickname ya está en uso. ¡Elige otro!";
         else errBox.innerText = "Error al crear la cuenta.";
         errBox.style.display = 'block';
         document.getElementById('btnAuthConfirmarReg').innerHTML = 'Crear Personaje';
@@ -131,7 +115,7 @@ window.crearCuentaRPG = async function() {
 window.cerrarSesionRPG = async function() {
     if(confirm("¿Quieres salir de la cuenta actual?")) {
         await signOut(auth);
-        localStorage.removeItem('sakura_gamer_profile'); // Borra cualquier caché residual
+        localStorage.removeItem('sakura_gamer_profile'); 
         window.location.reload();
     }
 };
@@ -219,7 +203,7 @@ window.descargarProgresoNube = async function(uid) {
                 if (!gamerProfile.equipo) gamerProfile.equipo = { cabeza: null, pecho: null, piernas: null, pies: null, mano_derecha: null, mano_izquierda: null, amuleto: null, anillo: null, mascota: null }; 
             }
         } else {
-            // SI LA CUENTA NO TIENE PERFIL (EJEMPLO: EL ADMIN), SE LE CREA UNO AUTOMÁTICO
+            // SI ES ADMIN O NO TENÍA, CREA PERFIL
             gamerProfile = {
                 tag: "Admin_" + uid.substring(0,4), xp: 0, tokens: 0, rango: "Genin", profesion: "Sin Clase", 
                 stats: { hpMax: 100, hpActual: 100, energiaMax: 100, energiaActual: 100, ultimaEnergia: Date.now(), atk: 10, def: 5 }, 
