@@ -230,6 +230,7 @@ window.cazarEnZona = function(zonaId) {
     gamerProfile.stats.hpActual -= zona.gastaHp; gamerProfile.stats.energiaActual -= costoEnergia;
     let probFinalDrop = zona.probDrop; if (gamerProfile.profesion === 'Explorador') probFinalDrop += 15;
     let rngDrop = Math.random() * 100; let msj = `Cazaste con éxito en <strong>${zona.nombre}</strong>.`;
+
     if (rngDrop <= probFinalDrop) { let itemDB = calcularDropConPesos(zona.drops); if (itemDB) { window.agregarItemInventario({...itemDB}); msj += `<br>¡Botín: <strong class="rareza-${itemDB.rareza}">${window.sanitizarHTML(itemDB.nombre)}</strong>!`; } }
     gamerProfile.cooldowns[keyCooldown] = ahora; gamerProfile.tokens = (gamerProfile.tokens || 0) + zona.tokGana; gamerProfile.xp = (gamerProfile.xp || 0) + zona.xpGana; window.guardarProgresoRPG();
     window.mostrarTextoFlotante(`+${zona.xpGana} XP`, '#25d366'); document.getElementById('rpgResultadoGremio').innerHTML = `<span style="color:var(--secondary-color);">${msj}</span><br><span style="color:#25d366; font-size:0.85em;">+${zona.xpGana} XP | +${zona.tokGana} Tokens</span>`;
@@ -280,7 +281,7 @@ window.entrarMazmorraRPG = function(zonaId) {
 };
 
 // ==========================================
-// EL COLISEO: RUMBLE Y AVENTURA SOLITARIA
+// EL COLISEO: RUMBLE Y AVENTURA (LIFE IN ADVENTURE)
 // ==========================================
 window.cambiarPestanaColiseo = function(modo) {
     document.getElementById('tabModoAventura').classList.toggle('activo', modo === 'aventura');
@@ -295,12 +296,8 @@ window.iniciarEscuchadorRumble = function() {
         let lbl = document.getElementById('lblInscritosRumble'); if(lbl) lbl.innerText = snapshot.size;
         let yaInscrito = false; snapshot.forEach(doc => { if(doc.data().tag === gamerProfile.tag) yaInscrito = true; });
         let btn = document.getElementById('btnInscribirseRumble');
-        if(btn) {
-            if(yaInscrito) { btn.disabled = true; btn.innerHTML = "<i class='fas fa-check'></i> Ya estás inscrito"; btn.style.background = "#25d366"; } 
-            else { btn.disabled = false; btn.innerHTML = "<i class='fas fa-pen-nib'></i> Inscribirse"; btn.style.background = "#ff3366"; }
-        }
+        if(btn) { if(yaInscrito) { btn.disabled = true; btn.innerHTML = "<i class='fas fa-check'></i> Inscrito"; btn.style.background = "#25d366"; } else { btn.disabled = false; btn.innerHTML = "<i class='fas fa-pen-nib'></i> Inscribirse"; btn.style.background = "#ff3366"; } }
     });
-
     getDoc(doc(db, "rumble_historial", "ultimo_torneo")).then(docSnap => {
         if (docSnap.exists() && document.getElementById('logUltimoRumble')) { document.getElementById('logUltimoRumble').innerHTML = docSnap.data().logHTML; }
     }).catch(e => console.warn(e));
@@ -309,91 +306,112 @@ window.iniciarEscuchadorRumble = function() {
 window.inscribirseRumbleBD = async function() {
   let btn = document.getElementById('btnInscribirseRumble'); btn.disabled = true; btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i>";
   try { await setDoc(doc(db, "rumble_inscritos", gamerProfile.tag), { tag: gamerProfile.tag, fecha: Date.now() }); alert("¡Inscripción exitosa al Rumble!"); } 
-  catch(e) { alert("Error al inscribirse."); btn.disabled = false; }
+  catch(e) { alert("Error."); btn.disabled = false; }
 };
 
-// MOTOR NARRATIVO TIPO "LIFE IN ADVENTURE"
-const eventosNarrativos = [
-    {
-        texto: "¡Te embosca un Caballero Renegado! Su armadura brilla con magia oscura. (Poder de Ataque requerido: 35 | Defensa requerida: 20)",
-        opciones: [
-            { texto: "<i class='fas fa-sword'></i> Atacar con todo", tipo: "atk", req: 35 },
-            { texto: "<i class='fas fa-shield'></i> Buscar una apertura", tipo: "def", req: 20 },
-            { texto: "<i class='fas fa-person-running'></i> Intentar huir", tipo: "huir", req: 0 }
-        ]
-    },
-    {
-        texto: "Encuentras un cofre antiguo atrapado en raíces espinosas. Parece frágil pero peligroso. (Poder de Ataque requerido: 25 | Defensa requerida: 15)",
-        opciones: [
-            { texto: "<i class='fas fa-axe'></i> Romper las raíces por la fuerza", tipo: "atk", req: 25 },
-            { texto: "<i class='fas fa-hand'></i> Resistir las espinas y sacarlo", tipo: "def", req: 15 },
-            { texto: "<i class='fas fa-person-running'></i> Alejarte", tipo: "huir", req: 0 }
-        ]
-    }
+// MOTOR NARRATIVO: MULTI-FASES CON RIESGO DE MUERTE
+const bancoEventosNarrativos = [
+    { texto: "Un Caballero Renegado te bloquea el puente. Su espada brilla con oscuridad.", opciones: [{ texto: "<i class='fas fa-sword'></i> Atacar de frente", tipo: "atk", req: 30 }, { texto: "<i class='fas fa-shield'></i> Bloquear y contraatacar", tipo: "def", req: 25 }, { texto: "<i class='fas fa-person-running'></i> Huir cobardemente", tipo: "huir", req: 0 }] },
+    { texto: "Encuentras un cofre antiguo atrapado en raíces con espinas venenosas.", opciones: [{ texto: "<i class='fas fa-axe'></i> Cortar las raíces", tipo: "atk", req: 25 }, { texto: "<i class='fas fa-hand'></i> Resistir el veneno y abrirlo", tipo: "def", req: 20 }, { texto: "<i class='fas fa-person-running'></i> Ignorar el cofre", tipo: "huir", req: 0 }] },
+    { texto: "El suelo colapsa bajo tus pies y caes hacia un nido de arañas gigantes.", opciones: [{ texto: "<i class='fas fa-fire'></i> Usar un ataque en área", tipo: "atk", req: 40 }, { texto: "<i class='fas fa-shield-halved'></i> Protegerte con el escudo en la caída", tipo: "def", req: 35 }, { texto: "<i class='fas fa-person-running'></i> Escalar desesperadamente", tipo: "huir", req: 0 }] },
+    { texto: "Un Mercader Fantasma te ofrece un trato: tu vitalidad a cambio de riquezas.", opciones: [{ texto: "<i class='fas fa-eye'></i> Intimidarlo para robarle", tipo: "atk", req: 45 }, { texto: "<i class='fas fa-hand-holding-magic'></i> Resistir su magia mental", tipo: "def", req: 30 }, { texto: "<i class='fas fa-person-running'></i> Rechazar el trato", tipo: "huir", req: 0 }] },
+    { texto: "Llegas a la Guarida del Rey Goblin. Está durmiendo sobre una montaña de oro.", opciones: [{ texto: "<i class='fas fa-skull'></i> Ejecutar un golpe letal", tipo: "atk", req: 50 }, { texto: "<i class='fas fa-shoe-prints'></i> Acercarte sigilosamente", tipo: "def", req: 40 }, { texto: "<i class='fas fa-person-running'></i> Demasiado riesgo. Huir.", tipo: "huir", req: 0 }] }
 ];
 
-let eventoActual = null;
+let estadoAventura = { activa: false, paso: 0, maxPasos: 3, xpAcum: 0, tokAcum: 0, eventoActual: null };
 
 window.iniciarAventuraNarrativa = function() {
-    if (gamerProfile.stats.energiaActual < 30) return alert("Necesitas 30 de Energía para iniciar una Aventura.");
-    if (gamerProfile.stats.hpActual < 20) return alert("Estás muy débil. Cúrate primero.");
+    if (gamerProfile.stats.energiaActual < 30) return alert("Necesitas 30 Energía ⚡ para esta expedición.");
+    if (gamerProfile.stats.hpActual < 25) return alert("Estás muy débil. Cúrate primero, podrías morir.");
     
     gamerProfile.stats.energiaActual -= 30;
+    estadoAventura = { activa: true, paso: 1, maxPasos: 3, xpAcum: 0, tokAcum: 0, eventoActual: null };
     window.guardarProgresoRPG();
+    window.cargarPasoAventura();
+};
 
-    eventoActual = eventosNarrativos[Math.floor(Math.random() * eventosNarrativos.length)];
+window.cargarPasoAventura = function() {
+    let pool = bancoEventosNarrativos.sort(() => 0.5 - Math.random());
+    estadoAventura.eventoActual = pool[0];
     
-    document.getElementById('narrativeBox').innerHTML = eventoActual.texto;
+    let infoHTML = `<div style="color:#00e5ff; font-weight:bold; font-size:0.8em; margin-bottom:8px;">[ Etapa ${estadoAventura.paso} / ${estadoAventura.maxPasos} ]</div>`;
+    infoHTML += estadoAventura.eventoActual.texto;
+    
+    let reqHTML = `<div style="font-size:0.8em; color:var(--text-muted); margin-top:10px;">Req Aprox: ATK ${estadoAventura.eventoActual.opciones[0].req} | DEF ${estadoAventura.eventoActual.opciones[1].req}</div>`;
+
+    document.getElementById('narrativeBox').innerHTML = infoHTML + reqHTML;
+    
     let htmlOpciones = "";
-    eventoActual.opciones.forEach((opc, index) => {
-        htmlOpciones += `<button class="narrative-btn" onclick="resolverAventuraNarrativa(${index})">${opc.texto}</button>`;
-    });
+    estadoAventura.eventoActual.opciones.forEach((opc, index) => { htmlOpciones += `<button class="narrative-btn" onclick="resolverAventuraNarrativa(${index})">${opc.texto}</button>`; });
     document.getElementById('narrativeOptions').innerHTML = htmlOpciones;
 };
 
 window.resolverAventuraNarrativa = function(indexOpcion) {
-    if(!eventoActual) return;
-    let opcion = eventoActual.opciones[indexOpcion];
+    if(!estadoAventura.activa) return;
+    let opcion = estadoAventura.eventoActual.opciones[indexOpcion];
     let statsPoder = window.obtenerPoderJugador();
     let box = document.getElementById('narrativeBox');
     let btnBox = document.getElementById('narrativeOptions');
 
     if (opcion.tipo === 'huir') {
-        box.innerHTML = "Lograste escapar intacto, pero dejaste caer algo de Oro en tu huida...";
-        gamerProfile.tokens = Math.max(0, (gamerProfile.tokens || 0) - 5);
-        btnBox.innerHTML = `<button class="narrative-btn" onclick="reiniciarAventura()"><i class="fas fa-undo"></i> Terminar Expedición</button>`;
-        window.guardarProgresoRPG();
-        return;
+        let xpSalvada = Math.floor(estadoAventura.xpAcum / 2); let tokSalvado = Math.floor(estadoAventura.tokAcum / 2);
+        gamerProfile.xp += xpSalvada; gamerProfile.tokens += tokSalvado;
+        box.innerHTML = `<span style="color:#ffaa00;">Huiste del peligro.</span> Abandonaste la expedición, pero salvaste la mitad del botín.<br><br>Ganas: +${xpSalvada} XP y +${tokSalvado} Tokens.`;
+        btnBox.innerHTML = `<button class="narrative-btn" onclick="reiniciarAventuraUI()"><i class="fas fa-undo"></i> Volver a la ciudad</button>`;
+        estadoAventura.activa = false; window.guardarProgresoRPG(); return;
     }
 
     let statUsado = opcion.tipo === 'atk' ? statsPoder.atk : statsPoder.def;
-    let rngFactor = Math.floor(Math.random() * 10) - 5; // Dados: -5 a +5
-    let totalTirada = statUsado + rngFactor;
+    let rngDado = Math.floor(Math.random() * 21) - 10; // Dado de suerte entre -10 y +10
+    let totalTirada = statUsado + rngDado;
 
     if (totalTirada >= opcion.req) {
-        // VICTORIA
-        let xpGana = 150; let tokGana = 25;
-        box.innerHTML = `¡Tirada Exitosa! (Tu Stat: ${statUsado} + Dado: ${rngFactor} = ${totalTirada}). <br><br><span style="color:#25d366;">Superaste el desafío y obtuviste grandes riquezas.</span>`;
-        gamerProfile.xp += xpGana; gamerProfile.tokens += tokGana;
-        window.mostrarTextoFlotante(`+${xpGana} XP`, '#25d366');
+        // VICTORIA DEL PASO
+        let gananciaXp = 50 + (estadoAventura.paso * 20); let gananciaTok = 10 + (estadoAventura.paso * 5);
+        estadoAventura.xpAcum += gananciaXp; estadoAventura.tokAcum += gananciaTok;
+        
+        box.innerHTML = `<span style="color:#25d366; font-weight:bold;">¡Éxito!</span> (Stat: ${statUsado} + Dado: ${rngDado} = ${totalTirada}).<br><br>Superaste el obstáculo. Loot guardado en la mochila: <span style="color:#ffaa00;">${estadoAventura.tokAcum} Tokens</span> y <span style="color:#00e5ff;">${estadoAventura.xpAcum} XP</span>.`;
+        
+        if (estadoAventura.paso < estadoAventura.maxPasos) {
+            estadoAventura.paso++;
+            btnBox.innerHTML = `<button class="narrative-btn" style="border-color:#25d366; color:#25d366;" onclick="cargarPasoAventura()">Avanzar a la siguiente sala <i class="fas fa-arrow-right"></i></button>`;
+        } else {
+            // FIN DE LA AVENTURA
+            gamerProfile.xp += estadoAventura.xpAcum; gamerProfile.tokens += estadoAventura.tokAcum;
+            box.innerHTML += `<br><br><strong style="color:#b000ff; font-size:1.1em;">¡EXPEDICIÓN COMPLETADA!</strong><br>Sobreviviste y reclamas todo el botín.`;
+            btnBox.innerHTML = `<button class="narrative-btn" onclick="reiniciarAventuraUI()"><i class="fas fa-undo"></i> Volver a la ciudad</button>`;
+            estadoAventura.activa = false; window.guardarProgresoRPG(); try{ confetti({ particleCount: 80, spread: 70 }); }catch(e){}
+        }
     } else {
         // DERROTA / DAÑO
-        let dmg = 40;
+        let dmg = 25 + (estadoAventura.paso * 10);
         gamerProfile.stats.hpActual -= dmg;
-        if(gamerProfile.stats.hpActual < 0) gamerProfile.stats.hpActual = 0;
         
-        box.innerHTML = `Fallaste. (Tu Stat: ${statUsado} + Dado: ${rngFactor} = ${totalTirada} / Req: ${opcion.req}). <br><br><span style="color:#ff3366;">Recibiste un duro golpe (-${dmg} HP) y huiste.</span>`;
-        window.mostrarTextoFlotante(`-${dmg} HP`, '#ff3366');
+        if (gamerProfile.stats.hpActual <= 0) {
+            // MUERTE
+            gamerProfile.stats.hpActual = 0;
+            box.innerHTML = `<span style="color:#ff3366; font-weight:bold; font-size:1.2em;">HAS MUERTO.</span><br><br>El golpe fue fatal. Perdiste todo el botín acumulado (${estadoAventura.xpAcum} XP y ${estadoAventura.tokAcum} Tokens) y fuiste arrastrado a la ciudad.`;
+            btnBox.innerHTML = `<button class="narrative-btn" style="border-color:#ff3366; color:#ff3366;" onclick="reiniciarAventuraUI()"><i class="fas fa-tombstone"></i> Revivir en la ciudad</button>`;
+            estadoAventura.activa = false; window.guardarProgresoRPG();
+        } else {
+            // DAÑO PERO SOBREVIVE
+            box.innerHTML = `<span style="color:#ff3366; font-weight:bold;">¡Fallo Crítico!</span> (Stat: ${statUsado} + Dado: ${rngDado} = ${totalTirada} / Req: ${opcion.req}).<br><br>Recibiste un duro golpe de <strong>-${dmg} HP</strong>.<br>Loot actual en riesgo: ${estadoAventura.xpAcum} XP.`;
+            if (estadoAventura.paso < estadoAventura.maxPasos) {
+                estadoAventura.paso++;
+                btnBox.innerHTML = `<button class="narrative-btn" style="border-color:#ff5500; color:#ff5500;" onclick="cargarPasoAventura()">Arrastrarte a la siguiente sala <i class="fas fa-arrow-right"></i></button>`;
+            } else {
+                gamerProfile.xp += estadoAventura.xpAcum; gamerProfile.tokens += estadoAventura.tokAcum;
+                box.innerHTML += `<br><br><strong style="color:#b000ff; font-size:1.1em;">¡EXPEDICIÓN COMPLETADA A DURAS PENAS!</strong><br>Sobreviviste sangrando y reclamas el botín.`;
+                btnBox.innerHTML = `<button class="narrative-btn" onclick="reiniciarAventuraUI()"><i class="fas fa-undo"></i> Volver a la ciudad</button>`;
+                estadoAventura.activa = false; window.guardarProgresoRPG(); try{ confetti({ particleCount: 80, spread: 70 }); }catch(e){}
+            }
+        }
     }
-
-    btnBox.innerHTML = `<button class="narrative-btn" onclick="reiniciarAventura()"><i class="fas fa-undo"></i> Terminar Expedición</button>`;
-    eventoActual = null;
-    window.guardarProgresoRPG();
 };
 
-window.reiniciarAventura = function() {
+window.reiniciarAventuraUI = function() {
     document.getElementById('narrativeBox').innerHTML = "Las puertas del coliseo abandonado se abren ante ti. ¿Estás listo para forjar tu destino?";
-    document.getElementById('narrativeOptions').innerHTML = `<button class="narrative-btn" onclick="iniciarAventuraNarrativa()"><i class="fas fa-play"></i> Iniciar Historia (-30 ⚡)</button>`;
+    document.getElementById('narrativeOptions').innerHTML = `<button class="narrative-btn" onclick="iniciarAventuraNarrativa()"><i class="fas fa-play"></i> Iniciar Expedición (-30 ⚡)</button>`;
 };
 
 // ==========================================
@@ -443,6 +461,7 @@ window.renderizarRefinamientoRPG = function() {
     let cont = document.getElementById('listaRefinamientoRPG'); if(!cont) return;
     let armasJugador = gamerProfile.inventario.filter(i => (i.tipo || '').toLowerCase() === 'arma' && i.ranura && i.ranura !== 'ninguna');
     if(armasJugador.length === 0) { cont.innerHTML = "<p style='color: var(--text-muted); font-size: 0.85em; text-align: center;'>No tienes armas para refinar.</p>"; return; }
+
     let cantMat = gamerProfile.inventario.filter(i => (i.tipo || '').toLowerCase() === 'material').reduce((acc, i) => acc + (i.cantidad || 1), 0);
     let html = "";
     armasJugador.forEach(item => {
