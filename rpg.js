@@ -105,8 +105,16 @@ window.mostrarTextoFlotante = function(texto, color) { let el = document.createE
 window.cargarObjetosRPG = async function() {
   try {
     const snapsObj = await getDocs(query(collection(db, "rpg_objetos"))); rpgObjetosGlobal = [];
-    snapsObj.forEach(d => { let obj = d.data(); rpgObjetosGlobal.push({ id: d.id, nombre: obj.nombre, tipo: (obj.tipo || 'arma').toLowerCase(), rareza: obj.rareza || 'N', ranura: obj.ranura || 'ninguna', atk: obj.stats?.atk || 0, def: obj.stats?.def || 0, imgUrl: obj.imgUrl || '', costoMat: obj.costoMat || 3, costoTok: obj.costoTok || 15, pesoDrop: obj.pesoDrop || 100, nivelReq: obj.nivelReq || 1 }); });
-    if(currentUserUid) { window.renderizarFraguaRPG(); window.renderizarHorno(); }
+    snapsObj.forEach(d => { 
+        let obj = d.data(); 
+        rpgObjetosGlobal.push({ 
+            id: d.id, nombre: obj.nombre, tipo: (obj.tipo || 'arma').toLowerCase(), rareza: obj.rareza || 'N', 
+            ranura: obj.ranura || 'ninguna', atk: obj.stats?.atk || 0, def: obj.stats?.def || 0, imgUrl: obj.imgUrl || '', 
+            costoMat: obj.costoMat || 3, costoTok: obj.costoTok || 15, pesoDrop: obj.pesoDrop || 100, nivelReq: obj.nivelReq || 1,
+            enBazar: obj.enBazar || false, precioBazar: obj.precioBazar || 0
+        }); 
+    });
+    if(currentUserUid) { window.renderizarFraguaRPG(); window.renderizarHorno(); window.renderizarBazarRPG(); }
   } catch(e) {}
 };
 
@@ -155,7 +163,7 @@ window.renderizarTodoRPG = function() {
   let statsPoder = window.obtenerPoderJugador();
   document.getElementById('rpgStatAtk').innerText = statsPoder.atk; document.getElementById('rpgStatDef').innerText = statsPoder.def;
 
-  window.renderizarPaperDollGrande(); window.renderizarInventarioRPG(); window.renderizarFraguaRPG(); window.renderizarRefinamientoRPG(); window.renderizarHorno();
+  window.renderizarPaperDollGrande(); window.renderizarInventarioRPG(); window.renderizarFraguaRPG(); window.renderizarRefinamientoRPG(); window.renderizarHorno(); window.renderizarBazarRPG();
 };
 
 window.renderizarPaperDollGrande = function() {
@@ -217,7 +225,7 @@ window.usarConsumibleRPG = function(uid_inventario) { let idx = gamerProfile.inv
 window.venderItemRPG = function(uid_inventario, tokensPorUnidad) { let index = gamerProfile.inventario.findIndex(i => i.uid_inventario === uid_inventario); if(index === -1) return; let item = gamerProfile.inventario[index]; let maxCant = item.cantidad || 1; let cantAVender = 1; if (maxCant > 1) { let resp = prompt(`¿Cuántas unidades quieres vender? (Tienes ${maxCant})`); if (resp === null) return; cantAVender = parseInt(resp); if (isNaN(cantAVender) || cantAVender <= 0 || cantAVender > maxCant) return alert("Cantidad inválida."); } if (gamerProfile.equipo) { for (let r in gamerProfile.equipo) { if (gamerProfile.equipo[r] === uid_inventario) gamerProfile.equipo[r] = null; } } if (cantAVender >= maxCant) { gamerProfile.inventario.splice(index, 1); } else { item.cantidad -= cantAVender; } let totalGanado = cantAVender * tokensPorUnidad; gamerProfile.tokens = (gamerProfile.tokens || 0) + totalGanado; window.guardarProgresoRPG(); window.mostrarTextoFlotante(`+${totalGanado} Tokens`, '#ffaa00'); };
 window.entrenarStatRPG = function(stat) { let costo = 10; if((gamerProfile.tokens || 0) < costo) return alert("No tienes suficientes Tokens."); gamerProfile.tokens -= costo; if(stat === 'hp') { gamerProfile.stats.hpMax += 10; gamerProfile.stats.hpActual = gamerProfile.stats.hpMax; window.mostrarTextoFlotante('+10 MaxHP', '#ff3366'); } else if(stat === 'energia') { gamerProfile.stats.energiaMax += 10; gamerProfile.stats.energiaActual = gamerProfile.stats.energiaMax + (gamerProfile.profesion === 'Mago'?30:0); window.mostrarTextoFlotante('+10 MaxEnergía', '#ffcc00'); } else if(stat === 'atk') { gamerProfile.stats.atk += 2; window.mostrarTextoFlotante('+2 ATK', '#ffaa00'); } else if(stat === 'def') { gamerProfile.stats.def += 2; window.mostrarTextoFlotante('+2 DEF', '#00e5ff'); } window.guardarProgresoRPG(); };
 
-function calcularDropConPesos(nombresDrops) { let posibles = nombresDrops.map(nombre => rpgObjetosGlobal.find(o => o.nombre === nombre)).filter(Boolean); if(posibles.length === 0) return null; let pesoTotal = posibles.reduce((sum, item) => sum + item.pesoDrop, 0); let random = Math.random() * pesoTotal; let acumulado = 0; for(let i = 0; i < posibles.length; i++) { acumulado += posibles[i].pesoDrop; if(random <= acumulado) return posibles[i]; } return posibles[0]; }
+function calcularDropConPesos(nombresDrops) { let posibles = nombresDrops.map(nombre => rpgObjetosGlobal.find(o => o.nombre === nombre && !o.enBazar)).filter(Boolean); if(posibles.length === 0) return null; let pesoTotal = posibles.reduce((sum, item) => sum + item.pesoDrop, 0); let random = Math.random() * pesoTotal; let acumulado = 0; for(let i = 0; i < posibles.length; i++) { acumulado += posibles[i].pesoDrop; if(random <= acumulado) return posibles[i]; } return posibles[0]; }
 
 window.cazarEnZona = function(zonaId) {
     let zona = zonasCaza[zonaId]; let nivelJugador = calcularNivel(gamerProfile.xp);
@@ -244,7 +252,7 @@ window.minar = function() {
     gamerProfile.stats.energiaActual -= 15; gamerProfile.stats.hpActual -= 5;
     let chanceDoble = gamerProfile.profesion === 'Artesano' ? 30 : 0; let rng = Math.random() * 100; let msj = "Sacas escombros inútiles.";
     if (rng < 65) { 
-        let todosLosMateriales = rpgObjetosGlobal.filter(o => o.tipo === 'material');
+        let todosLosMateriales = rpgObjetosGlobal.filter(o => o.tipo === 'material' && !o.enBazar);
         if (todosLosMateriales.length > 0) {
             let nombresMateriales = todosLosMateriales.map(m => m.nombre); let matGanado = calcularDropConPesos(nombresMateriales);
             if (matGanado) { let qty = 1; if(Math.random() * 100 <= chanceDoble) { qty = 2; msj = `¡Minaste <strong class="rareza-${matGanado.rareza}">${window.sanitizarHTML(matGanado.nombre)} x2</strong>! <span style="color:#ffaa00;">(¡DOBLE POR ARTESANO!)</span>`; } else { msj = `¡Minaste: <strong class="rareza-${matGanado.rareza}">${window.sanitizarHTML(matGanado.nombre)}</strong>!`; } window.agregarItemInventario({...matGanado}, qty); }
@@ -284,10 +292,8 @@ window.entrarMazmorraRPG = function(zonaId) {
 // EL COLISEO: RUMBLE Y AVENTURA (LIFE IN ADVENTURE)
 // ==========================================
 window.cambiarPestanaColiseo = function(modo) {
-    document.getElementById('tabModoAventura').classList.toggle('activo', modo === 'aventura');
-    document.getElementById('tabModoRumble').classList.toggle('activo', modo === 'rumble');
-    document.getElementById('coliseoAventura').style.display = modo === 'aventura' ? 'block' : 'none';
-    document.getElementById('coliseoRumble').style.display = modo === 'rumble' ? 'block' : 'none';
+    document.getElementById('tabModoAventura').classList.toggle('activo', modo === 'aventura'); document.getElementById('tabModoRumble').classList.toggle('activo', modo === 'rumble');
+    document.getElementById('coliseoAventura').style.display = modo === 'aventura' ? 'block' : 'none'; document.getElementById('coliseoRumble').style.display = modo === 'rumble' ? 'block' : 'none';
 };
 
 window.iniciarEscuchadorRumble = function() {
@@ -309,7 +315,6 @@ window.inscribirseRumbleBD = async function() {
   catch(e) { alert("Error."); btn.disabled = false; }
 };
 
-// MOTOR NARRATIVO: MULTI-FASES CON RIESGO DE MUERTE
 const bancoEventosNarrativos = [
     { texto: "Un Caballero Renegado te bloquea el puente. Su espada brilla con oscuridad.", opciones: [{ texto: "<i class='fas fa-sword'></i> Atacar de frente", tipo: "atk", req: 30 }, { texto: "<i class='fas fa-shield'></i> Bloquear y contraatacar", tipo: "def", req: 25 }, { texto: "<i class='fas fa-person-running'></i> Huir cobardemente", tipo: "huir", req: 0 }] },
     { texto: "Encuentras un cofre antiguo atrapado en raíces con espinas venenosas.", opciones: [{ texto: "<i class='fas fa-axe'></i> Cortar las raíces", tipo: "atk", req: 25 }, { texto: "<i class='fas fa-hand'></i> Resistir el veneno y abrirlo", tipo: "def", req: 20 }, { texto: "<i class='fas fa-person-running'></i> Ignorar el cofre", tipo: "huir", req: 0 }] },
@@ -317,30 +322,21 @@ const bancoEventosNarrativos = [
     { texto: "Un Mercader Fantasma te ofrece un trato: tu vitalidad a cambio de riquezas.", opciones: [{ texto: "<i class='fas fa-eye'></i> Intimidarlo para robarle", tipo: "atk", req: 45 }, { texto: "<i class='fas fa-hand-holding-magic'></i> Resistir su magia mental", tipo: "def", req: 30 }, { texto: "<i class='fas fa-person-running'></i> Rechazar el trato", tipo: "huir", req: 0 }] },
     { texto: "Llegas a la Guarida del Rey Goblin. Está durmiendo sobre una montaña de oro.", opciones: [{ texto: "<i class='fas fa-skull'></i> Ejecutar un golpe letal", tipo: "atk", req: 50 }, { texto: "<i class='fas fa-shoe-prints'></i> Acercarte sigilosamente", tipo: "def", req: 40 }, { texto: "<i class='fas fa-person-running'></i> Demasiado riesgo. Huir.", tipo: "huir", req: 0 }] }
 ];
-
 let estadoAventura = { activa: false, paso: 0, maxPasos: 3, xpAcum: 0, tokAcum: 0, eventoActual: null };
 
 window.iniciarAventuraNarrativa = function() {
     if (gamerProfile.stats.energiaActual < 30) return alert("Necesitas 30 Energía ⚡ para esta expedición.");
     if (gamerProfile.stats.hpActual < 25) return alert("Estás muy débil. Cúrate primero, podrías morir.");
-    
-    gamerProfile.stats.energiaActual -= 30;
-    estadoAventura = { activa: true, paso: 1, maxPasos: 3, xpAcum: 0, tokAcum: 0, eventoActual: null };
-    window.guardarProgresoRPG();
-    window.cargarPasoAventura();
+    gamerProfile.stats.energiaActual -= 30; estadoAventura = { activa: true, paso: 1, maxPasos: 3, xpAcum: 0, tokAcum: 0, eventoActual: null };
+    window.guardarProgresoRPG(); window.cargarPasoAventura();
 };
 
 window.cargarPasoAventura = function() {
-    let pool = bancoEventosNarrativos.sort(() => 0.5 - Math.random());
-    estadoAventura.eventoActual = pool[0];
-    
+    let pool = bancoEventosNarrativos.sort(() => 0.5 - Math.random()); estadoAventura.eventoActual = pool[0];
     let infoHTML = `<div style="color:#00e5ff; font-weight:bold; font-size:0.8em; margin-bottom:8px;">[ Etapa ${estadoAventura.paso} / ${estadoAventura.maxPasos} ]</div>`;
     infoHTML += estadoAventura.eventoActual.texto;
-    
     let reqHTML = `<div style="font-size:0.8em; color:var(--text-muted); margin-top:10px;">Req Aprox: ATK ${estadoAventura.eventoActual.opciones[0].req} | DEF ${estadoAventura.eventoActual.opciones[1].req}</div>`;
-
     document.getElementById('narrativeBox').innerHTML = infoHTML + reqHTML;
-    
     let htmlOpciones = "";
     estadoAventura.eventoActual.opciones.forEach((opc, index) => { htmlOpciones += `<button class="narrative-btn" onclick="resolverAventuraNarrativa(${index})">${opc.texto}</button>`; });
     document.getElementById('narrativeOptions').innerHTML = htmlOpciones;
@@ -348,10 +344,7 @@ window.cargarPasoAventura = function() {
 
 window.resolverAventuraNarrativa = function(indexOpcion) {
     if(!estadoAventura.activa) return;
-    let opcion = estadoAventura.eventoActual.opciones[indexOpcion];
-    let statsPoder = window.obtenerPoderJugador();
-    let box = document.getElementById('narrativeBox');
-    let btnBox = document.getElementById('narrativeOptions');
+    let opcion = estadoAventura.eventoActual.opciones[indexOpcion]; let statsPoder = window.obtenerPoderJugador(); let box = document.getElementById('narrativeBox'); let btnBox = document.getElementById('narrativeOptions');
 
     if (opcion.tipo === 'huir') {
         let xpSalvada = Math.floor(estadoAventura.xpAcum / 2); let tokSalvado = Math.floor(estadoAventura.tokAcum / 2);
@@ -361,45 +354,30 @@ window.resolverAventuraNarrativa = function(indexOpcion) {
         estadoAventura.activa = false; window.guardarProgresoRPG(); return;
     }
 
-    let statUsado = opcion.tipo === 'atk' ? statsPoder.atk : statsPoder.def;
-    let rngDado = Math.floor(Math.random() * 21) - 10; // Dado de suerte entre -10 y +10
-    let totalTirada = statUsado + rngDado;
+    let statUsado = opcion.tipo === 'atk' ? statsPoder.atk : statsPoder.def; let rngDado = Math.floor(Math.random() * 21) - 10; let totalTirada = statUsado + rngDado;
 
     if (totalTirada >= opcion.req) {
-        // VICTORIA DEL PASO
         let gananciaXp = 50 + (estadoAventura.paso * 20); let gananciaTok = 10 + (estadoAventura.paso * 5);
         estadoAventura.xpAcum += gananciaXp; estadoAventura.tokAcum += gananciaTok;
-        
         box.innerHTML = `<span style="color:#25d366; font-weight:bold;">¡Éxito!</span> (Stat: ${statUsado} + Dado: ${rngDado} = ${totalTirada}).<br><br>Superaste el obstáculo. Loot guardado en la mochila: <span style="color:#ffaa00;">${estadoAventura.tokAcum} Tokens</span> y <span style="color:#00e5ff;">${estadoAventura.xpAcum} XP</span>.`;
-        
-        if (estadoAventura.paso < estadoAventura.maxPasos) {
-            estadoAventura.paso++;
-            btnBox.innerHTML = `<button class="narrative-btn" style="border-color:#25d366; color:#25d366;" onclick="cargarPasoAventura()">Avanzar a la siguiente sala <i class="fas fa-arrow-right"></i></button>`;
-        } else {
-            // FIN DE LA AVENTURA
+        if (estadoAventura.paso < estadoAventura.maxPasos) { estadoAventura.paso++; btnBox.innerHTML = `<button class="narrative-btn" style="border-color:#25d366; color:#25d366;" onclick="cargarPasoAventura()">Avanzar a la siguiente sala <i class="fas fa-arrow-right"></i></button>`; } 
+        else {
             gamerProfile.xp += estadoAventura.xpAcum; gamerProfile.tokens += estadoAventura.tokAcum;
             box.innerHTML += `<br><br><strong style="color:#b000ff; font-size:1.1em;">¡EXPEDICIÓN COMPLETADA!</strong><br>Sobreviviste y reclamas todo el botín.`;
             btnBox.innerHTML = `<button class="narrative-btn" onclick="reiniciarAventuraUI()"><i class="fas fa-undo"></i> Volver a la ciudad</button>`;
             estadoAventura.activa = false; window.guardarProgresoRPG(); try{ confetti({ particleCount: 80, spread: 70 }); }catch(e){}
         }
     } else {
-        // DERROTA / DAÑO
-        let dmg = 25 + (estadoAventura.paso * 10);
-        gamerProfile.stats.hpActual -= dmg;
-        
+        let dmg = 25 + (estadoAventura.paso * 10); gamerProfile.stats.hpActual -= dmg;
         if (gamerProfile.stats.hpActual <= 0) {
-            // MUERTE
             gamerProfile.stats.hpActual = 0;
             box.innerHTML = `<span style="color:#ff3366; font-weight:bold; font-size:1.2em;">HAS MUERTO.</span><br><br>El golpe fue fatal. Perdiste todo el botín acumulado (${estadoAventura.xpAcum} XP y ${estadoAventura.tokAcum} Tokens) y fuiste arrastrado a la ciudad.`;
             btnBox.innerHTML = `<button class="narrative-btn" style="border-color:#ff3366; color:#ff3366;" onclick="reiniciarAventuraUI()"><i class="fas fa-tombstone"></i> Revivir en la ciudad</button>`;
             estadoAventura.activa = false; window.guardarProgresoRPG();
         } else {
-            // DAÑO PERO SOBREVIVE
             box.innerHTML = `<span style="color:#ff3366; font-weight:bold;">¡Fallo Crítico!</span> (Stat: ${statUsado} + Dado: ${rngDado} = ${totalTirada} / Req: ${opcion.req}).<br><br>Recibiste un duro golpe de <strong>-${dmg} HP</strong>.<br>Loot actual en riesgo: ${estadoAventura.xpAcum} XP.`;
-            if (estadoAventura.paso < estadoAventura.maxPasos) {
-                estadoAventura.paso++;
-                btnBox.innerHTML = `<button class="narrative-btn" style="border-color:#ff5500; color:#ff5500;" onclick="cargarPasoAventura()">Arrastrarte a la siguiente sala <i class="fas fa-arrow-right"></i></button>`;
-            } else {
+            if (estadoAventura.paso < estadoAventura.maxPasos) { estadoAventura.paso++; btnBox.innerHTML = `<button class="narrative-btn" style="border-color:#ff5500; color:#ff5500;" onclick="cargarPasoAventura()">Arrastrarte a la siguiente sala <i class="fas fa-arrow-right"></i></button>`; } 
+            else {
                 gamerProfile.xp += estadoAventura.xpAcum; gamerProfile.tokens += estadoAventura.tokAcum;
                 box.innerHTML += `<br><br><strong style="color:#b000ff; font-size:1.1em;">¡EXPEDICIÓN COMPLETADA A DURAS PENAS!</strong><br>Sobreviviste sangrando y reclamas el botín.`;
                 btnBox.innerHTML = `<button class="narrative-btn" onclick="reiniciarAventuraUI()"><i class="fas fa-undo"></i> Volver a la ciudad</button>`;
@@ -415,7 +393,62 @@ window.reiniciarAventuraUI = function() {
 };
 
 // ==========================================
-// EL HORNO Y LA FRAGUA
+// EL GRAN MERCADO (SUMIDERO DE TOKENS)
+// ==========================================
+window.renderizarBazarRPG = function() {
+    if(!currentUserUid) return;
+    let cont = document.getElementById('listaBazarRPG'); if(!cont) return;
+    
+    // Filtrar objetos que el Admin marcó como exclusivos de la tienda
+    let itemsBazar = rpgObjetosGlobal.filter(o => o.enBazar === true);
+    
+    if(itemsBazar.length === 0) {
+        cont.innerHTML = "<p style='color: var(--text-muted); font-size: 0.85em; text-align: center;'><i class='fas fa-ghost'></i> El mercader no tiene artículos exclusivos a la venta hoy.</p>";
+        return;
+    }
+    
+    let html = "";
+    itemsBazar.forEach(item => {
+        let puedeComprar = (gamerProfile.tokens || 0) >= item.precioBazar;
+        let thumb = item.imgUrl ? `<img src="${item.imgUrl}" style="width: 32px; height: 32px; object-fit: contain; image-rendering: pixelated; margin-right: 8px; background: rgba(0,0,0,0.4); border-radius: 4px; border: 1px solid var(--glass-border);">` : `<div style="font-size: 1.5em; margin-right: 8px;">🗡️</div>`;
+        let infoExtra = item.tipo === 'arma' ? `ATK +${item.atk} | DEF +${item.def}` : `Material Exclusivo`;
+        
+        html += `<div style="background: rgba(0, 229, 255, 0.05); border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 8px; padding: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <div style="display: flex; align-items: center;">
+                ${thumb}
+                <div>
+                    <div class="rpg-item-name rareza-${item.rareza}" style="font-size: 0.9em; font-weight: bold;">${window.sanitizarHTML(item.nombre)}</div>
+                    <div style="font-size: 0.7em; color: var(--text-muted);">${infoExtra}</div>
+                </div>
+            </div>
+            <button class="btn-comprar" style="margin: 0; padding: 6px 12px; font-size: 0.8em; background: ${puedeComprar ? '#00e5ff' : 'rgba(255,255,255,0.1)'}; color: #000; font-weight:bold; width:auto; white-space:nowrap;" onclick="window.comprarEnBazar('${item.id}')" ${!puedeComprar ? 'disabled' : ''}>
+                ${item.precioBazar} 🪙
+            </button>
+        </div>`;
+    });
+    cont.innerHTML = html;
+};
+
+window.comprarEnBazar = function(idItem) {
+    let item = rpgObjetosGlobal.find(o => o.id === idItem);
+    if(!item) return;
+    if((gamerProfile.tokens || 0) < item.precioBazar) return alert("Tokens insuficientes para adquirir esta reliquia.");
+    
+    if(confirm(`¿Deseas intercambiar ${item.precioBazar} Tokens por: ${item.nombre}?`)) {
+        gamerProfile.tokens -= item.precioBazar;
+        
+        let itemAGuardar = {...item};
+        if(item.tipo === 'arma') itemAGuardar.nivelMejora = 0; // Se entrega sin refinar
+        
+        window.agregarItemInventario(itemAGuardar, 1);
+        window.guardarProgresoRPG();
+        window.mostrarTextoFlotante(`¡Obtuviste: ${item.nombre}!`, '#00e5ff');
+        try{ confetti({ particleCount: 60, spread: 50, colors: ['#00e5ff', '#ffaa00'] }); }catch(e){}
+    }
+};
+
+// ==========================================
+// EL HORNO Y LA FRAGUA NORMALES
 // ==========================================
 const recetasHorno = [ { id: 'h_cobre', reqMat: 'Cobre', reqCant: 5, tok: 10, resNombre: 'Lingote de Cobre', resRareza: 'R' }, { id: 'h_hierro', reqMat: 'Hierro', reqCant: 5, tok: 25, resNombre: 'Lingote de Hierro', resRareza: 'SR' }, { id: 'h_caos', reqMat: 'Cristal de Caos', reqCant: 3, tok: 50, resNombre: 'Gema del Caos', resRareza: 'SSR' } ];
 window.renderizarHorno = function() {
@@ -434,7 +467,10 @@ window.fundirEnHorno = function(idReceta) {
 window.renderizarFraguaRPG = function() {
   if(!currentUserUid || !gamerProfile.inventario) return;
   let cont = document.getElementById('listaRecetasFragua'); if(!cont) return;
-  let armas = rpgObjetosGlobal.filter(o => (o.tipo || '').toLowerCase() === 'arma');
+  
+  // En la Fragua normal ya no mostramos los objetos que son exclusivos del Bazar
+  let armas = rpgObjetosGlobal.filter(o => (o.tipo || '').toLowerCase() === 'arma' && !o.enBazar);
+  
   if(armas.length === 0) { cont.innerHTML = "<p style='color: var(--text-muted); font-size: 0.85em; text-align: center;'>No hay recetas.</p>"; return; }
   let nivelJugador = calcularNivel(gamerProfile.xp); let html = "";
   armas.forEach(a => {
