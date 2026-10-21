@@ -149,7 +149,7 @@ window.renderizarTodoRPG = function() {
 
   document.getElementById('rpgPerfilTag').innerText = gamerProfile.tag || "Aventurero"; document.getElementById('rpgPerfilTokens').innerText = `${gamerProfile.tokens || 0} 🪙`;
   document.getElementById('rpgNivelBadge').innerText = `Nv. ${nivelJugador}`; document.getElementById('rpgProximoNivelTxt').innerText = nivelJugador + 1;
-  document.getElementById('rpgBarraXpFill').style.width = `${pctXp}%`; document.getElementById('rpgBarraXpText').innerText = `${xpActual - xpBaseNivel} / ${xpProximo - xpBaseNivel} XP`;
+  document.getElementById('rpgBarraXpFill').style.width = `${pctXp}%`; document.getElementById('rpgBarraXpText').innerText = `${xpActual - xpBaseNivel} /${xpProximo - xpBaseNivel} XP`;
 
   let lblClase = document.getElementById('rpgPerfilClase'); let btnElegir = document.getElementById('btnAbrirModalClase'); lblClase.innerText = gamerProfile.profesion || "Sin Clase";
   if (nivelJugador >= 5 && (gamerProfile.profesion === "Sin Clase" || !gamerProfile.profesion)) { btnElegir.style.display = 'inline-block'; lblClase.style.color = '#888'; } else { btnElegir.style.display = 'none'; lblClase.style.color = '#fff'; }
@@ -166,22 +166,44 @@ window.renderizarTodoRPG = function() {
   window.renderizarPaperDollGrande(); window.renderizarInventarioRPG(); window.renderizarFraguaRPG(); window.renderizarRefinamientoRPG(); window.renderizarHorno(); window.renderizarBazarRPG();
 };
 
+// NUEVO: EL PAPER DOLL REDISEÑADO CON GRID FORZADO Y ORDENADO
 window.renderizarPaperDollGrande = function() {
   if(!currentUserUid || !gamerProfile.equipo) return;
   let grid = document.getElementById('paperDollGrid'); if(!grid) return; 
-  let ranurasConfig = { cabeza: { label: 'Cabeza', icon: '🪖', area: 'cabeza' }, amuleto: { label: 'Amuleto', icon: '📿', area: 'amuleto' }, anillo: { label: 'Anillo', icon: '💍', area: 'anillo' }, mano_derecha: { label: 'Mano Der.', icon: '🗡️', area: 'mano_der' }, pecho: { label: 'Pecho', icon: '🛡️', area: 'pecho' }, mano_izquierda: { label: 'Mano Izq.', icon: '🛡️', area: 'mano_izq' }, piernas: { label: 'Piernas', icon: '👖', area: 'piernas' }, pies: { label: 'Pies', icon: '🥾', area: 'pies' }, mascota: { label: 'Mascota', icon: '🐾', area: 'mascota' } };
+  
+  // Limpiamos estilos viejos
+  grid.style.cssText = "display: grid; grid-template-columns: repeat(3, 75px); grid-auto-rows: 75px; gap: 12px; justify-content: center; position:relative; z-index:1;";
+  
+  let ranurasConfig = [
+    { key: 'amuleto', label: 'Amuleto', icon: '📿' },
+    { key: 'cabeza', label: 'Cabeza', icon: '🪖' },
+    { key: 'mascota', label: 'Mascota', icon: '🐾' },
+    { key: 'mano_derecha', label: 'Mano Der.', icon: '🗡️' },
+    { key: 'pecho', label: 'Pecho', icon: '🛡️' },
+    { key: 'mano_izquierda', label: 'Mano Izq.', icon: '🛡️' },
+    { key: 'anillo', label: 'Anillo', icon: '💍' },
+    { key: 'piernas', label: 'Piernas', icon: '👖' },
+    { key: 'pies', label: 'Pies', icon: '🥾' }
+  ];
+  
   let html = "";
-  for (let key in ranurasConfig) {
-    let slot = ranurasConfig[key]; let uidItemEquipado = gamerProfile.equipo?.[key]; let itemObj = uidItemEquipado ? gamerProfile.inventario.find(i => i.uid_inventario === uidItemEquipado) : null;
-    let contenido = `<div style="font-size: 1em; opacity: 0.5;">${slot.icon}</div><div style="font-size: 0.55em; color: #666; margin-top: 4px;">${slot.label}</div>`;
-    let estilo = `grid-area: ${slot.area}; background: #08040d; border: 1px dashed #222; border-radius: 4px; padding: 5px; text-align: center; cursor: pointer; min-height: 55px; display: flex; flex-direction: column; align-items: center; justify-content: center;`;
+  ranurasConfig.forEach(slot => {
+    let uidItemEquipado = gamerProfile.equipo?.[slot.key]; 
+    let itemObj = uidItemEquipado ? gamerProfile.inventario.find(i => i.uid_inventario === uidItemEquipado) : null;
+    
+    let contenido = `<div style="font-size: 1.5em; opacity: 0.3;">${slot.icon}</div><div style="font-size: 0.5em; color: #555; margin-top: 4px; text-transform:uppercase; font-weight:bold;">${slot.label}</div>`;
+    let estilo = `background: rgba(0,0,0,0.6); border: 1px dashed #333; border-radius: 8px; padding: 5px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; position:relative; overflow:hidden; transition:0.2s; box-shadow: inset 0 0 10px #000;`;
+    
     if (itemObj) {
-      let imgThumb = itemObj.imgUrl ? `<img src="${itemObj.imgUrl}" style="width: 22px; height: 22px; object-fit: contain; image-rendering: pixelated; margin-bottom: 2px;">` : `<div style="font-size: 1.1em;">${slot.icon}</div>`;
-      let lblNombre = itemObj.nivelMejora ? `${window.sanitizarHTML(itemObj.nombre)} <span class="text-upgrade">+${itemObj.nivelMejora}</span>` : window.sanitizarHTML(itemObj.nombre);
-      contenido = `${imgThumb}<div style="font-size: 0.55em; color: #25d366; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">${lblNombre}</div>`; estilo = `grid-area: ${slot.area}; background: rgba(37,211,102,0.05); border: 1px solid rgba(37,211,102,0.3); border-radius: 4px; padding: 5px; text-align: center; cursor: pointer; min-height: 55px; display: flex; flex-direction: column; align-items: center; justify-content: center;`;
+      let imgThumb = itemObj.imgUrl ? `<img src="${itemObj.imgUrl}" style="width: 32px; height: 32px; object-fit: contain; image-rendering: pixelated; margin-bottom: 2px;">` : `<div style="font-size: 1.5em;">${slot.icon}</div>`;
+      let lblNombre = itemObj.nivelMejora ? `<span style="color:#00e5ff;">+${itemObj.nivelMejora}</span>` : ``;
+      
+      contenido = `${imgThumb}<div style="font-size: 0.55em; color: #fff; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; text-shadow: 0 0 2px #000;">${window.sanitizarHTML(itemObj.nombre)}</div><div style="position:absolute; top:2px; right:4px; font-size:0.7em; font-weight:bold;">${lblNombre}</div>`; 
+      
+      estilo = `background: rgba(37,211,102,0.05); border: 1px solid rgba(37,211,102,0.4); border-radius: 8px; padding: 5px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; position:relative; box-shadow: inset 0 0 15px rgba(37,211,102,0.1);`;
     }
-    html += `<div style="${estilo}" title="Ranura: ${slot.label}" onclick="window.desequiparRanuraRPG('${key}')">${contenido}</div>`;
-  }
+    html += `<div style="${estilo}" title="${slot.label}" onclick="window.desequiparRanuraRPG('${slot.key}')">${contenido}</div>`;
+  });
   grid.innerHTML = html;
 };
 
@@ -225,30 +247,14 @@ window.equiparItemRPG = function(uid_inventario) { let item = gamerProfile.inven
 window.usarConsumibleRPG = function(uid_inventario) { let idx = gamerProfile.inventario.findIndex(i => i.uid_inventario === uid_inventario); if(idx === -1) return; let item = gamerProfile.inventario[idx]; let nombreMinus = (item.nombre || "").toLowerCase(); let enMaxReal = gamerProfile.stats.energiaMax + (gamerProfile.profesion === 'Mago' ? 30 : 0); if (nombreMinus.includes("energía") || nombreMinus.includes("energia") || nombreMinus.includes("stamina")) { gamerProfile.stats.energiaActual += 50; if(gamerProfile.stats.energiaActual > enMaxReal) gamerProfile.stats.energiaActual = enMaxReal; window.mostrarTextoFlotante(`+50 Energía ⚡`, '#ffcc00'); } else { gamerProfile.stats.hpActual += 50; if(gamerProfile.stats.hpActual > gamerProfile.stats.hpMax) gamerProfile.stats.hpActual = gamerProfile.stats.hpMax; window.mostrarTextoFlotante(`Curado +50 HP`, '#ff3366'); } if (item.cantidad > 1) { item.cantidad--; } else { gamerProfile.inventario.splice(idx, 1); } window.guardarProgresoRPG(); };
 window.venderItemRPG = function(uid_inventario, tokensPorUnidad) { let index = gamerProfile.inventario.findIndex(i => i.uid_inventario === uid_inventario); if(index === -1) return; let item = gamerProfile.inventario[index]; let maxCant = item.cantidad || 1; let cantAVender = 1; if (maxCant > 1) { let resp = prompt(`¿Cuántas unidades quieres vender? (Tienes ${maxCant})`); if (resp === null) return; cantAVender = parseInt(resp); if (isNaN(cantAVender) || cantAVender <= 0 || cantAVender > maxCant) return alert("Cantidad inválida."); } if (gamerProfile.equipo) { for (let r in gamerProfile.equipo) { if (gamerProfile.equipo[r] === uid_inventario) gamerProfile.equipo[r] = null; } } if (cantAVender >= maxCant) { gamerProfile.inventario.splice(index, 1); } else { item.cantidad -= cantAVender; } let totalGanado = cantAVender * tokensPorUnidad; gamerProfile.tokens = (gamerProfile.tokens || 0) + totalGanado; window.guardarProgresoRPG(); window.mostrarTextoFlotante(`+${totalGanado} Tokens`, '#ffaa00'); };
 
-// FIX: Aumentar HP/EN solo aumenta el máximo, NO rellena la barra. (Dark Souls / Runescape feel)
 window.entrenarStatRPG = function(stat) { 
     let costo = 10; 
     if((gamerProfile.tokens || 0) < costo) return alert("No tienes suficientes Tokens."); 
-    
     gamerProfile.tokens -= costo; 
-    if(stat === 'hp') { 
-        gamerProfile.stats.hpMax += 10; 
-        // Eliminado: gamerProfile.stats.hpActual = gamerProfile.stats.hpMax;
-        window.mostrarTextoFlotante('+10 MaxHP', '#ff3366'); 
-    } 
-    else if(stat === 'energia') { 
-        gamerProfile.stats.energiaMax += 10; 
-        // Eliminado: gamerProfile.stats.energiaActual = gamerProfile.stats.energiaMax;
-        window.mostrarTextoFlotante('+10 MaxEnergía', '#ffcc00'); 
-    } 
-    else if(stat === 'atk') { 
-        gamerProfile.stats.atk += 2; 
-        window.mostrarTextoFlotante('+2 ATK', '#ffaa00'); 
-    } 
-    else if(stat === 'def') { 
-        gamerProfile.stats.def += 2; 
-        window.mostrarTextoFlotante('+2 DEF', '#00e5ff'); 
-    } 
+    if(stat === 'hp') { gamerProfile.stats.hpMax += 10; window.mostrarTextoFlotante('+10 MaxHP', '#ff3366'); } 
+    else if(stat === 'energia') { gamerProfile.stats.energiaMax += 10; window.mostrarTextoFlotante('+10 MaxEnergía', '#ffcc00'); } 
+    else if(stat === 'atk') { gamerProfile.stats.atk += 2; window.mostrarTextoFlotante('+2 ATK', '#ffaa00'); } 
+    else if(stat === 'def') { gamerProfile.stats.def += 2; window.mostrarTextoFlotante('+2 DEF', '#00e5ff'); } 
     window.guardarProgresoRPG(); 
 };
 
@@ -310,7 +316,6 @@ window.entrarMazmorraRPG = function(zonaId) {
       gamerProfile.xp = (gamerProfile.xp || 0) + mazmorra.xpGana; gamerProfile.tokens = (gamerProfile.tokens || 0) + mazmorra.tokGana; window.guardarProgresoRPG();
       window.mostrarTextoFlotante(`+${mazmorra.xpGana} XP`, '#25d366'); log.innerHTML = `<span style="color:#25d366;">¡Limpiaste ${mazmorra.nombre}!</span><br>Loot: <strong>${premioTxt}</strong><br><span style="font-size:0.8em; color:#888;">+${mazmorra.xpGana} XP | +${mazmorra.tokGana} 🪙</span>`;
     } else {
-      // FIX DARK SOULS: Si pierdes la mazmorra, pierdes el equivalente a toda la recompensa en XP
       let perdida = mazmorra.xpGana; gamerProfile.xp -= perdida; if(gamerProfile.xp < 0) gamerProfile.xp = 0; window.guardarProgresoRPG();
       window.mostrarTextoFlotante(`Derrota`, '#ff3366'); log.innerHTML = `<span style="color:#ff3366;">Derrota en ${mazmorra.nombre}. Tus huesos adornan el suelo.</span><br><span style="font-size:0.8em;">Perdiste <strong style="color:#ffaa00;">${perdida} XP</strong>.</span>`;
     }
@@ -403,9 +408,7 @@ window.resolverAventuraNarrativa = function(indexOpcion) {
         let dmg = 30 + (estadoAventura.paso * 15); gamerProfile.stats.hpActual -= dmg;
         if (gamerProfile.stats.hpActual <= 0) {
             gamerProfile.stats.hpActual = 0;
-            // FIX DARK SOULS: Si mueres, además del loot de esta run, pierdes XP base.
             let penalizacionMuerte = estadoAventura.xpAcum * 2; gamerProfile.xp -= penalizacionMuerte; if(gamerProfile.xp < 0) gamerProfile.xp = 0;
-            
             box.innerHTML = `<span style="color:#ff3366; font-weight:bold;">HAS MUERTO.</span><br><br>El golpe fue fatal. Perdiste todo el botín acumulado y <strong style="color:#ffaa00;">${penalizacionMuerte} XP</strong> extra de tu nivel.`;
             btnBox.innerHTML = `<button class="narrative-btn" style="border-left: 2px solid #ff3366;" onclick="reiniciarAventuraUI()">Revivir en la ciudad</button>`;
             estadoAventura.activa = false; window.guardarProgresoRPG();
@@ -537,7 +540,7 @@ window.refinarItemRPG = function(uid_inventario) {
     let item = gamerProfile.inventario[idx]; let nvl = item.nivelMejora || 0; if(nvl >= 10) return alert("Arma al máximo.");
     let costoMat = (nvl + 1) * 2; if (gamerProfile.profesion === 'Artesano') costoMat = Math.max(1, costoMat - 1); let costoTok = (nvl + 1) * 20;
     let cantMat = gamerProfile.inventario.filter(i => (i.tipo || '').toLowerCase() === 'material').reduce((acc, i) => acc + (i.cantidad || 1), 0);
-    if(cantMat < costoMat || (gamerProfile.tokens || 0) < costoTok) return alert("Recursos insuficientes.");
+    if(cantMat < costoMat || (gamerProfile.tokens || 0) < costoTok) return alert("Recursos insuficientes para refinar.");
 
     gamerProfile.tokens -= costoTok; window.consumirMaterialesPorCantidadGlobal(costoMat);
     idx = gamerProfile.inventario.findIndex(i => i.uid_inventario === uid_inventario); item = gamerProfile.inventario[idx];
