@@ -90,7 +90,6 @@ function actualizarEnergiaPasiva() {
     else if (gamerProfile.stats.energiaActual >= limiteEnergia) { gamerProfile.stats.ultimaEnergia = ahora; }
 }
 
-setInterval(() => { if(currentUserUid){ actualizarEnergiaPasiva(); window.renderizarTodoRPG(); } }, 60000);
 function calcularNivel(xp) { return Math.floor(Math.sqrt((xp || 0) / 20)) + 1; }
 function calcularXpNivelActual(nivel) { return Math.pow(nivel - 1, 2) * 20; }
 function calcularXpSiguienteNivel(nivel) { return Math.pow(nivel, 2) * 20; }
@@ -166,14 +165,11 @@ window.renderizarTodoRPG = function() {
   window.renderizarPaperDollGrande(); window.renderizarInventarioRPG(); window.renderizarFraguaRPG(); window.renderizarRefinamientoRPG(); window.renderizarHorno(); window.renderizarBazarRPG();
 };
 
-// NUEVO: EL PAPER DOLL REDISEÑADO CON GRID FORZADO Y ORDENADO
 window.renderizarPaperDollGrande = function() {
   if(!currentUserUid || !gamerProfile.equipo) return;
   let grid = document.getElementById('paperDollGrid'); if(!grid) return; 
   
-  // Limpiamos estilos viejos
-  grid.style.cssText = "display: grid; grid-template-columns: repeat(3, 75px); grid-auto-rows: 75px; gap: 12px; justify-content: center; position:relative; z-index:1;";
-  
+  // FIX: Grid exacto de 3 columnas para que nunca se rompa ni envíe items abajo
   let ranurasConfig = [
     { key: 'amuleto', label: 'Amuleto', icon: '📿' },
     { key: 'cabeza', label: 'Cabeza', icon: '🪖' },
@@ -540,7 +536,7 @@ window.refinarItemRPG = function(uid_inventario) {
     let item = gamerProfile.inventario[idx]; let nvl = item.nivelMejora || 0; if(nvl >= 10) return alert("Arma al máximo.");
     let costoMat = (nvl + 1) * 2; if (gamerProfile.profesion === 'Artesano') costoMat = Math.max(1, costoMat - 1); let costoTok = (nvl + 1) * 20;
     let cantMat = gamerProfile.inventario.filter(i => (i.tipo || '').toLowerCase() === 'material').reduce((acc, i) => acc + (i.cantidad || 1), 0);
-    if(cantMat < costoMat || (gamerProfile.tokens || 0) < costoTok) return alert("Recursos insuficientes para refinar.");
+    if(cantMat < costoMat || (gamerProfile.tokens || 0) < costoTok) return alert("Recursos insuficientes.");
 
     gamerProfile.tokens -= costoTok; window.consumirMaterialesPorCantidadGlobal(costoMat);
     idx = gamerProfile.inventario.findIndex(i => i.uid_inventario === uid_inventario); item = gamerProfile.inventario[idx];
@@ -554,3 +550,56 @@ window.refinarItemRPG = function(uid_inventario) {
     window.guardarProgresoRPG();
 };
 window.sanitizarHTML = function(str) { return String(str || '').replace(/[&<>"']/g, function(m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]; }); };
+
+// ==========================================
+// SISTEMA DE TIMERS EN VIVO (COOLDOWNS)
+// ==========================================
+setInterval(() => {
+    if(!currentUserUid || !gamerProfile.cooldowns) return;
+    let ahora = Date.now();
+    
+    // 1. Timer de Caza (1 min = 60000 ms)
+    let ultimoCaza = gamerProfile.cooldowns['cooldown_caza'] || 0;
+    let diffCaza = 60000 - (ahora - ultimoCaza);
+    let elCaza = document.getElementById('ui-cd-caza');
+    if(elCaza) {
+        if(diffCaza > 0) {
+            let sec = Math.ceil(diffCaza/1000);
+            elCaza.innerHTML = `<i class="fas fa-hourglass-half"></i> ${Math.floor(sec/60)}m ${sec%60}s`;
+            elCaza.style.color = "#ffaa00";
+        } else {
+            elCaza.innerHTML = `<i class="fas fa-check"></i> Listo`;
+            elCaza.style.color = "#25d366";
+        }
+    }
+
+    // 2. Timer de Mina (2 min = 120000 ms)
+    let ultimoMinar = gamerProfile.cooldowns['cooldown_minar'] || 0;
+    let diffMinar = 120000 - (ahora - ultimoMinar);
+    let elMinar = document.getElementById('ui-cd-mina');
+    if(elMinar) {
+        if(diffMinar > 0) {
+            let sec = Math.ceil(diffMinar/1000);
+            elMinar.innerHTML = `<i class="fas fa-hourglass-half"></i> ${Math.floor(sec/60)}m ${sec%60}s`;
+            elMinar.style.color = "#ffaa00";
+        } else {
+            elMinar.innerHTML = `<i class="fas fa-check"></i> Listo`;
+            elMinar.style.color = "#25d366";
+        }
+    }
+
+    // 3. Timer de Mazmorra (5 min = 300000 ms)
+    let ultimoMaz = gamerProfile.cooldowns['cooldown_mazmorra_global'] || 0;
+    let diffMaz = 300000 - (ahora - ultimoMaz);
+    let elMaz = document.getElementById('ui-cd-mazmorra');
+    if(elMaz) {
+        if(diffMaz > 0) {
+            let sec = Math.ceil(diffMaz/1000);
+            elMaz.innerHTML = `<i class="fas fa-hourglass-half"></i> ${Math.floor(sec/60)}m ${sec%60}s`;
+            elMaz.style.color = "#ffaa00";
+        } else {
+            elMaz.innerHTML = `<i class="fas fa-check"></i> Listo`;
+            elMaz.style.color = "#25d366";
+        }
+    }
+}, 1000);
