@@ -158,13 +158,14 @@ window.renderizarListaRPGAdmin = function() {
   objetosFiltrados.forEach(obj => {
     let imgDisplay = obj.imgUrl ? `<img src="${obj.imgUrl}" class="item-card-thumb" style="object-fit:cover;">` : `<div class="item-card-thumb" style="display:flex; align-items:center; justify-content:center; font-size:1.5em;">🗡️</div>`;
     let ranuraTexto = obj.ranura ? obj.ranura.toUpperCase() : 'NINGUNA';
+    let esBazar = obj.enBazar ? `<span class="tag-badge" style="background:#b000ff20; color:#b000ff; border-color:#b000ff;">🛒 BAZAR</span>` : '';
     
     html += `
     <div class="item-card-row">
       ${imgDisplay}
       <div class="item-card-info">
         <div class="item-card-title rareza-${obj.rareza}">${sanitizar(obj.nombre)}</div>
-        <div class="item-card-meta"><span>${obj.tipo.toUpperCase()}</span> • <span class="tag-badge tag-${obj.rareza.toLowerCase()}">${obj.rareza}</span> • <span style="color:#00e5ff;">Ranura: ${ranuraTexto}</span></div>
+        <div class="item-card-meta"><span>${obj.tipo.toUpperCase()}</span> • <span class="tag-badge tag-${obj.rareza.toLowerCase()}">${obj.rareza}</span> • <span style="color:#00e5ff;">Ranura: ${ranuraTexto}</span> ${esBazar}</div>
       </div>
       <div class="item-card-actions">
         <button class="btn-action-touch btn-edit" onclick="prepararEdicionRPG('${obj.id}')"><i class="fas fa-pen"></i></button>
@@ -187,10 +188,13 @@ window.guardarObjetoRPG = async function(btnElement) {
   let costoTok = parseInt(document.getElementById('rpgItemCostoTok').value) || null;
   let pesoDrop = parseInt(document.getElementById('rpgItemPesoDrop').value) || null;
   let nivelReq = parseInt(document.getElementById('rpgItemNivelReq').value) || 1;
+  let enBazar = document.getElementById('rpgItemBazar').checked;
+  let precioBazar = parseInt(document.getElementById('rpgItemPrecioBazar').value) || 0;
   let fileInput = document.getElementById('rpgItemImg');
 
   if(!nombre) return alert("Ponle un nombre al objeto.");
   if(!idEdit && !fileInput.files[0]) return alert("Selecciona una imagen para el objeto nuevo.");
+  if(enBazar && precioBazar <= 0) return alert("Si el objeto está en el Bazar, debe tener un Precio en Tokens válido.");
   
   let btn = (btnElement && btnElement instanceof HTMLElement) ? btnElement : document.createElement('button');
   btn.disabled = true;
@@ -201,7 +205,9 @@ window.guardarObjetoRPG = async function(btnElement) {
     let datosObj = { 
       nombre: nombre, tipo: tipo, rareza: rareza, ranura: ranura,
       stats: { atk: atk, def: def }, costoMat: costoMat, costoTok: costoTok,
-      pesoDrop: pesoDrop, nivelReq: nivelReq, timestamp: Date.now() 
+      pesoDrop: pesoDrop, nivelReq: nivelReq, 
+      enBazar: enBazar, precioBazar: precioBazar,
+      timestamp: Date.now() 
     };
 
     if(fileInput.files[0]) {
@@ -234,6 +240,8 @@ window.prepararEdicionRPG = function(id) {
   document.getElementById('rpgItemCostoTok').value = obj.costoTok || '';
   document.getElementById('rpgItemPesoDrop').value = obj.pesoDrop || '';
   document.getElementById('rpgItemNivelReq').value = obj.nivelReq || ''; 
+  document.getElementById('rpgItemBazar').checked = obj.enBazar || false;
+  document.getElementById('rpgItemPrecioBazar').value = obj.precioBazar || '';
   document.getElementById('rpgItemImg').value = ""; 
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
@@ -248,6 +256,8 @@ window.resetFormularioRPG = function() {
   document.getElementById('rpgItemCostoTok').value = "";
   document.getElementById('rpgItemPesoDrop').value = "";
   document.getElementById('rpgItemNivelReq').value = ""; 
+  document.getElementById('rpgItemBazar').checked = false;
+  document.getElementById('rpgItemPrecioBazar').value = "";
   document.getElementById('rpgItemImg').value = "";
 };
 
@@ -406,7 +416,6 @@ async function cargarJugadoresAdmin() {
   } catch(e) { console.warn("Error cargar jug:", e); } 
 }
 
-// NUEVA FUNCIÓN PARA CASTIGAR TRAMPOSOS (HARD RESET)
 window.resetearJugadorManualmente = async function(uid, tag) {
   if (confirm(`🚨 ADVERTENCIA: ¿Estás seguro de hacer un HARD RESET a "${tag}"?\n\nEsto borrará todo su nivel, inventario, equipo y oro, regresándolo a Nivel 1. Úsalo solo con tramposos.`)) {
     try {
