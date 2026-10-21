@@ -145,8 +145,12 @@ window.renderizarListaRPGAdmin = function() {
   const filtroRanura = document.getElementById('filtroRanuraAdmin')?.value || 'todos';
   
   let objetosFiltrados = rpgObjetosAdminGlobal;
-  if (filtroRanura !== 'todos') {
-    objetosFiltrados = rpgObjetosAdminGlobal.filter(obj => (obj.ranura || 'ninguna') === filtroRanura);
+  
+  // Lógica del nuevo filtro simple (armas, materiales o todos)
+  if (filtroRanura === 'arma') {
+    objetosFiltrados = rpgObjetosAdminGlobal.filter(obj => (obj.tipo || 'arma') === 'arma');
+  } else if (filtroRanura === 'material') {
+    objetosFiltrados = rpgObjetosAdminGlobal.filter(obj => (obj.tipo || 'arma') === 'material');
   }
 
   if (objetosFiltrados.length === 0) { 
