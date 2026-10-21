@@ -10,6 +10,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="admin.css">
+  <style>
+    /* MEJORAS DE UI PROFESIONAL */
+    .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .form-group-pro { display: flex; flex-direction: column; gap: 6px; }
+    
+    .btn-upload-pro { display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(0, 229, 255, 0.05); border: 1px dashed #00e5ff; color: #00e5ff; padding: 12px; border-radius: 8px; cursor: pointer; transition: 0.3s; font-size: 0.9em; text-align: center; width: 100%; box-sizing: border-box; }
+    .btn-upload-pro:hover { background: rgba(0, 229, 255, 0.15); border-style: solid; }
+    
+    .item-card-row { align-items: flex-start; padding: 12px; }
+    .item-card-title { white-space: normal; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.3; font-size: 1em; margin-bottom: 4px; }
+    
+    .fieldset-box { background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 8px; padding: 12px; margin-bottom: 15px; }
+    .fieldset-title { font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; font-weight: bold; }
+  </style>
 </head>
 <body>
 
@@ -175,102 +189,122 @@
 
   <!-- PESTAÑA: SISTEMA RPG Y FORJA -->
   <section id="panel-rpg" class="admin-panel">
-    <div class="card-panel" style="border-color: rgba(0, 229, 255, 0.4);">
+    <div class="card-panel" style="border-top: 3px solid #00e5ff;">
       <div class="panel-header">
-        <span class="panel-title" style="color: #00e5ff;"><i class="fas fa-hammer"></i> Forja de Objetos RPG</span>
-        <button style="background:none; border:none; color:#ff3366; cursor:pointer; font-weight:bold;" onclick="resetFormularioRPG()">Limpiar</button>
+        <span class="panel-title" style="color: #00e5ff;"><i class="fas fa-hammer"></i> Forja de Objetos</span>
+        <button style="background:none; border:none; color:#ff3366; cursor:pointer; font-weight:bold; font-size: 0.85em;" onclick="resetFormularioRPG()"><i class="fas fa-eraser"></i> Limpiar</button>
       </div>
-      <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 15px;">Crea o edita equipamiento asignando su ranura corporal correspondiente para el Paper Doll.</p>
+      <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 20px;">Crea equipamiento para el juego. Usa nombres llamativos y ajusta el balance.</p>
       
       <input type="hidden" id="rpgEditId" value="">
       
-      <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-        <input type="text" id="rpgItemNombre" class="form-input" placeholder="Nombre del Objeto" style="flex: 2;">
-        <input type="file" id="rpgItemImg" accept="image/*" class="form-input" style="flex: 1; padding: 10px;">
+      <!-- Bloque 1: Identidad del Objeto -->
+      <div class="fieldset-box">
+        <div class="form-group-pro" style="margin-bottom: 12px;">
+          <label class="form-label">Nombre del Objeto</label>
+          <input type="text" id="rpgItemNombre" class="form-input" placeholder="Ej: Espada Larga de Hierro">
+        </div>
+        
+        <div class="form-group-pro">
+          <label class="form-label">Imagen (Ícono)</label>
+          <label for="rpgItemImg" class="btn-upload-pro"><i class="fas fa-image"></i> Subir o Cambiar Imagen</label>
+          <input type="file" id="rpgItemImg" accept="image/*" style="display:none;">
+        </div>
       </div>
       
-      <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-        <select id="rpgItemTipo" class="form-select">
-          <option value="arma">Equipo / Pieza</option>
-          <option value="material">Material de Forja</option>
-          <option value="consumible">Poción / Consumible</option>
-        </select>
-        <select id="rpgItemRareza" class="form-select">
-          <option value="N">Común (N)</option>
-          <option value="R">Raro (R)</option>
-          <option value="SR">Épico (SR)</option>
-          <option value="SSR">Legendario (SSR)</option>
-        </select>
+      <!-- Bloque 2: Clasificación -->
+      <div class="grid-2col">
+        <div class="form-group-pro">
+          <label class="form-label">Tipo</label>
+          <select id="rpgItemTipo" class="form-select">
+            <option value="arma">Equipo / Pieza</option>
+            <option value="material">Material de Forja</option>
+            <option value="consumible">Consumible</option>
+          </select>
+        </div>
+        <div class="form-group-pro">
+          <label class="form-label">Rareza</label>
+          <select id="rpgItemRareza" class="form-select">
+            <option value="N">Común (N)</option>
+            <option value="R">Raro (R)</option>
+            <option value="SR">Épico (SR)</option>
+            <option value="SSR">Legendario (SSR)</option>
+          </select>
+        </div>
       </div>
 
-      <!-- SELECTOR DE RANURA CORPORAL -->
-      <div class="form-group" style="margin-bottom: 10px;">
-        <label class="form-label" style="color: var(--secondary-color);">Ranura de Equipamiento (Paper Doll):</label>
+      <!-- Bloque 3: Ranura -->
+      <div class="fieldset-box" style="border-color: rgba(255, 51, 102, 0.3);">
+        <div class="fieldset-title" style="color: #ff3366;"><i class="fas fa-tshirt"></i> Ranura Corporal</div>
         <select id="rpgItemRanura" class="form-select">
-          <option value="cabeza">🪖 Cabeza (Casco / Sombrero)</option>
-          <option value="pecho">🛡️ Pecho (Armadura / Túnica)</option>
-          <option value="piernas">👖 Piernas (Pantalones)</option>
-          <option value="pies">🥾 Pies (Botas / Zapatos)</option>
+          <option value="ninguna">📦 Ninguna (Solo Material/Consumible)</option>
           <option value="mano_derecha">🗡️ Mano Derecha (Arma Principal)</option>
-          <option value="mano_izquierda">🛡️ Mano Izquierda (Escudo / Arma Sec.)</option>
-          <option value="amuleto">📿 Amuleto (Collar)</option>
-          <option value="anillo">💍 Anillo</option>
-          <option value="mascota">🐾 Mascota / Acompañante</option>
-          <option value="ninguna">📦 Ninguna (Solo Material / Consumible)</option>
-        </select>
-      </div>
-      
-      <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-        <input type="number" id="rpgItemAtk" class="form-input" placeholder="+ Ataque (Ej: 15)">
-        <input type="number" id="rpgItemDef" class="form-input" placeholder="+ Defensa (Ej: 5)">
-      </div>
-
-      <div style="font-size: 0.85em; color: #ffaa00; margin-bottom: 6px; font-weight: bold;"><i class="fas fa-balance-scale"></i> Economía y Drop (Dejar vacío para usar defecto):</div>
-      <div style="display: flex; gap: 6px; margin-bottom: 12px;">
-        <input type="number" id="rpgItemCostoMat" class="form-input" placeholder="Req. Mats" title="Costo en Materiales">
-        <input type="number" id="rpgItemCostoTok" class="form-input" placeholder="Req. Tokens" title="Costo en Tokens">
-        <input type="number" id="rpgItemPesoDrop" class="form-input" placeholder="Peso (1=Raro)" title="Peso de Drop (RNG)">
-        <input type="number" id="rpgItemNivelReq" class="form-input" placeholder="Nv. Requerido" title="Nivel mínimo para equipar">
-      </div>
-
-      <!-- SECCIÓN DEL BAZAR / GRAN MERCADO -->
-      <div style="font-size: 0.85em; color: #b000ff; margin-bottom: 6px; font-weight: bold;"><i class="fas fa-store"></i> El Gran Mercado (Venta Directa por Tokens):</div>
-      <div style="display: flex; gap: 10px; margin-bottom: 12px; align-items: center; background: rgba(176,0,255,0.1); padding: 10px; border-radius: 6px; border: 1px dashed rgba(176,0,255,0.3);">
-        <label style="display: flex; align-items: center; gap: 5px; color: #fff; cursor: pointer; font-size: 0.9em;">
-          <input type="checkbox" id="rpgItemBazar" style="width: 18px; height: 18px; accent-color: #b000ff;">
-          Vender en el Bazar Exclusivo
-        </label>
-        <input type="number" id="rpgItemPrecioBazar" class="form-input" placeholder="Precio (Tokens)" title="Costo de compra en el Bazar" style="flex: 1;">
-      </div>
-
-      <button onclick="guardarObjetoRPG(this)" class="btn-submit" style="background: rgba(0, 229, 255, 0.1); color: #00e5ff; border: 1px solid #00e5ff;">Forjar / Actualizar Objeto</button>
-    </div>
-
-    <!-- INVENTARIO DE LA FORJA CON EL FILTRO DESPLEGABLE INTEGRADO -->
-    <div class="card-panel">
-      <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-        <span class="panel-title"><i class="fas fa-list"></i> Inventario de la Forja</span>
-        <select id="filtroRanuraAdmin" class="form-select" style="max-width: 180px; padding: 6px;" onchange="renderizarListaRPGAdmin()">
-          <option value="todos">🗂️ Ver Todas</option>
-          <option value="cabeza">🪖 Cabeza</option>
-          <option value="pecho">🛡️ Pecho</option>
+          <option value="mano_izquierda">🛡️ Mano Izq. (Escudo/Secundaria)</option>
+          <option value="cabeza">🪖 Cabeza (Casco)</option>
+          <option value="pecho">🛡️ Pecho (Armadura)</option>
           <option value="piernas">👖 Piernas</option>
-          <option value="pies">🥾 Pies</option>
-          <option value="mano_derecha">🗡️ Mano Der.</option>
-          <option value="mano_izquierda">🛡️ Mano Izq.</option>
+          <option value="pies">🥾 Pies (Botas)</option>
           <option value="amuleto">📿 Amuleto</option>
           <option value="anillo">💍 Anillo</option>
           <option value="mascota">🐾 Mascota</option>
-          <option value="ninguna">📦 Ninguna</option>
         </select>
       </div>
-      <div id="listaObjetosRPGAdmin"><p style="text-align:center; color: var(--text-muted);"><i class="fas fa-spinner fa-spin"></i> Cargando objetos...</p></div>
+      
+      <!-- Bloque 4: Atributos (Stats) -->
+      <div class="grid-2col">
+        <div class="form-group-pro">
+          <label class="form-label" style="color: #ffaa00;"><i class="fas fa-crosshairs"></i> Bono ATK</label>
+          <input type="number" id="rpgItemAtk" class="form-input" placeholder="Ej: 15">
+        </div>
+        <div class="form-group-pro">
+          <label class="form-label" style="color: #00e5ff;"><i class="fas fa-shield-alt"></i> Bono DEF</label>
+          <input type="number" id="rpgItemDef" class="form-input" placeholder="Ej: 5">
+        </div>
+      </div>
+
+      <!-- Bloque 5: Economía -->
+      <div class="fieldset-box" style="border-color: rgba(255, 170, 0, 0.3);">
+        <div class="fieldset-title" style="color: #ffaa00;"><i class="fas fa-balance-scale"></i> Economía y Drop</div>
+        <div class="grid-2col">
+          <input type="number" id="rpgItemCostoMat" class="form-input" placeholder="Mats forja" title="Costo en Materiales">
+          <input type="number" id="rpgItemCostoTok" class="form-input" placeholder="Costo Tokens" title="Costo en Tokens">
+          <input type="number" id="rpgItemPesoDrop" class="form-input" placeholder="Peso RNG" title="Probabilidad de que caiga (1=Raro)">
+          <input type="number" id="rpgItemNivelReq" class="form-input" placeholder="Nv. Requerido" title="Nivel mínimo para usar">
+        </div>
+      </div>
+
+      <!-- Bloque 6: Bazar -->
+      <div class="fieldset-box" style="border-color: rgba(176, 0, 255, 0.4); background: rgba(176,0,255,0.05);">
+        <div class="fieldset-title" style="color: #b000ff;"><i class="fas fa-store"></i> El Gran Mercado</div>
+        <div class="grid-2col" style="align-items: center; margin-bottom: 0;">
+          <label style="display: flex; align-items: center; gap: 8px; color: #fff; cursor: pointer; font-size: 0.9em; font-weight: bold;">
+            <input type="checkbox" id="rpgItemBazar" style="width: 20px; height: 20px; accent-color: #b000ff;">
+            Exclusivo Bazar
+          </label>
+          <input type="number" id="rpgItemPrecioBazar" class="form-input" placeholder="Precio 🪙" title="Costo en el Bazar">
+        </div>
+      </div>
+
+      <button onclick="guardarObjetoRPG(this)" class="btn-submit" style="background: linear-gradient(135deg, #00e5ff, #0099ff); color: #000; font-size: 1.1em; border-radius: var(--radius-pill); box-shadow: 0 4px 15px rgba(0, 229, 255, 0.3);"><i class="fas fa-anvil"></i> Guardar Objeto</button>
     </div>
 
-    <div class="card-panel" style="border-color: rgba(255, 51, 102, 0.4); margin-top: 20px;">
+    <!-- INVENTARIO DE LA FORJA -->
+    <div class="card-panel">
+      <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <span class="panel-title"><i class="fas fa-list"></i> Inventario de Forja</span>
+        <select id="filtroRanuraAdmin" class="form-select" style="max-width: 160px; padding: 6px; font-size: 0.85em;" onchange="renderizarListaRPGAdmin()">
+          <option value="todos">🗂️ Ver Todo</option>
+          <option value="arma">⚔️ Solo Armas</option>
+          <option value="material">💎 Solo Materiales</option>
+        </select>
+      </div>
+      <div id="listaObjetosRPGAdmin"><p style="text-align:center; color: var(--text-muted);"><i class="fas fa-spinner fa-spin"></i> Cargando...</p></div>
+    </div>
+
+    <div class="card-panel" style="border-top: 3px solid #ff3366; margin-top: 20px;">
       <div class="panel-header"><span class="panel-title" style="color: #ff3366;"><i class="fas fa-skull-crossbones"></i> Torneo Rumble Royale</span></div>
-      <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 15px;">Inicia el evento multijugador. Tomará a todos los inscritos actuales y narrará una batalla a muerte.</p>
-      <button onclick="ejecutarTorneoRumble()" class="btn-submit" style="background: #ff3366;"><i class="fas fa-play"></i> INICIAR BATALLA AHORA</button>
+      <p style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 15px;">Narrará una batalla a muerte automática entre todos los inscritos.</p>
+      <button onclick="ejecutarTorneoRumble()" class="btn-submit" style="background: #ff3366; border-radius: var(--radius-pill);"><i class="fas fa-play"></i> INICIAR BATALLA</button>
     </div>
   </section>
 
@@ -314,6 +348,6 @@
   <h2>SAKURA GAMEVERSE</h2><p style="text-align:center;">Comprobante de Venta</p><div class="divider"></div><p><strong>Fecha:</strong> <span id="printFecha"></span></p><p><strong>Cliente:</strong> <span id="printCliente"></span></p><p><strong>C.I / ID:</strong> <span id="printCedula"></span></p><p><strong>Pago vía:</strong> <span id="printMetodo"></span></p><div class="divider"></div><p><strong>Detalle de Compra:</strong></p><pre id="printDetalles" style="font-family:inherit; white-space: pre-wrap; margin: 5px 0; font-size: 14px;"></pre><div class="divider"></div><p style="text-align:right; font-size: 1.2em;"><strong>TOTAL USD: $<span id="printTotal"></span></strong></p><p style="text-align:center; margin-top:20px; font-size: 0.9em;">¡Gracias por tu compra!</p>
 </div>
 
-<script type="module" src="admin.js"></script>
+<script type="module" src="admin.js?v=7"></script>
 </body>
 </html>
