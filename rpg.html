@@ -98,7 +98,7 @@
         </div>
       </div>
 
-      <!-- BARRAS -->
+      <!-- BARRAS CON TIMERS INTEGRADOS -->
       <div style="margin-bottom: 15px;">
         <div style="display: flex; justify-content: space-between; font-size: 0.7em; color: #ccc;"><span>EXPERIENCIA</span><span style="color: #00e5ff;">Nv. <span id="rpgProximoNivelTxt">2</span></span></div>
         <div class="bar-container"><div id="rpgBarraXpFill" class="bar-fill fill-xp" style="width: 0%;"></div><div id="rpgBarraXpText" class="bar-text">0 / 20 XP</div></div>
@@ -106,12 +106,18 @@
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
         <div>
-          <div style="font-size: 0.7em; color: #ccc; display:flex; justify-content:space-between;"><span>SALUD</span></div>
+          <div style="font-size: 0.7em; color: #ccc; display:flex; justify-content:space-between;">
+            <span>SALUD</span>
+            <span id="ui-timer-hp" style="color:#ff3366; font-weight:bold;">MÁXIMO</span>
+          </div>
           <div class="bar-container"><div id="rpgBarraHpFill" class="bar-fill fill-hp" style="width: 100%;"></div><div id="rpgBarraHpText" class="bar-text">100/100</div></div>
           <button onclick="entrenarStatRPG('hp')" class="btn-upgrade-stat" title="Coste: 10 Tokens. Aumenta máximo, no cura.">+ Max HP (10 🪙)</button>
         </div>
         <div>
-          <div style="font-size: 0.7em; color: #ccc; display:flex; justify-content:space-between;"><span>ENERGÍA</span></div>
+          <div style="font-size: 0.7em; color: #ccc; display:flex; justify-content:space-between;">
+            <span>ENERGÍA</span>
+            <span id="ui-timer-en" style="color:#ffcc00; font-weight:bold;">MÁXIMO</span>
+          </div>
           <div class="bar-container"><div id="rpgBarraEnergiaFill" class="bar-fill fill-en" style="width: 100%;"></div><div id="rpgBarraEnergiaText" class="bar-text">100/100</div></div>
           <button onclick="entrenarStatRPG('energia')" class="btn-upgrade-stat" title="Coste: 10 Tokens. Aumenta máximo, no rellena.">+ Max EN (10 🪙)</button>
         </div>
@@ -211,7 +217,7 @@
       </div>
     </div>
 
-    <!-- EL DISTRITO COMERCIAL Y ARTESANO (TABS INTEGRADAS) -->
+    <!-- EL DISTRITO COMERCIAL Y ARTESANO -->
     <div class="card-panel" style="padding: 15px; margin-bottom: 20px; border-top: 1px solid #333;">
       <h3 style="color: #fff; margin: 0 0 12px 0; font-size: 1em;">DISTRITO COMERCIAL</h3>
       
@@ -250,6 +256,6 @@
   </main>
 </div> 
 
-<script type="module" src="rpg.js?v=11"></script>
+<script type="module" src="rpg.js?v=12"></script>
 </body>
 </html>
