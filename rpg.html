@@ -29,10 +29,12 @@
     .btn-upgrade-stat { background: transparent; border: 1px dashed rgba(255,255,255,0.2); color: var(--text-muted); border-radius: 4px; padding: 4px; font-size: 0.65em; cursor: pointer; width: 100%; margin-top: 8px; transition: 0.2s; text-transform: uppercase; letter-spacing: 1px; }
     .btn-upgrade-stat:hover { border-color: #ffaa00; color: #ffaa00; background: rgba(255,170,0,0.1); }
     
+    /* Pestañas del Distrito Comercial */
     .trade-tabs { display: flex; gap: 4px; background: #000; padding: 4px; border-radius: 8px; border: 1px solid #222; overflow-x: auto; margin-bottom: 15px; scrollbar-width: none; }
     .trade-tab-btn { flex: 1; min-width: 80px; background: transparent; border: none; color: #666; padding: 8px; font-size: 0.75em; font-weight: bold; border-radius: 4px; cursor: pointer; transition: 0.3s; text-transform: uppercase; white-space: nowrap; }
     .trade-tab-btn.activo { background: rgba(255,255,255,0.1); color: #fff; box-shadow: inset 0 0 5px rgba(0,0,0,0.5); }
     
+    /* Listas y Tarjetas sutiles */
     .rpg-list-item { background: rgba(0,0,0,0.4); border-left: 2px solid #444; padding: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border-radius: 0 6px 6px 0; transition: 0.2s; }
     .rpg-list-item:hover { background: rgba(255,255,255,0.05); border-left-color: #ffaa00; }
     
@@ -129,7 +131,7 @@
       </div>
     </div>
 
-    <!-- NUEVO: PANEL DE EQUIPAMIENTO (PAPER DOLL 3x3) -->
+    <!-- PANEL DE EQUIPAMIENTO (PAPER DOLL 3x3) -->
     <div class="card-panel" style="padding: 15px; margin-bottom: 15px; border-top: 2px solid #ffaa00; position:relative; overflow:hidden;">
       <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); opacity:0.04; font-size:150px; pointer-events:none;"><i class="fas fa-user-ninja"></i></div>
       
@@ -148,22 +150,40 @@
       <div id="rpgContenedorInventario" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; max-height: 250px; overflow-y: auto; padding-right: 4px;"></div>
     </div>
 
-    <!-- TABLÓN DEL GREMIO (CAZA) -->
+    <!-- TABLÓN DEL GREMIO (CAZA Y TIMERS) -->
     <div class="card-panel" style="padding: 15px; margin-bottom: 15px; border-left: 3px solid #25d366;">
       <h3 style="color: #fff; margin: 0 0 12px 0; font-size: 1em;">ZONA DE EXPEDICIÓN</h3>
+      
+      <!-- Timer Caza -->
+      <div style="display: flex; justify-content: space-between; font-size: 0.8em; color: #888; margin-bottom: 6px; font-weight: bold;">
+        <span>Zonas de Caza:</span>
+        <span id="ui-cd-caza" style="color: #25d366;"><i class="fas fa-check"></i> Listo</span>
+      </div>
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
         <button class="btn-comprar" style="margin:0; background: #111; border: 1px solid #333; color: #ccc; font-size: 0.75em; padding: 10px;" onclick="cazarEnZona('gallinas')">🐔 Bosque Menor<br><span style="color:#888;">-5 ⚡ | -2 HP</span></button>
         <button class="btn-comprar" style="margin:0; background: #111; border: 1px solid #333; color: #ccc; font-size: 0.75em; padding: 10px;" onclick="cazarEnZona('vacas')">🐮 Llanuras (Nv.3)<br><span style="color:#888;">-10 ⚡ | -5 HP</span></button>
         <button class="btn-comprar" style="margin:0; background: #111; border: 1px solid #442222; color: #e57373; font-size: 0.75em; padding: 10px;" onclick="cazarEnZona('goblins')">👺 Camp. Goblin (Nv.4)<br><span style="color:#888;">-15 ⚡ | -10 HP</span></button>
         <button class="btn-comprar" style="margin:0; background: #111; border: 1px solid #442222; color: #ff3366; font-size: 0.75em; padding: 10px;" onclick="cazarEnZona('gigantes')">👹 Valle Gigantes (Nv.7)<br><span style="color:#888;">-20 ⚡ | -20 HP</span></button>
       </div>
+      
+      <!-- Timer Mina -->
+      <div style="display: flex; justify-content: space-between; font-size: 0.8em; color: #888; margin-bottom: 6px; font-weight: bold;">
+        <span>Mina Profunda:</span>
+        <span id="ui-cd-mina" style="color: #25d366;"><i class="fas fa-check"></i> Listo</span>
+      </div>
       <button class="btn-comprar" style="margin: 0 0 12px 0; background: #111; border: 1px solid #0055ff; color: #00e5ff; font-size: 0.85em; padding: 12px;" onclick="minar()"><i class="fas fa-hammer"></i> Adentrarse en la Mina (-15 ⚡ | -5 HP)</button>
       
+      <!-- Timer Mazmorras -->
+      <div style="display: flex; justify-content: space-between; font-size: 0.8em; color: #888; margin-bottom: 6px; margin-top: 12px; font-weight: bold;">
+        <span>Mazmorras de Expedición:</span>
+        <span id="ui-cd-mazmorra" style="color: #25d366;"><i class="fas fa-check"></i> Listo</span>
+      </div>
       <div style="display: flex; flex-direction: column; gap: 8px;">
         <button class="btn-comprar" style="margin:0; background: #111; border: 1px solid #224422; color: #81c784; font-size: 0.8em; padding: 10px; text-align:left;" onclick="entrarMazmorraRPG('facil')">🌲 Bosque Slime (Poder: 40) <span style="float:right;">-25 ⚡</span></button>
         <button class="btn-comprar" style="margin:0; background: #111; border: 1px solid #442244; color: #ba68c8; font-size: 0.8em; padding: 10px; text-align:left;" onclick="entrarMazmorraRPG('media')">🦇 Cueva Sangrienta (Poder: 180) <span style="float:right;">-40 ⚡</span></button>
         <button class="btn-comprar" style="margin:0; background: #111; border: 1px solid #442222; color: #e57373; font-size: 0.8em; padding: 10px; text-align:left;" onclick="entrarMazmorraRPG('dificil')">🐉 Torre del Dragón (Poder: 600) <span style="float:right;">-60 ⚡</span></button>
       </div>
+      
       <div style="background: #050505; padding: 10px; border-radius: 4px; border: 1px solid #222; margin-top: 12px; text-align: center; font-family: monospace; font-size: 0.8em; color: #aaa;" id="rpgResultadoGremio">
         El gremio espera tus hazañas.
       </div>
@@ -230,6 +250,6 @@
   </main>
 </div> 
 
-<script type="module" src="rpg.js?v=9"></script>
+<script type="module" src="rpg.js?v=11"></script>
 </body>
 </html>
