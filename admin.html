@@ -225,13 +225,22 @@
         <input type="number" id="rpgItemDef" class="form-input" placeholder="+ Defensa (Ej: 5)">
       </div>
 
-      <!-- NUEVA SECCIÓN DE COSTOS Y PROBABILIDADES -->
       <div style="font-size: 0.85em; color: #ffaa00; margin-bottom: 6px; font-weight: bold;"><i class="fas fa-balance-scale"></i> Economía y Drop (Dejar vacío para usar defecto):</div>
       <div style="display: flex; gap: 6px; margin-bottom: 12px;">
         <input type="number" id="rpgItemCostoMat" class="form-input" placeholder="Req. Mats" title="Costo en Materiales">
         <input type="number" id="rpgItemCostoTok" class="form-input" placeholder="Req. Tokens" title="Costo en Tokens">
         <input type="number" id="rpgItemPesoDrop" class="form-input" placeholder="Peso (1=Raro)" title="Peso de Drop (RNG)">
         <input type="number" id="rpgItemNivelReq" class="form-input" placeholder="Nv. Requerido" title="Nivel mínimo para equipar">
+      </div>
+
+      <!-- SECCIÓN DEL BAZAR / GRAN MERCADO -->
+      <div style="font-size: 0.85em; color: #b000ff; margin-bottom: 6px; font-weight: bold;"><i class="fas fa-store"></i> El Gran Mercado (Venta Directa por Tokens):</div>
+      <div style="display: flex; gap: 10px; margin-bottom: 12px; align-items: center; background: rgba(176,0,255,0.1); padding: 10px; border-radius: 6px; border: 1px dashed rgba(176,0,255,0.3);">
+        <label style="display: flex; align-items: center; gap: 5px; color: #fff; cursor: pointer; font-size: 0.9em;">
+          <input type="checkbox" id="rpgItemBazar" style="width: 18px; height: 18px; accent-color: #b000ff;">
+          Vender en el Bazar Exclusivo
+        </label>
+        <input type="number" id="rpgItemPrecioBazar" class="form-input" placeholder="Precio (Tokens)" title="Costo de compra en el Bazar" style="flex: 1;">
       </div>
 
       <button onclick="guardarObjetoRPG(this)" class="btn-submit" style="background: rgba(0, 229, 255, 0.1); color: #00e5ff; border: 1px solid #00e5ff;">Forjar / Actualizar Objeto</button>
