@@ -29,12 +29,10 @@
     .btn-upgrade-stat { background: transparent; border: 1px dashed rgba(255,255,255,0.2); color: var(--text-muted); border-radius: 4px; padding: 4px; font-size: 0.65em; cursor: pointer; width: 100%; margin-top: 8px; transition: 0.2s; text-transform: uppercase; letter-spacing: 1px; }
     .btn-upgrade-stat:hover { border-color: #ffaa00; color: #ffaa00; background: rgba(255,170,0,0.1); }
     
-    /* Pestañas del Distrito Comercial */
     .trade-tabs { display: flex; gap: 4px; background: #000; padding: 4px; border-radius: 8px; border: 1px solid #222; overflow-x: auto; margin-bottom: 15px; scrollbar-width: none; }
     .trade-tab-btn { flex: 1; min-width: 80px; background: transparent; border: none; color: #666; padding: 8px; font-size: 0.75em; font-weight: bold; border-radius: 4px; cursor: pointer; transition: 0.3s; text-transform: uppercase; white-space: nowrap; }
     .trade-tab-btn.activo { background: rgba(255,255,255,0.1); color: #fff; box-shadow: inset 0 0 5px rgba(0,0,0,0.5); }
     
-    /* Listas y Tarjetas sutiles */
     .rpg-list-item { background: rgba(0,0,0,0.4); border-left: 2px solid #444; padding: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border-radius: 0 6px 6px 0; transition: 0.2s; }
     .rpg-list-item:hover { background: rgba(255,255,255,0.05); border-left-color: #ffaa00; }
     
@@ -43,7 +41,7 @@
 </head>
 <body class="theme-rosa">
 
-<!-- LOGIN Y SELECCIÓN DE CLASE (Igual que antes) -->
+<!-- LOGIN Y SELECCIÓN DE CLASE -->
 <div id="pantallaAuthRPG" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #05010a; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center;">
   <div class="card-panel" style="width: 90%; max-width: 350px; text-align: center; border-color: var(--secondary-color); padding: 25px;">
     <img src="logo.webp?v=2" style="width: 80px; border-radius: 50%; margin-bottom: 15px; border: 2px solid var(--secondary-color);">
@@ -83,7 +81,7 @@
 
   <main style="max-width: 500px; width: 95%; margin: 15px auto; padding-bottom: 40px;">
     
-    <!-- PERFIL DE ESTADO (UI PULIDA) -->
+    <!-- PERFIL DE ESTADO -->
     <div class="card-panel" style="padding: 20px; margin-bottom: 15px;">
       <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
         <div>
@@ -98,7 +96,7 @@
         </div>
       </div>
 
-      <!-- BARRAS REDISEÑADAS -->
+      <!-- BARRAS -->
       <div style="margin-bottom: 15px;">
         <div style="display: flex; justify-content: space-between; font-size: 0.7em; color: #ccc;"><span>EXPERIENCIA</span><span style="color: #00e5ff;">Nv. <span id="rpgProximoNivelTxt">2</span></span></div>
         <div class="bar-container"><div id="rpgBarraXpFill" class="bar-fill fill-xp" style="width: 0%;"></div><div id="rpgBarraXpText" class="bar-text">0 / 20 XP</div></div>
@@ -131,14 +129,23 @@
       </div>
     </div>
 
-    <!-- EQUIPO Y MOCHILA (PAPER DOLL) -->
+    <!-- NUEVO: PANEL DE EQUIPAMIENTO (PAPER DOLL 3x3) -->
+    <div class="card-panel" style="padding: 15px; margin-bottom: 15px; border-top: 2px solid #ffaa00; position:relative; overflow:hidden;">
+      <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); opacity:0.04; font-size:150px; pointer-events:none;"><i class="fas fa-user-ninja"></i></div>
+      
+      <h3 style="color: #fff; margin: 0 0 15px 0; font-size: 1em; text-align:center; letter-spacing: 2px;"><i class="fas fa-tshirt" style="color:#ffaa00;"></i> EQUIPAMIENTO ACTIVO</h3>
+      
+      <!-- Grid fija de 3 columnas para que nunca se rompa -->
+      <div id="paperDollGrid" style="display: grid; grid-template-columns: repeat(3, 75px); grid-auto-rows: 75px; gap: 12px; justify-content: center; position:relative; z-index:1;"></div>
+    </div>
+
+    <!-- MOCHILA (SEPARADA) -->
     <div class="card-panel" style="padding: 15px; margin-bottom: 15px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid #222; padding-bottom: 8px;">
-        <h3 style="color: #fff; margin: 0; font-size: 1em;">INVENTARIO</h3>
+        <h3 style="color: #fff; margin: 0; font-size: 1em;">INVENTARIO (MOCHILA)</h3>
         <span style="font-size: 0.75em; color: #888;">Materiales: <strong id="rpgTotalMateriales" style="color:#00e5ff;">0</strong></span>
       </div>
-      <div id="paperDollGrid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-width: 280px; margin: 0 auto 15px auto;"></div>
-      <div id="rpgContenedorInventario" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; max-height: 250px; overflow-y: auto; padding-right: 4px; border-top: 1px dashed #222; padding-top: 10px;"></div>
+      <div id="rpgContenedorInventario" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; max-height: 250px; overflow-y: auto; padding-right: 4px;"></div>
     </div>
 
     <!-- TABLÓN DEL GREMIO (CAZA) -->
@@ -184,7 +191,7 @@
       </div>
     </div>
 
-    <!-- EL DISTRITO COMERCIAL Y ARTESANO (TABS INTEGRADAS PARA NO HACER SCROLL INFINITO) -->
+    <!-- EL DISTRITO COMERCIAL Y ARTESANO (TABS INTEGRADAS) -->
     <div class="card-panel" style="padding: 15px; margin-bottom: 20px; border-top: 1px solid #333;">
       <h3 style="color: #fff; margin: 0 0 12px 0; font-size: 1em;">DISTRITO COMERCIAL</h3>
       
@@ -223,6 +230,6 @@
   </main>
 </div> 
 
-<script type="module" src="rpg.js"></script>
+<script type="module" src="rpg.js?v=9"></script>
 </body>
 </html>
