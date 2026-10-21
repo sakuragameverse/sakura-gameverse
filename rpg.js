@@ -84,10 +84,42 @@ window.consumirMaterialesPorCantidadGlobal = function(cantidadNecesaria) {
     gamerProfile.inventario = gamerProfile.inventario.filter(i => i.cantidad > 0);
 };
 
+// ==========================================
+// NUEVO: SISTEMA DE REGENERACIÓN PASIVA (HP y ENERGÍA)
+// ==========================================
 function actualizarEnergiaPasiva() {
-    if(!gamerProfile.stats) return; let ahora = Date.now(); let tiempoPasado = ahora - (gamerProfile.stats.ultimaEnergia || ahora); let minutosPasados = Math.floor(tiempoPasado / 60000); let limiteEnergia = gamerProfile.stats.energiaMax + (gamerProfile.profesion === 'Mago' ? 30 : 0);
-    if (minutosPasados > 0 && gamerProfile.stats.energiaActual < limiteEnergia) { gamerProfile.stats.energiaActual += minutosPasados; if (gamerProfile.stats.energiaActual > limiteEnergia) gamerProfile.stats.energiaActual = limiteEnergia; gamerProfile.stats.ultimaEnergia += minutosPasados * 60000; window.guardarProgresoRPG(); } 
-    else if (gamerProfile.stats.energiaActual >= limiteEnergia) { gamerProfile.stats.ultimaEnergia = ahora; }
+    if(!gamerProfile.stats) return; 
+    let ahora = Date.now(); 
+    let tiempoPasado = ahora - (gamerProfile.stats.ultimaEnergia || ahora); 
+    let minutosPasados = Math.floor(tiempoPasado / 60000); 
+
+    let limiteEnergia = gamerProfile.stats.energiaMax + (gamerProfile.profesion === 'Mago' ? 30 : 0);
+    let limiteHp = gamerProfile.stats.hpMax;
+
+    if (minutosPasados > 0) {
+        let actualizo = false;
+        
+        // Recupera +1 de Energía por minuto
+        if (gamerProfile.stats.energiaActual < limiteEnergia) { 
+            gamerProfile.stats.energiaActual += minutosPasados; 
+            if (gamerProfile.stats.energiaActual > limiteEnergia) gamerProfile.stats.energiaActual = limiteEnergia; 
+            actualizo = true;
+        } 
+        
+        // Recupera +2 de HP por minuto
+        if (gamerProfile.stats.hpActual < limiteHp) {
+            gamerProfile.stats.hpActual += (minutosPasados * 2);
+            if (gamerProfile.stats.hpActual > limiteHp) gamerProfile.stats.hpActual = limiteHp;
+            actualizo = true;
+        }
+
+        if (actualizo) {
+            gamerProfile.stats.ultimaEnergia += minutosPasados * 60000; 
+            window.guardarProgresoRPG();
+        } else if (gamerProfile.stats.energiaActual >= limiteEnergia && gamerProfile.stats.hpActual >= limiteHp) { 
+            gamerProfile.stats.ultimaEnergia = ahora; 
+        }
+    }
 }
 
 function calcularNivel(xp) { return Math.floor(Math.sqrt((xp || 0) / 20)) + 1; }
@@ -169,7 +201,6 @@ window.renderizarPaperDollGrande = function() {
   if(!currentUserUid || !gamerProfile.equipo) return;
   let grid = document.getElementById('paperDollGrid'); if(!grid) return; 
   
-  // FIX: Grid exacto de 3 columnas para que nunca se rompa ni envíe items abajo
   let ranurasConfig = [
     { key: 'amuleto', label: 'Amuleto', icon: '📿' },
     { key: 'cabeza', label: 'Cabeza', icon: '🪖' },
@@ -193,9 +224,7 @@ window.renderizarPaperDollGrande = function() {
     if (itemObj) {
       let imgThumb = itemObj.imgUrl ? `<img src="${itemObj.imgUrl}" style="width: 32px; height: 32px; object-fit: contain; image-rendering: pixelated; margin-bottom: 2px;">` : `<div style="font-size: 1.5em;">${slot.icon}</div>`;
       let lblNombre = itemObj.nivelMejora ? `<span style="color:#00e5ff;">+${itemObj.nivelMejora}</span>` : ``;
-      
       contenido = `${imgThumb}<div style="font-size: 0.55em; color: #fff; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; text-shadow: 0 0 2px #000;">${window.sanitizarHTML(itemObj.nombre)}</div><div style="position:absolute; top:2px; right:4px; font-size:0.7em; font-weight:bold;">${lblNombre}</div>`; 
-      
       estilo = `background: rgba(37,211,102,0.05); border: 1px solid rgba(37,211,102,0.4); border-radius: 8px; padding: 5px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; position:relative; box-shadow: inset 0 0 15px rgba(37,211,102,0.1);`;
     }
     html += `<div style="${estilo}" title="${slot.label}" onclick="window.desequiparRanuraRPG('${slot.key}')">${contenido}</div>`;
@@ -263,7 +292,7 @@ window.cazarEnZona = function(zonaId) {
     if (gamerProfile.stats.energiaActual < costoEnergia) return document.getElementById('rpgResultadoGremio').innerHTML = `<span style="color:#ffcc00;">Agotado. Faltan ⚡.</span>`;
     if (gamerProfile.stats.hpActual < zona.gastaHp) return document.getElementById('rpgResultadoGremio').innerHTML = `<span style="color:#ff3366;">Al borde de la muerte. Cúrate.</span>`;
     let ahora = Date.now(); let cooldownTime = 1 * 60 * 1000; let keyCooldown = 'cooldown_caza'; let ultimoUso = gamerProfile.cooldowns[keyCooldown] || 0;
-    if (ahora - ultimoUso < cooldownTime) { let faltanSec = Math.ceil((cooldownTime - (ahora - ultimoUso)) / 1000); return document.getElementById('rpgResultadoGremio').innerHTML = `<span style="color:#555;">Descansando... (${Math.floor(faltanSec / 60)}m ${faltanSec % 60}s).</span>`; }
+    if (ahora - ultimoUso < cooldownTime) { return document.getElementById('rpgResultadoGremio').innerHTML = `<span style="color:#555;">Descansando...</span>`; }
     
     gamerProfile.stats.hpActual -= zona.gastaHp; gamerProfile.stats.energiaActual -= costoEnergia;
     let probFinalDrop = zona.probDrop; if (gamerProfile.profesion === 'Explorador') probFinalDrop += 15;
@@ -278,7 +307,7 @@ window.minar = function() {
     if (gamerProfile.stats.energiaActual < 15) return document.getElementById('rpgResultadoGremio').innerHTML = `<span style="color:#ffcc00;">Agotado. Faltan ⚡.</span>`;
     if (gamerProfile.stats.hpActual < 5) return document.getElementById('rpgResultadoGremio').innerHTML = `<span style="color:#ff3366;">Estás herido.</span>`;
     let ahora = Date.now(); let cooldownTime = 2 * 60 * 1000; let keyCooldown = 'cooldown_minar'; let ultimoUso = gamerProfile.cooldowns[keyCooldown] || 0;
-    if (ahora - ultimoUso < cooldownTime) { let faltanSec = Math.ceil((cooldownTime - (ahora - ultimoUso)) / 1000); return document.getElementById('rpgResultadoGremio').innerHTML = `<span style="color:#555;">Picota rota... (${Math.floor(faltanSec / 60)}m ${faltanSec % 60}s).</span>`; }
+    if (ahora - ultimoUso < cooldownTime) { return document.getElementById('rpgResultadoGremio').innerHTML = `<span style="color:#555;">Picota rota...</span>`; }
     gamerProfile.stats.energiaActual -= 15; gamerProfile.stats.hpActual -= 5;
     let chanceDoble = gamerProfile.profesion === 'Artesano' ? 30 : 0; let rng = Math.random() * 100; let msj = "Solo sacas escombros.";
     if (rng < 65) { 
@@ -299,7 +328,7 @@ window.entrarMazmorraRPG = function(zonaId) {
   if (gamerProfile.stats.hpActual < costoHp) return document.getElementById('rpgResultadoGremio').innerHTML = `<span style="color:#ff3366;">Morirías antes de entrar. Necesitas ${costoHp} HP.</span>`;
   let ahora = Date.now(); let cooldownTime = 5 * 60 * 1000; let keyCooldown = 'cooldown_mazmorra_global'; let ultimoUso = gamerProfile.cooldowns[keyCooldown] || 0;
   let log = document.getElementById('rpgResultadoGremio');
-  if (ahora - ultimoUso < cooldownTime) { let faltanSec = Math.ceil((cooldownTime - (ahora - ultimoUso)) / 1000); return log.innerHTML = `<span style="color:#555;">Grupo descansando (${Math.floor(faltanSec / 60)}m ${faltanSec % 60}s).</span>`; }
+  if (ahora - ultimoUso < cooldownTime) { return log.innerHTML = `<span style="color:#555;">Grupo descansando...</span>`; }
   
   let statsPoder = window.obtenerPoderJugador(); let poder = statsPoder.total;
   log.innerHTML = `<span style="color:#00e5ff;">Explorando ${mazmorra.nombre}...</span>`;
@@ -536,7 +565,7 @@ window.refinarItemRPG = function(uid_inventario) {
     let item = gamerProfile.inventario[idx]; let nvl = item.nivelMejora || 0; if(nvl >= 10) return alert("Arma al máximo.");
     let costoMat = (nvl + 1) * 2; if (gamerProfile.profesion === 'Artesano') costoMat = Math.max(1, costoMat - 1); let costoTok = (nvl + 1) * 20;
     let cantMat = gamerProfile.inventario.filter(i => (i.tipo || '').toLowerCase() === 'material').reduce((acc, i) => acc + (i.cantidad || 1), 0);
-    if(cantMat < costoMat || (gamerProfile.tokens || 0) < costoTok) return alert("Recursos insuficientes.");
+    if(cantMat < costoMat || (gamerProfile.tokens || 0) < costoTok) return alert("Recursos insuficientes para refinar.");
 
     gamerProfile.tokens -= costoTok; window.consumirMaterialesPorCantidadGlobal(costoMat);
     idx = gamerProfile.inventario.findIndex(i => i.uid_inventario === uid_inventario); item = gamerProfile.inventario[idx];
@@ -555,10 +584,10 @@ window.sanitizarHTML = function(str) { return String(str || '').replace(/[&<>"']
 // SISTEMA DE TIMERS EN VIVO (COOLDOWNS)
 // ==========================================
 setInterval(() => {
-    if(!currentUserUid || !gamerProfile.cooldowns) return;
+    if(!currentUserUid || !gamerProfile.cooldowns || !gamerProfile.stats) return;
     let ahora = Date.now();
     
-    // 1. Timer de Caza (1 min = 60000 ms)
+    // 1. Timer de Caza (1 min)
     let ultimoCaza = gamerProfile.cooldowns['cooldown_caza'] || 0;
     let diffCaza = 60000 - (ahora - ultimoCaza);
     let elCaza = document.getElementById('ui-cd-caza');
@@ -573,7 +602,7 @@ setInterval(() => {
         }
     }
 
-    // 2. Timer de Mina (2 min = 120000 ms)
+    // 2. Timer de Mina (2 min)
     let ultimoMinar = gamerProfile.cooldowns['cooldown_minar'] || 0;
     let diffMinar = 120000 - (ahora - ultimoMinar);
     let elMinar = document.getElementById('ui-cd-mina');
@@ -588,7 +617,7 @@ setInterval(() => {
         }
     }
 
-    // 3. Timer de Mazmorra (5 min = 300000 ms)
+    // 3. Timer de Mazmorra (5 min)
     let ultimoMaz = gamerProfile.cooldowns['cooldown_mazmorra_global'] || 0;
     let diffMaz = 300000 - (ahora - ultimoMaz);
     let elMaz = document.getElementById('ui-cd-mazmorra');
@@ -600,6 +629,32 @@ setInterval(() => {
         } else {
             elMaz.innerHTML = `<i class="fas fa-check"></i> Listo`;
             elMaz.style.color = "#25d366";
+        }
+    }
+    
+    // 4. Timers de Regeneración (HP y Energía)
+    let ultimaRegen = gamerProfile.stats.ultimaEnergia || ahora;
+    let diffRegen = 60000 - (ahora - ultimaRegen);
+    let secRegen = Math.max(0, Math.ceil(diffRegen / 1000));
+    
+    let limiteEnergia = gamerProfile.stats.energiaMax + (gamerProfile.profesion === 'Mago' ? 30 : 0);
+    let limiteHp = gamerProfile.stats.hpMax;
+
+    let elEn = document.getElementById('ui-timer-en');
+    if(elEn) {
+        if(gamerProfile.stats.energiaActual < limiteEnergia) {
+            elEn.innerHTML = `+1 ⚡ en ${secRegen}s`;
+        } else {
+            elEn.innerHTML = `MÁXIMO`;
+        }
+    }
+
+    let elHp = document.getElementById('ui-timer-hp');
+    if(elHp) {
+        if(gamerProfile.stats.hpActual < limiteHp) {
+            elHp.innerHTML = `+2 ♥ en ${secRegen}s`;
+        } else {
+            elHp.innerHTML = `MÁXIMO`;
         }
     }
 }, 1000);
