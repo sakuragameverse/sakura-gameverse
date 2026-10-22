@@ -249,6 +249,7 @@ window.ejecutarEnvioRegalo = async function(e) {
     }
 };
 
+// ACÁ SE APLICA EL FIX DEL FLEX-WRAP PARA QUE LOS BOTONES NO SE APLASTEN EN MÓVILES
 async function cargarJugadoresAdmin() { 
   try { 
     const q = query(collection(db, "jugadores_cloud"), orderBy("updatedAt", "desc")); 
@@ -259,25 +260,52 @@ async function cargarJugadoresAdmin() {
     snapshot.forEach(d => { 
       const p = d.data().profile || {}; const tag = p.tag || 'Sin Nombre'; const xp = p.xp || 0; const tokens = p.tokens || 0; const rango = p.rango || 'Genin'; 
       htmlBloque += `
-      <div class="item-card-row">
-        <div style="flex-grow: 1;">
+      <div class="item-card-row" style="flex-wrap: wrap; gap: 10px;">
+        <div style="flex-grow: 1; min-width: 150px;">
           <div style="font-weight:700; color:#fff; font-size:1.05em;">${sanitizar(tag)}</div>
           <div style="font-size:0.85em; color:var(--text-muted);">
             Rango: <strong>${rango}</strong> | <strong style="color:var(--secondary-color);">${xp} XP</strong> | <strong style="color:#ffaa00;"><i class="fas fa-coins"></i> ${tokens} 🪙</strong>
           </div>
         </div>
-        <div class="item-card-actions">
+        <div class="item-card-actions" style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: flex-end;">
           <button class="btn-action-touch" style="color: #25d366; border: 1px solid rgba(37,211,102,0.3);" title="Enviar Regalo" onclick="abrirCajaRegalo('${d.id}', '${sanitizar(tag)}')"><i class="fas fa-gift"></i></button>
           <button class="btn-action-touch" style="color: #ff007f; border: 1px solid rgba(255,0,127,0.3);" title="Sumar/Restar XP" onclick="asignarXpManualmente('${d.id}', ${xp}, '${sanitizar(tag)}')"><i class="fas fa-star"></i></button>
           <button class="btn-action-touch" style="color: #ffaa00; border: 1px solid rgba(255,170,0,0.3);" title="Gestionar Tokens" onclick="asignarTokensManualmente('${d.id}', ${tokens}, '${sanitizar(tag)}')"><i class="fas fa-coins"></i></button>
           <button class="btn-action-touch btn-edit" title="Editar GamerTag" onclick="editarJugadorManualmente('${d.id}', '${sanitizar(tag)}')"><i class="fas fa-pen"></i></button>
           <button class="btn-action-touch btn-del" title="Eliminar Jugador" onclick="eliminarJugadorManualmente('${d.id}', '${sanitizar(tag)}')"><i class="fas fa-trash"></i></button>
+          <button class="btn-action-touch" style="color: #ff3366; border: 1px solid rgba(255,51,102,0.3);" title="HARD RESET" onclick="resetearJugadorManualmente('${d.id}', '${sanitizar(tag)}')"><i class="fas fa-skull-crossbones"></i></button>
         </div>
       </div>`; 
     }); 
     cont.innerHTML = htmlBloque; 
   } catch(e) { console.warn("Error cargar jug:", e); } 
 }
+
+window.resetearJugadorManualmente = async function(uid, tag) {
+  if (confirm(`🚨 ADVERTENCIA: ¿Estás seguro de hacer un HARD RESET a "${tag}"?\n\nEsto borrará todo su nivel, inventario, equipo y oro, regresándolo a Nivel 1. Úsalo solo con tramposos.`)) {
+    try {
+      let perfilCastigado = { 
+        tag: tag, xp: 0, tokens: 0, rango: "Genin", profesion: "", 
+        stats: { hpMax: 100, hpActual: 100, energiaMax: 100, energiaActual: 100, ultimaEnergia: Date.now(), atk: 10, def: 5 }, 
+        inventario: [],
+        equipo: { cabeza: null, pecho: null, piernas: null, pies: null, mano_derecha: null, mano_izquierda: null, amuleto: null, anillo: null, mascota: null },
+        cooldowns: {}
+      };
+      
+      await updateDoc(doc(db, "jugadores_cloud", uid), { 
+          profile: perfilCastigado, 
+          updatedAt: Date.now(),
+          marcadoComoTramposo: true
+      });
+      
+      alert(`☠️ Hard Reset aplicado con éxito a ${tag}. La justicia ha hablado.`);
+      cargarJugadoresAdmin(); 
+    } catch(e) { 
+        alert("Error al resetear al jugador."); 
+        console.warn(e);
+    }
+  }
+};
 
 window.asignarXpManualmente = async function(uid, currentXp, tag) { 
   let cantidad = parseInt(prompt(`⭐ ASIGNAR XP A: ${tag}\n\nIngresa la cantidad (usa negativos para restar):`)); 
